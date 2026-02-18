@@ -400,7 +400,7 @@ export function ProgressiveSkyline() {
 
               {/* Horses in the fields - DETAILED AND RECOGNIZABLE! */}
               <g>
-                {[120, 320, 420, 580, 680, 760].map((x, i) => {
+                {[50, 135, 335, 400, 615, 740].map((x, i) => {
                   const yOffsets = [-5, 2, -2, 4, 0, 3]; // Varied depths for visual interest
                   return (
                   <g key={`horse-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-horse" opacity="1" style={{animationDelay: `${i * 0.3}s`}}>
@@ -460,7 +460,7 @@ export function ProgressiveSkyline() {
 
               {/* Cows grazing - DETAILED AND RECOGNIZABLE! */}
               <g>
-                {[220, 410, 500, 670].map((x, i) => {
+                {[95, 370, 525, 775].map((x, i) => {
                   const yOffsets = [3, -4, 1, -2]; // Varied depths
                   return (
                   <g key={`cow-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-cow" opacity="1" style={{animationDelay: `${i * 0.5}s`}}>
@@ -528,7 +528,7 @@ export function ProgressiveSkyline() {
 
               {/* Sheep grazing - FLUFFY AND RECOGNIZABLE! */}
               <g>
-                {[160, 290, 470, 590, 700].map((x, i) => {
+                {[75, 310, 500, 590, 715].map((x, i) => {
                   const yOffsets = [-3, 4, -1, 2, 0]; // Varied depths
                   return (
                   <g key={`sheep-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-sheep" opacity="1" style={{animationDelay: `${i * 0.4}s`}}>
@@ -574,7 +574,7 @@ export function ProgressiveSkyline() {
 
               {/* Chickens pecking - DETAILED AND RECOGNIZABLE! */}
               <g>
-                {[200, 260, 340, 480, 540, 620, 730].map((x, i) => {
+                {[40, 155, 345, 490, 545, 625, 760].map((x, i) => {
                   const yOffsets = [2, -2, 3, -1, 1, 4, 0]; // Varied depths
                   return (
                   <g key={`chicken-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-chicken" opacity="1" style={{animationDelay: `${i * 0.2}s`}}>
@@ -656,11 +656,6 @@ export function ProgressiveSkyline() {
               <g opacity="1">
                 {/* Asphalt road */}
                 <rect x="800" y="218" width="1200" height="32" fill={`url(#roadGradient-${iteration})`} />
-
-                {/* Road center line (dashed) */}
-                {Array.from({length: 30}).map((_, i) => (
-                  <rect key={`dash-${i}`} x={800 + i * 40} y="232" width="20" height="2" opacity="1" />
-                ))}
 
                 {/* Sidewalks */}
                 <rect x="800" y="210" width="1200" height="4" fill="#d8d8d8" opacity="1" />
@@ -2369,60 +2364,121 @@ export function ProgressiveSkyline() {
 
               {/* Red barns - matching opening, extended (1/3 LARGER) */}
               <g>
-                {/* Barn 1 - Large */}
+                {/* Barn 1 - Large (fully detailed like Phase 1 Barn 1) */}
                 <rect x="3970" y="178" width="43" height="27" fill="#c73e3e" opacity="1" />
                 <path d="M 3965,178 L 3991.5,158 L 4018,178 Z" fill="#a83232" opacity="1" />
+                {/* Wood plank texture lines */}
+                <path d="M 3972,185 L 4012,185 M 3972,192 L 4012,192 M 3972,199 L 4012,199" stroke="#a83232" strokeWidth="0.7" opacity="1" />
+                {/* Barn doors with cross pattern */}
                 <rect x="3986" y="189" width="11" height="16" fill="#6d4428" opacity="1" />
+                <path d="M 3991.5,194 L 3991.5,205 M 3986,199 L 3997,199" stroke="#5a3a2a" strokeWidth="1.3" opacity="1" />
+                {/* Hayloft windows */}
+                <rect x="3975" y="183" width="6" height="7" fill="#4a4a4a" opacity="1" />
+                <rect x="4000" y="183" width="6" height="7" fill="#4a4a4a" opacity="1" />
+                {/* Cross beams on sides */}
+                <path d="M 3970,178 L 3970,205 M 4013,178 L 4013,205" stroke="#a83232" strokeWidth="1" opacity="1" />
+                {/* Weather vane on top */}
+                <rect x="3990.5" y="155" width="1.5" height="7" fill="#4a4a4a" opacity="1" />
+                <path d="M 3985,158 L 3991.5,155 L 3991.5,161 Z" fill="#d4af37" opacity="1" />
+                <path d="M 3998,158 L 3991.5,155 L 3991.5,161 Z" fill="#d4af37" opacity="1" />
+                {/* Silo next to barn */}
                 <rect x="4017" y="170" width="11" height="35" fill="#d4d4d4" opacity="1" />
                 <ellipse cx="4022.5" cy="170" rx="5.5" ry="2.5" fill="#b8b8b8" opacity="1" />
-                {/* Detail: wood planks */}
-                <path d="M 3972,185 L 4012,185 M 3972,192 L 4012,192 M 3972,199 L 4012,199" stroke="#a83232" strokeWidth="0.5" opacity="1" />
+                {/* Silo roof */}
+                <path d="M 4019,168 L 4022.5,161 L 4026,168" fill="#a83232" opacity="1" />
+                {/* Silo bands */}
+                <rect x="4017" y="183" width="11" height="1.5" fill="#a8a8a8" opacity="1" />
+                <rect x="4017" y="194" width="11" height="1.5" fill="#a8a8a8" opacity="1" />
+                {/* Silo ladder */}
+                <rect x="4022" y="175" width="1" height="25" fill="#8a8a8a" opacity="1" />
+                {Array.from({length: 8}).map((_, li) => (
+                  <rect key={`ladder-end-${li}`} x="4020" y={178 + li * 3} width="5" height="0.5" fill="#8a8a8a" opacity="1" />
+                ))}
 
-                {/* Barn 2 - Medium */}
+                {/* Barn 2 - Medium (detailed like Phase 1 Barn 2) */}
                 <rect x="4242" y="182" width="32" height="20" fill="#c73e3e" opacity="1" />
                 <path d="M 4238,182 L 4258,166 L 4278,182 Z" fill="#a83232" opacity="1" />
                 <rect x="4252" y="189" width="8" height="13" fill="#6d4428" opacity="1" />
-                {/* Detail: window */}
-                <rect x="4244" y="185" width="4" height="4" fill="#4a4a4a" opacity="1" />
-                <rect x="4268" y="185" width="4" height="4" fill="#4a4a4a" opacity="1" />
+                {/* Barn door X pattern */}
+                <path d="M 4252,189 L 4260,202 M 4260,189 L 4252,202" stroke="#5a3a2a" strokeWidth="0.8" opacity="1" />
+                {/* Hayloft windows */}
+                <rect x="4244" y="185" width="5" height="6" fill="#4a4a4a" opacity="1" />
+                <rect x="4265" y="185" width="5" height="6" fill="#4a4a4a" opacity="1" />
+                {/* Silo */}
+                <rect x="4278" y="178" width="9" height="24" fill="#d4d4d4" opacity="1" />
+                <ellipse cx="4282.5" cy="178" rx="4.5" ry="2" fill="#b8b8b8" opacity="1" />
+                <path d="M 4279,176 L 4282.5,170 L 4286,176" fill="#a83232" opacity="1" />
 
-                {/* Barn 3 - Small-Medium */}
+                {/* Barn 3 - Small-Medium (detailed like Phase 1 Barn 3) */}
                 <rect x="4442" y="185" width="27" height="17" fill="#c73e3e" opacity="1" />
                 <path d="M 4439,185 L 4455.5,172 L 4472,185 Z" fill="#a83232" opacity="1" />
                 <rect x="4450" y="190" width="7" height="12" fill="#6d4428" opacity="1" />
+                {/* Windows */}
+                <rect x="4444" y="187" width="4" height="5" fill="#4a4a4a" opacity="1" />
+                <rect x="4463" y="187" width="4" height="5" fill="#4a4a4a" opacity="1" />
+                {/* Weathered wood detail */}
+                <path d="M 4443,190 L 4468,190 M 4443,195 L 4468,195" stroke="#a83232" strokeWidth="0.5" opacity="1" />
 
-                {/* Barn 4 - Large */}
+                {/* Barn 4 - Large (fully detailed) */}
                 <rect x="4672" y="178" width="37" height="24" fill="#c73e3e" opacity="1" />
                 <path d="M 4668,178 L 4690.5,162 L 4713,178 Z" fill="#a83232" opacity="1" />
+                {/* Wood plank texture */}
+                <path d="M 4674,185 L 4708,185 M 4674,192 L 4708,192 M 4674,197 L 4708,197" stroke="#a83232" strokeWidth="0.5" opacity="1" />
+                {/* Barn doors with X pattern */}
                 <rect x="4684" y="187" width="9" height="15" fill="#6d4428" opacity="1" />
+                <path d="M 4684,187 L 4693,202 M 4693,187 L 4684,202" stroke="#5a3a2a" strokeWidth="0.8" opacity="1" />
+                {/* Hayloft windows */}
+                <rect x="4676" y="183" width="5" height="6" fill="#4a4a4a" opacity="1" />
+                <rect x="4698" y="183" width="5" height="6" fill="#4a4a4a" opacity="1" />
+                {/* Silo with full details */}
                 <rect x="4713" y="173" width="9" height="29" fill="#d4d4d4" opacity="1" />
                 <ellipse cx="4717.5" cy="173" rx="4.5" ry="2.2" fill="#b8b8b8" opacity="1" />
-                {/* Detail: X on door */}
-                <path d="M 4684,187 L 4693,202 M 4693,187 L 4684,202" stroke="#5a3a2a" strokeWidth="0.8" opacity="1" />
+                <path d="M 4715,171 L 4717.5,165 L 4720,171" fill="#a83232" opacity="1" />
+                <rect x="4713" y="183" width="9" height="1.5" fill="#a8a8a8" opacity="1" />
+                <rect x="4713" y="193" width="9" height="1.5" fill="#a8a8a8" opacity="1" />
 
-                {/* Barn 5 - Medium */}
+                {/* Barn 5 - Medium (detailed) */}
                 <rect x="4892" y="183" width="29" height="19" fill="#c73e3e" opacity="1" />
                 <path d="M 4889,183 L 4906.5,170 L 4924,183 Z" fill="#a83232" opacity="1" />
                 <rect x="4901" y="189" width="8" height="13" fill="#6d4428" opacity="1" />
+                {/* Windows */}
+                <rect x="4895" y="186" width="4" height="5" fill="#4a4a4a" opacity="1" />
+                <rect x="4914" y="186" width="4" height="5" fill="#4a4a4a" opacity="1" />
+                {/* Wood planks */}
+                <path d="M 4893,189 L 4920,189 M 4893,194 L 4920,194" stroke="#a83232" strokeWidth="0.5" opacity="1" />
               </g>
 
-              {/* Farmhouses */}
+              {/* Farmhouses - fully detailed with windows, chimneys */}
               <g>
+                {/* Farmhouse #1 */}
                 <rect x="4080" y="195" width="18" height="10" fill="#f0e6d3" opacity="1" />
                 <path d="M 4078,195 L 4089,188 L 4100,195 Z" fill="#8b5a3c" opacity="1" />
                 <rect x="4085" y="198" width="3" height="7" fill="#6d4428" opacity="1" />
+                <rect x="4083" y="197" width="2" height="2.5" fill="#6b8ea8" opacity="1" />
+                <rect x="4091" y="197" width="2" height="2.5" fill="#6b8ea8" opacity="1" />
+                <rect x="4095" y="191" width="2" height="4" fill="#a85757" opacity="1" />
 
+                {/* Farmhouse #2 */}
                 <rect x="4360" y="197" width="16" height="8" fill="#e8d4b8" opacity="1" />
                 <path d="M 4358,197 L 4368,191 L 4378,197 Z" fill="#6b5a45" opacity="1" />
                 <rect x="4365" y="199" width="3" height="6" fill="#6d4428" opacity="1" />
+                <rect x="4362" y="198" width="2" height="2" fill="#6b8ea8" opacity="1" />
+                <rect x="4370" y="198" width="2" height="2" fill="#6b8ea8" opacity="1" />
 
+                {/* Farmhouse #3 */}
                 <rect x="4620" y="196" width="17" height="9" fill="#f0e6d3" opacity="1" />
                 <path d="M 4618,196 L 4628.5,190 L 4639,196 Z" fill="#8b5a3c" opacity="1" />
                 <rect x="4626" y="199" width="3" height="6" fill="#6d4428" opacity="1" />
+                <rect x="4622" y="198" width="2" height="2.5" fill="#6b8ea8" opacity="1" />
+                <rect x="4632" y="198" width="2" height="2.5" fill="#6b8ea8" opacity="1" />
+                <rect x="4634" y="192" width="2" height="4" fill="#a85757" opacity="1" />
 
+                {/* Farmhouse #4 */}
                 <rect x="4850" y="198" width="15" height="7" fill="#e8d4b8" opacity="1" />
                 <path d="M 4848,198 L 4857.5,193 L 4867,198 Z" fill="#6b5a45" opacity="1" />
                 <rect x="4855" y="200" width="3" height="5" fill="#6d4428" opacity="1" />
+                <rect x="4852" y="199" width="2" height="2" fill="#6b8ea8" opacity="1" />
+                <rect x="4860" y="199" width="2" height="2" fill="#6b8ea8" opacity="1" />
               </g>
 
               {/* Trees */}
@@ -2437,25 +2493,41 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
-              {/* Hay bales */}
+              {/* Hay bales - with texture like Phase 1 */}
               <g>
                 {[4150, 4220, 4420, 4480, 4670, 4760, 4920].map((x, i) => (
                   <g key={`hay-end-${i}`} opacity="1">
                     <ellipse cx={x} cy="205" rx="5" ry="3" fill="#d4a574" />
                     <ellipse cx={x} cy="203" rx="4" ry="2" fill="#c9995f" />
+                    {/* Hay texture lines */}
+                    <path d={`M ${x-3},204 L ${x+3},204 M ${x-2},205 L ${x+2},205`} stroke="#b88a50" strokeWidth="0.5" opacity="1" />
                   </g>
                 ))}
               </g>
 
-              {/* Tractors */}
+              {/* Tractors - fully detailed like Phase 1 */}
               <g>
                 {[4050, 4350, 4750, 4950].map((x, i) => (
                   <g key={`tractor-end-${i}`} opacity="1">
+                    {/* Tractor body - green */}
                     <rect x={x} y="198" width="18" height="8" rx="1" fill="#4a7c2f" />
+                    {/* Engine hood */}
                     <rect x={x+12} y="196" width="6" height="4" rx="0.5" fill="#3d6928" />
+                    {/* Cab */}
                     <rect x={x+4} y="194" width="6" height="5" rx="0.5" fill="#5a8a3f" />
+                    {/* Cab window */}
+                    <rect x={x+5} y="195" width="4" height="3" fill="#6b8ea8" opacity="1" />
+                    {/* Big rear wheel with hub */}
                     <circle cx={x+4} cy="206" r="4" fill="#2f2f2f" />
+                    <circle cx={x+4} cy="206" r="2" fill="#4a4a4a" />
+                    {/* Small front wheel with hub */}
                     <circle cx={x+15} cy="204" r="2.5" fill="#2f2f2f" />
+                    <circle cx={x+15} cy="204" r="1" fill="#4a4a4a" />
+                    {/* Exhaust pipe */}
+                    <rect x={x+10} y="192" width="1" height="4" fill="#4a4a4a" />
+                    <ellipse cx={x+10.5} cy="192" rx="1.5" ry="0.8" fill="#6a6a6a" />
+                    {/* Yellow details */}
+                    <rect x={x+13} y="199" width="4" height="1" fill="#ffd700" opacity="1" />
                   </g>
                 ))}
               </g>
@@ -2464,7 +2536,7 @@ export function ProgressiveSkyline() {
 
               {/* Horses in the fields - DETAILED AND RECOGNIZABLE! */}
               <g>
-                {[3900, 4050, 4240, 4350, 4530, 4700].map((x, i) => {
+                {[3840, 3930, 4130, 4195, 4310, 4560].map((x, i) => {
                   const yOffsets = [2, -3, 5, -1, 3, -4]; // Varied depths
                   return (
                   <g key={`horse-end-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-horse" opacity="1" style={{animationDelay: `${i * 0.3}s`}}>
@@ -2524,7 +2596,7 @@ export function ProgressiveSkyline() {
 
               {/* Cows grazing - DETAILED AND RECOGNIZABLE! */}
               <g>
-                {[3980, 4150, 4370, 4480].map((x, i) => {
+                {[3880, 4170, 4510, 4790].map((x, i) => {
                   const yOffsets = [4, -1, 3, -3]; // Varied depths
                   return (
                   <g key={`cow-end-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-cow" opacity="1" style={{animationDelay: `${i * 0.5}s`}}>
@@ -2592,7 +2664,7 @@ export function ProgressiveSkyline() {
 
               {/* Sheep grazing - FLUFFY AND RECOGNIZABLE! */}
               <g>
-                {[3940, 4090, 4290, 4410, 4580].map((x, i) => {
+                {[3860, 4140, 4290, 4540, 4780].map((x, i) => {
                   const yOffsets = [-2, 5, -4, 1, -3]; // Varied depths
                   return (
                   <g key={`sheep-end-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-sheep" opacity="1" style={{animationDelay: `${i * 0.4}s`}}>
@@ -2638,7 +2710,7 @@ export function ProgressiveSkyline() {
 
               {/* Chickens pecking - DETAILED AND RECOGNIZABLE! */}
               <g>
-                {[3990, 4080, 4210, 4310, 4420, 4520, 4660].map((x, i) => {
+                {[3910, 3950, 4200, 4330, 4400, 4575, 4810].map((x, i) => {
                   const yOffsets = [3, -3, 1, -2, 4, -1, 2]; // Varied depths
                   return (
                   <g key={`chicken-end-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-chicken" opacity="1" style={{animationDelay: `${i * 0.2}s`}}>
@@ -2692,34 +2764,8 @@ export function ProgressiveSkyline() {
               </g>
 
               {/* ========== FOREGROUND: GRASS STRIP WITH VARIETY TREES ========== */}
-              {/* Grass strip with tapered transition zones on both ends */}
-              <rect x="1850" y="234" width="150" height="4" fill="#7aa87a" opacity="0.5" />
+              {/* Grass strip at foreground where street meets landscape - GREEN CITY SECTION ONLY */}
               <rect x="2000" y="232" width="1800" height="6" fill="#7aa87a" opacity="1" />
-              <rect x="3800" y="234" width="150" height="4" fill="#7aa87a" opacity="0.5" />
-
-              {/* Transition trees - suburbs side (x=1800-2000): small shrubs growing into city */}
-              <g opacity="1">
-                {[{x: 1860, s: 0.35}, {x: 1890, s: 0.5}, {x: 1920, s: 0.6}, {x: 1950, s: 0.75}, {x: 1980, s: 0.85}].map(({x, s}, i) => (
-                  <g key={`trans-tree-in-${i}`} transform={`translate(${x}, 235) scale(${s})`}>
-                    <rect x="2" y={-3 * s} width={3} height={5} fill="#5a4a3a" opacity="1" />
-                    <circle cx="3.5" cy={-10 * s} r={5} fill="#4a8a3a" opacity="1" />
-                    <circle cx="0" cy={-7 * s} r={3.5} fill="#5a9a4a" opacity="1" />
-                    <circle cx="7" cy={-7 * s} r={3.5} fill="#5a9a4a" opacity="1" />
-                  </g>
-                ))}
-              </g>
-
-              {/* Transition trees - rural side (x=3800-4000): shrubs fading out */}
-              <g opacity="1">
-                {[{x: 3810, s: 0.85}, {x: 3840, s: 0.7}, {x: 3870, s: 0.55}, {x: 3910, s: 0.4}, {x: 3940, s: 0.3}].map(({x, s}, i) => (
-                  <g key={`trans-tree-out-${i}`} transform={`translate(${x}, 235) scale(${s})`}>
-                    <rect x="2" y={-3 * s} width={3} height={5} fill="#5a4a3a" opacity="1" />
-                    <circle cx="3.5" cy={-10 * s} r={5} fill="#4a8a3a" opacity="1" />
-                    <circle cx="0" cy={-7 * s} r={3.5} fill="#5a9a4a" opacity="1" />
-                    <circle cx="7" cy={-7 * s} r={3.5} fill="#5a9a4a" opacity="1" />
-                  </g>
-                ))}
-              </g>
 
               {/* VARIETY TREES - Evergreen and Deciduous mix along foreground - GREEN CITY ONLY (x=2000-3800) */}
               <g opacity="1">
@@ -2801,11 +2847,13 @@ export function ProgressiveSkyline() {
               {/* Moving traffic - cars driving across the entire city with VARIED COLORS and BIDIRECTIONAL! */}
               <g>
                 {[
+                  {x: 20, color: "#8b4513", direction: "forward"},     // Brown - near left edge
                   {x: 400, color: "#c73e3e", direction: "forward"},    // Red
                   {x: 1200, color: "#2f4f7f", direction: "reverse"},   // Blue
                   {x: 1950, color: "#4a7c2f", direction: "forward"},   // Green - just before green city
                   {x: 3850, color: "#d4af37", direction: "reverse"},   // Gold - just after green city
-                  {x: 4600, color: "#cc6633", direction: "forward"}    // Orange
+                  {x: 4600, color: "#cc6633", direction: "forward"},   // Orange
+                  {x: 4950, color: "#4a4a8a", direction: "reverse"}    // Indigo - near right edge
                 ].map((car, i) => (
                   <g key={`fg-car-${i}`} className={car.direction === "forward" ? "moving-car" : "moving-car-reverse"} opacity="1" style={{animationDelay: `${i * 1.5}s`}}>
                     {/* Sedan body - COLORED! */}
@@ -2835,10 +2883,12 @@ export function ProgressiveSkyline() {
               {/* Additional vehicles - SUVs with bidirectional traffic */}
               <g>
                 {[
+                  {x: 50, direction: "forward"},        // Near left edge
                   {x: 800, direction: "reverse"},
                   {x: 1600, direction: "forward"},
                   {x: 3900, direction: "reverse"},     // Just after green city
-                  {x: 4800, direction: "forward"}
+                  {x: 4800, direction: "forward"},
+                  {x: 4920, direction: "reverse"}       // Near right edge
                 ].map((suv, i) => (
                   <g key={`fg-suv-${i}`} className={suv.direction === "forward" ? "moving-car" : "moving-car-reverse"} opacity="1" style={{animationDelay: `${i * 2}s`}}>
                     {/* SUV body - taller and wider */}
