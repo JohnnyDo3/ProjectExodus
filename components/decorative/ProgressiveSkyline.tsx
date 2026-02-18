@@ -825,11 +825,15 @@ export function ProgressiveSkyline() {
                   {/* Chimney */}
                   <rect x={x+34} y="168" width="4" height="10" fill="#a85757" opacity="1" />
 
-                  {/* Shutters */}
+                  {/* Shutters - top and bottom story */}
                   <rect x={x+3} y="184" width="1.2" height="8" fill="#2f2f2f" opacity="1" />
                   <rect x={x+11.8} y="184" width="1.2" height="8" fill="#2f2f2f" opacity="1" />
                   <rect x={x+27} y="184" width="1.2" height="8" fill="#2f2f2f" opacity="1" />
                   <rect x={x+35.8} y="184" width="1.2" height="8" fill="#2f2f2f" opacity="1" />
+                  <rect x={x+3} y="196" width="1.2" height="8" fill="#2f2f2f" opacity="1" />
+                  <rect x={x+11.8} y="196" width="1.2" height="8" fill="#2f2f2f" opacity="1" />
+                  <rect x={x+27} y="196" width="1.2" height="8" fill="#2f2f2f" opacity="1" />
+                  <rect x={x+35.8} y="196" width="1.2" height="8" fill="#2f2f2f" opacity="1" />
                 </g>
               ))}
 
@@ -858,13 +862,13 @@ export function ProgressiveSkyline() {
                       />
                     )))}
                   </g>
-                  {/* Right window */}
+                  {/* Right window - positioned between door and garage */}
                   <g>
-                    <rect x={x+32} y="191" width="10" height="5" fill="#4a4a4a" opacity="1" />
+                    <rect x={x+26} y="191" width="10" height="5" fill="#4a4a4a" opacity="1" />
                     {[0, 1, 2].map(col => [0, 1].map(row => (
                       <rect
                         key={`ranch-right-${i}-${col}-${row}`}
-                        x={x + 32.3 + col * 3.2}
+                        x={x + 26.3 + col * 3.2}
                         y={191.3 + row * 2.3}
                         width="2.8"
                         height="2"
@@ -908,7 +912,7 @@ export function ProgressiveSkyline() {
                         y={191.3 + row * 2.3}
                         width="2"
                         height="2"
-                        fill="#6b8ea8"
+                        fill={isNightTime && isWindowLit(x + i * 120) ? "#FFD700" : "#6b8ea8"}
                         opacity="1"
                       />
                     )))}
@@ -922,26 +926,26 @@ export function ProgressiveSkyline() {
                         y={191.3 + row * 2.3}
                         width="2"
                         height="2"
-                        fill="#6b8ea8"
+                        fill={isNightTime && isWindowLit(x + i * 120 + 1) ? "#FFA500" : "#6b8ea8"}
                         opacity="1"
                       />
                     )))}
                   </g>
 
-                  {/* Window boxes with flowers */}
-                  <rect x={x+3} y="198" width="6" height="1.5" fill="#8b7355" opacity="1" />
-                  <rect x={x+15} y="198" width="6" height="1.5" fill="#8b7355" opacity="1" />
+                  {/* Window boxes with flowers - snug below windows */}
+                  <rect x={x+3} y="196.5" width="6" height="1.5" fill="#8b7355" opacity="1" />
+                  <rect x={x+18} y="196.5" width="6" height="1.5" fill="#8b7355" opacity="1" />
                   <circle cx={x+5} cy="197" r="0.8" fill="#ff69b4" opacity="1" />
                   <circle cx={x+7} cy="197" r="0.8" fill="#ffd700" opacity="1" />
-                  <circle cx={x+17} cy="197" r="0.8" fill="#ff69b4" opacity="1" />
-                  <circle cx={x+19} cy="197" r="0.8" fill="#ffd700" opacity="1" />
+                  <circle cx={x+20} cy="197" r="0.8" fill="#ff69b4" opacity="1" />
+                  <circle cx={x+22} cy="197" r="0.8" fill="#ffd700" opacity="1" />
 
-                  {/* Small chimney */}
-                  <rect x={x+19} y="186" width="2.5" height="6" fill="#a85757" opacity="1" />
+                  {/* Small chimney - right of windows */}
+                  <rect x={x+26} y="182" width="2.5" height="8" fill="#a85757" opacity="1" />
 
-                  {/* Garden fence */}
-                  {Array.from({length: 6}).map((_, fi) => (
-                    <rect key={`fence-${fi}`} x={x + fi * 4} y="207" width="1" height="5" fill="#e8d4b8" opacity="1" />
+                  {/* Garden fence - gap at doorway */}
+                  {[0, 4, 8, 21, 25, 29].map((offset, fi) => (
+                    <rect key={`fence-${fi}`} x={x + offset} y="207" width="1" height="5" fill="#e8d4b8" opacity="1" />
                   ))}
                 </g>
               ))}
@@ -965,7 +969,7 @@ export function ProgressiveSkyline() {
                         y={188.3 + row * 3.4}
                         width="2.9"
                         height="3.1"
-                        fill="#6b8ea8"
+                        fill={isNightTime && isWindowLit(x + i * 180) ? "#FFD700" : "#6b8ea8"}
                         opacity="1"
                       />
                     )))}
@@ -979,7 +983,7 @@ export function ProgressiveSkyline() {
                         y={188.3 + row * 3.4}
                         width="2.9"
                         height="3.1"
-                        fill="#6b8ea8"
+                        fill={isNightTime && isWindowLit(x + i * 180 + 1) ? "#FFA500" : "#6b8ea8"}
                         opacity="1"
                       />
                     )))}
@@ -1000,7 +1004,7 @@ export function ProgressiveSkyline() {
 
               {/* Yard trees and landscaping - between houses, not blocking views */}
               <g opacity="1">
-                {[815, 865, 1020, 1175, 1225, 1280, 1330, 1385, 1590, 1645, 1695, 1850, 1900, 1950].map((x, i) => (
+                {[868, 986, 1050, 1105, 1168, 1286, 1350, 1405, 1468, 1586, 1650, 1705, 1768, 1886].map((x, i) => (
                   <g key={`yard-tree-${i}`}>
                     {/* Tree trunk */}
                     <rect x={x} y="203" width="2" height="7" fill="#6b5a45" opacity="1" />
