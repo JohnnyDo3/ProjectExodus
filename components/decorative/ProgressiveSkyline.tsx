@@ -716,13 +716,13 @@ export function ProgressiveSkyline() {
                   </g>
                   {/* Tower window - 4-pane (2x2 grid) */}
                   <g>
-                    <rect x={x+14} y="170" width="5" height="6" fill="#4a4a4a" opacity="1" />
+                    <rect x={x+15.5} y="170" width="4" height="6" fill="#4a4a4a" opacity="1" />
                     {[0, 1].map(col => [0, 1].map(row => (
                       <rect
                         key={`vic-tower-${i}-${col}-${row}`}
-                        x={x + 14.4 + col * 2.2}
+                        x={x + 15.7 + col * 1.8}
                         y={170.4 + row * 2.6}
-                        width="1.9"
+                        width="1.5"
                         height="2.2"
                         fill={isNightTime && isWindowLit(x + i * 100 + 2) ? "#FFA500" : "#6b8ea8"}
                         opacity="1"
@@ -878,12 +878,12 @@ export function ProgressiveSkyline() {
                     )))}
                   </g>
 
-                  {/* Attached garage - larger */}
-                  <rect x={x+38} y="193" width="9" height="13" fill="#c9b18f" opacity="1" />
-                  <rect x={x+39} y="200" width="7" height="6" fill="#4a4a4a" opacity="1" />
+                  {/* Attached garage - nearly same height as main house */}
+                  <rect x={x+38} y="189" width="9" height="17" fill="#c9b18f" opacity="1" />
+                  <rect x={x+39} y="199" width="7" height="7" fill="#4a4a4a" opacity="1" />
 
-                  {/* Front door */}
-                  <rect x={x+19} y="196" width="5" height="10" fill="#6b5a45" opacity="1" />
+                  {/* Front door - overlaps vertically with windows */}
+                  <rect x={x+19} y="190" width="5" height="16" fill="#6b5a45" opacity="1" />
 
                   {/* Front porch/step */}
                   <rect x={x+17} y="206" width="9" height="2" fill="#c9b18f" opacity="1" />
@@ -902,13 +902,13 @@ export function ProgressiveSkyline() {
                   {/* Arched door - larger */}
                   <path d={`M ${x+11},193 L ${x+11},207 L ${x+19},207 L ${x+19},193 Q ${x+15},190 ${x+11},193 Z`} fill="#a85757" opacity="1" />
 
-                  {/* Cottage windows - cozy 4-pane (2x2 grid) */}
+                  {/* Cottage windows - cozy 4-pane (2x2 grid), 3px gap from door */}
                   <g>
-                    <rect x={x+5} y="191" width="5" height="5" fill="#4a4a4a" opacity="1" />
+                    <rect x={x+3} y="191" width="5" height="5" fill="#4a4a4a" opacity="1" />
                     {[0, 1].map(col => [0, 1].map(row => (
                       <rect
                         key={`cottage-left-${i}-${col}-${row}`}
-                        x={x + 5.3 + col * 2.3}
+                        x={x + 3.3 + col * 2.3}
                         y={191.3 + row * 2.3}
                         width="2"
                         height="2"
@@ -918,11 +918,11 @@ export function ProgressiveSkyline() {
                     )))}
                   </g>
                   <g>
-                    <rect x={x+20} y="191" width="5" height="5" fill="#4a4a4a" opacity="1" />
+                    <rect x={x+22} y="191" width="5" height="5" fill="#4a4a4a" opacity="1" />
                     {[0, 1].map(col => [0, 1].map(row => (
                       <rect
                         key={`cottage-right-${i}-${col}-${row}`}
-                        x={x + 20.3 + col * 2.3}
+                        x={x + 22.3 + col * 2.3}
                         y={191.3 + row * 2.3}
                         width="2"
                         height="2"
@@ -933,19 +933,19 @@ export function ProgressiveSkyline() {
                   </g>
 
                   {/* Window boxes with flowers - snug below windows */}
-                  <rect x={x+3} y="196.5" width="6" height="1.5" fill="#8b7355" opacity="1" />
-                  <rect x={x+18} y="196.5" width="6" height="1.5" fill="#8b7355" opacity="1" />
-                  <circle cx={x+5} cy="197" r="0.8" fill="#ff69b4" opacity="1" />
-                  <circle cx={x+7} cy="197" r="0.8" fill="#ffd700" opacity="1" />
-                  <circle cx={x+20} cy="197" r="0.8" fill="#ff69b4" opacity="1" />
-                  <circle cx={x+22} cy="197" r="0.8" fill="#ffd700" opacity="1" />
+                  <rect x={x+1} y="196.5" width="6" height="1.5" fill="#8b7355" opacity="1" />
+                  <rect x={x+20} y="196.5" width="6" height="1.5" fill="#8b7355" opacity="1" />
+                  <circle cx={x+3} cy="197" r="0.8" fill="#ff69b4" opacity="1" />
+                  <circle cx={x+5} cy="197" r="0.8" fill="#ffd700" opacity="1" />
+                  <circle cx={x+22} cy="197" r="0.8" fill="#ff69b4" opacity="1" />
+                  <circle cx={x+24} cy="197" r="0.8" fill="#ffd700" opacity="1" />
 
                   {/* Small chimney - right of windows */}
                   <rect x={x+26} y="182" width="2.5" height="8" fill="#a85757" opacity="1" />
 
-                  {/* Garden fence - gap at doorway */}
+                  {/* Garden fence - gap at doorway, stops at sidewalk */}
                   {[0, 4, 8, 21, 25, 29].map((offset, fi) => (
-                    <rect key={`fence-${fi}`} x={x + offset} y="207" width="1" height="5" fill="#e8d4b8" opacity="1" />
+                    <rect key={`fence-${fi}`} x={x + offset} y="207" width="1" height="3" fill="#e8d4b8" opacity="1" />
                   ))}
                 </g>
               ))}
@@ -996,9 +996,9 @@ export function ProgressiveSkyline() {
                   <rect x={x+2} y="181" width="12" height="1.5" fill="#3d5866" opacity="1" />
                   <rect x={x+18} y="181" width="12" height="1.5" fill="#3d5866" opacity="1" />
 
-                  {/* Modern landscaping - larger */}
-                  <circle cx={x+5} cy="208" r="4" fill="#8bc34a" opacity="1" />
-                  <circle cx={x+28} cy="208" r="4" fill="#8bc34a" opacity="1" />
+                  {/* Modern landscaping - trimmed shrubs */}
+                  <circle cx={x+5} cy="209" r="3" fill="#8bc34a" opacity="1" />
+                  <circle cx={x+28} cy="209" r="3" fill="#8bc34a" opacity="1" />
                 </g>
               ))}
 
