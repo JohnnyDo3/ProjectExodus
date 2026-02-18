@@ -2536,7 +2536,7 @@ export function ProgressiveSkyline() {
 
               {/* Horses in the fields - DETAILED AND RECOGNIZABLE! */}
               <g>
-                {[3840, 3930, 4130, 4195, 4310, 4560].map((x, i) => {
+                {[3840, 3930, 4130, 4200, 4310, 4560].map((x, i) => {
                   const yOffsets = [2, -3, 5, -1, 3, -4]; // Varied depths
                   return (
                   <g key={`horse-end-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-horse" opacity="1" style={{animationDelay: `${i * 0.3}s`}}>
