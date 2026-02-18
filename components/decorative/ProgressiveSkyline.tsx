@@ -1008,6 +1008,102 @@ export function ProgressiveSkyline() {
               <path d="M 800,208 Q 900,208 1000,207 Q 1100,209 1200,207 Q 1300,206 1400,208 Q 1500,209 1600,207 Q 1700,207 1800,208 Q 1900,208 1950,208 Q 2000,208 2050,208 Q 2100,208 2100,208 L 2100,250 L 800,250 Z"
                     fill="#8ab88a" opacity="1" />
 
+              {/* Background landscape - rolling hills with depth and house silhouettes */}
+              {/* Rendered FIRST so foreground houses, roads, and cars appear in front */}
+
+              {/* === LAYER 1: Farthest hills - lightest, haziest === */}
+              <g opacity="0.12">
+                <path d="M 800,172 Q 870,165 950,168 Q 1050,160 1150,164 Q 1250,158 1350,162 Q 1450,157 1550,161 Q 1650,156 1750,160 Q 1850,163 1950,166 Q 2000,168 2000,190 L 800,190 Z"
+                      fill="#8aaa8a" />
+                {/* Farthest house silhouettes - very small, faint */}
+                {[860, 930, 1000, 1080, 1160, 1240, 1320, 1400, 1480, 1560, 1640, 1720, 1800, 1880, 1960].map((bx, bi) => {
+                  const bh = 2 + (bi % 2) * 1;
+                  const bw = 3 + (bi % 3);
+                  const by = 163 - (bi % 4) * 1.5 - Math.sin(bi * 0.8) * 2;
+                  return (
+                    <g key={`bg-far-${bi}`}>
+                      <rect x={bx} y={by} width={bw} height={bh} fill="#7a9a7a" />
+                      <path d={`M ${bx-0.3},${by} L ${bx + bw/2},${by - 1.5} L ${bx + bw + 0.3},${by} Z`} fill="#6a8a6a" />
+                    </g>
+                  );
+                })}
+              </g>
+
+              {/* === LAYER 2: Mid-far hills - slightly more visible === */}
+              <g opacity="0.18">
+                <path d="M 800,176 Q 880,170 970,173 Q 1070,167 1170,170 Q 1270,165 1370,169 Q 1470,163 1570,167 Q 1670,164 1770,168 Q 1870,171 1950,174 Q 2000,176 2000,195 L 800,195 Z"
+                      fill="#7a9a7a" />
+                {/* Mid-far house silhouettes */}
+                {[840, 895, 950, 1015, 1075, 1140, 1205, 1270, 1335, 1400, 1465, 1530, 1595, 1660, 1725, 1790, 1855, 1920].map((bx, bi) => {
+                  const bh = 2.5 + (bi % 3) * 1;
+                  const bw = 4 + (bi % 2) * 1.5;
+                  const by = 170 - (bi % 5) * 1.2 - Math.sin(bi * 0.7) * 1.5;
+                  return (
+                    <g key={`bg-midfar-${bi}`}>
+                      <rect x={bx} y={by} width={bw} height={bh} fill="#6a8a6a" />
+                      <path d={`M ${bx-0.3},${by} L ${bx + bw/2},${by - 1.8 - (bi % 2) * 0.5} L ${bx + bw + 0.3},${by} Z`} fill="#5a7a5a" />
+                    </g>
+                  );
+                })}
+                {/* Scattered trees at this depth */}
+                {[870, 925, 1045, 1110, 1200, 1305, 1430, 1500, 1625, 1695, 1760, 1890].map((tx, ti) => (
+                  <circle key={`bg-far-tree-${ti}`} cx={tx} cy={170 - (ti % 3) * 1.5 - Math.sin(ti * 0.9) * 1.5} r={1.2 + (ti % 2) * 0.4} fill="#6a8a5a" />
+                ))}
+              </g>
+
+              {/* === LAYER 3: Mid hills - moderate visibility === */}
+              <g opacity="0.22">
+                <path d="M 800,180 Q 890,175 980,178 Q 1080,173 1180,176 Q 1280,171 1380,175 Q 1480,170 1580,174 Q 1680,172 1780,175 Q 1880,178 1960,180 Q 2000,181 2000,200 L 800,200 Z"
+                      fill="#6a8a6a" />
+                {/* Mid-distance house silhouettes - more defined */}
+                {[825, 880, 940, 1005, 1060, 1125, 1190, 1255, 1320, 1385, 1445, 1510, 1575, 1640, 1705, 1770, 1835, 1905, 1965].map((bx, bi) => {
+                  const bh = 3 + (bi % 3) * 1.2;
+                  const bw = 4.5 + (bi % 2) * 2;
+                  const by = 176 - (bi % 4) * 1 - Math.sin(bi * 0.6) * 1.2;
+                  return (
+                    <g key={`bg-mid-${bi}`}>
+                      <rect x={bx} y={by} width={bw} height={bh} fill="#5a7a5a" />
+                      <path d={`M ${bx-0.4},${by} L ${bx + bw/2},${by - 2 - (bi % 2) * 0.8} L ${bx + bw + 0.4},${by} Z`} fill="#4a6a4a" />
+                      {bi % 4 === 0 && <rect x={bx + 1} y={by + 0.8} width="0.8" height="0.8" fill="#7a9a6a" opacity="0.6" />}
+                    </g>
+                  );
+                })}
+                {/* Trees between mid houses */}
+                {[850, 910, 975, 1035, 1095, 1155, 1220, 1285, 1350, 1415, 1475, 1545, 1610, 1675, 1740, 1805, 1870, 1940].map((tx, ti) => (
+                  <g key={`bg-mid-tree-${ti}`}>
+                    <rect x={tx} y={176 - (ti % 3) * 0.8} width="0.6" height={2.5 + (ti % 2)} fill="#4a5a3a" />
+                    <circle cx={tx + 0.3} cy={174.5 - (ti % 3) * 0.8} r={1.2 + (ti % 2) * 0.3} fill="#5a7a4a" />
+                  </g>
+                ))}
+              </g>
+
+              {/* === LAYER 4: Nearest background hills - most visible === */}
+              <g opacity="0.3">
+                <path d="M 800,185 Q 900,181 1000,183 Q 1100,179 1200,182 Q 1300,178 1400,181 Q 1500,180 1600,178 Q 1700,181 1800,180 Q 1900,183 2000,185 L 2000,205 L 800,205 Z"
+                      fill="#5a7a5a" />
+                {/* Nearest background house silhouettes - most detailed */}
+                {[830, 870, 920, 960, 1010, 1060, 1100, 1150, 1200, 1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800, 1850, 1900, 1950].map((bx, bi) => {
+                  const bh = 3.5 + (bi % 3) * 1.5;
+                  const bw = 5 + (bi % 2) * 2;
+                  const by = 182 - (bi % 5) * 0.8 - Math.sin(bi * 0.5) * 1;
+                  return (
+                    <g key={`bg-near-${bi}`}>
+                      <rect x={bx} y={by} width={bw} height={bh} fill="#4a6a4a" opacity="0.7" />
+                      <path d={`M ${bx-0.5},${by} L ${bx + bw/2},${by - 2.5 - (bi % 2)} L ${bx + bw + 0.5},${by} Z`} fill="#3a5a3a" opacity="0.6" />
+                      {bi % 3 === 0 && <rect x={bx + 1} y={by + 1} width="1" height="1" fill="#6a8a5a" opacity="0.5" />}
+                      {bi % 5 === 0 && <rect x={bx + bw - 2} y={by + 1} width="0.8" height="0.8" fill="#6a8a5a" opacity="0.4" />}
+                    </g>
+                  );
+                })}
+                {/* Nearest background trees */}
+                {[845, 890, 935, 985, 1035, 1080, 1125, 1175, 1225, 1275, 1325, 1375, 1425, 1475, 1525, 1575, 1625, 1675, 1725, 1775, 1825, 1875, 1925].map((tx, ti) => (
+                  <g key={`bg-near-tree-${ti}`}>
+                    <rect x={tx} y={183 - (ti % 3)} width="0.8" height={3 + (ti % 2)} fill="#3a4a2a" />
+                    <circle cx={tx + 0.4} cy={181 - (ti % 3)} r={1.8 + (ti % 2) * 0.5} fill="#4a6a3a" />
+                  </g>
+                ))}
+              </g>
+
               {/* Main road infrastructure */}
               <g opacity="1">
                 {/* Concrete curb - top side */}
@@ -1544,101 +1640,6 @@ export function ProgressiveSkyline() {
                     {/* Headlights/taillights */}
                     <rect x={car.dir > 0 ? car.x + (car.type === 'suv' ? 13 : 11) : car.x} y={car.y + 0.5} width="1" height="1.5" rx="0.3" fill={car.dir > 0 ? '#ffd700' : '#cc3333'} opacity="0.8" />
                     <rect x={car.dir > 0 ? car.x : car.x + (car.type === 'suv' ? 13 : 11)} y={car.y + 0.5} width="1" height="1.5" rx="0.3" fill={car.dir > 0 ? '#cc3333' : '#ffd700'} opacity="0.8" />
-                  </g>
-                ))}
-              </g>
-
-              {/* Background landscape - rolling hills with depth and house silhouettes */}
-
-              {/* === LAYER 1: Farthest hills - lightest, haziest === */}
-              <g opacity="0.12">
-                <path d="M 800,172 Q 870,165 950,168 Q 1050,160 1150,164 Q 1250,158 1350,162 Q 1450,157 1550,161 Q 1650,156 1750,160 Q 1850,163 1950,166 Q 2000,168 2000,190 L 800,190 Z"
-                      fill="#8aaa8a" />
-                {/* Farthest house silhouettes - very small, faint */}
-                {[860, 930, 1000, 1080, 1160, 1240, 1320, 1400, 1480, 1560, 1640, 1720, 1800, 1880, 1960].map((bx, bi) => {
-                  const bh = 2 + (bi % 2) * 1;
-                  const bw = 3 + (bi % 3);
-                  const by = 163 - (bi % 4) * 1.5 - Math.sin(bi * 0.8) * 2;
-                  return (
-                    <g key={`bg-far-${bi}`}>
-                      <rect x={bx} y={by} width={bw} height={bh} fill="#7a9a7a" />
-                      <path d={`M ${bx-0.3},${by} L ${bx + bw/2},${by - 1.5} L ${bx + bw + 0.3},${by} Z`} fill="#6a8a6a" />
-                    </g>
-                  );
-                })}
-              </g>
-
-              {/* === LAYER 2: Mid-far hills - slightly more visible === */}
-              <g opacity="0.18">
-                <path d="M 800,176 Q 880,170 970,173 Q 1070,167 1170,170 Q 1270,165 1370,169 Q 1470,163 1570,167 Q 1670,164 1770,168 Q 1870,171 1950,174 Q 2000,176 2000,195 L 800,195 Z"
-                      fill="#7a9a7a" />
-                {/* Mid-far house silhouettes */}
-                {[840, 895, 950, 1015, 1075, 1140, 1205, 1270, 1335, 1400, 1465, 1530, 1595, 1660, 1725, 1790, 1855, 1920].map((bx, bi) => {
-                  const bh = 2.5 + (bi % 3) * 1;
-                  const bw = 4 + (bi % 2) * 1.5;
-                  const by = 170 - (bi % 5) * 1.2 - Math.sin(bi * 0.7) * 1.5;
-                  return (
-                    <g key={`bg-midfar-${bi}`}>
-                      <rect x={bx} y={by} width={bw} height={bh} fill="#6a8a6a" />
-                      <path d={`M ${bx-0.3},${by} L ${bx + bw/2},${by - 1.8 - (bi % 2) * 0.5} L ${bx + bw + 0.3},${by} Z`} fill="#5a7a5a" />
-                    </g>
-                  );
-                })}
-                {/* Scattered trees at this depth */}
-                {[870, 925, 1045, 1110, 1200, 1305, 1430, 1500, 1625, 1695, 1760, 1890].map((tx, ti) => (
-                  <circle key={`bg-far-tree-${ti}`} cx={tx} cy={170 - (ti % 3) * 1.5 - Math.sin(ti * 0.9) * 1.5} r={1.2 + (ti % 2) * 0.4} fill="#6a8a5a" />
-                ))}
-              </g>
-
-              {/* === LAYER 3: Mid hills - moderate visibility === */}
-              <g opacity="0.22">
-                <path d="M 800,180 Q 890,175 980,178 Q 1080,173 1180,176 Q 1280,171 1380,175 Q 1480,170 1580,174 Q 1680,172 1780,175 Q 1880,178 1960,180 Q 2000,181 2000,200 L 800,200 Z"
-                      fill="#6a8a6a" />
-                {/* Mid-distance house silhouettes - more defined */}
-                {[825, 880, 940, 1005, 1060, 1125, 1190, 1255, 1320, 1385, 1445, 1510, 1575, 1640, 1705, 1770, 1835, 1905, 1965].map((bx, bi) => {
-                  const bh = 3 + (bi % 3) * 1.2;
-                  const bw = 4.5 + (bi % 2) * 2;
-                  const by = 176 - (bi % 4) * 1 - Math.sin(bi * 0.6) * 1.2;
-                  return (
-                    <g key={`bg-mid-${bi}`}>
-                      <rect x={bx} y={by} width={bw} height={bh} fill="#5a7a5a" />
-                      <path d={`M ${bx-0.4},${by} L ${bx + bw/2},${by - 2 - (bi % 2) * 0.8} L ${bx + bw + 0.4},${by} Z`} fill="#4a6a4a" />
-                      {bi % 4 === 0 && <rect x={bx + 1} y={by + 0.8} width="0.8" height="0.8" fill="#7a9a6a" opacity="0.6" />}
-                    </g>
-                  );
-                })}
-                {/* Trees between mid houses */}
-                {[850, 910, 975, 1035, 1095, 1155, 1220, 1285, 1350, 1415, 1475, 1545, 1610, 1675, 1740, 1805, 1870, 1940].map((tx, ti) => (
-                  <g key={`bg-mid-tree-${ti}`}>
-                    <rect x={tx} y={176 - (ti % 3) * 0.8} width="0.6" height={2.5 + (ti % 2)} fill="#4a5a3a" />
-                    <circle cx={tx + 0.3} cy={174.5 - (ti % 3) * 0.8} r={1.2 + (ti % 2) * 0.3} fill="#5a7a4a" />
-                  </g>
-                ))}
-              </g>
-
-              {/* === LAYER 4: Nearest background hills - most visible === */}
-              <g opacity="0.3">
-                <path d="M 800,185 Q 900,181 1000,183 Q 1100,179 1200,182 Q 1300,178 1400,181 Q 1500,180 1600,178 Q 1700,181 1800,180 Q 1900,183 2000,185 L 2000,205 L 800,205 Z"
-                      fill="#5a7a5a" />
-                {/* Nearest background house silhouettes - most detailed */}
-                {[830, 870, 920, 960, 1010, 1060, 1100, 1150, 1200, 1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800, 1850, 1900, 1950].map((bx, bi) => {
-                  const bh = 3.5 + (bi % 3) * 1.5;
-                  const bw = 5 + (bi % 2) * 2;
-                  const by = 182 - (bi % 5) * 0.8 - Math.sin(bi * 0.5) * 1;
-                  return (
-                    <g key={`bg-near-${bi}`}>
-                      <rect x={bx} y={by} width={bw} height={bh} fill="#4a6a4a" opacity="0.7" />
-                      <path d={`M ${bx-0.5},${by} L ${bx + bw/2},${by - 2.5 - (bi % 2)} L ${bx + bw + 0.5},${by} Z`} fill="#3a5a3a" opacity="0.6" />
-                      {bi % 3 === 0 && <rect x={bx + 1} y={by + 1} width="1" height="1" fill="#6a8a5a" opacity="0.5" />}
-                      {bi % 5 === 0 && <rect x={bx + bw - 2} y={by + 1} width="0.8" height="0.8" fill="#6a8a5a" opacity="0.4" />}
-                    </g>
-                  );
-                })}
-                {/* Nearest background trees */}
-                {[845, 890, 935, 985, 1035, 1080, 1125, 1175, 1225, 1275, 1325, 1375, 1425, 1475, 1525, 1575, 1625, 1675, 1725, 1775, 1825, 1875, 1925].map((tx, ti) => (
-                  <g key={`bg-near-tree-${ti}`}>
-                    <rect x={tx} y={183 - (ti % 3)} width="0.8" height={3 + (ti % 2)} fill="#3a4a2a" />
-                    <circle cx={tx + 0.4} cy={181 - (ti % 3)} r={1.8 + (ti % 2) * 0.5} fill="#4a6a3a" />
                   </g>
                 ))}
               </g>
