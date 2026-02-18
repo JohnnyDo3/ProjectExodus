@@ -460,7 +460,7 @@ export function ProgressiveSkyline() {
 
               {/* Cows grazing - DETAILED AND RECOGNIZABLE! */}
               <g>
-                {[230, 390, 510, 640].map((x, i) => {
+                {[220, 410, 500, 670].map((x, i) => {
                   const yOffsets = [3, -4, 1, -2]; // Varied depths
                   return (
                   <g key={`cow-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-cow" opacity="1" style={{animationDelay: `${i * 0.5}s`}}>
@@ -2464,8 +2464,8 @@ export function ProgressiveSkyline() {
 
               {/* Horses in the fields - DETAILED AND RECOGNIZABLE! */}
               <g>
-                {[3920, 4120, 4220, 4380, 4480, 4560].map((x, i) => {
-                  const yOffsets = [3, -4, 1, -2, 4, 0]; // Varied depths
+                {[3900, 4050, 4240, 4350, 4530, 4700].map((x, i) => {
+                  const yOffsets = [2, -3, 5, -1, 3, -4]; // Varied depths
                   return (
                   <g key={`horse-end-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-horse" opacity="1" style={{animationDelay: `${i * 0.3}s`}}>
                     {/* Main body - larger and more defined */}
@@ -2524,8 +2524,8 @@ export function ProgressiveSkyline() {
 
               {/* Cows grazing - DETAILED AND RECOGNIZABLE! */}
               <g>
-                {[4030, 4190, 4310, 4440].map((x, i) => {
-                  const yOffsets = [-2, 3, -4, 2]; // Varied depths
+                {[3980, 4150, 4370, 4480].map((x, i) => {
+                  const yOffsets = [4, -1, 3, -3]; // Varied depths
                   return (
                   <g key={`cow-end-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-cow" opacity="1" style={{animationDelay: `${i * 0.5}s`}}>
                     {/* Main cow body - large and boxy */}
@@ -2592,8 +2592,8 @@ export function ProgressiveSkyline() {
 
               {/* Sheep grazing - FLUFFY AND RECOGNIZABLE! */}
               <g>
-                {[3960, 4090, 4270, 4390, 4500].map((x, i) => {
-                  const yOffsets = [4, -3, 2, -1, 3]; // Varied depths
+                {[3940, 4090, 4290, 4410, 4580].map((x, i) => {
+                  const yOffsets = [-2, 5, -4, 1, -3]; // Varied depths
                   return (
                   <g key={`sheep-end-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-sheep" opacity="1" style={{animationDelay: `${i * 0.4}s`}}>
                     {/* Fluffy wool body - multiple overlapping circles for texture */}
@@ -2638,8 +2638,8 @@ export function ProgressiveSkyline() {
 
               {/* Chickens pecking - DETAILED AND RECOGNIZABLE! */}
               <g>
-                {[4000, 4060, 4140, 4280, 4340, 4420, 4530].map((x, i) => {
-                  const yOffsets = [-1, 3, -2, 1, 4, 0, 2]; // Varied depths
+                {[3990, 4080, 4210, 4310, 4420, 4520, 4660].map((x, i) => {
+                  const yOffsets = [3, -3, 1, -2, 4, -1, 2]; // Varied depths
                   return (
                   <g key={`chicken-end-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-chicken" opacity="1" style={{animationDelay: `${i * 0.2}s`}}>
                     {/* Chicken body - plump and defined */}
