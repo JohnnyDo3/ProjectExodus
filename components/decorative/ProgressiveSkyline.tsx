@@ -635,9 +635,9 @@ export function ProgressiveSkyline() {
               {/* ========== PHASE 2: DEVELOPING SUBURBS (800-2000) ========== */}
 
               {/* Grassy ground layer - smooth from rural buffer, flattening toward city (WIDE BUFFERS: 800-900, 1800-2100) */}
-              <path d="M 800,210 Q 900,210 1000,208 Q 1100,212 1200,207 Q 1300,203 1400,209 Q 1500,211 1600,206 Q 1700,206 1800,208 Q 1900,209 1950,210 Q 2000,210 2050,210 Q 2100,210 2100,210 L 2100,250 L 800,250 Z"
+              <path d="M 800,210 Q 900,210 1000,209 Q 1100,211 1200,209 Q 1300,208 1400,210 Q 1500,210 1600,209 Q 1700,209 1800,210 Q 1900,210 1950,210 Q 2000,210 2050,210 Q 2100,210 2100,210 L 2100,250 L 800,250 Z"
                     fill="#7aa87a" opacity="1" />
-              <path d="M 800,208 Q 900,208 1000,206 Q 1100,209 1200,205 Q 1300,202 1400,207 Q 1500,210 1600,205 Q 1700,205 1800,206 Q 1900,207 1950,208 Q 2000,208 2050,208 Q 2100,208 2100,208 L 2100,250 L 800,250 Z"
+              <path d="M 800,208 Q 900,208 1000,207 Q 1100,209 1200,207 Q 1300,206 1400,208 Q 1500,209 1600,207 Q 1700,207 1800,208 Q 1900,208 1950,208 Q 2000,208 2050,208 Q 2100,208 2100,208 L 2100,250 L 800,250 Z"
                     fill="#8ab88a" opacity="1" />
 
               {/* Main road infrastructure */}
@@ -645,9 +645,9 @@ export function ProgressiveSkyline() {
                 {/* Asphalt road */}
                 <rect x="800" y="218" width="1200" height="32" fill={`url(#roadGradient-${iteration})`} />
 
-                {/* Sidewalks */}
-                <rect x="800" y="210" width="1200" height="4" fill="#d8d8d8" opacity="1" />
-                <rect x="800" y="250" width="1200" height="2" fill="#d8d8d8" opacity="1" />
+                {/* Grass strips - continuous green to road edge */}
+                <rect x="800" y="210" width="1200" height="4" fill="#7aa87a" opacity="1" />
+                <rect x="800" y="250" width="1200" height="2" fill="#7aa87a" opacity="1" />
               </g>
 
 
@@ -865,8 +865,8 @@ export function ProgressiveSkyline() {
                   <rect x={x+38} y="189" width="9" height="17" fill="#c9b18f" opacity="1" />
                   <rect x={x+39} y="199" width="7" height="7" fill="#4a4a4a" opacity="1" />
 
-                  {/* Front door - overlaps vertically with windows */}
-                  <rect x={x+19} y="190" width="5" height="16" fill="#6b5a45" opacity="1" />
+                  {/* Front door */}
+                  <rect x={x+19} y="196" width="5" height="10" fill="#6b5a45" opacity="1" />
 
                   {/* Front porch/step */}
                   <rect x={x+17} y="206" width="9" height="2" fill="#c9b18f" opacity="1" />
@@ -915,13 +915,13 @@ export function ProgressiveSkyline() {
                     )))}
                   </g>
 
-                  {/* Window boxes with flowers - snug below windows */}
-                  <rect x={x+1} y="196.5" width="6" height="1.5" fill="#8b7355" opacity="1" />
-                  <rect x={x+20} y="196.5" width="6" height="1.5" fill="#8b7355" opacity="1" />
-                  <circle cx={x+3} cy="197" r="0.8" fill="#ff69b4" opacity="1" />
-                  <circle cx={x+5} cy="197" r="0.8" fill="#ffd700" opacity="1" />
-                  <circle cx={x+22} cy="197" r="0.8" fill="#ff69b4" opacity="1" />
-                  <circle cx={x+24} cy="197" r="0.8" fill="#ffd700" opacity="1" />
+                  {/* Window boxes with flowers - centered under windows */}
+                  <rect x={x+2.5} y="196.5" width="6" height="1.5" fill="#8b7355" opacity="1" />
+                  <rect x={x+21.5} y="196.5" width="6" height="1.5" fill="#8b7355" opacity="1" />
+                  <circle cx={x+4} cy="196" r="0.8" fill="#ff69b4" opacity="1" />
+                  <circle cx={x+6.5} cy="196" r="0.8" fill="#ffd700" opacity="1" />
+                  <circle cx={x+23} cy="196" r="0.8" fill="#ff69b4" opacity="1" />
+                  <circle cx={x+25.5} cy="196" r="0.8" fill="#ffd700" opacity="1" />
 
                   {/* Small chimney - right of windows */}
                   <rect x={x+26} y="182" width="2.5" height="8" fill="#a85757" opacity="1" />
@@ -997,18 +997,18 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
-              {/* Street lights along the road - POSITIONED ON ROAD EDGE */}
+              {/* Street lights along the road - ON GRASS STRIP BY ROAD EDGE */}
               <g opacity="1">
                 {[840, 990, 1140, 1290, 1440, 1590, 1740, 1890].map((x, i) => (
                   <g key={`street-light-${i}`}>
-                    {/* Light pole base on sidewalk edge near road */}
-                    <rect x={x} y="212" width="2" height="12" fill="#4a4a4a" opacity="1" />
+                    {/* Light pole standing on grass strip, base at road edge */}
+                    <rect x={x} y="203" width="2" height="12" fill="#4a4a4a" opacity="1" />
                     {/* Light arm extending over road */}
-                    <rect x={x} y="212" width="8" height="1.5" fill="#4a4a4a" opacity="1" />
+                    <rect x={x} y="203" width="8" height="1.5" fill="#4a4a4a" opacity="1" />
                     {/* Light fixture */}
-                    <rect x={x+5} y="213" width="4" height="2" fill="#5a5a5a" opacity="1" />
-                    <circle cx={x+7} cy="216" r="2" fill="#ffd700" opacity="1" />
-                    <circle cx={x+7} cy="216" r="1" fill="#ffeb3b" className="window-light" />
+                    <rect x={x+5} y="204" width="4" height="2" fill="#5a5a5a" opacity="1" />
+                    <circle cx={x+7} cy="207" r="2" fill="#ffd700" opacity="1" />
+                    <circle cx={x+7} cy="207" r="1" fill="#ffeb3b" className="window-light" />
                   </g>
                 ))}
               </g>
