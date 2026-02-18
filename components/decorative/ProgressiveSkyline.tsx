@@ -1074,8 +1074,8 @@ export function ProgressiveSkyline() {
                 <g key={`victorian-${i}`}>
                   {/* Foundation */}
                   <rect x={x-1} y="208" width="37" height="3" fill="#8a8a7a" opacity="0.9" />
-                  {/* Driveway connecting to road */}
-                  <rect x={x+30} y="208" width="8" height="8" fill="#c8c4bc" opacity="0.8" />
+                  {/* Driveway connecting to road - extends across sidewalk and curb */}
+                  <rect x={x+30} y="208" width="8" height="10" fill="#c8c4bc" opacity="0.85" />
                   {/* Parked car in driveway */}
                   {i % 2 === 0 && (
                     <g>
@@ -1158,8 +1158,8 @@ export function ProgressiveSkyline() {
                 <g key={`colonial-${i}`}>
                   {/* Foundation */}
                   <rect x={x-1} y="208" width="42" height="3" fill="#8a8a7a" opacity="0.9" />
-                  {/* Driveway */}
-                  <rect x={x-10} y="208" width="10" height="8" fill="#c8c4bc" opacity="0.8" />
+                  {/* Driveway - extends to road */}
+                  <rect x={x-10} y="208" width="10" height="10" fill="#c8c4bc" opacity="0.85" />
                   {/* Attached garage on left side */}
                   <rect x={x-12} y="193" width="12" height="15" fill={`url(#colonialHouse-${iteration})`} />
                   <path d={`M ${x-14},193 L ${x-6},187 L ${x+2},193 Z`} fill={`url(#colonialRoof-${iteration})`} />
@@ -1256,8 +1256,8 @@ export function ProgressiveSkyline() {
                 <g key={`ranch-${i}`}>
                   {/* Foundation */}
                   <rect x={x-1} y="206" width="50" height="2.5" fill="#8a8a7a" opacity="0.9" />
-                  {/* Driveway from garage to road */}
-                  <rect x={x+38} y="206" width="10" height="10" fill="#c8c4bc" opacity="0.8" />
+                  {/* Driveway from garage to road - extends to road */}
+                  <rect x={x+38} y="206" width="10" height="12" fill="#c8c4bc" opacity="0.85" />
                   {/* Parked car in driveway */}
                   {i % 2 === 0 && (
                     <g>
@@ -1319,8 +1319,8 @@ export function ProgressiveSkyline() {
                 <g key={`cottage-${i}`}>
                   {/* Foundation */}
                   <rect x={x-1} y="207" width="32" height="2.5" fill="#8a8a7a" opacity="0.9" />
-                  {/* Stone walkway path to door */}
-                  {[0, 3, 6, 9].map((step, si) => (
+                  {/* Stone walkway path to door - extends to road */}
+                  {[0, 3, 6, 9, 12].map((step, si) => (
                     <rect key={`cottage-path-${i}-${si}`} x={x+13} y={209.5 + step * 0.8} width="4" height="2" rx="0.5" fill="#b8b0a0" opacity="0.7" />
                   ))}
                   {/* Cottage body */}
@@ -1399,8 +1399,8 @@ export function ProgressiveSkyline() {
                 <g key={`modern-${i}`}>
                   {/* Foundation - modern concrete */}
                   <rect x={x-1} y="207" width="35" height="2.5" fill="#9a9a92" opacity="0.9" />
-                  {/* Driveway - modern paved */}
-                  <rect x={x-10} y="207" width="10" height="9" fill="#a0a098" opacity="0.7" />
+                  {/* Driveway - modern paved, extends to road */}
+                  <rect x={x-10} y="207" width="10" height="11" fill="#a0a098" opacity="0.75" />
                   {/* Modern carport/garage */}
                   <rect x={x-10} y="195" width="10" height="12" fill={`url(#modernHouse-${iteration})`} />
                   <rect x={x-9} y="195" width="8" height="0.8" fill={`url(#modernRoof-${iteration})`} />
@@ -1499,20 +1499,20 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
-              {/* Street lights along the road - ON SIDEWALK CURB */}
+              {/* Street lights along the road - on curb at road edge */}
               <g opacity="1">
                 {[840, 990, 1140, 1290, 1440, 1590, 1740, 1890].map((x, i) => (
                   <g key={`street-light-${i}`}>
-                    {/* Light pole on sidewalk, base at curb */}
-                    <rect x={x} y="198" width="1.5" height="18" fill="#6a6a6a" opacity="1" />
+                    {/* Light pole base on curb, extends up */}
+                    <rect x={x} y="200" width="1.5" height="18" fill="#6a6a6a" opacity="1" />
                     {/* Light arm curving over road */}
-                    <path d={`M ${x+0.75},199 Q ${x+4},197 ${x+8},198`} stroke="#6a6a6a" strokeWidth="1.2" fill="none" />
-                    {/* Light fixture - hanging down */}
-                    <rect x={x+6.5} y="198" width="3" height="2" rx="0.5" fill="#5a5a5a" opacity="1" />
+                    <path d={`M ${x+0.75},201 Q ${x+5},199 ${x+10},200`} stroke="#6a6a6a" strokeWidth="1.2" fill="none" />
+                    {/* Light fixture */}
+                    <rect x={x+8} y="200" width="3.5" height="2" rx="0.5" fill="#5a5a5a" opacity="1" />
                     {/* Light glow */}
-                    <circle cx={x+8} cy="201" r="2.5" fill="#ffd700" opacity="0.15" />
-                    <circle cx={x+8} cy="200.5" r="1.5" fill="#ffd700" opacity="0.9" />
-                    <circle cx={x+8} cy="200.5" r="0.8" fill="#ffeb3b" className="window-light" />
+                    <circle cx={x+10} cy="203" r="3" fill="#ffd700" opacity="0.12" />
+                    <circle cx={x+10} cy="202.5" r="1.5" fill="#ffd700" opacity="0.9" />
+                    <circle cx={x+10} cy="202.5" r="0.8" fill="#ffeb3b" className="window-light" />
                   </g>
                 ))}
               </g>
@@ -1574,22 +1574,22 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
-              {/* Mailboxes */}
+              {/* Mailboxes - at curb by road */}
               <g opacity="1">
                 {[825, 975, 1125, 1275, 1425, 1575, 1725, 1875].map((x, i) => (
                   <g key={`mailbox-${i}`}>
-                    <rect x={x} y="211" width="1.5" height="4" fill="#5a4a3a" opacity="1" />
-                    <rect x={x-0.5} y="210" width="2.5" height="2" rx="0.5" fill="#d4af37" opacity="1" />
+                    <rect x={x} y="213" width="1.5" height="5" fill="#5a4a3a" opacity="1" />
+                    <rect x={x-0.5} y="212" width="2.5" height="2" rx="0.5" fill="#d4af37" opacity="1" />
                   </g>
                 ))}
               </g>
 
-              {/* Fire hydrants */}
+              {/* Fire hydrants - at curb by road */}
               <g opacity="1">
                 {[1000, 1300, 1600, 1900].map((x, i) => (
                   <g key={`hydrant-${i}`}>
-                    <rect x={x} y="212" width="3" height="4" fill="#cc3333" opacity="1" />
-                    <rect x={x-0.5} y="213" width="4" height="1.5" fill="#aa2222" opacity="1" />
+                    <rect x={x} y="214" width="3" height="4" fill="#cc3333" opacity="1" />
+                    <rect x={x-0.5} y="215" width="4" height="1.5" fill="#aa2222" opacity="1" />
                   </g>
                 ))}
               </g>
