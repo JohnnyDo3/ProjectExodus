@@ -1053,21 +1053,21 @@ export function ProgressiveSkyline() {
               {/* ========== PHASE 3: SUSTAINABLE GREEN CITY - PROJECT EXODUS (2000-3800) ========== */}
 
               {/* Flat ground layer - with wide buffers from suburbs and to rural (WIDE BUFFERS: 2000-2100, 3600-3900) */}
-              <path d="M 2000,210 Q 2100,210 2200,210 L 3500,210 Q 3600,210 3650,209 Q 3700,207 3750,205 Q 3800,203 3850,200 Q 3900,198 3900,198 L 3900,250 L 2000,250 Z"
+              <path d="M 2000,210 Q 2100,210 2200,210 L 3400,210 Q 3500,209 3600,208 Q 3650,207 3700,206 Q 3750,205 3800,205 Q 3850,203 3900,200 L 3900,250 L 2000,250 Z"
                     fill="#7aa87a" opacity="1" />
-              <path d="M 2000,208 Q 2100,208 2200,208 L 3500,208 Q 3600,208 3650,207 Q 3700,206 3750,204 Q 3800,202 3850,199 Q 3900,197 3900,197 L 3900,250 L 2000,250 Z"
+              <path d="M 2000,208 Q 2100,208 2200,208 L 3400,208 Q 3500,207 3600,206 Q 3650,206 3700,205 Q 3750,204 3800,204 Q 3850,202 3900,199 L 3900,250 L 2000,250 Z"
                     fill="#8ab88a" opacity="1" />
 
               {/* Pedestrian-friendly streets with bike lanes */}
               <g opacity="1">
-                {/* Main street at bottom */}
-                <rect x="2000" y="220" width="1800" height="30" fill={`url(#roadGradient-${iteration})`} />
+                {/* Main street at bottom - aligned with suburbs road (y=218) */}
+                <rect x="2000" y="218" width="1800" height="32" fill={`url(#roadGradient-${iteration})`} />
 
-                {/* Sidewalk/pedestrian path */}
-                <rect x="2000" y="217" width="1800" height="3" fill="#d8d8d8" opacity="1" />
+                {/* Sidewalk/pedestrian path - matches suburbs sidewalk bottom edge */}
+                <rect x="2000" y="214" width="1800" height="4" fill="#d8d8d8" opacity="1" />
 
-                {/* Grass strip between road and sidewalk - landscape architecture area */}
-                <rect x="2000" y="213" width="1800" height="4" fill="#7aa87a" opacity="1" />
+                {/* Grass strip between road and sidewalk - sits at suburbs sidewalk level */}
+                <rect x="2000" y="210" width="1800" height="4" fill="#7aa87a" opacity="1" />
 
                 {/* Bike lane markings on street */}
                 {Array.from({length: 36}).map((_, i) => (
@@ -2348,9 +2348,9 @@ export function ProgressiveSkyline() {
               {/* This creates a SEAMLESS LOOP back to the start */}
 
               {/* Rolling hills - smooth gradual emergence from city buffer (WIDE BUFFER: 3800-3900) */}
-              <path d="M 3800,203 Q 3900,198 4000,200 Q 4100,215 4200,200 Q 4300,190 4400,200 Q 4500,205 4600,195 Q 4700,200 4800,205 Q 4900,195 5000,210 L 5000,250 L 3800,250 Z"
+              <path d="M 3800,205 Q 3900,200 4000,202 Q 4100,215 4200,200 Q 4300,192 4400,202 Q 4500,205 4600,197 Q 4700,202 4800,205 Q 4900,197 5000,210 L 5000,250 L 3800,250 Z"
                     fill="#7aa87a" opacity="1" />
-              <path d="M 3800,202 Q 3900,197 4000,198 Q 4100,208 4200,195 Q 4300,185 4400,195 Q 4500,203 4600,190 Q 4700,185 4800,192 Q 4900,188 5000,205 L 5000,250 L 3800,250 Z"
+              <path d="M 3800,204 Q 3900,199 4000,200 Q 4100,208 4200,197 Q 4300,187 4400,197 Q 4500,203 4600,192 Q 4700,187 4800,194 Q 4900,190 5000,205 L 5000,250 L 3800,250 Z"
                     fill="#8ab88a" opacity="1" />
 
               {/* White picket fences along road - protecting animals - CONTINUOUS */}
@@ -2692,8 +2692,34 @@ export function ProgressiveSkyline() {
               </g>
 
               {/* ========== FOREGROUND: GRASS STRIP WITH VARIETY TREES ========== */}
-              {/* Grass strip at foreground where street meets landscape - GREEN CITY SECTION ONLY */}
+              {/* Grass strip with tapered transition zones on both ends */}
+              <rect x="1850" y="234" width="150" height="4" fill="#7aa87a" opacity="0.5" />
               <rect x="2000" y="232" width="1800" height="6" fill="#7aa87a" opacity="1" />
+              <rect x="3800" y="234" width="150" height="4" fill="#7aa87a" opacity="0.5" />
+
+              {/* Transition trees - suburbs side (x=1800-2000): small shrubs growing into city */}
+              <g opacity="1">
+                {[{x: 1860, s: 0.35}, {x: 1890, s: 0.5}, {x: 1920, s: 0.6}, {x: 1950, s: 0.75}, {x: 1980, s: 0.85}].map(({x, s}, i) => (
+                  <g key={`trans-tree-in-${i}`} transform={`translate(${x}, 235) scale(${s})`}>
+                    <rect x="2" y={-3 * s} width={3} height={5} fill="#5a4a3a" opacity="1" />
+                    <circle cx="3.5" cy={-10 * s} r={5} fill="#4a8a3a" opacity="1" />
+                    <circle cx="0" cy={-7 * s} r={3.5} fill="#5a9a4a" opacity="1" />
+                    <circle cx="7" cy={-7 * s} r={3.5} fill="#5a9a4a" opacity="1" />
+                  </g>
+                ))}
+              </g>
+
+              {/* Transition trees - rural side (x=3800-4000): shrubs fading out */}
+              <g opacity="1">
+                {[{x: 3810, s: 0.85}, {x: 3840, s: 0.7}, {x: 3870, s: 0.55}, {x: 3910, s: 0.4}, {x: 3940, s: 0.3}].map(({x, s}, i) => (
+                  <g key={`trans-tree-out-${i}`} transform={`translate(${x}, 235) scale(${s})`}>
+                    <rect x="2" y={-3 * s} width={3} height={5} fill="#5a4a3a" opacity="1" />
+                    <circle cx="3.5" cy={-10 * s} r={5} fill="#4a8a3a" opacity="1" />
+                    <circle cx="0" cy={-7 * s} r={3.5} fill="#5a9a4a" opacity="1" />
+                    <circle cx="7" cy={-7 * s} r={3.5} fill="#5a9a4a" opacity="1" />
+                  </g>
+                ))}
+              </g>
 
               {/* VARIETY TREES - Evergreen and Deciduous mix along foreground - GREEN CITY ONLY (x=2000-3800) */}
               <g opacity="1">
