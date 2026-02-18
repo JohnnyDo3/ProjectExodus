@@ -230,15 +230,86 @@ export function ProgressiveSkyline() {
             <g fill={`url(#skylineGradient-${iteration})`} className="text-[var(--foreground)]">
               {/* ========== PHASE 1: RURAL COUNTRYSIDE (0-800) ========== */}
 
-              {/* Beautiful rolling hills - gradually calming toward suburbs (WIDE BUFFER: 600-900) */}
+              {/* Rolling hills - multi-layered for atmospheric depth */}
+              {/* Distant background hills - dark, misty */}
+              <path d="M 0,200 Q 80,190 160,195 Q 250,185 350,192 Q 450,188 550,193 Q 650,185 750,190 Q 800,195 900,198 L 900,250 L 0,250 Z"
+                    fill="#4a7a4a" opacity="0.5" />
+              <path d="M 0,197 Q 100,188 200,193 Q 300,183 400,190 Q 500,195 600,187 Q 700,183 800,192 Q 850,195 900,197 L 900,250 L 0,250 Z"
+                    fill="#5a8a5a" opacity="0.45" />
+              {/* Mid-ground hills - primary terrain */}
               <path d="M 0,210 Q 100,195 200,205 Q 300,215 400,200 Q 500,190 600,200 Q 650,205 700,208 Q 750,210 800,210 Q 850,210 900,210 L 900,250 L 0,250 Z"
                     fill="#7aa87a" opacity="1" />
               <path d="M 0,205 Q 80,192 160,200 Q 240,208 320,195 Q 400,185 480,195 Q 560,203 600,198 Q 650,203 700,206 Q 750,208 800,208 Q 850,208 900,208 L 900,250 L 0,250 Z"
                     fill="#8ab88a" opacity="1" />
 
-              {/* White picket fences along road - protecting animals - CONTINUOUS */}
+              {/* Dirt paths connecting structures */}
+              <path d="M 210,205 Q 240,208 260,206 Q 275,205 285,205" stroke="#b89a6a" strokeWidth="2.5" fill="none" opacity="0.6" />
+              <path d="M 475,202 Q 500,206 520,205 Q 540,204 560,205" stroke="#b89a6a" strokeWidth="2" fill="none" opacity="0.5" />
+
+              {/* Crop field rows - wheat near Barn #1 */}
+              <g opacity="0.7">
+                <rect x="300" y="201" width="30" height="8" fill="#d4b87a" opacity="0.4" rx="1" />
+                {Array.from({length: 7}).map((_, i) => (
+                  <g key={`wheat-${i}`}>
+                    <rect x={302 + i * 4} y="199" width="1" height="9" fill="#c9a855" opacity="0.8" rx="0.5" />
+                    <ellipse cx={302.5 + i * 4} cy="198.5" rx="1" ry="0.8" fill="#d4b87a" opacity="0.7" />
+                  </g>
+                ))}
+              </g>
+              {/* Crop field rows - corn near Barn #2 */}
+              <g opacity="0.7">
+                <rect x="500" y="199" width="28" height="8" fill="#d4b87a" opacity="0.4" rx="1" />
+                {Array.from({length: 6}).map((_, i) => (
+                  <g key={`corn-${i}`}>
+                    <rect x={502 + i * 4.5} y="196" width="1.2" height="10" fill="#7a9a3a" opacity="0.8" rx="0.5" />
+                    <ellipse cx={502.6 + i * 4.5} cy="195.5" rx="0.8" ry="1.2" fill="#8aaa4a" opacity="0.6" />
+                  </g>
+                ))}
+              </g>
+
+              {/* Small farm pond with cattails */}
               <g>
-                {/* Continuous fence from 0 to 800 */}
+                {/* Pond depression - darker ground around edges */}
+                <ellipse cx="130" cy="216" rx="22" ry="6" fill="#5a7a5a" opacity="0.4" />
+                {/* Water surface */}
+                <ellipse cx="130" cy="216" rx="18" ry="4.5" fill="#4a7a9a" opacity="0.7" />
+                {/* Light reflection on water */}
+                <ellipse cx="127" cy="215" rx="10" ry="2" fill="#6a9aba" opacity="0.4" />
+                <ellipse cx="133" cy="217" rx="6" ry="1" fill="#5a8aaa" opacity="0.3" />
+                {/* Cattails on the edges */}
+                <rect x="112" y="209" width="1" height="8" fill="#5a6a3a" opacity="0.8" />
+                <ellipse cx="112.5" cy="208.5" rx="1.2" ry="2" fill="#6b5a3a" opacity="0.8" />
+                <rect x="115" y="210" width="1" height="7" fill="#5a6a3a" opacity="0.8" />
+                <ellipse cx="115.5" cy="209.5" rx="1" ry="1.8" fill="#6b5a3a" opacity="0.8" />
+                <rect x="147" y="210" width="1" height="7" fill="#5a6a3a" opacity="0.8" />
+                <ellipse cx="147.5" cy="209.5" rx="1.2" ry="2" fill="#6b5a3a" opacity="0.8" />
+                <rect x="150" y="211" width="1" height="6" fill="#5a6a3a" opacity="0.8" />
+                <ellipse cx="150.5" cy="210.5" rx="1" ry="1.5" fill="#6b5a3a" opacity="0.8" />
+              </g>
+
+              {/* Wildflower patches scattered in pastures */}
+              <g opacity="0.9">
+                {/* Patch near x=50 */}
+                {[45, 48, 52, 55, 47, 53].map((fx, fi) => (
+                  <circle key={`flower-a-${fi}`} cx={fx} cy={213 + (fi % 3) * 1.5} r="0.8" fill={['#ff69b4', '#ffd700', '#9370db', '#ff6347', '#ffd700', '#ff69b4'][fi]} opacity="1" />
+                ))}
+                {/* Patch near x=380 */}
+                {[375, 378, 382, 385, 377, 383].map((fx, fi) => (
+                  <circle key={`flower-b-${fi}`} cx={fx} cy={212 + (fi % 3) * 1.5} r="0.8" fill={['#ffd700', '#ff69b4', '#ff6347', '#9370db', '#ff69b4', '#ffd700'][fi]} opacity="1" />
+                ))}
+                {/* Patch near x=700 */}
+                {[695, 698, 702, 705, 697, 703].map((fx, fi) => (
+                  <circle key={`flower-c-${fi}`} cx={fx} cy={213 + (fi % 3) * 1.5} r="0.8" fill={['#9370db', '#ffd700', '#ff69b4', '#ffd700', '#ff6347', '#9370db'][fi]} opacity="1" />
+                ))}
+              </g>
+
+              {/* White picket fences with sturdy posts - CONTINUOUS */}
+              <g>
+                {/* Fence posts every 40px - thicker structural posts */}
+                {Array.from({length: 21}).map((_, i) => (
+                  <rect key={`post-${i}`} x={i * 40 - 1} y="223" width="3" height="13" fill="#e8e0d0" opacity="1" />
+                ))}
+                {/* Pickets between posts */}
                 {Array.from({length: 100}).map((_, i) => (
                   <g key={`picket-${i}`}>
                     <rect x={i * 8} y="225" width="2" height="10" fill="#f5f5f5" opacity="1" />
@@ -246,14 +317,39 @@ export function ProgressiveSkyline() {
                   </g>
                 ))}
                 {/* Horizontal rails spanning entire length */}
-                <rect x="0" y="228" width="800" height="1.5" fill="#f5f5f5" opacity="1" />
-                <rect x="0" y="232" width="800" height="1.5" fill="#f5f5f5" opacity="1" />
+                <rect x="0" y="228" width="800" height="1.5" fill="#f0ece0" opacity="1" />
+                <rect x="0" y="232" width="800" height="1.5" fill="#f0ece0" opacity="1" />
+              </g>
+
+              {/* Building shadows/foundations - ground all structures */}
+              <g opacity="0.3">
+                {/* Barn #1 shadow */}
+                <ellipse cx="195" cy="206" rx="28" ry="3" fill="#2f3f2f" />
+                {/* Silo #1 shadow */}
+                <ellipse cx="225.5" cy="206" rx="8" ry="2.5" fill="#2f3f2f" />
+                {/* Barn #2 shadow */}
+                <ellipse cx="460" cy="203" rx="20" ry="2.5" fill="#2f3f2f" />
+                {/* Silo #2 shadow */}
+                <ellipse cx="482.5" cy="203" rx="6" ry="2" fill="#2f3f2f" />
+                {/* Barn #3 shadow */}
+                <ellipse cx="656" cy="204" rx="18" ry="2.5" fill="#2f3f2f" />
+                {/* Farmhouse #1 shadow */}
+                <ellipse cx="289" cy="206" rx="12" ry="2" fill="#2f3f2f" />
+                {/* Farmhouse #2 shadow */}
+                <ellipse cx="570" cy="206" rx="10" ry="2" fill="#2f3f2f" />
+                {/* Tractor shadows */}
+                <ellipse cx="259" cy="208" rx="10" ry="2" fill="#2f3f2f" />
+                <ellipse cx="559" cy="208" rx="10" ry="2" fill="#2f3f2f" />
               </g>
 
               {/* Red Barn #1 - Large Classic Barn with Details (1/3 LARGER) */}
               <g>
+                {/* Foundation */}
+                <rect x="169" y="204" width="45" height="2" fill="#6a6a5a" opacity="0.8" />
                 <rect x="170" y="178" width="43" height="27" fill="#c73e3e" opacity="1" />
                 <path d="M 165,178 L 191.5,158 L 218,178 Z" fill="#a83232" opacity="1" />
+                {/* Roof eave overhang */}
+                <path d="M 165,178 L 218,178" stroke="#8a2828" strokeWidth="1.5" opacity="1" />
                 {/* Wood plank texture lines */}
                 <path d="M 172,185 L 212,185 M 172,192 L 212,192 M 172,199 L 212,199" stroke="#a83232" strokeWidth="0.7" opacity="1" />
                 {/* Barn doors */}
@@ -286,8 +382,10 @@ export function ProgressiveSkyline() {
 
               {/* Red Barn #2 - Medium Barn (1/3 LARGER) */}
               <g>
+                <rect x="441" y="201" width="34" height="2" fill="#6a6a5a" opacity="0.8" />
                 <rect x="442" y="182" width="32" height="20" fill="#c73e3e" opacity="1" />
                 <path d="M 438,182 L 458,166 L 478,182 Z" fill="#a83232" opacity="1" />
+                <path d="M 438,182 L 478,182" stroke="#8a2828" strokeWidth="1.2" opacity="1" />
                 <rect x="452" y="188" width="8" height="14" fill="#6d4428" opacity="1" />
                 <rect x="444" y="185" width="5" height="6" fill="#4a4a4a" opacity="1" />
                 <rect x="465" y="185" width="5" height="6" fill="#4a4a4a" opacity="1" />
@@ -302,8 +400,10 @@ export function ProgressiveSkyline() {
 
               {/* Red Barn #3 - Rustic Barn (1/3 LARGER) */}
               <g>
+                <rect x="641" y="202" width="29" height="2" fill="#6a6a5a" opacity="0.8" />
                 <rect x="642" y="185" width="27" height="18" fill="#c73e3e" opacity="1" />
                 <path d="M 639,185 L 655.5,172 L 672,185 Z" fill="#a83232" opacity="1" />
+                <path d="M 639,185 L 672,185" stroke="#8a2828" strokeWidth="1" opacity="1" />
                 <rect x="651" y="190" width="7" height="13" fill="#6d4428" opacity="1" />
                 <rect x="644" y="187" width="4" height="5" fill="#4a4a4a" opacity="1" />
                 <rect x="663" y="187" width="4" height="5" fill="#4a4a4a" opacity="1" />
@@ -313,46 +413,157 @@ export function ProgressiveSkyline() {
 
               {/* Open pasture areas for animals */}
 
-              {/* Miniature Farmhouses */}
+              {/* Enhanced Farmhouses with porches, shutters, smoke */}
               <g>
-                {/* Farmhouse #1 */}
+                {/* Farmhouse #1 - larger with full detail */}
+                {/* Foundation */}
+                <rect x="279" y="204" width="20" height="2" fill="#8a8a7a" opacity="0.8" />
+                {/* Main body */}
                 <rect x="280" y="195" width="18" height="10" fill="#f0e6d3" opacity="1" />
-                <path d="M 278,195 L 289,188 L 300,195 Z" fill="#8b5a3c" opacity="1" />
-                <rect x="285" y="198" width="3" height="7" fill="#6d4428" opacity="1" />
-                <rect x={283} y="197" width="2" height="2.5" fill="#6b8ea8" opacity="1" />
-                <rect x={291} y="197" width="2" height="2.5" fill="#6b8ea8" opacity="1" />
-                <rect x="295" y="191" width="2" height="4" fill="#a85757" opacity="1" />
+                {/* Roof with overhang */}
+                <path d="M 277,195 L 289,186 L 301,195 Z" fill="#8b5a3c" opacity="1" />
+                {/* Roof ridge line */}
+                <path d="M 277,195 L 289,186 L 301,195" stroke="#7a4a2c" strokeWidth="0.5" fill="none" opacity="1" />
+                {/* Front door with frame */}
+                <rect x="284.5" y="197.5" width="4" height="7.5" fill="#5a3a2a" opacity="1" />
+                <rect x="284" y="197" width="5" height="0.8" fill="#6d4428" opacity="1" />
+                {/* Door knob */}
+                <circle cx="287.5" cy="201" r="0.4" fill="#d4af37" opacity="1" />
+                {/* Windows with shutters */}
+                <rect x="282" y="197" width="2.5" height="3" fill="#6b8ea8" opacity="1" />
+                <rect x="281.5" y="197" width="0.5" height="3" fill="#3a5a3a" opacity="1" />
+                <rect x="284.5" y="197" width="0.5" height="3" fill="#3a5a3a" opacity="0.6" />
+                <rect x="292" y="197" width="2.5" height="3" fill="#6b8ea8" opacity="1" />
+                <rect x="291.5" y="197" width="0.5" height="3" fill="#3a5a3a" opacity="0.6" />
+                <rect x="294.5" y="197" width="0.5" height="3" fill="#3a5a3a" opacity="1" />
+                {/* Window pane dividers */}
+                <path d="M 283.25,197 L 283.25,200 M 282,198.5 L 284.5,198.5" stroke="#4a6a7a" strokeWidth="0.3" />
+                <path d="M 293.25,197 L 293.25,200 M 292,198.5 L 294.5,198.5" stroke="#4a6a7a" strokeWidth="0.3" />
+                {/* Porch */}
+                <rect x="282" y="204.5" width="9" height="1.5" fill="#c9b18f" opacity="1" />
+                <rect x="283" y="201" width="1" height="4" fill="#c9b18f" opacity="0.8" />
+                <rect x="289" y="201" width="1" height="4" fill="#c9b18f" opacity="0.8" />
+                {/* Chimney with smoke */}
+                <rect x="295" y="189" width="2.5" height="6" fill="#a85757" opacity="1" />
+                <rect x="294.5" y="188.5" width="3.5" height="1" fill="#8a4a4a" opacity="1" />
+                <ellipse cx="296.5" cy="186" rx="1.5" ry="2" fill="#c4c4c4" opacity="0.3" />
+                <ellipse cx="297" cy="183" rx="1" ry="1.5" fill="#c4c4c4" opacity="0.2" />
 
-                {/* Farmhouse #2 */}
+                {/* Farmhouse #2 - with full detail */}
+                {/* Foundation */}
+                <rect x="559" y="204" width="18" height="2" fill="#8a8a7a" opacity="0.8" />
+                {/* Main body */}
                 <rect x="560" y="197" width="16" height="8" fill="#e8d4b8" opacity="1" />
-                <path d="M 558,197 L 568,191 L 578,197 Z" fill="#6b5a45" opacity="1" />
-                <rect x="565" y="199" width="3" height="6" fill="#6d4428" opacity="1" />
-                <rect x={562} y="198" width="2" height="2" fill="#6b8ea8" opacity="1" />
-                <rect x={570} y="198" width="2" height="2" fill="#6b8ea8" opacity="1" />
+                {/* Roof with overhang */}
+                <path d="M 557,197 L 568,189 L 579,197 Z" fill="#6b5a45" opacity="1" />
+                <path d="M 557,197 L 568,189 L 579,197" stroke="#5a4a35" strokeWidth="0.5" fill="none" opacity="1" />
+                {/* Front door with frame */}
+                <rect x="564.5" y="199" width="3.5" height="6" fill="#5a3a2a" opacity="1" />
+                <circle cx="567" cy="202" r="0.35" fill="#d4af37" opacity="1" />
+                {/* Windows with shutters */}
+                <rect x="561" y="198.5" width="2.5" height="2.5" fill="#6b8ea8" opacity="1" />
+                <rect x="560.5" y="198.5" width="0.5" height="2.5" fill="#3a5a3a" opacity="1" />
+                <rect x="563.5" y="198.5" width="0.5" height="2.5" fill="#3a5a3a" opacity="0.6" />
+                <rect x="570" y="198.5" width="2.5" height="2.5" fill="#6b8ea8" opacity="1" />
+                <rect x="569.5" y="198.5" width="0.5" height="2.5" fill="#3a5a3a" opacity="0.6" />
+                <rect x="572.5" y="198.5" width="0.5" height="2.5" fill="#3a5a3a" opacity="1" />
+                {/* Window pane dividers */}
+                <path d="M 562.25,198.5 L 562.25,201 M 561,199.75 L 563.5,199.75" stroke="#4a6a7a" strokeWidth="0.3" />
+                <path d="M 571.25,198.5 L 571.25,201 M 570,199.75 L 572.5,199.75" stroke="#4a6a7a" strokeWidth="0.3" />
+                {/* Porch */}
+                <rect x="562" y="204.5" width="8" height="1.5" fill="#c9b18f" opacity="1" />
+                {/* Chimney with smoke */}
+                <rect x="574" y="192" width="2" height="5" fill="#a85757" opacity="1" />
+                <ellipse cx="575" cy="189.5" rx="1.2" ry="1.8" fill="#c4c4c4" opacity="0.25" />
               </g>
 
-              {/* Natural scattered trees */}
+              {/* Varied trees - deciduous and evergreen mix with size variation */}
               <g>
-                {[60, 110, 165, 320, 410, 490, 610, 690, 750].map((x, i) => (
-                  <g key={`tree-${i}`} opacity="1">
-                    {/* Tree trunk */}
-                    <rect x={x} y="195" width="3" height="10" fill="#6b5a45" />
-                    {/* Tree foliage - fuller, rounder */}
-                    <circle cx={x+1.5} cy="192" r="7" fill="#5a8a5a" opacity="1" />
-                    <circle cx={x-2} cy="194" r="5" fill="#6a9a6a" opacity="1" />
-                    <circle cx={x+5} cy="194" r="5" fill="#6a9a6a" opacity="1" />
-                  </g>
-                ))}
+                {/* Large deciduous oak - x=60 */}
+                <g>
+                  <rect x="59" y="193" width="4" height="12" fill="#5a4a35" />
+                  <rect x="57" y="203" width="2" height="3" fill="#5a4a35" opacity="0.6" transform="rotate(-15 58 203)" />
+                  <circle cx="61" cy="189" r="9" fill="#4a7a4a" />
+                  <circle cx="55" cy="191" r="6" fill="#5a8a5a" />
+                  <circle cx="67" cy="191" r="6" fill="#5a8a5a" />
+                  <circle cx="61" cy="185" r="5" fill="#6a9a6a" />
+                </g>
+                {/* Medium evergreen pine - x=110 */}
+                <g>
+                  <rect x="110" y="196" width="2.5" height="9" fill="#5a4a35" />
+                  <path d="M 103,205 L 111.25,187 L 119.5,205 Z" fill="#3a6a3a" />
+                  <path d="M 105,200 L 111.25,185 L 117.5,200 Z" fill="#4a7a4a" />
+                  <path d="M 107,195 L 111.25,183 L 115.5,195 Z" fill="#5a8a5a" />
+                </g>
+                {/* Small young tree - x=165 */}
+                <g>
+                  <rect x="165" y="198" width="2" height="7" fill="#6b5a45" />
+                  <circle cx="166" cy="196" r="4" fill="#6a9a6a" />
+                  <circle cx="164" cy="197" r="3" fill="#7aaa7a" />
+                  <circle cx="168" cy="197" r="3" fill="#7aaa7a" />
+                </g>
+                {/* Large deciduous maple - x=320 */}
+                <g>
+                  <rect x="319" y="194" width="4" height="11" fill="#5a4a35" />
+                  <circle cx="321" cy="190" r="8" fill="#5a8a5a" />
+                  <circle cx="315" cy="192" r="5.5" fill="#6a9a6a" />
+                  <circle cx="327" cy="192" r="5.5" fill="#6a9a6a" />
+                  <circle cx="321" cy="186" r="4.5" fill="#8ab88a" />
+                </g>
+                {/* Tall evergreen spruce - x=410 */}
+                <g>
+                  <rect x="410" y="195" width="2.5" height="10" fill="#4a3a25" />
+                  <path d="M 403,206 L 411.25,185 L 419.5,206 Z" fill="#2f5f2f" />
+                  <path d="M 405,200 L 411.25,182 L 417.5,200 Z" fill="#3a6a3a" />
+                  <path d="M 407,195 L 411.25,180 L 415.5,195 Z" fill="#4a7a4a" />
+                </g>
+                {/* Medium deciduous - x=490 */}
+                <g>
+                  <rect x="490" y="196" width="3" height="9" fill="#6b5a45" />
+                  <circle cx="491.5" cy="193" r="6.5" fill="#5a8a5a" />
+                  <circle cx="488" cy="195" r="4.5" fill="#6a9a6a" />
+                  <circle cx="495" cy="195" r="4.5" fill="#6a9a6a" />
+                </g>
+                {/* Small evergreen - x=610 */}
+                <g>
+                  <rect x="610" y="198" width="2" height="7" fill="#4a3a25" />
+                  <path d="M 605,205 L 611,192 L 617,205 Z" fill="#3a6a3a" />
+                  <path d="M 607,201 L 611,190 L 615,201 Z" fill="#4a7a4a" />
+                </g>
+                {/* Large deciduous elm - x=690 */}
+                <g>
+                  <rect x="689" y="193" width="4" height="12" fill="#5a4a35" />
+                  <circle cx="691" cy="189" r="8" fill="#4a7a4a" />
+                  <circle cx="685" cy="191" r="5.5" fill="#5a8a5a" />
+                  <circle cx="697" cy="191" r="5.5" fill="#5a8a5a" />
+                  <circle cx="691" cy="185" r="5" fill="#6a9a6a" />
+                </g>
+                {/* Medium deciduous birch - x=750 */}
+                <g>
+                  <rect x="750" y="196" width="2.5" height="9" fill="#c9b89a" />
+                  <path d="M 750.5,197 L 750.5,200" stroke="#6b5a45" strokeWidth="0.5" />
+                  <path d="M 751.5,198 L 751.5,201" stroke="#6b5a45" strokeWidth="0.5" />
+                  <circle cx="751.25" cy="193" r="6" fill="#6a9a6a" />
+                  <circle cx="748" cy="195" r="4" fill="#7aaa7a" />
+                  <circle cx="755" cy="195" r="4" fill="#7aaa7a" />
+                </g>
               </g>
 
-              {/* Hay bales scattered in fields */}
+              {/* Hay bales with shadows and enhanced texture */}
               <g>
                 {[350, 420, 620, 680].map((x, i) => (
                   <g key={`hay-${i}`} opacity="1">
-                    <ellipse cx={x} cy="205" rx="5" ry="3" fill="#d4a574" />
-                    <ellipse cx={x} cy="203" rx="4" ry="2" fill="#c9995f" />
-                    {/* Hay texture lines */}
-                    <path d={`M ${x-3},204 L ${x+3},204 M ${x-2},205 L ${x+2},205`} stroke="#b88a50" strokeWidth="0.5" opacity="1" />
+                    {/* Ground shadow */}
+                    <ellipse cx={x} cy="208" rx="6" ry="1.5" fill="#3a5a3a" opacity="0.25" />
+                    {/* Main bale body */}
+                    <ellipse cx={x} cy="205" rx="5" ry="3.5" fill="#d4a574" />
+                    {/* Highlight on top */}
+                    <ellipse cx={x} cy="203" rx="4" ry="2" fill="#dab87a" />
+                    {/* Twine wrapping */}
+                    <path d={`M ${x-4},203 L ${x-4},207`} stroke="#8a7040" strokeWidth="0.5" opacity="0.6" />
+                    <path d={`M ${x+4},203 L ${x+4},207`} stroke="#8a7040" strokeWidth="0.5" opacity="0.6" />
+                    {/* Straw texture */}
+                    <path d={`M ${x-3},204 L ${x+3},204 M ${x-2},205.5 L ${x+2},205.5 M ${x-3.5},206 L ${x+3.5},206`} stroke="#b88a50" strokeWidth="0.4" opacity="0.7" />
                   </g>
                 ))}
               </g>
@@ -382,6 +593,31 @@ export function ProgressiveSkyline() {
                     <rect x={x+13} y="199" width="4" height="1" fill="#ffd700" opacity="1" />
                   </g>
                 ))}
+              </g>
+
+              {/* Windmill - iconic rural landmark */}
+              <g>
+                {/* Windmill tower - lattice structure */}
+                <path d="M 386,205 L 389,175 L 393,175 L 396,205 Z" fill="#8a8a7a" opacity="0.9" />
+                {/* Lattice cross-bracing */}
+                <path d="M 387.5,200 L 394,180 M 394.5,200 L 388,180" stroke="#6a6a5a" strokeWidth="0.5" opacity="0.7" />
+                <path d="M 388,195 L 394,190 M 394,195 L 388,190" stroke="#6a6a5a" strokeWidth="0.4" opacity="0.6" />
+                {/* Platform at top */}
+                <rect x="387" y="174" width="8" height="1.5" fill="#6a6a5a" opacity="1" />
+                {/* Nacelle/hub */}
+                <rect x="389" y="172" width="4" height="3" rx="1" fill="#7a7a6a" opacity="1" />
+                {/* Blades - 4 blades extending from hub */}
+                <path d="M 391,173 L 391,157" stroke="#e8e0d0" strokeWidth="1.2" opacity="0.9" />
+                <path d="M 391,173 L 391,189" stroke="#e8e0d0" strokeWidth="1.2" opacity="0.9" />
+                <path d="M 391,173 L 377,169" stroke="#e8e0d0" strokeWidth="1.2" opacity="0.9" />
+                <path d="M 391,173 L 405,177" stroke="#e8e0d0" strokeWidth="1.2" opacity="0.9" />
+                {/* Blade surfaces - angled panels */}
+                <path d="M 391,157 L 392.5,160 L 391,168 L 389.5,165 Z" fill="#e8e0d0" opacity="0.4" />
+                <path d="M 391,189 L 389.5,186 L 391,178 L 392.5,181 Z" fill="#e8e0d0" opacity="0.4" />
+                <path d="M 377,169 L 380,170.5 L 387,173 L 384,171.5 Z" fill="#e8e0d0" opacity="0.4" />
+                <path d="M 405,177 L 402,175.5 L 395,173 L 398,174.5 Z" fill="#e8e0d0" opacity="0.4" />
+                {/* Hub center */}
+                <circle cx="391" cy="173" r="1.5" fill="#5a5a4a" opacity="1" />
               </g>
 
               {/* FARM ANIMALS - Rendered on top of trees and hay */}
@@ -2330,24 +2566,109 @@ export function ProgressiveSkyline() {
               {/* ========== PHASE 4: RETURN TO RURAL - IDENTICAL TO OPENING (3800-5000) ========== */}
               {/* This creates a SEAMLESS LOOP back to the start */}
 
-              {/* Rolling hills - smooth gradual emergence from city buffer (WIDE BUFFER: 3800-3900) */}
+              {/* Rolling hills - multi-layered for atmospheric depth */}
+              {/* Distant background hills */}
+              <path d="M 3800,200 Q 3900,192 4000,195 Q 4150,186 4300,192 Q 4450,188 4600,193 Q 4750,185 4900,190 Q 5000,195 5000,198 L 5000,250 L 3800,250 Z"
+                    fill="#4a7a4a" opacity="0.5" />
+              <path d="M 3800,197 Q 3900,189 4050,193 Q 4200,183 4350,190 Q 4500,195 4650,187 Q 4800,183 4950,192 Q 5000,195 5000,197 L 5000,250 L 3800,250 Z"
+                    fill="#5a8a5a" opacity="0.45" />
+              {/* Mid-ground hills */}
               <path d="M 3800,205 Q 3900,200 4000,202 Q 4100,215 4200,200 Q 4300,192 4400,202 Q 4500,205 4600,197 Q 4700,202 4800,205 Q 4900,197 5000,210 L 5000,250 L 3800,250 Z"
                     fill="#7aa87a" opacity="1" />
               <path d="M 3800,204 Q 3900,199 4000,200 Q 4100,208 4200,197 Q 4300,187 4400,197 Q 4500,203 4600,192 Q 4700,187 4800,194 Q 4900,190 5000,205 L 5000,250 L 3800,250 Z"
                     fill="#8ab88a" opacity="1" />
 
-              {/* White picket fences along road - protecting animals - CONTINUOUS */}
+              {/* Dirt paths connecting structures */}
+              <path d="M 4013,205 Q 4040,208 4060,206 Q 4075,205 4085,205" stroke="#b89a6a" strokeWidth="2.5" fill="none" opacity="0.6" />
+              <path d="M 4469,204 Q 4500,207 4520,205 Q 4550,204 4570,205" stroke="#b89a6a" strokeWidth="2" fill="none" opacity="0.5" />
+              <path d="M 4709,203 Q 4730,206 4750,204 Q 4770,203 4780,204" stroke="#b89a6a" strokeWidth="2" fill="none" opacity="0.5" />
+
+              {/* Crop field rows */}
+              <g opacity="0.7">
+                {/* Wheat field near Barn #1 */}
+                <rect x="4100" y="201" width="30" height="8" fill="#d4b87a" opacity="0.4" rx="1" />
+                {Array.from({length: 7}).map((_, i) => (
+                  <g key={`wheat-end-${i}`}>
+                    <rect x={4102 + i * 4} y="199" width="1" height="8" fill="#c9a855" opacity="0.8" rx="0.5" />
+                    <ellipse cx={4102.5 + i * 4} cy="198.5" rx="1" ry="0.8" fill="#d4b87a" opacity="0.7" />
+                  </g>
+                ))}
+                {/* Corn field */}
+                <rect x="4550" y="199" width="28" height="8" fill="#d4b87a" opacity="0.4" rx="1" />
+                {Array.from({length: 6}).map((_, i) => (
+                  <g key={`corn-end-${i}`}>
+                    <rect x={4552 + i * 4.5} y="196" width="1.2" height="10" fill="#7a9a3a" opacity="0.8" rx="0.5" />
+                    <ellipse cx={4552.6 + i * 4.5} cy="195.5" rx="0.8" ry="1.2" fill="#8aaa4a" opacity="0.6" />
+                  </g>
+                ))}
+              </g>
+
+              {/* Farm pond with cattails */}
               <g>
-                {/* Continuous fence from 3800 to 5000 */}
+                <ellipse cx="4830" cy="216" rx="22" ry="6" fill="#5a7a5a" opacity="0.4" />
+                <ellipse cx="4830" cy="216" rx="18" ry="4.5" fill="#4a7a9a" opacity="0.7" />
+                <ellipse cx="4827" cy="215" rx="10" ry="2" fill="#6a9aba" opacity="0.4" />
+                <ellipse cx="4833" cy="217" rx="6" ry="1" fill="#5a8aaa" opacity="0.3" />
+                {/* Cattails */}
+                <rect x="4812" y="209" width="1" height="8" fill="#5a6a3a" opacity="0.8" />
+                <ellipse cx="4812.5" cy="208.5" rx="1.2" ry="2" fill="#6b5a3a" opacity="0.8" />
+                <rect x="4815" y="210" width="1" height="7" fill="#5a6a3a" opacity="0.8" />
+                <ellipse cx="4815.5" cy="209.5" rx="1" ry="1.8" fill="#6b5a3a" opacity="0.8" />
+                <rect x="4847" y="210" width="1" height="7" fill="#5a6a3a" opacity="0.8" />
+                <ellipse cx="4847.5" cy="209.5" rx="1.2" ry="2" fill="#6b5a3a" opacity="0.8" />
+              </g>
+
+              {/* Wildflower patches */}
+              <g opacity="0.9">
+                {[3850, 3853, 3857, 3860, 3852, 3858].map((fx, fi) => (
+                  <circle key={`flower-d-${fi}`} cx={fx} cy={213 + (fi % 3) * 1.5} r="0.8" fill={['#ff69b4', '#ffd700', '#9370db', '#ff6347', '#ffd700', '#ff69b4'][fi]} opacity="1" />
+                ))}
+                {[4300, 4303, 4307, 4310, 4302, 4308].map((fx, fi) => (
+                  <circle key={`flower-e-${fi}`} cx={fx} cy={212 + (fi % 3) * 1.5} r="0.8" fill={['#ffd700', '#ff69b4', '#ff6347', '#9370db', '#ff69b4', '#ffd700'][fi]} opacity="1" />
+                ))}
+                {[4600, 4603, 4607, 4610, 4602, 4608].map((fx, fi) => (
+                  <circle key={`flower-f-${fi}`} cx={fx} cy={213 + (fi % 3) * 1.5} r="0.8" fill={['#9370db', '#ffd700', '#ff69b4', '#ffd700', '#ff6347', '#9370db'][fi]} opacity="1" />
+                ))}
+              </g>
+
+              {/* White picket fences with sturdy posts - CONTINUOUS */}
+              <g>
+                {/* Fence posts every 40px */}
+                {Array.from({length: 31}).map((_, i) => (
+                  <rect key={`post-end-${i}`} x={3800 + i * 40 - 1} y="223" width="3" height="13" fill="#e8e0d0" opacity="1" />
+                ))}
+                {/* Pickets */}
                 {Array.from({length: 150}).map((_, i) => (
                   <g key={`picket-end-${i}`}>
                     <rect x={3800 + i * 8} y="225" width="2" height="10" fill="#f5f5f5" opacity="1" />
                     <path d={`M ${3800 + i * 8},225 L ${3800 + i * 8 + 1},223 L ${3800 + i * 8 + 2},225 Z`} fill="#f5f5f5" opacity="1" />
                   </g>
                 ))}
-                {/* Horizontal rails spanning entire length */}
-                <rect x="3800" y="228" width="1200" height="1.5" fill="#f5f5f5" opacity="1" />
-                <rect x="3800" y="232" width="1200" height="1.5" fill="#f5f5f5" opacity="1" />
+                {/* Horizontal rails */}
+                <rect x="3800" y="228" width="1200" height="1.5" fill="#f0ece0" opacity="1" />
+                <rect x="3800" y="232" width="1200" height="1.5" fill="#f0ece0" opacity="1" />
+              </g>
+
+              {/* Building shadows/foundations - ground all structures */}
+              <g opacity="0.3">
+                <ellipse cx="3995" cy="206" rx="28" ry="3" fill="#2f3f2f" />
+                <ellipse cx="4022.5" cy="206" rx="8" ry="2.5" fill="#2f3f2f" />
+                <ellipse cx="4260" cy="203" rx="20" ry="2.5" fill="#2f3f2f" />
+                <ellipse cx="4282.5" cy="203" rx="6" ry="2" fill="#2f3f2f" />
+                <ellipse cx="4456" cy="203" rx="16" ry="2.5" fill="#2f3f2f" />
+                <ellipse cx="4692" cy="203" rx="22" ry="2.5" fill="#2f3f2f" />
+                <ellipse cx="4717.5" cy="203" rx="6" ry="2" fill="#2f3f2f" />
+                <ellipse cx="4908" cy="203" rx="18" ry="2.5" fill="#2f3f2f" />
+                {/* Farmhouse shadows */}
+                <ellipse cx="4089" cy="206" rx="12" ry="2" fill="#2f3f2f" />
+                <ellipse cx="4368" cy="206" rx="10" ry="2" fill="#2f3f2f" />
+                <ellipse cx="4628" cy="206" rx="11" ry="2" fill="#2f3f2f" />
+                <ellipse cx="4857" cy="206" rx="9" ry="2" fill="#2f3f2f" />
+                {/* Tractor shadows */}
+                <ellipse cx="4059" cy="208" rx="10" ry="2" fill="#2f3f2f" />
+                <ellipse cx="4359" cy="208" rx="10" ry="2" fill="#2f3f2f" />
+                <ellipse cx="4759" cy="208" rx="10" ry="2" fill="#2f3f2f" />
+                <ellipse cx="4939" cy="208" rx="10" ry="2" fill="#2f3f2f" />
               </g>
 
               {/* Red barns - matching opening, extended (1/3 LARGER) */}
@@ -2436,59 +2757,105 @@ export function ProgressiveSkyline() {
                 <path d="M 4893,189 L 4920,189 M 4893,194 L 4920,194" stroke="#a83232" strokeWidth="0.5" opacity="1" />
               </g>
 
-              {/* Farmhouses - fully detailed with windows, chimneys */}
+              {/* Enhanced Farmhouses with porches, shutters, smoke */}
               <g>
                 {/* Farmhouse #1 */}
+                <rect x="4079" y="204" width="20" height="2" fill="#8a8a7a" opacity="0.8" />
                 <rect x="4080" y="195" width="18" height="10" fill="#f0e6d3" opacity="1" />
-                <path d="M 4078,195 L 4089,188 L 4100,195 Z" fill="#8b5a3c" opacity="1" />
-                <rect x="4085" y="198" width="3" height="7" fill="#6d4428" opacity="1" />
-                <rect x="4083" y="197" width="2" height="2.5" fill="#6b8ea8" opacity="1" />
-                <rect x="4091" y="197" width="2" height="2.5" fill="#6b8ea8" opacity="1" />
-                <rect x="4095" y="191" width="2" height="4" fill="#a85757" opacity="1" />
+                <path d="M 4077,195 L 4089,186 L 4101,195 Z" fill="#8b5a3c" opacity="1" />
+                <rect x="4084.5" y="197.5" width="4" height="7.5" fill="#5a3a2a" opacity="1" />
+                <circle cx="4087.5" cy="201" r="0.4" fill="#d4af37" opacity="1" />
+                <rect x="4082" y="197" width="2.5" height="3" fill="#6b8ea8" opacity="1" />
+                <rect x="4081.5" y="197" width="0.5" height="3" fill="#3a5a3a" opacity="1" />
+                <rect x="4092" y="197" width="2.5" height="3" fill="#6b8ea8" opacity="1" />
+                <rect x="4094.5" y="197" width="0.5" height="3" fill="#3a5a3a" opacity="1" />
+                <rect x="4082" y="204.5" width="9" height="1.5" fill="#c9b18f" opacity="1" />
+                <rect x="4095" y="189" width="2.5" height="6" fill="#a85757" opacity="1" />
+                <ellipse cx="4096.5" cy="186" rx="1.5" ry="2" fill="#c4c4c4" opacity="0.3" />
 
                 {/* Farmhouse #2 */}
+                <rect x="4359" y="204" width="18" height="2" fill="#8a8a7a" opacity="0.8" />
                 <rect x="4360" y="197" width="16" height="8" fill="#e8d4b8" opacity="1" />
-                <path d="M 4358,197 L 4368,191 L 4378,197 Z" fill="#6b5a45" opacity="1" />
-                <rect x="4365" y="199" width="3" height="6" fill="#6d4428" opacity="1" />
-                <rect x="4362" y="198" width="2" height="2" fill="#6b8ea8" opacity="1" />
-                <rect x="4370" y="198" width="2" height="2" fill="#6b8ea8" opacity="1" />
+                <path d="M 4357,197 L 4368,189 L 4379,197 Z" fill="#6b5a45" opacity="1" />
+                <rect x="4364.5" y="199" width="3.5" height="6" fill="#5a3a2a" opacity="1" />
+                <circle cx="4367" cy="202" r="0.35" fill="#d4af37" opacity="1" />
+                <rect x="4361" y="198.5" width="2.5" height="2.5" fill="#6b8ea8" opacity="1" />
+                <rect x="4360.5" y="198.5" width="0.5" height="2.5" fill="#3a5a3a" opacity="1" />
+                <rect x="4370" y="198.5" width="2.5" height="2.5" fill="#6b8ea8" opacity="1" />
+                <rect x="4372.5" y="198.5" width="0.5" height="2.5" fill="#3a5a3a" opacity="1" />
+                <rect x="4362" y="204.5" width="8" height="1.5" fill="#c9b18f" opacity="1" />
+                <rect x="4374" y="192" width="2" height="5" fill="#a85757" opacity="1" />
+                <ellipse cx="4375" cy="189.5" rx="1.2" ry="1.8" fill="#c4c4c4" opacity="0.25" />
 
                 {/* Farmhouse #3 */}
+                <rect x="4619" y="204" width="19" height="2" fill="#8a8a7a" opacity="0.8" />
                 <rect x="4620" y="196" width="17" height="9" fill="#f0e6d3" opacity="1" />
-                <path d="M 4618,196 L 4628.5,190 L 4639,196 Z" fill="#8b5a3c" opacity="1" />
-                <rect x="4626" y="199" width="3" height="6" fill="#6d4428" opacity="1" />
-                <rect x="4622" y="198" width="2" height="2.5" fill="#6b8ea8" opacity="1" />
-                <rect x="4632" y="198" width="2" height="2.5" fill="#6b8ea8" opacity="1" />
-                <rect x="4634" y="192" width="2" height="4" fill="#a85757" opacity="1" />
+                <path d="M 4617,196 L 4628.5,188 L 4640,196 Z" fill="#8b5a3c" opacity="1" />
+                <rect x="4625.5" y="198.5" width="3.5" height="6.5" fill="#5a3a2a" opacity="1" />
+                <circle cx="4628" cy="202" r="0.4" fill="#d4af37" opacity="1" />
+                <rect x="4622" y="198" width="2.5" height="2.5" fill="#6b8ea8" opacity="1" />
+                <rect x="4621.5" y="198" width="0.5" height="2.5" fill="#3a5a3a" opacity="1" />
+                <rect x="4632" y="198" width="2.5" height="2.5" fill="#6b8ea8" opacity="1" />
+                <rect x="4634.5" y="198" width="0.5" height="2.5" fill="#3a5a3a" opacity="1" />
+                <rect x="4623" y="204.5" width="8" height="1.5" fill="#c9b18f" opacity="1" />
+                <rect x="4634" y="190" width="2.5" height="6" fill="#a85757" opacity="1" />
+                <ellipse cx="4635.5" cy="187.5" rx="1.5" ry="2" fill="#c4c4c4" opacity="0.3" />
 
                 {/* Farmhouse #4 */}
+                <rect x="4849" y="204" width="17" height="2" fill="#8a8a7a" opacity="0.8" />
                 <rect x="4850" y="198" width="15" height="7" fill="#e8d4b8" opacity="1" />
-                <path d="M 4848,198 L 4857.5,193 L 4867,198 Z" fill="#6b5a45" opacity="1" />
-                <rect x="4855" y="200" width="3" height="5" fill="#6d4428" opacity="1" />
-                <rect x="4852" y="199" width="2" height="2" fill="#6b8ea8" opacity="1" />
-                <rect x="4860" y="199" width="2" height="2" fill="#6b8ea8" opacity="1" />
+                <path d="M 4847,198 L 4857.5,191 L 4868,198 Z" fill="#6b5a45" opacity="1" />
+                <rect x="4854.5" y="200" width="3" height="5" fill="#5a3a2a" opacity="1" />
+                <circle cx="4856.5" cy="202.5" r="0.35" fill="#d4af37" opacity="1" />
+                <rect x="4851" y="199" width="2.5" height="2.5" fill="#6b8ea8" opacity="1" />
+                <rect x="4850.5" y="199" width="0.5" height="2.5" fill="#3a5a3a" opacity="1" />
+                <rect x="4860" y="199" width="2.5" height="2.5" fill="#6b8ea8" opacity="1" />
+                <rect x="4862.5" y="199" width="0.5" height="2.5" fill="#3a5a3a" opacity="1" />
+                <rect x="4852" y="204.5" width="7" height="1.5" fill="#c9b18f" opacity="1" />
               </g>
 
-              {/* Trees */}
+              {/* Varied trees - deciduous and evergreen mix */}
               <g>
-                {[3860, 3910, 3965, 4120, 4210, 4290, 4410, 4490, 4550, 4640, 4720, 4790, 4880, 4960].map((x, i) => (
-                  <g key={`tree-end-${i}`} opacity="1">
-                    <rect x={x} y="195" width="3" height="10" fill="#6b5a45" />
-                    <circle cx={x+1.5} cy="192" r="7" fill="#5a8a5a" opacity="1" />
-                    <circle cx={x-2} cy="194" r="5" fill="#6a9a6a" opacity="1" />
-                    <circle cx={x+5} cy="194" r="5" fill="#6a9a6a" opacity="1" />
-                  </g>
-                ))}
+                {/* Large oak - 3860 */}
+                <g><rect x="3859" y="193" width="4" height="12" fill="#5a4a35" /><circle cx="3861" cy="189" r="9" fill="#4a7a4a" /><circle cx="3855" cy="191" r="6" fill="#5a8a5a" /><circle cx="3867" cy="191" r="6" fill="#5a8a5a" /></g>
+                {/* Evergreen pine - 3910 */}
+                <g><rect x="3910" y="196" width="2.5" height="9" fill="#5a4a35" /><path d="M 3903,205 L 3911.25,187 L 3919.5,205 Z" fill="#3a6a3a" /><path d="M 3905,200 L 3911.25,185 L 3917.5,200 Z" fill="#4a7a4a" /><path d="M 3907,195 L 3911.25,183 L 3915.5,195 Z" fill="#5a8a5a" /></g>
+                {/* Small young tree - 3965 */}
+                <g><rect x="3965" y="198" width="2" height="7" fill="#6b5a45" /><circle cx="3966" cy="196" r="4" fill="#6a9a6a" /><circle cx="3964" cy="197" r="3" fill="#7aaa7a" /></g>
+                {/* Large maple - 4120 */}
+                <g><rect x="4119" y="194" width="4" height="11" fill="#5a4a35" /><circle cx="4121" cy="190" r="8" fill="#5a8a5a" /><circle cx="4115" cy="192" r="5.5" fill="#6a9a6a" /><circle cx="4127" cy="192" r="5.5" fill="#6a9a6a" /><circle cx="4121" cy="186" r="4.5" fill="#8ab88a" /></g>
+                {/* Medium deciduous - 4210 */}
+                <g><rect x="4210" y="196" width="3" height="9" fill="#6b5a45" /><circle cx="4211.5" cy="193" r="6.5" fill="#5a8a5a" /><circle cx="4208" cy="195" r="4.5" fill="#6a9a6a" /><circle cx="4215" cy="195" r="4.5" fill="#6a9a6a" /></g>
+                {/* Tall spruce - 4290 */}
+                <g><rect x="4290" y="195" width="2.5" height="10" fill="#4a3a25" /><path d="M 4283,206 L 4291.25,185 L 4299.5,206 Z" fill="#2f5f2f" /><path d="M 4285,200 L 4291.25,182 L 4297.5,200 Z" fill="#3a6a3a" /><path d="M 4287,195 L 4291.25,180 L 4295.5,195 Z" fill="#4a7a4a" /></g>
+                {/* Small evergreen - 4410 */}
+                <g><rect x="4410" y="198" width="2" height="7" fill="#4a3a25" /><path d="M 4405,205 L 4411,192 L 4417,205 Z" fill="#3a6a3a" /><path d="M 4407,201 L 4411,190 L 4415,201 Z" fill="#4a7a4a" /></g>
+                {/* Large oak - 4490 */}
+                <g><rect x="4489" y="193" width="4" height="12" fill="#5a4a35" /><circle cx="4491" cy="189" r="8" fill="#4a7a4a" /><circle cx="4485" cy="191" r="5.5" fill="#5a8a5a" /><circle cx="4497" cy="191" r="5.5" fill="#5a8a5a" /><circle cx="4491" cy="185" r="5" fill="#6a9a6a" /></g>
+                {/* Birch - 4550 */}
+                <g><rect x="4550" y="196" width="2.5" height="9" fill="#c9b89a" /><path d="M 4550.5,197 L 4550.5,200" stroke="#6b5a45" strokeWidth="0.5" /><circle cx="4551.25" cy="193" r="6" fill="#6a9a6a" /><circle cx="4548" cy="195" r="4" fill="#7aaa7a" /><circle cx="4555" cy="195" r="4" fill="#7aaa7a" /></g>
+                {/* Medium deciduous - 4640 */}
+                <g><rect x="4640" y="196" width="3" height="9" fill="#6b5a45" /><circle cx="4641.5" cy="192" r="7" fill="#5a8a5a" /><circle cx="4638" cy="194" r="5" fill="#6a9a6a" /><circle cx="4645" cy="194" r="5" fill="#6a9a6a" /></g>
+                {/* Evergreen - 4720 */}
+                <g><rect x="4720" y="196" width="2.5" height="9" fill="#4a3a25" /><path d="M 4714,205 L 4721.25,188 L 4728.5,205 Z" fill="#3a6a3a" /><path d="M 4716,201 L 4721.25,186 L 4726.5,201 Z" fill="#4a7a4a" /><path d="M 4718,197 L 4721.25,184 L 4724.5,197 Z" fill="#5a8a5a" /></g>
+                {/* Large elm - 4790 */}
+                <g><rect x="4789" y="193" width="4" height="12" fill="#5a4a35" /><circle cx="4791" cy="189" r="8" fill="#4a7a4a" /><circle cx="4785" cy="191" r="5.5" fill="#5a8a5a" /><circle cx="4797" cy="191" r="5.5" fill="#5a8a5a" /></g>
+                {/* Small deciduous - 4880 */}
+                <g><rect x="4880" y="198" width="2" height="7" fill="#6b5a45" /><circle cx="4881" cy="196" r="4.5" fill="#6a9a6a" /><circle cx="4879" cy="197" r="3.5" fill="#7aaa7a" /><circle cx="4884" cy="197" r="3.5" fill="#7aaa7a" /></g>
+                {/* Tall pine - 4960 */}
+                <g><rect x="4960" y="196" width="2.5" height="9" fill="#5a4a35" /><path d="M 4954,205 L 4961.25,188 L 4968.5,205 Z" fill="#3a6a3a" /><path d="M 4956,200 L 4961.25,185 L 4966.5,200 Z" fill="#4a7a4a" /><path d="M 4958,195 L 4961.25,183 L 4964.5,195 Z" fill="#5a8a5a" /></g>
               </g>
 
-              {/* Hay bales - with texture like Phase 1 */}
+              {/* Hay bales with shadows and enhanced texture */}
               <g>
                 {[4150, 4220, 4420, 4480, 4670, 4760, 4920].map((x, i) => (
                   <g key={`hay-end-${i}`} opacity="1">
-                    <ellipse cx={x} cy="205" rx="5" ry="3" fill="#d4a574" />
-                    <ellipse cx={x} cy="203" rx="4" ry="2" fill="#c9995f" />
-                    {/* Hay texture lines */}
-                    <path d={`M ${x-3},204 L ${x+3},204 M ${x-2},205 L ${x+2},205`} stroke="#b88a50" strokeWidth="0.5" opacity="1" />
+                    <ellipse cx={x} cy="208" rx="6" ry="1.5" fill="#3a5a3a" opacity="0.25" />
+                    <ellipse cx={x} cy="205" rx="5" ry="3.5" fill="#d4a574" />
+                    <ellipse cx={x} cy="203" rx="4" ry="2" fill="#dab87a" />
+                    <path d={`M ${x-4},203 L ${x-4},207`} stroke="#8a7040" strokeWidth="0.5" opacity="0.6" />
+                    <path d={`M ${x+4},203 L ${x+4},207`} stroke="#8a7040" strokeWidth="0.5" opacity="0.6" />
+                    <path d={`M ${x-3},204 L ${x+3},204 M ${x-2},205.5 L ${x+2},205.5 M ${x-3.5},206 L ${x+3.5},206`} stroke="#b88a50" strokeWidth="0.4" opacity="0.7" />
                   </g>
                 ))}
               </g>
@@ -2518,6 +2885,24 @@ export function ProgressiveSkyline() {
                     <rect x={x+13} y="199" width="4" height="1" fill="#ffd700" opacity="1" />
                   </g>
                 ))}
+              </g>
+
+              {/* Windmill - iconic rural landmark */}
+              <g>
+                <path d="M 4186,205 L 4189,175 L 4193,175 L 4196,205 Z" fill="#8a8a7a" opacity="0.9" />
+                <path d="M 4187.5,200 L 4194,180 M 4194.5,200 L 4188,180" stroke="#6a6a5a" strokeWidth="0.5" opacity="0.7" />
+                <path d="M 4188,195 L 4194,190 M 4194,195 L 4188,190" stroke="#6a6a5a" strokeWidth="0.4" opacity="0.6" />
+                <rect x="4187" y="174" width="8" height="1.5" fill="#6a6a5a" opacity="1" />
+                <rect x="4189" y="172" width="4" height="3" rx="1" fill="#7a7a6a" opacity="1" />
+                <path d="M 4191,173 L 4191,157" stroke="#e8e0d0" strokeWidth="1.2" opacity="0.9" />
+                <path d="M 4191,173 L 4191,189" stroke="#e8e0d0" strokeWidth="1.2" opacity="0.9" />
+                <path d="M 4191,173 L 4177,169" stroke="#e8e0d0" strokeWidth="1.2" opacity="0.9" />
+                <path d="M 4191,173 L 4205,177" stroke="#e8e0d0" strokeWidth="1.2" opacity="0.9" />
+                <path d="M 4191,157 L 4192.5,160 L 4191,168 L 4189.5,165 Z" fill="#e8e0d0" opacity="0.4" />
+                <path d="M 4191,189 L 4189.5,186 L 4191,178 L 4192.5,181 Z" fill="#e8e0d0" opacity="0.4" />
+                <path d="M 4177,169 L 4180,170.5 L 4187,173 L 4184,171.5 Z" fill="#e8e0d0" opacity="0.4" />
+                <path d="M 4205,177 L 4202,175.5 L 4195,173 L 4198,174.5 Z" fill="#e8e0d0" opacity="0.4" />
+                <circle cx="4191" cy="173" r="1.5" fill="#5a5a4a" opacity="1" />
               </g>
 
               {/* FARM ANIMALS - matching opening rural biome */}
