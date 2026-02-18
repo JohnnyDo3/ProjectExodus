@@ -1001,158 +1001,210 @@ export function ProgressiveSkyline() {
 
               {/* Main road infrastructure */}
               <g opacity="1">
+                {/* Concrete curb - top side */}
+                <rect x="800" y="216" width="1200" height="2" fill="#b8b8b0" opacity="1" />
                 {/* Asphalt road */}
                 <rect x="800" y="218" width="1200" height="32" fill={`url(#roadGradient-${iteration})`} />
+                {/* Concrete curb - bottom side */}
+                <rect x="800" y="250" width="1200" height="1.5" fill="#b8b8b0" opacity="1" />
 
-                {/* Grass strips - continuous green to road edge */}
-                <rect x="800" y="210" width="1200" height="4" fill="#7aa87a" opacity="1" />
-                <rect x="800" y="250" width="1200" height="2" fill="#7aa87a" opacity="1" />
+                {/* Center line - yellow dashed */}
+                {Array.from({length: 40}).map((_, li) => (
+                  <rect key={`center-line-${li}`} x={810 + li * 30} y="233.5" width="18" height="1" fill="#d4a017" opacity="0.9" />
+                ))}
+
+                {/* Crosswalks at intervals */}
+                {[900, 1200, 1500, 1800].map((cx, ci) => (
+                  <g key={`crosswalk-${ci}`}>
+                    {Array.from({length: 6}).map((_, si) => (
+                      <rect key={`cw-stripe-${ci}-${si}`} x={cx + si * 5} y="218" width="3" height="32" fill="#e8e8e0" opacity="0.6" />
+                    ))}
+                  </g>
+                ))}
+
+                {/* Sidewalk - concrete path between grass and road */}
+                <rect x="800" y="212" width="1200" height="4" fill="#d4d0c8" opacity="1" />
+                {/* Sidewalk expansion joints */}
+                {Array.from({length: 60}).map((_, ji) => (
+                  <rect key={`joint-${ji}`} x={810 + ji * 20} y="212" width="0.5" height="4" fill="#bab6ae" opacity="0.5" />
+                ))}
+
+                {/* Grass strips - continuous green to sidewalk edge */}
+                <rect x="800" y="210" width="1200" height="2" fill="#7aa87a" opacity="1" />
+                <rect x="800" y="251.5" width="1200" height="2" fill="#7aa87a" opacity="1" />
+              </g>
+
+              {/* Power lines along street */}
+              <g opacity="0.6">
+                {/* Power poles */}
+                {[830, 980, 1130, 1280, 1430, 1580, 1730, 1880].map((px, pi) => (
+                  <g key={`power-pole-${pi}`}>
+                    <rect x={px} y="175" width="1.5" height="37" fill="#6b5a45" opacity="0.8" />
+                    {/* Cross arm */}
+                    <rect x={px-4} y="177" width="10" height="1" fill="#6b5a45" opacity="0.8" />
+                    {/* Insulators */}
+                    <rect x={px-3.5} y="176" width="1" height="2" fill="#4a4a4a" opacity="0.8" />
+                    <rect x={px+4} y="176" width="1" height="2" fill="#4a4a4a" opacity="0.8" />
+                  </g>
+                ))}
+                {/* Power wires connecting poles - slight sag */}
+                {[830, 980, 1130, 1280, 1430, 1580, 1730].map((px, pi) => {
+                  const nx = px + 150;
+                  return (
+                    <g key={`power-wire-${pi}`}>
+                      <path d={`M ${px-3},177 Q ${(px + nx) / 2 - 3},181 ${nx-3},177`} stroke="#3a3a3a" strokeWidth="0.4" fill="none" />
+                      <path d={`M ${px+5},177 Q ${(px + nx) / 2 + 5},181 ${nx+5},177`} stroke="#3a3a3a" strokeWidth="0.4" fill="none" />
+                    </g>
+                  );
+                })}
               </g>
 
 
               {/* Ultra-detailed miniature houses - Victorian style (1/4 LARGER) */}
               {[820, 1120, 1420, 1720].map((x, i) => (
                 <g key={`victorian-${i}`}>
-                  {/* Main house body - 25% larger */}
+                  {/* Foundation */}
+                  <rect x={x-1} y="208" width="37" height="3" fill="#8a8a7a" opacity="0.9" />
+                  {/* Driveway connecting to road */}
+                  <rect x={x+30} y="208" width="8" height="8" fill="#c8c4bc" opacity="0.8" />
+                  {/* Parked car in driveway */}
+                  {i % 2 === 0 && (
+                    <g>
+                      <rect x={x+31} y="209" width="6" height="3.5" rx="0.8" fill={["#4a6a8a","#8a3030","#3a5a3a","#5a5a7a"][i]} opacity="0.9" />
+                      <rect x={x+31.5} y="209.5" width="3" height="1.5" rx="0.5" fill="#8ab8d8" opacity="0.5" />
+                      <circle cx={x+32} cy="212.5" r="0.8" fill="#2f2f2f" />
+                      <circle cx={x+36} cy="212.5" r="0.8" fill="#2f2f2f" />
+                    </g>
+                  )}
+                  {/* Main house body */}
                   <rect x={x} y="180" width="35" height="28" fill={`url(#victorianHouse-${iteration})`} />
 
                   {/* Steep Victorian roof with decorative peak */}
                   <path d={`M ${x-4},180 L ${x+17.5},162 L ${x+39},180 Z`} fill={`url(#victorianRoof-${iteration})`} />
-                  <rect x={x+13.5} y="162" width="8" height="18" fill={`url(#victorianHouse-${iteration})`} /> {/* Tower - wider */}
-                  <path d={`M ${x+11},162 L ${x+17.5},153 L ${x+24},162 Z`} fill={`url(#victorianRoof-${iteration})`} /> {/* Tower roof */}
+                  <rect x={x+13.5} y="162" width="8" height="18" fill={`url(#victorianHouse-${iteration})`} />
+                  <path d={`M ${x+11},162 L ${x+17.5},153 L ${x+24},162 Z`} fill={`url(#victorianRoof-${iteration})`} />
+                  {/* Gutters along roofline */}
+                  <path d={`M ${x-4},180 L ${x+39},180`} stroke="#7a6a5a" strokeWidth="0.8" opacity="0.7" />
+                  {/* Downspout */}
+                  <rect x={x+37} y="180" width="0.8" height="28" fill="#7a6a5a" opacity="0.6" />
+                  {/* Roof vent */}
+                  <rect x={x+6} y="170" width="3" height="2" rx="0.5" fill="#6a6a6a" opacity="0.6" />
 
-                  {/* Detailed multi-pane windows - Victorian style with 2x3 panes */}
-                  {/* Left window - 6-pane (2x3 grid) */}
+                  {/* Windows - 6-pane (2x3 grid) */}
                   <g>
                     <rect x={x+5} y="186" width="6" height="9" fill="#4a4a4a" opacity="1" />
                     {[0, 1].map(col => [0, 1, 2].map(row => (
-                      <rect
-                        key={`vic-left-${i}-${col}-${row}`}
-                        x={x + 5.4 + col * 2.8}
-                        y={186.4 + row * 2.8}
-                        width="2.4"
-                        height="2.4"
-                        fill={isNightTime && isWindowLit(x + i * 100) ? "#FFD700" : "#6b8ea8"}
-                        opacity="1"
-                      />
+                      <rect key={`vic-left-${i}-${col}-${row}`} x={x + 5.4 + col * 2.8} y={186.4 + row * 2.8} width="2.4" height="2.4"
+                        fill={isNightTime && isWindowLit(x + i * 100) ? "#FFD700" : "#6b8ea8"} opacity="1" />
                     )))}
-                    {/* Window sill */}
                     <rect x={x+4.5} y="194.5" width="7" height="1" fill="#d4c4a8" opacity="1" />
                   </g>
-                  {/* Right window - 6-pane (2x3 grid) */}
                   <g>
                     <rect x={x+24} y="186" width="6" height="9" fill="#4a4a4a" opacity="1" />
                     {[0, 1].map(col => [0, 1, 2].map(row => (
-                      <rect
-                        key={`vic-right-${i}-${col}-${row}`}
-                        x={x + 24.4 + col * 2.8}
-                        y={186.4 + row * 2.8}
-                        width="2.4"
-                        height="2.4"
-                        fill={isNightTime && isWindowLit(x + i * 100 + 1) ? "#FFD700" : "#6b8ea8"}
-                        opacity="1"
-                      />
+                      <rect key={`vic-right-${i}-${col}-${row}`} x={x + 24.4 + col * 2.8} y={186.4 + row * 2.8} width="2.4" height="2.4"
+                        fill={isNightTime && isWindowLit(x + i * 100 + 1) ? "#FFD700" : "#6b8ea8"} opacity="1" />
                     )))}
-                    {/* Window sill */}
                     <rect x={x+23.5} y="194.5" width="7" height="1" fill="#d4c4a8" opacity="1" />
                   </g>
-                  {/* Tower window - 4-pane (2x2 grid) */}
+                  {/* Tower window */}
                   <g>
                     <rect x={x+14.5} y="169" width="6" height="7" fill="#4a4a4a" opacity="1" />
                     {[0, 1].map(col => [0, 1].map(row => (
-                      <rect
-                        key={`vic-tower-${i}-${col}-${row}`}
-                        x={x + 14.8 + col * 2.8}
-                        y={169.3 + row * 3.2}
-                        width="2.4"
-                        height="2.8"
-                        fill={isNightTime && isWindowLit(x + i * 100 + 2) ? "#FFA500" : "#6b8ea8"}
-                        opacity="1"
-                      />
+                      <rect key={`vic-tower-${i}-${col}-${row}`} x={x + 14.8 + col * 2.8} y={169.3 + row * 3.2} width="2.4" height="2.8"
+                        fill={isNightTime && isWindowLit(x + i * 100 + 2) ? "#FFA500" : "#6b8ea8"} opacity="1" />
                     )))}
                   </g>
 
                   {/* Front door with porch */}
                   <rect x={x+14} y="194" width="7" height="14" fill="#8b5a3c" opacity="1" />
+                  <circle cx={x+19} cy="201" r="0.5" fill="#d4af37" opacity="1" />
                   <path d={`M ${x+10},194 L ${x+25},194`} stroke="#6d4428" strokeWidth="2" opacity="1" />
+                  {/* Porch pillars */}
+                  <rect x={x+11} y="194" width="1.5" height="14" fill="#e8e0d0" opacity="0.9" />
+                  <rect x={x+22.5} y="194" width="1.5" height="14" fill="#e8e0d0" opacity="0.9" />
+                  {/* Front stoop - 3 steps */}
+                  <rect x={x+12} y="208" width="11" height="1.5" fill="#a0988a" opacity="0.9" />
+                  <rect x={x+13} y="209.5" width="9" height="1.5" fill="#a0988a" opacity="0.8" />
+                  <rect x={x+14} y="211" width="7" height="1.5" fill="#a0988a" opacity="0.7" />
 
-                  {/* Chimney with smoke */}
+                  {/* Chimney with smoke and cap */}
                   <rect x={x+28} y="168" width="4" height="12" fill="#a85757" opacity="1" />
+                  <rect x={x+27.5} y="167.5" width="5" height="1" fill="#8a4a4a" opacity="1" />
                   <ellipse className="chimney-smoke" cx={x+30} cy="164" rx="2.5" ry="4" fill="#c4c4c4" opacity="1" />
 
                   {/* Decorative trim */}
-                  <rect x={x} y="207" width="35" height="2" fill="#d4c4a8" opacity="1" />
+                  <rect x={x} y="207" width="35" height="1.5" fill="#d4c4a8" opacity="1" />
+
+                  {/* Foundation plantings - bushes along house base */}
+                  <circle cx={x+4} cy="208" r="2" fill="#4a7a4a" opacity="0.8" />
+                  <circle cx={x+8} cy="208.5" r="1.5" fill="#5a8a5a" opacity="0.7" />
+                  <circle cx={x+27} cy="208.5" r="1.5" fill="#5a8a5a" opacity="0.7" />
+                  <circle cx={x+31} cy="208" r="2" fill="#4a7a4a" opacity="0.8" />
                 </g>
               ))}
 
               {/* Colonial style houses - symmetrical design (1/4 LARGER) */}
               {[1000, 1300, 1600, 1900].map((x, i) => (
                 <g key={`colonial-${i}`}>
-                  {/* Main colonial structure - 25% larger */}
+                  {/* Foundation */}
+                  <rect x={x-1} y="208" width="42" height="3" fill="#8a8a7a" opacity="0.9" />
+                  {/* Driveway */}
+                  <rect x={x-10} y="208" width="10" height="8" fill="#c8c4bc" opacity="0.8" />
+                  {/* Attached garage on left side */}
+                  <rect x={x-12} y="193" width="12" height="15" fill={`url(#colonialHouse-${iteration})`} />
+                  <path d={`M ${x-14},193 L ${x-6},187 L ${x+2},193 Z`} fill={`url(#colonialRoof-${iteration})`} />
+                  <rect x={x-10} y="200" width="8" height="8" fill="#4a4a4a" opacity="0.9" />
+                  {/* Garage door horizontal lines */}
+                  <path d={`M ${x-10},202 L ${x-2},202 M ${x-10},204 L ${x-2},204 M ${x-10},206 L ${x-2},206`} stroke="#3a3a3a" strokeWidth="0.3" opacity="0.6" />
+                  {/* Parked car in driveway */}
+                  {i % 2 === 1 && (
+                    <g>
+                      <rect x={x-9} y="209" width="7" height="3.5" rx="0.8" fill={["#2f4f6f","#6f3f3f","#3f5f3f","#5f4f6f"][i]} opacity="0.9" />
+                      <rect x={x-8.5} y="209.5" width="3.5" height="1.5" rx="0.5" fill="#8ab8d8" opacity="0.5" />
+                      <circle cx={x-8} cy="212.5" r="0.8" fill="#2f2f2f" />
+                      <circle cx={x-3.5} cy="212.5" r="0.8" fill="#2f2f2f" />
+                    </g>
+                  )}
+                  {/* Main colonial structure */}
                   <rect x={x} y="178" width="40" height="30" fill={`url(#colonialHouse-${iteration})`} />
 
                   {/* Classic colonial roof */}
                   <path d={`M ${x-3},178 L ${x+20},164 L ${x+43},178 Z`} fill={`url(#colonialRoof-${iteration})`} />
+                  {/* Gutters */}
+                  <path d={`M ${x-3},178 L ${x+43},178`} stroke="#7a6a5a" strokeWidth="0.8" opacity="0.7" />
+                  {/* Downspout */}
+                  <rect x={x} y="178" width="0.8" height="30" fill="#7a6a5a" opacity="0.5" />
+                  {/* Roof vent */}
+                  <rect x={x+8} y="170" width="3" height="2" rx="0.5" fill="#6a6a6a" opacity="0.5" />
 
-                  {/* Symmetrical windows (4 windows, 2 stories) - Colonial 6-pane style (2x3 grid) */}
-                  {/* Top left window */}
+                  {/* 4 windows (2 stories, 2x3 pane) */}
                   <g>
                     <rect x={x+5} y="184" width="6" height="8" fill="#4a4a4a" opacity="1" />
                     {[0, 1].map(col => [0, 1, 2].map(row => (
-                      <rect
-                        key={`col-tl-${i}-${col}-${row}`}
-                        x={x + 5.3 + col * 2.8}
-                        y={184.3 + row * 2.5}
-                        width="2.4"
-                        height="2.2"
-                        fill={isNightTime && isWindowLit(x + i * 200) ? "#FFD700" : "#6b8ea8"}
-                        opacity="1"
-                      />
+                      <rect key={`col-tl-${i}-${col}-${row}`} x={x + 5.3 + col * 2.8} y={184.3 + row * 2.5} width="2.4" height="2.2"
+                        fill={isNightTime && isWindowLit(x + i * 200) ? "#FFD700" : "#6b8ea8"} opacity="1" />
                     )))}
                   </g>
-                  {/* Top right window */}
                   <g>
                     <rect x={x+29} y="184" width="6" height="8" fill="#4a4a4a" opacity="1" />
                     {[0, 1].map(col => [0, 1, 2].map(row => (
-                      <rect
-                        key={`col-tr-${i}-${col}-${row}`}
-                        x={x + 29.3 + col * 2.8}
-                        y={184.3 + row * 2.5}
-                        width="2.4"
-                        height="2.2"
-                        fill={isNightTime && isWindowLit(x + i * 200 + 1) ? "#FFA500" : "#6b8ea8"}
-                        opacity="1"
-                      />
+                      <rect key={`col-tr-${i}-${col}-${row}`} x={x + 29.3 + col * 2.8} y={184.3 + row * 2.5} width="2.4" height="2.2"
+                        fill={isNightTime && isWindowLit(x + i * 200 + 1) ? "#FFA500" : "#6b8ea8"} opacity="1" />
                     )))}
                   </g>
-                  {/* Bottom left window */}
                   <g>
                     <rect x={x+5} y="196" width="6" height="8" fill="#4a4a4a" opacity="1" />
                     {[0, 1].map(col => [0, 1, 2].map(row => (
-                      <rect
-                        key={`col-bl-${i}-${col}-${row}`}
-                        x={x + 5.3 + col * 2.8}
-                        y={196.3 + row * 2.5}
-                        width="2.4"
-                        height="2.2"
-                        fill={isNightTime && isWindowLit(x + i * 200 + 2) ? "#FFD700" : "#6b8ea8"}
-                        opacity="1"
-                      />
+                      <rect key={`col-bl-${i}-${col}-${row}`} x={x + 5.3 + col * 2.8} y={196.3 + row * 2.5} width="2.4" height="2.2"
+                        fill={isNightTime && isWindowLit(x + i * 200 + 2) ? "#FFD700" : "#6b8ea8"} opacity="1" />
                     )))}
                   </g>
-                  {/* Bottom right window */}
                   <g>
                     <rect x={x+29} y="196" width="6" height="8" fill="#4a4a4a" opacity="1" />
                     {[0, 1].map(col => [0, 1, 2].map(row => (
-                      <rect
-                        key={`col-br-${i}-${col}-${row}`}
-                        x={x + 29.3 + col * 2.8}
-                        y={196.3 + row * 2.5}
-                        width="2.4"
-                        height="2.2"
-                        fill={isNightTime && isWindowLit(x + i * 200 + 3) ? "#FFA500" : "#6b8ea8"}
-                        opacity="1"
-                      />
+                      <rect key={`col-br-${i}-${col}-${row}`} x={x + 29.3 + col * 2.8} y={196.3 + row * 2.5} width="2.4" height="2.2"
+                        fill={isNightTime && isWindowLit(x + i * 200 + 3) ? "#FFA500" : "#6b8ea8"} opacity="1" />
                     )))}
                   </g>
 
@@ -1163,11 +1215,17 @@ export function ProgressiveSkyline() {
                   {/* Front porch pillars */}
                   <rect x={x+12} y="194" width="2" height="14" fill="#e8e8e8" opacity="1" />
                   <rect x={x+26} y="194" width="2" height="14" fill="#e8e8e8" opacity="1" />
+                  {/* Front stoop - 3 steps */}
+                  <rect x={x+13} y="208" width="14" height="1.5" fill="#a0988a" opacity="0.9" />
+                  <rect x={x+14} y="209.5" width="12" height="1.5" fill="#a0988a" opacity="0.8" />
+                  <rect x={x+15} y="211" width="10" height="1.5" fill="#a0988a" opacity="0.7" />
 
-                  {/* Chimney */}
+                  {/* Chimney with cap and smoke */}
                   <rect x={x+34} y="168" width="4" height="10" fill="#a85757" opacity="1" />
+                  <rect x={x+33.5} y="167.5" width="5" height="1" fill="#8a4a4a" opacity="1" />
+                  <ellipse className="chimney-smoke" cx={x+36} cy="164" rx="2" ry="3" fill="#c4c4c4" opacity="0.3" />
 
-                  {/* Shutters - top and bottom story */}
+                  {/* Shutters - all 8 windows */}
                   <rect x={x+3} y="184" width="1.2" height="8" fill="#2f2f2f" opacity="1" />
                   <rect x={x+11.8} y="184" width="1.2" height="8" fill="#2f2f2f" opacity="1" />
                   <rect x={x+27} y="184" width="1.2" height="8" fill="#2f2f2f" opacity="1" />
@@ -1176,182 +1234,258 @@ export function ProgressiveSkyline() {
                   <rect x={x+11.8} y="196" width="1.2" height="8" fill="#2f2f2f" opacity="1" />
                   <rect x={x+27} y="196" width="1.2" height="8" fill="#2f2f2f" opacity="1" />
                   <rect x={x+35.8} y="196" width="1.2" height="8" fill="#2f2f2f" opacity="1" />
+
+                  {/* Foundation plantings */}
+                  <circle cx={x+4} cy="208.5" r="1.8" fill="#4a7a4a" opacity="0.7" />
+                  <circle cx={x+36} cy="208.5" r="1.8" fill="#4a7a4a" opacity="0.7" />
+                  <circle cx={x+39} cy="209" r="1.5" fill="#5a8a5a" opacity="0.6" />
                 </g>
               ))}
 
-              {/* Ranch style houses - low and wide (1/4 LARGER, NO DRIVEWAYS) */}
+              {/* Ranch style houses - low and wide (1/4 LARGER) */}
               {[880, 1180, 1480, 1780].map((x, i) => (
                 <g key={`ranch-${i}`}>
-                  {/* Wide, low ranch house - 25% larger */}
+                  {/* Foundation */}
+                  <rect x={x-1} y="206" width="50" height="2.5" fill="#8a8a7a" opacity="0.9" />
+                  {/* Driveway from garage to road */}
+                  <rect x={x+38} y="206" width="10" height="10" fill="#c8c4bc" opacity="0.8" />
+                  {/* Parked car in driveway */}
+                  {i % 2 === 0 && (
+                    <g>
+                      <rect x={x+39} y="208" width="7" height="3.5" rx="0.8" fill={["#7a2a2a","#2a4a6a","#5a5a2a","#4a3a5a"][i]} opacity="0.9" />
+                      <rect x={x+39.5} y="208.5" width="3.5" height="1.5" rx="0.5" fill="#8ab8d8" opacity="0.5" />
+                      <circle cx={x+40} cy="211.5" r="0.8" fill="#2f2f2f" />
+                      <circle cx={x+45} cy="211.5" r="0.8" fill="#2f2f2f" />
+                    </g>
+                  )}
+                  {/* Wide, low ranch house */}
                   <rect x={x} y="188" width="48" height="18" fill={`url(#ranchHouse-${iteration})`} />
 
                   {/* Low-pitched roof */}
                   <path d={`M ${x-3},188 L ${x+24},179 L ${x+51},188 Z`} fill={`url(#ranchRoof-${iteration})`} />
+                  {/* Gutters */}
+                  <path d={`M ${x-3},188 L ${x+51},188`} stroke="#7a6a5a" strokeWidth="0.6" opacity="0.6" />
+                  {/* Downspout */}
+                  <rect x={x+48} y="188" width="0.7" height="18" fill="#7a6a5a" opacity="0.5" />
 
-                  {/* Horizontal windows - Ranch style 6-pane (3x2 grid) for wide look */}
-                  {/* Left window */}
+                  {/* Horizontal windows - Ranch style 6-pane (3x2 grid) */}
                   <g>
                     <rect x={x+6} y="191" width="10" height="5" fill="#4a4a4a" opacity="1" />
                     {[0, 1, 2].map(col => [0, 1].map(row => (
-                      <rect
-                        key={`ranch-left-${i}-${col}-${row}`}
-                        x={x + 6.3 + col * 3.2}
-                        y={191.3 + row * 2.3}
-                        width="2.8"
-                        height="2"
-                        fill={isNightTime && isWindowLit(x + i * 150) ? "#FFD700" : "#6b8ea8"}
-                        opacity="1"
-                      />
+                      <rect key={`ranch-left-${i}-${col}-${row}`} x={x + 6.3 + col * 3.2} y={191.3 + row * 2.3} width="2.8" height="2"
+                        fill={isNightTime && isWindowLit(x + i * 150) ? "#FFD700" : "#6b8ea8"} opacity="1" />
                     )))}
                   </g>
-                  {/* Right window - positioned between door and garage */}
                   <g>
                     <rect x={x+26} y="191" width="10" height="5" fill="#4a4a4a" opacity="1" />
                     {[0, 1, 2].map(col => [0, 1].map(row => (
-                      <rect
-                        key={`ranch-right-${i}-${col}-${row}`}
-                        x={x + 26.3 + col * 3.2}
-                        y={191.3 + row * 2.3}
-                        width="2.8"
-                        height="2"
-                        fill={isNightTime && isWindowLit(x + i * 150 + 1) ? "#FFA500" : "#6b8ea8"}
-                        opacity="1"
-                      />
+                      <rect key={`ranch-right-${i}-${col}-${row}`} x={x + 26.3 + col * 3.2} y={191.3 + row * 2.3} width="2.8" height="2"
+                        fill={isNightTime && isWindowLit(x + i * 150 + 1) ? "#FFA500" : "#6b8ea8"} opacity="1" />
                     )))}
                   </g>
 
-                  {/* Attached garage - nearly same height as main house */}
+                  {/* Attached garage */}
                   <rect x={x+38} y="189" width="9" height="17" fill="#c9b18f" opacity="1" />
-                  <rect x={x+39} y="199" width="7" height="7" fill="#4a4a4a" opacity="1" />
+                  <rect x={x+39} y="199" width="7" height="7" fill="#4a4a4a" opacity="0.9" />
+                  {/* Garage door horizontal lines */}
+                  <path d={`M ${x+39},201 L ${x+46},201 M ${x+39},203 L ${x+46},203 M ${x+39},205 L ${x+46},205`} stroke="#3a3a3a" strokeWidth="0.3" opacity="0.5" />
 
-                  {/* Front door */}
+                  {/* Front door with knob */}
                   <rect x={x+19} y="196" width="5" height="10" fill="#6b5a45" opacity="1" />
+                  <circle cx={x+23} cy="201" r="0.4" fill="#d4af37" opacity="1" />
 
-                  {/* Front porch/step */}
-                  <rect x={x+17} y="206" width="9" height="2" fill="#c9b18f" opacity="1" />
+                  {/* Front stoop - 2 steps */}
+                  <rect x={x+17} y="206" width="9" height="1.5" fill="#a0988a" opacity="0.9" />
+                  <rect x={x+18} y="207.5" width="7" height="1.5" fill="#a0988a" opacity="0.8" />
+
+                  {/* Foundation plantings - low hedge along front */}
+                  {[2, 8, 14, 28, 34].map((ox, oi) => (
+                    <ellipse key={`ranch-bush-${i}-${oi}`} cx={x + ox} cy="206.5" rx="2.5" ry="1.5" fill="#5a8a5a" opacity="0.7" />
+                  ))}
                 </g>
               ))}
 
               {/* Cottage style houses - small and cozy (1/4 LARGER) */}
               {[1060, 1360, 1660, 1960].map((x, i) => (
                 <g key={`cottage-${i}`}>
-                  {/* Cottage body - 25% larger */}
+                  {/* Foundation */}
+                  <rect x={x-1} y="207" width="32" height="2.5" fill="#8a8a7a" opacity="0.9" />
+                  {/* Stone walkway path to door */}
+                  {[0, 3, 6, 9].map((step, si) => (
+                    <rect key={`cottage-path-${i}-${si}`} x={x+13} y={209.5 + step * 0.8} width="4" height="2" rx="0.5" fill="#b8b0a0" opacity="0.7" />
+                  ))}
+                  {/* Cottage body */}
                   <rect x={x} y="188" width="30" height="19" fill={`url(#cottageHouse-${iteration})`} />
 
                   {/* Rounded cottage roof */}
                   <path d={`M ${x-3},188 Q ${x+15},175 ${x+33},188 Z`} fill={`url(#cottageRoof-${iteration})`} />
+                  {/* Gutter along roofline */}
+                  <path d={`M ${x-3},188 Q ${x+15},188.5 ${x+33},188`} stroke="#7a6a5a" strokeWidth="0.6" fill="none" opacity="0.6" />
+                  {/* Downspout */}
+                  <rect x={x-1} y="188" width="0.7" height="19" fill="#7a6a5a" opacity="0.5" />
 
-                  {/* Arched door - larger */}
+                  {/* Arched door */}
                   <path d={`M ${x+11},193 L ${x+11},207 L ${x+19},207 L ${x+19},193 Q ${x+15},190 ${x+11},193 Z`} fill="#a85757" opacity="1" />
+                  {/* Door knob */}
+                  <circle cx={x+17} cy="201" r="0.4" fill="#d4af37" opacity="1" />
+                  {/* Front stoop */}
+                  <rect x={x+10} y="207" width="10" height="1.5" fill="#a0988a" opacity="0.9" />
+                  <rect x={x+11} y="208.5" width="8" height="1.5" fill="#a0988a" opacity="0.8" />
 
-                  {/* Cottage windows - cozy 4-pane (2x2 grid), 3px gap from door */}
+                  {/* Cottage windows - 4-pane */}
                   <g>
                     <rect x={x+3} y="191" width="5" height="5" fill="#4a4a4a" opacity="1" />
                     {[0, 1].map(col => [0, 1].map(row => (
-                      <rect
-                        key={`cottage-left-${i}-${col}-${row}`}
-                        x={x + 3.3 + col * 2.3}
-                        y={191.3 + row * 2.3}
-                        width="2"
-                        height="2"
-                        fill={isNightTime && isWindowLit(x + i * 120) ? "#FFD700" : "#6b8ea8"}
-                        opacity="1"
-                      />
+                      <rect key={`cottage-left-${i}-${col}-${row}`} x={x + 3.3 + col * 2.3} y={191.3 + row * 2.3} width="2" height="2"
+                        fill={isNightTime && isWindowLit(x + i * 120) ? "#FFD700" : "#6b8ea8"} opacity="1" />
                     )))}
                   </g>
                   <g>
                     <rect x={x+22} y="191" width="5" height="5" fill="#4a4a4a" opacity="1" />
                     {[0, 1].map(col => [0, 1].map(row => (
-                      <rect
-                        key={`cottage-right-${i}-${col}-${row}`}
-                        x={x + 22.3 + col * 2.3}
-                        y={191.3 + row * 2.3}
-                        width="2"
-                        height="2"
-                        fill={isNightTime && isWindowLit(x + i * 120 + 1) ? "#FFA500" : "#6b8ea8"}
-                        opacity="1"
-                      />
+                      <rect key={`cottage-right-${i}-${col}-${row}`} x={x + 22.3 + col * 2.3} y={191.3 + row * 2.3} width="2" height="2"
+                        fill={isNightTime && isWindowLit(x + i * 120 + 1) ? "#FFA500" : "#6b8ea8"} opacity="1" />
                     )))}
                   </g>
 
-                  {/* Window boxes with flowers - centered under windows */}
+                  {/* Window boxes with flowers */}
                   <rect x={x+2.5} y="196.5" width="6" height="1.5" fill="#8b7355" opacity="1" />
                   <rect x={x+21.5} y="196.5" width="6" height="1.5" fill="#8b7355" opacity="1" />
                   <circle cx={x+4} cy="196" r="0.8" fill="#ff69b4" opacity="1" />
                   <circle cx={x+6.5} cy="196" r="0.8" fill="#ffd700" opacity="1" />
+                  <circle cx={x+5.3} cy="195.8" r="0.6" fill="#9370db" opacity="0.8" />
                   <circle cx={x+23} cy="196" r="0.8" fill="#ff69b4" opacity="1" />
                   <circle cx={x+25.5} cy="196" r="0.8" fill="#ffd700" opacity="1" />
+                  <circle cx={x+24.3} cy="195.8" r="0.6" fill="#9370db" opacity="0.8" />
 
-                  {/* Small chimney - right of windows */}
+                  {/* Small chimney with cap */}
                   <rect x={x+26} y="182" width="2.5" height="8" fill="#a85757" opacity="1" />
+                  <rect x={x+25.5} y="181.5" width="3.5" height="1" fill="#8a4a4a" opacity="1" />
+                  <ellipse cx={x+27.5} cy="179.5" rx="1.2" ry="1.5" fill="#c4c4c4" opacity="0.2" />
 
-                  {/* Garden fence - gap at doorway, stops at sidewalk */}
-                  {[0, 4, 8, 21, 25, 29].map((offset, fi) => (
-                    <rect key={`fence-${fi}`} x={x + offset} y="207" width="1" height="3" fill="#e8d4b8" opacity="1" />
+                  {/* White picket garden fence - gap at doorway */}
+                  {[0, 3, 6, 21, 24, 27].map((offset, fi) => (
+                    <g key={`cottage-fence-${i}-${fi}`}>
+                      <rect x={x + offset} y="207" width="1.2" height="4" fill="#f5f5f0" opacity="0.9" />
+                      <path d={`M ${x+offset},207 L ${x+offset+0.6},206 L ${x+offset+1.2},207`} fill="#f5f5f0" opacity="0.9" />
+                    </g>
                   ))}
+                  {/* Horizontal fence rails */}
+                  <rect x={x} y="208.5" width="9" height="0.5" fill="#f5f5f0" opacity="0.7" />
+                  <rect x={x+21} y="208.5" width="9" height="0.5" fill="#f5f5f0" opacity="0.7" />
+
+                  {/* Cottage garden - flowers and bushes around house */}
+                  <circle cx={x+2} cy="207.5" r="2" fill="#5a8a5a" opacity="0.7" />
+                  <circle cx={x+28} cy="207.5" r="2" fill="#5a8a5a" opacity="0.7" />
+                  {/* Small garden flowers */}
+                  <circle cx={x+1} cy="209" r="0.5" fill="#ff69b4" opacity="0.8" />
+                  <circle cx={x+3} cy="209.5" r="0.5" fill="#ffd700" opacity="0.8" />
+                  <circle cx={x+27} cy="209" r="0.5" fill="#ff69b4" opacity="0.8" />
+                  <circle cx={x+29} cy="209.5" r="0.5" fill="#ffd700" opacity="0.8" />
                 </g>
               ))}
 
               {/* Modern style houses - clean lines (1/4 LARGER) */}
               {[940, 1240, 1540, 1840].map((x, i) => (
                 <g key={`modern-${i}`}>
-                  {/* Cubic modern house - 25% larger */}
+                  {/* Foundation - modern concrete */}
+                  <rect x={x-1} y="207" width="35" height="2.5" fill="#9a9a92" opacity="0.9" />
+                  {/* Driveway - modern paved */}
+                  <rect x={x-10} y="207" width="10" height="9" fill="#a0a098" opacity="0.7" />
+                  {/* Modern carport/garage */}
+                  <rect x={x-10} y="195" width="10" height="12" fill={`url(#modernHouse-${iteration})`} />
+                  <rect x={x-9} y="195" width="8" height="0.8" fill={`url(#modernRoof-${iteration})`} />
+                  <rect x={x-8} y="201" width="7" height="6" fill="#3a4a5a" opacity="0.8" />
+                  {/* Parked car */}
+                  {i % 2 === 1 && (
+                    <g>
+                      <rect x={x-9} y="208" width="7" height="3.5" rx="1" fill={["#e8e8e8","#1a1a2a","#c8c8c8","#2a2a3a"][i]} opacity="0.9" />
+                      <rect x={x-8.5} y="208.5" width="3.5" height="1.5" rx="0.5" fill="#8ab8d8" opacity="0.5" />
+                      <circle cx={x-8} cy="211.5" r="0.8" fill="#2f2f2f" />
+                      <circle cx={x-3.5} cy="211.5" r="0.8" fill="#2f2f2f" />
+                    </g>
+                  )}
+                  {/* Cubic modern house */}
                   <rect x={x} y="183" width="33" height="24" fill={`url(#modernHouse-${iteration})`} />
 
-                  {/* Flat/minimal roof */}
-                  <rect x={x-1} y="180" width="35" height="3" fill={`url(#modernRoof-${iteration})`} />
+                  {/* Flat/minimal roof with overhang */}
+                  <rect x={x-2} y="180" width="37" height="3" fill={`url(#modernRoof-${iteration})`} />
+                  {/* Roof edge drip line */}
+                  <rect x={x-2} y="182.5" width="37" height="0.5" fill="#5a5a5a" opacity="0.5" />
 
-                  {/* Large modern windows - floor-to-ceiling 3x4 grid pane design */}
+                  {/* Large modern windows - floor-to-ceiling */}
                   <g>
                     <rect x={x+3} y="188" width="10" height="14" fill="#3a4a5a" opacity="1" />
                     {[0, 1, 2].map(col => [0, 1, 2, 3].map(row => (
-                      <rect
-                        key={`modern-left-${i}-${col}-${row}`}
-                        x={x + 3.3 + col * 3.2}
-                        y={188.3 + row * 3.4}
-                        width="2.9"
-                        height="3.1"
-                        fill={isNightTime && isWindowLit(x + i * 180) ? "#FFD700" : "#6b8ea8"}
-                        opacity="1"
-                      />
+                      <rect key={`modern-left-${i}-${col}-${row}`} x={x + 3.3 + col * 3.2} y={188.3 + row * 3.4} width="2.9" height="3.1"
+                        fill={isNightTime && isWindowLit(x + i * 180) ? "#FFD700" : "#6b8ea8"} opacity="1" />
                     )))}
                   </g>
                   <g>
                     <rect x={x+20} y="188" width="10" height="14" fill="#3a4a5a" opacity="1" />
                     {[0, 1, 2].map(col => [0, 1, 2, 3].map(row => (
-                      <rect
-                        key={`modern-right-${i}-${col}-${row}`}
-                        x={x + 20.3 + col * 3.2}
-                        y={188.3 + row * 3.4}
-                        width="2.9"
-                        height="3.1"
-                        fill={isNightTime && isWindowLit(x + i * 180 + 1) ? "#FFA500" : "#6b8ea8"}
-                        opacity="1"
-                      />
+                      <rect key={`modern-right-${i}-${col}-${row}`} x={x + 20.3 + col * 3.2} y={188.3 + row * 3.4} width="2.9" height="3.1"
+                        fill={isNightTime && isWindowLit(x + i * 180 + 1) ? "#FFA500" : "#6b8ea8"} opacity="1" />
                     )))}
                   </g>
 
-                  {/* Minimal door */}
+                  {/* Minimal door with handle */}
                   <rect x={x+14} y="196" width="5" height="11" fill="#5a7a8a" opacity="1" />
+                  <rect x={x+18} y="200" width="0.8" height="3" rx="0.3" fill="#c0c0c0" opacity="0.8" />
+                  {/* Front step */}
+                  <rect x={x+13} y="207" width="7" height="1.5" fill="#9a9a92" opacity="0.9" />
 
-                  {/* Solar panels on roof - more panels */}
+                  {/* Solar panels on roof */}
                   <rect x={x+2} y="181" width="12" height="1.5" fill="#3d5866" opacity="1" />
                   <rect x={x+18} y="181" width="12" height="1.5" fill="#3d5866" opacity="1" />
 
-                  {/* Modern landscaping - trimmed shrubs */}
-                  <circle cx={x+5} cy="209" r="3" fill="#8bc34a" opacity="1" />
-                  <circle cx={x+28} cy="209" r="3" fill="#8bc34a" opacity="1" />
+                  {/* Modern landscaping - geometric trimmed shrubs + ornamental grass */}
+                  <ellipse cx={x+5} cy="208.5" rx="3" ry="2" fill="#8bc34a" opacity="0.9" />
+                  <ellipse cx={x+28} cy="208.5" rx="3" ry="2" fill="#8bc34a" opacity="0.9" />
+                  {/* Ornamental grass */}
+                  <path d={`M ${x+16},207 Q ${x+15},204 ${x+14},207 Q ${x+16},203 ${x+17},207 Q ${x+15.5},204 ${x+16.5},207`} stroke="#7aaa5a" strokeWidth="0.4" fill="none" opacity="0.6" />
                 </g>
               ))}
 
-              {/* Yard trees and landscaping - between houses, not blocking views */}
+              {/* Yard trees and landscaping - varied sizes, between houses */}
               <g opacity="1">
-                {[868, 986, 1050, 1105, 1168, 1286, 1350, 1405, 1468, 1586, 1650, 1705, 1768, 1886].map((x, i) => (
+                {[868, 986, 1050, 1105, 1168, 1286, 1350, 1405, 1468, 1586, 1650, 1705, 1768, 1886].map((x, i) => {
+                  const isMature = i % 3 === 0;
+                  const isMedium = i % 3 === 1;
+                  const trunkH = isMature ? 10 : isMedium ? 7 : 5;
+                  const foliageR = isMature ? 6 : isMedium ? 4.5 : 3;
+                  const foliageY = isMature ? 197 : isMedium ? 200 : 203;
+                  const trunkY = 210 - trunkH;
+                  return (
                   <g key={`yard-tree-${i}`}>
-                    {/* Tree trunk */}
-                    <rect x={x} y="203" width="2" height="7" fill="#6b5a45" opacity="1" />
-                    {/* Tree foliage */}
-                    <circle cx={x+1} cy="201" r="4" fill="#5a8a5a" opacity="1" />
+                    <rect x={x} y={trunkY} width={isMature ? 3 : 2} height={trunkH} fill="#6b5a45" opacity="1" />
+                    <circle cx={x+1} cy={foliageY} r={foliageR} fill={i % 2 === 0 ? "#4a7a4a" : "#5a8a5a"} opacity="1" />
+                    {isMature && <>
+                      <circle cx={x-3} cy={foliageY+2} r={foliageR * 0.7} fill="#5a8a5a" opacity="0.9" />
+                      <circle cx={x+5} cy={foliageY+2} r={foliageR * 0.7} fill="#5a8a5a" opacity="0.9" />
+                    </>}
+                  </g>
+                  );
+                })}
+              </g>
+
+              {/* White picket fences between some properties */}
+              <g opacity="0.75">
+                {[860, 970, 1160, 1270, 1460, 1570, 1760, 1870].map((fx, fi) => (
+                  <g key={`prop-fence-${fi}`}>
+                    {/* Fence posts */}
+                    <rect x={fx} y="207" width="1" height="5" fill="#e8e0d0" opacity="0.9" />
+                    <rect x={fx+8} y="207" width="1" height="5" fill="#e8e0d0" opacity="0.9" />
+                    {/* Horizontal rails */}
+                    <rect x={fx} y="208" width="9" height="0.5" fill="#e8e0d0" opacity="0.8" />
+                    <rect x={fx} y="210" width="9" height="0.5" fill="#e8e0d0" opacity="0.8" />
+                    {/* Pickets */}
+                    {Array.from({length: 4}).map((_, pi) => (
+                      <g key={`picket-${fi}-${pi}`}>
+                        <rect x={fx + 1.5 + pi * 2} y="207" width="0.8" height="5" fill="#f5f5f0" opacity="0.85" />
+                        <path d={`M ${fx + 1.5 + pi * 2},207 L ${fx + 1.9 + pi * 2},206 L ${fx + 2.3 + pi * 2},207`} fill="#f5f5f0" opacity="0.85" />
+                      </g>
+                    ))}
                   </g>
                 ))}
               </g>
