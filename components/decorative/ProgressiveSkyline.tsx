@@ -311,19 +311,7 @@ export function ProgressiveSkyline() {
                 <path d="M 643,190 L 668,190 M 643,195 L 668,195" stroke="#a83232" strokeWidth="0.5" opacity="1" />
               </g>
 
-              {/* Farmland/crop rows near barns (grass areas for animals, crop rows without) */}
-              <g opacity="0.9">
-                {/* Light farmland patches - tilled soil appearance */}
-                <rect x="235" y="200" width="35" height="8" fill="#c9b18f" opacity="0.4" />
-                <rect x="490" y="198" width="30" height="7" fill="#c9b18f" opacity="0.4" />
-                {/* Crop rows - simple lines */}
-                {Array.from({length: 8}).map((_, i) => (
-                  <rect key={`crop-1-${i}`} x={237 + i * 4} y="201" width="2" height="6" fill="#6a9a6a" opacity="0.7" />
-                ))}
-                {Array.from({length: 7}).map((_, i) => (
-                  <rect key={`crop-2-${i}`} x={492 + i * 4} y="199" width="2" height="5" fill="#6a9a6a" opacity="0.7" />
-                ))}
-              </g>
+              {/* Open pasture areas for animals */}
 
               {/* Miniature Farmhouses */}
               <g>
@@ -400,8 +388,8 @@ export function ProgressiveSkyline() {
 
               {/* Horses in the fields - DETAILED AND RECOGNIZABLE! */}
               <g>
-                {[50, 135, 335, 400, 615, 740].map((x, i) => {
-                  const yOffsets = [-5, 2, -2, 4, 0, 3]; // Varied depths for visual interest
+                {[40, 145, 340, 715].map((x, i) => {
+                  const yOffsets = [-5, 2, -2, 3]; // Varied depths for visual interest
                   return (
                   <g key={`horse-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-horse" opacity="1" style={{animationDelay: `${i * 0.3}s`}}>
                     {/* Main body - larger and more defined */}
@@ -460,7 +448,7 @@ export function ProgressiveSkyline() {
 
               {/* Cows grazing - DETAILED AND RECOGNIZABLE! */}
               <g>
-                {[95, 370, 525, 775].map((x, i) => {
+                {[105, 410, 530, 760].map((x, i) => {
                   const yOffsets = [3, -4, 1, -2]; // Varied depths
                   return (
                   <g key={`cow-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-cow" opacity="1" style={{animationDelay: `${i * 0.5}s`}}>
@@ -528,8 +516,8 @@ export function ProgressiveSkyline() {
 
               {/* Sheep grazing - FLUFFY AND RECOGNIZABLE! */}
               <g>
-                {[75, 310, 500, 590, 715].map((x, i) => {
-                  const yOffsets = [-3, 4, -1, 2, 0]; // Varied depths
+                {[75, 308, 500, 610].map((x, i) => {
+                  const yOffsets = [-3, 4, -1, 2]; // Varied depths
                   return (
                   <g key={`sheep-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-sheep" opacity="1" style={{animationDelay: `${i * 0.4}s`}}>
                     {/* Fluffy wool body - multiple overlapping circles for texture */}
@@ -574,7 +562,7 @@ export function ProgressiveSkyline() {
 
               {/* Chickens pecking - DETAILED AND RECOGNIZABLE! */}
               <g>
-                {[40, 155, 345, 490, 545, 625, 760].map((x, i) => {
+                {[8, 241, 375, 435, 585, 635, 795].map((x, i) => {
                   const yOffsets = [2, -2, 3, -1, 1, 4, 0]; // Varied depths
                   return (
                   <g key={`chicken-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-chicken" opacity="1" style={{animationDelay: `${i * 0.2}s`}}>
@@ -671,8 +659,8 @@ export function ProgressiveSkyline() {
 
                   {/* Steep Victorian roof with decorative peak */}
                   <path d={`M ${x-4},180 L ${x+17.5},162 L ${x+39},180 Z`} fill={`url(#victorianRoof-${iteration})`} />
-                  <rect x={x+15} y="162" width="5" height="18" fill={`url(#victorianHouse-${iteration})`} /> {/* Tower */}
-                  <path d={`M ${x+12.5},162 L ${x+17.5},153 L ${x+22.5},162 Z`} fill={`url(#victorianRoof-${iteration})`} /> {/* Tower roof */}
+                  <rect x={x+13.5} y="162" width="8" height="18" fill={`url(#victorianHouse-${iteration})`} /> {/* Tower - wider */}
+                  <path d={`M ${x+11},162 L ${x+17.5},153 L ${x+24},162 Z`} fill={`url(#victorianRoof-${iteration})`} /> {/* Tower roof */}
 
                   {/* Detailed multi-pane windows - Victorian style with 2x3 panes */}
                   {/* Left window - 6-pane (2x3 grid) */}
@@ -711,14 +699,14 @@ export function ProgressiveSkyline() {
                   </g>
                   {/* Tower window - 4-pane (2x2 grid) */}
                   <g>
-                    <rect x={x+15.5} y="170" width="4" height="6" fill="#4a4a4a" opacity="1" />
+                    <rect x={x+14.5} y="169" width="6" height="7" fill="#4a4a4a" opacity="1" />
                     {[0, 1].map(col => [0, 1].map(row => (
                       <rect
                         key={`vic-tower-${i}-${col}-${row}`}
-                        x={x + 15.7 + col * 1.8}
-                        y={170.4 + row * 2.6}
-                        width="1.5"
-                        height="2.2"
+                        x={x + 14.8 + col * 2.8}
+                        y={169.3 + row * 3.2}
+                        width="2.4"
+                        height="2.8"
                         fill={isNightTime && isWindowLit(x + i * 100 + 2) ? "#FFA500" : "#6b8ea8"}
                         opacity="1"
                       />
@@ -2507,7 +2495,7 @@ export function ProgressiveSkyline() {
 
               {/* Tractors - fully detailed like Phase 1 */}
               <g>
-                {[4050, 4350, 4750, 4950].map((x, i) => (
+                {[4050, 4350, 4750, 4930].map((x, i) => (
                   <g key={`tractor-end-${i}`} opacity="1">
                     {/* Tractor body - green */}
                     <rect x={x} y="198" width="18" height="8" rx="1" fill="#4a7c2f" />
@@ -2536,8 +2524,8 @@ export function ProgressiveSkyline() {
 
               {/* Horses in the fields - DETAILED AND RECOGNIZABLE! */}
               <g>
-                {[3840, 3930, 4130, 4200, 4310, 4560].map((x, i) => {
-                  const yOffsets = [2, -3, 5, -1, 3, -4]; // Varied depths
+                {[3845, 4145, 4325, 4515, 4654].map((x, i) => {
+                  const yOffsets = [2, -3, 5, -1, 3]; // Varied depths
                   return (
                   <g key={`horse-end-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-horse" opacity="1" style={{animationDelay: `${i * 0.3}s`}}>
                     {/* Main body - larger and more defined */}
@@ -2596,7 +2584,7 @@ export function ProgressiveSkyline() {
 
               {/* Cows grazing - DETAILED AND RECOGNIZABLE! */}
               <g>
-                {[3880, 4170, 4510, 4790].map((x, i) => {
+                {[3920, 4215, 4395, 4590].map((x, i) => {
                   const yOffsets = [4, -1, 3, -3]; // Varied depths
                   return (
                   <g key={`cow-end-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-cow" opacity="1" style={{animationDelay: `${i * 0.5}s`}}>
@@ -2664,7 +2652,7 @@ export function ProgressiveSkyline() {
 
               {/* Sheep grazing - FLUFFY AND RECOGNIZABLE! */}
               <g>
-                {[3860, 4140, 4290, 4540, 4780].map((x, i) => {
+                {[3885, 4110, 4296, 4555, 4790].map((x, i) => {
                   const yOffsets = [-2, 5, -4, 1, -3]; // Varied depths
                   return (
                   <g key={`sheep-end-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-sheep" opacity="1" style={{animationDelay: `${i * 0.4}s`}}>
@@ -2710,7 +2698,7 @@ export function ProgressiveSkyline() {
 
               {/* Chickens pecking - DETAILED AND RECOGNIZABLE! */}
               <g>
-                {[3910, 3950, 4200, 4330, 4400, 4575, 4810].map((x, i) => {
+                {[3810, 3950, 4180, 4430, 4480, 4625, 4820].map((x, i) => {
                   const yOffsets = [3, -3, 1, -2, 4, -1, 2]; // Varied depths
                   return (
                   <g key={`chicken-end-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-chicken" opacity="1" style={{animationDelay: `${i * 0.2}s`}}>
