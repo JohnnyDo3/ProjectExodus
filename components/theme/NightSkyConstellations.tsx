@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef } from 'react'
 import { useSkyTheme } from './SkyThemeProvider'
 
 interface Star {
@@ -307,7 +307,6 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 3000 }:
   const dimensionsRef = useRef({ w: 0, h: 0 })
   const mousePosRef = useRef({ x: 0, y: 0 })
   const activeConstellationRef = useRef<number | null>(null)
-  const [showPointer, setShowPointer] = useState(false)
 
   const { currentPhase } = useSkyTheme()
   const isNightTime = alwaysShow || ['dusk', 'evening', 'night', 'midnight'].includes(currentPhase)
@@ -674,50 +673,57 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 3000 }:
     }
   }, [isNightTime, starCount])
 
-  // Mouse move handler with rotation-aware hit detection
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
-    const canvas = canvasRef.current
-    if (!canvas) return
+  // Document-level mouse move handler with rotation-aware hit detection
+  // Uses document listener so hover works even when page content overlays the canvas
+  useEffect(() => {
+    if (!isNightTime) return
 
-    const rect = canvas.getBoundingClientRect()
-    const screenX = e.clientX - rect.left
-    const screenY = e.clientY - rect.top
+    const handleMouseMove = (e: MouseEvent) => {
+      const canvas = canvasRef.current
+      if (!canvas) return
 
-    mousePosRef.current = { x: screenX, y: screenY }
+      const rect = canvas.getBoundingClientRect()
+      const screenX = e.clientX - rect.left
+      const screenY = e.clientY - rect.top
 
-    // Inverse-rotate mouse coordinates to match star positions in pre-rotation space
-    const { w, h } = dimensionsRef.current
-    const angle = -rotationAngleRef.current
-    const cx = w / 2
-    const cy = h / 2
-    const dx = screenX - cx
-    const dy = screenY - cy
-    const cosA = Math.cos(angle)
-    const sinA = Math.sin(angle)
-    const rotX = dx * cosA - dy * sinA + cx
-    const rotY = dx * sinA + dy * cosA + cy
+      mousePosRef.current = { x: screenX, y: screenY }
 
-    // Find nearest constellation using rotation-corrected coordinates
-    const stars = starsRef.current
-    let nearestConstellation: number | null = null
-    let minDistance = Infinity
+      // Inverse-rotate mouse coordinates to match star positions in pre-rotation space
+      const { w, h } = dimensionsRef.current
+      const angle = -rotationAngleRef.current
+      const cx = w / 2
+      const cy = h / 2
+      const dx = screenX - cx
+      const dy = screenY - cy
+      const cosA = Math.cos(angle)
+      const sinA = Math.sin(angle)
+      const rotX = dx * cosA - dy * sinA + cx
+      const rotY = dx * sinA + dy * cosA + cy
 
-    constellations.forEach(constellation => {
-      constellation.stars.forEach(starIdx => {
-        const star = stars[starIdx]
-        if (star) {
-          const distance = Math.sqrt((star.x - rotX) ** 2 + (star.y - rotY) ** 2)
-          if (distance < 80 && distance < minDistance) {
-            minDistance = distance
-            nearestConstellation = constellation.id
+      // Find nearest constellation using rotation-corrected coordinates
+      const stars = starsRef.current
+      let nearestConstellation: number | null = null
+      let minDistance = Infinity
+
+      constellations.forEach(constellation => {
+        constellation.stars.forEach(starIdx => {
+          const star = stars[starIdx]
+          if (star) {
+            const distance = Math.sqrt((star.x - rotX) ** 2 + (star.y - rotY) ** 2)
+            if (distance < 80 && distance < minDistance) {
+              minDistance = distance
+              nearestConstellation = constellation.id
+            }
           }
-        }
+        })
       })
-    })
 
-    activeConstellationRef.current = nearestConstellation
-    setShowPointer(nearestConstellation !== null)
-  }, [])
+      activeConstellationRef.current = nearestConstellation
+    }
+
+    document.addEventListener('mousemove', handleMouseMove)
+    return () => document.removeEventListener('mousemove', handleMouseMove)
+  }, [isNightTime])
 
   if (!isNightTime) return null
 
@@ -725,10 +731,8 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 3000 }:
     <canvas
       ref={canvasRef}
       className="absolute inset-0 z-0"
-      onMouseMove={handleMouseMove}
       style={{
         background: 'transparent',
-        cursor: showPointer ? 'pointer' : 'default'
       }}
     />
   )
