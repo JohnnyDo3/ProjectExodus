@@ -630,253 +630,144 @@ export function ProgressiveSkyline() {
                 <circle cx="391" cy="173" r="1.5" fill="#5a5a4a" opacity="1" />
               </g>
 
-              {/* FARM ANIMALS - Shrunk 1/3, self-aware, grouped naturally */}
+              {/* FARM ANIMALS - Minecraft/voxel style, all rectangles, no gaps */}
 
-              {/* Horses in pairs - facing each other, 2/3 scale */}
+              {/* Horses - Minecraft blocky style, dir: 1=face left, -1=face right */}
               <g>
-                {/* Pair 1: Two horses facing each other near x=40 */}
                 {[
-                  {x: 35, facing: 1, y: -3, color: '#654321', chest: '#7a5230'},
-                  {x: 60, facing: -1, y: -2, color: '#8b6f47', chest: '#9a7a55'},
+                  {x: 35, dir: -1, y: -3, color: '#654321', chest: '#7a5230'},
+                  {x: 60, dir: 1, y: -2, color: '#8b6f47', chest: '#9a7a55'},
+                  {x: 335, dir: -1, y: -1, color: '#654321', chest: '#7a5230'},
+                  {x: 355, dir: -1, y: 0, color: '#4a3520', chest: '#5a3a25'},
+                  {x: 715, dir: -1, y: 2, color: '#654321', chest: '#7a5230'},
                 ].map((h, i) => (
-                  <g key={`horse-pair1-${i}`} transform={`translate(0, ${h.y}) scale(${h.facing}, 1)`} className="animal-horse" opacity="1" style={{animationDelay: `${i * 0.3}s`}}>
-                    <g transform={`translate(${h.facing === -1 ? -2 * h.x : 0}, 0)`}>
-                      <ellipse cx={h.x * h.facing} cy="204" rx="6.7" ry="4" fill={h.color} />
-                      <ellipse cx={h.x * h.facing + 4} cy="204" rx="3.3" ry="4" fill={h.chest} />
-                      <path d={`M ${h.x * h.facing + 5.3},202.7 L ${h.x * h.facing + 7.3},200.7 L ${h.x * h.facing + 6.7},204 Z`} fill={h.color} />
-                      <ellipse cx={h.x * h.facing + 8.7} cy="200.3" rx="2.3" ry="3" fill={h.color} />
-                      <ellipse cx={h.x * h.facing + 10} cy="201" rx="1.3" ry="1.7" fill="#8b6f47" />
-                      <path d={`M ${h.x * h.facing + 8},197.3 L ${h.x * h.facing + 7.3},195.3 L ${h.x * h.facing + 8.7},196.7 Z`} fill={h.color} />
-                      <path d={`M ${h.x * h.facing + 9.3},197.3 L ${h.x * h.facing + 10},195.3 L ${h.x * h.facing + 9},196.7 Z`} fill={h.color} />
-                      <circle cx={h.x * h.facing + 8.7} cy="199.7" r="0.7" fill="#2f2f2f" />
-                      <circle cx={h.x * h.facing + 8.9} cy="199.5" r="0.3" fill="#ffffff" />
-                      <circle cx={h.x * h.facing + 10.3} cy="201.3" r="0.3" fill="#4a3520" />
-                      <rect x={h.x * h.facing + 2} y="208" width="1.3" height="4" fill={h.color} />
-                      <rect x={h.x * h.facing + 4.7} y="208" width="1.3" height="4" fill={h.chest} />
-                      <rect x={h.x * h.facing - 3.3} y="208" width="1.3" height="4" fill={h.color} />
-                      <rect x={h.x * h.facing - 0.7} y="208" width="1.3" height="4" fill={h.chest} />
-                      <rect x={h.x * h.facing + 2} y="211.5" width="1.3" height="0.7" fill="#2f2f2f" />
-                      <rect x={h.x * h.facing + 4.7} y="211.5" width="1.3" height="0.7" fill="#2f2f2f" />
-                      <rect x={h.x * h.facing - 3.3} y="211.5" width="1.3" height="0.7" fill="#2f2f2f" />
-                      <rect x={h.x * h.facing - 0.7} y="211.5" width="1.3" height="0.7" fill="#2f2f2f" />
-                      <path d={`M ${h.x * h.facing - 6.7},203 Q ${h.x * h.facing - 8.7},204.7 ${h.x * h.facing - 9.3},207.3`} stroke="#4a3520" strokeWidth="1.3" fill="none" />
-                      <path d={`M ${h.x * h.facing + 7.3},198 Q ${h.x * h.facing + 6},198.7 ${h.x * h.facing + 4.7},200`} stroke="#4a3520" strokeWidth="1" fill="none" />
-                    </g>
+                  <g key={`horse-${i}`} transform={`translate(0, ${h.y})`} className="animal-horse" opacity="1" style={{animationDelay: `${i * 0.3}s`}}>
+                    {/* Body block */}
+                    <rect x={h.x - 6} y="201" width="12" height="7" fill={h.color} />
+                    {/* Chest/shoulder highlight */}
+                    <rect x={h.x + (h.dir > 0 ? -6 : 2)} y="201" width="4" height="7" fill={h.chest} />
+                    {/* Neck - overlaps body by 1px */}
+                    <rect x={h.x + (h.dir > 0 ? -8 : 5)} y="196" width="3" height="6" fill={h.color} />
+                    {/* Head block */}
+                    <rect x={h.x + (h.dir > 0 ? -13 : 6)} y="194" width="6" height="4.5" fill={h.color} />
+                    {/* Muzzle - lighter snout */}
+                    <rect x={h.x + (h.dir > 0 ? -14.5 : 10.5)} y="196" width="2" height="2.5" fill={h.chest} />
+                    {/* Eye */}
+                    <rect x={h.x + (h.dir > 0 ? -11 : 9)} y="195" width="1" height="1" fill="#2f2f2f" />
+                    <rect x={h.x + (h.dir > 0 ? -10.8 : 9.2)} y="195" width="0.4" height="0.5" fill="#ffffff" />
+                    {/* Ears */}
+                    <rect x={h.x + (h.dir > 0 ? -12 : 7)} y="192.5" width="1.2" height="2" fill={h.color} />
+                    <rect x={h.x + (h.dir > 0 ? -10 : 9)} y="192.5" width="1.2" height="2" fill={h.color} />
+                    {/* Nostril */}
+                    <rect x={h.x + (h.dir > 0 ? -14 : 12)} y="197.5" width="0.5" height="0.5" fill="#3a2a1a" />
+                    {/* Front legs - flush with body bottom */}
+                    <rect x={h.x + 3} y="207.5" width="1.3" height="4" fill={h.color} />
+                    <rect x={h.x + 5} y="207.5" width="1.3" height="4" fill={h.chest} />
+                    {/* Back legs */}
+                    <rect x={h.x - 5.3} y="207.5" width="1.3" height="4" fill={h.color} />
+                    <rect x={h.x - 3.3} y="207.5" width="1.3" height="4" fill={h.chest} />
+                    {/* Hooves */}
+                    <rect x={h.x + 3} y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                    <rect x={h.x + 5} y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                    <rect x={h.x - 5.3} y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                    <rect x={h.x - 3.3} y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                    {/* Tail - hangs from rear */}
+                    <rect x={h.x + (h.dir > 0 ? 5.5 : -7)} y="201.5" width="1.5" height="5.5" fill="#4a3520" />
+                    {/* Mane - dark stripe along neck */}
+                    <rect x={h.x + (h.dir > 0 ? -8 : 7)} y="194" width="1" height="7" fill="#4a3520" />
                   </g>
                 ))}
-                {/* Pair 2: Two horses near x=340, one nuzzling the other */}
-                {[
-                  {x: 335, y: -1, color: '#654321'},
-                  {x: 355, y: 0, color: '#4a3520'},
-                ].map((h, i) => (
-                  <g key={`horse-pair2-${i}`} transform={`translate(0, ${h.y})`} className="animal-horse" opacity="1" style={{animationDelay: `${(i + 2) * 0.3}s`}}>
-                    <ellipse cx={h.x} cy="204" rx="6.7" ry="4" fill={h.color} />
-                    <ellipse cx={h.x + 4} cy="204" rx="3.3" ry="4" fill="#7a5230" />
-                    <path d={`M ${h.x + 5.3},202.7 L ${h.x + 7.3},200.7 L ${h.x + 6.7},204 Z`} fill={h.color} />
-                    <ellipse cx={h.x + 8.7} cy="200.3" rx="2.3" ry="3" fill={h.color} />
-                    <ellipse cx={h.x + 10} cy="201" rx="1.3" ry="1.7" fill="#8b6f47" />
-                    <path d={`M ${h.x + 8},197.3 L ${h.x + 7.3},195.3 L ${h.x + 8.7},196.7 Z`} fill={h.color} />
-                    <path d={`M ${h.x + 9.3},197.3 L ${h.x + 10},195.3 L ${h.x + 9},196.7 Z`} fill={h.color} />
-                    <circle cx={h.x + 8.7} cy="199.7" r="0.7" fill="#2f2f2f" />
-                    <circle cx={h.x + 8.9} cy="199.5" r="0.3" fill="#ffffff" />
-                    <rect x={h.x + 2} y="208" width="1.3" height="4" fill={h.color} />
-                    <rect x={h.x + 4.7} y="208" width="1.3" height="4" fill="#7a5230" />
-                    <rect x={h.x - 3.3} y="208" width="1.3" height="4" fill={h.color} />
-                    <rect x={h.x - 0.7} y="208" width="1.3" height="4" fill="#7a5230" />
-                    <rect x={h.x + 2} y="211.5" width="1.3" height="0.7" fill="#2f2f2f" />
-                    <rect x={h.x + 4.7} y="211.5" width="1.3" height="0.7" fill="#2f2f2f" />
-                    <rect x={h.x - 3.3} y="211.5" width="1.3" height="0.7" fill="#2f2f2f" />
-                    <rect x={h.x - 0.7} y="211.5" width="1.3" height="0.7" fill="#2f2f2f" />
-                    <path d={`M ${h.x - 6.7},203 Q ${h.x - 8.7},204.7 ${h.x - 9.3},207.3`} stroke="#4a3520" strokeWidth="1.3" fill="none" />
-                    <path d={`M ${h.x + 7.3},198 Q ${h.x + 6},198.7 ${h.x + 4.7},200`} stroke="#4a3520" strokeWidth="1" fill="none" />
-                  </g>
-                ))}
-                {/* Solo horse at x=715 looking toward cows */}
-                <g transform="translate(0, 2)" className="animal-horse" opacity="1" style={{animationDelay: '1.2s'}}>
-                  <ellipse cx={715} cy="204" rx="6.7" ry="4" fill="#654321" />
-                  <ellipse cx={721} cy="204" rx="3.3" ry="4" fill="#7a5230" />
-                  <path d={`M 720.3,202.7 L 722.3,200.7 L 721.7,204 Z`} fill="#654321" />
-                  <ellipse cx={723.7} cy="200.3" rx="2.3" ry="3" fill="#654321" />
-                  <ellipse cx={725} cy="201" rx="1.3" ry="1.7" fill="#8b6f47" />
-                  <path d="M 723,197.3 L 722.3,195.3 L 723.7,196.7 Z" fill="#654321" />
-                  <path d="M 724.3,197.3 L 725,195.3 L 724,196.7 Z" fill="#654321" />
-                  <circle cx={723.7} cy="199.7" r="0.7" fill="#2f2f2f" />
-                  <circle cx={723.9} cy="199.5" r="0.3" fill="#ffffff" />
-                  <rect x={717} y="208" width="1.3" height="4" fill="#654321" />
-                  <rect x={719.7} y="208" width="1.3" height="4" fill="#7a5230" />
-                  <rect x={711.7} y="208" width="1.3" height="4" fill="#654321" />
-                  <rect x={714.3} y="208" width="1.3" height="4" fill="#7a5230" />
-                  <rect x={717} y="211.5" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x={719.7} y="211.5" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x={711.7} y="211.5" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x={714.3} y="211.5" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <path d={`M 708.3,203 Q 706.3,204.7 705.7,207.3`} stroke="#4a3520" strokeWidth="1.3" fill="none" />
-                  <path d="M 722.3,198 Q 721,198.7 719.7,200" stroke="#4a3520" strokeWidth="1" fill="none" />
-                </g>
               </g>
 
-              {/* Cows grazing in groups - 2/3 scale, facing each other */}
+              {/* Cows - Minecraft blocky style, dir: 1=face left, -1=face right */}
               <g>
-                {/* Cow group 1: mother+calf near x=105 facing same direction */}
                 {[
-                  {x: 100, y: 2, scale: 1},
-                  {x: 118, y: 3, scale: 0.7},
+                  {x: 100, dir: 1, y: 2, s: 1},
+                  {x: 118, dir: 1, y: 3, s: 0.7},
+                  {x: 410, dir: 1, y: -3, s: 1},
+                  {x: 440, dir: -1, y: -2, s: 1},
+                  {x: 760, dir: 1, y: -1, s: 1},
                 ].map((c, i) => (
-                  <g key={`cow-group1-${i}`} transform={`translate(0, ${c.y}) scale(${c.scale})`} className="animal-cow" opacity="1" style={{animationDelay: `${i * 0.5}s`}}>
-                    <g transform={`scale(${1/c.scale}) translate(0,${c.y * (1 - 1/c.scale)})`}>
-                      <rect x={c.x / c.scale - 5.3} y="201.3" width="10.7" height="5.3" rx="1.3" fill="#f5f5f5" />
-                      <ellipse cx={c.x / c.scale} cy="206.7" rx="2" ry="1.3" fill="#ffb6c1" />
-                      <ellipse cx={c.x / c.scale - 3.3} cy="202.7" rx="1.7" ry="1.3" fill="#2f2f2f" />
-                      <ellipse cx={c.x / c.scale + 1.3} cy="202" rx="2" ry="1.7" fill="#2f2f2f" />
-                      <rect x={c.x / c.scale - 6} y="199.3" width="2" height="3.3" rx="0.7" fill="#f5f5f5" />
-                      <ellipse cx={c.x / c.scale - 6.7} cy="200" rx="2.3" ry="2.7" fill="#f5f5f5" />
-                      <ellipse cx={c.x / c.scale - 7.3} cy="199.3" rx="1" ry="1" fill="#2f2f2f" />
-                      <ellipse cx={c.x / c.scale - 8} cy="201.3" rx="1.3" ry="1.7" fill="#ffb6c1" />
-                      <circle cx={c.x / c.scale - 6.7} cy="199.3" r="0.7" fill="#2f2f2f" />
-                      <circle cx={c.x / c.scale - 6.5} cy="199.1" r="0.3" fill="#ffffff" />
-                      <path d={`M ${c.x / c.scale - 7.3},197.3 Q ${c.x / c.scale - 8},196 ${c.x / c.scale - 8.7},195.3`} stroke="#8a7a6a" strokeWidth="0.8" fill="none" />
-                      <path d={`M ${c.x / c.scale - 6},197.3 Q ${c.x / c.scale - 5.3},196 ${c.x / c.scale - 4.7},195.3`} stroke="#8a7a6a" strokeWidth="0.8" fill="none" />
-                      <rect x={c.x / c.scale - 3.3} y="207" width="1.3" height="4.7" rx="0.7" fill="#e8e8e8" />
-                      <rect x={c.x / c.scale - 0.7} y="207" width="1.3" height="4.7" rx="0.7" fill="#e8e8e8" />
-                      <rect x={c.x / c.scale + 1.3} y="207" width="1.3" height="4.7" rx="0.7" fill="#e8e8e8" />
-                      <rect x={c.x / c.scale + 4} y="207" width="1.3" height="4.7" rx="0.7" fill="#e8e8e8" />
-                      <rect x={c.x / c.scale - 3.3} y="211.3" width="1.3" height="0.7" fill="#2f2f2f" />
-                      <rect x={c.x / c.scale - 0.7} y="211.3" width="1.3" height="0.7" fill="#2f2f2f" />
-                      <rect x={c.x / c.scale + 1.3} y="211.3" width="1.3" height="0.7" fill="#2f2f2f" />
-                      <rect x={c.x / c.scale + 4} y="211.3" width="1.3" height="0.7" fill="#2f2f2f" />
-                      <path d={`M ${c.x / c.scale + 5.3},202.7 L ${c.x / c.scale + 6.7},207`} stroke="#f5f5f5" strokeWidth="1" />
-                      <ellipse cx={c.x / c.scale + 6.7} cy="207.7" rx="1" ry="1.3" fill="#2f2f2f" />
-                    </g>
+                  <g key={`cow-${i}`} transform={`translate(${c.x - c.x * c.s}, ${c.y + (1 - c.s) * 208}) scale(${c.s})`} className="animal-cow" opacity="1" style={{animationDelay: `${i * 0.5}s`}}>
+                    {/* Body block - white */}
+                    <rect x={c.x - 5} y="201" width="11" height="7" fill="#f5f5f5" />
+                    {/* Black spots on body */}
+                    <rect x={c.x - 3.5} y="202" width="3" height="2.5" fill="#2f2f2f" />
+                    <rect x={c.x + 1} y="201.5" width="3.5" height="2.5" fill="#2f2f2f" />
+                    {/* Neck */}
+                    <rect x={c.x + (c.dir > 0 ? -7 : 5)} y="199" width="2.5" height="3" fill="#f5f5f5" />
+                    {/* Head block */}
+                    <rect x={c.x + (c.dir > 0 ? -11 : 5.5)} y="197" width="5" height="5" fill="#f5f5f5" />
+                    {/* Face spot */}
+                    <rect x={c.x + (c.dir > 0 ? -10.5 : 6)} y="197.5" width="2.5" height="2" fill="#2f2f2f" />
+                    {/* Snout/muzzle - pink */}
+                    <rect x={c.x + (c.dir > 0 ? -12.5 : 9)} y="200" width="2.5" height="2" fill="#ffb6c1" />
+                    {/* Nostrils */}
+                    <rect x={c.x + (c.dir > 0 ? -12 : 9.5)} y="200.8" width="0.5" height="0.5" fill="#4a3520" />
+                    <rect x={c.x + (c.dir > 0 ? -11 : 10.5)} y="200.8" width="0.5" height="0.5" fill="#4a3520" />
+                    {/* Eye */}
+                    <rect x={c.x + (c.dir > 0 ? -8.5 : 7.5)} y="198.5" width="1" height="1" fill="#2f2f2f" />
+                    <rect x={c.x + (c.dir > 0 ? -8.3 : 7.7)} y="198.5" width="0.4" height="0.5" fill="#ffffff" />
+                    {/* Horns */}
+                    <rect x={c.x + (c.dir > 0 ? -10 : 6.5)} y="195.5" width="0.8" height="2" fill="#8a7a6a" />
+                    <rect x={c.x + (c.dir > 0 ? -8 : 8.5)} y="195.5" width="0.8" height="2" fill="#8a7a6a" />
+                    {/* Udder - pink, flush under body */}
+                    <rect x={c.x - 1.5} y="207" width="3" height="1.5" fill="#ffb6c1" />
+                    {/* Legs - overlap body by 0.5px */}
+                    <rect x={c.x - 4} y="207.5" width="1.3" height="4" fill="#e8e8e8" />
+                    <rect x={c.x - 2} y="207.5" width="1.3" height="4" fill="#e8e8e8" />
+                    <rect x={c.x + 1.5} y="207.5" width="1.3" height="4" fill="#e8e8e8" />
+                    <rect x={c.x + 3.5} y="207.5" width="1.3" height="4" fill="#e8e8e8" />
+                    {/* Hooves */}
+                    <rect x={c.x - 4} y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                    <rect x={c.x - 2} y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                    <rect x={c.x + 1.5} y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                    <rect x={c.x + 3.5} y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                    {/* Tail */}
+                    <rect x={c.x + (c.dir > 0 ? 5 : -6.5)} y="202" width="1" height="5" fill="#2f2f2f" />
                   </g>
                 ))}
-                {/* Cow pair facing each other near x=410 and x=430 */}
-                {[
-                  {x: 410, y: -3, dir: 1},
-                  {x: 440, y: -2, dir: -1},
-                ].map((c, i) => (
-                  <g key={`cow-pair-${i}`} transform={`translate(0, ${c.y})`} className="animal-cow" opacity="1" style={{animationDelay: `${(i + 2) * 0.5}s`}}>
-                    <rect x={c.x - 5.3} y="201.3" width="10.7" height="5.3" rx="1.3" fill="#f5f5f5" />
-                    <ellipse cx={c.x} cy="206.7" rx="2" ry="1.3" fill="#ffb6c1" />
-                    <ellipse cx={c.x - 3.3} cy="202.7" rx="1.7" ry="1.3" fill="#2f2f2f" />
-                    <ellipse cx={c.x + 1.3} cy="202" rx="2" ry="1.7" fill="#2f2f2f" />
-                    <rect x={c.x + (c.dir > 0 ? -6 : 4)} y="199.3" width="2" height="3.3" rx="0.7" fill="#f5f5f5" />
-                    <ellipse cx={c.x + (c.dir > 0 ? -6.7 : 6.7)} cy="200" rx="2.3" ry="2.7" fill="#f5f5f5" />
-                    <ellipse cx={c.x + (c.dir > 0 ? -7.3 : 7.3)} cy="199.3" rx="1" ry="1" fill="#2f2f2f" />
-                    <ellipse cx={c.x + (c.dir > 0 ? -8 : 8)} cy="201.3" rx="1.3" ry="1.7" fill="#ffb6c1" />
-                    <circle cx={c.x + (c.dir > 0 ? -6.7 : 6.7)} cy="199.3" r="0.7" fill="#2f2f2f" />
-                    <circle cx={c.x + (c.dir > 0 ? -6.5 : 6.5)} cy="199.1" r="0.3" fill="#ffffff" />
-                    <rect x={c.x - 3.3} y="207" width="1.3" height="4.7" rx="0.7" fill="#e8e8e8" />
-                    <rect x={c.x - 0.7} y="207" width="1.3" height="4.7" rx="0.7" fill="#e8e8e8" />
-                    <rect x={c.x + 1.3} y="207" width="1.3" height="4.7" rx="0.7" fill="#e8e8e8" />
-                    <rect x={c.x + 4} y="207" width="1.3" height="4.7" rx="0.7" fill="#e8e8e8" />
-                    <rect x={c.x - 3.3} y="211.3" width="1.3" height="0.7" fill="#2f2f2f" />
-                    <rect x={c.x - 0.7} y="211.3" width="1.3" height="0.7" fill="#2f2f2f" />
-                    <rect x={c.x + 1.3} y="211.3" width="1.3" height="0.7" fill="#2f2f2f" />
-                    <rect x={c.x + 4} y="211.3" width="1.3" height="0.7" fill="#2f2f2f" />
-                    <path d={`M ${c.x + (c.dir > 0 ? 5.3 : -5.3)},202.7 L ${c.x + (c.dir > 0 ? 6.7 : -6.7)},207`} stroke="#f5f5f5" strokeWidth="1" />
-                    <ellipse cx={c.x + (c.dir > 0 ? 6.7 : -6.7)} cy="207.7" rx="1" ry="1.3" fill="#2f2f2f" />
-                  </g>
-                ))}
-                {/* Solo cow near x=760 grazing, looking at nearby horse */}
-                <g transform="translate(0, -1)" className="animal-cow" opacity="1" style={{animationDelay: '2s'}}>
-                  <rect x={754.7} y="201.3" width="10.7" height="5.3" rx="1.3" fill="#f5f5f5" />
-                  <ellipse cx={760} cy="206.7" rx="2" ry="1.3" fill="#ffb6c1" />
-                  <ellipse cx={756.7} cy="202.7" rx="1.7" ry="1.3" fill="#2f2f2f" />
-                  <ellipse cx={761.3} cy="202" rx="2" ry="1.7" fill="#2f2f2f" />
-                  <rect x={749} y="199.3" width="2" height="3.3" rx="0.7" fill="#f5f5f5" />
-                  <ellipse cx={748.3} cy="200" rx="2.3" ry="2.7" fill="#f5f5f5" />
-                  <ellipse cx={747.7} cy="199.3" rx="1" ry="1" fill="#2f2f2f" />
-                  <ellipse cx={747} cy="201.3" rx="1.3" ry="1.7" fill="#ffb6c1" />
-                  <circle cx={748.3} cy="199.3" r="0.7" fill="#2f2f2f" />
-                  <circle cx={748.5} cy="199.1" r="0.3" fill="#ffffff" />
-                  <rect x={756.7} y="207" width="1.3" height="4.7" rx="0.7" fill="#e8e8e8" />
-                  <rect x={759.3} y="207" width="1.3" height="4.7" rx="0.7" fill="#e8e8e8" />
-                  <rect x={761.3} y="207" width="1.3" height="4.7" rx="0.7" fill="#e8e8e8" />
-                  <rect x={764} y="207" width="1.3" height="4.7" rx="0.7" fill="#e8e8e8" />
-                  <rect x={756.7} y="211.3" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x={759.3} y="211.3" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x={761.3} y="211.3" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x={764} y="211.3" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <path d={`M 765.3,202.7 L 766.7,207`} stroke="#f5f5f5" strokeWidth="1" />
-                  <ellipse cx={766.7} cy="207.7" rx="1" ry="1.3" fill="#2f2f2f" />
-                </g>
               </g>
 
-              {/* Sheep in flocks - 2/3 scale, huddled together, aware of each other */}
+              {/* Sheep - Minecraft blocky style, dir: 1=face left, -1=face right */}
               <g>
-                {/* Flock 1: 3 sheep huddled near x=75 */}
                 {[
-                  {x: 68, y: -2, dir: 1},
-                  {x: 78, y: -1, dir: 1},
-                  {x: 86, y: -3, dir: -1},
+                  {x: 68, dir: 1, y: -2},
+                  {x: 78, dir: 1, y: -1},
+                  {x: 86, dir: -1, y: -3},
+                  {x: 308, dir: 1, y: 3},
+                  {x: 497, dir: 1, y: 0},
+                  {x: 513, dir: -1, y: 1},
                 ].map((s, i) => (
-                  <g key={`sheep-flock1-${i}`} transform={`translate(0, ${s.y})`} className="animal-sheep" opacity="1" style={{animationDelay: `${i * 0.4}s`}}>
-                    <circle cx={s.x} cy="206" r="3" fill="#f5f5f5" />
-                    <circle cx={s.x - 2 * s.dir} cy="205.3" r="2.3" fill="#f5f5f5" />
-                    <circle cx={s.x + 2 * s.dir} cy="205.3" r="2.3" fill="#f5f5f5" />
-                    <circle cx={s.x - 0.7 * s.dir} cy="207.3" r="2" fill="#f5f5f5" />
-                    <circle cx={s.x + 1.3 * s.dir} cy="207.3" r="2" fill="#f5f5f5" />
-                    <circle cx={s.x} cy="204" r="2" fill="#f5f5f5" />
-                    <circle cx={s.x - 1.3 * s.dir} cy="204.7" r="1" fill="#e8e8e8" />
-                    <circle cx={s.x + 0.7 * s.dir} cy="205.7" r="1" fill="#e8e8e8" />
-                    <ellipse cx={s.x - 4 * s.dir} cy="204.7" rx="1.7" ry="2" fill="#2f2f2f" />
-                    <ellipse cx={s.x - 4.7 * s.dir} cy="203.3" rx="0.7" ry="1" fill="#2f2f2f" />
-                    <ellipse cx={s.x - 3.3 * s.dir} cy="203.3" rx="0.7" ry="1" fill="#2f2f2f" />
-                    <circle cx={s.x - 4.3 * s.dir} cy="204.7" r="0.4" fill="#ffffff" />
-                    <circle cx={s.x - 4.3 * s.dir} cy="204.7" r="0.2" fill="#2f2f2f" />
-                    <ellipse cx={s.x - 5 * s.dir} cy="205.3" rx="0.5" ry="0.4" fill="#1a1a1a" />
-                    <rect x={s.x - 2.7} y="208.7" width="1" height="2.7" rx="0.3" fill="#2f2f2f" />
-                    <rect x={s.x - 0.7} y="208.7" width="1" height="2.7" rx="0.3" fill="#2f2f2f" />
-                    <rect x={s.x + 0.7} y="208.7" width="1" height="2.7" rx="0.3" fill="#2f2f2f" />
-                    <rect x={s.x + 2.7} y="208.7" width="1" height="2.7" rx="0.3" fill="#2f2f2f" />
-                    <circle cx={s.x + 3.3 * s.dir} cy="206.7" r="1" fill="#f5f5f5" />
+                  <g key={`sheep-${i}`} transform={`translate(0, ${s.y})`} className="animal-sheep" opacity="1" style={{animationDelay: `${i * 0.4}s`}}>
+                    {/* Woolly body block - slightly oversized for fluffy look */}
+                    <rect x={s.x - 5} y="203" width="10" height="6" fill="#f5f5f5" />
+                    {/* Wool texture highlights */}
+                    <rect x={s.x - 4} y="203.5" width="2" height="1.5" fill="#e8e8e8" />
+                    <rect x={s.x + 1} y="204" width="2" height="1.5" fill="#e8e8e8" />
+                    <rect x={s.x - 2} y="206" width="2" height="1.5" fill="#e8e8e8" />
+                    {/* Dark face */}
+                    <rect x={s.x + (s.dir > 0 ? -8 : 4)} y="203.5" width="3.5" height="4" fill="#2f2f2f" />
+                    {/* Ears */}
+                    <rect x={s.x + (s.dir > 0 ? -8.5 : 4)} y="203" width="1.2" height="1.5" fill="#2f2f2f" />
+                    <rect x={s.x + (s.dir > 0 ? -5.5 : 6.5)} y="203" width="1.2" height="1.5" fill="#2f2f2f" />
+                    {/* Eye */}
+                    <rect x={s.x + (s.dir > 0 ? -7 : 5.5)} y="204.5" width="0.8" height="0.8" fill="#ffffff" />
+                    <rect x={s.x + (s.dir > 0 ? -6.8 : 5.7)} y="204.5" width="0.3" height="0.4" fill="#1a1a1a" />
+                    {/* Nose */}
+                    <rect x={s.x + (s.dir > 0 ? -8.5 : 7)} y="206" width="1" height="0.7" fill="#1a1a1a" />
+                    {/* Legs - dark, flush with body */}
+                    <rect x={s.x - 3.5} y="208.5" width="1" height="3" fill="#2f2f2f" />
+                    <rect x={s.x - 1.5} y="208.5" width="1" height="3" fill="#2f2f2f" />
+                    <rect x={s.x + 1} y="208.5" width="1" height="3" fill="#2f2f2f" />
+                    <rect x={s.x + 3} y="208.5" width="1" height="3" fill="#2f2f2f" />
+                    {/* Tail puff */}
+                    <rect x={s.x + (s.dir > 0 ? 4.5 : -5.5)} y="204" width="1.5" height="2" fill="#f5f5f5" />
                   </g>
                 ))}
-                {/* Flock 2: 2 sheep near x=500 facing each other */}
-                {[
-                  {x: 497, y: 0, dir: 1},
-                  {x: 513, y: 1, dir: -1},
-                ].map((s, i) => (
-                  <g key={`sheep-flock2-${i}`} transform={`translate(0, ${s.y})`} className="animal-sheep" opacity="1" style={{animationDelay: `${(i + 3) * 0.4}s`}}>
-                    <circle cx={s.x} cy="206" r="3" fill="#f5f5f5" />
-                    <circle cx={s.x - 2 * s.dir} cy="205.3" r="2.3" fill="#f5f5f5" />
-                    <circle cx={s.x + 2 * s.dir} cy="205.3" r="2.3" fill="#f5f5f5" />
-                    <circle cx={s.x} cy="204" r="2" fill="#f5f5f5" />
-                    <circle cx={s.x - 1.3 * s.dir} cy="204.7" r="1" fill="#e8e8e8" />
-                    <ellipse cx={s.x - 4 * s.dir} cy="204.7" rx="1.7" ry="2" fill="#2f2f2f" />
-                    <ellipse cx={s.x - 4.7 * s.dir} cy="203.3" rx="0.7" ry="1" fill="#2f2f2f" />
-                    <ellipse cx={s.x - 3.3 * s.dir} cy="203.3" rx="0.7" ry="1" fill="#2f2f2f" />
-                    <circle cx={s.x - 4.3 * s.dir} cy="204.7" r="0.4" fill="#ffffff" />
-                    <circle cx={s.x - 4.3 * s.dir} cy="204.7" r="0.2" fill="#2f2f2f" />
-                    <ellipse cx={s.x - 5 * s.dir} cy="205.3" rx="0.5" ry="0.4" fill="#1a1a1a" />
-                    <rect x={s.x - 2.7} y="208.7" width="1" height="2.7" rx="0.3" fill="#2f2f2f" />
-                    <rect x={s.x - 0.7} y="208.7" width="1" height="2.7" rx="0.3" fill="#2f2f2f" />
-                    <rect x={s.x + 0.7} y="208.7" width="1" height="2.7" rx="0.3" fill="#2f2f2f" />
-                    <rect x={s.x + 2.7} y="208.7" width="1" height="2.7" rx="0.3" fill="#2f2f2f" />
-                    <circle cx={s.x + 3.3 * s.dir} cy="206.7" r="1" fill="#f5f5f5" />
-                  </g>
-                ))}
-                {/* Solo sheep near x=308 looking toward flock */}
-                <g transform="translate(0, 3)" className="animal-sheep" opacity="1" style={{animationDelay: '2s'}}>
-                  <circle cx={308} cy="206" r="3" fill="#f5f5f5" />
-                  <circle cx={306} cy="205.3" r="2.3" fill="#f5f5f5" />
-                  <circle cx={310} cy="205.3" r="2.3" fill="#f5f5f5" />
-                  <circle cx={308} cy="204" r="2" fill="#f5f5f5" />
-                  <ellipse cx={304} cy="204.7" rx="1.7" ry="2" fill="#2f2f2f" />
-                  <ellipse cx={303.3} cy="203.3" rx="0.7" ry="1" fill="#2f2f2f" />
-                  <ellipse cx={304.7} cy="203.3" rx="0.7" ry="1" fill="#2f2f2f" />
-                  <circle cx={303.7} cy="204.7" r="0.4" fill="#ffffff" />
-                  <circle cx={303.7} cy="204.7" r="0.2" fill="#2f2f2f" />
-                  <ellipse cx={303} cy="205.3" rx="0.5" ry="0.4" fill="#1a1a1a" />
-                  <rect x={305.3} y="208.7" width="1" height="2.7" rx="0.3" fill="#2f2f2f" />
-                  <rect x={307.3} y="208.7" width="1" height="2.7" rx="0.3" fill="#2f2f2f" />
-                  <rect x={309} y="208.7" width="1" height="2.7" rx="0.3" fill="#2f2f2f" />
-                  <rect x={310.7} y="208.7" width="1" height="2.7" rx="0.3" fill="#2f2f2f" />
-                  <circle cx={311.3} cy="206.7" r="1" fill="#f5f5f5" />
-                </g>
               </g>
 
-              {/* Chickens pecking in groups - 2/3 scale, scratching together */}
+              {/* Chickens - Minecraft blocky style, dir: 1=face left, -1=face right */}
               <g>
                 {[
                   {x: 8, y: 1, dir: 1},
@@ -892,93 +783,122 @@ export function ProgressiveSkyline() {
                   {x: 795, y: 0, dir: -1},
                 ].map((ch, i) => (
                   <g key={`chicken-${i}`} transform={`translate(0, ${ch.y})`} className="animal-chicken" opacity="1" style={{animationDelay: `${i * 0.15}s`}}>
-                    <ellipse cx={ch.x} cy="209" rx="2.3" ry="2" fill="#d4a574" />
-                    <ellipse cx={ch.x + 0.3 * ch.dir} cy="209" rx="1.3" ry="1.3" fill="#b8946a" />
-                    <path d={`M ${ch.x + 2 * ch.dir},208.3 Q ${ch.x + 3 * ch.dir},207 ${ch.x + 3.3 * ch.dir},205.7 Q ${ch.x + 2.7 * ch.dir},206.3 ${ch.x + 2.3 * ch.dir},207.7 Z`} fill="#8b6f47" />
-                    <rect x={ch.x - 1.7 * ch.dir - 0.5} y="207.3" width="1" height="1.3" rx="0.3" fill="#d4a574" />
-                    <circle cx={ch.x - 1.7 * ch.dir} cy="207" r="1.3" fill="#d4a574" />
-                    <path d={`M ${ch.x - 2 * ch.dir},205.7 L ${ch.x - 1.9 * ch.dir},204.7 L ${ch.x - 1.5 * ch.dir},205.2 L ${ch.x - 1.3 * ch.dir},204.3 L ${ch.x - 1.2 * ch.dir},205 L ${ch.x - 1 * ch.dir},205.7 Z`} fill="#cc3333" />
-                    <ellipse cx={ch.x - 2 * ch.dir} cy="207.7" rx="0.4" ry="0.5" fill="#cc3333" />
-                    <path d={`M ${ch.x - 2.7 * ch.dir},207 L ${ch.x - 3.3 * ch.dir},207 L ${ch.x - 3 * ch.dir},207.3 Z`} fill="#ffd700" />
-                    <circle cx={ch.x - 1.7 * ch.dir} cy="206.5" r="0.3" fill="#2f2f2f" />
-                    <circle cx={ch.x - 1.5 * ch.dir} cy="206.3" r="0.1" fill="#ffffff" />
-                    <path d={`M ${ch.x - 0.7},211.3 L ${ch.x - 0.7},212 L ${ch.x - 1.3},212.5`} stroke="#ffd700" strokeWidth="0.7" fill="none" />
-                    <path d={`M ${ch.x + 0.7},211.3 L ${ch.x + 0.7},212 L ${ch.x + 1.3},212.5`} stroke="#ffd700" strokeWidth="0.7" fill="none" />
+                    {/* Body block */}
+                    <rect x={ch.x - 2.5} y="207.5" width="5" height="3.5" fill="#d4a574" />
+                    {/* Wing marking */}
+                    <rect x={ch.x + (ch.dir > 0 ? 0 : -2)} y="208" width="2" height="2" fill="#b8946a" />
+                    {/* Tail feathers - angled block */}
+                    <rect x={ch.x + (ch.dir > 0 ? 2 : -4)} y="206" width="2" height="3" fill="#8b6f47" />
+                    {/* Head block */}
+                    <rect x={ch.x + (ch.dir > 0 ? -4 : 2)} y="206" width="2.5" height="2.5" fill="#d4a574" />
+                    {/* Comb - red on top of head */}
+                    <rect x={ch.x + (ch.dir > 0 ? -3.5 : 2.5)} y="204.5" width="1.5" height="1.8" fill="#cc3333" />
+                    {/* Wattle - red under beak */}
+                    <rect x={ch.x + (ch.dir > 0 ? -3.5 : 2.5)} y="208" width="0.8" height="0.8" fill="#cc3333" />
+                    {/* Beak - yellow */}
+                    <rect x={ch.x + (ch.dir > 0 ? -5 : 4)} y="207" width="1.5" height="0.8" fill="#ffd700" />
+                    {/* Eye */}
+                    <rect x={ch.x + (ch.dir > 0 ? -3 : 3)} y="206.5" width="0.5" height="0.5" fill="#2f2f2f" />
+                    {/* Legs - thin yellow */}
+                    <rect x={ch.x - 1} y="210.5" width="0.7" height="2" fill="#e8a020" />
+                    <rect x={ch.x + 0.7} y="210.5" width="0.7" height="2" fill="#e8a020" />
+                    {/* Feet */}
+                    <rect x={ch.x - 1.5} y="212" width="1.5" height="0.5" fill="#e8a020" />
+                    <rect x={ch.x + 0.5} y="212" width="1.5" height="0.5" fill="#e8a020" />
                   </g>
                 ))}
               </g>
 
-              {/* FOREGROUND: Drinking animals at pond - rendered last so they appear in front */}
+              {/* FOREGROUND: Drinking animals at pond - Minecraft blocky style */}
               <g>
-                {/* Cow drinking at the pond - 2/3 scale, head dipped to water */}
+                {/* Cow drinking at pond - head lowered toward water */}
                 <g className="animal-drinking" style={{animationDelay: '0s', animationDuration: '12s'}}>
-                  <ellipse cx={148} cy="209" rx="5.3" ry="3.3" fill="#f5f5f5" />
-                  <ellipse cx={146} cy="208.3" rx="1.7" ry="1.3" fill="#2f2f2f" />
-                  <ellipse cx={150} cy="207.7" rx="2" ry="1.7" fill="#2f2f2f" />
-                  <ellipse cx={148} cy="212.3" rx="2" ry="1.3" fill="#ffb6c1" />
-                  <path d={`M 143.3,208.3 L 140,213 L 142,213.7 L 144.7,209.3 Z`} fill="#f5f5f5" />
-                  <ellipse cx={139} cy="213.7" rx="2.3" ry="2" fill="#f5f5f5" />
-                  <ellipse cx={138.3} cy="213" rx="1" ry="1" fill="#2f2f2f" />
-                  <ellipse cx={137.3} cy="214.7" rx="1.3" ry="1.2" fill="#ffb6c1" />
-                  <ellipse cx={136.3} cy="216" rx="2" ry="0.5" fill="#6a9aba" opacity="0.5" />
-                  <ellipse cx={136.3} cy="216" rx="3.3" ry="0.7" fill="#6a9aba" opacity="0.2" />
-                  <ellipse cx={137.3} cy="211.7" rx="1" ry="0.7" fill="#e8e8e8" transform="rotate(-30 137.3 211.7)" />
-                  <ellipse cx={140} cy="211.7" rx="1" ry="0.7" fill="#e8e8e8" transform="rotate(30 140 211.7)" />
-                  <circle cx={139} cy="213" r="0.5" fill="#2f2f2f" />
-                  <circle cx={139.1} cy="212.9" r="0.2" fill="#ffffff" />
-                  <path d={`M 137.3,211 Q 136.7,210 136,209.7`} stroke="#8a7a6a" strokeWidth="0.7" fill="none" />
-                  <path d={`M 139.3,211 Q 140,210 140.7,209.7`} stroke="#8a7a6a" strokeWidth="0.7" fill="none" />
-                  <rect x={145.3} y="212.3" width="1.3" height="3.3" rx="0.5" fill="#e8e8e8" />
-                  <rect x={148} y="212.3" width="1.3" height="3.3" rx="0.5" fill="#e8e8e8" />
-                  <rect x={143.3} y="212.3" width="1.3" height="3.3" rx="0.5" fill="#e8e8e8" />
-                  <rect x={150.7} y="212.3" width="1.3" height="3.3" rx="0.5" fill="#e8e8e8" />
-                  <rect x={145.3} y="215.3" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x={148} y="215.3" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x={143.3} y="215.3" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x={150.7} y="215.3" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <path d={`M 152.7,207.7 Q 154,209.7 153.3,212.3`} stroke="#f5f5f5" strokeWidth="0.8" fill="none" />
-                  <ellipse cx={153.3} cy="213" rx="0.7" ry="1" fill="#2f2f2f" />
+                  {/* Body block */}
+                  <rect x={143} y="207" width="11" height="7" fill="#f5f5f5" />
+                  {/* Black spots */}
+                  <rect x={144.5} y="208" width="3" height="2.5" fill="#2f2f2f" />
+                  <rect x={149} y="207.5" width="3.5" height="2.5" fill="#2f2f2f" />
+                  {/* Neck - angled down toward water */}
+                  <rect x={139} y="210" width="4.5" height="3" fill="#f5f5f5" />
+                  {/* Head - lowered to water level */}
+                  <rect x={135} y="211" width="5" height="4.5" fill="#f5f5f5" />
+                  {/* Face spot */}
+                  <rect x={135.5} y="211.5" width="2" height="1.5" fill="#2f2f2f" />
+                  {/* Snout - pink */}
+                  <rect x={133.5} y="213.5" width="2" height="2" fill="#ffb6c1" />
+                  {/* Eye */}
+                  <rect x={137.5} y="212" width="1" height="1" fill="#2f2f2f" />
+                  {/* Water ripple */}
+                  <rect x={133} y="216" width="6" height="0.5" fill="#6a9aba" opacity="0.4" />
+                  <rect x={132} y="216.5" width="8" height="0.5" fill="#6a9aba" opacity="0.2" />
+                  {/* Udder */}
+                  <rect x={147} y="213" width="3" height="1.5" fill="#ffb6c1" />
+                  {/* Legs */}
+                  <rect x={144} y="213.5" width="1.3" height="3" fill="#e8e8e8" />
+                  <rect x={146} y="213.5" width="1.3" height="3" fill="#e8e8e8" />
+                  <rect x={150} y="213.5" width="1.3" height="3" fill="#e8e8e8" />
+                  <rect x={152} y="213.5" width="1.3" height="3" fill="#e8e8e8" />
+                  {/* Hooves */}
+                  <rect x={144} y="216" width="1.3" height="0.7" fill="#2f2f2f" />
+                  <rect x={146} y="216" width="1.3" height="0.7" fill="#2f2f2f" />
+                  <rect x={150} y="216" width="1.3" height="0.7" fill="#2f2f2f" />
+                  <rect x={152} y="216" width="1.3" height="0.7" fill="#2f2f2f" />
+                  {/* Tail */}
+                  <rect x={153.5} y="208" width="1" height="5" fill="#2f2f2f" />
                 </g>
 
-                {/* Horse drinking at opposite side - 2/3 scale */}
+                {/* Horse drinking at opposite side - head lowered */}
                 <g className="animal-drinking" style={{animationDelay: '4s', animationDuration: '10s'}}>
-                  <ellipse cx={115} cy="207" rx="6.7" ry="4" fill="#654321" />
-                  <ellipse cx={119} cy="207" rx="3.3" ry="4" fill="#7a5230" />
-                  <path d={`M 120,205.7 L 123.3,211 L 121.3,212.3 L 118.7,207 Z`} fill="#654321" />
-                  <ellipse cx={122} cy="212.3" rx="2.7" ry="1.7" fill="#5a3a1a" />
-                  <ellipse cx={124} cy="213" rx="1.3" ry="1" fill="#4a2a0a" />
-                  <circle cx={124.7} cy="212.7" r="0.3" fill="#2f2f2f" />
-                  <circle cx={124.7} cy="213.3" r="0.3" fill="#2f2f2f" />
-                  <ellipse cx={124.7} cy="214.3" rx="2" ry="0.5" fill="#6a9aba" opacity="0.5" />
-                  <ellipse cx={124.7} cy="214.3" rx="3.3" ry="0.7" fill="#6a9aba" opacity="0.2" />
-                  <circle cx={121.3} cy="211.7" r="0.4" fill="#2f2f2f" />
-                  <circle cx={121.5} cy="211.5" r="0.13" fill="#ffffff" />
-                  <path d="M 120.7,210.7 L 120,209.3 L 121.3,210 Z" fill="#5a3a1a" />
-                  <path d="M 122,210.7 L 122.7,209.3 L 121.7,210 Z" fill="#5a3a1a" />
-                  <path d={`M 118.7,204 Q 120,203.3 121.3,204.7`} stroke="#3a2a1a" strokeWidth="1" fill="none" />
-                  <rect x={110.7} y="211" width="1.3" height="4" rx="0.5" fill="#654321" />
-                  <rect x={113.3} y="211" width="1.3" height="4" rx="0.5" fill="#654321" />
-                  <rect x={116} y="211" width="1.3" height="4" rx="0.5" fill="#654321" />
-                  <rect x={118.7} y="211" width="1.3" height="4" rx="0.5" fill="#654321" />
-                  <rect x={110.7} y="214.7" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x={113.3} y="214.7" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x={116} y="214.7" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x={118.7} y="214.7" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <path d={`M 108.7,205.7 Q 106.7,208 107.3,211`} stroke="#3a2a1a" strokeWidth="1" fill="none" />
+                  {/* Body block */}
+                  <rect x={109} y="204" width="12" height="7" fill="#654321" />
+                  {/* Chest */}
+                  <rect x={117} y="204" width="4" height="7" fill="#7a5230" />
+                  {/* Neck - angled down to water */}
+                  <rect x={120} y="208" width="3" height="5" fill="#654321" />
+                  {/* Head - lowered */}
+                  <rect x={120} y="211" width="6" height="4" fill="#654321" />
+                  {/* Muzzle */}
+                  <rect x={124.5} y="213" width="2" height="2" fill="#7a5230" />
+                  {/* Eye */}
+                  <rect x={123} y="212" width="1" height="1" fill="#2f2f2f" />
+                  {/* Nostril */}
+                  <rect x={125.5} y="214" width="0.5" height="0.5" fill="#3a2a1a" />
+                  {/* Water ripple */}
+                  <rect x={123} y="215.5" width="5" height="0.5" fill="#6a9aba" opacity="0.4" />
+                  <rect x={122} y="216" width="7" height="0.5" fill="#6a9aba" opacity="0.2" />
+                  {/* Legs */}
+                  <rect x={110} y="210.5" width="1.3" height="4.5" fill="#654321" />
+                  <rect x={112.5} y="210.5" width="1.3" height="4.5" fill="#654321" />
+                  <rect x={115} y="210.5" width="1.3" height="4.5" fill="#654321" />
+                  <rect x={117.5} y="210.5" width="1.3" height="4.5" fill="#654321" />
+                  {/* Hooves */}
+                  <rect x={110} y="214.5" width="1.3" height="0.7" fill="#2f2f2f" />
+                  <rect x={112.5} y="214.5" width="1.3" height="0.7" fill="#2f2f2f" />
+                  <rect x={115} y="214.5" width="1.3" height="0.7" fill="#2f2f2f" />
+                  <rect x={117.5} y="214.5" width="1.3" height="0.7" fill="#2f2f2f" />
+                  {/* Tail */}
+                  <rect x={108} y="205" width="1.5" height="5" fill="#4a3520" />
+                  {/* Mane */}
+                  <rect x={120} y="208" width="1" height="4" fill="#4a3520" />
                 </g>
 
-                {/* Chickens bathing in shallow water - 2/3 scale */}
+                {/* Chickens bathing in shallow water - Minecraft blocky style */}
                 {[126, 131, 135].map((cx, ci) => (
                   <g key={`chicken-bath-${ci}`} className="chicken-bathing" style={{animationDelay: `${ci * 1.2}s`}}>
-                    <ellipse cx={cx} cy="217" rx="2" ry="1.3" fill="#d4a574" />
-                    <path d={`M ${cx-0.7},216.3 Q ${cx-1.3},215 ${cx},215.3 Q ${cx+1.3},215 ${cx+0.7},216.3`} fill="#b8946a" opacity="0.8" />
-                    <ellipse cx={cx} cy="217.3" rx="3" ry="0.7" fill="#6a9aba" opacity="0.35" />
-                    <circle cx={cx-1.3} cy="216" r="1" fill="#d4a574" />
-                    <path d={`M ${cx-1.7},215.3 L ${cx-1.5},214.7 L ${cx-1.3},215 L ${cx-1.2},214.5 L ${cx-1},215.3 Z`} fill="#cc3333" />
-                    <path d={`M ${cx-2.3},216 L ${cx-2.8},216 L ${cx-2.5},216.3 Z`} fill="#ffd700" />
-                    <circle cx={cx-1.5} cy="215.7" r="0.2" fill="#2f2f2f" />
-                    <circle cx={cx+1.3} cy="215.3" r="0.3" fill="#6a9aba" opacity="0.5" />
-                    <circle cx={cx-0.7} cy="215" r="0.2" fill="#6a9aba" opacity="0.4" />
+                    {/* Body - partially submerged */}
+                    <rect x={cx - 2} y="216" width="4" height="2" fill="#d4a574" />
+                    {/* Water splash around body */}
+                    <rect x={cx - 3} y="217.5" width="6" height="0.5" fill="#6a9aba" opacity="0.35" />
+                    {/* Head poking up */}
+                    <rect x={cx - 3} y="214.5" width="2" height="2" fill="#d4a574" />
+                    {/* Comb */}
+                    <rect x={cx - 2.5} y="213.5" width="1.2" height="1.2" fill="#cc3333" />
+                    {/* Beak */}
+                    <rect x={cx - 4} y="215.5" width="1.2" height="0.6" fill="#ffd700" />
+                    {/* Eye */}
+                    <rect x={cx - 2.5} y="215" width="0.4" height="0.4" fill="#2f2f2f" />
+                    {/* Water droplets */}
+                    <rect x={cx + 1.5} y="215.5" width="0.5" height="0.5" fill="#6a9aba" opacity="0.5" />
                   </g>
                 ))}
               </g>
@@ -3375,113 +3295,115 @@ export function ProgressiveSkyline() {
                 <circle cx="4191" cy="173" r="1.5" fill="#5a5a4a" opacity="1" />
               </g>
 
-              {/* FARM ANIMALS - 2/3 scale, self-aware, matching opening biome */}
+              {/* FARM ANIMALS - Minecraft/voxel style, matching opening biome */}
 
-              {/* Horses in pairs - 2/3 scale, facing each other */}
+              {/* Horses - Minecraft blocky style */}
               <g>
                 {[
-                  {x: 3845, y: 1, dir: 1},
-                  {x: 3868, y: 2, dir: -1},
-                  {x: 4145, y: -2, dir: 1},
-                  {x: 4325, y: 3, dir: 1},
-                  {x: 4345, y: 2, dir: -1},
-                  {x: 4515, y: -1, dir: 1},
-                  {x: 4654, y: 2, dir: 1},
+                  {x: 3845, dir: -1, y: 1, color: '#654321', chest: '#7a5230'},
+                  {x: 3868, dir: 1, y: 2, color: '#8b6f47', chest: '#9a7a55'},
+                  {x: 4145, dir: -1, y: -2, color: '#654321', chest: '#7a5230'},
+                  {x: 4325, dir: -1, y: 3, color: '#4a3520', chest: '#5a3a25'},
+                  {x: 4345, dir: 1, y: 2, color: '#654321', chest: '#7a5230'},
+                  {x: 4515, dir: -1, y: -1, color: '#654321', chest: '#7a5230'},
+                  {x: 4654, dir: -1, y: 2, color: '#8b6f47', chest: '#9a7a55'},
                 ].map((h, i) => (
                   <g key={`horse-end-${i}`} transform={`translate(0, ${h.y})`} className="animal-horse" opacity="1" style={{animationDelay: `${i * 0.3}s`}}>
-                    <ellipse cx={h.x} cy="204" rx="6.7" ry="4" fill="#654321" />
-                    <ellipse cx={h.x + 4 * h.dir} cy="204" rx="3.3" ry="4" fill="#7a5230" />
-                    <path d={`M ${h.x + 5.3 * h.dir},202.7 L ${h.x + 7.3 * h.dir},200.7 L ${h.x + 6.7 * h.dir},204 Z`} fill="#654321" />
-                    <ellipse cx={h.x + 8.7 * h.dir} cy="200.3" rx="2.3" ry="3" fill="#654321" />
-                    <ellipse cx={h.x + 10 * h.dir} cy="201" rx="1.3" ry="1.7" fill="#8b6f47" />
-                    <path d={`M ${h.x + 8 * h.dir},197.3 L ${h.x + 7.3 * h.dir},195.3 L ${h.x + 8.7 * h.dir},196.7 Z`} fill="#654321" />
-                    <path d={`M ${h.x + 9.3 * h.dir},197.3 L ${h.x + 10 * h.dir},195.3 L ${h.x + 9 * h.dir},196.7 Z`} fill="#654321" />
-                    <circle cx={h.x + 8.7 * h.dir} cy="199.7" r="0.7" fill="#2f2f2f" />
-                    <circle cx={h.x + 8.9 * h.dir} cy="199.5" r="0.3" fill="#ffffff" />
-                    <rect x={h.x + 2} y="208" width="1.3" height="4" fill="#654321" />
-                    <rect x={h.x + 4.7} y="208" width="1.3" height="4" fill="#7a5230" />
-                    <rect x={h.x - 3.3} y="208" width="1.3" height="4" fill="#654321" />
-                    <rect x={h.x - 0.7} y="208" width="1.3" height="4" fill="#7a5230" />
-                    <rect x={h.x + 2} y="211.5" width="1.3" height="0.7" fill="#2f2f2f" />
-                    <rect x={h.x + 4.7} y="211.5" width="1.3" height="0.7" fill="#2f2f2f" />
-                    <rect x={h.x - 3.3} y="211.5" width="1.3" height="0.7" fill="#2f2f2f" />
-                    <rect x={h.x - 0.7} y="211.5" width="1.3" height="0.7" fill="#2f2f2f" />
-                    <path d={`M ${h.x - 6.7 * h.dir},203 Q ${h.x - 8.7 * h.dir},204.7 ${h.x - 9.3 * h.dir},207.3`} stroke="#4a3520" strokeWidth="1.3" fill="none" />
-                    <path d={`M ${h.x + 7.3 * h.dir},198 Q ${h.x + 6 * h.dir},198.7 ${h.x + 4.7 * h.dir},200`} stroke="#4a3520" strokeWidth="1" fill="none" />
+                    <rect x={h.x - 6} y="201" width="12" height="7" fill={h.color} />
+                    <rect x={h.x + (h.dir > 0 ? -6 : 2)} y="201" width="4" height="7" fill={h.chest} />
+                    <rect x={h.x + (h.dir > 0 ? -8 : 5)} y="196" width="3" height="6" fill={h.color} />
+                    <rect x={h.x + (h.dir > 0 ? -13 : 6)} y="194" width="6" height="4.5" fill={h.color} />
+                    <rect x={h.x + (h.dir > 0 ? -14.5 : 10.5)} y="196" width="2" height="2.5" fill={h.chest} />
+                    <rect x={h.x + (h.dir > 0 ? -11 : 9)} y="195" width="1" height="1" fill="#2f2f2f" />
+                    <rect x={h.x + (h.dir > 0 ? -10.8 : 9.2)} y="195" width="0.4" height="0.5" fill="#ffffff" />
+                    <rect x={h.x + (h.dir > 0 ? -12 : 7)} y="192.5" width="1.2" height="2" fill={h.color} />
+                    <rect x={h.x + (h.dir > 0 ? -10 : 9)} y="192.5" width="1.2" height="2" fill={h.color} />
+                    <rect x={h.x + (h.dir > 0 ? -14 : 12)} y="197.5" width="0.5" height="0.5" fill="#3a2a1a" />
+                    <rect x={h.x + 3} y="207.5" width="1.3" height="4" fill={h.color} />
+                    <rect x={h.x + 5} y="207.5" width="1.3" height="4" fill={h.chest} />
+                    <rect x={h.x - 5.3} y="207.5" width="1.3" height="4" fill={h.color} />
+                    <rect x={h.x - 3.3} y="207.5" width="1.3" height="4" fill={h.chest} />
+                    <rect x={h.x + 3} y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                    <rect x={h.x + 5} y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                    <rect x={h.x - 5.3} y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                    <rect x={h.x - 3.3} y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                    <rect x={h.x + (h.dir > 0 ? 5.5 : -7)} y="201.5" width="1.5" height="5.5" fill="#4a3520" />
+                    <rect x={h.x + (h.dir > 0 ? -8 : 7)} y="194" width="1" height="7" fill="#4a3520" />
                   </g>
                 ))}
               </g>
 
-              {/* Cows in groups - 2/3 scale, facing each other */}
+              {/* Cows - Minecraft blocky style */}
               <g>
                 {[
-                  {x: 3920, y: 3, dir: 1},
-                  {x: 3945, y: 2, dir: -1},
-                  {x: 4215, y: -1, dir: 1},
-                  {x: 4395, y: 2, dir: -1},
-                  {x: 4415, y: 1, dir: 1},
-                  {x: 4590, y: -2, dir: 1},
+                  {x: 3920, dir: 1, y: 3},
+                  {x: 3945, dir: -1, y: 2},
+                  {x: 4215, dir: 1, y: -1},
+                  {x: 4395, dir: -1, y: 2},
+                  {x: 4415, dir: 1, y: 1},
+                  {x: 4590, dir: 1, y: -2},
                 ].map((c, i) => (
                   <g key={`cow-end-${i}`} transform={`translate(0, ${c.y})`} className="animal-cow" opacity="1" style={{animationDelay: `${i * 0.5}s`}}>
-                    <rect x={c.x - 5.3} y="201.3" width="10.7" height="5.3" rx="1.3" fill="#f5f5f5" />
-                    <ellipse cx={c.x} cy="206.7" rx="2" ry="1.3" fill="#ffb6c1" />
-                    <ellipse cx={c.x - 3.3} cy="202.7" rx="1.7" ry="1.3" fill="#2f2f2f" />
-                    <ellipse cx={c.x + 1.3} cy="202" rx="2" ry="1.7" fill="#2f2f2f" />
-                    <rect x={c.x + (c.dir > 0 ? -6 : 4)} y="199.3" width="2" height="3.3" rx="0.7" fill="#f5f5f5" />
-                    <ellipse cx={c.x + (c.dir > 0 ? -6.7 : 6.7)} cy="200" rx="2.3" ry="2.7" fill="#f5f5f5" />
-                    <ellipse cx={c.x + (c.dir > 0 ? -7.3 : 7.3)} cy="199.3" rx="1" ry="1" fill="#2f2f2f" />
-                    <ellipse cx={c.x + (c.dir > 0 ? -8 : 8)} cy="201.3" rx="1.3" ry="1.7" fill="#ffb6c1" />
-                    <circle cx={c.x + (c.dir > 0 ? -6.7 : 6.7)} cy="199.3" r="0.7" fill="#2f2f2f" />
-                    <circle cx={c.x + (c.dir > 0 ? -6.5 : 6.5)} cy="199.1" r="0.3" fill="#ffffff" />
-                    <path d={`M ${c.x + (c.dir > 0 ? -7.3 : 7.3)},197.3 Q ${c.x + (c.dir > 0 ? -8 : 8)},196 ${c.x + (c.dir > 0 ? -8.7 : 8.7)},195.3`} stroke="#8a7a6a" strokeWidth="0.8" fill="none" />
-                    <rect x={c.x - 3.3} y="207" width="1.3" height="4.7" rx="0.7" fill="#e8e8e8" />
-                    <rect x={c.x - 0.7} y="207" width="1.3" height="4.7" rx="0.7" fill="#e8e8e8" />
-                    <rect x={c.x + 1.3} y="207" width="1.3" height="4.7" rx="0.7" fill="#e8e8e8" />
-                    <rect x={c.x + 4} y="207" width="1.3" height="4.7" rx="0.7" fill="#e8e8e8" />
-                    <rect x={c.x - 3.3} y="211.3" width="1.3" height="0.7" fill="#2f2f2f" />
-                    <rect x={c.x - 0.7} y="211.3" width="1.3" height="0.7" fill="#2f2f2f" />
-                    <rect x={c.x + 1.3} y="211.3" width="1.3" height="0.7" fill="#2f2f2f" />
-                    <rect x={c.x + 4} y="211.3" width="1.3" height="0.7" fill="#2f2f2f" />
-                    <path d={`M ${c.x + (c.dir > 0 ? 5.3 : -5.3)},202.7 L ${c.x + (c.dir > 0 ? 6.7 : -6.7)},207`} stroke="#f5f5f5" strokeWidth="1" />
-                    <ellipse cx={c.x + (c.dir > 0 ? 6.7 : -6.7)} cy="207.7" rx="1" ry="1.3" fill="#2f2f2f" />
+                    <rect x={c.x - 5} y="201" width="11" height="7" fill="#f5f5f5" />
+                    <rect x={c.x - 3.5} y="202" width="3" height="2.5" fill="#2f2f2f" />
+                    <rect x={c.x + 1} y="201.5" width="3.5" height="2.5" fill="#2f2f2f" />
+                    <rect x={c.x + (c.dir > 0 ? -7 : 5)} y="199" width="2.5" height="3" fill="#f5f5f5" />
+                    <rect x={c.x + (c.dir > 0 ? -11 : 5.5)} y="197" width="5" height="5" fill="#f5f5f5" />
+                    <rect x={c.x + (c.dir > 0 ? -10.5 : 6)} y="197.5" width="2.5" height="2" fill="#2f2f2f" />
+                    <rect x={c.x + (c.dir > 0 ? -12.5 : 9)} y="200" width="2.5" height="2" fill="#ffb6c1" />
+                    <rect x={c.x + (c.dir > 0 ? -12 : 9.5)} y="200.8" width="0.5" height="0.5" fill="#4a3520" />
+                    <rect x={c.x + (c.dir > 0 ? -11 : 10.5)} y="200.8" width="0.5" height="0.5" fill="#4a3520" />
+                    <rect x={c.x + (c.dir > 0 ? -8.5 : 7.5)} y="198.5" width="1" height="1" fill="#2f2f2f" />
+                    <rect x={c.x + (c.dir > 0 ? -8.3 : 7.7)} y="198.5" width="0.4" height="0.5" fill="#ffffff" />
+                    <rect x={c.x + (c.dir > 0 ? -10 : 6.5)} y="195.5" width="0.8" height="2" fill="#8a7a6a" />
+                    <rect x={c.x + (c.dir > 0 ? -8 : 8.5)} y="195.5" width="0.8" height="2" fill="#8a7a6a" />
+                    <rect x={c.x - 1.5} y="207" width="3" height="1.5" fill="#ffb6c1" />
+                    <rect x={c.x - 4} y="207.5" width="1.3" height="4" fill="#e8e8e8" />
+                    <rect x={c.x - 2} y="207.5" width="1.3" height="4" fill="#e8e8e8" />
+                    <rect x={c.x + 1.5} y="207.5" width="1.3" height="4" fill="#e8e8e8" />
+                    <rect x={c.x + 3.5} y="207.5" width="1.3" height="4" fill="#e8e8e8" />
+                    <rect x={c.x - 4} y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                    <rect x={c.x - 2} y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                    <rect x={c.x + 1.5} y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                    <rect x={c.x + 3.5} y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                    <rect x={c.x + (c.dir > 0 ? 5 : -6.5)} y="202" width="1" height="5" fill="#2f2f2f" />
                   </g>
                 ))}
               </g>
 
-              {/* Sheep in flocks - 2/3 scale */}
+              {/* Sheep - Minecraft blocky style */}
               <g>
                 {[
-                  {x: 3885, y: -1, dir: 1},
-                  {x: 3895, y: 0, dir: -1},
-                  {x: 4110, y: 4, dir: 1},
-                  {x: 4120, y: 3, dir: 1},
-                  {x: 4296, y: -3, dir: -1},
-                  {x: 4555, y: 0, dir: 1},
-                  {x: 4565, y: 1, dir: -1},
-                  {x: 4790, y: -2, dir: 1},
+                  {x: 3885, dir: 1, y: -1},
+                  {x: 3895, dir: -1, y: 0},
+                  {x: 4110, dir: 1, y: 4},
+                  {x: 4120, dir: 1, y: 3},
+                  {x: 4296, dir: -1, y: -3},
+                  {x: 4555, dir: 1, y: 0},
+                  {x: 4565, dir: -1, y: 1},
+                  {x: 4790, dir: 1, y: -2},
                 ].map((s, i) => (
                   <g key={`sheep-end-${i}`} transform={`translate(0, ${s.y})`} className="animal-sheep" opacity="1" style={{animationDelay: `${i * 0.4}s`}}>
-                    <circle cx={s.x} cy="206" r="3" fill="#f5f5f5" />
-                    <circle cx={s.x - 2 * s.dir} cy="205.3" r="2.3" fill="#f5f5f5" />
-                    <circle cx={s.x + 2 * s.dir} cy="205.3" r="2.3" fill="#f5f5f5" />
-                    <circle cx={s.x} cy="204" r="2" fill="#f5f5f5" />
-                    <circle cx={s.x - 1.3 * s.dir} cy="204.7" r="1" fill="#e8e8e8" />
-                    <ellipse cx={s.x - 4 * s.dir} cy="204.7" rx="1.7" ry="2" fill="#2f2f2f" />
-                    <ellipse cx={s.x - 4.7 * s.dir} cy="203.3" rx="0.7" ry="1" fill="#2f2f2f" />
-                    <ellipse cx={s.x - 3.3 * s.dir} cy="203.3" rx="0.7" ry="1" fill="#2f2f2f" />
-                    <circle cx={s.x - 4.3 * s.dir} cy="204.7" r="0.4" fill="#ffffff" />
-                    <circle cx={s.x - 4.3 * s.dir} cy="204.7" r="0.2" fill="#2f2f2f" />
-                    <ellipse cx={s.x - 5 * s.dir} cy="205.3" rx="0.5" ry="0.4" fill="#1a1a1a" />
-                    <rect x={s.x - 2.7} y="208.7" width="1" height="2.7" rx="0.3" fill="#2f2f2f" />
-                    <rect x={s.x - 0.7} y="208.7" width="1" height="2.7" rx="0.3" fill="#2f2f2f" />
-                    <rect x={s.x + 0.7} y="208.7" width="1" height="2.7" rx="0.3" fill="#2f2f2f" />
-                    <rect x={s.x + 2.7} y="208.7" width="1" height="2.7" rx="0.3" fill="#2f2f2f" />
-                    <circle cx={s.x + 3.3 * s.dir} cy="206.7" r="1" fill="#f5f5f5" />
+                    <rect x={s.x - 5} y="203" width="10" height="6" fill="#f5f5f5" />
+                    <rect x={s.x - 4} y="203.5" width="2" height="1.5" fill="#e8e8e8" />
+                    <rect x={s.x + 1} y="204" width="2" height="1.5" fill="#e8e8e8" />
+                    <rect x={s.x - 2} y="206" width="2" height="1.5" fill="#e8e8e8" />
+                    <rect x={s.x + (s.dir > 0 ? -8 : 4)} y="203.5" width="3.5" height="4" fill="#2f2f2f" />
+                    <rect x={s.x + (s.dir > 0 ? -8.5 : 4)} y="203" width="1.2" height="1.5" fill="#2f2f2f" />
+                    <rect x={s.x + (s.dir > 0 ? -5.5 : 6.5)} y="203" width="1.2" height="1.5" fill="#2f2f2f" />
+                    <rect x={s.x + (s.dir > 0 ? -7 : 5.5)} y="204.5" width="0.8" height="0.8" fill="#ffffff" />
+                    <rect x={s.x + (s.dir > 0 ? -6.8 : 5.7)} y="204.5" width="0.3" height="0.4" fill="#1a1a1a" />
+                    <rect x={s.x + (s.dir > 0 ? -8.5 : 7)} y="206" width="1" height="0.7" fill="#1a1a1a" />
+                    <rect x={s.x - 3.5} y="208.5" width="1" height="3" fill="#2f2f2f" />
+                    <rect x={s.x - 1.5} y="208.5" width="1" height="3" fill="#2f2f2f" />
+                    <rect x={s.x + 1} y="208.5" width="1" height="3" fill="#2f2f2f" />
+                    <rect x={s.x + 3} y="208.5" width="1" height="3" fill="#2f2f2f" />
+                    <rect x={s.x + (s.dir > 0 ? 4.5 : -5.5)} y="204" width="1.5" height="2" fill="#f5f5f5" />
                   </g>
                 ))}
               </g>
 
-              {/* Chickens in pairs - 2/3 scale */}
+              {/* Chickens - Minecraft blocky style */}
               <g>
                 {[
                   {x: 3810, y: 2, dir: 1},
@@ -3497,87 +3419,81 @@ export function ProgressiveSkyline() {
                   {x: 4828, y: 2, dir: -1},
                 ].map((ch, i) => (
                   <g key={`chicken-end-${i}`} transform={`translate(0, ${ch.y})`} className="animal-chicken" opacity="1" style={{animationDelay: `${i * 0.15}s`}}>
-                    <ellipse cx={ch.x} cy="209" rx="2.3" ry="2" fill="#d4a574" />
-                    <ellipse cx={ch.x + 0.3 * ch.dir} cy="209" rx="1.3" ry="1.3" fill="#b8946a" />
-                    <path d={`M ${ch.x + 2 * ch.dir},208.3 Q ${ch.x + 3 * ch.dir},207 ${ch.x + 3.3 * ch.dir},205.7 Q ${ch.x + 2.7 * ch.dir},206.3 ${ch.x + 2.3 * ch.dir},207.7 Z`} fill="#8b6f47" />
-                    <rect x={ch.x - 1.7 * ch.dir - 0.5} y="207.3" width="1" height="1.3" rx="0.3" fill="#d4a574" />
-                    <circle cx={ch.x - 1.7 * ch.dir} cy="207" r="1.3" fill="#d4a574" />
-                    <path d={`M ${ch.x - 2 * ch.dir},205.7 L ${ch.x - 1.9 * ch.dir},204.7 L ${ch.x - 1.5 * ch.dir},205.2 L ${ch.x - 1.3 * ch.dir},204.3 L ${ch.x - 1.2 * ch.dir},205 L ${ch.x - 1 * ch.dir},205.7 Z`} fill="#cc3333" />
-                    <ellipse cx={ch.x - 2 * ch.dir} cy="207.7" rx="0.4" ry="0.5" fill="#cc3333" />
-                    <path d={`M ${ch.x - 2.7 * ch.dir},207 L ${ch.x - 3.3 * ch.dir},207 L ${ch.x - 3 * ch.dir},207.3 Z`} fill="#ffd700" />
-                    <circle cx={ch.x - 1.7 * ch.dir} cy="206.5" r="0.3" fill="#2f2f2f" />
-                    <path d={`M ${ch.x - 0.7},211.3 L ${ch.x - 0.7},212 L ${ch.x - 1.3},212.5`} stroke="#ffd700" strokeWidth="0.7" fill="none" />
-                    <path d={`M ${ch.x + 0.7},211.3 L ${ch.x + 0.7},212 L ${ch.x + 1.3},212.5`} stroke="#ffd700" strokeWidth="0.7" fill="none" />
+                    <rect x={ch.x - 2.5} y="207.5" width="5" height="3.5" fill="#d4a574" />
+                    <rect x={ch.x + (ch.dir > 0 ? 0 : -2)} y="208" width="2" height="2" fill="#b8946a" />
+                    <rect x={ch.x + (ch.dir > 0 ? 2 : -4)} y="206" width="2" height="3" fill="#8b6f47" />
+                    <rect x={ch.x + (ch.dir > 0 ? -4 : 2)} y="206" width="2.5" height="2.5" fill="#d4a574" />
+                    <rect x={ch.x + (ch.dir > 0 ? -3.5 : 2.5)} y="204.5" width="1.5" height="1.8" fill="#cc3333" />
+                    <rect x={ch.x + (ch.dir > 0 ? -3.5 : 2.5)} y="208" width="0.8" height="0.8" fill="#cc3333" />
+                    <rect x={ch.x + (ch.dir > 0 ? -5 : 4)} y="207" width="1.5" height="0.8" fill="#ffd700" />
+                    <rect x={ch.x + (ch.dir > 0 ? -3 : 3)} y="206.5" width="0.5" height="0.5" fill="#2f2f2f" />
+                    <rect x={ch.x - 1} y="210.5" width="0.7" height="2" fill="#e8a020" />
+                    <rect x={ch.x + 0.7} y="210.5" width="0.7" height="2" fill="#e8a020" />
+                    <rect x={ch.x - 1.5} y="212" width="1.5" height="0.5" fill="#e8a020" />
+                    <rect x={ch.x + 0.5} y="212" width="1.5" height="0.5" fill="#e8a020" />
                   </g>
                 ))}
               </g>
 
-              {/* FOREGROUND: Drinking animals at ending pond - rendered last */}
+              {/* FOREGROUND: Drinking animals at ending pond - Minecraft blocky style */}
               <g>
-                {/* Cow drinking - 2/3 scale */}
+                {/* Cow drinking - head lowered to water */}
                 <g className="animal-drinking" style={{animationDelay: '2s', animationDuration: '11s'}}>
-                  <ellipse cx={4848} cy="209" rx="5.3" ry="3.3" fill="#f5f5f5" />
-                  <ellipse cx={4846} cy="208.3" rx="1.7" ry="1.3" fill="#2f2f2f" />
-                  <ellipse cx={4850} cy="207.7" rx="2" ry="1.7" fill="#2f2f2f" />
-                  <ellipse cx={4848} cy="212.3" rx="2" ry="1.3" fill="#ffb6c1" />
-                  <path d={`M 4843.3,208.3 L 4840,213 L 4842,213.7 L 4844.7,209.3 Z`} fill="#f5f5f5" />
-                  <ellipse cx={4839} cy="213.7" rx="2.3" ry="2" fill="#f5f5f5" />
-                  <ellipse cx={4838.3} cy="213" rx="1" ry="1" fill="#2f2f2f" />
-                  <ellipse cx={4837.3} cy="214.7" rx="1.3" ry="1.2" fill="#ffb6c1" />
-                  <ellipse cx={4836.3} cy="216" rx="2" ry="0.5" fill="#6a9aba" opacity="0.5" />
-                  <ellipse cx={4836.3} cy="216" rx="3.3" ry="0.7" fill="#6a9aba" opacity="0.2" />
-                  <circle cx={4839} cy="213" r="0.5" fill="#2f2f2f" />
-                  <circle cx={4839.1} cy="212.9" r="0.2" fill="#ffffff" />
-                  <rect x={4845.3} y="212.3" width="1.3" height="3.3" rx="0.5" fill="#e8e8e8" />
-                  <rect x={4848} y="212.3" width="1.3" height="3.3" rx="0.5" fill="#e8e8e8" />
-                  <rect x={4843.3} y="212.3" width="1.3" height="3.3" rx="0.5" fill="#e8e8e8" />
-                  <rect x={4850.7} y="212.3" width="1.3" height="3.3" rx="0.5" fill="#e8e8e8" />
-                  <rect x={4845.3} y="215.3" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x={4848} y="215.3" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x={4843.3} y="215.3" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x={4850.7} y="215.3" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <path d={`M 4852.7,207.7 Q 4854,209.7 4853.3,212.3`} stroke="#f5f5f5" strokeWidth="0.8" fill="none" />
-                  <ellipse cx={4853.3} cy="213" rx="0.7" ry="1" fill="#2f2f2f" />
+                  <rect x={4843} y="207" width="11" height="7" fill="#f5f5f5" />
+                  <rect x={4844.5} y="208" width="3" height="2.5" fill="#2f2f2f" />
+                  <rect x={4849} y="207.5" width="3.5" height="2.5" fill="#2f2f2f" />
+                  <rect x={4839} y="210" width="4.5" height="3" fill="#f5f5f5" />
+                  <rect x={4835} y="211" width="5" height="4.5" fill="#f5f5f5" />
+                  <rect x={4835.5} y="211.5" width="2" height="1.5" fill="#2f2f2f" />
+                  <rect x={4833.5} y="213.5" width="2" height="2" fill="#ffb6c1" />
+                  <rect x={4837.5} y="212" width="1" height="1" fill="#2f2f2f" />
+                  <rect x={4833} y="216" width="6" height="0.5" fill="#6a9aba" opacity="0.4" />
+                  <rect x={4832} y="216.5" width="8" height="0.5" fill="#6a9aba" opacity="0.2" />
+                  <rect x={4847} y="213" width="3" height="1.5" fill="#ffb6c1" />
+                  <rect x={4844} y="213.5" width="1.3" height="3" fill="#e8e8e8" />
+                  <rect x={4846} y="213.5" width="1.3" height="3" fill="#e8e8e8" />
+                  <rect x={4850} y="213.5" width="1.3" height="3" fill="#e8e8e8" />
+                  <rect x={4852} y="213.5" width="1.3" height="3" fill="#e8e8e8" />
+                  <rect x={4844} y="216" width="1.3" height="0.7" fill="#2f2f2f" />
+                  <rect x={4846} y="216" width="1.3" height="0.7" fill="#2f2f2f" />
+                  <rect x={4850} y="216" width="1.3" height="0.7" fill="#2f2f2f" />
+                  <rect x={4852} y="216" width="1.3" height="0.7" fill="#2f2f2f" />
+                  <rect x={4853.5} y="208" width="1" height="5" fill="#2f2f2f" />
                 </g>
 
-                {/* Horse drinking - 2/3 scale */}
+                {/* Horse drinking - head lowered */}
                 <g className="animal-drinking" style={{animationDelay: '6s', animationDuration: '9s'}}>
-                  <ellipse cx={4815} cy="207" rx="6.7" ry="4" fill="#654321" />
-                  <ellipse cx={4819} cy="207" rx="3.3" ry="4" fill="#7a5230" />
-                  <path d={`M 4820,205.7 L 4823.3,211 L 4821.3,212.3 L 4818.7,207 Z`} fill="#654321" />
-                  <ellipse cx={4822} cy="212.3" rx="2.7" ry="1.7" fill="#5a3a1a" />
-                  <ellipse cx={4824} cy="213" rx="1.3" ry="1" fill="#4a2a0a" />
-                  <circle cx={4824.7} cy="212.7" r="0.3" fill="#2f2f2f" />
-                  <circle cx={4824.7} cy="213.3" r="0.3" fill="#2f2f2f" />
-                  <ellipse cx={4824.7} cy="214.3" rx="2" ry="0.5" fill="#6a9aba" opacity="0.5" />
-                  <ellipse cx={4824.7} cy="214.3" rx="3.3" ry="0.7" fill="#6a9aba" opacity="0.2" />
-                  <circle cx={4821.3} cy="211.7" r="0.4" fill="#2f2f2f" />
-                  <circle cx={4821.5} cy="211.5" r="0.13" fill="#ffffff" />
-                  <path d="M 4820.7,210.7 L 4820,209.3 L 4821.3,210 Z" fill="#5a3a1a" />
-                  <path d="M 4822,210.7 L 4822.7,209.3 L 4821.7,210 Z" fill="#5a3a1a" />
-                  <path d={`M 4818.7,204 Q 4820,203.3 4821.3,204.7`} stroke="#3a2a1a" strokeWidth="1" fill="none" />
-                  <rect x={4810.7} y="211" width="1.3" height="4" rx="0.5" fill="#654321" />
-                  <rect x={4813.3} y="211" width="1.3" height="4" rx="0.5" fill="#654321" />
-                  <rect x={4816} y="211" width="1.3" height="4" rx="0.5" fill="#654321" />
-                  <rect x={4818.7} y="211" width="1.3" height="4" rx="0.5" fill="#654321" />
-                  <rect x={4810.7} y="214.7" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x={4813.3} y="214.7" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x={4816} y="214.7" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x={4818.7} y="214.7" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <path d={`M 4808.7,205.7 Q 4806.7,208 4807.3,211`} stroke="#3a2a1a" strokeWidth="1" fill="none" />
+                  <rect x={4809} y="204" width="12" height="7" fill="#654321" />
+                  <rect x={4817} y="204" width="4" height="7" fill="#7a5230" />
+                  <rect x={4820} y="208" width="3" height="5" fill="#654321" />
+                  <rect x={4820} y="211" width="6" height="4" fill="#654321" />
+                  <rect x={4824.5} y="213" width="2" height="2" fill="#7a5230" />
+                  <rect x={4823} y="212" width="1" height="1" fill="#2f2f2f" />
+                  <rect x={4825.5} y="214" width="0.5" height="0.5" fill="#3a2a1a" />
+                  <rect x={4823} y="215.5" width="5" height="0.5" fill="#6a9aba" opacity="0.4" />
+                  <rect x={4822} y="216" width="7" height="0.5" fill="#6a9aba" opacity="0.2" />
+                  <rect x={4810} y="210.5" width="1.3" height="4.5" fill="#654321" />
+                  <rect x={4812.5} y="210.5" width="1.3" height="4.5" fill="#654321" />
+                  <rect x={4815} y="210.5" width="1.3" height="4.5" fill="#654321" />
+                  <rect x={4817.5} y="210.5" width="1.3" height="4.5" fill="#654321" />
+                  <rect x={4810} y="214.5" width="1.3" height="0.7" fill="#2f2f2f" />
+                  <rect x={4812.5} y="214.5" width="1.3" height="0.7" fill="#2f2f2f" />
+                  <rect x={4815} y="214.5" width="1.3" height="0.7" fill="#2f2f2f" />
+                  <rect x={4817.5} y="214.5" width="1.3" height="0.7" fill="#2f2f2f" />
+                  <rect x={4808} y="205" width="1.5" height="5" fill="#4a3520" />
+                  <rect x={4820} y="208" width="1" height="4" fill="#4a3520" />
                 </g>
 
-                {/* Chickens bathing - 2/3 scale */}
+                {/* Chickens bathing - Minecraft blocky style */}
                 {[4826, 4831, 4835].map((cx, ci) => (
                   <g key={`chicken-bath-end-${ci}`} className="chicken-bathing" style={{animationDelay: `${ci * 1.5 + 0.5}s`}}>
-                    <ellipse cx={cx} cy="217" rx="2" ry="1.3" fill="#d4a574" />
-                    <path d={`M ${cx-0.7},216.3 Q ${cx-1.3},215 ${cx},215.3 Q ${cx+1.3},215 ${cx+0.7},216.3`} fill="#b8946a" opacity="0.8" />
-                    <ellipse cx={cx} cy="217.3" rx="3" ry="0.7" fill="#6a9aba" opacity="0.35" />
-                    <circle cx={cx-1.3} cy="216" r="1" fill="#d4a574" />
-                    <path d={`M ${cx-1.7},215.3 L ${cx-1.5},214.7 L ${cx-1.3},215 L ${cx-1.2},214.5 L ${cx-1},215.3 Z`} fill="#cc3333" />
-                    <path d={`M ${cx-2.3},216 L ${cx-2.8},216 L ${cx-2.5},216.3 Z`} fill="#ffd700" />
-                    <circle cx={cx-1.5} cy="215.7" r="0.2" fill="#2f2f2f" />
-                    <circle cx={cx+1.3} cy="215.3" r="0.3" fill="#6a9aba" opacity="0.5" />
+                    <rect x={cx - 2} y="216" width="4" height="2" fill="#d4a574" />
+                    <rect x={cx - 3} y="217.5" width="6" height="0.5" fill="#6a9aba" opacity="0.35" />
+                    <rect x={cx - 3} y="214.5" width="2" height="2" fill="#d4a574" />
+                    <rect x={cx - 2.5} y="213.5" width="1.2" height="1.2" fill="#cc3333" />
+                    <rect x={cx - 4} y="215.5" width="1.2" height="0.6" fill="#ffd700" />
+                    <rect x={cx - 2.5} y="215" width="0.4" height="0.4" fill="#2f2f2f" />
+                    <rect x={cx + 1.5} y="215.5" width="0.5" height="0.5" fill="#6a9aba" opacity="0.5" />
                   </g>
                 ))}
               </g>
