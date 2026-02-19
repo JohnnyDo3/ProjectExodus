@@ -114,30 +114,50 @@ export function ProgressiveSkyline() {
           50% { transform: translateY(-2px); }
         }
 
-        /* Wide horizontal roaming animations */
+        /* Wide horizontal roaming animations - animals flip to face direction of travel */
         @keyframes roamRight {
-          0%, 100% { transform: translateX(0px) translateY(0); }
-          25% { transform: translateX(25px) translateY(-1px); }
-          50% { transform: translateX(50px) translateY(0); }
-          75% { transform: translateX(25px) translateY(-1px); }
+          0% { transform: translateX(0px) translateY(0) scaleX(1); }
+          25% { transform: translateX(25px) translateY(-1px) scaleX(1); }
+          49.9% { transform: translateX(50px) translateY(0) scaleX(1); }
+          50% { transform: translateX(50px) translateY(0) scaleX(-1); }
+          75% { transform: translateX(25px) translateY(-1px) scaleX(-1); }
+          99.9% { transform: translateX(0px) translateY(0) scaleX(-1); }
+          100% { transform: translateX(0px) translateY(0) scaleX(1); }
         }
         @keyframes roamLeft {
-          0%, 100% { transform: translateX(0px) translateY(0); }
-          25% { transform: translateX(-25px) translateY(-1px); }
-          50% { transform: translateX(-50px) translateY(0); }
-          75% { transform: translateX(-25px) translateY(-1px); }
+          0% { transform: translateX(0px) translateY(0) scaleX(1); }
+          25% { transform: translateX(-25px) translateY(-1px) scaleX(1); }
+          49.9% { transform: translateX(-50px) translateY(0) scaleX(1); }
+          50% { transform: translateX(-50px) translateY(0) scaleX(-1); }
+          75% { transform: translateX(-25px) translateY(-1px) scaleX(-1); }
+          99.9% { transform: translateX(0px) translateY(0) scaleX(-1); }
+          100% { transform: translateX(0px) translateY(0) scaleX(1); }
         }
         @keyframes roamWide {
-          0%, 100% { transform: translateX(0px) translateY(0); }
-          20% { transform: translateX(35px) translateY(-2px); }
-          50% { transform: translateX(70px) translateY(0); }
-          80% { transform: translateX(35px) translateY(-2px); }
+          0% { transform: translateX(0px) translateY(0) scaleX(1); }
+          20% { transform: translateX(35px) translateY(-2px) scaleX(1); }
+          49.9% { transform: translateX(70px) translateY(0) scaleX(1); }
+          50% { transform: translateX(70px) translateY(0) scaleX(-1); }
+          80% { transform: translateX(35px) translateY(-2px) scaleX(-1); }
+          99.9% { transform: translateX(0px) translateY(0) scaleX(-1); }
+          100% { transform: translateX(0px) translateY(0) scaleX(1); }
         }
         @keyframes roamWideLeft {
-          0%, 100% { transform: translateX(0px) translateY(0); }
-          20% { transform: translateX(-35px) translateY(-2px); }
-          50% { transform: translateX(-70px) translateY(0); }
-          80% { transform: translateX(-35px) translateY(-2px); }
+          0% { transform: translateX(0px) translateY(0) scaleX(1); }
+          20% { transform: translateX(-35px) translateY(-2px) scaleX(1); }
+          49.9% { transform: translateX(-70px) translateY(0) scaleX(1); }
+          50% { transform: translateX(-70px) translateY(0) scaleX(-1); }
+          80% { transform: translateX(-35px) translateY(-2px) scaleX(-1); }
+          99.9% { transform: translateX(0px) translateY(0) scaleX(-1); }
+          100% { transform: translateX(0px) translateY(0) scaleX(1); }
+        }
+
+        .animal-horse, .animal-horse-left,
+        .animal-cow, .animal-cow-left,
+        .animal-sheep, .animal-sheep-left,
+        .animal-chicken, .animal-chicken-left {
+          transform-box: fill-box;
+          transform-origin: center;
         }
 
         .animal-horse {
@@ -171,20 +191,26 @@ export function ProgressiveSkyline() {
         }
 
         @keyframes chickenRoam {
-          0%, 100% { transform: translateX(0px) translateY(0); }
-          15% { transform: translateX(10px) translateY(-1px); }
-          30% { transform: translateX(20px) translateY(0); }
-          50% { transform: translateX(30px) translateY(-1px); }
-          65% { transform: translateX(20px) translateY(0); }
-          80% { transform: translateX(10px) translateY(-1px); }
+          0% { transform: translateX(0px) translateY(0) scaleX(1); }
+          15% { transform: translateX(10px) translateY(-1px) scaleX(1); }
+          30% { transform: translateX(20px) translateY(0) scaleX(1); }
+          49.9% { transform: translateX(30px) translateY(-1px) scaleX(1); }
+          50% { transform: translateX(30px) translateY(-1px) scaleX(-1); }
+          65% { transform: translateX(20px) translateY(0) scaleX(-1); }
+          80% { transform: translateX(10px) translateY(-1px) scaleX(-1); }
+          99.9% { transform: translateX(0px) translateY(0) scaleX(-1); }
+          100% { transform: translateX(0px) translateY(0) scaleX(1); }
         }
         @keyframes chickenRoamLeft {
-          0%, 100% { transform: translateX(0px) translateY(0); }
-          15% { transform: translateX(-10px) translateY(-1px); }
-          30% { transform: translateX(-20px) translateY(0); }
-          50% { transform: translateX(-30px) translateY(-1px); }
-          65% { transform: translateX(-20px) translateY(0); }
-          80% { transform: translateX(-10px) translateY(-1px); }
+          0% { transform: translateX(0px) translateY(0) scaleX(1); }
+          15% { transform: translateX(-10px) translateY(-1px) scaleX(1); }
+          30% { transform: translateX(-20px) translateY(0) scaleX(1); }
+          49.9% { transform: translateX(-30px) translateY(-1px) scaleX(1); }
+          50% { transform: translateX(-30px) translateY(-1px) scaleX(-1); }
+          65% { transform: translateX(-20px) translateY(0) scaleX(-1); }
+          80% { transform: translateX(-10px) translateY(-1px) scaleX(-1); }
+          99.9% { transform: translateX(0px) translateY(0) scaleX(-1); }
+          100% { transform: translateX(0px) translateY(0) scaleX(1); }
         }
 
         .animal-chicken {
@@ -704,7 +730,8 @@ export function ProgressiveSkyline() {
                   {x: 340, dir: -1, y: -1, color: '#654321', chest: '#7a5230'},
                   {x: 720, dir: -1, y: 2, color: '#4a3520', chest: '#5a3a25'},
                 ].map((h, i) => (
-                  <g key={`horse-${i}`} transform={`translate(0, ${h.y})`} className={h.dir > 0 ? "animal-horse-left" : "animal-horse"} opacity="1" style={{animationDelay: `${i * 2.5}s`}}>
+                  <g key={`horse-${i}`} transform={`translate(0, ${h.y})`}>
+                  <g className={h.dir > 0 ? "animal-horse-left" : "animal-horse"} opacity="1" style={{animationDelay: `${i * 2.5}s`}}>
                     {/* Body block */}
                     <rect x={h.x - 6} y="201" width="12" height="7" fill={h.color} />
                     {/* Chest/shoulder highlight */}
@@ -739,6 +766,7 @@ export function ProgressiveSkyline() {
                     {/* Mane */}
                     <rect x={h.x + (h.dir > 0 ? -8 : 7)} y="195.5" width="1" height="6" fill="#4a3520" />
                   </g>
+                  </g>
                 ))}
               </g>
 
@@ -750,7 +778,8 @@ export function ProgressiveSkyline() {
                   {x: 600, dir: 1, y: -1, s: 1},
                   {x: 760, dir: 1, y: -1, s: 0.7},
                 ].map((c, i) => (
-                  <g key={`cow-${i}`} transform={`translate(${c.x - c.x * c.s}, ${c.y + (1 - c.s) * 208}) scale(${c.s})`} className={c.dir > 0 ? "animal-cow" : "animal-cow-left"} opacity="1" style={{animationDelay: `${i * 3}s`}}>
+                  <g key={`cow-${i}`} transform={`translate(${c.x - c.x * c.s}, ${c.y + (1 - c.s) * 208}) scale(${c.s})`}>
+                  <g className={c.dir > 0 ? "animal-cow" : "animal-cow-left"} opacity="1" style={{animationDelay: `${i * 3}s`}}>
                     {/* Body block - white */}
                     <rect x={c.x - 5} y="201" width="11" height="7" fill="#f5f5f5" />
                     {/* Black spots on body */}
@@ -788,6 +817,7 @@ export function ProgressiveSkyline() {
                     {/* Tail */}
                     <rect x={c.x + (c.dir > 0 ? 5 : -6.5)} y="202" width="1" height="5" fill="#2f2f2f" />
                   </g>
+                  </g>
                 ))}
               </g>
 
@@ -799,7 +829,8 @@ export function ProgressiveSkyline() {
                   {x: 500, dir: 1, y: 0},
                   {x: 680, dir: -1, y: 1},
                 ].map((s, i) => (
-                  <g key={`sheep-${i}`} transform={`translate(0, ${s.y})`} className={s.dir > 0 ? "animal-sheep" : "animal-sheep-left"} opacity="1" style={{animationDelay: `${i * 3.5}s`}}>
+                  <g key={`sheep-${i}`} transform={`translate(0, ${s.y})`}>
+                  <g className={s.dir > 0 ? "animal-sheep" : "animal-sheep-left"} opacity="1" style={{animationDelay: `${i * 3.5}s`}}>
                     {/* Woolly body block - slightly oversized for fluffy look */}
                     <rect x={s.x - 5} y="203" width="10" height="6" fill="#f5f5f5" />
                     {/* Wool texture highlights */}
@@ -824,6 +855,7 @@ export function ProgressiveSkyline() {
                     {/* Tail puff */}
                     <rect x={s.x + (s.dir > 0 ? 4.5 : -5.5)} y="204" width="1.5" height="2" fill="#f5f5f5" />
                   </g>
+                  </g>
                 ))}
               </g>
 
@@ -837,7 +869,8 @@ export function ProgressiveSkyline() {
                   {x: 630, y: 1, dir: 1},
                   {x: 790, y: 0, dir: -1},
                 ].map((ch, i) => (
-                  <g key={`chicken-${i}`} transform={`translate(0, ${ch.y})`} className={ch.dir > 0 ? "animal-chicken" : "animal-chicken-left"} opacity="1" style={{animationDelay: `${i * 1.5}s`}}>
+                  <g key={`chicken-${i}`} transform={`translate(0, ${ch.y})`}>
+                  <g className={ch.dir > 0 ? "animal-chicken" : "animal-chicken-left"} opacity="1" style={{animationDelay: `${i * 1.5}s`}}>
                     {/* Body block */}
                     <rect x={ch.x - 2.5} y="207.5" width="5" height="3.5" fill="#d4a574" />
                     {/* Wing marking */}
@@ -860,6 +893,7 @@ export function ProgressiveSkyline() {
                     {/* Feet */}
                     <rect x={ch.x - 1.5} y="212" width="1.5" height="0.5" fill="#e8a020" />
                     <rect x={ch.x + 0.5} y="212" width="1.5" height="0.5" fill="#e8a020" />
+                  </g>
                   </g>
                 ))}
               </g>
@@ -988,7 +1022,7 @@ export function ProgressiveSkyline() {
 
               {/* === LAYER 1: Farthest hills - subtle depth backdrop === */}
               <g opacity="0.16">
-                <path d="M 800,172 Q 870,165 950,168 Q 1050,160 1150,164 Q 1250,158 1350,162 Q 1450,157 1550,161 Q 1650,156 1750,160 Q 1850,163 1950,166 Q 2000,168 2000,190 L 800,190 Z"
+                <path d="M 800,172 Q 870,165 950,168 Q 1050,160 1150,164 Q 1250,158 1350,162 Q 1450,157 1550,161 Q 1650,156 1750,160 Q 1850,163 1950,166 Q 2000,168 2000,210 L 800,210 Z"
                       fill="#8aaa8a" />
                 {/* Farthest house silhouettes - very small, faint */}
                 {[860, 930, 1000, 1080, 1160, 1240, 1320, 1400, 1480, 1560, 1640, 1720, 1800, 1880, 1960].map((bx, bi) => {
@@ -1004,7 +1038,27 @@ export function ProgressiveSkyline() {
                 })}
               </g>
 
-              {/* Layers 2-4 removed for clean, subtle background */}
+              {/* === LAYER 2: Mid-distance hills - fills gap between far backdrop and ground === */}
+              <g opacity="0.12">
+                <path d="M 800,185 Q 900,180 1000,183 Q 1100,178 1200,182 Q 1350,176 1500,180 Q 1650,175 1800,179 Q 1900,183 2000,185 L 2000,210 L 800,210 Z"
+                      fill="#7a9a7a" />
+                {/* Mid-distance tree line */}
+                {[850, 920, 1010, 1090, 1180, 1270, 1350, 1440, 1530, 1620, 1710, 1800, 1890, 1970].map((tx, ti) => {
+                  const ty = 178 + Math.sin(ti * 1.2) * 3;
+                  return (
+                    <g key={`bg-mid-tree-${ti}`}>
+                      <rect x={tx} y={ty + 3} width="1" height="3" fill="#5a7a5a" />
+                      <ellipse cx={tx + 0.5} cy={ty + 2} rx="2.5" ry="3" fill="#6a8a6a" />
+                    </g>
+                  );
+                })}
+              </g>
+
+              {/* === LAYER 3: Near backdrop - connects to foreground ground === */}
+              <g opacity="0.08">
+                <path d="M 800,195 Q 920,192 1050,194 Q 1200,190 1350,193 Q 1500,189 1650,192 Q 1800,194 1950,196 Q 2000,197 2000,210 L 800,210 Z"
+                      fill="#6a9a6a" />
+              </g>
 
               {/* Full green ground - no road, grass everywhere */}
               <g opacity="1">
@@ -1620,43 +1674,51 @@ export function ProgressiveSkyline() {
                 </g>
               </g>
 
-              {/* ===== SUBURBAN SIDEWALK running along lower portion ===== */}
+              {/* ===== SUBURBAN SIDEWALK - aligned with city sidewalk at y=214 ===== */}
               <g opacity="1">
-                {/* Concrete sidewalk strip */}
-                <rect x="800" y="237" width="1200" height="3.5" fill="#d4d0c8" opacity="0.9" />
+                {/* Concrete sidewalk strip - same y-level as city sidewalk */}
+                <rect x="800" y="214" width="1200" height="4" fill="#d8d8d8" opacity="0.9" />
                 {/* Sidewalk expansion joints */}
                 {Array.from({length: 60}).map((_, ji) => (
-                  <rect key={`sw-joint-${ji}`} x={810 + ji * 20} y="237" width="0.4" height="3.5" fill="#bab6ae" opacity="0.4" />
+                  <rect key={`sw-joint-${ji}`} x={810 + ji * 20} y="214" width="0.4" height="4" fill="#c0c0b8" opacity="0.35" />
                 ))}
-                {/* Curb edge (subtle) */}
-                <rect x="800" y="240.5" width="1200" height="0.8" fill="#b8b4ac" opacity="0.6" />
+                {/* Curb edge */}
+                <rect x="800" y="218" width="1200" height="0.6" fill="#b0b0a8" opacity="0.5" />
               </g>
 
               {/* ===== DRIVEWAYS from each house down to the sidewalk ===== */}
-              <g opacity="0.8">
-                {/* Victorian driveways */}
+              <g opacity="0.75">
+                {/* Victorian driveways - short path from foundation to sidewalk */}
                 {[820, 1120, 1420, 1720].map((x, i) => (
-                  <rect key={`vic-dw-${i}`} x={x+14} y="212" width="6" height="25" rx="0.5" fill="#c8c4bc" opacity="0.7" />
+                  <rect key={`vic-dw-${i}`} x={x+14} y="211" width="5" height="3.5" rx="0.3" fill="#c8c4bc" />
                 ))}
                 {/* Colonial driveways */}
                 {[1000, 1300, 1600, 1900].map((x, i) => (
-                  <rect key={`col-dw-${i}`} x={x+16} y="212" width="7" height="25" rx="0.5" fill="#c8c4bc" opacity="0.7" />
+                  <rect key={`col-dw-${i}`} x={x+16} y="211" width="6" height="3.5" rx="0.3" fill="#c8c4bc" />
                 ))}
                 {/* Ranch driveways */}
                 {[880, 1180, 1480, 1780].map((x, i) => (
-                  <rect key={`ranch-dw-${i}`} x={x+20} y="210" width="7" height="27" rx="0.5" fill="#c8c4bc" opacity="0.7" />
+                  <rect key={`ranch-dw-${i}`} x={x+20} y="210" width="6" height="4.5" rx="0.3" fill="#c8c4bc" />
                 ))}
                 {/* Cottage stone paths */}
                 {[1060, 1360, 1660, 1960].map((x, i) => (
                   <g key={`cot-path-${i}`}>
-                    {Array.from({length: 8}).map((_, si) => (
-                      <rect key={`cot-step-${i}-${si}`} x={x+13} y={213 + si * 3} width="4" height="2" rx="0.8" fill="#b8b0a0" opacity="0.6" />
-                    ))}
+                    <rect x={x+13} y="211" width="3.5" height="1.5" rx="0.8" fill="#b8b0a0" opacity="0.7" />
+                    <rect x={x+13.5} y="213" width="3" height="1.2" rx="0.8" fill="#b8b0a0" opacity="0.6" />
                   </g>
                 ))}
                 {/* Modern driveways */}
                 {[940, 1240, 1540, 1840].map((x, i) => (
-                  <rect key={`mod-dw-${i}`} x={x+13} y="210" width="6" height="27" rx="0.3" fill="#a0a098" opacity="0.65" />
+                  <rect key={`mod-dw-${i}`} x={x+13} y="210" width="5" height="4.5" rx="0.3" fill="#a0a098" />
+                ))}
+              </g>
+
+              {/* ===== CONNECTING DRIVEWAYS to the black road at transition zone (x=1900-2000) ===== */}
+              <g opacity="0.7">
+                {/* The sidewalk connects seamlessly to city sidewalk at x=2000 */}
+                {/* Short connecting driveways from sidewalk down to where the road meets */}
+                {[1920, 1960].map((x, i) => (
+                  <rect key={`connect-dw-${i}`} x={x} y="218" width="5" height="2" rx="0.3" fill="#b0b0a8" opacity="0.6" />
                 ))}
               </g>
 
@@ -1665,9 +1727,9 @@ export function ProgressiveSkyline() {
                 {[835, 950, 1070, 1135, 1250, 1370, 1435, 1550, 1670, 1735, 1850, 1970].map((x, i) => (
                   <g key={`mailbox-${i}`}>
                     {/* Post */}
-                    <rect x={x} y="232" width="1.2" height="5.5" fill="#5a4a3a" />
+                    <rect x={x} y="210" width="1.2" height="4.5" fill="#5a4a3a" />
                     {/* Mailbox */}
-                    <rect x={x-0.8} y="231" width="3" height="2" rx="0.5" fill={i % 3 === 0 ? "#2a2a2a" : "#d4af37"} />
+                    <rect x={x-0.8} y="209" width="3" height="2" rx="0.5" fill={i % 3 === 0 ? "#2a2a2a" : "#d4af37"} />
                   </g>
                 ))}
               </g>
@@ -1676,8 +1738,8 @@ export function ProgressiveSkyline() {
               <g opacity="0.9">
                 {[1000, 1400, 1800].map((x, i) => (
                   <g key={`hydrant-${i}`}>
-                    <rect x={x} y="234" width="2.5" height="3.5" fill="#cc3333" />
-                    <rect x={x-0.3} y="235" width="3" height="1.2" fill="#aa2222" />
+                    <rect x={x} y="212" width="2.5" height="3" fill="#cc3333" />
+                    <rect x={x-0.3} y="213" width="3" height="1" fill="#aa2222" />
                   </g>
                 ))}
               </g>
@@ -3404,7 +3466,8 @@ export function ProgressiveSkyline() {
                   {x: 4520, dir: -1, y: -1, color: '#654321', chest: '#7a5230'},
                   {x: 4900, dir: 1, y: 2, color: '#8b6f47', chest: '#9a7a55'},
                 ].map((h, i) => (
-                  <g key={`horse-end-${i}`} transform={`translate(0, ${h.y})`} className={h.dir > 0 ? "animal-horse-left" : "animal-horse"} opacity="1" style={{animationDelay: `${i * 2.5}s`}}>
+                  <g key={`horse-end-${i}`} transform={`translate(0, ${h.y})`}>
+                  <g className={h.dir > 0 ? "animal-horse-left" : "animal-horse"} opacity="1" style={{animationDelay: `${i * 2.5}s`}}>
                     <rect x={h.x - 6} y="201" width="12" height="7" fill={h.color} />
                     <rect x={h.x + (h.dir > 0 ? -6 : 2)} y="201" width="4" height="7" fill={h.chest} />
                     {/* Neck - shorter */}
@@ -3428,6 +3491,7 @@ export function ProgressiveSkyline() {
                     <rect x={h.x + (h.dir > 0 ? 5.5 : -7)} y="201.5" width="1.5" height="5.5" fill="#4a3520" />
                     <rect x={h.x + (h.dir > 0 ? -8 : 7)} y="195.5" width="1" height="6" fill="#4a3520" />
                   </g>
+                  </g>
                 ))}
               </g>
 
@@ -3439,7 +3503,8 @@ export function ProgressiveSkyline() {
                   {x: 4400, dir: 1, y: 2},
                   {x: 4700, dir: 1, y: -2},
                 ].map((c, i) => (
-                  <g key={`cow-end-${i}`} transform={`translate(0, ${c.y})`} className={c.dir > 0 ? "animal-cow" : "animal-cow-left"} opacity="1" style={{animationDelay: `${i * 3}s`}}>
+                  <g key={`cow-end-${i}`} transform={`translate(0, ${c.y})`}>
+                  <g className={c.dir > 0 ? "animal-cow" : "animal-cow-left"} opacity="1" style={{animationDelay: `${i * 3}s`}}>
                     <rect x={c.x - 5} y="201" width="11" height="7" fill="#f5f5f5" />
                     <rect x={c.x - 3.5} y="202" width="3" height="2.5" fill="#2f2f2f" />
                     <rect x={c.x + 1} y="201.5" width="3.5" height="2.5" fill="#2f2f2f" />
@@ -3464,6 +3529,7 @@ export function ProgressiveSkyline() {
                     <rect x={c.x + 3.5} y="211" width="1.3" height="0.7" fill="#2f2f2f" />
                     <rect x={c.x + (c.dir > 0 ? 5 : -6.5)} y="202" width="1" height="5" fill="#2f2f2f" />
                   </g>
+                  </g>
                 ))}
               </g>
 
@@ -3476,7 +3542,8 @@ export function ProgressiveSkyline() {
                   {x: 4560, dir: -1, y: 0},
                   {x: 4790, dir: 1, y: -2},
                 ].map((s, i) => (
-                  <g key={`sheep-end-${i}`} transform={`translate(0, ${s.y})`} className={s.dir > 0 ? "animal-sheep" : "animal-sheep-left"} opacity="1" style={{animationDelay: `${i * 3.5}s`}}>
+                  <g key={`sheep-end-${i}`} transform={`translate(0, ${s.y})`}>
+                  <g className={s.dir > 0 ? "animal-sheep" : "animal-sheep-left"} opacity="1" style={{animationDelay: `${i * 3.5}s`}}>
                     <rect x={s.x - 5} y="203" width="10" height="6" fill="#f5f5f5" />
                     <rect x={s.x - 4} y="203.5" width="2" height="1.5" fill="#e8e8e8" />
                     <rect x={s.x + 1} y="204" width="2" height="1.5" fill="#e8e8e8" />
@@ -3493,6 +3560,7 @@ export function ProgressiveSkyline() {
                     <rect x={s.x + 3} y="208.5" width="1" height="3" fill="#2f2f2f" />
                     <rect x={s.x + (s.dir > 0 ? 4.5 : -5.5)} y="204" width="1.5" height="2" fill="#f5f5f5" />
                   </g>
+                  </g>
                 ))}
               </g>
 
@@ -3506,7 +3574,8 @@ export function ProgressiveSkyline() {
                   {x: 4630, y: -1, dir: 1},
                   {x: 4825, y: 1, dir: -1},
                 ].map((ch, i) => (
-                  <g key={`chicken-end-${i}`} transform={`translate(0, ${ch.y})`} className={ch.dir > 0 ? "animal-chicken" : "animal-chicken-left"} opacity="1" style={{animationDelay: `${i * 1.5}s`}}>
+                  <g key={`chicken-end-${i}`} transform={`translate(0, ${ch.y})`}>
+                  <g className={ch.dir > 0 ? "animal-chicken" : "animal-chicken-left"} opacity="1" style={{animationDelay: `${i * 1.5}s`}}>
                     <rect x={ch.x - 2.5} y="207.5" width="5" height="3.5" fill="#d4a574" />
                     <rect x={ch.x + (ch.dir > 0 ? 0 : -2)} y="208" width="2" height="2" fill="#b8946a" />
                     <rect x={ch.x + (ch.dir > 0 ? 2 : -4)} y="206" width="2" height="3" fill="#8b6f47" />
@@ -3519,6 +3588,7 @@ export function ProgressiveSkyline() {
                     <rect x={ch.x + 0.7} y="210.5" width="0.7" height="2" fill="#e8a020" />
                     <rect x={ch.x - 1.5} y="212" width="1.5" height="0.5" fill="#e8a020" />
                     <rect x={ch.x + 0.5} y="212" width="1.5" height="0.5" fill="#e8a020" />
+                  </g>
                   </g>
                 ))}
               </g>
