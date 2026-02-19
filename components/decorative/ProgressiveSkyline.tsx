@@ -763,9 +763,9 @@ export function ProgressiveSkyline() {
                   {x: 760, dir: 1, y: -1, s: 0.7},
                 ].map((c, i) => (
                   <g key={`cow-${i}`} transform={`translate(${c.x - c.x * c.s}, ${c.y + (1 - c.s) * 208}) scale(${c.s})`}>
-                  <g className={c.dir > 0 ? "animal-cow" : "animal-cow-left"} style={{animationDelay: `${i * 3}s`}}>
+                  <g className={c.dir > 0 ? "animal-cow-left" : "animal-cow"} style={{animationDelay: `${i * 3}s`}}>
                   <g transform={`translate(${c.x}, 203)`}>
-                  <g className={c.dir > 0 ? "face-cow" : "face-cow-left"} style={{animationDelay: `${i * 3}s`}}>
+                  <g className={c.dir > 0 ? "face-cow-left" : "face-cow"} style={{animationDelay: `${i * 3}s`}}>
                   <g transform={`translate(${-c.x}, -203)`} opacity="1">
                     {/* Body block - white */}
                     <rect x={c.x - 5} y="201" width="11" height="7" fill="#f5f5f5" />
@@ -818,9 +818,9 @@ export function ProgressiveSkyline() {
                   {x: 680, dir: -1, y: 1},
                 ].map((s, i) => (
                   <g key={`sheep-${i}`} transform={`translate(0, ${s.y})`}>
-                  <g className={s.dir > 0 ? "animal-sheep" : "animal-sheep-left"} style={{animationDelay: `${i * 3.5}s`}}>
+                  <g className={s.dir > 0 ? "animal-sheep-left" : "animal-sheep"} style={{animationDelay: `${i * 3.5}s`}}>
                   <g transform={`translate(${s.x}, 206)`}>
-                  <g className={s.dir > 0 ? "face-sheep" : "face-sheep-left"} style={{animationDelay: `${i * 3.5}s`}}>
+                  <g className={s.dir > 0 ? "face-sheep-left" : "face-sheep"} style={{animationDelay: `${i * 3.5}s`}}>
                   <g transform={`translate(${-s.x}, -206)`} opacity="1">
                     {/* Woolly body block - slightly oversized for fluffy look */}
                     <rect x={s.x - 5} y="203" width="10" height="6" fill="#f5f5f5" />
@@ -862,9 +862,9 @@ export function ProgressiveSkyline() {
                   {x: 790, y: 0, dir: -1},
                 ].map((ch, i) => (
                   <g key={`chicken-${i}`} transform={`translate(0, ${ch.y})`}>
-                  <g className={ch.dir > 0 ? "animal-chicken" : "animal-chicken-left"} style={{animationDelay: `${i * 1.5}s`}}>
+                  <g className={ch.dir > 0 ? "animal-chicken-left" : "animal-chicken"} style={{animationDelay: `${i * 1.5}s`}}>
                   <g transform={`translate(${ch.x}, 208)`}>
-                  <g className={ch.dir > 0 ? "face-chicken" : "face-chicken-left"} style={{animationDelay: `${i * 1.5}s`}}>
+                  <g className={ch.dir > 0 ? "face-chicken-left" : "face-chicken"} style={{animationDelay: `${i * 1.5}s`}}>
                   <g transform={`translate(${-ch.x}, -208)`} opacity="1">
                     <rect x={ch.x - 2.5} y="207.5" width="5" height="3.5" fill="#d4a574" />
                     <rect x={ch.x + (ch.dir > 0 ? 0 : -2)} y="208" width="2" height="2" fill="#b8946a" />
@@ -3557,9 +3557,9 @@ export function ProgressiveSkyline() {
                   {x: 4700, dir: 1, y: -2},
                 ].map((c, i) => (
                   <g key={`cow-end-${i}`} transform={`translate(0, ${c.y})`}>
-                  <g className={c.dir > 0 ? "animal-cow" : "animal-cow-left"} style={{animationDelay: `${i * 3}s`}}>
+                  <g className={c.dir > 0 ? "animal-cow-left" : "animal-cow"} style={{animationDelay: `${i * 3}s`}}>
                   <g transform={`translate(${c.x}, 203)`}>
-                  <g className={c.dir > 0 ? "face-cow" : "face-cow-left"} style={{animationDelay: `${i * 3}s`}}>
+                  <g className={c.dir > 0 ? "face-cow-left" : "face-cow"} style={{animationDelay: `${i * 3}s`}}>
                   <g transform={`translate(${-c.x}, -203)`} opacity="1">
                     <rect x={c.x - 5} y="201" width="11" height="7" fill="#f5f5f5" />
                     <rect x={c.x - 3.5} y="202" width="3" height="2.5" fill="#2f2f2f" />
@@ -3600,9 +3600,9 @@ export function ProgressiveSkyline() {
                   {x: 4790, dir: 1, y: -2},
                 ].map((s, i) => (
                   <g key={`sheep-end-${i}`} transform={`translate(0, ${s.y})`}>
-                  <g className={s.dir > 0 ? "animal-sheep" : "animal-sheep-left"} style={{animationDelay: `${i * 3.5}s`}}>
+                  <g className={s.dir > 0 ? "animal-sheep-left" : "animal-sheep"} style={{animationDelay: `${i * 3.5}s`}}>
                   <g transform={`translate(${s.x}, 206)`}>
-                  <g className={s.dir > 0 ? "face-sheep" : "face-sheep-left"} style={{animationDelay: `${i * 3.5}s`}}>
+                  <g className={s.dir > 0 ? "face-sheep-left" : "face-sheep"} style={{animationDelay: `${i * 3.5}s`}}>
                   <g transform={`translate(${-s.x}, -206)`} opacity="1">
                     <rect x={s.x - 5} y="203" width="10" height="6" fill="#f5f5f5" />
                     <rect x={s.x - 4} y="203.5" width="2" height="1.5" fill="#e8e8e8" />
@@ -3636,9 +3636,9 @@ export function ProgressiveSkyline() {
                   {x: 4825, y: 1, dir: -1},
                 ].map((ch, i) => (
                   <g key={`chicken-end-${i}`} transform={`translate(0, ${ch.y})`}>
-                  <g className={ch.dir > 0 ? "animal-chicken" : "animal-chicken-left"} style={{animationDelay: `${i * 1.5}s`}}>
+                  <g className={ch.dir > 0 ? "animal-chicken-left" : "animal-chicken"} style={{animationDelay: `${i * 1.5}s`}}>
                   <g transform={`translate(${ch.x}, 208)`}>
-                  <g className={ch.dir > 0 ? "face-chicken" : "face-chicken-left"} style={{animationDelay: `${i * 1.5}s`}}>
+                  <g className={ch.dir > 0 ? "face-chicken-left" : "face-chicken"} style={{animationDelay: `${i * 1.5}s`}}>
                   <g transform={`translate(${-ch.x}, -208)`} opacity="1">
                     <rect x={ch.x - 2.5} y="207.5" width="5" height="3.5" fill="#d4a574" />
                     <rect x={ch.x + (ch.dir > 0 ? 0 : -2)} y="208" width="2" height="2" fill="#b8946a" />
