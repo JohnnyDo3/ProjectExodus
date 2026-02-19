@@ -1006,18 +1006,19 @@ export function ProgressiveSkyline() {
 
               {/* Layers 2-4 removed for clean, subtle background */}
 
-              {/* Main road infrastructure - grass extends right to road edge */}
+              {/* Full green ground - no road, grass everywhere */}
               <g opacity="1">
-                {/* Extended grass strip right up to road */}
-                <rect x="800" y="210" width="1200" height="8" fill="#7aa87a" opacity="1" />
-                <rect x="800" y="212" width="1200" height="6" fill="#8ab88a" opacity="0.7" />
-                {/* Asphalt road */}
-                <rect x="800" y="218" width="1200" height="32" fill={`url(#roadGradient-${iteration})`} />
-
-                {/* Center line - yellow dashed */}
-                {Array.from({length: 40}).map((_, li) => (
-                  <rect key={`center-line-${li}`} x={810 + li * 30} y="233.5" width="18" height="1" fill="#d4a017" opacity="0.9" />
+                {/* Lush grass covering entire ground area */}
+                <rect x="800" y="210" width="1200" height="40" fill="#7aa87a" opacity="1" />
+                <rect x="800" y="215" width="1200" height="35" fill="#6a9a6a" opacity="0.8" />
+                <rect x="800" y="225" width="1200" height="25" fill="#5a8a5a" opacity="0.6" />
+                {/* Grass texture - subtle variation patches */}
+                {[830, 870, 920, 960, 1010, 1060, 1110, 1160, 1210, 1260, 1310, 1360, 1410, 1460, 1510, 1560, 1610, 1660, 1710, 1760, 1810, 1860, 1910, 1950].map((gx, gi) => (
+                  <ellipse key={`grass-patch-${gi}`} cx={gx} cy={218 + (gi % 5) * 6} rx={8 + (gi % 3) * 3} ry={3 + (gi % 2) * 2} fill={gi % 2 === 0 ? "#8ab88a" : "#7aaa7a"} opacity="0.4" />
                 ))}
+                {/* Winding walking path through the green - stone/gravel */}
+                <path d="M 800,230 Q 850,225 900,228 Q 960,232 1020,226 Q 1100,222 1180,228 Q 1260,234 1340,226 Q 1420,220 1500,228 Q 1580,235 1660,227 Q 1740,222 1820,228 Q 1900,234 1960,228 Q 1990,226 2000,228" stroke="#c9b89a" strokeWidth="3" fill="none" opacity="0.5" strokeLinecap="round" />
+                <path d="M 800,230 Q 850,225 900,228 Q 960,232 1020,226 Q 1100,222 1180,228 Q 1260,234 1340,226 Q 1420,220 1500,228 Q 1580,235 1660,227 Q 1740,222 1820,228 Q 1900,234 1960,228 Q 1990,226 2000,228" stroke="#d4c4a0" strokeWidth="1.5" fill="none" opacity="0.3" strokeLinecap="round" />
               </g>
 
               {/* Power lines along street */}
@@ -1576,71 +1577,107 @@ export function ProgressiveSkyline() {
                 </g>
               </g>
 
-              {/* Street lights along the road - on curb at road edge */}
+              {/* Park lamp posts - shorter, decorative */}
               <g opacity="1">
-                {[840, 990, 1140, 1290, 1440, 1590, 1740, 1890].map((x, i) => (
-                  <g key={`street-light-${i}`}>
-                    {/* Light pole base on curb, extends up */}
-                    <rect x={x} y="200" width="1.5" height="18" fill="#6a6a6a" opacity="1" />
-                    {/* Light arm curving over road */}
-                    <path d={`M ${x+0.75},201 Q ${x+5},199 ${x+10},200`} stroke="#6a6a6a" strokeWidth="1.2" fill="none" />
-                    {/* Light fixture */}
-                    <rect x={x+8} y="200" width="3.5" height="2" rx="0.5" fill="#5a5a5a" opacity="1" />
-                    {/* Light glow */}
-                    <circle cx={x+10} cy="203" r="3" fill="#ffd700" opacity="0.12" />
-                    <circle cx={x+10} cy="202.5" r="1.5" fill="#ffd700" opacity="0.9" />
-                    <circle cx={x+10} cy="202.5" r="0.8" fill="#ffeb3b" className="window-light" />
+                {[870, 1020, 1170, 1320, 1470, 1620, 1770, 1920].map((x, i) => (
+                  <g key={`park-light-${i}`}>
+                    {/* Decorative lamp post */}
+                    <rect x={x} y="207" width="1" height="8" fill="#4a4a4a" opacity="0.8" />
+                    {/* Lamp top - globe style */}
+                    <circle cx={x+0.5} cy="206.5" r="1.5" fill="#e8e0d0" opacity="0.7" />
+                    <circle cx={x+0.5} cy="206.5" r="0.8" fill="#ffd700" opacity="0.5" />
                   </g>
                 ))}
               </g>
 
-              {/* Moving cars on the road */}
-              <g>
-                {[
-                  {x: 850, y: 222, color: '#3a5a8a', dir: 1, type: 'sedan'},
-                  {x: 1050, y: 240, color: '#8a3a3a', dir: -1, type: 'sedan'},
-                  {x: 1350, y: 223, color: '#e8e8e0', dir: 1, type: 'suv'},
-                  {x: 1550, y: 241, color: '#2a4a2a', dir: -1, type: 'sedan'},
-                  {x: 1750, y: 222, color: '#5a5a7a', dir: 1, type: 'sedan'},
-                  {x: 1950, y: 240, color: '#8a6a3a', dir: -1, type: 'suv'},
-                ].map((car, ci) => (
-                  <g key={`road-car-${ci}`}>
-                    {/* Car body */}
-                    <rect x={car.x} y={car.y} width={car.type === 'suv' ? 14 : 12} height={car.type === 'suv' ? 5 : 4} rx="1.5" fill={car.color} opacity="0.9" />
-                    {/* Car roof/cabin */}
-                    <rect x={car.x + (car.dir > 0 ? 3 : 2)} y={car.y - 2.5} width={car.type === 'suv' ? 8 : 6} height="2.8" rx="1" fill={car.color} opacity="0.85" />
-                    {/* Windshield */}
-                    <rect x={car.x + (car.dir > 0 ? 7 : 2.5)} y={car.y - 2} width="2.5" height="2" rx="0.5" fill="#8ab8d8" opacity="0.6" />
-                    {/* Rear window */}
-                    <rect x={car.x + (car.dir > 0 ? 3.5 : 7.5)} y={car.y - 2} width="2" height="2" rx="0.5" fill="#8ab8d8" opacity="0.5" />
-                    {/* Wheels */}
-                    <circle cx={car.x + 2.5} cy={car.y + (car.type === 'suv' ? 5 : 4)} r="1.3" fill="#2f2f2f" />
-                    <circle cx={car.x + (car.type === 'suv' ? 11.5 : 9.5)} cy={car.y + (car.type === 'suv' ? 5 : 4)} r="1.3" fill="#2f2f2f" />
-                    <circle cx={car.x + 2.5} cy={car.y + (car.type === 'suv' ? 5 : 4)} r="0.5" fill="#8a8a8a" />
-                    <circle cx={car.x + (car.type === 'suv' ? 11.5 : 9.5)} cy={car.y + (car.type === 'suv' ? 5 : 4)} r="0.5" fill="#8a8a8a" />
-                    {/* Headlights/taillights */}
-                    <rect x={car.dir > 0 ? car.x + (car.type === 'suv' ? 13 : 11) : car.x} y={car.y + 0.5} width="1" height="1.5" rx="0.3" fill={car.dir > 0 ? '#ffd700' : '#cc3333'} opacity="0.8" />
-                    <rect x={car.dir > 0 ? car.x : car.x + (car.type === 'suv' ? 13 : 11)} y={car.y + 0.5} width="1" height="1.5" rx="0.3" fill={car.dir > 0 ? '#cc3333' : '#ffd700'} opacity="0.8" />
-                  </g>
-                ))}
+              {/* People walking / cycling on paths */}
+              <g opacity="0.8">
+                {/* Person walking dog near x=900 */}
+                <g>
+                  <circle cx="905" cy="225" r="1.2" fill="#d4a574" />
+                  <rect x="904.3" y="226" width="1.5" height="3" fill="#4a6a8a" />
+                  <rect x="904" y="229" width="0.7" height="2" fill="#3a3a5a" />
+                  <rect x="905.5" y="229" width="0.7" height="2" fill="#3a3a5a" />
+                  {/* Leash */}
+                  <path d="M 906,227.5 Q 908,228 910,228" stroke="#6b5a45" strokeWidth="0.3" fill="none" />
+                  {/* Dog */}
+                  <rect x="909" y="228" width="3" height="2" rx="0.5" fill="#8b6f47" />
+                  <rect x="912" y="227" width="1.5" height="1.5" fill="#8b6f47" />
+                  <rect x="909.5" y="230" width="0.5" height="1" fill="#6b5a45" />
+                  <rect x="911.5" y="230" width="0.5" height="1" fill="#6b5a45" />
+                </g>
+                {/* Person on bench reading near x=1170 */}
+                <g>
+                  <circle cx="1170" cy="207.5" r="1.2" fill="#8b6f47" />
+                  <rect x="1169.3" y="208.5" width="1.5" height="2.5" fill="#5a7a3a" />
+                  {/* Book */}
+                  <rect x="1168" y="209" width="1.2" height="1.5" fill="#e8e8e8" />
+                </g>
+                {/* Kid on swing near x=870 */}
+                <g>
+                  <circle cx="867" cy="205.5" r="0.8" fill="#d4a574" />
+                  <rect x="866.5" y="206.2" width="1" height="2" fill="#cc3333" />
+                </g>
               </g>
 
-              {/* Mailboxes - at curb by road */}
+              {/* ===== SUBURBAN SIDEWALK running along lower portion ===== */}
               <g opacity="1">
-                {[825, 975, 1125, 1275, 1425, 1575, 1725, 1875].map((x, i) => (
-                  <g key={`mailbox-${i}`}>
-                    <rect x={x} y="213" width="1.5" height="5" fill="#5a4a3a" opacity="1" />
-                    <rect x={x-0.5} y="212" width="2.5" height="2" rx="0.5" fill="#d4af37" opacity="1" />
-                  </g>
+                {/* Concrete sidewalk strip */}
+                <rect x="800" y="237" width="1200" height="3.5" fill="#d4d0c8" opacity="0.9" />
+                {/* Sidewalk expansion joints */}
+                {Array.from({length: 60}).map((_, ji) => (
+                  <rect key={`sw-joint-${ji}`} x={810 + ji * 20} y="237" width="0.4" height="3.5" fill="#bab6ae" opacity="0.4" />
                 ))}
+                {/* Curb edge (subtle) */}
+                <rect x="800" y="240.5" width="1200" height="0.8" fill="#b8b4ac" opacity="0.6" />
               </g>
 
-              {/* Fire hydrants - at curb by road */}
-              <g opacity="1">
+              {/* ===== DRIVEWAYS from each house down to the sidewalk ===== */}
+              <g opacity="0.8">
+                {/* Victorian driveways */}
+                {[820, 1120, 1420, 1720].map((x, i) => (
+                  <rect key={`vic-dw-${i}`} x={x+14} y="212" width="6" height="25" rx="0.5" fill="#c8c4bc" opacity="0.7" />
+                ))}
+                {/* Colonial driveways */}
                 {[1000, 1300, 1600, 1900].map((x, i) => (
+                  <rect key={`col-dw-${i}`} x={x+16} y="212" width="7" height="25" rx="0.5" fill="#c8c4bc" opacity="0.7" />
+                ))}
+                {/* Ranch driveways */}
+                {[880, 1180, 1480, 1780].map((x, i) => (
+                  <rect key={`ranch-dw-${i}`} x={x+20} y="210" width="7" height="27" rx="0.5" fill="#c8c4bc" opacity="0.7" />
+                ))}
+                {/* Cottage stone paths */}
+                {[1060, 1360, 1660, 1960].map((x, i) => (
+                  <g key={`cot-path-${i}`}>
+                    {Array.from({length: 8}).map((_, si) => (
+                      <rect key={`cot-step-${i}-${si}`} x={x+13} y={213 + si * 3} width="4" height="2" rx="0.8" fill="#b8b0a0" opacity="0.6" />
+                    ))}
+                  </g>
+                ))}
+                {/* Modern driveways */}
+                {[940, 1240, 1540, 1840].map((x, i) => (
+                  <rect key={`mod-dw-${i}`} x={x+13} y="210" width="6" height="27" rx="0.3" fill="#a0a098" opacity="0.65" />
+                ))}
+              </g>
+
+              {/* ===== MAILBOXES at the sidewalk ===== */}
+              <g opacity="1">
+                {[835, 950, 1070, 1135, 1250, 1370, 1435, 1550, 1670, 1735, 1850, 1970].map((x, i) => (
+                  <g key={`mailbox-${i}`}>
+                    {/* Post */}
+                    <rect x={x} y="232" width="1.2" height="5.5" fill="#5a4a3a" />
+                    {/* Mailbox */}
+                    <rect x={x-0.8} y="231" width="3" height="2" rx="0.5" fill={i % 3 === 0 ? "#2a2a2a" : "#d4af37"} />
+                  </g>
+                ))}
+              </g>
+
+              {/* ===== FIRE HYDRANTS along sidewalk ===== */}
+              <g opacity="0.9">
+                {[1000, 1400, 1800].map((x, i) => (
                   <g key={`hydrant-${i}`}>
-                    <rect x={x} y="214" width="3" height="4" fill="#cc3333" opacity="1" />
-                    <rect x={x-0.5} y="215" width="4" height="1.5" fill="#aa2222" opacity="1" />
+                    <rect x={x} y="234" width="2.5" height="3.5" fill="#cc3333" />
+                    <rect x={x-0.3} y="235" width="3" height="1.2" fill="#aa2222" />
                   </g>
                 ))}
               </g>
