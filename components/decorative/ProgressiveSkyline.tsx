@@ -344,15 +344,15 @@ export function ProgressiveSkyline() {
               {/* ========== PHASE 1: RURAL COUNTRYSIDE (0-800) ========== */}
 
               {/* Rolling hills - multi-layered for atmospheric depth */}
-              {/* Distant background hills - dark, misty */}
-              <path d="M 0,200 Q 80,190 160,195 Q 250,185 350,192 Q 450,188 550,193 Q 650,185 750,190 Q 800,195 900,198 L 900,250 L 0,250 Z"
+              {/* Distant background hills - dark, misty - extend to x=850 to overlap with suburbs */}
+              <path d="M 0,200 Q 80,190 160,195 Q 250,185 350,192 Q 450,188 550,193 Q 650,185 750,190 Q 800,193 850,195 L 850,250 L 0,250 Z"
                     fill="#4a7a4a" opacity="0.5" />
-              <path d="M 0,197 Q 100,188 200,193 Q 300,183 400,190 Q 500,195 600,187 Q 700,183 800,192 Q 850,195 900,197 L 900,250 L 0,250 Z"
+              <path d="M 0,197 Q 100,188 200,193 Q 300,183 400,190 Q 500,195 600,187 Q 700,183 800,190 Q 850,193 850,195 L 850,250 L 0,250 Z"
                     fill="#5a8a5a" opacity="0.45" />
-              {/* Mid-ground hills - primary terrain */}
-              <path d="M 0,210 Q 100,195 200,205 Q 300,215 400,200 Q 500,190 600,200 Q 650,205 700,208 Q 750,210 800,210 Q 850,210 900,210 L 900,250 L 0,250 Z"
+              {/* Mid-ground hills - primary terrain - flatten at x=800 to merge with suburb ground */}
+              <path d="M 0,210 Q 100,195 200,205 Q 300,215 400,200 Q 500,190 600,200 Q 650,205 700,208 Q 750,209 800,210 L 850,210 L 850,250 L 0,250 Z"
                     fill="#7aa87a" opacity="1" />
-              <path d="M 0,205 Q 80,192 160,200 Q 240,208 320,195 Q 400,185 480,195 Q 560,203 600,198 Q 650,203 700,206 Q 750,208 800,208 Q 850,208 900,208 L 900,250 L 0,250 Z"
+              <path d="M 0,205 Q 80,192 160,200 Q 240,208 320,195 Q 400,185 480,195 Q 560,203 600,198 Q 650,203 700,206 Q 750,208 800,208 L 850,208 L 850,250 L 0,250 Z"
                     fill="#8ab88a" opacity="1" />
 
               {/* Dirt paths connecting structures */}
@@ -991,15 +991,15 @@ export function ProgressiveSkyline() {
               {/* Background landscape - rolling hills with depth and house silhouettes */}
               {/* Rendered FIRST so foreground houses, roads, and cars appear in front */}
 
-              {/* === LAYER 1: Farthest hills - subtle depth backdrop === */}
+              {/* === LAYER 1: Farthest hills - starts matching rural distant hills at x=800, then rises === */}
               <g opacity="0.16">
-                <path d="M 800,172 Q 870,165 950,168 Q 1050,160 1150,164 Q 1250,158 1350,162 Q 1450,157 1550,161 Q 1650,156 1750,160 Q 1850,163 1950,166 Q 2000,168 2000,210 L 800,210 Z"
+                <path d="M 800,195 Q 870,190 950,186 Q 1050,178 1150,174 Q 1250,168 1350,165 Q 1450,162 1550,164 Q 1650,162 1750,166 Q 1850,172 1950,180 Q 2000,188 2000,210 L 800,210 Z"
                       fill="#8aaa8a" />
                 {/* Farthest house silhouettes - very small, faint */}
-                {[860, 930, 1000, 1080, 1160, 1240, 1320, 1400, 1480, 1560, 1640, 1720, 1800, 1880, 1960].map((bx, bi) => {
+                {[900, 980, 1060, 1150, 1240, 1330, 1420, 1510, 1600, 1690, 1780, 1870, 1940].map((bx, bi) => {
                   const bh = 2 + (bi % 2) * 1;
                   const bw = 3 + (bi % 3);
-                  const by = 163 - (bi % 4) * 1.5 - Math.sin(bi * 0.8) * 2;
+                  const by = 170 - (bi % 4) * 1.5 - Math.sin(bi * 0.8) * 2 + (bx < 950 ? 15 : 0) + (bx > 1800 ? 10 : 0);
                   return (
                     <g key={`bg-far-${bi}`}>
                       <rect x={bx} y={by} width={bw} height={bh} fill="#7a9a7a" />
@@ -1009,13 +1009,13 @@ export function ProgressiveSkyline() {
                 })}
               </g>
 
-              {/* === LAYER 2: Mid-distance hills - fills gap between far backdrop and ground === */}
+              {/* === LAYER 2: Mid-distance hills - ramps from rural mid-ground level === */}
               <g opacity="0.12">
-                <path d="M 800,185 Q 900,180 1000,183 Q 1100,178 1200,182 Q 1350,176 1500,180 Q 1650,175 1800,179 Q 1900,183 2000,185 L 2000,210 L 800,210 Z"
+                <path d="M 800,202 Q 880,198 960,195 Q 1050,190 1150,186 Q 1300,180 1450,183 Q 1600,179 1750,184 Q 1880,190 1950,197 Q 2000,202 2000,210 L 800,210 Z"
                       fill="#7a9a7a" />
-                {/* Mid-distance tree line */}
-                {[850, 920, 1010, 1090, 1180, 1270, 1350, 1440, 1530, 1620, 1710, 1800, 1890, 1970].map((tx, ti) => {
-                  const ty = 178 + Math.sin(ti * 1.2) * 3;
+                {/* Mid-distance tree line - starts sparse, gets denser */}
+                {[920, 1010, 1090, 1180, 1270, 1350, 1440, 1530, 1620, 1710, 1800, 1890].map((tx, ti) => {
+                  const ty = 185 + Math.sin(ti * 1.2) * 3 + (tx < 950 ? 8 : 0) + (tx > 1800 ? 6 : 0);
                   return (
                     <g key={`bg-mid-tree-${ti}`}>
                       <rect x={tx} y={ty + 3} width="1" height="3" fill="#5a7a5a" />
@@ -1025,9 +1025,9 @@ export function ProgressiveSkyline() {
                 })}
               </g>
 
-              {/* === LAYER 3: Near backdrop - connects to foreground ground === */}
+              {/* === LAYER 3: Near backdrop - gentle transition from rural to ground === */}
               <g opacity="0.08">
-                <path d="M 800,195 Q 920,192 1050,194 Q 1200,190 1350,193 Q 1500,189 1650,192 Q 1800,194 1950,196 Q 2000,197 2000,210 L 800,210 Z"
+                <path d="M 800,206 Q 900,203 1000,200 Q 1150,195 1300,193 Q 1500,191 1650,194 Q 1800,198 1900,203 Q 2000,207 2000,210 L 800,210 Z"
                       fill="#6a9a6a" />
               </g>
 
@@ -1714,6 +1714,26 @@ export function ProgressiveSkyline() {
                     fill="#7aa87a" opacity="1" />
               <path d="M 2000,208 Q 2100,208 2200,208 L 3400,208 Q 3500,207 3600,206 Q 3650,206 3700,205 Q 3750,204 3800,204 Q 3850,202 3900,199 L 3900,250 L 2000,250 Z"
                     fill="#8ab88a" opacity="1" />
+
+              {/* === CITY BACKGROUND: Transition hills that merge suburbs → city → rural === */}
+              {/* Left transition (x=2000-2400): hills fade OUT from suburban background */}
+              <g opacity="0.1">
+                <path d="M 2000,188 Q 2050,191 2100,195 Q 2200,200 2300,205 Q 2400,208 2400,210 L 2400,210 L 2000,210 Z"
+                      fill="#8aaa8a" />
+              </g>
+              <g opacity="0.06">
+                <path d="M 2000,202 Q 2050,204 2100,206 Q 2200,208 2300,209 Q 2400,210 2400,210 L 2400,210 L 2000,210 Z"
+                      fill="#7a9a7a" />
+              </g>
+              {/* Right transition (x=3400-3800): hills fade IN toward ending rural */}
+              <g opacity="0.1">
+                <path d="M 3400,210 Q 3500,208 3600,204 Q 3650,200 3700,197 Q 3750,195 3800,197 Q 3850,199 3900,200 L 3900,210 L 3400,210 Z"
+                      fill="#4a7a4a" />
+              </g>
+              <g opacity="0.06">
+                <path d="M 3500,210 Q 3600,207 3700,203 Q 3750,200 3800,202 Q 3850,204 3900,205 L 3900,210 L 3500,210 Z"
+                      fill="#5a8a5a" />
+              </g>
 
               {/* Pedestrian-friendly streets with bike lanes */}
               <g opacity="1">
@@ -3005,15 +3025,15 @@ export function ProgressiveSkyline() {
               {/* This creates a SEAMLESS LOOP back to the start */}
 
               {/* Rolling hills - multi-layered for atmospheric depth */}
-              {/* Distant background hills */}
-              <path d="M 3800,200 Q 3900,192 4000,195 Q 4150,186 4300,192 Q 4450,188 4600,193 Q 4750,185 4900,192 Q 5000,197 5000,200 L 5000,250 L 3800,250 Z"
+              {/* Distant background hills - ramp up from city transition */}
+              <path d="M 3800,205 Q 3850,202 3900,198 Q 3950,194 4000,195 Q 4150,186 4300,192 Q 4450,188 4600,193 Q 4750,185 4900,192 Q 5000,197 5000,200 L 5000,250 L 3800,250 Z"
                     fill="#4a7a4a" opacity="0.5" />
-              <path d="M 3800,197 Q 3900,189 4050,193 Q 4200,183 4350,190 Q 4500,195 4650,187 Q 4800,183 4950,192 Q 5000,195 5000,197 L 5000,250 L 3800,250 Z"
+              <path d="M 3800,204 Q 3850,200 3900,196 Q 3950,192 4050,193 Q 4200,183 4350,190 Q 4500,195 4650,187 Q 4800,183 4950,192 Q 5000,195 5000,197 L 5000,250 L 3800,250 Z"
                     fill="#5a8a5a" opacity="0.45" />
-              {/* Mid-ground hills */}
-              <path d="M 3800,205 Q 3900,200 4000,202 Q 4100,215 4200,200 Q 4300,192 4400,202 Q 4500,205 4600,197 Q 4700,202 4800,205 Q 4900,197 5000,210 L 5000,250 L 3800,250 Z"
+              {/* Mid-ground hills - start flat near city boundary, then undulate */}
+              <path d="M 3800,208 Q 3850,207 3900,204 Q 3950,202 4000,202 Q 4100,215 4200,200 Q 4300,192 4400,202 Q 4500,205 4600,197 Q 4700,202 4800,205 Q 4900,197 5000,210 L 5000,250 L 3800,250 Z"
                     fill="#7aa87a" opacity="1" />
-              <path d="M 3800,204 Q 3900,199 4000,200 Q 4100,208 4200,197 Q 4300,187 4400,197 Q 4500,203 4600,192 Q 4700,187 4800,194 Q 4900,190 5000,205 L 5000,250 L 3800,250 Z"
+              <path d="M 3800,207 Q 3850,205 3900,202 Q 3950,200 4000,200 Q 4100,208 4200,197 Q 4300,187 4400,197 Q 4500,203 4600,192 Q 4700,187 4800,194 Q 4900,190 5000,205 L 5000,250 L 3800,250 Z"
                     fill="#8ab88a" opacity="1" />
 
               {/* Dirt paths connecting structures */}
