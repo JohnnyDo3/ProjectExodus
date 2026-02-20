@@ -2989,43 +2989,43 @@ export function ProgressiveSkyline() {
                   const baseY = 214;
 
                   if (plantType === 0) {
-                    // Tall tree (scaled to ~35%)
+                    // Tall tree (scaled to ~28%)
                     return (
                       <g key={`plant-${i}`}>
-                        <rect x={x} y={baseY - 4.5} width="0.9" height="4.5" fill="#6b5a45" opacity="1" />
-                        <circle cx={x+0.5} cy={baseY - 4.5} r="1.8" fill="#4a7c2f" opacity="1" />
-                        <circle cx={x-0.7} cy={baseY - 3.5} r="1.4" fill="#5a8a5a" opacity="1" />
-                        <circle cx={x+1.6} cy={baseY - 3.5} r="1.4" fill="#5a8a5a" opacity="1" />
-                        <circle cx={x+0.5} cy={baseY - 5.8} r="1.1" fill="#6a9a6a" opacity="1" />
+                        <rect x={x} y={baseY - 3.5} width="0.7" height="3.5" fill="#6b5a45" opacity="1" />
+                        <circle cx={x+0.4} cy={baseY - 3.5} r="1.4" fill="#4a7c2f" opacity="1" />
+                        <circle cx={x-0.5} cy={baseY - 2.8} r="1.1" fill="#5a8a5a" opacity="1" />
+                        <circle cx={x+1.3} cy={baseY - 2.8} r="1.1" fill="#5a8a5a" opacity="1" />
+                        <circle cx={x+0.4} cy={baseY - 4.5} r="0.9" fill="#6a9a6a" opacity="1" />
                       </g>
                     );
                   } else if (plantType === 1) {
-                    // Medium tree (scaled to ~35%)
+                    // Medium tree (scaled to ~28%)
                     return (
                       <g key={`plant-${i}`}>
-                        <rect x={x} y={baseY - 3.2} width="0.7" height="3.2" fill="#6b5a45" opacity="1" />
-                        <circle cx={x+0.4} cy={baseY - 3.2} r="1.4" fill="#4a7c2f" opacity="1" />
-                        <circle cx={x-0.5} cy={baseY - 2.5} r="1.1" fill="#5a8a5a" opacity="1" />
-                        <circle cx={x+1.2} cy={baseY - 2.5} r="1.1" fill="#5a8a5a" opacity="1" />
+                        <rect x={x} y={baseY - 2.5} width="0.6" height="2.5" fill="#6b5a45" opacity="1" />
+                        <circle cx={x+0.3} cy={baseY - 2.5} r="1.1" fill="#4a7c2f" opacity="1" />
+                        <circle cx={x-0.4} cy={baseY - 2} r="0.9" fill="#5a8a5a" opacity="1" />
+                        <circle cx={x+1} cy={baseY - 2} r="0.9" fill="#5a8a5a" opacity="1" />
                       </g>
                     );
                   } else if (plantType === 2) {
-                    // Round bush (scaled to ~35%)
+                    // Round bush (scaled to ~28%)
                     return (
                       <g key={`plant-${i}`}>
-                        <circle cx={x+0.4} cy={baseY - 0.7} r="1.4" fill="#3a7a3a" opacity="1" />
-                        <circle cx={x-0.4} cy={baseY - 0.4} r="1.1" fill="#4a8a4a" opacity="1" />
-                        <circle cx={x+1.1} cy={baseY - 0.4} r="1.1" fill="#4a8a4a" opacity="1" />
-                        <circle cx={x+0.4} cy={baseY - 1.4} r="0.9" fill="#5a9a5a" opacity="1" />
+                        <circle cx={x+0.3} cy={baseY - 0.6} r="1.1" fill="#3a7a3a" opacity="1" />
+                        <circle cx={x-0.3} cy={baseY - 0.3} r="0.9" fill="#4a8a4a" opacity="1" />
+                        <circle cx={x+0.9} cy={baseY - 0.3} r="0.9" fill="#4a8a4a" opacity="1" />
+                        <circle cx={x+0.3} cy={baseY - 1.1} r="0.7" fill="#5a9a5a" opacity="1" />
                       </g>
                     );
                   } else {
-                    // Small bush/shrub (scaled to ~35%)
+                    // Small bush/shrub (scaled to ~28%)
                     return (
                       <g key={`plant-${i}`}>
-                        <ellipse cx={x+0.4} cy={baseY - 0.4} rx="1.1" ry="0.7" fill="#3a6a3a" opacity="1" />
-                        <circle cx={x-0.2} cy={baseY - 0.7} r="0.7" fill="#4a7a4a" opacity="1" />
-                        <circle cx={x+0.9} cy={baseY - 0.7} r="0.7" fill="#4a7a4a" opacity="1" />
+                        <ellipse cx={x+0.3} cy={baseY - 0.3} rx="0.9" ry="0.6" fill="#3a6a3a" opacity="1" />
+                        <circle cx={x-0.1} cy={baseY - 0.6} r="0.6" fill="#4a7a4a" opacity="1" />
+                        <circle cx={x+0.7} cy={baseY - 0.6} r="0.6" fill="#4a7a4a" opacity="1" />
                       </g>
                     );
                   }
