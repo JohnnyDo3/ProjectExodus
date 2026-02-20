@@ -2387,35 +2387,35 @@ export function ProgressiveSkyline() {
               <g>
                 {/* Park 1 - centered at x=2303 (between buildings 2268 and 2338) */}
                 <g>
-                  {/* Oak tree - left side (75% scale) */}
+                  {/* Oak tree - left side (scaled down ~45%) */}
                   <g key="park1-tree-1">
-                    <rect x="2275" y="199" width="3" height="11" fill="#5a4a3a" opacity="1" />
-                    <circle cx="2276.5" cy="194" r="7.5" fill="#4a7c2f" opacity="1" />
-                    <circle cx="2271" cy="197" r="5" fill="#5a8a4a" opacity="1" />
-                    <circle cx="2282" cy="197" r="5" fill="#5a8a4a" opacity="1" />
-                    <circle cx="2276.5" cy="188" r="4.5" fill="#6a9a5a" opacity="1" />
+                    <rect x="2275.5" y="205" width="1.5" height="5" fill="#5a4a3a" opacity="1" />
+                    <circle cx="2276.5" cy="203" r="3.5" fill="#4a7c2f" opacity="1" />
+                    <circle cx="2274" cy="204.5" r="2.3" fill="#5a8a4a" opacity="1" />
+                    <circle cx="2279" cy="204.5" r="2.3" fill="#5a8a4a" opacity="1" />
+                    <circle cx="2276.5" cy="200.5" r="2" fill="#6a9a5a" opacity="1" />
                   </g>
-                  {/* Pine tree - left-center (75% scale) */}
+                  {/* Pine tree - left-center (scaled down ~45%) */}
                   <g key="park1-tree-2">
-                    <rect x="2292" y="201" width="2" height="9" fill="#5a4a3a" opacity="1" />
-                    <polygon points="2293,182 2286,203 2300,203" fill="#2d5a3d" opacity="1" />
-                    <polygon points="2293,188 2288,201 2298,201" fill="#3d6a4d" opacity="1" />
-                    <polygon points="2293,193 2289,200 2297,200" fill="#2d5a3d" opacity="1" />
+                    <rect x="2292.5" y="206" width="1" height="4" fill="#5a4a3a" opacity="1" />
+                    <polygon points="2293,197 2289.5,207 2296.5,207" fill="#2d5a3d" opacity="1" />
+                    <polygon points="2293,200 2290.5,206 2295.5,206" fill="#3d6a4d" opacity="1" />
+                    <polygon points="2293,202.5 2291,205 2295,205" fill="#2d5a3d" opacity="1" />
                   </g>
-                  {/* Maple tree - center-right (75% scale) */}
+                  {/* Maple tree - center-right (scaled down ~45%) */}
                   <g key="park1-tree-3">
-                    <rect x="2313" y="200" width="2" height="10" fill="#6b5a45" opacity="1" />
-                    <ellipse cx="2314" cy="192" rx="7.5" ry="7" fill="#5a9a4a" opacity="1" />
-                    <ellipse cx="2308" cy="195" r="4" fill="#6aaa5a" opacity="1" />
-                    <ellipse cx="2320" cy="195" r="4" fill="#6aaa5a" opacity="1" />
+                    <rect x="2313.5" y="205.5" width="1" height="4.5" fill="#6b5a45" opacity="1" />
+                    <ellipse cx="2314" cy="203" rx="3.5" ry="3" fill="#5a9a4a" opacity="1" />
+                    <ellipse cx="2311.5" cy="204.5" r="1.8" fill="#6aaa5a" opacity="1" />
+                    <ellipse cx="2316.5" cy="204.5" r="1.8" fill="#6aaa5a" opacity="1" />
                   </g>
-                  {/* Oak tree - right side (75% scale) */}
+                  {/* Oak tree - right side (scaled down ~45%) */}
                   <g key="park1-tree-4">
-                    <rect x="2329" y="199" width="3" height="11" fill="#5a4a3a" opacity="1" />
-                    <circle cx="2330.5" cy="194" r="7.5" fill="#4a7c2f" opacity="1" />
-                    <circle cx="2325" cy="197" r="5" fill="#5a8a4a" opacity="1" />
-                    <circle cx="2336" cy="197" r="5" fill="#5a8a4a" opacity="1" />
-                    <circle cx="2330.5" cy="188" r="4.5" fill="#6a9a5a" opacity="1" />
+                    <rect x="2329.5" y="205" width="1.5" height="5" fill="#5a4a3a" opacity="1" />
+                    <circle cx="2330.5" cy="203" r="3.5" fill="#4a7c2f" opacity="1" />
+                    <circle cx="2328" cy="204.5" r="2.3" fill="#5a8a4a" opacity="1" />
+                    <circle cx="2333" cy="204.5" r="2.3" fill="#5a8a4a" opacity="1" />
+                    <circle cx="2330.5" cy="200.5" r="2" fill="#6a9a5a" opacity="1" />
                   </g>
 
                   {/* Fountain centered at x=2303 */}
@@ -2458,41 +2458,41 @@ export function ProgressiveSkyline() {
 
                 {/* Park 2 - centered at x=2779 (between buildings 2736 and 2822) - largest park */}
                 <g>
-                  {/* Cypress tree - far left (75% scale) */}
+                  {/* Cypress tree - far left (scaled down ~45%) */}
                   <g key="park2-tree-1">
-                    <rect x="2743" y="201" width="2" height="9" fill="#5a4a3a" opacity="1" />
-                    <ellipse cx="2744" cy="188" rx="4" ry="13" fill="#2d5a3d" opacity="1" />
-                    <ellipse cx="2744" cy="190" rx="3" ry="11" fill="#3d6a4d" opacity="1" />
+                    <rect x="2743.5" y="206" width="1" height="4" fill="#5a4a3a" opacity="1" />
+                    <ellipse cx="2744" cy="200" rx="1.8" ry="6" fill="#2d5a3d" opacity="1" />
+                    <ellipse cx="2744" cy="201" rx="1.4" ry="5" fill="#3d6a4d" opacity="1" />
                   </g>
-                  {/* Oak - left side (75% scale) */}
+                  {/* Oak - left side (scaled down ~45%) */}
                   <g key="park2-tree-2">
-                    <rect x="2755" y="197" width="4" height="13" fill="#5a4a3a" opacity="1" />
-                    <circle cx="2757" cy="190" r="9" fill="#4a7c2f" opacity="1" />
-                    <circle cx="2750" cy="194" r="6" fill="#5a8a4a" opacity="1" />
-                    <circle cx="2764" cy="194" r="6" fill="#5a8a4a" opacity="1" />
-                    <circle cx="2757" cy="183" r="5" fill="#6a9a5a" opacity="1" />
+                    <rect x="2756" y="204" width="2" height="6" fill="#5a4a3a" opacity="1" />
+                    <circle cx="2757" cy="201" r="4" fill="#4a7c2f" opacity="1" />
+                    <circle cx="2754" cy="203" r="2.7" fill="#5a8a4a" opacity="1" />
+                    <circle cx="2760" cy="203" r="2.7" fill="#5a8a4a" opacity="1" />
+                    <circle cx="2757" cy="198" r="2.3" fill="#6a9a5a" opacity="1" />
                   </g>
-                  {/* Pine - center left (75% scale) */}
+                  {/* Pine - center left (scaled down ~45%) */}
                   <g key="park2-tree-3">
-                    <rect x="2773" y="200" width="2" height="10" fill="#5a4a3a" opacity="1" />
-                    <polygon points="2774,180 2767,202 2781,202" fill="#2d5a3d" opacity="1" />
-                    <polygon points="2774,186 2769,200 2779,200" fill="#3d6a4d" opacity="1" />
-                    <polygon points="2774,192 2770,199 2778,199" fill="#2d5a3d" opacity="1" />
+                    <rect x="2773.5" y="206" width="1" height="4" fill="#5a4a3a" opacity="1" />
+                    <polygon points="2774,197 2770.5,207 2777.5,207" fill="#2d5a3d" opacity="1" />
+                    <polygon points="2774,200 2771.5,206 2776.5,206" fill="#3d6a4d" opacity="1" />
+                    <polygon points="2774,202.5 2772,205 2776,205" fill="#2d5a3d" opacity="1" />
                   </g>
-                  {/* Pine - center right (75% scale) */}
+                  {/* Pine - center right (scaled down ~45%) */}
                   <g key="park2-tree-4">
-                    <rect x="2785" y="200" width="2" height="10" fill="#5a4a3a" opacity="1" />
-                    <polygon points="2786,182 2779,202 2793,202" fill="#2d5a3d" opacity="1" />
-                    <polygon points="2786,188 2781,200 2791,200" fill="#3d6a4d" opacity="1" />
-                    <polygon points="2786,193 2782,199 2790,199" fill="#2d5a3d" opacity="1" />
+                    <rect x="2785.5" y="206" width="1" height="4" fill="#5a4a3a" opacity="1" />
+                    <polygon points="2786,198 2782.5,207 2789.5,207" fill="#2d5a3d" opacity="1" />
+                    <polygon points="2786,200.5 2783.5,206 2788.5,206" fill="#3d6a4d" opacity="1" />
+                    <polygon points="2786,203 2784,205 2788,205" fill="#2d5a3d" opacity="1" />
                   </g>
-                  {/* Oak - right side (75% scale) */}
+                  {/* Oak - right side (scaled down ~45%) */}
                   <g key="park2-tree-5">
-                    <rect x="2801" y="197" width="4" height="13" fill="#5a4a3a" opacity="1" />
-                    <circle cx="2803" cy="190" r="9" fill="#4a7c2f" opacity="1" />
-                    <circle cx="2796" cy="194" r="6" fill="#5a8a4a" opacity="1" />
-                    <circle cx="2810" cy="194" r="6" fill="#5a8a4a" opacity="1" />
-                    <circle cx="2803" cy="183" r="5" fill="#6a9a5a" opacity="1" />
+                    <rect x="2802" y="204" width="2" height="6" fill="#5a4a3a" opacity="1" />
+                    <circle cx="2803" cy="201" r="4" fill="#4a7c2f" opacity="1" />
+                    <circle cx="2800" cy="203" r="2.7" fill="#5a8a4a" opacity="1" />
+                    <circle cx="2806" cy="203" r="2.7" fill="#5a8a4a" opacity="1" />
+                    <circle cx="2803" cy="198" r="2.3" fill="#6a9a5a" opacity="1" />
                   </g>
 
                   {/* Garden statue/sculpture on pedestal centered at x=2779 */}
@@ -2537,34 +2537,34 @@ export function ProgressiveSkyline() {
 
                 {/* Park 3 - centered at x=3399 (between buildings 3362 and 3436) */}
                 <g>
-                  {/* Maple tree - left side (75% scale) */}
+                  {/* Maple tree - left side (scaled down ~45%) */}
                   <g key="park3-tree-1">
-                    <rect x="3369" y="198" width="3" height="12" fill="#6b5a45" opacity="1" />
-                    <ellipse cx="3370.5" cy="190" rx="8" ry="7.5" fill="#5a9a4a" opacity="1" />
-                    <ellipse cx="3364" cy="194" r="4.5" fill="#6aaa5a" opacity="1" />
-                    <ellipse cx="3377" cy="194" r="4.5" fill="#6aaa5a" opacity="1" />
-                    <ellipse cx="3370.5" cy="184" rx="4.5" ry="4" fill="#7aba6a" opacity="1" />
+                    <rect x="3370" y="205" width="1.5" height="5" fill="#6b5a45" opacity="1" />
+                    <ellipse cx="3370.5" cy="202.5" rx="3.5" ry="3.3" fill="#5a9a4a" opacity="1" />
+                    <ellipse cx="3368" cy="204" r="2" fill="#6aaa5a" opacity="1" />
+                    <ellipse cx="3373" cy="204" r="2" fill="#6aaa5a" opacity="1" />
+                    <ellipse cx="3370.5" cy="200" rx="2" ry="1.8" fill="#7aba6a" opacity="1" />
                   </g>
-                  {/* Pine - left-center (75% scale) */}
+                  {/* Pine - left-center (scaled down ~45%) */}
                   <g key="park3-tree-2">
-                    <rect x="3387" y="200" width="2" height="10" fill="#5a4a3a" opacity="1" />
-                    <polygon points="3388,183 3381,202 3395,202" fill="#2d5a3d" opacity="1" />
-                    <polygon points="3388,189 3383,200 3393,200" fill="#3d6a4d" opacity="1" />
-                    <polygon points="3388,194 3384,199 3392,199" fill="#2d5a3d" opacity="1" />
+                    <rect x="3387.5" y="206" width="1" height="4" fill="#5a4a3a" opacity="1" />
+                    <polygon points="3388,197.5 3384.5,207 3391.5,207" fill="#2d5a3d" opacity="1" />
+                    <polygon points="3388,200 3385.5,206 3390.5,206" fill="#3d6a4d" opacity="1" />
+                    <polygon points="3388,202.5 3386,205 3390,205" fill="#2d5a3d" opacity="1" />
                   </g>
-                  {/* Cypress - center (75% scale) */}
+                  {/* Cypress - center (scaled down ~45%) */}
                   <g key="park3-tree-3">
-                    <rect x="3398" y="201" width="2" height="9" fill="#5a4a3a" opacity="1" />
-                    <ellipse cx="3399" cy="189" rx="3" ry="12" fill="#2d5a3d" opacity="1" />
-                    <ellipse cx="3399" cy="191" rx="2.5" ry="10" fill="#3d6a4d" opacity="1" />
+                    <rect x="3398.5" y="206" width="1" height="4" fill="#5a4a3a" opacity="1" />
+                    <ellipse cx="3399" cy="201" rx="1.4" ry="5.5" fill="#2d5a3d" opacity="1" />
+                    <ellipse cx="3399" cy="201.5" rx="1.1" ry="4.5" fill="#3d6a4d" opacity="1" />
                   </g>
-                  {/* Oak tree - right side (75% scale) */}
+                  {/* Oak tree - right side (scaled down ~45%) */}
                   <g key="park3-tree-4">
-                    <rect x="3421" y="198" width="3" height="12" fill="#5a4a3a" opacity="1" />
-                    <circle cx="3422.5" cy="191" r="8" fill="#4a7c2f" opacity="1" />
-                    <circle cx="3416" cy="195" r="5" fill="#5a8a4a" opacity="1" />
-                    <circle cx="3429" cy="195" r="5" fill="#5a8a4a" opacity="1" />
-                    <circle cx="3422.5" cy="185" r="4.5" fill="#6a9a5a" opacity="1" />
+                    <rect x="3422" y="205" width="1.5" height="5" fill="#5a4a3a" opacity="1" />
+                    <circle cx="3422.5" cy="202.5" r="3.5" fill="#4a7c2f" opacity="1" />
+                    <circle cx="3420" cy="204" r="2.3" fill="#5a8a4a" opacity="1" />
+                    <circle cx="3425" cy="204" r="2.3" fill="#5a8a4a" opacity="1" />
+                    <circle cx="3422.5" cy="200" r="2" fill="#6a9a5a" opacity="1" />
                   </g>
 
                   {/* Decorative garden bed with flower rings centered at x=3399 */}
