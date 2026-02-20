@@ -2642,6 +2642,11 @@ export function ProgressiveSkyline() {
                   <path d="M 2268,143 Q 2303,180 2338,143 L 2334,143 Q 2303,170 2272,143 Z" fill="#d8d0c8" opacity="1" />
                   <path d="M 2268,143 Q 2303,180 2338,143" stroke="#c0b8b0" strokeWidth="0.8" fill="none" opacity="0.8" />
                   <path d="M 2272,143 Q 2303,170 2334,143" stroke="#b8b0a8" strokeWidth="0.6" fill="none" opacity="0.5" />
+                  {/* Arch drop shadow */}
+                  <path d="M 2274,144 Q 2303,173 2332,144" stroke="#000000" strokeWidth="1.8" fill="none" opacity="0.06" />
+                  {/* Springer rosettes */}
+                  <circle cx="2270" cy="145" r="1.2" fill="#d8d0c8" opacity="0.7" />
+                  <circle cx="2336" cy="145" r="1.2" fill="#d8d0c8" opacity="0.7" />
                   {/* Voussoir joints */}
                   <line x1="2280" y1="143" x2="2281" y2="151" stroke="#b8b0a8" strokeWidth="0.4" opacity="0.5" />
                   <line x1="2289" y1="143" x2="2290" y2="156" stroke="#b8b0a8" strokeWidth="0.4" opacity="0.5" />
@@ -2762,6 +2767,10 @@ export function ProgressiveSkyline() {
                   <circle cx="2295" cy="136" r="0.8" fill="#ff9999" opacity="0.7" />
                   <circle cx="2303" cy="135" r="1" fill="#ffcc66" opacity="0.7" />
                   <circle cx="2311" cy="136" r="0.8" fill="#cc99ff" opacity="0.7" />
+                  {/* Garden walkway */}
+                  <rect x="2296" y="136.5" width="14" height="0.8" fill="#d0c8c0" opacity="0.4" rx="0.3" />
+                  <rect x="2283" y="136.8" width="6" height="0.6" fill="#d0c8c0" opacity="0.3" rx="0.2" />
+                  <rect x="2317" y="136.8" width="6" height="0.6" fill="#d0c8c0" opacity="0.3" rx="0.2" />
                 </g>
 
                 {/* Bridge 2 over Park 2 - Roman columns + fully enclosed glass dome */}
@@ -2783,6 +2792,11 @@ export function ProgressiveSkyline() {
                   <path d="M 2736,148 Q 2779,188 2822,148 L 2818,148 Q 2779,178 2740,148 Z" fill="#d8d0c8" opacity="1" />
                   <path d="M 2736,148 Q 2779,188 2822,148" stroke="#c0b8b0" strokeWidth="0.8" fill="none" opacity="0.8" />
                   <path d="M 2740,148 Q 2779,178 2818,148" stroke="#b8b0a8" strokeWidth="0.6" fill="none" opacity="0.5" />
+                  {/* Arch drop shadow */}
+                  <path d="M 2742,149 Q 2779,180 2816,149" stroke="#000000" strokeWidth="1.8" fill="none" opacity="0.06" />
+                  {/* Springer rosettes */}
+                  <circle cx="2738" cy="150" r="1.2" fill="#d8d0c8" opacity="0.7" />
+                  <circle cx="2820" cy="150" r="1.2" fill="#d8d0c8" opacity="0.7" />
                   {/* Voussoir joints */}
                   <line x1="2749" y1="148" x2="2750" y2="156" stroke="#b8b0a8" strokeWidth="0.4" opacity="0.5" />
                   <line x1="2762" y1="148" x2="2763" y2="162" stroke="#b8b0a8" strokeWidth="0.4" opacity="0.5" />
@@ -2899,6 +2913,10 @@ export function ProgressiveSkyline() {
                   <circle cx="2768" cy="140" r="0.8" fill="#cc99ff" opacity="0.7" />
                   <circle cx="2779" cy="139" r="1" fill="#ffcc66" opacity="0.7" />
                   <circle cx="2790" cy="140" r="0.8" fill="#ff9999" opacity="0.7" />
+                  {/* Garden walkway */}
+                  <rect x="2770" y="141" width="18" height="0.8" fill="#d0c8c0" opacity="0.4" rx="0.3" />
+                  <rect x="2751" y="141.3" width="8" height="0.6" fill="#d0c8c0" opacity="0.3" rx="0.2" />
+                  <rect x="2799" y="141.3" width="8" height="0.6" fill="#d0c8c0" opacity="0.3" rx="0.2" />
                 </g>
 
                 {/* Bridge 3 over Park 3 - Roman columns + fully enclosed glass dome */}
@@ -2920,6 +2938,11 @@ export function ProgressiveSkyline() {
                   <path d="M 3362,146 Q 3401,184 3440,146 L 3436,146 Q 3401,174 3366,146 Z" fill="#d8d0c8" opacity="1" />
                   <path d="M 3362,146 Q 3401,184 3440,146" stroke="#c0b8b0" strokeWidth="0.8" fill="none" opacity="0.8" />
                   <path d="M 3366,146 Q 3401,174 3436,146" stroke="#b8b0a8" strokeWidth="0.6" fill="none" opacity="0.5" />
+                  {/* Arch drop shadow */}
+                  <path d="M 3368,147 Q 3401,176 3434,147" stroke="#000000" strokeWidth="1.8" fill="none" opacity="0.06" />
+                  {/* Springer rosettes */}
+                  <circle cx="3364" cy="148" r="1.2" fill="#d8d0c8" opacity="0.7" />
+                  <circle cx="3438" cy="148" r="1.2" fill="#d8d0c8" opacity="0.7" />
                   {/* Voussoir joints */}
                   <line x1="3374" y1="146" x2="3375" y2="154" stroke="#b8b0a8" strokeWidth="0.4" opacity="0.5" />
                   <line x1="3386" y1="146" x2="3387" y2="160" stroke="#b8b0a8" strokeWidth="0.4" opacity="0.5" />
@@ -3039,6 +3062,10 @@ export function ProgressiveSkyline() {
                   <circle cx="3393" cy="139" r="0.8" fill="#ff9999" opacity="0.7" />
                   <circle cx="3401" cy="137" r="1" fill="#66ccff" opacity="0.7" />
                   <circle cx="3409" cy="139" r="0.8" fill="#cc99ff" opacity="0.7" />
+                  {/* Garden walkway */}
+                  <rect x="3393" y="139.5" width="16" height="0.8" fill="#d0c8c0" opacity="0.4" rx="0.3" />
+                  <rect x="3375" y="139.8" width="7" height="0.6" fill="#d0c8c0" opacity="0.3" rx="0.2" />
+                  <rect x="3420" y="139.8" width="7" height="0.6" fill="#d0c8c0" opacity="0.3" rx="0.2" />
                 </g>
               </g>
 
