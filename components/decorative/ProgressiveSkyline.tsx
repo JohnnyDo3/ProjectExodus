@@ -79,7 +79,16 @@ export function ProgressiveSkyline() {
 
         .turbine-blade {
           animation: rotate 4s linear infinite;
-          transform-origin: center;
+        }
+
+        @keyframes cyclistBob {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-1.5px); }
+        }
+
+        @keyframes wheelSpin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
         }
 
         @keyframes carDrive {
@@ -1800,6 +1809,17 @@ export function ProgressiveSkyline() {
 
                 {/* Sidewalk/pedestrian path - matches suburbs sidewalk bottom edge */}
                 <rect x="2000" y="214" width="1800" height="4" fill="#d8d8d8" opacity="1" />
+                {/* Sidewalk expansion joint lines every ~30px */}
+                {Array.from({length: 60}).map((_, j) => (
+                  <line key={`joint-${j}`} x1={2000 + j * 30} y1="214" x2={2000 + j * 30} y2="218"
+                        stroke="#c0c0c0" strokeWidth="0.4" opacity="0.6" />
+                ))}
+                {/* Brick-pattern border strip along sidewalk edge */}
+                <rect x="2000" y="217.5" width="1800" height="0.8" fill="#b0a090" opacity="0.7" />
+                {Array.from({length: 180}).map((_, b) => (
+                  <rect key={`brick-${b}`} x={2000 + b * 10} y="217.5" width="4.5" height="0.8"
+                        fill={b % 2 === 0 ? "#a89080" : "#b8a898"} opacity="0.6" />
+                ))}
 
                 {/* Grass strip between road and sidewalk - sits at suburbs sidewalk level */}
                 <rect x="2000" y="210" width="1800" height="4" fill="#7aa87a" opacity="1" />
@@ -1814,21 +1834,21 @@ export function ProgressiveSkyline() {
               {/* Modern eco-buildings with varied sizes and detailed architecture - MINIATURE */}
               <g>
                 {[
-                  {x: 2020, h: 60, w: 45, color: "#e8f4e8"}, {x: 2074, h: 80, w: 58, color: "#f0f8f0"},
-                  {x: 2142, h: 68, w: 52, color: "#e0f2e0"}, {x: 2204, h: 90, w: 64, color: "#e8f4e8"},
-                  {x: 2338, h: 88, w: 62, color: "#e0f2e0"},
-                  {x: 2410, h: 65, w: 48, color: "#e8f4e8"},
-                  {x: 2468, h: 98, w: 68, color: "#f0f8f0"},
-                  {x: 2546, h: 78, w: 56, color: "#e0f2e0"}, {x: 2612, h: 85, w: 60, color: "#e8f4e8"},
-                  {x: 2682, h: 72, w: 54, color: "#f0f8f0"},
-                  {x: 2822, h: 82, w: 58, color: "#e8f4e8"}, {x: 2890, h: 75, w: 52, color: "#f0f8f0"},
-                  {x: 2952, h: 92, w: 64, color: "#e0f2e0"}, {x: 3026, h: 68, w: 50, color: "#e8f4e8"},
-                  {x: 3086, h: 88, w: 62, color: "#f0f8f0"}, {x: 3158, h: 78, w: 56, color: "#e0f2e0"},
-                  {x: 3224, h: 98, w: 68, color: "#e8f4e8"}, {x: 3302, h: 85, w: 60, color: "#f0f8f0"},
+                  {x: 2020, h: 60, w: 45, color: "#e8f4e8"}, {x: 2074, h: 80, w: 58, color: "#f5ede0"},
+                  {x: 2142, h: 68, w: 52, color: "#e0ecf4"}, {x: 2204, h: 90, w: 64, color: "#e8d0c0"},
+                  {x: 2338, h: 88, w: 62, color: "#f0f8f0"},
+                  {x: 2410, h: 65, w: 48, color: "#f0e6d6"},
+                  {x: 2468, h: 98, w: 68, color: "#e8f4e8"},
+                  {x: 2546, h: 78, w: 56, color: "#e8e4e0"}, {x: 2612, h: 85, w: 60, color: "#e0f2e0"},
+                  {x: 2682, h: 72, w: 54, color: "#d8e8f0"},
+                  {x: 2822, h: 82, w: 58, color: "#e0c8b8"}, {x: 2890, h: 75, w: 52, color: "#e8f4e8"},
+                  {x: 2952, h: 92, w: 64, color: "#ede0cf"}, {x: 3026, h: 68, w: 50, color: "#e0dcd8"},
+                  {x: 3086, h: 88, w: 62, color: "#e0f2e0"}, {x: 3158, h: 78, w: 56, color: "#d8c0b0"},
+                  {x: 3224, h: 98, w: 68, color: "#e4f0f8"}, {x: 3302, h: 85, w: 60, color: "#f0f8f0"},
                   /* Park 3 replaces building at x=3372 */
-                  {x: 3436, h: 95, w: 66, color: "#e8f4e8"},
-                  {x: 3512, h: 82, w: 58, color: "#f0f8f0"}, {x: 3580, h: 100, w: 70, color: "#e0f2e0"},
-                  {x: 3660, h: 88, w: 62, color: "#e8f4e8"}, {x: 3732, h: 75, w: 54, color: "#f0f8f0"}
+                  {x: 3436, h: 95, w: 66, color: "#e8d0c0"},
+                  {x: 3512, h: 82, w: 58, color: "#e8f4e8"}, {x: 3580, h: 100, w: 70, color: "#d8d4d0"},
+                  {x: 3660, h: 88, w: 62, color: "#f0f8f0"}, {x: 3732, h: 75, w: 54, color: "#f5ede0"}
                 ].map((bldg, i) => {
                   // Calculate skyscraper window layout - detailed windows with tight spacing
                   const windowWidth = 8
@@ -2105,247 +2125,238 @@ export function ProgressiveSkyline() {
                       />
                     </g>
 
-                    {/* First floor windows - wide shop-style with 6 panes (3x2 grid) */}
-                    <g opacity="1">
-                      {/* Left storefront window - wide 6-pane shop window */}
-                      {(() => {
-                        const leftWinX = bldg.x + bldg.w/2 - 26
-                        const leftWinY = 200
-                        const sfWidth = 18
-                        const sfHeight = 10
-                        const paneWidth = (sfWidth - 2.4) / 3  // 3 columns
-                        const paneHeight = (sfHeight - 1.6) / 2  // 2 rows
-                        const isLeftLit = isNightTime && isWindowLit(bldg.x + 1000 + i)
-                        return (
-                          <g>
-                            {/* Window frame */}
-                            <rect x={leftWinX} y={leftWinY} width={sfWidth} height={sfHeight} fill="#4a5a4a" opacity="1" />
-                            {/* 6 panes of glass (3 columns x 2 rows) */}
-                            {[0, 1, 2].map(col => [0, 1].map(row => (
-                              <rect
-                                key={`left-pane-${col}-${row}`}
-                                x={leftWinX + 0.6 + col * (paneWidth + 0.3)}
-                                y={leftWinY + 0.6 + row * (paneHeight + 0.4)}
-                                width={paneWidth}
-                                height={paneHeight}
-                                fill={isLeftLit ? "#FFD700" : "#6b8ea8"}
-                                opacity="1"
-                              />
-                            )))}
-                            {/* Vertical mullions (2 dividers for 3 columns) */}
-                            <rect x={leftWinX + 0.6 + paneWidth} y={leftWinY + 0.6} width="0.6" height={sfHeight - 1.2} fill="#4a5a4a" opacity="1" />
-                            <rect x={leftWinX + 0.6 + 2 * paneWidth + 0.3} y={leftWinY + 0.6} width="0.6" height={sfHeight - 1.2} fill="#4a5a4a" opacity="1" />
-                            {/* Horizontal mullion (center divider for 2 rows) */}
-                            <rect x={leftWinX + 0.6} y={leftWinY + 0.6 + paneHeight} width={sfWidth - 1.2} height="0.5" fill="#4a5a4a" opacity="1" />
-                            {/* Window sill */}
-                            <rect x={leftWinX - 0.5} y={leftWinY + sfHeight - 0.5} width={sfWidth + 1} height="1.5" fill="#5a6a5a" opacity="1" />
-                            {/* Decorative trim above window */}
-                            <rect x={leftWinX - 0.5} y={leftWinY - 1} width={sfWidth + 1} height="1" fill="#6a7a6a" opacity="1" />
-                            {/* Reflections on each pane */}
-                            {!isLeftLit && [0, 1, 2].map(col => (
-                              <rect
-                                key={`left-reflect-${col}`}
-                                x={leftWinX + 1 + col * (paneWidth + 0.3)}
-                                y={leftWinY + 1}
-                                width={paneWidth * 0.4}
-                                height={paneHeight * 0.5}
-                                fill="#8ab8d8"
-                                opacity="0.35"
-                              />
-                            ))}
-                          </g>
-                        )
-                      })()}
+                    {/* First floor - varied storefronts cycling 4 types */}
+                    {(() => {
+                      const storefrontType = i % 4 // 0=cafe, 1=flower shop, 2=bookstore, 3=standard glass
+                      const cx = bldg.x + bldg.w / 2
+                      const awningColors = ['#c84040', '#4a8a4a', '#b8860b', '#4a6a8a']
+                      const awningColor = awningColors[storefrontType]
 
-                      {/* Right storefront window - wide 6-pane shop window */}
-                      {(() => {
-                        const rightWinX = bldg.x + bldg.w/2 + 8
-                        const rightWinY = 200
-                        const sfWidth = 18
-                        const sfHeight = 10
-                        const paneWidth = (sfWidth - 2.4) / 3  // 3 columns
-                        const paneHeight = (sfHeight - 1.6) / 2  // 2 rows
-                        const isRightLit = isNightTime && isWindowLit(bldg.x + 1001 + i)
-                        return (
-                          <g>
-                            {/* Window frame */}
-                            <rect x={rightWinX} y={rightWinY} width={sfWidth} height={sfHeight} fill="#4a5a4a" opacity="1" />
-                            {/* 6 panes of glass (3 columns x 2 rows) */}
-                            {[0, 1, 2].map(col => [0, 1].map(row => (
-                              <rect
-                                key={`right-pane-${col}-${row}`}
-                                x={rightWinX + 0.6 + col * (paneWidth + 0.3)}
-                                y={rightWinY + 0.6 + row * (paneHeight + 0.4)}
-                                width={paneWidth}
-                                height={paneHeight}
-                                fill={isRightLit ? "#FFD700" : "#6b8ea8"}
-                                opacity="1"
-                              />
-                            )))}
-                            {/* Vertical mullions (2 dividers for 3 columns) */}
-                            <rect x={rightWinX + 0.6 + paneWidth} y={rightWinY + 0.6} width="0.6" height={sfHeight - 1.2} fill="#4a5a4a" opacity="1" />
-                            <rect x={rightWinX + 0.6 + 2 * paneWidth + 0.3} y={rightWinY + 0.6} width="0.6" height={sfHeight - 1.2} fill="#4a5a4a" opacity="1" />
-                            {/* Horizontal mullion (center divider for 2 rows) */}
-                            <rect x={rightWinX + 0.6} y={rightWinY + 0.6 + paneHeight} width={sfWidth - 1.2} height="0.5" fill="#4a5a4a" opacity="1" />
-                            {/* Window sill */}
-                            <rect x={rightWinX - 0.5} y={rightWinY + sfHeight - 0.5} width={sfWidth + 1} height="1.5" fill="#5a6a5a" opacity="1" />
-                            {/* Decorative trim above window */}
-                            <rect x={rightWinX - 0.5} y={rightWinY - 1} width={sfWidth + 1} height="1" fill="#6a7a6a" opacity="1" />
-                            {/* Reflections on each pane */}
-                            {!isRightLit && [0, 1, 2].map(col => (
-                              <rect
-                                key={`right-reflect-${col}`}
-                                x={rightWinX + 1 + col * (paneWidth + 0.3)}
-                                y={rightWinY + 1}
-                                width={paneWidth * 0.4}
-                                height={paneHeight * 0.5}
-                                fill="#8ab8d8"
-                                opacity="0.35"
-                              />
-                            ))}
-                          </g>
-                        )
-                      })()}
-                    </g>
+                      return (
+                        <g opacity="1">
+                          {/* Colored awning/sign strip above storefront */}
+                          <rect x={bldg.x + 4} y={195} width={bldg.w - 8} height="3" fill={awningColor} opacity="1" />
+                          {/* Awning scalloped edge */}
+                          {Array.from({length: Math.floor((bldg.w - 8) / 4)}).map((_, s) => (
+                            <path key={`scallop-${i}-${s}`}
+                                  d={`M ${bldg.x + 4 + s * 4},198 Q ${bldg.x + 6 + s * 4},200 ${bldg.x + 8 + s * 4},198`}
+                                  fill={awningColor} opacity="0.9" />
+                          ))}
+
+                          {storefrontType === 0 ? (
+                            /* CAFE: striped awning + bistro table */
+                            <g>
+                              {/* Striped awning pattern */}
+                              {Array.from({length: Math.floor((bldg.w - 8) / 3)}).map((_, s) => (
+                                s % 2 === 0 ? (
+                                  <rect key={`stripe-${i}-${s}`} x={bldg.x + 4 + s * 3} y={195} width="3" height="3" fill="#e8e0d0" opacity="0.5" />
+                                ) : null
+                              ))}
+                              {/* Wide display window */}
+                              <rect x={cx - 18} y={199} width="36" height="11" fill="#4a5a4a" opacity="1" />
+                              <rect x={cx - 17} y={199.5} width="34" height="10" fill={isNightTime && isWindowLit(bldg.x + 1000 + i) ? "#FFD700" : "#6b8ea8"} opacity="1" />
+                              {/* Cafe door */}
+                              <rect x={cx - 4} y={199} width="8" height="13" fill="#5a6a5a" opacity="1" />
+                              <rect x={cx - 3} y={200} width="2.5" height="12" fill="#6b8ea8" opacity="0.9" />
+                              <rect x={cx + 0.5} y={200} width="2.5" height="12" fill="#6b8ea8" opacity="0.9" />
+                              <circle cx={cx - 0.5} cy={206} r="0.5" fill="#d4af37" opacity="1" />
+                              <circle cx={cx + 0.5} cy={206} r="0.5" fill="#d4af37" opacity="1" />
+                              {/* Bistro table outside (on sidewalk) */}
+                              <rect x={cx + 14} y={212} width="0.8" height="4" fill="#5a5a5a" opacity="1" />
+                              <ellipse cx={cx + 14.4} cy={212} rx="3" ry="1" fill="#6a6a6a" opacity="1" />
+                              {/* Tiny chairs */}
+                              <rect x={cx + 10} y={213} width="2" height="3" rx="0.3" fill="#8a6a4a" opacity="0.8" />
+                              <rect x={cx + 17} y={213} width="2" height="3" rx="0.3" fill="#8a6a4a" opacity="0.8" />
+                              {/* Sign text area */}
+                              <rect x={cx - 6} y={195.5} width="12" height="2" fill="#f5e6d3" opacity="0.8" rx="0.5" />
+                            </g>
+                          ) : storefrontType === 1 ? (
+                            /* FLOWER SHOP: window boxes, green awning */
+                            <g>
+                              {/* Display window */}
+                              <rect x={cx - 18} y={199} width="36" height="11" fill="#4a5a4a" opacity="1" />
+                              <rect x={cx - 17} y={199.5} width="15" height="10" fill={isNightTime && isWindowLit(bldg.x + 1000 + i) ? "#FFD700" : "#6b8ea8"} opacity="1" />
+                              <rect x={cx + 2} y={199.5} width="15" height="10" fill={isNightTime && isWindowLit(bldg.x + 1001 + i) ? "#FFD700" : "#6b8ea8"} opacity="1" />
+                              {/* Door */}
+                              <rect x={cx - 4} y={199} width="8" height="13" fill="#5a6a5a" opacity="1" />
+                              <rect x={cx - 3} y={200} width="2.5" height="12" fill="#6b8ea8" opacity="0.9" />
+                              <rect x={cx + 0.5} y={200} width="2.5" height="12" fill="#6b8ea8" opacity="0.9" />
+                              <circle cx={cx + 0.5} cy={206} r="0.5" fill="#d4af37" opacity="1" />
+                              {/* Window flower boxes below display windows */}
+                              <rect x={cx - 17} y={209} width="14" height="2.5" fill="#7a5a3a" opacity="1" />
+                              <circle cx={cx - 14} cy={208.5} r="1.2" fill="#ff69b4" opacity="1" />
+                              <circle cx={cx - 11} cy={208} r="1.4" fill="#ffd700" opacity="1" />
+                              <circle cx={cx - 8} cy={208.5} r="1.2" fill="#ff69b4" opacity="1" />
+                              <rect x={cx + 3} y={209} width="14" height="2.5" fill="#7a5a3a" opacity="1" />
+                              <circle cx={cx + 6} cy={208.5} r="1.2" fill="#cc99ff" opacity="1" />
+                              <circle cx={cx + 9} cy={208} r="1.4" fill="#ff6347" opacity="1" />
+                              <circle cx={cx + 12} cy={208.5} r="1.2" fill="#cc99ff" opacity="1" />
+                              {/* Potted plant by door */}
+                              <rect x={cx + 5} y={213} width="2" height="3" fill="#7a5a3a" opacity="1" />
+                              <circle cx={cx + 6} cy={212} r="2" fill="#4a8a4a" opacity="1" />
+                            </g>
+                          ) : storefrontType === 2 ? (
+                            /* BOOKSTORE: wide display, warm awning */
+                            <g>
+                              {/* Wide display window with warm backing */}
+                              <rect x={cx - 18} y={199} width="36" height="11" fill="#4a5a4a" opacity="1" />
+                              <rect x={cx - 17} y={199.5} width="34" height="10" fill={isNightTime && isWindowLit(bldg.x + 1000 + i) ? "#FFD700" : "#8a7a6a"} opacity="1" />
+                              {/* Book display in window */}
+                              {Array.from({length: 5}).map((_, b) => (
+                                <rect key={`book-${i}-${b}`} x={cx - 14 + b * 6} y={203} width="4" height="5" rx="0.3"
+                                      fill={['#c84040', '#4a6a8a', '#8a6a4a', '#6a4a7a', '#4a8a6a'][b]} opacity="0.8" />
+                              ))}
+                              {/* Door */}
+                              <rect x={cx - 4} y={199} width="8" height="13" fill="#5a4a3a" opacity="1" />
+                              <rect x={cx - 3} y={200} width="6" height="12" fill="#8a7a6a" opacity="0.9" />
+                              <rect x={cx - 3} y={206} width="6" height="0.5" fill="#5a4a3a" opacity="1" />
+                              <circle cx={cx + 2} cy={206} r="0.5" fill="#d4af37" opacity="1" />
+                              {/* Sign text area */}
+                              <rect x={cx - 8} y={195.5} width="16" height="2" fill="#f5e6d3" opacity="0.8" rx="0.5" />
+                            </g>
+                          ) : (
+                            /* STANDARD: glass doors (original style) */
+                            <g>
+                              {/* Left storefront window */}
+                              <rect x={cx - 26} y={200} width="18" height="10" fill="#4a5a4a" opacity="1" />
+                              <rect x={cx - 25.4} y={200.6} width="16.8" height="8.8" fill={isNightTime && isWindowLit(bldg.x + 1000 + i) ? "#FFD700" : "#6b8ea8"} opacity="1" />
+                              <rect x={cx - 25.4} y={204.5} width="16.8" height="0.5" fill="#4a5a4a" opacity="1" />
+                              <rect x={cx - 20} y={200.6} width="0.6" height="8.8" fill="#4a5a4a" opacity="1" />
+                              <rect x={cx - 14.6} y={200.6} width="0.6" height="8.8" fill="#4a5a4a" opacity="1" />
+                              {/* Right storefront window */}
+                              <rect x={cx + 8} y={200} width="18" height="10" fill="#4a5a4a" opacity="1" />
+                              <rect x={cx + 8.6} y={200.6} width="16.8" height="8.8" fill={isNightTime && isWindowLit(bldg.x + 1001 + i) ? "#FFD700" : "#6b8ea8"} opacity="1" />
+                              <rect x={cx + 8.6} y={204.5} width="16.8" height="0.5" fill="#4a5a4a" opacity="1" />
+                              <rect x={cx + 14} y={200.6} width="0.6" height="8.8" fill="#4a5a4a" opacity="1" />
+                              <rect x={cx + 19.4} y={200.6} width="0.6" height="8.8" fill="#4a5a4a" opacity="1" />
+                              {/* Door */}
+                              <rect x={cx - 4} y={199} width="8" height="13" fill="#5a6a5a" opacity="1" />
+                              <rect x={cx - 3} y={200} width="2.5" height="12" fill="#6b8ea8" opacity="0.9" />
+                              <rect x={cx + 0.5} y={200} width="2.5" height="12" fill="#6b8ea8" opacity="0.9" />
+                              <rect x={cx - 3} y={206} width="2.5" height="0.5" fill="#4a5a4a" opacity="1" />
+                              <rect x={cx + 0.5} y={206} width="2.5" height="0.5" fill="#4a5a4a" opacity="1" />
+                              <rect x={cx - 0.8} y={205} width="0.8" height="4" fill="#d4af37" opacity="1" />
+                              <rect x={cx + 0.1} y={205} width="0.8" height="4" fill="#d4af37" opacity="1" />
+                            </g>
+                          )}
+
+                          {/* Entrance step */}
+                          <rect x={cx - 10} y={212} width="20" height="1.5" fill="#a8a8a8" opacity="1" />
+                        </g>
+                      )
+                    })()}
 
                     {/* Building foundation/sidewalk - prevents merging into grass */}
                     <g opacity="1">
-                      {/* Concrete foundation strip under building */}
-                      <rect x={bldg.x - 3}
-                            y="212"
-                            width={bldg.w + 6}
-                            height="6"
-                            fill="#c8c8c8"
-                            opacity="1" />
-                      {/* Foundation edge detail */}
-                      <rect x={bldg.x - 3}
-                            y="212"
-                            width={bldg.w + 6}
-                            height="1"
-                            fill="#b0b0b0"
-                            opacity="1" />
+                      <rect x={bldg.x - 3} y="212" width={bldg.w + 6} height="6" fill="#c8c8c8" opacity="1" />
+                      <rect x={bldg.x - 3} y="212" width={bldg.w + 6} height="1" fill="#b0b0b0" opacity="1" />
                     </g>
 
-                    {/* Ground-level entrance with architectural details */}
-                    <g opacity="1">
-                      {/* Entrance canopy/awning */}
-                      <rect x={bldg.x + bldg.w/2 - 12}
-                            y={197}
-                            width="24"
-                            height="2"
-                            fill="#4a5a4a"
-                            opacity="1" />
-                      {/* Canopy support brackets */}
-                      <path d={`M ${bldg.x + bldg.w/2 - 10},199 L ${bldg.x + bldg.w/2 - 10},197 L ${bldg.x + bldg.w/2 - 8},197`}
-                            stroke="#3a4a3a" strokeWidth="1" fill="none" />
-                      <path d={`M ${bldg.x + bldg.w/2 + 10},199 L ${bldg.x + bldg.w/2 + 10},197 L ${bldg.x + bldg.w/2 + 8},197`}
-                            stroke="#3a4a3a" strokeWidth="1" fill="none" />
+                    {/* Rooftop equipment - 3 cycling types */}
+                    {(() => {
+                      const roofType = i % 3 // 0=solar+turbine, 1=garden+planters+antenna, 2=HVAC+water tower+antenna
+                      const roofY = 215 - bldg.h
 
-                      {/* Door frame - extends to sidewalk level (y=212) */}
-                      <rect x={bldg.x + bldg.w/2 - 8}
-                            y={199}
-                            width="16"
-                            height="13"
-                            fill="#5a6a5a"
-                            opacity="1" />
+                      if (roofType === 0) {
+                        return (
+                          <g opacity="1">
+                            {/* TYPE A: Solar panels + wind turbine */}
+                            {/* Solar panels */}
+                            {Array.from({length: Math.floor(bldg.w/12)}).map((_, panel) => (
+                              <rect key={`roof-solar-${i}-${panel}`}
+                                    x={bldg.x + 2 + panel * 12} y={roofY - 6}
+                                    width="10" height="6" fill="#2f4f7f" stroke="#1a2f4f" strokeWidth="0.5" />
+                            ))}
+                            {/* Turbine tower */}
+                            <rect x={bldg.x + bldg.w/2 - 1} y={roofY - 10} width="2" height="10" fill="#e8e8e8" opacity="1" />
+                            <circle cx={bldg.x + bldg.w/2} cy={roofY - 10} r="2" fill="#4a7c2f" opacity="1" />
+                            {/* Rotating blades */}
+                            <g className="turbine-blade" style={{animationDelay: `${i * 0.2}s`, transformOrigin: `${bldg.x + bldg.w/2}px ${roofY - 10}px`}}>
+                              <path d={`M ${bldg.x + bldg.w/2},${roofY - 12} L ${bldg.x + bldg.w/2 + 1},${roofY - 18} L ${bldg.x + bldg.w/2 - 1},${roofY - 18} Z`} fill="#f0f0f0" />
+                              <path d={`M ${bldg.x + bldg.w/2 + 2},${roofY - 10} L ${bldg.x + bldg.w/2 + 8},${roofY - 11} L ${bldg.x + bldg.w/2 + 7},${roofY - 9} Z`} fill="#f0f0f0" />
+                              <path d={`M ${bldg.x + bldg.w/2 - 1},${roofY - 8} L ${bldg.x + bldg.w/2 - 6},${roofY - 5} L ${bldg.x + bldg.w/2 - 5},${roofY - 7} Z`} fill="#f0f0f0" />
+                            </g>
+                          </g>
+                        )
+                      } else if (roofType === 1) {
+                        return (
+                          <g opacity="1">
+                            {/* TYPE B: Garden roof + planters + antenna */}
+                            {/* Lush garden roof strip */}
+                            <rect x={bldg.x + 2} y={roofY - 2} width={bldg.w - 4} height="2" fill="#5a9a4a" opacity="1" />
+                            {/* Planter boxes */}
+                            {Array.from({length: Math.floor(bldg.w / 16)}).map((_, p) => (
+                              <g key={`planter-roof-${i}-${p}`}>
+                                <rect x={bldg.x + 4 + p * 16} y={roofY - 5} width="10" height="4" fill="#8a6a4a" opacity="1" />
+                                {/* Small plants/flowers in planters */}
+                                <circle cx={bldg.x + 7 + p * 16} cy={roofY - 6} r="2" fill="#4a8a4a" opacity="1" />
+                                <circle cx={bldg.x + 11 + p * 16} cy={roofY - 6} r="1.8" fill="#5a9a5a" opacity="1" />
+                                <circle cx={bldg.x + 9 + p * 16} cy={roofY - 7} r="1" fill="#ff69b4" opacity="0.8" />
+                              </g>
+                            ))}
+                            {/* Antenna */}
+                            <rect x={bldg.x + bldg.w - 8} y={roofY - 14} width="1" height="12" fill="#8a8a8a" opacity="1" />
+                            <circle cx={bldg.x + bldg.w - 7.5} cy={roofY - 14} r="2" fill="#8a8a8a" opacity="1" />
+                          </g>
+                        )
+                      } else {
+                        return (
+                          <g opacity="1">
+                            {/* TYPE C: HVAC + water tower + antenna */}
+                            {/* HVAC unit */}
+                            <rect x={bldg.x + bldg.w - 14} y={roofY - 7} width="10" height="6" fill="#a8a8a8" opacity="1" />
+                            <rect x={bldg.x + bldg.w - 13} y={roofY - 8} width="3" height="2" fill="#909090" opacity="1" />
+                            {/* HVAC vent grille */}
+                            {Array.from({length: 3}).map((_, v) => (
+                              <rect key={`vent-${i}-${v}`} x={bldg.x + bldg.w - 13 + v * 3} y={roofY - 5} width="2" height="0.5" fill="#808080" opacity="1" />
+                            ))}
+                            {/* Water tower */}
+                            <rect x={bldg.x + 8} y={roofY - 12} width="2" height="8" fill="#7a7a7a" opacity="1" />
+                            <rect x={bldg.x + 12} y={roofY - 12} width="2" height="8" fill="#7a7a7a" opacity="1" />
+                            <rect x={bldg.x + 6} y={roofY - 16} width="10" height="5" rx="1" fill="#a0a0a0" opacity="1" />
+                            <ellipse cx={bldg.x + 11} cy={roofY - 16} rx="5" ry="1.5" fill="#b0b0b0" opacity="1" />
+                            {/* Antenna */}
+                            <rect x={bldg.x + bldg.w/2} y={roofY - 13} width="1" height="10" fill="#8a8a8a" opacity="1" />
+                            <rect x={bldg.x + bldg.w/2 - 2} y={roofY - 11} width="5" height="0.5" fill="#8a8a8a" opacity="1" />
+                            <rect x={bldg.x + bldg.w/2 - 1.5} y={roofY - 9} width="4" height="0.5" fill="#8a8a8a" opacity="1" />
+                          </g>
+                        )
+                      }
+                    })()}
 
-                      {/* Decorative keystone above door */}
-                      <path d={`M ${bldg.x + bldg.w/2 - 3},199 L ${bldg.x + bldg.w/2},196 L ${bldg.x + bldg.w/2 + 3},199 Z`}
-                            fill="#c8d8c8" opacity="1" />
-
-                      {/* Glass doors with mullions */}
-                      <rect x={bldg.x + bldg.w/2 - 6}
-                            y={200}
-                            width="5"
-                            height="12"
-                            fill="#6b8ea8"
-                            opacity="0.9" />
-                      <rect x={bldg.x + bldg.w/2 + 1}
-                            y={200}
-                            width="5"
-                            height="12"
-                            fill="#6b8ea8"
-                            opacity="0.9" />
-                      {/* Door mullions - horizontal */}
-                      <rect x={bldg.x + bldg.w/2 - 6} y={206} width="5" height="0.5" fill="#4a5a4a" opacity="1" />
-                      <rect x={bldg.x + bldg.w/2 + 1} y={206} width="5" height="0.5" fill="#4a5a4a" opacity="1" />
-                      {/* Door handles */}
-                      <rect x={bldg.x + bldg.w/2 - 1.5}
-                            y={205}
-                            width="0.8"
-                            height="4"
-                            fill="#d4af37"
-                            opacity="1" />
-                      <rect x={bldg.x + bldg.w/2 + 0.7}
-                            y={205}
-                            width="0.8"
-                            height="4"
-                            fill="#d4af37"
-                            opacity="1" />
-
-                      {/* Entrance step */}
-                      <rect x={bldg.x + bldg.w/2 - 10}
-                            y={212}
-                            width="20"
-                            height="1.5"
-                            fill="#a8a8a8"
-                            opacity="1" />
-                    </g>
-
-                    {/* Rooftop equipment (HVAC units, antennas) */}
-                    <g opacity="1">
-                      {/* HVAC unit */}
-                      <rect x={bldg.x + bldg.w - 12}
-                            y={215 - bldg.h - 8}
-                            width="8"
-                            height="5"
-                            fill="#a8a8a8"
-                            opacity="1" />
-                      {/* Antenna */}
-                      <rect x={bldg.x + 6}
-                            y={215 - bldg.h - 15}
-                            width="1"
-                            height="12"
-                            fill="#8a8a8a"
-                            opacity="1" />
-                      <circle cx={bldg.x + 6.5}
-                              cy={215 - bldg.h - 15}
-                              r="2"
-                              fill="#8a8a8a"
-                              opacity="1" />
-
-                      {/* Small rooftop wind turbine */}
-                      <g>
-                        {/* Turbine tower - small white pole */}
-                        <rect x={bldg.x + bldg.w/2 - 1}
-                              y={215 - bldg.h - 10}
-                              width="2"
-                              height="10"
-                              fill="#e8e8e8"
-                              opacity="1" />
-                        {/* Turbine hub - small green circle */}
-                        <circle cx={bldg.x + bldg.w/2}
-                                cy={215 - bldg.h - 10}
-                                r="2"
-                                fill="#4a7c2f"
-                                opacity="1" />
-                        {/* Small rotating blades */}
-                        <g className="turbine-blade" style={{animationDelay: `${i * 0.2}s`, transformOrigin: `${bldg.x + bldg.w/2}px ${215 - bldg.h - 10}px`}}>
-                          {/* Blade 1 - pointing up */}
-                          <path d={`M ${bldg.x + bldg.w/2},${215 - bldg.h - 12} L ${bldg.x + bldg.w/2 + 1},${215 - bldg.h - 18} L ${bldg.x + bldg.w/2 - 1},${215 - bldg.h - 18} Z`}
-                                fill="#f0f0f0"
-                                opacity="1" />
-                          {/* Blade 2 - pointing right */}
-                          <path d={`M ${bldg.x + bldg.w/2 + 2},${215 - bldg.h - 10} L ${bldg.x + bldg.w/2 + 8},${215 - bldg.h - 11} L ${bldg.x + bldg.w/2 + 7},${215 - bldg.h - 9} Z`}
-                                fill="#f0f0f0"
-                                opacity="1" />
-                          {/* Blade 3 - pointing lower left */}
-                          <path d={`M ${bldg.x + bldg.w/2 - 1},${215 - bldg.h - 8} L ${bldg.x + bldg.w/2 - 6},${215 - bldg.h - 5} L ${bldg.x + bldg.w/2 - 5},${215 - bldg.h - 7} Z`}
-                                fill="#f0f0f0"
-                                opacity="1" />
+                    {/* Window flower boxes on select buildings */}
+                    {[0, 2, 3, 5, 7, 9, 11, 13, 16, 19].includes(i) && (() => {
+                      const boxY = 215 - bldg.h + 28 // Position below 2nd row of windows
+                      const flowerColors = [
+                        ['#ff69b4', '#ffd700', '#ff69b4'],
+                        ['#cc99ff', '#ff6347', '#cc99ff'],
+                        ['#ffd700', '#ff69b4', '#ffd700'],
+                        ['#ff6347', '#cc99ff', '#ff6347'],
+                        ['#ff69b4', '#ffd700', '#9b59b6']
+                      ]
+                      const colors = flowerColors[i % 5]
+                      return (
+                        <g>
+                          {/* Place 2-3 flower boxes per building */}
+                          {Array.from({length: Math.min(3, windowCols)}).map((_, fb) => {
+                            const fbX = startX + fb * (windowWidth + windowGapX) * Math.ceil(windowCols / 3)
+                            return (
+                              <g key={`flowerbox-${i}-${fb}`}>
+                                {/* Wooden box */}
+                                <rect x={fbX - 1} y={boxY} width={windowWidth + 2} height="2.5" fill="#7a5a3a" opacity="1" />
+                                <rect x={fbX - 1} y={boxY + 2} width={windowWidth + 2} height="0.5" fill="#6a4a2a" opacity="1" />
+                                {/* Flowers */}
+                                <circle cx={fbX + 1.5} cy={boxY - 0.5} r="1.2" fill={colors[0]} opacity="1" />
+                                <circle cx={fbX + windowWidth / 2} cy={boxY - 1} r="1.4" fill={colors[1]} opacity="1" />
+                                <circle cx={fbX + windowWidth - 1.5} cy={boxY - 0.5} r="1.2" fill={colors[2]} opacity="1" />
+                                {/* Greenery/leaves */}
+                                <ellipse cx={fbX + windowWidth / 2} cy={boxY + 0.5} rx="3" ry="1" fill="#4a8a4a" opacity="0.6" />
+                              </g>
+                            )
+                          })}
                         </g>
-                      </g>
-                    </g>
+                      )
+                    })()}
                   </g>
                 )})}
               </g>
@@ -2463,25 +2474,27 @@ export function ProgressiveSkyline() {
                     <circle cx="2803" cy="183" r="5" fill="#6a9a5a" opacity="1" />
                   </g>
 
-                  {/* Fountain centered at x=2779 */}
+                  {/* Garden statue/sculpture on pedestal centered at x=2779 */}
                   <g>
-                    {/* Fountain base */}
-                    <ellipse cx="2779" cy="210" rx="10" ry="4" fill="#a8a8a8" opacity="1" />
-                    <rect x="2774" y="206" width="10" height="4" fill="#b8b8b8" opacity="1" rx="1" />
-
-                    {/* Fountain basin */}
-                    <ellipse cx="2779" cy="206" rx="8" ry="3" fill="#87CEEB" opacity="1" />
-
-                    {/* Water spray - symmetrical */}
-                    <circle cx="2779" cy="203" r="1.5" fill="#B0E0E6" opacity="1" />
-                    <circle cx="2776" cy="204" r="1" fill="#B0E0E6" opacity="1" />
-                    <circle cx="2782" cy="204" r="1" fill="#B0E0E6" opacity="1" />
-                    <circle cx="2777" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
-                    <circle cx="2781" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
-
-                    {/* Central water column */}
-                    <path d="M 2779,203 L 2779,198 L 2778,199 M 2779,198 L 2780,199"
-                          stroke="#B0E0E6" strokeWidth="0.8" fill="none" opacity="1" />
+                    {/* Stone pedestal - tiered base */}
+                    <rect x="2773" y="207" width="12" height="3" fill="#c8c0b8" opacity="1" rx="0.5" />
+                    <rect x="2775" y="204" width="8" height="3" fill="#d0c8c0" opacity="1" rx="0.5" />
+                    <rect x="2776" y="201" width="6" height="3" fill="#d8d0c8" opacity="1" rx="0.5" />
+                    {/* Pedestal cap molding */}
+                    <rect x="2774.5" y="206.5" width="9" height="0.8" fill="#b8b0a8" opacity="1" />
+                    {/* Sculpture - abstract figure (person with outstretched arms) */}
+                    <rect x="2778" y="194" width="2" height="7" fill="#a0a8a0" opacity="1" rx="0.5" />
+                    {/* Head */}
+                    <circle cx="2779" cy="192.5" r="2" fill="#a8b0a8" opacity="1" />
+                    {/* Arms outstretched */}
+                    <line x1="2775" y1="196" x2="2783" y2="196" stroke="#a0a8a0" strokeWidth="1.2" strokeLinecap="round" />
+                    {/* Dove in left hand */}
+                    <ellipse cx="2774.5" cy="195" rx="1.5" ry="0.8" fill="#e0e0e0" opacity="1" />
+                    <path d="M 2773.5,195 L 2772,194" stroke="#e0e0e0" strokeWidth="0.5" />
+                    {/* Base platform */}
+                    <ellipse cx="2779" cy="210" rx="10" ry="3.5" fill="#b8b0a8" opacity="1" />
+                    {/* Decorative ring around pedestal base */}
+                    <ellipse cx="2779" cy="209" rx="7" ry="2" fill="none" stroke="#a0a098" strokeWidth="0.5" opacity="0.6" />
                   </g>
 
                   {/* Bench on left side - 27px from center */}
@@ -2533,25 +2546,40 @@ export function ProgressiveSkyline() {
                     <circle cx="3422.5" cy="185" r="4.5" fill="#6a9a5a" opacity="1" />
                   </g>
 
-                  {/* Fountain centered at x=3399 */}
+                  {/* Decorative garden bed with flower rings centered at x=3399 */}
                   <g>
-                    {/* Fountain base */}
-                    <ellipse cx="3399" cy="210" rx="10" ry="4" fill="#a8a8a8" opacity="1" />
-                    <rect x="3394" y="206" width="10" height="4" fill="#b8b8b8" opacity="1" rx="1" />
-
-                    {/* Fountain basin */}
-                    <ellipse cx="3399" cy="206" rx="8" ry="3" fill="#87CEEB" opacity="1" />
-
-                    {/* Water spray - symmetrical */}
-                    <circle cx="3399" cy="203" r="1.5" fill="#B0E0E6" opacity="1" />
-                    <circle cx="3396" cy="204" r="1" fill="#B0E0E6" opacity="1" />
-                    <circle cx="3402" cy="204" r="1" fill="#B0E0E6" opacity="1" />
-                    <circle cx="3397" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
-                    <circle cx="3401" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
-
-                    {/* Central water column */}
-                    <path d="M 3399,203 L 3399,198 L 3398,199 M 3399,198 L 3400,199"
-                          stroke="#B0E0E6" strokeWidth="0.8" fill="none" opacity="1" />
+                    {/* Outer ring - stone border */}
+                    <ellipse cx="3399" cy="208" rx="12" ry="5" fill="#a8a098" opacity="1" />
+                    {/* Garden soil */}
+                    <ellipse cx="3399" cy="208" rx="11" ry="4.5" fill="#6a5a4a" opacity="1" />
+                    {/* Outer flower ring */}
+                    {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((angle, fi) => {
+                      const rad = angle * Math.PI / 180
+                      const fx = 3399 + Math.cos(rad) * 9
+                      const fy = 208 + Math.sin(rad) * 3.5
+                      const colors = ['#ff69b4', '#ffd700', '#9b59b6', '#ff6347', '#4a9adb', '#ff69b4', '#ffd700', '#9b59b6', '#ff6347', '#4a9adb', '#ff69b4', '#ffd700']
+                      return <circle key={`outer-flower-${fi}`} cx={fx} cy={fy} r="1.2" fill={colors[fi]} opacity="1" />
+                    })}
+                    {/* Middle ring - stone border */}
+                    <ellipse cx="3399" cy="208" rx="6" ry="2.5" fill="#b0a8a0" opacity="1" />
+                    {/* Inner garden soil */}
+                    <ellipse cx="3399" cy="208" rx="5" ry="2" fill="#5a4a3a" opacity="1" />
+                    {/* Inner flower ring */}
+                    {[0, 60, 120, 180, 240, 300].map((angle, fi) => {
+                      const rad = angle * Math.PI / 180
+                      const fx = 3399 + Math.cos(rad) * 4
+                      const fy = 208 + Math.sin(rad) * 1.5
+                      const colors = ['#cc99ff', '#ff9966', '#66cc99', '#ff69b4', '#ffd700', '#cc99ff']
+                      return <circle key={`inner-flower-${fi}`} cx={fx} cy={fy} r="1" fill={colors[fi]} opacity="1" />
+                    })}
+                    {/* Center ornamental plant */}
+                    <circle cx="3399" cy="207" r="1.5" fill="#4a8a4a" opacity="1" />
+                    <circle cx="3399" cy="206" r="1" fill="#5a9a5a" opacity="1" />
+                    {/* Greenery between flowers */}
+                    <ellipse cx="3394" cy="208" rx="1.5" ry="0.8" fill="#4a7a4a" opacity="0.7" />
+                    <ellipse cx="3404" cy="208" rx="1.5" ry="0.8" fill="#4a7a4a" opacity="0.7" />
+                    <ellipse cx="3399" cy="205.5" rx="1" ry="0.5" fill="#5a8a5a" opacity="0.6" />
+                    <ellipse cx="3399" cy="210.5" rx="1" ry="0.5" fill="#5a8a5a" opacity="0.6" />
                   </g>
 
                   {/* Bench on left side - 27px from center */}
@@ -3028,6 +3056,28 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
+              {/* Street lamps along sidewalk - ~12 lamp posts every ~150px */}
+              <g opacity="1">
+                {[2050, 2200, 2350, 2500, 2650, 2800, 2950, 3100, 3250, 3400, 3550, 3700].map((x, li) => (
+                  <g key={`lamp-${li}`}>
+                    {/* Lamp pole */}
+                    <rect x={x + 20} y="196" width="1.5" height="22" fill="#5a5a5a" opacity="1" />
+                    {/* Curved arm */}
+                    <path d={`M ${x + 21.5},198 Q ${x + 26},196 ${x + 27},198`} stroke="#5a5a5a" strokeWidth="1.2" fill="none" />
+                    {/* Lamp head */}
+                    <rect x={x + 24.5} y="197" width="5" height="3" rx="1" fill="#6a6a6a" opacity="1" />
+                    {/* Lamp glass */}
+                    <rect x={x + 25} y="197.5" width="4" height="2" rx="0.5" fill={isNightTime ? "#FFD700" : "#e8e0c8"} opacity={isNightTime ? "1" : "0.8"} />
+                    {/* Lamp glow at night */}
+                    {isNightTime && (
+                      <ellipse cx={x + 27} cy="204" rx="6" ry="8" fill="#FFD700" opacity="0.08" />
+                    )}
+                    {/* Base plate */}
+                    <rect x={x + 19} y="217" width="4" height="1.5" rx="0.5" fill="#5a5a5a" opacity="1" />
+                  </g>
+                ))}
+              </g>
+
               {/* Pedestrians walking */}
               <g opacity="1">
                 {[2050, 2200, 2350, 2500, 2650, 2800, 2950, 3100, 3250, 3400, 3550, 3700].map((x, i) => (
@@ -3043,21 +3093,32 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
-              {/* Cyclists riding bikes */}
+              {/* Cyclists riding bikes - animated with bobbing + wheel spin */}
               <g opacity="1">
-                {[2120, 2320, 2520, 2720, 2920, 3120, 3320, 3520, 3720].map((x, i) => (
-                  <g key={`cyclist-${i}`}>
+                {[2120, 2320, 2520, 2720, 2920, 3120, 3320, 3520, 3720].map((x, ci) => (
+                  <g key={`cyclist-${ci}`} style={{animation: 'cyclistBob 1.2s ease-in-out infinite', animationDelay: `${ci * 0.15}s`}}>
                     {/* Bike frame */}
                     <path d={`M ${x},214 L ${x+4},214 L ${x+2},210 Z`} stroke="#4a7c2f" strokeWidth="1" fill="none" opacity="1" />
-                    {/* Wheels */}
-                    <circle cx={x} cy="216" r="2" fill="none" stroke="#2f2f2f" strokeWidth="0.8" opacity="1" />
-                    <circle cx={x+4} cy="216" r="2" fill="none" stroke="#2f2f2f" strokeWidth="0.8" opacity="1" />
+                    {/* Back wheel - spinning */}
+                    <g style={{animation: 'wheelSpin 0.8s linear infinite', animationDelay: `${ci * 0.1}s`, transformOrigin: `${x}px 216px`}}>
+                      <circle cx={x} cy="216" r="2" fill="none" stroke="#2f2f2f" strokeWidth="0.8" opacity="1" />
+                      {/* Spoke */}
+                      <line x1={x} y1="214.2" x2={x} y2="217.8" stroke="#4a4a4a" strokeWidth="0.3" />
+                      <line x1={x - 1.8} y1="216" x2={x + 1.8} y2="216" stroke="#4a4a4a" strokeWidth="0.3" />
+                    </g>
+                    {/* Front wheel - spinning */}
+                    <g style={{animation: 'wheelSpin 0.8s linear infinite', animationDelay: `${ci * 0.1 + 0.05}s`, transformOrigin: `${x+4}px 216px`}}>
+                      <circle cx={x+4} cy="216" r="2" fill="none" stroke="#2f2f2f" strokeWidth="0.8" opacity="1" />
+                      {/* Spoke */}
+                      <line x1={x+4} y1="214.2" x2={x+4} y2="217.8" stroke="#4a4a4a" strokeWidth="0.3" />
+                      <line x1={x + 2.2} y1="216" x2={x + 5.8} y2="216" stroke="#4a4a4a" strokeWidth="0.3" />
+                    </g>
                     {/* Cyclist body */}
-                    <ellipse cx={x+2} cy="211" rx="1.5" ry="2" fill={i % 2 === 0 ? "#5a8a5a" : "#7a6a5a"} opacity="1" />
+                    <ellipse cx={x+2} cy="211" rx="1.5" ry="2" fill={ci % 2 === 0 ? "#5a8a5a" : "#7a6a5a"} opacity="1" />
                     {/* Cyclist head */}
                     <circle cx={x+2} cy="208" r="1.2" fill="#d4a574" opacity="1" />
                     {/* Helmet */}
-                    <ellipse cx={x+2} cy="207.5" rx="1.4" ry="1" fill={i % 2 === 0 ? "#4a7c2f" : "#c73e3e"} opacity="1" />
+                    <ellipse cx={x+2} cy="207.5" rx="1.4" ry="1" fill={ci % 2 === 0 ? "#4a7c2f" : "#c73e3e"} opacity="1" />
                   </g>
                 ))}
               </g>
