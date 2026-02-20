@@ -1019,18 +1019,31 @@ export function ProgressiveSkyline() {
               <g opacity="0.55">
                 <path d="M 800,195 Q 870,190 950,186 Q 1050,178 1150,174 Q 1250,168 1350,165 Q 1450,162 1550,164 Q 1650,162 1750,166 Q 1850,172 1950,180 Q 2000,188 2000,210 L 800,210 Z"
                       fill="#5a7a5a" />
-                {/* Farthest house silhouettes - small, visible */}
-                {[900, 980, 1060, 1150, 1240, 1330, 1420, 1510, 1600, 1690, 1780, 1870, 1940].map((bx, bi) => {
-                  const bh = 2 + (bi % 2) * 1;
-                  const bw = 3 + (bi % 3);
-                  const by = 170 - (bi % 4) * 1.5 - Math.sin(bi * 0.8) * 2 + (bx < 950 ? 15 : 0) + (bx > 1800 ? 10 : 0);
-                  return (
-                    <g key={`bg-far-${bi}`}>
-                      <rect x={bx} y={by} width={bw} height={bh} fill="#4a6a4a" />
-                      <path d={`M ${bx-0.3},${by} L ${bx + bw/2},${by - 1.5} L ${bx + bw + 0.3},${by} Z`} fill="#3a5a3a" />
-                    </g>
-                  );
-                })}
+                {/* Farthest house silhouettes - grounded on the hill line */}
+                {(() => {
+                  // Hill keypoints from the path: x → y
+                  const hillPts: [number,number][] = [[800,195],[870,190],[950,186],[1050,178],[1150,174],[1250,168],[1350,165],[1450,162],[1550,164],[1650,162],[1750,166],[1850,172],[1950,180],[2000,188]];
+                  const hillY = (x: number) => {
+                    for (let i = 0; i < hillPts.length - 1; i++) {
+                      if (x >= hillPts[i][0] && x <= hillPts[i+1][0]) {
+                        const t = (x - hillPts[i][0]) / (hillPts[i+1][0] - hillPts[i][0]);
+                        return hillPts[i][1] + t * (hillPts[i+1][1] - hillPts[i][1]);
+                      }
+                    }
+                    return 180;
+                  };
+                  return [900, 980, 1060, 1150, 1240, 1330, 1420, 1510, 1600, 1690, 1780, 1870, 1940].map((bx, bi) => {
+                    const bh = 2 + (bi % 2) * 1;
+                    const bw = 3 + (bi % 3);
+                    const by = hillY(bx) - bh; // Place house base ON the hill line
+                    return (
+                      <g key={`bg-far-${bi}`}>
+                        <rect x={bx} y={by} width={bw} height={bh} fill="#4a6a4a" />
+                        <path d={`M ${bx-0.3},${by} L ${bx + bw/2},${by - 1.5} L ${bx + bw + 0.3},${by} Z`} fill="#3a5a3a" />
+                      </g>
+                    );
+                  });
+                })()}
               </g>
 
               {/* === LAYER 2: Mid-distance hills - ramps from rural mid-ground level === */}
@@ -1065,9 +1078,15 @@ export function ProgressiveSkyline() {
                 {[830, 870, 920, 960, 1010, 1060, 1110, 1160, 1210, 1260, 1310, 1360, 1410, 1460, 1510, 1560, 1610, 1660, 1710, 1760, 1810, 1860, 1910, 1950].map((gx, gi) => (
                   <ellipse key={`grass-patch-${gi}`} cx={gx} cy={218 + (gi % 5) * 6} rx={8 + (gi % 3) * 3} ry={3 + (gi % 2) * 2} fill={gi % 2 === 0 ? "#8ab88a" : "#7aaa7a"} opacity="0.4" />
                 ))}
-                {/* Winding walking path through the green - stone/gravel */}
-                <path d="M 800,230 Q 850,225 900,228 Q 960,232 1020,226 Q 1100,222 1180,228 Q 1260,234 1340,226 Q 1420,220 1500,228 Q 1580,235 1660,227 Q 1740,222 1820,228 Q 1900,234 1960,228 Q 1990,226 2000,228" stroke="#c9b89a" strokeWidth="3" fill="none" opacity="0.5" strokeLinecap="round" />
-                <path d="M 800,230 Q 850,225 900,228 Q 960,232 1020,226 Q 1100,222 1180,228 Q 1260,234 1340,226 Q 1420,220 1500,228 Q 1580,235 1660,227 Q 1740,222 1820,228 Q 1900,234 1960,228 Q 1990,226 2000,228" stroke="#d4c4a0" strokeWidth="1.5" fill="none" opacity="0.3" strokeLinecap="round" />
+                {/* Suburban sidewalk - concrete walkway winding through the neighborhood */}
+                <path d="M 800,230 Q 850,225 900,228 Q 960,232 1020,226 Q 1100,222 1180,228 Q 1260,234 1340,226 Q 1420,220 1500,228 Q 1580,235 1660,227 Q 1740,222 1820,228 Q 1900,234 1960,228 Q 1990,226 2000,228" stroke="#d4d0c8" strokeWidth="4" fill="none" opacity="0.85" strokeLinecap="round" />
+                <path d="M 800,230 Q 850,225 900,228 Q 960,232 1020,226 Q 1100,222 1180,228 Q 1260,234 1340,226 Q 1420,220 1500,228 Q 1580,235 1660,227 Q 1740,222 1820,228 Q 1900,234 1960,228 Q 1990,226 2000,228" stroke="#c8c4bc" strokeWidth="1.5" fill="none" opacity="0.3" strokeLinecap="round" />
+                {/* Sidewalk expansion joints */}
+                {Array.from({length: 40}).map((_, ji) => {
+                  const jx = 810 + ji * 30;
+                  const jy = 230 + Math.sin(ji * 0.47) * 4 - 2;
+                  return <circle key={`sw-dot-${ji}`} cx={jx} cy={jy} r="0.3" fill="#bab6ae" opacity="0.4" />;
+                })}
               </g>
 
               {/* Power lines along street */}
@@ -1641,7 +1660,7 @@ export function ProgressiveSkyline() {
 
               {/* People walking / cycling on paths */}
               <g opacity="0.8">
-                {/* Person walking dog near x=900 */}
+                {/* Person walking dog on sidewalk near x=900 */}
                 <g>
                   <circle cx="905" cy="225" r="1.2" fill="#d4a574" />
                   <rect x="904.3" y="226" width="1.5" height="3" fill="#4a6a8a" />
@@ -1669,109 +1688,106 @@ export function ProgressiveSkyline() {
                 </g>
               </g>
 
-              {/* ===== SUBURBAN SIDEWALK at y=237, curving up to meet city sidewalk at y=214 near x=2000 ===== */}
-              <g opacity="1">
-                {/* Concrete sidewalk strip - flat until x=1850, then curves up to y=214 at x=2000 */}
-                <path d="M 800,237 L 1850,237 Q 1900,237 1930,232 Q 1960,225 1980,218 Q 1995,215 2000,214 L 2000,218 Q 1995,219 1980,222 Q 1960,229 1930,236 Q 1900,240.5 1850,240.5 L 800,240.5 Z" fill="#d4d0c8" opacity="0.9" />
-                {/* Sidewalk expansion joints - flat portion */}
-                {Array.from({length: 53}).map((_, ji) => (
-                  <rect key={`sw-joint-${ji}`} x={810 + ji * 20} y="237" width="0.4" height="3.5" fill="#bab6ae" opacity="0.4" />
-                ))}
-                {/* Curb edge - flat portion */}
-                <path d="M 800,240.5 L 1850,240.5 Q 1900,240.5 1930,236 Q 1960,229 1980,222 Q 1995,219 2000,218" stroke="#b8b4ac" strokeWidth="0.8" fill="none" opacity="0.6" />
-              </g>
+              {/* Grass meets road directly - no sidewalk strip needed */}
 
               {/* ===== LONG DRIVEWAYS - mixed styles: skinny concrete, curved, stone walkways ===== */}
               <g opacity="0.8">
-                {/* Victorian - alternating: gentle curve + stone walkway */}
+                {/* Victorian walkways - centered on door (x+17.5), extending to road */}
                 {[820, 1120, 1420, 1720].map((x, i) => (
                   i % 2 === 0 ? (
-                    <path key={`vic-dw-${i}`} d={`M ${x+16},212 Q ${x+17},220 ${x+15},228 Q ${x+16},233 ${x+16},237`} stroke="#c8c4bc" strokeWidth="3.5" fill="none" opacity="0.65" strokeLinecap="round" />
+                    <path key={`vic-dw-${i}`} d={`M ${x+17.5},212.5 Q ${x+18},225 ${x+17},235 Q ${x+17.5},242 ${x+17.5},250`} stroke="#c8c4bc" strokeWidth="3.5" fill="none" opacity="0.65" strokeLinecap="round" />
                   ) : (
                     <g key={`vic-dw-${i}`}>
-                      {Array.from({length: 9}).map((_, si) => (
-                        <ellipse key={`vic-stone-${i}-${si}`} cx={x+16 + (si % 2 === 0 ? 0 : 0.8)} cy={213 + si * 2.8} rx="1.8" ry="1.2" fill="#b8b0a0" opacity="0.6" transform={`rotate(${si * 12 - 10}, ${x+16}, ${213 + si * 2.8})`} />
+                      {Array.from({length: 14}).map((_, si) => (
+                        <ellipse key={`vic-stone-${i}-${si}`} cx={x+17.5 + (si % 2 === 0 ? 0 : 0.8)} cy={213 + si * 2.8} rx="1.8" ry="1.2" fill="#b8b0a0" opacity="0.6" transform={`rotate(${si * 12 - 10}, ${x+17.5}, ${213 + si * 2.8})`} />
                       ))}
                     </g>
                   )
                 ))}
-                {/* Colonial - alternating: straight skinny + gentle curve */}
+                {/* Colonial walkways - centered on door (x+20), extending to road */}
                 {[1000, 1300, 1600, 1900].map((x, i) => (
                   i % 2 === 0 ? (
-                    <rect key={`col-dw-${i}`} x={x+17} y="212" width="3.5" height="25" rx="0.5" fill="#c8c4bc" opacity="0.6" />
+                    <rect key={`col-dw-${i}`} x={x+18.5} y="212.5" width="3.5" height="37.5" rx="0.5" fill="#c8c4bc" opacity="0.6" />
                   ) : (
-                    <path key={`col-dw-${i}`} d={`M ${x+17},212 Q ${x+19},222 ${x+16},230 Q ${x+17},234 ${x+17},237`} stroke="#c8c4bc" strokeWidth="3.5" fill="none" opacity="0.6" strokeLinecap="round" />
+                    <path key={`col-dw-${i}`} d={`M ${x+20},212.5 Q ${x+21},225 ${x+19},238 Q ${x+20},245 ${x+20},250`} stroke="#c8c4bc" strokeWidth="3.5" fill="none" opacity="0.6" strokeLinecap="round" />
                   )
                 ))}
-                {/* Ranch - alternating: skinny straight + stone path */}
+                {/* Ranch walkways - centered on door (x+21.5), extending to road */}
                 {[880, 1180, 1480, 1780].map((x, i) => (
                   i % 2 === 0 ? (
-                    <rect key={`ranch-dw-${i}`} x={x+22} y="210" width="3.5" height="27" rx="0.5" fill="#c8c4bc" opacity="0.6" />
+                    <rect key={`ranch-dw-${i}`} x={x+20} y="210" width="3.5" height="40" rx="0.5" fill="#c8c4bc" opacity="0.6" />
                   ) : (
                     <g key={`ranch-dw-${i}`}>
-                      {Array.from({length: 10}).map((_, si) => (
-                        <rect key={`ranch-stone-${i}-${si}`} x={x+21 + (si % 2 === 0 ? 0 : 0.5)} y={211 + si * 2.6} width="3" height="1.8" rx="0.8" fill="#b0a898" opacity="0.55" />
+                      {Array.from({length: 15}).map((_, si) => (
+                        <rect key={`ranch-stone-${i}-${si}`} x={x+20 + (si % 2 === 0 ? 0 : 0.5)} y={211 + si * 2.6} width="3" height="1.8" rx="0.8" fill="#b0a898" opacity="0.55" />
                       ))}
                     </g>
                   )
                 ))}
-                {/* Cottage - natural stepping stones with slight wander */}
+                {/* Cottage stepping stones - centered on door (x+15), extending to road */}
                 {[1060, 1360, 1660, 1960].map((x, i) => (
                   <g key={`cot-path-${i}`}>
-                    {Array.from({length: 9}).map((_, si) => {
-                      const wobble = Math.sin(si * 1.3 + i) * 1.5;
+                    {Array.from({length: 14}).map((_, si) => {
+                      const wobble = Math.sin(si * 1.3 + i) * 1.2;
                       return (
-                        <ellipse key={`cot-step-${i}-${si}`} cx={x+14 + wobble} cy={213 + si * 2.7} rx="2" ry="1.3" fill="#a8a090" opacity="0.55" transform={`rotate(${si * 15 + i * 8}, ${x+14 + wobble}, ${213 + si * 2.7})`} />
+                        <ellipse key={`cot-step-${i}-${si}`} cx={x+15 + wobble} cy={213 + si * 2.7} rx="2" ry="1.3" fill="#a8a090" opacity="0.55" transform={`rotate(${si * 15 + i * 8}, ${x+15 + wobble}, ${213 + si * 2.7})`} />
                       );
                     })}
                   </g>
                 ))}
-                {/* Modern - alternating: sleek skinny + curved path */}
+                {/* Modern walkways - centered on door (x+16.5), extending to road */}
                 {[940, 1240, 1540, 1840].map((x, i) => (
                   i % 2 === 0 ? (
-                    <path key={`mod-dw-${i}`} d={`M ${x+15},210 Q ${x+16},220 ${x+14},230 Q ${x+15},234 ${x+15},237`} stroke="#a0a098" strokeWidth="3" fill="none" opacity="0.6" strokeLinecap="round" />
+                    <path key={`mod-dw-${i}`} d={`M ${x+16.5},210 Q ${x+17},225 ${x+16},238 Q ${x+16.5},245 ${x+16.5},250`} stroke="#a0a098" strokeWidth="3" fill="none" opacity="0.6" strokeLinecap="round" />
                   ) : (
-                    <rect key={`mod-dw-${i}`} x={x+14} y="210" width="3" height="27" rx="0.3" fill="#a0a098" opacity="0.55" />
+                    <rect key={`mod-dw-${i}`} x={x+15} y="210" width="3" height="40" rx="0.3" fill="#a0a098" opacity="0.55" />
                   )
                 ))}
               </g>
 
-              {/* ===== GARAGE DRIVEWAYS - wider concrete, from garage to sidewalk ===== */}
+              {/* ===== GARAGE DRIVEWAYS - wider concrete, from garage to road ===== */}
               <g opacity="0.75">
-                {/* Ranch garage driveways - attached garage at x+38, garage door at x+39 */}
+                {/* Ranch garage driveways - centered on garage door (x+39 to x+46, center=x+42.5) */}
                 {[880, 1180, 1480, 1780].map((x, i) => (
-                  <rect key={`ranch-gdw-${i}`} x={x+40} y="207" width="7" height="30" rx="0.5" fill="#c4c0b8" opacity="0.7" />
+                  <rect key={`ranch-gdw-${i}`} x={x+39.5} y="206" width="7" height="44" rx="0.5" fill="#c4c0b8" opacity="0.7" />
                 ))}
-                {/* Colonial driveways to shed/garage at x-12 */}
+                {/* Colonial driveways to shed/garage (shed center at x-6) */}
                 {[1000, 1300, 1600, 1900].map((x, i) => (
-                  <path key={`col-gdw-${i}`} d={`M ${x-6},208 Q ${x-5},218 ${x-7},228 Q ${x-6},234 ${x-6},237`} stroke="#c4c0b8" strokeWidth="6" fill="none" opacity="0.6" strokeLinecap="round" />
+                  <path key={`col-gdw-${i}`} d={`M ${x-6},208 Q ${x-5},225 ${x-7},240 Q ${x-6},246 ${x-6},250`} stroke="#c4c0b8" strokeWidth="6" fill="none" opacity="0.6" strokeLinecap="round" />
                 ))}
-                {/* Modern driveways to studio/garage at x-10 */}
+                {/* Modern driveways to studio/garage (studio center at x-5) */}
                 {[940, 1240, 1540, 1840].map((x, i) => (
-                  <rect key={`mod-gdw-${i}`} x={x-7} y="207" width="6" height="30" rx="0.3" fill="#b0b0a8" opacity="0.55" />
+                  <rect key={`mod-gdw-${i}`} x={x-7} y="207" width="6" height="43" rx="0.3" fill="#b0b0a8" opacity="0.55" />
                 ))}
               </g>
 
-              {/* ===== MAILBOXES at the sidewalk ===== */}
+              {/* ===== MAILBOXES along the winding sidewalk ===== */}
               <g opacity="1">
-                {[835, 950, 1070, 1135, 1250, 1370, 1435, 1550, 1670, 1735, 1850, 1970].map((x, i) => (
+                {[835, 950, 1070, 1135, 1250, 1370, 1435, 1550, 1670, 1735, 1850, 1970].map((x, i) => {
+                  // Approximate the winding sidewalk y at this x position
+                  const swY = 228 + Math.sin((x - 800) * 0.0052) * 4;
+                  return (
                   <g key={`mailbox-${i}`}>
                     {/* Post */}
-                    <rect x={x} y="232" width="1.2" height="5.5" fill="#5a4a3a" />
+                    <rect x={x} y={swY - 4} width="1.2" height="5.5" fill="#5a4a3a" />
                     {/* Mailbox */}
-                    <rect x={x-0.8} y="231" width="3" height="2" rx="0.5" fill={i % 3 === 0 ? "#2a2a2a" : "#d4af37"} />
+                    <rect x={x-0.8} y={swY - 5} width="3" height="2" rx="0.5" fill={i % 3 === 0 ? "#2a2a2a" : "#d4af37"} />
                   </g>
-                ))}
+                  );
+                })}
               </g>
 
               {/* ===== FIRE HYDRANTS along sidewalk ===== */}
               <g opacity="0.9">
-                {[1000, 1400, 1800].map((x, i) => (
+                {[1000, 1400, 1800].map((x, i) => {
+                  const swY = 228 + Math.sin((x - 800) * 0.0052) * 4;
+                  return (
                   <g key={`hydrant-${i}`}>
-                    <rect x={x} y="234" width="2.5" height="3.5" fill="#cc3333" />
-                    <rect x={x-0.3} y="235" width="3" height="1.2" fill="#aa2222" />
+                    <rect x={x} y={swY - 1} width="2.5" height="3.5" fill="#cc3333" />
+                    <rect x={x-0.3} y={swY} width="3" height="1.2" fill="#aa2222" />
                   </g>
-                ))}
+                  );
+                })}
               </g>
 
               {/* ========== PHASE 3: SUSTAINABLE GREEN CITY - PROJECT EXODUS (2000-3800) ========== */}
