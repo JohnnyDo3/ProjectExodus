@@ -1880,7 +1880,8 @@ export function ProgressiveSkyline() {
                       <circle key={`plant-${plant}`} cx={bldg.x + 4 + plant * 8} cy={215-bldg.h-2} r="1.5" fill="#5a8a5a" opacity="1" />
                     ))}
 
-                    {/* SOLAR PANELS covering entire roof */}
+                    {/* SOLAR PANELS - only on Type A rooftops (i%3===0) */}
+                    {i % 3 === 0 && (
                     <g opacity="1">
                       {Array.from({length: Math.floor(bldg.w/12)}).map((_, panel) => (
                         <rect key={`solar-${panel}`}
@@ -1893,6 +1894,7 @@ export function ProgressiveSkyline() {
                               strokeWidth="0.5" />
                       ))}
                     </g>
+                    )}
 
                     {/* Decorative cornice at roofline - multi-layer detail */}
                     <rect x={bldg.x - 2} y={215 - bldg.h - 1} width={bldg.w + 4} height="2" fill="#c8d8c8" opacity="1" />
@@ -2125,6 +2127,12 @@ export function ProgressiveSkyline() {
                       />
                     </g>
 
+                    {/* Building foundation/sidewalk - draws FIRST so storefront items layer on top */}
+                    <g opacity="1">
+                      <rect x={bldg.x - 3} y="212" width={bldg.w + 6} height="6" fill="#c8c8c8" opacity="1" />
+                      <rect x={bldg.x - 3} y="212" width={bldg.w + 6} height="1" fill="#b0b0b0" opacity="1" />
+                    </g>
+
                     {/* First floor - varied storefronts cycling 4 types */}
                     {(() => {
                       const storefrontType = i % 4 // 0=cafe, 1=flower shop, 2=bookstore, 3=standard glass
@@ -2134,12 +2142,12 @@ export function ProgressiveSkyline() {
 
                       return (
                         <g opacity="1">
-                          {/* Colored awning/sign strip above storefront */}
-                          <rect x={bldg.x + 4} y={195} width={bldg.w - 8} height="3" fill={awningColor} opacity="1" />
+                          {/* Colored awning/sign strip below floor band */}
+                          <rect x={bldg.x + 4} y={198} width={bldg.w - 8} height="3" fill={awningColor} opacity="1" />
                           {/* Awning scalloped edge */}
                           {Array.from({length: Math.floor((bldg.w - 8) / 4)}).map((_, s) => (
                             <path key={`scallop-${i}-${s}`}
-                                  d={`M ${bldg.x + 4 + s * 4},198 Q ${bldg.x + 6 + s * 4},200 ${bldg.x + 8 + s * 4},198`}
+                                  d={`M ${bldg.x + 4 + s * 4},201 Q ${bldg.x + 6 + s * 4},203 ${bldg.x + 8 + s * 4},201`}
                                   fill={awningColor} opacity="0.9" />
                           ))}
 
@@ -2149,7 +2157,7 @@ export function ProgressiveSkyline() {
                               {/* Striped awning pattern */}
                               {Array.from({length: Math.floor((bldg.w - 8) / 3)}).map((_, s) => (
                                 s % 2 === 0 ? (
-                                  <rect key={`stripe-${i}-${s}`} x={bldg.x + 4 + s * 3} y={195} width="3" height="3" fill="#e8e0d0" opacity="0.5" />
+                                  <rect key={`stripe-${i}-${s}`} x={bldg.x + 4 + s * 3} y={198} width="3" height="3" fill="#e8e0d0" opacity="0.5" />
                                 ) : null
                               ))}
                               {/* Wide display window */}
@@ -2168,7 +2176,7 @@ export function ProgressiveSkyline() {
                               <rect x={cx + 10} y={213} width="2" height="3" rx="0.3" fill="#8a6a4a" opacity="0.8" />
                               <rect x={cx + 17} y={213} width="2" height="3" rx="0.3" fill="#8a6a4a" opacity="0.8" />
                               {/* Sign text area */}
-                              <rect x={cx - 6} y={195.5} width="12" height="2" fill="#f5e6d3" opacity="0.8" rx="0.5" />
+                              <rect x={cx - 6} y={198.5} width="12" height="2" fill="#f5e6d3" opacity="0.8" rx="0.5" />
                             </g>
                           ) : storefrontType === 1 ? (
                             /* FLOWER SHOP: window boxes, green awning */
@@ -2212,7 +2220,7 @@ export function ProgressiveSkyline() {
                               <rect x={cx - 3} y={206} width="6" height="0.5" fill="#5a4a3a" opacity="1" />
                               <circle cx={cx + 2} cy={206} r="0.5" fill="#d4af37" opacity="1" />
                               {/* Sign text area */}
-                              <rect x={cx - 8} y={195.5} width="16" height="2" fill="#f5e6d3" opacity="0.8" rx="0.5" />
+                              <rect x={cx - 8} y={198.5} width="16" height="2" fill="#f5e6d3" opacity="0.8" rx="0.5" />
                             </g>
                           ) : (
                             /* STANDARD: glass doors (original style) */
@@ -2245,12 +2253,6 @@ export function ProgressiveSkyline() {
                         </g>
                       )
                     })()}
-
-                    {/* Building foundation/sidewalk - prevents merging into grass */}
-                    <g opacity="1">
-                      <rect x={bldg.x - 3} y="212" width={bldg.w + 6} height="6" fill="#c8c8c8" opacity="1" />
-                      <rect x={bldg.x - 3} y="212" width={bldg.w + 6} height="1" fill="#b0b0b0" opacity="1" />
-                    </g>
 
                     {/* Rooftop equipment - 3 cycling types */}
                     {(() => {
@@ -2324,9 +2326,10 @@ export function ProgressiveSkyline() {
                       }
                     })()}
 
-                    {/* Window flower boxes on select buildings */}
+                    {/* Window flower boxes on select buildings - below 2nd row window sills */}
                     {[0, 2, 3, 5, 7, 9, 11, 13, 16, 19].includes(i) && (() => {
-                      const boxY = 215 - bldg.h + 28 // Position below 2nd row of windows
+                      // Position below 2nd row window sills: topMargin + 1 row + windowHeight + sill
+                      const boxY = 215 - bldg.h + topMargin + (windowHeight + windowGapY) + windowHeight + 1
                       const flowerColors = [
                         ['#ff69b4', '#ffd700', '#ff69b4'],
                         ['#cc99ff', '#ff6347', '#cc99ff'],
@@ -2335,11 +2338,13 @@ export function ProgressiveSkyline() {
                         ['#ff69b4', '#ffd700', '#9b59b6']
                       ]
                       const colors = flowerColors[i % 5]
+                      // Place 2 flower boxes, evenly spaced within building width
+                      const boxCount = Math.min(2, windowCols)
+                      const boxSpacing = bldg.w / (boxCount + 1)
                       return (
                         <g>
-                          {/* Place 2-3 flower boxes per building */}
-                          {Array.from({length: Math.min(3, windowCols)}).map((_, fb) => {
-                            const fbX = startX + fb * (windowWidth + windowGapX) * Math.ceil(windowCols / 3)
+                          {Array.from({length: boxCount}).map((_, fb) => {
+                            const fbX = bldg.x + boxSpacing * (fb + 1) - windowWidth / 2
                             return (
                               <g key={`flowerbox-${i}-${fb}`}>
                                 {/* Wooden box */}
@@ -2968,43 +2973,43 @@ export function ProgressiveSkyline() {
                   const baseY = 214;
 
                   if (plantType === 0) {
-                    // Tall tree
+                    // Tall tree (scaled to ~55%)
                     return (
                       <g key={`plant-${i}`}>
-                        <rect x={x} y={baseY - 10} width="2.5" height="12" fill="#6b5a45" opacity="1" />
-                        <circle cx={x+1.25} cy={baseY - 12} r="5" fill="#4a7c2f" opacity="1" />
-                        <circle cx={x-2} cy={baseY - 10} r="4" fill="#5a8a5a" opacity="1" />
-                        <circle cx={x+4.5} cy={baseY - 10} r="4" fill="#5a8a5a" opacity="1" />
-                        <circle cx={x+1.25} cy={baseY - 16} r="3" fill="#6a9a6a" opacity="1" />
+                        <rect x={x} y={baseY - 7} width="1.4" height="7" fill="#6b5a45" opacity="1" />
+                        <circle cx={x+0.7} cy={baseY - 7} r="2.8" fill="#4a7c2f" opacity="1" />
+                        <circle cx={x-1.1} cy={baseY - 5.5} r="2.2" fill="#5a8a5a" opacity="1" />
+                        <circle cx={x+2.5} cy={baseY - 5.5} r="2.2" fill="#5a8a5a" opacity="1" />
+                        <circle cx={x+0.7} cy={baseY - 9} r="1.7" fill="#6a9a6a" opacity="1" />
                       </g>
                     );
                   } else if (plantType === 1) {
-                    // Medium tree
+                    // Medium tree (scaled to ~55%)
                     return (
                       <g key={`plant-${i}`}>
-                        <rect x={x} y={baseY - 7} width="2" height="9" fill="#6b5a45" opacity="1" />
-                        <circle cx={x+1} cy={baseY - 9} r="4" fill="#4a7c2f" opacity="1" />
-                        <circle cx={x-1.5} cy={baseY - 7} r="3" fill="#5a8a5a" opacity="1" />
-                        <circle cx={x+3.5} cy={baseY - 7} r="3" fill="#5a8a5a" opacity="1" />
+                        <rect x={x} y={baseY - 5} width="1.1" height="5" fill="#6b5a45" opacity="1" />
+                        <circle cx={x+0.6} cy={baseY - 5} r="2.2" fill="#4a7c2f" opacity="1" />
+                        <circle cx={x-0.8} cy={baseY - 4} r="1.7" fill="#5a8a5a" opacity="1" />
+                        <circle cx={x+1.9} cy={baseY - 4} r="1.7" fill="#5a8a5a" opacity="1" />
                       </g>
                     );
                   } else if (plantType === 2) {
-                    // Round bush
+                    // Round bush (scaled to ~55%)
                     return (
                       <g key={`plant-${i}`}>
-                        <circle cx={x+1} cy={baseY - 2} r="4" fill="#3a7a3a" opacity="1" />
-                        <circle cx={x-1} cy={baseY - 1} r="3" fill="#4a8a4a" opacity="1" />
-                        <circle cx={x+3} cy={baseY - 1} r="3" fill="#4a8a4a" opacity="1" />
-                        <circle cx={x+1} cy={baseY - 4} r="2.5" fill="#5a9a5a" opacity="1" />
+                        <circle cx={x+0.6} cy={baseY - 1.1} r="2.2" fill="#3a7a3a" opacity="1" />
+                        <circle cx={x-0.6} cy={baseY - 0.6} r="1.7" fill="#4a8a4a" opacity="1" />
+                        <circle cx={x+1.7} cy={baseY - 0.6} r="1.7" fill="#4a8a4a" opacity="1" />
+                        <circle cx={x+0.6} cy={baseY - 2.2} r="1.4" fill="#5a9a5a" opacity="1" />
                       </g>
                     );
                   } else {
-                    // Small bush/shrub
+                    // Small bush/shrub (scaled to ~55%)
                     return (
                       <g key={`plant-${i}`}>
-                        <ellipse cx={x+1} cy={baseY - 1} rx="3" ry="2" fill="#3a6a3a" opacity="1" />
-                        <circle cx={x-0.5} cy={baseY - 2} r="2" fill="#4a7a4a" opacity="1" />
-                        <circle cx={x+2.5} cy={baseY - 2} r="2" fill="#4a7a4a" opacity="1" />
+                        <ellipse cx={x+0.6} cy={baseY - 0.6} rx="1.7" ry="1.1" fill="#3a6a3a" opacity="1" />
+                        <circle cx={x-0.3} cy={baseY - 1.1} r="1.1" fill="#4a7a4a" opacity="1" />
+                        <circle cx={x+1.4} cy={baseY - 1.1} r="1.1" fill="#4a7a4a" opacity="1" />
                       </g>
                     );
                   }
@@ -3061,19 +3066,19 @@ export function ProgressiveSkyline() {
                 {[2050, 2200, 2350, 2500, 2650, 2800, 2950, 3100, 3250, 3400, 3550, 3700].map((x, li) => (
                   <g key={`lamp-${li}`}>
                     {/* Lamp pole */}
-                    <rect x={x + 20} y="196" width="1.5" height="22" fill="#5a5a5a" opacity="1" />
+                    <rect x={x + 20} y="198" width="1.5" height="18" fill="#5a5a5a" opacity="1" />
                     {/* Curved arm */}
-                    <path d={`M ${x + 21.5},198 Q ${x + 26},196 ${x + 27},198`} stroke="#5a5a5a" strokeWidth="1.2" fill="none" />
+                    <path d={`M ${x + 21.5},200 Q ${x + 26},198 ${x + 27},200`} stroke="#5a5a5a" strokeWidth="1.2" fill="none" />
                     {/* Lamp head */}
-                    <rect x={x + 24.5} y="197" width="5" height="3" rx="1" fill="#6a6a6a" opacity="1" />
+                    <rect x={x + 24.5} y="199" width="5" height="3" rx="1" fill="#6a6a6a" opacity="1" />
                     {/* Lamp glass */}
-                    <rect x={x + 25} y="197.5" width="4" height="2" rx="0.5" fill={isNightTime ? "#FFD700" : "#e8e0c8"} opacity={isNightTime ? "1" : "0.8"} />
+                    <rect x={x + 25} y="199.5" width="4" height="2" rx="0.5" fill={isNightTime ? "#FFD700" : "#e8e0c8"} opacity={isNightTime ? "1" : "0.8"} />
                     {/* Lamp glow at night */}
                     {isNightTime && (
-                      <ellipse cx={x + 27} cy="204" rx="6" ry="8" fill="#FFD700" opacity="0.08" />
+                      <ellipse cx={x + 27} cy="206" rx="6" ry="8" fill="#FFD700" opacity="0.08" />
                     )}
-                    {/* Base plate */}
-                    <rect x={x + 19} y="217" width="4" height="1.5" rx="0.5" fill="#5a5a5a" opacity="1" />
+                    {/* Base plate - centered on sidewalk */}
+                    <rect x={x + 19.5} y="215.5" width="3" height="1" rx="0.5" fill="#5a5a5a" opacity="1" />
                   </g>
                 ))}
               </g>
