@@ -3877,7 +3877,7 @@ export function ProgressiveSkyline() {
               {/* Grass strip at foreground where street meets landscape - GREEN CITY SECTION ONLY */}
               <rect x="2000" y="232" width="1800" height="6" fill="#7aa87a" opacity="1" />
 
-              {/* VARIETY TREES - Evergreen and Deciduous mix along foreground - GREEN CITY ONLY (x=2000-3800) */}
+              {/* VARIETY TREES - Bonsai-scaled evergreen and deciduous mix along foreground - GREEN CITY ONLY (x=2000-3800) */}
               <g opacity="1">
                 {Array.from({length: 45}).map((_, i) => {
                   const x = 2010 + i * 40;
@@ -3886,52 +3886,44 @@ export function ProgressiveSkyline() {
                   const baseY = 235;
 
                   if (treeType === 0) {
-                    // Tall Evergreen Pine - triangular conifer
+                    // Bonsai Pine - tiny triangular conifer
                     return (
                       <g key={`fg-tree-${i}`}>
-                        {/* Trunk */}
-                        <rect x={x+4} y={baseY-3} width="4" height="6" fill="#5a4a3a" opacity="1" />
-                        {/* Pine layers - dark green, stays green year-round */}
-                        <polygon points={`${x+6},${baseY-28} ${x-3},${baseY-6} ${x+15},${baseY-6}`} fill="#2d5a3d" opacity="1" />
-                        <polygon points={`${x+6},${baseY-22} ${x-1},${baseY-8} ${x+13},${baseY-8}`} fill="#3d6a4d" opacity="1" />
-                        <polygon points={`${x+6},${baseY-16} ${x+1},${baseY-5} ${x+11},${baseY-5}`} fill="#2d5a3d" opacity="1" />
+                        <rect x={x+1.5} y={baseY-1} width="1.5" height="2.5" fill="#5a4a3a" opacity="1" />
+                        <polygon points={`${x+2.2},${baseY-9.5} ${x-0.5},${baseY-2} ${x+5},${baseY-2}`} fill="#2d5a3d" opacity="1" />
+                        <polygon points={`${x+2.2},${baseY-7.5} ${x+0.3},${baseY-2.8} ${x+4.2},${baseY-2.8}`} fill="#3d6a4d" opacity="1" />
+                        <polygon points={`${x+2.2},${baseY-5.5} ${x+0.8},${baseY-1.8} ${x+3.7},${baseY-1.8}`} fill="#2d5a3d" opacity="1" />
                       </g>
                     );
                   } else if (treeType === 1) {
-                    // Deciduous Oak - round canopy
+                    // Bonsai Oak - tiny round canopy
                     return (
                       <g key={`fg-tree-${i}`}>
-                        {/* Trunk */}
-                        <rect x={x+3} y={baseY-3} width="5" height="7" fill="#6b5a45" opacity="1" />
-                        {/* Round leafy canopy - varied greens */}
-                        <circle cx={x+5.5} cy={baseY-16} r="10" fill="#5a8a4a" opacity="1" />
-                        <circle cx={x-1} cy={baseY-12} r="6" fill="#6a9a5a" opacity="1" />
-                        <circle cx={x+12} cy={baseY-12} r="6" fill="#6a9a5a" opacity="1" />
-                        <circle cx={x+5.5} cy={baseY-22} r="5" fill="#7aaa6a" opacity="1" />
+                        <rect x={x+1.5} y={baseY-1} width="1.8" height="2.5" fill="#6b5a45" opacity="1" />
+                        <circle cx={x+2.2} cy={baseY-5.5} r="3.5" fill="#5a8a4a" opacity="1" />
+                        <circle cx={x-0.3} cy={baseY-4} r="2" fill="#6a9a5a" opacity="1" />
+                        <circle cx={x+4.8} cy={baseY-4} r="2" fill="#6a9a5a" opacity="1" />
+                        <circle cx={x+2.2} cy={baseY-7.5} r="1.8" fill="#7aaa6a" opacity="1" />
                       </g>
                     );
                   } else if (treeType === 2) {
-                    // Small Evergreen Cypress - narrow columnar shape
+                    // Bonsai Cypress - tiny columnar shape
                     return (
                       <g key={`fg-tree-${i}`}>
-                        {/* Trunk */}
-                        <rect x={x+3} y={baseY-3} width="3" height="5" fill="#5a4a3a" opacity="1" />
-                        {/* Narrow columnar evergreen */}
-                        <ellipse cx={x+4.5} cy={baseY-14} rx="5" ry="14" fill="#2d5a3d" opacity="1" />
-                        <ellipse cx={x+4.5} cy={baseY-16} rx="4" ry="11" fill="#3d6a4d" opacity="1" />
+                        <rect x={x+1.5} y={baseY-1} width="1" height="2" fill="#5a4a3a" opacity="1" />
+                        <ellipse cx={x+2} cy={baseY-5} rx="1.8" ry="5" fill="#2d5a3d" opacity="1" />
+                        <ellipse cx={x+2} cy={baseY-5.5} rx="1.4" ry="4" fill="#3d6a4d" opacity="1" />
                       </g>
                     );
                   } else {
-                    // Deciduous Maple - spreading canopy
+                    // Bonsai Maple - tiny spreading canopy
                     return (
                       <g key={`fg-tree-${i}`}>
-                        {/* Trunk */}
-                        <rect x={x+3} y={baseY-3} width="4" height="6" fill="#6b5a45" opacity="1" />
-                        {/* Spreading maple canopy */}
-                        <ellipse cx={x+5} cy={baseY-14} rx="11" ry="9" fill="#5a9a4a" opacity="1" />
-                        <ellipse cx={x-2} cy={baseY-11} rx="5" ry="5" fill="#6aaa5a" opacity="1" />
-                        <ellipse cx={x+12} cy={baseY-11} rx="5" ry="5" fill="#6aaa5a" opacity="1" />
-                        <ellipse cx={x+5} cy={baseY-20} rx="6" ry="5" fill="#7aba6a" opacity="1" />
+                        <rect x={x+1.5} y={baseY-1} width="1.5" height="2.5" fill="#6b5a45" opacity="1" />
+                        <ellipse cx={x+2} cy={baseY-5} rx="3.8" ry="3" fill="#5a9a4a" opacity="1" />
+                        <ellipse cx={x-0.5} cy={baseY-4} rx="1.8" ry="1.8" fill="#6aaa5a" opacity="1" />
+                        <ellipse cx={x+4.5} cy={baseY-4} rx="1.8" ry="1.8" fill="#6aaa5a" opacity="1" />
+                        <ellipse cx={x+2} cy={baseY-7} rx="2.2" ry="1.8" fill="#7aba6a" opacity="1" />
                       </g>
                     );
                   }
