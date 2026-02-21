@@ -905,40 +905,38 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
-              {/* Chicken coop - next to Barn #1 */}
+              {/* Chicken coop - to the LEFT of Barn #1 */}
               <g>
                 {/* Coop body */}
-                <rect x="238" y="203" width="12" height="8" fill="#8a6a4a" opacity="1" />
+                <rect x="148" y="203" width="12" height="8" fill="#8a6a4a" opacity="1" />
                 {/* Roof */}
-                <path d="M 236,203 L 244,197 L 252,203 Z" fill="#6a4a2a" opacity="1" />
-                <rect x="236" y="202.5" width="16" height="1" fill="#5a3a1a" opacity="1" />
-                {/* Door opening */}
-                <rect x="240" y="206" width="3.5" height="5" fill="#3a2a1a" opacity="1" />
+                <path d="M 146,203 L 154,197 L 162,203 Z" fill="#6a4a2a" opacity="1" />
+                <rect x="146" y="202.5" width="16" height="1" fill="#5a3a1a" opacity="1" />
+                {/* Door opening - faces right toward barn */}
+                <rect x="156" y="206" width="3.5" height="5" fill="#3a2a1a" opacity="1" />
                 {/* Small window */}
-                <rect x="246" y="204.5" width="2.5" height="2" fill="#4a4a4a" opacity="0.7" />
-                <path d="M 246,205.5 L 248.5,205.5 M 247.25,204.5 L 247.25,206.5" stroke="#6a5a4a" strokeWidth="0.3" />
+                <rect x="150" y="204.5" width="2.5" height="2" fill="#4a4a4a" opacity="0.7" />
+                <path d="M 150,205.5 L 152.5,205.5 M 151.25,204.5 L 151.25,206.5" stroke="#6a5a4a" strokeWidth="0.3" />
                 {/* Ramp from door to ground */}
-                <rect x="239" y="210.5" width="5" height="0.6" fill="#7a5a3a" opacity="0.9" transform="rotate(15, 241.5, 210.5)" />
+                <rect x="156" y="210.5" width="5" height="0.6" fill="#7a5a3a" opacity="0.9" transform="rotate(-15, 158.5, 210.5)" />
                 {/* Nesting chicken inside coop */}
                 <g style={{animation: 'chickenPeck 6s ease-in-out infinite'}}>
-                  <rect x="243.5" y="208" width="3.5" height="2.5" fill="#d4a574" opacity="0.9" />
-                  <rect x="242" y="207.5" width="2" height="2" fill="#d4a574" opacity="0.9" />
-                  <rect x="241.5" y="206.5" width="1.2" height="1.2" fill="#cc3333" opacity="0.9" />
-                  <rect x="241" y="208" width="1" height="0.5" fill="#ffd700" opacity="0.9" />
+                  <rect x="152" y="208" width="3.5" height="2.5" fill="#d4a574" opacity="0.9" />
+                  <rect x="155.5" y="207.5" width="2" height="2" fill="#d4a574" opacity="0.9" />
+                  <rect x="156.5" y="206.5" width="1.2" height="1.2" fill="#cc3333" opacity="0.9" />
+                  <rect x="157.5" y="208" width="1" height="0.5" fill="#ffd700" opacity="0.9" />
                 </g>
                 {/* Hay/straw around coop */}
-                <rect x="237" y="210" width="15" height="1" rx="0.5" fill="#d4b874" opacity="0.4" />
-                {/* Roaming chickens - leave coop, roam, return */}
-                {[0, 8, 16].map((delay, ci) => (
-                  <g key={`roam-ch-1-${ci}`} className="chicken-roam" style={{animationDelay: `${delay}s`, animationDuration: `${20 + ci * 4}s`}}>
-                    <g transform="translate(0, 12)">
-                      <rect x={241 - 2} y="220" width="4" height="3" fill="#d4a574" />
-                      <rect x={241 - 3.5} y="219" width="2" height="2.5" fill="#d4a574" />
-                      <rect x={241 - 3} y="218" width="1.2" height="1" fill="#cc3333" />
-                      <rect x={241 - 4.5} y="220" width="1.2" height="0.6" fill="#ffd700" />
-                      <rect x={241 - 0.5} y="222.5" width="0.6" height="1.5" fill="#e8a020" />
-                      <rect x={241 + 0.8} y="222.5" width="0.6" height="1.5" fill="#e8a020" />
-                    </g>
+                <rect x="147" y="210" width="15" height="1" rx="0.5" fill="#d4b874" opacity="0.4" />
+                {/* Roaming chickens - stay near coop at ground level */}
+                {[0, 7, 14].map((delay, ci) => (
+                  <g key={`roam-ch-1-${ci}`} className="chicken-roam" style={{animationDelay: `${delay}s`, animationDuration: `${18 + ci * 4}s`}}>
+                    <rect x={159 + ci * 3} y="208" width="4" height="3" fill={ci === 1 ? '#f5f5f0' : '#d4a574'} />
+                    <rect x={163 + ci * 3} y="207" width="2" height="2.5" fill={ci === 1 ? '#f5f5f0' : '#d4a574'} />
+                    <rect x={164 + ci * 3} y="206" width="1.2" height="1" fill="#cc3333" />
+                    <rect x={165 + ci * 3} y="207.5" width="1" height="0.5" fill="#ffd700" />
+                    <rect x={160 + ci * 3} y="210.5" width="0.6" height="1.5" fill="#e8a020" />
+                    <rect x={161.5 + ci * 3} y="210.5" width="0.6" height="1.5" fill="#e8a020" />
                   </g>
                 ))}
               </g>
@@ -1763,83 +1761,114 @@ export function ProgressiveSkyline() {
 
               {/* Grass meets road directly - no sidewalk strip needed */}
 
-              {/* ===== WALKWAYS - meet and intersect sidewalk ===== */}
-              <g opacity="0.85">
-                {/* Victorian walkways - centered on door (x+17.5), meet sidewalk edge */}
-                {[820, 1120, 1420, 1720].map((x, i) => {
-                  const swY = 228 + Math.sin((x + 17.5 - 800) * 0.0052) * 4 - 2;
-                  return i % 2 === 0 ? (
-                    <path key={`vic-dw-${i}`} d={`M ${x+17.5},212.5 Q ${x+17.8},220 ${x+17.5},${swY}`} stroke="#d4d0c8" strokeWidth="3.5" fill="none" opacity="0.85" strokeLinecap="round" />
-                  ) : (
-                    <g key={`vic-dw-${i}`}>
-                      {Array.from({length: 5}).map((_, si) => (
-                        <ellipse key={`vic-stone-${i}-${si}`} cx={x+17.5 + (si % 2 === 0 ? 0 : 0.8)} cy={213 + si * ((swY - 213) / 5)} rx="1.8" ry="1.2" fill="#d4d0c8" opacity="0.85" transform={`rotate(${si * 12 - 10}, ${x+17.5}, ${213 + si * ((swY - 213) / 5)})`} />
-                      ))}
-                    </g>
-                  );
-                })}
-                {/* Colonial walkways - centered on door (x+20), meet sidewalk edge */}
-                {[1000, 1300, 1600, 1900].map((x, i) => {
-                  const swY = 228 + Math.sin((x + 20 - 800) * 0.0052) * 4 - 2;
-                  return i % 2 === 0 ? (
-                    <rect key={`col-dw-${i}`} x={x+18.5} y="212.5" width="3.5" height={swY - 212.5} rx="0.5" fill="#d4d0c8" opacity="0.85" />
-                  ) : (
-                    <path key={`col-dw-${i}`} d={`M ${x+20},212.5 Q ${x+20.5},220 ${x+20},${swY}`} stroke="#d4d0c8" strokeWidth="3.5" fill="none" opacity="0.85" strokeLinecap="round" />
-                  );
-                })}
-                {/* Ranch walkways - centered on door (x+21.5), meet sidewalk edge */}
-                {[880, 1180, 1480, 1780].map((x, i) => {
-                  const swY = 228 + Math.sin((x + 21.5 - 800) * 0.0052) * 4 - 2;
-                  return i % 2 === 0 ? (
-                    <rect key={`ranch-dw-${i}`} x={x+20} y="210" width="3.5" height={swY - 210} rx="0.5" fill="#d4d0c8" opacity="0.85" />
-                  ) : (
-                    <g key={`ranch-dw-${i}`}>
-                      {Array.from({length: 5}).map((_, si) => (
-                        <rect key={`ranch-stone-${i}-${si}`} x={x+20 + (si % 2 === 0 ? 0 : 0.5)} y={211 + si * ((swY - 211) / 5)} width="3" height="1.8" rx="0.8" fill="#d4d0c8" opacity="0.85" />
-                      ))}
-                    </g>
-                  );
-                })}
-                {/* Cottage stepping stones - centered on door (x+15), meet sidewalk edge */}
-                {[1060, 1360, 1660, 1960].map((x, i) => {
-                  const swY = 228 + Math.sin((x + 15 - 800) * 0.0052) * 4 - 2;
-                  return (
-                    <g key={`cot-path-${i}`}>
-                      {Array.from({length: 5}).map((_, si) => {
-                        const wobble = Math.sin(si * 1.3 + i) * 1.2;
-                        return (
-                          <ellipse key={`cot-step-${i}-${si}`} cx={x+15 + wobble} cy={213 + si * ((swY - 213) / 5)} rx="2" ry="1.3" fill="#d4d0c8" opacity="0.85" transform={`rotate(${si * 15 + i * 8}, ${x+15 + wobble}, ${213 + si * ((swY - 213) / 5)})`} />
-                        );
-                      })}
-                    </g>
-                  );
-                })}
-                {/* Modern walkways - centered on door (x+16.5), meet sidewalk edge */}
-                {[940, 1240, 1540, 1840].map((x, i) => {
-                  const swY = 228 + Math.sin((x + 16.5 - 800) * 0.0052) * 4 - 2;
-                  return i % 2 === 0 ? (
-                    <path key={`mod-dw-${i}`} d={`M ${x+16.5},210 Q ${x+16.8},220 ${x+16.5},${swY}`} stroke="#d4d0c8" strokeWidth="3" fill="none" opacity="0.85" strokeLinecap="round" />
-                  ) : (
-                    <rect key={`mod-dw-${i}`} x={x+15} y="210" width="3" height={swY - 210} rx="0.3" fill="#d4d0c8" opacity="0.85" />
-                  );
-                })}
-              </g>
-
-              {/* ===== GARAGE DRIVEWAYS - wider concrete, from garage to road ===== */}
-              <g opacity="0.85">
-                {/* Ranch garage driveways - perfectly aligned with garage door (x+39, width 7) */}
-                {[880, 1180, 1480, 1780].map((x, i) => (
-                  <rect key={`ranch-gdw-${i}`} x={x+39} y="206" width="7" height="44" rx="0.5" fill="#d4d0c8" opacity="0.85" />
-                ))}
-                {/* Colonial driveways to shed/garage (shed center at x-6) */}
-                {[1000, 1300, 1600, 1900].map((x, i) => (
-                  <path key={`col-gdw-${i}`} d={`M ${x-6},208 Q ${x-5},225 ${x-7},240 Q ${x-6},246 ${x-6},250`} stroke="#d4d0c8" strokeWidth="6" fill="none" opacity="0.85" strokeLinecap="round" />
-                ))}
-                {/* Modern driveways to studio/garage (centered on studio window x-8, width 6) */}
-                {[940, 1240, 1540, 1840].map((x, i) => (
-                  <rect key={`mod-gdw-${i}`} x={x-8} y="207" width="6" height="43" rx="0.3" fill="#d4d0c8" opacity="0.85" />
-                ))}
-              </g>
+              {/* ===== WALKWAYS + DRIVEWAYS - all end at sidewalk top edge ===== */}
+              {/* Sidewalk curve: M800,230 Q850,225 900,228 Q960,232 1020,226 Q1100,222 1180,228 Q1260,234 1340,226 Q1420,220 1500,228 Q1580,235 1660,227 Q1740,222 1820,228 Q1900,234 1960,228 */}
+              {/* sidewalkY approximates the actual bezier curve; -2 = top edge of strokeWidth=4 sidewalk */}
+              {(() => {
+                // Sidewalk curve keypoints from the actual path definition
+                const swPoints: [number,number][] = [[800,230],[850,225],[900,228],[960,232],[1020,226],[1100,222],[1180,228],[1260,234],[1340,226],[1420,220],[1500,228],[1580,235],[1660,227],[1740,222],[1820,228],[1900,234],[1960,228],[2000,228]];
+                const sidewalkY = (px: number): number => {
+                  // Find surrounding keypoints and linearly interpolate
+                  if (px <= swPoints[0][0]) return swPoints[0][1] - 2;
+                  if (px >= swPoints[swPoints.length-1][0]) return swPoints[swPoints.length-1][1] - 2;
+                  for (let k = 0; k < swPoints.length - 1; k++) {
+                    if (px >= swPoints[k][0] && px <= swPoints[k+1][0]) {
+                      const t = (px - swPoints[k][0]) / (swPoints[k+1][0] - swPoints[k][0]);
+                      return swPoints[k][1] + t * (swPoints[k+1][1] - swPoints[k][1]) - 2;
+                    }
+                  }
+                  return 226; // fallback
+                };
+                return (
+                  <>
+                  {/* Front door walkways */}
+                  <g>
+                    {/* Victorian walkways */}
+                    {[820, 1120, 1420, 1720].map((x, wi) => {
+                      const swY = sidewalkY(x + 17.5);
+                      return wi % 2 === 0 ? (
+                        <path key={`vic-dw-${wi}`} d={`M ${x+17.5},212.5 Q ${x+17.8},${(212.5+swY)/2} ${x+17.5},${swY}`} stroke="#d4d0c8" strokeWidth="3.5" fill="none" opacity="0.85" strokeLinecap="round" />
+                      ) : (
+                        <g key={`vic-dw-${wi}`}>
+                          {Array.from({length: 5}).map((_, si) => (
+                            <ellipse key={`vic-stone-${wi}-${si}`} cx={x+17.5 + (si % 2 === 0 ? 0 : 0.8)} cy={213 + si * ((swY - 213) / 5)} rx="1.8" ry="1.2" fill="#d4d0c8" opacity="0.85" transform={`rotate(${si * 12 - 10}, ${x+17.5}, ${213 + si * ((swY - 213) / 5)})`} />
+                          ))}
+                        </g>
+                      );
+                    })}
+                    {/* Colonial walkways */}
+                    {[1000, 1300, 1600, 1900].map((x, wi) => {
+                      const swY = sidewalkY(x + 20);
+                      return wi % 2 === 0 ? (
+                        <rect key={`col-dw-${wi}`} x={x+18.5} y="212.5" width="3.5" height={swY - 212.5} rx="0.5" fill="#d4d0c8" opacity="0.85" />
+                      ) : (
+                        <path key={`col-dw-${wi}`} d={`M ${x+20},212.5 Q ${x+20.5},${(212.5+swY)/2} ${x+20},${swY}`} stroke="#d4d0c8" strokeWidth="3.5" fill="none" opacity="0.85" strokeLinecap="round" />
+                      );
+                    })}
+                    {/* Ranch walkways */}
+                    {[880, 1180, 1480, 1780].map((x, wi) => {
+                      const swY = sidewalkY(x + 21.5);
+                      return wi % 2 === 0 ? (
+                        <rect key={`ranch-dw-${wi}`} x={x+20} y="210" width="3.5" height={swY - 210} rx="0.5" fill="#d4d0c8" opacity="0.85" />
+                      ) : (
+                        <g key={`ranch-dw-${wi}`}>
+                          {Array.from({length: 5}).map((_, si) => (
+                            <rect key={`ranch-stone-${wi}-${si}`} x={x+20 + (si % 2 === 0 ? 0 : 0.5)} y={211 + si * ((swY - 211) / 5)} width="3" height="1.8" rx="0.8" fill="#d4d0c8" opacity="0.85" />
+                          ))}
+                        </g>
+                      );
+                    })}
+                    {/* Cottage stepping stones */}
+                    {[1060, 1360, 1660, 1960].map((x, wi) => {
+                      const swY = sidewalkY(x + 15);
+                      return (
+                        <g key={`cot-path-${wi}`}>
+                          {Array.from({length: 5}).map((_, si) => {
+                            const wobble = Math.sin(si * 1.3 + wi) * 1.2;
+                            return (
+                              <ellipse key={`cot-step-${wi}-${si}`} cx={x+15 + wobble} cy={213 + si * ((swY - 213) / 5)} rx="2" ry="1.3" fill="#d4d0c8" opacity="0.85" transform={`rotate(${si * 15 + wi * 8}, ${x+15 + wobble}, ${213 + si * ((swY - 213) / 5)})`} />
+                            );
+                          })}
+                        </g>
+                      );
+                    })}
+                    {/* Modern walkways */}
+                    {[940, 1240, 1540, 1840].map((x, wi) => {
+                      const swY = sidewalkY(x + 16.5);
+                      return wi % 2 === 0 ? (
+                        <path key={`mod-dw-${wi}`} d={`M ${x+16.5},210 Q ${x+16.8},${(210+swY)/2} ${x+16.5},${swY}`} stroke="#d4d0c8" strokeWidth="3" fill="none" opacity="0.85" strokeLinecap="round" />
+                      ) : (
+                        <rect key={`mod-dw-${wi}`} x={x+15} y="210" width="3" height={swY - 210} rx="0.3" fill="#d4d0c8" opacity="0.85" />
+                      );
+                    })}
+                  </g>
+                  {/* Garage driveways - also end at sidewalk top edge */}
+                  <g>
+                    {/* Ranch garage driveways */}
+                    {[880, 1180, 1480, 1780].map((x, wi) => {
+                      const swY = sidewalkY(x + 42);
+                      return (
+                        <rect key={`ranch-gdw-${wi}`} x={x+39} y="206" width="7" height={swY - 206} rx="0.5" fill="#d4d0c8" opacity="0.85" />
+                      );
+                    })}
+                    {/* Colonial driveways */}
+                    {[1000, 1300, 1600, 1900].map((x, wi) => {
+                      const swY = sidewalkY(x - 6);
+                      return (
+                        <path key={`col-gdw-${wi}`} d={`M ${x-6},208 Q ${x-5.5},${(208+swY)/2} ${x-6},${swY}`} stroke="#d4d0c8" strokeWidth="6" fill="none" opacity="0.85" strokeLinecap="round" />
+                      );
+                    })}
+                    {/* Modern driveways */}
+                    {[940, 1240, 1540, 1840].map((x, wi) => {
+                      const swY = sidewalkY(x - 5);
+                      return (
+                        <rect key={`mod-gdw-${wi}`} x={x-8} y="207" width="6" height={swY - 207} rx="0.3" fill="#d4d0c8" opacity="0.85" />
+                      );
+                    })}
+                  </g>
+                  </>
+                );
+              })()}
 
               {/* ===== MAILBOXES along the winding sidewalk ===== */}
               <g opacity="1">
@@ -2235,66 +2264,55 @@ export function ProgressiveSkyline() {
                       const cx = bldg.x + bldg.w / 2
                       const awningColors = ['#c84040', '#4a8a4a', '#b8860b', '#4a6a8a']
                       const awningColor = awningColors[storefrontType]
+                      // Scale display window half-width to fit building (2px margin each side)
+                      const displayHW = Math.min(18, bldg.w / 2 - 4)
+                      // Standard type: window width fits within building with door gap
+                      const stdWinW = Math.max(10, (bldg.w - 20) / 2)
 
                       return (
                         <g opacity="1">
-                          {/* Colored awning/sign strip below floor band */}
-                          <rect x={bldg.x + 4} y={198} width={bldg.w - 8} height="3" fill={awningColor} opacity="1" />
-                          {/* Awning scalloped edge */}
-                          {Array.from({length: Math.floor((bldg.w - 8) / 4)}).map((_, s) => (
-                            <path key={`scallop-${i}-${s}`}
-                                  d={`M ${bldg.x + 4 + s * 4},201 Q ${bldg.x + 6 + s * 4},203 ${bldg.x + 8 + s * 4},201`}
-                                  fill={awningColor} opacity="0.9" />
-                          ))}
-
+                          {/* === STOREFRONT CONTENT (renders first / behind awning) === */}
                           {storefrontType === 0 ? (
                             /* CAFE: striped awning + bistro table */
                             <g>
-                              {/* Striped awning pattern */}
-                              {Array.from({length: Math.floor((bldg.w - 8) / 3)}).map((_, s) => (
-                                s % 2 === 0 ? (
-                                  <rect key={`stripe-${i}-${s}`} x={bldg.x + 4 + s * 3} y={198} width="3" height="3" fill="#e8e0d0" opacity="0.5" />
-                                ) : null
-                              ))}
                               {/* Wide display window */}
-                              <rect x={cx - 18} y={199} width="36" height="11" fill="#4a5a4a" opacity="1" />
-                              <rect x={cx - 17} y={199.5} width="34" height="10" fill={isNightTime && isWindowLit(bldg.x + 1000 + i) ? "#FFD700" : "#6b8ea8"} opacity="1" />
+                              <rect x={cx - displayHW} y={201} width={displayHW * 2} height="9" fill="#4a5a4a" opacity="1" />
+                              <rect x={cx - displayHW + 1} y={201.5} width={displayHW * 2 - 2} height="8" fill={isNightTime && isWindowLit(bldg.x + 1000 + i) ? "#FFD700" : "#6b8ea8"} opacity="1" />
                               {/* Cafe door */}
-                              <rect x={cx - 4} y={199} width="8" height="13" fill="#5a6a5a" opacity="1" />
-                              <rect x={cx - 3} y={200} width="2.5" height="12" fill="#6b8ea8" opacity="0.9" />
-                              <rect x={cx + 0.5} y={200} width="2.5" height="12" fill="#6b8ea8" opacity="0.9" />
-                              <circle cx={cx - 0.5} cy={206} r="0.5" fill="#d4af37" opacity="1" />
-                              <circle cx={cx + 0.5} cy={206} r="0.5" fill="#d4af37" opacity="1" />
+                              <rect x={cx - 4} y={201} width="8" height="11" fill="#5a6a5a" opacity="1" />
+                              <rect x={cx - 3} y={202} width="2.5" height="10" fill="#6b8ea8" opacity="0.9" />
+                              <rect x={cx + 0.5} y={202} width="2.5" height="10" fill="#6b8ea8" opacity="0.9" />
+                              <circle cx={cx - 0.5} cy={207} r="0.5" fill="#d4af37" opacity="1" />
+                              <circle cx={cx + 0.5} cy={207} r="0.5" fill="#d4af37" opacity="1" />
                               {/* Bistro table outside (on sidewalk) */}
                               <rect x={cx + 14} y={212} width="0.8" height="4" fill="#5a5a5a" opacity="1" />
                               <ellipse cx={cx + 14.4} cy={212} rx="3" ry="1" fill="#6a6a6a" opacity="1" />
                               {/* Tiny chairs */}
                               <rect x={cx + 10} y={213} width="2" height="3" rx="0.3" fill="#8a6a4a" opacity="0.8" />
                               <rect x={cx + 17} y={213} width="2" height="3" rx="0.3" fill="#8a6a4a" opacity="0.8" />
-                              {/* Sign text area */}
-                              <rect x={cx - 6} y={198.5} width="12" height="2" fill="#f5e6d3" opacity="0.8" rx="0.5" />
                             </g>
                           ) : storefrontType === 1 ? (
                             /* FLOWER SHOP: window boxes, green awning */
                             <g>
-                              {/* Display window */}
-                              <rect x={cx - 18} y={199} width="36" height="11" fill="#4a5a4a" opacity="1" />
-                              <rect x={cx - 17} y={199.5} width="15" height="10" fill={isNightTime && isWindowLit(bldg.x + 1000 + i) ? "#FFD700" : "#6b8ea8"} opacity="1" />
-                              <rect x={cx + 2} y={199.5} width="15" height="10" fill={isNightTime && isWindowLit(bldg.x + 1001 + i) ? "#FFD700" : "#6b8ea8"} opacity="1" />
+                              {/* Display windows - two panes flanking door */}
+                              <rect x={cx - displayHW} y={201} width={displayHW - 5} height="9" fill="#4a5a4a" opacity="1" />
+                              <rect x={cx - displayHW + 1} y={201.5} width={displayHW - 7} height="8" fill={isNightTime && isWindowLit(bldg.x + 1000 + i) ? "#FFD700" : "#6b8ea8"} opacity="1" />
+                              <rect x={cx + 5} y={201} width={displayHW - 5} height="9" fill="#4a5a4a" opacity="1" />
+                              <rect x={cx + 6} y={201.5} width={displayHW - 7} height="8" fill={isNightTime && isWindowLit(bldg.x + 1001 + i) ? "#FFD700" : "#6b8ea8"} opacity="1" />
                               {/* Door */}
-                              <rect x={cx - 4} y={199} width="8" height="13" fill="#5a6a5a" opacity="1" />
-                              <rect x={cx - 3} y={200} width="2.5" height="12" fill="#6b8ea8" opacity="0.9" />
-                              <rect x={cx + 0.5} y={200} width="2.5" height="12" fill="#6b8ea8" opacity="0.9" />
-                              <circle cx={cx + 0.5} cy={206} r="0.5" fill="#d4af37" opacity="1" />
+                              <rect x={cx - 4} y={201} width="8" height="11" fill="#5a6a5a" opacity="1" />
+                              <rect x={cx - 3} y={202} width="2.5" height="10" fill="#6b8ea8" opacity="0.9" />
+                              <rect x={cx + 0.5} y={202} width="2.5" height="10" fill="#6b8ea8" opacity="0.9" />
+                              <circle cx={cx + 0.5} cy={207} r="0.5" fill="#d4af37" opacity="1" />
                               {/* Window flower boxes below display windows */}
-                              <rect x={cx - 17} y={209} width="14" height="2.5" fill="#7a5a3a" opacity="1" />
-                              <circle cx={cx - 14} cy={208.5} r="1.2" fill="#ff69b4" opacity="1" />
-                              <circle cx={cx - 11} cy={208} r="1.4" fill="#ffd700" opacity="1" />
-                              <circle cx={cx - 8} cy={208.5} r="1.2" fill="#ff69b4" opacity="1" />
-                              <rect x={cx + 3} y={209} width="14" height="2.5" fill="#7a5a3a" opacity="1" />
-                              <circle cx={cx + 6} cy={208.5} r="1.2" fill="#cc99ff" opacity="1" />
-                              <circle cx={cx + 9} cy={208} r="1.4" fill="#ff6347" opacity="1" />
-                              <circle cx={cx + 12} cy={208.5} r="1.2" fill="#cc99ff" opacity="1" />
+                              <rect x={cx - displayHW + 1} y={209} width={displayHW - 7} height="2.5" fill="#7a5a3a" opacity="1" />
+                              <circle cx={cx - displayHW + 4} cy={208.5} r="1.2" fill="#ff69b4" opacity="1" />
+                              <circle cx={cx - displayHW + 7} cy={208} r="1.4" fill="#ffd700" opacity="1" />
+                              <circle cx={cx - displayHW + 10} cy={208.5} r="1.2" fill="#ff69b4" opacity="1" />
+                              <rect x={cx + 6} y={209} width={displayHW - 7} height="2.5" fill="#7a5a3a" opacity="1" />
+                              <circle cx={cx + 9} cy={208.5} r="1.2" fill="#cc99ff" opacity="1" />
+                              <circle cx={cx + 12} cy={208} r="1.4" fill="#ff6347" opacity="1" />
+                              <circle cx={cx + 15} cy={208.5} r="1.2" fill="#cc99ff" opacity="1" />
                               {/* Potted plant by door */}
                               <rect x={cx + 5} y={213} width="2" height="3" fill="#7a5a3a" opacity="1" />
                               <circle cx={cx + 6} cy={212} r="2" fill="#4a8a4a" opacity="1" />
@@ -2303,45 +2321,60 @@ export function ProgressiveSkyline() {
                             /* BOOKSTORE: wide display, warm awning */
                             <g>
                               {/* Wide display window with warm backing */}
-                              <rect x={cx - 18} y={199} width="36" height="11" fill="#4a5a4a" opacity="1" />
-                              <rect x={cx - 17} y={199.5} width="34" height="10" fill={isNightTime && isWindowLit(bldg.x + 1000 + i) ? "#FFD700" : "#8a7a6a"} opacity="1" />
+                              <rect x={cx - displayHW} y={201} width={displayHW * 2} height="9" fill="#4a5a4a" opacity="1" />
+                              <rect x={cx - displayHW + 1} y={201.5} width={displayHW * 2 - 2} height="8" fill={isNightTime && isWindowLit(bldg.x + 1000 + i) ? "#FFD700" : "#8a7a6a"} opacity="1" />
                               {/* Book display in window */}
-                              {Array.from({length: 5}).map((_, b) => (
-                                <rect key={`book-${i}-${b}`} x={cx - 14 + b * 6} y={203} width="4" height="5" rx="0.3"
+                              {Array.from({length: Math.min(5, Math.floor(displayHW * 2 / 7))}).map((_, b) => (
+                                <rect key={`book-${i}-${b}`} x={cx - displayHW + 3 + b * 6} y={204} width="4" height="5" rx="0.3"
                                       fill={['#c84040', '#4a6a8a', '#8a6a4a', '#6a4a7a', '#4a8a6a'][b]} opacity="0.8" />
                               ))}
                               {/* Door */}
-                              <rect x={cx - 4} y={199} width="8" height="13" fill="#5a4a3a" opacity="1" />
-                              <rect x={cx - 3} y={200} width="6" height="12" fill="#8a7a6a" opacity="0.9" />
-                              <rect x={cx - 3} y={206} width="6" height="0.5" fill="#5a4a3a" opacity="1" />
-                              <circle cx={cx + 2} cy={206} r="0.5" fill="#d4af37" opacity="1" />
-                              {/* Sign text area */}
-                              <rect x={cx - 8} y={198.5} width="16" height="2" fill="#f5e6d3" opacity="0.8" rx="0.5" />
+                              <rect x={cx - 4} y={201} width="8" height="11" fill="#5a4a3a" opacity="1" />
+                              <rect x={cx - 3} y={202} width="6" height="10" fill="#8a7a6a" opacity="0.9" />
+                              <rect x={cx - 3} y={207} width="6" height="0.5" fill="#5a4a3a" opacity="1" />
+                              <circle cx={cx + 2} cy={207} r="0.5" fill="#d4af37" opacity="1" />
                             </g>
                           ) : (
-                            /* STANDARD: glass doors (original style) */
+                            /* STANDARD: glass doors - windows scaled to building width */
                             <g>
                               {/* Left storefront window */}
-                              <rect x={cx - 26} y={200} width="18" height="10" fill="#4a5a4a" opacity="1" />
-                              <rect x={cx - 25.4} y={200.6} width="16.8" height="8.8" fill={isNightTime && isWindowLit(bldg.x + 1000 + i) ? "#FFD700" : "#6b8ea8"} opacity="1" />
-                              <rect x={cx - 25.4} y={204.5} width="16.8" height="0.5" fill="#4a5a4a" opacity="1" />
-                              <rect x={cx - 20} y={200.6} width="0.6" height="8.8" fill="#4a5a4a" opacity="1" />
-                              <rect x={cx - 14.6} y={200.6} width="0.6" height="8.8" fill="#4a5a4a" opacity="1" />
+                              <rect x={cx - 8 - stdWinW} y={201} width={stdWinW} height="9" fill="#4a5a4a" opacity="1" />
+                              <rect x={cx - 7.4 - stdWinW} y={201.6} width={stdWinW - 1.2} height="7.8" fill={isNightTime && isWindowLit(bldg.x + 1000 + i) ? "#FFD700" : "#6b8ea8"} opacity="1" />
+                              <rect x={cx - 7.4 - stdWinW} y={205.5} width={stdWinW - 1.2} height="0.5" fill="#4a5a4a" opacity="1" />
+                              <rect x={cx - 8 - stdWinW / 2} y={201.6} width="0.6" height="7.8" fill="#4a5a4a" opacity="1" />
                               {/* Right storefront window */}
-                              <rect x={cx + 8} y={200} width="18" height="10" fill="#4a5a4a" opacity="1" />
-                              <rect x={cx + 8.6} y={200.6} width="16.8" height="8.8" fill={isNightTime && isWindowLit(bldg.x + 1001 + i) ? "#FFD700" : "#6b8ea8"} opacity="1" />
-                              <rect x={cx + 8.6} y={204.5} width="16.8" height="0.5" fill="#4a5a4a" opacity="1" />
-                              <rect x={cx + 14} y={200.6} width="0.6" height="8.8" fill="#4a5a4a" opacity="1" />
-                              <rect x={cx + 19.4} y={200.6} width="0.6" height="8.8" fill="#4a5a4a" opacity="1" />
+                              <rect x={cx + 8} y={201} width={stdWinW} height="9" fill="#4a5a4a" opacity="1" />
+                              <rect x={cx + 8.6} y={201.6} width={stdWinW - 1.2} height="7.8" fill={isNightTime && isWindowLit(bldg.x + 1001 + i) ? "#FFD700" : "#6b8ea8"} opacity="1" />
+                              <rect x={cx + 8.6} y={205.5} width={stdWinW - 1.2} height="0.5" fill="#4a5a4a" opacity="1" />
+                              <rect x={cx + 8 + stdWinW / 2} y={201.6} width="0.6" height="7.8" fill="#4a5a4a" opacity="1" />
                               {/* Door */}
-                              <rect x={cx - 4} y={199} width="8" height="13" fill="#5a6a5a" opacity="1" />
-                              <rect x={cx - 3} y={200} width="2.5" height="12" fill="#6b8ea8" opacity="0.9" />
-                              <rect x={cx + 0.5} y={200} width="2.5" height="12" fill="#6b8ea8" opacity="0.9" />
-                              <rect x={cx - 3} y={206} width="2.5" height="0.5" fill="#4a5a4a" opacity="1" />
-                              <rect x={cx + 0.5} y={206} width="2.5" height="0.5" fill="#4a5a4a" opacity="1" />
-                              <rect x={cx - 0.8} y={205} width="0.8" height="4" fill="#d4af37" opacity="1" />
-                              <rect x={cx + 0.1} y={205} width="0.8" height="4" fill="#d4af37" opacity="1" />
+                              <rect x={cx - 4} y={201} width="8" height="11" fill="#5a6a5a" opacity="1" />
+                              <rect x={cx - 3} y={202} width="2.5" height="10" fill="#6b8ea8" opacity="0.9" />
+                              <rect x={cx + 0.5} y={202} width="2.5" height="10" fill="#6b8ea8" opacity="0.9" />
+                              <rect x={cx - 3} y={207} width="2.5" height="0.5" fill="#4a5a4a" opacity="1" />
+                              <rect x={cx + 0.5} y={207} width="2.5" height="0.5" fill="#4a5a4a" opacity="1" />
+                              <rect x={cx - 0.8} y={206} width="0.8" height="4" fill="#d4af37" opacity="1" />
+                              <rect x={cx + 0.1} y={206} width="0.8" height="4" fill="#d4af37" opacity="1" />
                             </g>
+                          )}
+
+                          {/* === AWNING (renders last / in front of windows + doors) === */}
+                          <rect x={bldg.x + 4} y={198} width={bldg.w - 8} height="3.5" fill={awningColor} opacity="1" />
+                          {/* Awning scalloped edge */}
+                          {Array.from({length: Math.floor((bldg.w - 8) / 4)}).map((_, s) => (
+                            <path key={`scallop-${i}-${s}`}
+                                  d={`M ${bldg.x + 4 + s * 4},201.5 Q ${bldg.x + 6 + s * 4},203.5 ${bldg.x + 8 + s * 4},201.5`}
+                                  fill={awningColor} opacity="0.9" />
+                          ))}
+                          {/* Awning stripe pattern for cafe */}
+                          {storefrontType === 0 && Array.from({length: Math.floor((bldg.w - 8) / 3)}).map((_, s) => (
+                            s % 2 === 0 ? (
+                              <rect key={`stripe-${i}-${s}`} x={bldg.x + 4 + s * 3} y={198} width="3" height="3.5" fill="#e8e0d0" opacity="0.5" />
+                            ) : null
+                          ))}
+                          {/* Sign text area on awning */}
+                          {(storefrontType === 0 || storefrontType === 2) && (
+                            <rect x={cx - 6} y={198.5} width="12" height="2" fill="#f5e6d3" opacity="0.8" rx="0.5" />
                           )}
 
                           {/* Entrance step */}
@@ -3865,40 +3898,38 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
-              {/* Chicken coop - next to Barn 1 (section 2) */}
+              {/* Chicken coop - to the LEFT of Barn 1 (section 2) */}
               <g>
                 {/* Coop body */}
-                <rect x="4035" y="203" width="12" height="8" fill="#8a6a4a" opacity="1" />
+                <rect x="3948" y="203" width="12" height="8" fill="#8a6a4a" opacity="1" />
                 {/* Roof */}
-                <path d="M 4033,203 L 4041,197 L 4049,203 Z" fill="#6a4a2a" opacity="1" />
-                <rect x="4033" y="202.5" width="16" height="1" fill="#5a3a1a" opacity="1" />
-                {/* Door opening */}
-                <rect x="4037" y="206" width="3.5" height="5" fill="#3a2a1a" opacity="1" />
+                <path d="M 3946,203 L 3954,197 L 3962,203 Z" fill="#6a4a2a" opacity="1" />
+                <rect x="3946" y="202.5" width="16" height="1" fill="#5a3a1a" opacity="1" />
+                {/* Door opening - faces right toward barn */}
+                <rect x="3956" y="206" width="3.5" height="5" fill="#3a2a1a" opacity="1" />
                 {/* Small window */}
-                <rect x="4043" y="204.5" width="2.5" height="2" fill="#4a4a4a" opacity="0.7" />
-                <path d="M 4043,205.5 L 4045.5,205.5 M 4044.25,204.5 L 4044.25,206.5" stroke="#6a5a4a" strokeWidth="0.3" />
+                <rect x="3950" y="204.5" width="2.5" height="2" fill="#4a4a4a" opacity="0.7" />
+                <path d="M 3950,205.5 L 3952.5,205.5 M 3951.25,204.5 L 3951.25,206.5" stroke="#6a5a4a" strokeWidth="0.3" />
                 {/* Ramp */}
-                <rect x="4036" y="210.5" width="5" height="0.6" fill="#7a5a3a" opacity="0.9" transform="rotate(15, 4038.5, 210.5)" />
+                <rect x="3956" y="210.5" width="5" height="0.6" fill="#7a5a3a" opacity="0.9" transform="rotate(-15, 3958.5, 210.5)" />
                 {/* Nesting chicken */}
                 <g style={{animation: 'chickenPeck 7s ease-in-out infinite', animationDelay: '2s'}}>
-                  <rect x="4040.5" y="208" width="3.5" height="2.5" fill="#d4a574" opacity="0.9" />
-                  <rect x="4039" y="207.5" width="2" height="2" fill="#d4a574" opacity="0.9" />
-                  <rect x="4038.5" y="206.5" width="1.2" height="1.2" fill="#cc3333" opacity="0.9" />
-                  <rect x="4038" y="208" width="1" height="0.5" fill="#ffd700" opacity="0.9" />
+                  <rect x="3952" y="208" width="3.5" height="2.5" fill="#d4a574" opacity="0.9" />
+                  <rect x="3955.5" y="207.5" width="2" height="2" fill="#d4a574" opacity="0.9" />
+                  <rect x="3956.5" y="206.5" width="1.2" height="1.2" fill="#cc3333" opacity="0.9" />
+                  <rect x="3957.5" y="208" width="1" height="0.5" fill="#ffd700" opacity="0.9" />
                 </g>
                 {/* Hay/straw around coop */}
-                <rect x="4034" y="210" width="15" height="1" rx="0.5" fill="#d4b874" opacity="0.4" />
-                {/* Roaming chickens - leave coop, roam, return */}
-                {[0, 7, 15].map((delay, ci) => (
-                  <g key={`roam-ch-2-${ci}`} className="chicken-roam" style={{animationDelay: `${delay}s`, animationDuration: `${22 + ci * 3}s`}}>
-                    <g transform="translate(0, 12)">
-                      <rect x={4038 - 2} y="220" width="4" height="3" fill="#f5f5f0" />
-                      <rect x={4038 - 3.5} y="219" width="2" height="2.5" fill="#f5f5f0" />
-                      <rect x={4038 - 3} y="218" width="1.2" height="1" fill="#cc3333" />
-                      <rect x={4038 - 4.5} y="220" width="1.2" height="0.6" fill="#ffd700" />
-                      <rect x={4038 - 0.5} y="222.5" width="0.6" height="1.5" fill="#e8a020" />
-                      <rect x={4038 + 0.8} y="222.5" width="0.6" height="1.5" fill="#e8a020" />
-                    </g>
+                <rect x="3947" y="210" width="15" height="1" rx="0.5" fill="#d4b874" opacity="0.4" />
+                {/* Roaming chickens - stay near coop at ground level */}
+                {[0, 7, 14].map((delay, ci) => (
+                  <g key={`roam-ch-2-${ci}`} className="chicken-roam" style={{animationDelay: `${delay}s`, animationDuration: `${20 + ci * 3}s`}}>
+                    <rect x={3959 + ci * 3} y="208" width="4" height="3" fill={ci === 0 ? '#f5f5f0' : '#d4a574'} />
+                    <rect x={3963 + ci * 3} y="207" width="2" height="2.5" fill={ci === 0 ? '#f5f5f0' : '#d4a574'} />
+                    <rect x={3964 + ci * 3} y="206" width="1.2" height="1" fill="#cc3333" />
+                    <rect x={3965 + ci * 3} y="207.5" width="1" height="0.5" fill="#ffd700" />
+                    <rect x={3960 + ci * 3} y="210.5" width="0.6" height="1.5" fill="#e8a020" />
+                    <rect x={3961.5 + ci * 3} y="210.5" width="0.6" height="1.5" fill="#e8a020" />
                   </g>
                 ))}
               </g>
