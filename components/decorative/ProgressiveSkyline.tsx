@@ -2427,21 +2427,23 @@ export function ProgressiveSkyline() {
                                 <line x1={bldg.x + 8.5 + panel * 12} y1={roofY - 7} x2={bldg.x + 8.5 + panel * 12} y2={roofY - 10} stroke="#1a2f4f" strokeWidth="0.3" />
                               </g>
                             ))}
-                            {/* Wind turbine - realistic proportions */}
-                            {/* Turbine tower/pole - tapered */}
-                            <path d={`M ${tcx - 1},${roofY} L ${tcx - 0.6},${thy + 2} L ${tcx + 0.6},${thy + 2} L ${tcx + 1},${roofY} Z`} fill="#d0d0d0" stroke="#b0b0b0" strokeWidth="0.3" />
-                            {/* Nacelle housing */}
-                            <rect x={tcx - 2} y={thy} width="5" height="2.5" rx="0.5" fill="#e0e0e0" stroke="#b0b0b0" strokeWidth="0.3" />
+                            {/* Wind turbine - emerges from roof surface */}
+                            {/* Turbine tower/pole - tapered, base on green roof surface */}
+                            <path d={`M ${tcx - 1.2},${roofY - 3} L ${tcx - 0.5},${thy + 2} L ${tcx + 0.5},${thy + 2} L ${tcx + 1.2},${roofY - 3} Z`} fill="#d0d0d0" stroke="#b0b0b0" strokeWidth="0.3" />
+                            {/* Tower base plate - sits visibly on roof */}
+                            <rect x={tcx - 2.5} y={roofY - 3.5} width="5" height="1.2" rx="0.3" fill="#b8b8b8" stroke="#a0a0a0" strokeWidth="0.2" />
+                            {/* Nacelle housing - centered on tower */}
+                            <rect x={tcx - 2.5} y={thy} width="5" height="2.5" rx="0.5" fill="#e0e0e0" stroke="#b0b0b0" strokeWidth="0.3" />
                             {/* Hub/spinner cone */}
                             <circle cx={tcx} cy={thy + 1.2} r="1.2" fill="#c0c0c0" stroke="#a0a0a0" strokeWidth="0.3" />
-                            {/* Rotating blades - 3 long slim blades at 120° */}
+                            {/* Rotating blades - 3 blades at 120°, all 10px from hub center */}
                             <g className="turbine-blade" style={{animationDelay: `${i * 0.2}s`, transformOrigin: `${tcx}px ${thy + 1.2}px`}}>
-                              {/* Blade 1 - pointing up */}
-                              <path d={`M ${tcx - 0.6},${thy + 0.5} Q ${tcx - 0.4},${thy - 6} ${tcx},${thy - 10} Q ${tcx + 0.4},${thy - 6} ${tcx + 0.6},${thy + 0.5} Z`} fill="#f0f0f0" stroke="#d8d8d8" strokeWidth="0.2" />
-                              {/* Blade 2 - pointing lower-right (120°) */}
-                              <path d={`M ${tcx + 0.3},${thy + 1.8} Q ${tcx + 5.5},${thy + 4} ${tcx + 8.7},${thy + 6.2} Q ${tcx + 5.2},${thy + 4.8} ${tcx + 0.6},${thy + 2.2} Z`} fill="#e8e8e8" stroke="#d8d8d8" strokeWidth="0.2" />
-                              {/* Blade 3 - pointing lower-left (240°) */}
-                              <path d={`M ${tcx - 0.3},${thy + 1.8} Q ${tcx - 5.5},${thy + 4} ${tcx - 8.7},${thy + 6.2} Q ${tcx - 5.2},${thy + 4.8} ${tcx - 0.6},${thy + 2.2} Z`} fill="#e8e8e8" stroke="#d8d8d8" strokeWidth="0.2" />
+                              {/* Blade 1 - pointing up (10px from hub) */}
+                              <path d={`M ${tcx - 0.5},${thy + 0.5} Q ${tcx - 0.3},${thy - 4} ${tcx},${thy - 8.8} Q ${tcx + 0.3},${thy - 4} ${tcx + 0.5},${thy + 0.5} Z`} fill="#f0f0f0" stroke="#d8d8d8" strokeWidth="0.2" />
+                              {/* Blade 2 - pointing lower-right (120°, 10px from hub) */}
+                              <path d={`M ${tcx + 0.3},${thy + 1.8} Q ${tcx + 4.5},${thy + 3.5} ${tcx + 8.66},${thy + 6.2} Q ${tcx + 4.8},${thy + 4.3} ${tcx + 0.6},${thy + 2.1} Z`} fill="#e8e8e8" stroke="#d8d8d8" strokeWidth="0.2" />
+                              {/* Blade 3 - pointing lower-left (240°, 10px from hub) */}
+                              <path d={`M ${tcx - 0.3},${thy + 1.8} Q ${tcx - 4.5},${thy + 3.5} ${tcx - 8.66},${thy + 6.2} Q ${tcx - 4.8},${thy + 4.3} ${tcx - 0.6},${thy + 2.1} Z`} fill="#e8e8e8" stroke="#d8d8d8" strokeWidth="0.2" />
                             </g>
                           </g>
                         )
