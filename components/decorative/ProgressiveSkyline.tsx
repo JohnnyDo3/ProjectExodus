@@ -1860,34 +1860,74 @@ export function ProgressiveSkyline() {
                 );
               })()}
 
-              {/* ===== MAILBOXES along the winding sidewalk ===== */}
-              <g opacity="1">
-                {[835, 950, 1070, 1135, 1250, 1370, 1435, 1550, 1670, 1735, 1850, 1970].map((x, i) => {
-                  // Approximate the winding sidewalk y at this x position
-                  const swY = 228 + Math.sin((x - 800) * 0.0052) * 4;
-                  return (
-                  <g key={`mailbox-${i}`}>
-                    {/* Post */}
-                    <rect x={x} y={swY - 4} width="1.2" height="5.5" fill="#5a4a3a" />
-                    {/* Mailbox */}
-                    <rect x={x-0.8} y={swY - 5} width="3" height="2" rx="0.5" fill={i % 3 === 0 ? "#2a2a2a" : "#d4af37"} />
+              {/* ===== MAILBOXES + FIRE HYDRANTS - positioned relative to sidewalk curve ===== */}
+              {(() => {
+                // Sidewalk curve keypoints (same as walkway section)
+                const swPts: [number,number][] = [[800,230],[850,225],[900,228],[960,232],[1020,226],[1100,222],[1180,228],[1260,234],[1340,226],[1420,220],[1500,228],[1580,235],[1660,227],[1740,222],[1820,228],[1900,234],[1960,228],[2000,228]];
+                const swAt = (px: number): number => {
+                  if (px <= swPts[0][0]) return swPts[0][1];
+                  if (px >= swPts[swPts.length-1][0]) return swPts[swPts.length-1][1];
+                  for (let k = 0; k < swPts.length - 1; k++) {
+                    if (px >= swPts[k][0] && px <= swPts[k+1][0]) {
+                      const t = (px - swPts[k][0]) / (swPts[k+1][0] - swPts[k][0]);
+                      return swPts[k][1] + t * (swPts[k+1][1] - swPts[k][1]);
+                    }
+                  }
+                  return 228;
+                };
+                // Mailbox positions: to the left of each house walkway, above the sidewalk
+                // House walkway x-centers: Vic x+17.5, Ranch x+21.5, Modern x+16.5, Colonial x+20, Cottage x+15
+                const mailboxHouses = [
+                  {hx: 820, wx: 820+17.5},  // Victorian
+                  {hx: 880, wx: 880+21.5},  // Ranch
+                  {hx: 1000, wx: 1000+20},  // Colonial
+                  {hx: 1120, wx: 1120+17.5}, // Victorian
+                  {hx: 1240, wx: 1240+16.5}, // Modern
+                  {hx: 1360, wx: 1360+15},  // Cottage
+                  {hx: 1420, wx: 1420+17.5}, // Victorian
+                  {hx: 1540, wx: 1540+16.5}, // Modern
+                  {hx: 1660, wx: 1660+15},  // Cottage
+                  {hx: 1780, wx: 1780+21.5}, // Ranch
+                  {hx: 1840, wx: 1840+16.5}, // Modern
+                  {hx: 1960, wx: 1960+15},  // Cottage
+                ];
+                // Fire hydrant positions: between sidewalk and road, every ~200px
+                const hydrantXs = [900, 1100, 1300, 1500, 1700, 1900];
+                return (
+                  <>
+                  {/* Mailboxes - above sidewalk, to the left of each walkway */}
+                  <g opacity="1">
+                    {mailboxHouses.map((mb, mi) => {
+                      const msx = mb.wx - 5; // 5px to the left of walkway center
+                      const msy = swAt(msx) - 2; // sidewalk top edge
+                      return (
+                        <g key={`mailbox-${mi}`}>
+                          <rect x={msx} y={msy - 5} width="1.2" height="5.5" fill="#5a4a3a" />
+                          <rect x={msx - 0.8} y={msy - 6} width="3" height="2" rx="0.5" fill={mi % 3 === 0 ? "#2a2a2a" : "#d4af37"} />
+                        </g>
+                      );
+                    })}
                   </g>
-                  );
-                })}
-              </g>
-
-              {/* ===== FIRE HYDRANTS along sidewalk ===== */}
-              <g opacity="0.9">
-                {[1000, 1400, 1800].map((x, i) => {
-                  const swY = 228 + Math.sin((x - 800) * 0.0052) * 4;
-                  return (
-                  <g key={`hydrant-${i}`}>
-                    <rect x={x} y={swY - 1} width="2.5" height="3.5" fill="#cc3333" />
-                    <rect x={x-0.3} y={swY} width="3" height="1.2" fill="#aa2222" />
+                  {/* Fire hydrants - below sidewalk, between sidewalk and road */}
+                  <g opacity="0.9">
+                    {hydrantXs.map((hx, hi) => {
+                      const hsy = swAt(hx) + 3; // below sidewalk bottom edge
+                      return (
+                        <g key={`hydrant-${hi}`}>
+                          <rect x={hx} y={hsy} width="2.5" height="3.5" fill="#cc3333" />
+                          <rect x={hx - 0.3} y={hsy + 0.8} width="3" height="1.2" fill="#aa2222" />
+                          {/* Cap */}
+                          <rect x={hx + 0.3} y={hsy - 0.5} width="1.8" height="0.8" rx="0.3" fill="#dd4444" />
+                          {/* Side nozzles */}
+                          <rect x={hx - 0.8} y={hsy + 1.5} width="1" height="0.8" rx="0.2" fill="#bb3333" />
+                          <rect x={hx + 2.3} y={hsy + 1.5} width="1" height="0.8" rx="0.2" fill="#bb3333" />
+                        </g>
+                      );
+                    })}
                   </g>
-                  );
-                })}
-              </g>
+                  </>
+                );
+              })()}
 
               {/* ========== PHASE 3: SUSTAINABLE GREEN CITY - PROJECT EXODUS (2000-3800) ========== */}
 
