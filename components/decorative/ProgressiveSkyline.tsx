@@ -228,15 +228,14 @@ export function ProgressiveSkyline() {
 
         /* Drinking animation - head bobs up and down to water */
         @keyframes animalDrink {
-          0%, 100% { transform: translateX(0px) translateY(-3px); }
-          10% { transform: translateX(-1px) translateY(-1px); }
-          20% { transform: translateX(-2px) translateY(1px); }
-          35% { transform: translateX(-3px) translateY(2px); }
+          0%, 15% { transform: translateX(0px) translateY(-6px); }
+          22% { transform: translateX(-1px) translateY(-2px); }
+          30% { transform: translateX(-2px) translateY(1px); }
+          40% { transform: translateX(-3px) translateY(2px); }
           50% { transform: translateX(-2px) translateY(1px); }
-          60% { transform: translateX(0px) translateY(-3px); }
-          75% { transform: translateX(0px) translateY(-3px); }
-          85% { transform: translateX(-1px) translateY(0px); }
-          95% { transform: translateX(-2px) translateY(2px); }
+          58%, 78% { transform: translateX(0px) translateY(-6px); }
+          85% { transform: translateX(-1px) translateY(-3px); }
+          92% { transform: translateX(-2px) translateY(1px); }
         }
 
         @keyframes chickenBathe {
@@ -250,6 +249,14 @@ export function ProgressiveSkyline() {
 
         .animal-drinking {
           animation: animalDrink 8s ease-in-out infinite;
+        }
+
+        @keyframes chickenPeck {
+          0%, 85%, 100% { transform: translateY(0px); }
+          88% { transform: translateY(1.5px) rotate(8deg); }
+          91% { transform: translateY(0px); }
+          94% { transform: translateY(1.5px) rotate(8deg); }
+          97% { transform: translateY(0.5px); }
         }
 
         .chicken-bathing {
@@ -537,7 +544,7 @@ export function ProgressiveSkyline() {
                 </g>
                 {/* Medium evergreen pine - x=110 */}
                 <g>
-                  <rect x="110" y="196" width="2.5" height="9" fill="#5a4a35" />
+                  <rect x="110" y="196" width="2.5" height="14" fill="#5a4a35" />
                   <path d="M 103,205 L 111.25,187 L 119.5,205 Z" fill="#3a6a3a" />
                   <path d="M 105,200 L 111.25,185 L 117.5,200 Z" fill="#4a7a4a" />
                   <path d="M 107,195 L 111.25,183 L 115.5,195 Z" fill="#5a8a5a" />
@@ -559,7 +566,7 @@ export function ProgressiveSkyline() {
                 </g>
                 {/* Tall evergreen spruce - x=355 (moved from 410 to avoid windmill) */}
                 <g>
-                  <rect x="355" y="195" width="2.5" height="10" fill="#4a3a25" />
+                  <rect x="355" y="195" width="2.5" height="16" fill="#4a3a25" />
                   <path d="M 348,206 L 356.25,185 L 364.5,206 Z" fill="#2f5f2f" />
                   <path d="M 350,200 L 356.25,182 L 362.5,200 Z" fill="#3a6a3a" />
                   <path d="M 352,195 L 356.25,180 L 360.5,195 Z" fill="#4a7a4a" />
@@ -573,7 +580,7 @@ export function ProgressiveSkyline() {
                 </g>
                 {/* Small evergreen - x=610 */}
                 <g>
-                  <rect x="610" y="198" width="2" height="7" fill="#4a3a25" />
+                  <rect x="610" y="198" width="2" height="12" fill="#4a3a25" />
                   <path d="M 605,205 L 611,192 L 617,205 Z" fill="#3a6a3a" />
                   <path d="M 607,201 L 611,190 L 615,201 Z" fill="#4a7a4a" />
                 </g>
@@ -761,9 +768,9 @@ export function ProgressiveSkyline() {
               <g>
                 <g className="animal-sheep-left" style={{animationDuration: '38s'}}>
                   {[
-                    {dx: -8, dy: -1},
+                    {dx: -16, dy: -1},
                     {dx: 0, dy: 1},
-                    {dx: 9, dy: -2},
+                    {dx: 16, dy: -2},
                   ].map((m, mi) => {
                     const sx = 300 + m.dx;
                     const dir = 1;
@@ -825,6 +832,31 @@ export function ProgressiveSkyline() {
                   </g>
                   </g>
                 ))}
+              </g>
+
+              {/* Chicken coop - next to Barn #1 */}
+              <g>
+                {/* Coop body */}
+                <rect x="238" y="203" width="12" height="8" fill="#8a6a4a" opacity="1" />
+                {/* Roof */}
+                <path d="M 236,203 L 244,197 L 252,203 Z" fill="#6a4a2a" opacity="1" />
+                <rect x="236" y="202.5" width="16" height="1" fill="#5a3a1a" opacity="1" />
+                {/* Door opening */}
+                <rect x="240" y="206" width="3.5" height="5" fill="#3a2a1a" opacity="1" />
+                {/* Small window */}
+                <rect x="246" y="204.5" width="2.5" height="2" fill="#4a4a4a" opacity="0.7" />
+                <path d="M 246,205.5 L 248.5,205.5 M 247.25,204.5 L 247.25,206.5" stroke="#6a5a4a" strokeWidth="0.3" />
+                {/* Ramp from door to ground */}
+                <rect x="239" y="210.5" width="5" height="0.6" fill="#7a5a3a" opacity="0.9" transform="rotate(15, 241.5, 210.5)" />
+                {/* Nesting chicken inside coop */}
+                <g style={{animation: 'chickenPeck 6s ease-in-out infinite'}}>
+                  <rect x="243.5" y="208" width="3.5" height="2.5" fill="#d4a574" opacity="0.9" />
+                  <rect x="242" y="207.5" width="2" height="2" fill="#d4a574" opacity="0.9" />
+                  <rect x="241.5" y="206.5" width="1.2" height="1.2" fill="#cc3333" opacity="0.9" />
+                  <rect x="241" y="208" width="1" height="0.5" fill="#ffd700" opacity="0.9" />
+                </g>
+                {/* Hay/straw around coop */}
+                <rect x="237" y="210" width="15" height="1" rx="0.5" fill="#d4b874" opacity="0.4" />
               </g>
 
               {/* White picket fences - rendered AFTER animals so fence appears in front */}
@@ -987,7 +1019,7 @@ export function ProgressiveSkyline() {
                   return [900, 980, 1060, 1150, 1240, 1330, 1420, 1510, 1600, 1690, 1780, 1870, 1940].map((bx, bi) => {
                     const bh = 2 + (bi % 2) * 1;
                     const bw = 3 + (bi % 3);
-                    const by = hillY(bx) - bh; // Place house base ON the hill line
+                    const by = hillY(bx) - bh + 3; // Place house base lower on the hill, sitting on slope
                     return (
                       <g key={`bg-far-${bi}`}>
                         <rect x={bx} y={by} width={bw} height={bh} fill="#1a1a1a" />
@@ -1002,16 +1034,7 @@ export function ProgressiveSkyline() {
               <g opacity="0.45">
                 <path d="M 800,202 Q 880,198 960,195 Q 1050,190 1150,186 Q 1300,180 1450,183 Q 1600,179 1750,184 Q 1880,190 1950,197 Q 2000,202 2000,210 L 800,210 Z"
                       fill="#4a7a4a" />
-                {/* Mid-distance tree line - starts sparse, gets denser */}
-                {[920, 1010, 1090, 1180, 1270, 1350, 1440, 1530, 1620, 1710, 1800, 1890].map((tx, ti) => {
-                  const ty = 185 + Math.sin(ti * 1.2) * 3 + (tx < 950 ? 8 : 0) + (tx > 1800 ? 6 : 0);
-                  return (
-                    <g key={`bg-mid-tree-${ti}`}>
-                      <rect x={tx} y={ty + 3} width="1" height="3" fill="#2a2a2a" />
-                      <ellipse cx={tx + 0.5} cy={ty + 2} rx="2.5" ry="3" fill="#1a1a1a" />
-                    </g>
-                  );
-                })}
+                {/* Mid-distance tree silhouettes removed per design */}
               </g>
 
               {/* === LAYER 3: Near backdrop - gentle transition from rural to ground === */}
@@ -1540,29 +1563,29 @@ export function ProgressiveSkyline() {
 
                 {/* === BASKETBALL HOOP near x=1649 with rectangular half court === */}
                 <g>
-                  {/* Rectangular blacktop - proper half court shape */}
-                  <rect x="1639" y="208" width="20" height="12" rx="0.5" fill="#3a3a3a" opacity="0.7" />
+                  {/* Rectangular blacktop - slightly smaller half court */}
+                  <rect x="1641" y="208" width="17" height="10" rx="0.5" fill="#3a3a3a" opacity="0.7" />
                   {/* Court boundary lines (baseline, sidelines, half-court line) */}
-                  <rect x="1639" y="208" width="20" height="12" rx="0.5" fill="none" stroke="#e8e8e8" strokeWidth="0.4" opacity="0.5" />
-                  {/* Half-court line (top edge, farthest from basket) */}
-                  <path d="M 1639,220 L 1659,220" stroke="#e8e8e8" strokeWidth="0.3" opacity="0.5" />
+                  <rect x="1641" y="208" width="17" height="10" rx="0.5" fill="none" stroke="#e8e8e8" strokeWidth="0.4" opacity="0.5" />
+                  {/* Half-court line (bottom edge, farthest from basket) */}
+                  <path d="M 1641,218 L 1658,218" stroke="#e8e8e8" strokeWidth="0.3" opacity="0.5" />
                   {/* Center circle at half-court line */}
-                  <circle cx="1649" cy="220" r="2.5" fill="none" stroke="#e8e8e8" strokeWidth="0.3" opacity="0.45" />
-                  {/* Free throw line (38% from baseline y=208) at y=212.5 */}
-                  <path d="M 1643,212.5 L 1655,212.5" stroke="#e8e8e8" strokeWidth="0.3" opacity="0.45" />
-                  {/* Free throw lane (key/paint area - 32% width centered) */}
-                  <rect x="1646" y="208" width="6" height="4.5" fill="none" stroke="#e8e8e8" strokeWidth="0.3" opacity="0.4" />
+                  <circle cx="1649.5" cy="218" r="2" fill="none" stroke="#e8e8e8" strokeWidth="0.3" opacity="0.45" />
+                  {/* Free throw line */}
+                  <path d="M 1645,212 L 1654,212" stroke="#e8e8e8" strokeWidth="0.3" opacity="0.45" />
+                  {/* Free throw lane (key/paint area) */}
+                  <rect x="1646.5" y="208" width="6" height="4" fill="none" stroke="#e8e8e8" strokeWidth="0.3" opacity="0.4" />
                   {/* Three-point arc */}
-                  <path d="M 1641,208 Q 1641,216 1649,217 Q 1657,216 1657,208" fill="none" stroke="#e8e8e8" strokeWidth="0.3" opacity="0.4" />
-                  {/* Pole */}
-                  <rect x="1648" y="196" width="1.2" height="16" fill="#6a6a6a" />
+                  <path d="M 1643,208 Q 1643,215 1649.5,215.5 Q 1656,215 1656,208" fill="none" stroke="#e8e8e8" strokeWidth="0.3" opacity="0.4" />
+                  {/* Pole - at the baseline edge, not in middle of court */}
+                  <rect x="1648.5" y="194" width="1.2" height="14" fill="#6a6a6a" />
                   {/* Backboard */}
-                  <rect x="1645" y="196" width="8" height="5" rx="0.3" fill="#e8e8e8" opacity="0.9" />
-                  <rect x="1646" y="197" width="6" height="3.5" rx="0.2" fill="#ffffff" opacity="0.6" />
-                  {/* Rim - centered on backboard (cx=1649) */}
-                  <ellipse cx="1649" cy="201" rx="2" ry="0.6" fill="none" stroke="#cc3333" strokeWidth="0.6" />
+                  <rect x="1645.5" y="194" width="8" height="5" rx="0.3" fill="#e8e8e8" opacity="0.9" />
+                  <rect x="1646.5" y="195" width="6" height="3.5" rx="0.2" fill="#ffffff" opacity="0.6" />
+                  {/* Rim - centered on backboard */}
+                  <ellipse cx="1649.5" cy="199" rx="2" ry="0.6" fill="none" stroke="#cc3333" strokeWidth="0.6" />
                   {/* Net (simplified) */}
-                  <path d="M 1647,201.5 L 1648,204 M 1649,201.5 L 1649,204 M 1651,201.5 L 1650,204" stroke="#e8e0d0" strokeWidth="0.3" />
+                  <path d="M 1647.5,199.5 L 1648.5,202 M 1649.5,199.5 L 1649.5,202 M 1651.5,199.5 L 1650.5,202" stroke="#e8e0d0" strokeWidth="0.3" />
                 </g>
 
                 {/* === FLOWER GARDEN near x=1770 === */}
@@ -1656,59 +1679,66 @@ export function ProgressiveSkyline() {
 
               {/* Grass meets road directly - no sidewalk strip needed */}
 
-              {/* ===== WALKWAYS - stop before sidewalk (y≈224) ===== */}
+              {/* ===== WALKWAYS - meet sidewalk perfectly ===== */}
               <g opacity="0.8">
-                {/* Victorian walkways - centered on door (x+17.5), stop before sidewalk */}
-                {[820, 1120, 1420, 1720].map((x, i) => (
-                  i % 2 === 0 ? (
-                    <path key={`vic-dw-${i}`} d={`M ${x+17.5},212.5 Q ${x+17.8},218 ${x+17.5},224`} stroke="#d4d0c8" strokeWidth="3.5" fill="none" opacity="0.65" strokeLinecap="round" />
+                {/* Victorian walkways - centered on door (x+17.5), extend to sidewalk */}
+                {[820, 1120, 1420, 1720].map((x, i) => {
+                  const swY = 228 + Math.sin((x + 17.5 - 800) * 0.0052) * 4;
+                  return i % 2 === 0 ? (
+                    <path key={`vic-dw-${i}`} d={`M ${x+17.5},212.5 Q ${x+17.8},220 ${x+17.5},${swY}`} stroke="#d4d0c8" strokeWidth="3.5" fill="none" opacity="0.65" strokeLinecap="round" />
                   ) : (
                     <g key={`vic-dw-${i}`}>
-                      {Array.from({length: 4}).map((_, si) => (
-                        <ellipse key={`vic-stone-${i}-${si}`} cx={x+17.5 + (si % 2 === 0 ? 0 : 0.8)} cy={213 + si * 2.8} rx="1.8" ry="1.2" fill="#d4d0c8" opacity="0.6" transform={`rotate(${si * 12 - 10}, ${x+17.5}, ${213 + si * 2.8})`} />
+                      {Array.from({length: 5}).map((_, si) => (
+                        <ellipse key={`vic-stone-${i}-${si}`} cx={x+17.5 + (si % 2 === 0 ? 0 : 0.8)} cy={213 + si * ((swY - 213) / 5)} rx="1.8" ry="1.2" fill="#d4d0c8" opacity="0.6" transform={`rotate(${si * 12 - 10}, ${x+17.5}, ${213 + si * ((swY - 213) / 5)})`} />
                       ))}
                     </g>
-                  )
-                ))}
-                {/* Colonial walkways - centered on door (x+20), stop before sidewalk */}
-                {[1000, 1300, 1600, 1900].map((x, i) => (
-                  i % 2 === 0 ? (
-                    <rect key={`col-dw-${i}`} x={x+18.5} y="212.5" width="3.5" height="11.5" rx="0.5" fill="#d4d0c8" opacity="0.6" />
+                  );
+                })}
+                {/* Colonial walkways - centered on door (x+20), extend to sidewalk */}
+                {[1000, 1300, 1600, 1900].map((x, i) => {
+                  const swY = 228 + Math.sin((x + 20 - 800) * 0.0052) * 4;
+                  return i % 2 === 0 ? (
+                    <rect key={`col-dw-${i}`} x={x+18.5} y="212.5" width="3.5" height={swY - 212.5} rx="0.5" fill="#d4d0c8" opacity="0.6" />
                   ) : (
-                    <path key={`col-dw-${i}`} d={`M ${x+20},212.5 Q ${x+20.5},218 ${x+20},224`} stroke="#d4d0c8" strokeWidth="3.5" fill="none" opacity="0.6" strokeLinecap="round" />
-                  )
-                ))}
-                {/* Ranch walkways - centered on door (x+21.5), stop before sidewalk */}
-                {[880, 1180, 1480, 1780].map((x, i) => (
-                  i % 2 === 0 ? (
-                    <rect key={`ranch-dw-${i}`} x={x+20} y="210" width="3.5" height="14" rx="0.5" fill="#d4d0c8" opacity="0.6" />
+                    <path key={`col-dw-${i}`} d={`M ${x+20},212.5 Q ${x+20.5},220 ${x+20},${swY}`} stroke="#d4d0c8" strokeWidth="3.5" fill="none" opacity="0.6" strokeLinecap="round" />
+                  );
+                })}
+                {/* Ranch walkways - centered on door (x+21.5), extend to sidewalk */}
+                {[880, 1180, 1480, 1780].map((x, i) => {
+                  const swY = 228 + Math.sin((x + 21.5 - 800) * 0.0052) * 4;
+                  return i % 2 === 0 ? (
+                    <rect key={`ranch-dw-${i}`} x={x+20} y="210" width="3.5" height={swY - 210} rx="0.5" fill="#d4d0c8" opacity="0.6" />
                   ) : (
                     <g key={`ranch-dw-${i}`}>
                       {Array.from({length: 5}).map((_, si) => (
-                        <rect key={`ranch-stone-${i}-${si}`} x={x+20 + (si % 2 === 0 ? 0 : 0.5)} y={211 + si * 2.6} width="3" height="1.8" rx="0.8" fill="#d4d0c8" opacity="0.55" />
+                        <rect key={`ranch-stone-${i}-${si}`} x={x+20 + (si % 2 === 0 ? 0 : 0.5)} y={211 + si * ((swY - 211) / 5)} width="3" height="1.8" rx="0.8" fill="#d4d0c8" opacity="0.55" />
                       ))}
                     </g>
-                  )
-                ))}
-                {/* Cottage stepping stones - centered on door (x+15), stop before sidewalk */}
-                {[1060, 1360, 1660, 1960].map((x, i) => (
-                  <g key={`cot-path-${i}`}>
-                    {Array.from({length: 4}).map((_, si) => {
-                      const wobble = Math.sin(si * 1.3 + i) * 1.2;
-                      return (
-                        <ellipse key={`cot-step-${i}-${si}`} cx={x+15 + wobble} cy={213 + si * 2.7} rx="2" ry="1.3" fill="#d4d0c8" opacity="0.55" transform={`rotate(${si * 15 + i * 8}, ${x+15 + wobble}, ${213 + si * 2.7})`} />
-                      );
-                    })}
-                  </g>
-                ))}
-                {/* Modern walkways - centered on door (x+16.5), stop before sidewalk */}
-                {[940, 1240, 1540, 1840].map((x, i) => (
-                  i % 2 === 0 ? (
-                    <path key={`mod-dw-${i}`} d={`M ${x+16.5},210 Q ${x+16.8},217 ${x+16.5},224`} stroke="#d4d0c8" strokeWidth="3" fill="none" opacity="0.6" strokeLinecap="round" />
+                  );
+                })}
+                {/* Cottage stepping stones - centered on door (x+15), extend to sidewalk */}
+                {[1060, 1360, 1660, 1960].map((x, i) => {
+                  const swY = 228 + Math.sin((x + 15 - 800) * 0.0052) * 4;
+                  return (
+                    <g key={`cot-path-${i}`}>
+                      {Array.from({length: 5}).map((_, si) => {
+                        const wobble = Math.sin(si * 1.3 + i) * 1.2;
+                        return (
+                          <ellipse key={`cot-step-${i}-${si}`} cx={x+15 + wobble} cy={213 + si * ((swY - 213) / 5)} rx="2" ry="1.3" fill="#d4d0c8" opacity="0.55" transform={`rotate(${si * 15 + i * 8}, ${x+15 + wobble}, ${213 + si * ((swY - 213) / 5)})`} />
+                        );
+                      })}
+                    </g>
+                  );
+                })}
+                {/* Modern walkways - centered on door (x+16.5), extend to sidewalk */}
+                {[940, 1240, 1540, 1840].map((x, i) => {
+                  const swY = 228 + Math.sin((x + 16.5 - 800) * 0.0052) * 4;
+                  return i % 2 === 0 ? (
+                    <path key={`mod-dw-${i}`} d={`M ${x+16.5},210 Q ${x+16.8},220 ${x+16.5},${swY}`} stroke="#d4d0c8" strokeWidth="3" fill="none" opacity="0.6" strokeLinecap="round" />
                   ) : (
-                    <rect key={`mod-dw-${i}`} x={x+15} y="210" width="3" height="14" rx="0.3" fill="#d4d0c8" opacity="0.55" />
-                  )
-                ))}
+                    <rect key={`mod-dw-${i}`} x={x+15} y="210" width="3" height={swY - 210} rx="0.3" fill="#d4d0c8" opacity="0.55" />
+                  );
+                })}
               </g>
 
               {/* ===== GARAGE DRIVEWAYS - wider concrete, from garage to road ===== */}
@@ -2236,7 +2266,7 @@ export function ProgressiveSkyline() {
                       )
                     })()}
 
-                    {/* Rooftop equipment - 3 cycling types */}
+                    {/* Rooftop equipment - 3 cycling types with parapet */}
                     {(() => {
                       const roofType = i % 3 // 0=solar+turbine, 1=garden+planters+antenna, 2=HVAC+water tower+antenna
                       const roofY = 215 - bldg.h
@@ -2245,37 +2275,42 @@ export function ProgressiveSkyline() {
                         return (
                           <g opacity="1">
                             {/* TYPE A: Solar panels + wind turbine */}
-                            {/* Turbine - rendered first so it appears behind solar panels */}
-                            <rect x={bldg.x + bldg.w/2 - 1} y={roofY - 10} width="2" height="10" fill="#e8e8e8" opacity="1" />
-                            <circle cx={bldg.x + bldg.w/2} cy={roofY - 10} r="2" fill="#4a7c2f" opacity="1" />
-                            {/* Rotating blades */}
-                            <g className="turbine-blade" style={{animationDelay: `${i * 0.2}s`, transformOrigin: `${bldg.x + bldg.w/2}px ${roofY - 10}px`}}>
-                              <path d={`M ${bldg.x + bldg.w/2},${roofY - 12} L ${bldg.x + bldg.w/2 + 1},${roofY - 18} L ${bldg.x + bldg.w/2 - 1},${roofY - 18} Z`} fill="#f0f0f0" />
-                              <path d={`M ${bldg.x + bldg.w/2 + 2},${roofY - 10} L ${bldg.x + bldg.w/2 + 8},${roofY - 11} L ${bldg.x + bldg.w/2 + 7},${roofY - 9} Z`} fill="#f0f0f0" />
-                              <path d={`M ${bldg.x + bldg.w/2 - 1},${roofY - 8} L ${bldg.x + bldg.w/2 - 6},${roofY - 5} L ${bldg.x + bldg.w/2 - 5},${roofY - 7} Z`} fill="#f0f0f0" />
-                            </g>
-                            {/* Solar panels - rendered last so they appear in front */}
+                            {/* Turbine pole - behind parapet */}
+                            <rect x={bldg.x + bldg.w/2 - 1} y={roofY - 18} width="2" height="18" fill="#e8e8e8" opacity="1" />
+                            <circle cx={bldg.x + bldg.w/2} cy={roofY - 18} r="2" fill="#4a7c2f" opacity="1" />
+                            {/* Roof parapet - hides equipment bases */}
+                            <rect x={bldg.x - 1} y={roofY - 3} width={bldg.w + 2} height="4" fill="#c8d8c8" opacity="1" />
+                            <rect x={bldg.x} y={roofY - 3} width={bldg.w} height="0.5" fill="#b0c0b0" opacity="1" />
+                            {/* Solar panels - on top of parapet, visible */}
                             {Array.from({length: Math.floor(bldg.w/12)}).map((_, panel) => (
                               <rect key={`roof-solar-${i}-${panel}`}
                                     x={bldg.x + 2 + panel * 12} y={roofY - 6}
                                     width="10" height="6" fill="#2f4f7f" stroke="#1a2f4f" strokeWidth="0.5" />
                             ))}
+                            {/* Rotating blades - on top of everything, tall enough to clear */}
+                            <g className="turbine-blade" style={{animationDelay: `${i * 0.2}s`, transformOrigin: `${bldg.x + bldg.w/2}px ${roofY - 18}px`}}>
+                              <path d={`M ${bldg.x + bldg.w/2},${roofY - 20} L ${bldg.x + bldg.w/2 + 1},${roofY - 26} L ${bldg.x + bldg.w/2 - 1},${roofY - 26} Z`} fill="#f0f0f0" />
+                              <path d={`M ${bldg.x + bldg.w/2 + 2},${roofY - 18} L ${bldg.x + bldg.w/2 + 8},${roofY - 19} L ${bldg.x + bldg.w/2 + 7},${roofY - 17} Z`} fill="#f0f0f0" />
+                              <path d={`M ${bldg.x + bldg.w/2 - 1},${roofY - 16} L ${bldg.x + bldg.w/2 - 6},${roofY - 13} L ${bldg.x + bldg.w/2 - 5},${roofY - 15} Z`} fill="#f0f0f0" />
+                            </g>
                           </g>
                         )
                       } else if (roofType === 1) {
                         return (
                           <g opacity="1">
-                            {/* TYPE B: Garden roof + planters + antenna */}
-                            {/* Antenna - rendered first so it appears behind planters */}
+                            {/* TYPE B: Garden roof + planters + lightning rod */}
+                            {/* Lightning rod - behind parapet */}
                             <rect x={bldg.x + bldg.w - 8} y={roofY - 14} width="1" height="12" fill="#8a8a8a" opacity="1" />
                             <circle cx={bldg.x + bldg.w - 7.5} cy={roofY - 14} r="2" fill="#8a8a8a" opacity="1" />
-                            {/* Lush garden roof strip */}
+                            {/* Roof parapet - hides lightning rod base */}
+                            <rect x={bldg.x - 1} y={roofY - 3} width={bldg.w + 2} height="4" fill="#c8d8c8" opacity="1" />
+                            <rect x={bldg.x} y={roofY - 3} width={bldg.w} height="0.5" fill="#b0c0b0" opacity="1" />
+                            {/* Lush garden roof strip - in front of parapet */}
                             <rect x={bldg.x + 2} y={roofY - 2} width={bldg.w - 4} height="2" fill="#5a9a4a" opacity="1" />
-                            {/* Planter boxes */}
+                            {/* Planter boxes - in front */}
                             {Array.from({length: Math.floor(bldg.w / 16)}).map((_, p) => (
                               <g key={`planter-roof-${i}-${p}`}>
                                 <rect x={bldg.x + 4 + p * 16} y={roofY - 5} width="10" height="4" fill="#8a6a4a" opacity="1" />
-                                {/* Small plants/flowers in planters */}
                                 <circle cx={bldg.x + 7 + p * 16} cy={roofY - 6} r="2" fill="#4a8a4a" opacity="1" />
                                 <circle cx={bldg.x + 11 + p * 16} cy={roofY - 6} r="1.8" fill="#5a9a5a" opacity="1" />
                                 <circle cx={bldg.x + 9 + p * 16} cy={roofY - 7} r="1" fill="#ff69b4" opacity="0.8" />
@@ -2286,23 +2321,25 @@ export function ProgressiveSkyline() {
                       } else {
                         return (
                           <g opacity="1">
-                            {/* TYPE C: HVAC + water tower + antenna */}
-                            {/* Antenna - rendered first so it appears behind everything */}
+                            {/* TYPE C: HVAC + water tower + antenna - all behind parapet */}
+                            {/* Antenna */}
                             <rect x={bldg.x + bldg.w/2} y={roofY - 13} width="1" height="10" fill="#8a8a8a" opacity="1" />
                             <rect x={bldg.x + bldg.w/2 - 2} y={roofY - 11} width="5" height="0.5" fill="#8a8a8a" opacity="1" />
                             <rect x={bldg.x + bldg.w/2 - 1.5} y={roofY - 9} width="4" height="0.5" fill="#8a8a8a" opacity="1" />
-                            {/* Water tower - rendered before HVAC so it appears behind */}
+                            {/* Water tower */}
                             <rect x={bldg.x + 8} y={roofY - 12} width="2" height="12" fill="#7a7a7a" opacity="1" />
                             <rect x={bldg.x + 12} y={roofY - 12} width="2" height="12" fill="#7a7a7a" opacity="1" />
                             <rect x={bldg.x + 6} y={roofY - 16} width="10" height="5" rx="1" fill="#a0a0a0" opacity="1" />
                             <ellipse cx={bldg.x + 11} cy={roofY - 16} rx="5" ry="1.5" fill="#b0b0b0" opacity="1" />
-                            {/* HVAC unit - rendered last so it appears in front */}
+                            {/* HVAC unit */}
                             <rect x={bldg.x + bldg.w - 14} y={roofY - 7} width="10" height="6" fill="#a8a8a8" opacity="1" />
                             <rect x={bldg.x + bldg.w - 13} y={roofY - 8} width="3" height="2" fill="#909090" opacity="1" />
-                            {/* HVAC vent grille */}
                             {Array.from({length: 3}).map((_, v) => (
                               <rect key={`vent-${i}-${v}`} x={bldg.x + bldg.w - 13 + v * 3} y={roofY - 5} width="2" height="0.5" fill="#808080" opacity="1" />
                             ))}
+                            {/* Roof parapet - in front of all equipment */}
+                            <rect x={bldg.x - 1} y={roofY - 3} width={bldg.w + 2} height="4" fill="#c8d8c8" opacity="1" />
+                            <rect x={bldg.x} y={roofY - 3} width={bldg.w} height="0.5" fill="#b0c0b0" opacity="1" />
                           </g>
                         )
                       }
@@ -3441,7 +3478,7 @@ export function ProgressiveSkyline() {
                 {/* Large oak - 3860 */}
                 <g><rect x="3859" y="193" width="4" height="12" fill="#5a4a35" /><circle cx="3861" cy="189" r="9" fill="#4a7a4a" /><circle cx="3855" cy="191" r="6" fill="#5a8a5a" /><circle cx="3867" cy="191" r="6" fill="#5a8a5a" /></g>
                 {/* Evergreen pine - 3910 */}
-                <g><rect x="3910" y="196" width="2.5" height="9" fill="#5a4a35" /><path d="M 3903,205 L 3911.25,187 L 3919.5,205 Z" fill="#3a6a3a" /><path d="M 3905,200 L 3911.25,185 L 3917.5,200 Z" fill="#4a7a4a" /><path d="M 3907,195 L 3911.25,183 L 3915.5,195 Z" fill="#5a8a5a" /></g>
+                <g><rect x="3910" y="196" width="2.5" height="14" fill="#5a4a35" /><path d="M 3903,205 L 3911.25,187 L 3919.5,205 Z" fill="#3a6a3a" /><path d="M 3905,200 L 3911.25,185 L 3917.5,200 Z" fill="#4a7a4a" /><path d="M 3907,195 L 3911.25,183 L 3915.5,195 Z" fill="#5a8a5a" /></g>
                 {/* Small young tree - 3940 (moved from 3965 to avoid Barn#1) */}
                 <g><rect x="3940" y="198" width="2" height="7" fill="#6b5a45" /><circle cx="3941" cy="196" r="4" fill="#6a9a6a" /><circle cx="3939" cy="197" r="3" fill="#7aaa7a" /></g>
                 {/* Large maple - 4120 */}
@@ -3449,9 +3486,9 @@ export function ProgressiveSkyline() {
                 {/* Medium deciduous - 4210 */}
                 <g><rect x="4210" y="196" width="3" height="9" fill="#6b5a45" /><circle cx="4211.5" cy="193" r="6.5" fill="#5a8a5a" /><circle cx="4208" cy="195" r="4.5" fill="#6a9a6a" /><circle cx="4215" cy="195" r="4.5" fill="#6a9a6a" /></g>
                 {/* Tall spruce - 4290 */}
-                <g><rect x="4290" y="195" width="2.5" height="10" fill="#4a3a25" /><path d="M 4283,206 L 4291.25,185 L 4299.5,206 Z" fill="#2f5f2f" /><path d="M 4285,200 L 4291.25,182 L 4297.5,200 Z" fill="#3a6a3a" /><path d="M 4287,195 L 4291.25,180 L 4295.5,195 Z" fill="#4a7a4a" /></g>
+                <g><rect x="4290" y="195" width="2.5" height="16" fill="#4a3a25" /><path d="M 4283,206 L 4291.25,185 L 4299.5,206 Z" fill="#2f5f2f" /><path d="M 4285,200 L 4291.25,182 L 4297.5,200 Z" fill="#3a6a3a" /><path d="M 4287,195 L 4291.25,180 L 4295.5,195 Z" fill="#4a7a4a" /></g>
                 {/* Small evergreen - 4410 */}
-                <g><rect x="4410" y="198" width="2" height="7" fill="#4a3a25" /><path d="M 4405,205 L 4411,192 L 4417,205 Z" fill="#3a6a3a" /><path d="M 4407,201 L 4411,190 L 4415,201 Z" fill="#4a7a4a" /></g>
+                <g><rect x="4410" y="198" width="2" height="12" fill="#4a3a25" /><path d="M 4405,205 L 4411,192 L 4417,205 Z" fill="#3a6a3a" /><path d="M 4407,201 L 4411,190 L 4415,201 Z" fill="#4a7a4a" /></g>
                 {/* Large oak - 4490 */}
                 <g><rect x="4489" y="193" width="4" height="12" fill="#5a4a35" /><circle cx="4491" cy="189" r="8" fill="#4a7a4a" /><circle cx="4485" cy="191" r="5.5" fill="#5a8a5a" /><circle cx="4497" cy="191" r="5.5" fill="#5a8a5a" /><circle cx="4491" cy="185" r="5" fill="#6a9a6a" /></g>
                 {/* Birch - 4550 */}
@@ -3459,13 +3496,13 @@ export function ProgressiveSkyline() {
                 {/* Medium deciduous - 4640 */}
                 <g><rect x="4640" y="196" width="3" height="9" fill="#6b5a45" /><circle cx="4641.5" cy="192" r="7" fill="#5a8a5a" /><circle cx="4638" cy="194" r="5" fill="#6a9a6a" /><circle cx="4645" cy="194" r="5" fill="#6a9a6a" /></g>
                 {/* Evergreen - 4745 (moved from 4720 to clear silo) */}
-                <g><rect x="4745" y="196" width="2.5" height="9" fill="#4a3a25" /><path d="M 4739,205 L 4746.25,188 L 4753.5,205 Z" fill="#3a6a3a" /><path d="M 4741,201 L 4746.25,186 L 4751.5,201 Z" fill="#4a7a4a" /><path d="M 4743,197 L 4746.25,184 L 4749.5,197 Z" fill="#5a8a5a" /></g>
+                <g><rect x="4745" y="196" width="2.5" height="14" fill="#4a3a25" /><path d="M 4739,205 L 4746.25,188 L 4753.5,205 Z" fill="#3a6a3a" /><path d="M 4741,201 L 4746.25,186 L 4751.5,201 Z" fill="#4a7a4a" /><path d="M 4743,197 L 4746.25,184 L 4749.5,197 Z" fill="#5a8a5a" /></g>
                 {/* Large elm - 4790 */}
                 <g><rect x="4789" y="193" width="4" height="12" fill="#5a4a35" /><circle cx="4791" cy="189" r="8" fill="#4a7a4a" /><circle cx="4785" cy="191" r="5.5" fill="#5a8a5a" /><circle cx="4797" cy="191" r="5.5" fill="#5a8a5a" /></g>
                 {/* Small deciduous - 4880 */}
                 <g><rect x="4880" y="198" width="2" height="7" fill="#6b5a45" /><circle cx="4881" cy="196" r="4.5" fill="#6a9a6a" /><circle cx="4879" cy="197" r="3.5" fill="#7aaa7a" /><circle cx="4884" cy="197" r="3.5" fill="#7aaa7a" /></g>
                 {/* Tall pine - 4960 */}
-                <g><rect x="4960" y="196" width="2.5" height="9" fill="#5a4a35" /><path d="M 4954,205 L 4961.25,188 L 4968.5,205 Z" fill="#3a6a3a" /><path d="M 4956,200 L 4961.25,185 L 4966.5,200 Z" fill="#4a7a4a" /><path d="M 4958,195 L 4961.25,183 L 4964.5,195 Z" fill="#5a8a5a" /></g>
+                <g><rect x="4960" y="196" width="2.5" height="14" fill="#5a4a35" /><path d="M 4954,205 L 4961.25,188 L 4968.5,205 Z" fill="#3a6a3a" /><path d="M 4956,200 L 4961.25,185 L 4966.5,200 Z" fill="#4a7a4a" /><path d="M 4958,195 L 4961.25,183 L 4964.5,195 Z" fill="#5a8a5a" /></g>
               </g>
 
               {/* Tractors - fully detailed like Phase 1 */}
@@ -3615,9 +3652,9 @@ export function ProgressiveSkyline() {
               <g>
                 <g className="animal-sheep" style={{animationDuration: '42s'}}>
                   {[
-                    {dx: -9, dy: 0},
+                    {dx: -16, dy: 0},
                     {dx: 0, dy: -2},
-                    {dx: 8, dy: 1},
+                    {dx: 16, dy: 1},
                   ].map((m, mi) => {
                     const sx = 4100 + m.dx;
                     const dir = -1;
@@ -3651,9 +3688,9 @@ export function ProgressiveSkyline() {
               <g>
                 <g className="animal-sheep-left" style={{animationDuration: '35s'}}>
                   {[
-                    {dx: -7, dy: 1},
-                    {dx: 2, dy: -1},
-                    {dx: 10, dy: 0},
+                    {dx: -15, dy: 1},
+                    {dx: 0, dy: -1},
+                    {dx: 15, dy: 0},
                   ].map((m, mi) => {
                     const sx = 4700 + m.dx;
                     const dir = 1;
@@ -3715,6 +3752,31 @@ export function ProgressiveSkyline() {
                   </g>
                   </g>
                 ))}
+              </g>
+
+              {/* Chicken coop - next to Barn 1 (section 2) */}
+              <g>
+                {/* Coop body */}
+                <rect x="4035" y="203" width="12" height="8" fill="#8a6a4a" opacity="1" />
+                {/* Roof */}
+                <path d="M 4033,203 L 4041,197 L 4049,203 Z" fill="#6a4a2a" opacity="1" />
+                <rect x="4033" y="202.5" width="16" height="1" fill="#5a3a1a" opacity="1" />
+                {/* Door opening */}
+                <rect x="4037" y="206" width="3.5" height="5" fill="#3a2a1a" opacity="1" />
+                {/* Small window */}
+                <rect x="4043" y="204.5" width="2.5" height="2" fill="#4a4a4a" opacity="0.7" />
+                <path d="M 4043,205.5 L 4045.5,205.5 M 4044.25,204.5 L 4044.25,206.5" stroke="#6a5a4a" strokeWidth="0.3" />
+                {/* Ramp */}
+                <rect x="4036" y="210.5" width="5" height="0.6" fill="#7a5a3a" opacity="0.9" transform="rotate(15, 4038.5, 210.5)" />
+                {/* Nesting chicken */}
+                <g style={{animation: 'chickenPeck 7s ease-in-out infinite', animationDelay: '2s'}}>
+                  <rect x="4040.5" y="208" width="3.5" height="2.5" fill="#d4a574" opacity="0.9" />
+                  <rect x="4039" y="207.5" width="2" height="2" fill="#d4a574" opacity="0.9" />
+                  <rect x="4038.5" y="206.5" width="1.2" height="1.2" fill="#cc3333" opacity="0.9" />
+                  <rect x="4038" y="208" width="1" height="0.5" fill="#ffd700" opacity="0.9" />
+                </g>
+                {/* Hay/straw around coop */}
+                <rect x="4034" y="210" width="15" height="1" rx="0.5" fill="#d4b874" opacity="0.4" />
               </g>
 
               {/* White picket fences - rendered AFTER animals so fence appears in front */}
