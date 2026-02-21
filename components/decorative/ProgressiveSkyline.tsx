@@ -2005,21 +2005,7 @@ export function ProgressiveSkyline() {
                       <circle key={`plant-${plant}`} cx={bldg.x + 4 + plant * 8} cy={215-bldg.h-2} r="1.5" fill="#5a8a5a" opacity="1" />
                     ))}
 
-                    {/* SOLAR PANELS - only on Type A rooftops (i%3===0) */}
-                    {i % 3 === 0 && (
-                    <g opacity="1">
-                      {Array.from({length: Math.floor(bldg.w/12)}).map((_, panel) => (
-                        <rect key={`solar-${panel}`}
-                              x={bldg.x + 2 + panel * 12}
-                              y={215 - bldg.h - 6}
-                              width="10"
-                              height="6"
-                              fill="#2f4f7f"
-                              stroke="#1a2f4f"
-                              strokeWidth="0.5" />
-                      ))}
-                    </g>
-                    )}
+                    {/* (Solar panels are rendered in rooftop equipment section, above the cornice) */}
 
                     {/* Decorative cornice at roofline - multi-layer detail */}
                     <rect x={bldg.x - 2} y={215 - bldg.h - 1} width={bldg.w + 4} height="2" fill="#c8d8c8" opacity="1" />
@@ -2389,28 +2375,43 @@ export function ProgressiveSkyline() {
                       const roofY = 215 - bldg.h
 
                       if (roofType === 0) {
+                        const tcx = bldg.x + bldg.w - 12; // turbine near right edge
+                        const thy = roofY - 22; // hub height
                         return (
                           <g opacity="1">
                             {/* TYPE A: Solar panels + wind turbine */}
-                            {/* Turbine pole - behind parapet */}
-                            <rect x={bldg.x + bldg.w/2 - 1} y={roofY - 18} width="2" height="18" fill="#e8e8e8" opacity="1" />
-                            <circle cx={bldg.x + bldg.w/2} cy={roofY - 18} r="2" fill="#4a7c2f" opacity="1" />
-                            {/* Roof parapet - hides equipment bases */}
+                            {/* Roof parapet */}
                             <rect x={bldg.x - 1} y={roofY - 2} width={bldg.w + 2} height="3" fill="#c8d8c8" opacity="1" />
                             <rect x={bldg.x} y={roofY - 2} width={bldg.w} height="0.5" fill="#b0c0b0" opacity="1" />
                             {/* Green roof restored above parapet */}
                             <rect x={bldg.x} y={roofY - 3} width={bldg.w} height="1.5" fill="#4a7c2f" opacity="1" />
-                            {/* Solar panels - on top of parapet, visible */}
-                            {Array.from({length: Math.floor(bldg.w/12)}).map((_, panel) => (
-                              <rect key={`roof-solar-${i}-${panel}`}
-                                    x={bldg.x + 2 + panel * 12} y={roofY - 6}
-                                    width="10" height="6" fill="#2f4f7f" stroke="#1a2f4f" strokeWidth="0.5" />
+                            {/* Solar panels - raised above cornice, angled on small supports */}
+                            {Array.from({length: Math.max(1, Math.floor((bldg.w - 18) / 12))}).map((_, panel) => (
+                              <g key={`roof-solar-${i}-${panel}`}>
+                                {/* Panel support legs */}
+                                <rect x={bldg.x + 4 + panel * 12} y={roofY - 7} width="0.8" height="3" fill="#8a8a8a" opacity="0.8" />
+                                <rect x={bldg.x + 12 + panel * 12} y={roofY - 8} width="0.8" height="4" fill="#8a8a8a" opacity="0.8" />
+                                {/* Panel - tilted via trapezoid shape */}
+                                <path d={`M ${bldg.x + 3 + panel * 12},${roofY - 7} L ${bldg.x + 4 + panel * 12},${roofY - 10} L ${bldg.x + 13 + panel * 12},${roofY - 10} L ${bldg.x + 14 + panel * 12},${roofY - 7} Z`} fill="#2f4f7f" stroke="#1a2f4f" strokeWidth="0.4" />
+                                {/* Panel grid lines */}
+                                <line x1={bldg.x + 8.5 + panel * 12} y1={roofY - 7} x2={bldg.x + 8.5 + panel * 12} y2={roofY - 10} stroke="#1a2f4f" strokeWidth="0.3" />
+                              </g>
                             ))}
-                            {/* Rotating blades - balanced 3-blade propeller */}
-                            <g className="turbine-blade" style={{animationDelay: `${i * 0.2}s`, transformOrigin: `${bldg.x + bldg.w/2}px ${roofY - 18}px`}}>
-                              <path d={`M ${bldg.x + bldg.w/2 - 1},${roofY - 19} L ${bldg.x + bldg.w/2},${roofY - 27} L ${bldg.x + bldg.w/2 + 1},${roofY - 19} Z`} fill="#f0f0f0" />
-                              <path d={`M ${bldg.x + bldg.w/2 + 0.5},${roofY - 17.5} L ${bldg.x + bldg.w/2 + 8},${roofY - 13.5} L ${bldg.x + bldg.w/2 + 1},${roofY - 16.5} Z`} fill="#f0f0f0" />
-                              <path d={`M ${bldg.x + bldg.w/2 - 0.5},${roofY - 17.5} L ${bldg.x + bldg.w/2 - 8},${roofY - 13.5} L ${bldg.x + bldg.w/2 - 1},${roofY - 16.5} Z`} fill="#f0f0f0" />
+                            {/* Wind turbine - realistic proportions */}
+                            {/* Turbine tower/pole - tapered */}
+                            <path d={`M ${tcx - 1},${roofY} L ${tcx - 0.6},${thy + 2} L ${tcx + 0.6},${thy + 2} L ${tcx + 1},${roofY} Z`} fill="#d0d0d0" stroke="#b0b0b0" strokeWidth="0.3" />
+                            {/* Nacelle housing */}
+                            <rect x={tcx - 2} y={thy} width="5" height="2.5" rx="0.5" fill="#e0e0e0" stroke="#b0b0b0" strokeWidth="0.3" />
+                            {/* Hub/spinner cone */}
+                            <circle cx={tcx} cy={thy + 1.2} r="1.2" fill="#c0c0c0" stroke="#a0a0a0" strokeWidth="0.3" />
+                            {/* Rotating blades - 3 long slim blades at 120° */}
+                            <g className="turbine-blade" style={{animationDelay: `${i * 0.2}s`, transformOrigin: `${tcx}px ${thy + 1.2}px`}}>
+                              {/* Blade 1 - pointing up */}
+                              <path d={`M ${tcx - 0.6},${thy + 0.5} Q ${tcx - 0.4},${thy - 6} ${tcx},${thy - 10} Q ${tcx + 0.4},${thy - 6} ${tcx + 0.6},${thy + 0.5} Z`} fill="#f0f0f0" stroke="#d8d8d8" strokeWidth="0.2" />
+                              {/* Blade 2 - pointing lower-right (120°) */}
+                              <path d={`M ${tcx + 0.3},${thy + 1.8} Q ${tcx + 5.5},${thy + 4} ${tcx + 8.7},${thy + 6.2} Q ${tcx + 5.2},${thy + 4.8} ${tcx + 0.6},${thy + 2.2} Z`} fill="#e8e8e8" stroke="#d8d8d8" strokeWidth="0.2" />
+                              {/* Blade 3 - pointing lower-left (240°) */}
+                              <path d={`M ${tcx - 0.3},${thy + 1.8} Q ${tcx - 5.5},${thy + 4} ${tcx - 8.7},${thy + 6.2} Q ${tcx - 5.2},${thy + 4.8} ${tcx - 0.6},${thy + 2.2} Z`} fill="#e8e8e8" stroke="#d8d8d8" strokeWidth="0.2" />
                             </g>
                           </g>
                         )
