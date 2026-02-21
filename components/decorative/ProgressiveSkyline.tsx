@@ -366,16 +366,6 @@ export function ProgressiveSkyline() {
               <path d="M 210,205 Q 240,208 260,206 Q 275,205 285,205" stroke="#b89a6a" strokeWidth="2.5" fill="none" opacity="0.6" />
               <path d="M 475,202 Q 500,206 520,205 Q 540,204 560,205" stroke="#b89a6a" strokeWidth="2" fill="none" opacity="0.5" />
 
-              {/* Crop field rows - wheat near Barn #1 */}
-              <g opacity="0.7">
-                <rect x="300" y="201" width="30" height="8" fill="#d4b87a" opacity="0.4" rx="1" />
-                {Array.from({length: 7}).map((_, i) => (
-                  <g key={`wheat-${i}`}>
-                    <rect x={302 + i * 4} y="199" width="1" height="9" fill="#c9a855" opacity="0.8" rx="0.5" />
-                    <ellipse cx={302.5 + i * 4} cy="198.5" rx="1" ry="0.8" fill="#d4b87a" opacity="0.7" />
-                  </g>
-                ))}
-              </g>
               {/* Small farm pond with cattails - scaled 2/3 */}
               <g>
                 {/* Pond depression */}
@@ -396,20 +386,50 @@ export function ProgressiveSkyline() {
                 <ellipse cx="143.3" cy="213.7" rx="0.7" ry="1" fill="#6b5a3a" opacity="0.8" />
               </g>
 
-              {/* Wildflower patches scattered in pastures */}
+              {/* Wildflower patches scattered in pastures - actual petal flowers */}
               <g opacity="0.9">
                 {/* Patch near x=50 */}
-                {[45, 48, 52, 55, 47, 53].map((fx, fi) => (
-                  <circle key={`flower-a-${fi}`} cx={fx} cy={213 + (fi % 3) * 1.5} r="0.8" fill={['#ff69b4', '#ffd700', '#9370db', '#ff6347', '#ffd700', '#ff69b4'][fi]} opacity="1" />
-                ))}
+                {[45, 48, 52, 55, 47, 53].map((fx, fi) => {
+                  const cy = 213 + (fi % 3) * 1.5;
+                  const color = ['#ff69b4', '#ffd700', '#9370db', '#ff6347', '#ffd700', '#ff69b4'][fi];
+                  return (
+                    <g key={`flower-a-${fi}`}>
+                      <rect x={fx - 0.15} y={cy} width="0.3" height="1.5" fill="#4a7a3a" opacity="0.7" />
+                      {[0, 72, 144, 216, 288].map((angle, pi) => (
+                        <ellipse key={pi} cx={fx + Math.cos(angle * Math.PI / 180) * 0.7} cy={cy - 0.3 + Math.sin(angle * Math.PI / 180) * 0.7} rx="0.5" ry="0.3" fill={color} transform={`rotate(${angle}, ${fx + Math.cos(angle * Math.PI / 180) * 0.7}, ${cy - 0.3 + Math.sin(angle * Math.PI / 180) * 0.7})`} />
+                      ))}
+                      <circle cx={fx} cy={cy - 0.3} r="0.3" fill="#ffd700" opacity="0.9" />
+                    </g>
+                  );
+                })}
                 {/* Patch near x=380 */}
-                {[375, 378, 382, 385, 377, 383].map((fx, fi) => (
-                  <circle key={`flower-b-${fi}`} cx={fx} cy={212 + (fi % 3) * 1.5} r="0.8" fill={['#ffd700', '#ff69b4', '#ff6347', '#9370db', '#ff69b4', '#ffd700'][fi]} opacity="1" />
-                ))}
+                {[375, 378, 382, 385, 377, 383].map((fx, fi) => {
+                  const cy = 212 + (fi % 3) * 1.5;
+                  const color = ['#ffd700', '#ff69b4', '#ff6347', '#9370db', '#ff69b4', '#ffd700'][fi];
+                  return (
+                    <g key={`flower-b-${fi}`}>
+                      <rect x={fx - 0.15} y={cy} width="0.3" height="1.5" fill="#4a7a3a" opacity="0.7" />
+                      {[0, 72, 144, 216, 288].map((angle, pi) => (
+                        <ellipse key={pi} cx={fx + Math.cos(angle * Math.PI / 180) * 0.7} cy={cy - 0.3 + Math.sin(angle * Math.PI / 180) * 0.7} rx="0.5" ry="0.3" fill={color} transform={`rotate(${angle}, ${fx + Math.cos(angle * Math.PI / 180) * 0.7}, ${cy - 0.3 + Math.sin(angle * Math.PI / 180) * 0.7})`} />
+                      ))}
+                      <circle cx={fx} cy={cy - 0.3} r="0.3" fill="#ffd700" opacity="0.9" />
+                    </g>
+                  );
+                })}
                 {/* Patch near x=700 */}
-                {[695, 698, 702, 705, 697, 703].map((fx, fi) => (
-                  <circle key={`flower-c-${fi}`} cx={fx} cy={213 + (fi % 3) * 1.5} r="0.8" fill={['#9370db', '#ffd700', '#ff69b4', '#ffd700', '#ff6347', '#9370db'][fi]} opacity="1" />
-                ))}
+                {[695, 698, 702, 705, 697, 703].map((fx, fi) => {
+                  const cy = 213 + (fi % 3) * 1.5;
+                  const color = ['#9370db', '#ffd700', '#ff69b4', '#ffd700', '#ff6347', '#9370db'][fi];
+                  return (
+                    <g key={`flower-c-${fi}`}>
+                      <rect x={fx - 0.15} y={cy} width="0.3" height="1.5" fill="#4a7a3a" opacity="0.7" />
+                      {[0, 72, 144, 216, 288].map((angle, pi) => (
+                        <ellipse key={pi} cx={fx + Math.cos(angle * Math.PI / 180) * 0.7} cy={cy - 0.3 + Math.sin(angle * Math.PI / 180) * 0.7} rx="0.5" ry="0.3" fill={color} transform={`rotate(${angle}, ${fx + Math.cos(angle * Math.PI / 180) * 0.7}, ${cy - 0.3 + Math.sin(angle * Math.PI / 180) * 0.7})`} />
+                      ))}
+                      <circle cx={fx} cy={cy - 0.3} r="0.3" fill="#ffd700" opacity="0.9" />
+                    </g>
+                  );
+                })}
               </g>
 
               {/* White picket fences with sturdy posts - CONTINUOUS */}
@@ -604,12 +624,12 @@ export function ProgressiveSkyline() {
                   <path d="M 105,200 L 111.25,185 L 117.5,200 Z" fill="#4a7a4a" />
                   <path d="M 107,195 L 111.25,183 L 115.5,195 Z" fill="#5a8a5a" />
                 </g>
-                {/* Small young tree - x=165 */}
+                {/* Small young tree - x=30 (moved from 165 to avoid Barn#1) */}
                 <g>
-                  <rect x="165" y="198" width="2" height="7" fill="#6b5a45" />
-                  <circle cx="166" cy="196" r="4" fill="#6a9a6a" />
-                  <circle cx="164" cy="197" r="3" fill="#7aaa7a" />
-                  <circle cx="168" cy="197" r="3" fill="#7aaa7a" />
+                  <rect x="30" y="198" width="2" height="7" fill="#6b5a45" />
+                  <circle cx="31" cy="196" r="4" fill="#6a9a6a" />
+                  <circle cx="29" cy="197" r="3" fill="#7aaa7a" />
+                  <circle cx="33" cy="197" r="3" fill="#7aaa7a" />
                 </g>
                 {/* Large deciduous maple - x=320 */}
                 <g>
@@ -619,19 +639,19 @@ export function ProgressiveSkyline() {
                   <circle cx="327" cy="192" r="5.5" fill="#6a9a6a" />
                   <circle cx="321" cy="186" r="4.5" fill="#8ab88a" />
                 </g>
-                {/* Tall evergreen spruce - x=410 */}
+                {/* Tall evergreen spruce - x=355 (moved from 410 to avoid windmill) */}
                 <g>
-                  <rect x="410" y="195" width="2.5" height="10" fill="#4a3a25" />
-                  <path d="M 403,206 L 411.25,185 L 419.5,206 Z" fill="#2f5f2f" />
-                  <path d="M 405,200 L 411.25,182 L 417.5,200 Z" fill="#3a6a3a" />
-                  <path d="M 407,195 L 411.25,180 L 415.5,195 Z" fill="#4a7a4a" />
+                  <rect x="355" y="195" width="2.5" height="10" fill="#4a3a25" />
+                  <path d="M 348,206 L 356.25,185 L 364.5,206 Z" fill="#2f5f2f" />
+                  <path d="M 350,200 L 356.25,182 L 362.5,200 Z" fill="#3a6a3a" />
+                  <path d="M 352,195 L 356.25,180 L 360.5,195 Z" fill="#4a7a4a" />
                 </g>
-                {/* Medium deciduous - x=490 */}
+                {/* Medium deciduous - x=505 (moved from 490 to clear Silo#2) */}
                 <g>
-                  <rect x="490" y="196" width="3" height="9" fill="#6b5a45" />
-                  <circle cx="491.5" cy="193" r="6.5" fill="#5a8a5a" />
-                  <circle cx="488" cy="195" r="4.5" fill="#6a9a6a" />
-                  <circle cx="495" cy="195" r="4.5" fill="#6a9a6a" />
+                  <rect x="505" y="196" width="3" height="9" fill="#6b5a45" />
+                  <circle cx="506.5" cy="193" r="6.5" fill="#5a8a5a" />
+                  <circle cx="503" cy="195" r="4.5" fill="#6a9a6a" />
+                  <circle cx="510" cy="195" r="4.5" fill="#6a9a6a" />
                 </g>
                 {/* Small evergreen - x=610 */}
                 <g>
@@ -647,11 +667,11 @@ export function ProgressiveSkyline() {
                   <circle cx="697" cy="191" r="5.5" fill="#5a8a5a" />
                   <circle cx="691" cy="185" r="5" fill="#6a9a6a" />
                 </g>
-                {/* Medium deciduous birch - x=750 */}
+                {/* Medium deciduous birch - x=750 (trunk extended to reach ground) */}
                 <g>
-                  <rect x="750" y="196" width="2.5" height="9" fill="#c9b89a" />
-                  <path d="M 750.5,197 L 750.5,200" stroke="#6b5a45" strokeWidth="0.5" />
-                  <path d="M 751.5,198 L 751.5,201" stroke="#6b5a45" strokeWidth="0.5" />
+                  <rect x="750" y="196" width="2.5" height="13" fill="#c9b89a" />
+                  <path d="M 750.5,200 L 750.5,203" stroke="#6b5a45" strokeWidth="0.5" />
+                  <path d="M 751.5,201 L 751.5,204" stroke="#6b5a45" strokeWidth="0.5" />
                   <circle cx="751.25" cy="193" r="6" fill="#6a9a6a" />
                   <circle cx="748" cy="195" r="4" fill="#7aaa7a" />
                   <circle cx="755" cy="195" r="4" fill="#7aaa7a" />
@@ -732,9 +752,9 @@ export function ProgressiveSkyline() {
                   {x: 720, dir: -1, y: 2, color: '#4a3520', chest: '#5a3a25'},
                 ].map((h, i) => (
                   <g key={`horse-${i}`} transform={`translate(0, ${h.y})`}>
-                  <g className={h.dir > 0 ? "animal-horse-left" : "animal-horse"} style={{animationDelay: `${i * 2.5}s`}}>
+                  <g className={h.dir > 0 ? "animal-horse-left" : "animal-horse"} style={{animationDelay: `${i * 3.7}s`, animationDuration: `${h.dir > 0 ? 32 + i * 5 : 28 + i * 7}s`}}>
                   <g transform={`translate(${h.x}, 203)`}>
-                  <g className={h.dir > 0 ? "face-horse-left" : "face-horse"} style={{animationDelay: `${i * 2.5}s`}}>
+                  <g style={{animation: `faceFlip ${h.dir > 0 ? 32 + i * 5 : 28 + i * 7}s linear infinite`, animationDelay: `${i * 3.7}s`}}>
                   <g transform={`translate(${-h.x}, -203)`} opacity="1">
                     {/* Body block */}
                     <rect x={h.x - 6} y="201" width="12" height="7" fill={h.color} />
@@ -772,9 +792,9 @@ export function ProgressiveSkyline() {
                   {x: 760, dir: 1, y: -1, s: 0.7},
                 ].map((c, i) => (
                   <g key={`cow-${i}`} transform={`translate(${c.x - c.x * c.s}, ${c.y + (1 - c.s) * 208}) scale(${c.s})`}>
-                  <g className={c.dir > 0 ? "animal-cow-left" : "animal-cow"} style={{animationDelay: `${i * 3}s`}}>
+                  <g className={c.dir > 0 ? "animal-cow-left" : "animal-cow"} style={{animationDelay: `${i * 4.3}s`, animationDuration: `${c.dir > 0 ? 30 + i * 7 : 35 + i * 6}s`}}>
                   <g transform={`translate(${c.x}, 203)`}>
-                  <g className={c.dir > 0 ? "face-cow-left" : "face-cow"} style={{animationDelay: `${i * 3}s`}}>
+                  <g style={{animation: `faceFlip ${c.dir > 0 ? 30 + i * 7 : 35 + i * 6}s linear infinite`, animationDelay: `${i * 4.3}s`}}>
                   <g transform={`translate(${-c.x}, -203)`} opacity="1">
                     {/* Body block - white */}
                     <rect x={c.x - 5} y="201" width="11" height="7" fill="#f5f5f5" />
@@ -827,9 +847,9 @@ export function ProgressiveSkyline() {
                   {x: 680, dir: -1, y: 1},
                 ].map((s, i) => (
                   <g key={`sheep-${i}`} transform={`translate(0, ${s.y})`}>
-                  <g className={s.dir > 0 ? "animal-sheep-left" : "animal-sheep"} style={{animationDelay: `${i * 3.5}s`}}>
+                  <g className={s.dir > 0 ? "animal-sheep-left" : "animal-sheep"} style={{animationDelay: `${i * 5.1}s`, animationDuration: `${s.dir > 0 ? 22 + i * 6 : 25 + i * 5}s`}}>
                   <g transform={`translate(${s.x}, 206)`}>
-                  <g className={s.dir > 0 ? "face-sheep-left" : "face-sheep"} style={{animationDelay: `${i * 3.5}s`}}>
+                  <g style={{animation: `faceFlip ${s.dir > 0 ? 22 + i * 6 : 25 + i * 5}s linear infinite`, animationDelay: `${i * 5.1}s`}}>
                   <g transform={`translate(${-s.x}, -206)`} opacity="1">
                     {/* Woolly body block - slightly oversized for fluffy look */}
                     <rect x={s.x - 5} y="203" width="10" height="6" fill="#f5f5f5" />
@@ -864,16 +884,16 @@ export function ProgressiveSkyline() {
               <g>
                 {[
                   {x: 45, y: 1, dir: 1},
-                  {x: 245, y: -1, dir: -1},
+                  {x: 200, y: -1, dir: -1},
                   {x: 380, y: 2, dir: 1},
-                  {x: 500, y: -1, dir: -1},
+                  {x: 555, y: -1, dir: -1},
                   {x: 630, y: 1, dir: 1},
                   {x: 760, y: 0, dir: -1},
                 ].map((ch, i) => (
                   <g key={`chicken-${i}`} transform={`translate(0, ${ch.y})`}>
-                  <g className={ch.dir > 0 ? "animal-chicken-left" : "animal-chicken"} style={{animationDelay: `${i * 1.5}s`}}>
+                  <g className={ch.dir > 0 ? "animal-chicken-left" : "animal-chicken"} style={{animationDelay: `${i * 2.3}s`, animationDuration: `${ch.dir > 0 ? 20 + i * 3 : 18 + i * 4}s`}}>
                   <g transform={`translate(${ch.x}, 208)`}>
-                  <g className={ch.dir > 0 ? "face-chicken-left" : "face-chicken"} style={{animationDelay: `${i * 1.5}s`}}>
+                  <g style={{animation: `faceFlip ${ch.dir > 0 ? 20 + i * 3 : 18 + i * 4}s linear infinite`, animationDelay: `${i * 2.3}s`}}>
                   <g transform={`translate(${-ch.x}, -208)`} opacity="1">
                     <rect x={ch.x - 2.5} y="207.5" width="5" height="3.5" fill="#d4a574" />
                     <rect x={ch.x + (ch.dir > 0 ? 0 : -2)} y="208" width="2" height="2" fill="#b8946a" />
@@ -1038,8 +1058,8 @@ export function ProgressiveSkyline() {
                     const by = hillY(bx) - bh; // Place house base ON the hill line
                     return (
                       <g key={`bg-far-${bi}`}>
-                        <rect x={bx} y={by} width={bw} height={bh} fill="#4a6a4a" />
-                        <path d={`M ${bx-0.3},${by} L ${bx + bw/2},${by - 1.5} L ${bx + bw + 0.3},${by} Z`} fill="#3a5a3a" />
+                        <rect x={bx} y={by} width={bw} height={bh} fill="#1a1a1a" />
+                        <path d={`M ${bx-0.3},${by} L ${bx + bw/2},${by - 1.5} L ${bx + bw + 0.3},${by} Z`} fill="#1a1a1a" />
                       </g>
                     );
                   });
@@ -1055,8 +1075,8 @@ export function ProgressiveSkyline() {
                   const ty = 185 + Math.sin(ti * 1.2) * 3 + (tx < 950 ? 8 : 0) + (tx > 1800 ? 6 : 0);
                   return (
                     <g key={`bg-mid-tree-${ti}`}>
-                      <rect x={tx} y={ty + 3} width="1" height="3" fill="#3a5a3a" />
-                      <ellipse cx={tx + 0.5} cy={ty + 2} rx="2.5" ry="3" fill="#4a6a4a" />
+                      <rect x={tx} y={ty + 3} width="1" height="3" fill="#2a2a2a" />
+                      <ellipse cx={tx + 0.5} cy={ty + 2} rx="2.5" ry="3" fill="#1a1a1a" />
                     </g>
                   );
                 })}
@@ -1588,15 +1608,20 @@ export function ProgressiveSkyline() {
 
                 {/* === BASKETBALL HOOP near x=1650 === */}
                 <g>
+                  {/* Blacktop half court */}
+                  <ellipse cx="1649" cy="214" rx="10" ry="5" fill="#3a3a3a" opacity="0.7" />
+                  <ellipse cx="1649" cy="214" rx="10" ry="5" fill="none" stroke="#e8e8e8" strokeWidth="0.4" opacity="0.5" />
+                  {/* Free throw line */}
+                  <path d="M 1643,211 L 1655,211" stroke="#e8e8e8" strokeWidth="0.3" opacity="0.4" />
                   {/* Pole */}
                   <rect x="1648" y="196" width="1.2" height="16" fill="#6a6a6a" />
                   {/* Backboard */}
                   <rect x="1645" y="196" width="8" height="5" rx="0.3" fill="#e8e8e8" opacity="0.9" />
                   <rect x="1646" y="197" width="6" height="3.5" rx="0.2" fill="#ffffff" opacity="0.6" />
-                  {/* Rim */}
-                  <ellipse cx="1651" cy="201" rx="2" ry="0.6" fill="none" stroke="#cc3333" strokeWidth="0.6" />
+                  {/* Rim - centered on backboard (cx=1649) */}
+                  <ellipse cx="1649" cy="201" rx="2" ry="0.6" fill="none" stroke="#cc3333" strokeWidth="0.6" />
                   {/* Net (simplified) */}
-                  <path d="M 1649,201.5 L 1650,204 M 1651,201.5 L 1651,204 M 1653,201.5 L 1652,204" stroke="#e8e0d0" strokeWidth="0.3" />
+                  <path d="M 1647,201.5 L 1648,204 M 1649,201.5 L 1649,204 M 1651,201.5 L 1650,204" stroke="#e8e0d0" strokeWidth="0.3" />
                 </g>
 
                 {/* === FLOWER GARDEN near x=1770 === */}
@@ -1618,14 +1643,14 @@ export function ProgressiveSkyline() {
                   ))}
                 </g>
 
-                {/* === PARK BENCH 2 near x=1890 === */}
+                {/* === PARK BENCH 2 near x=1955 (moved from 1890 to avoid driveway overlap) === */}
                 <g>
-                  <rect x="1886" y="211" width="1" height="3" fill="#6b5a45" />
-                  <rect x="1894" y="211" width="1" height="3" fill="#6b5a45" />
-                  <rect x="1885" y="210.5" width="11" height="1" rx="0.3" fill="#8b7355" />
-                  <rect x="1885" y="208.5" width="11" height="0.8" rx="0.3" fill="#8b7355" />
-                  <rect x="1885" y="210" width="0.5" height="2" fill="#6b5a45" />
-                  <rect x="1895.5" y="210" width="0.5" height="2" fill="#6b5a45" />
+                  <rect x="1951" y="211" width="1" height="3" fill="#6b5a45" />
+                  <rect x="1959" y="211" width="1" height="3" fill="#6b5a45" />
+                  <rect x="1950" y="210.5" width="11" height="1" rx="0.3" fill="#8b7355" />
+                  <rect x="1950" y="208.5" width="11" height="0.8" rx="0.3" fill="#8b7355" />
+                  <rect x="1950" y="210" width="0.5" height="2" fill="#6b5a45" />
+                  <rect x="1960.5" y="210" width="0.5" height="2" fill="#6b5a45" />
                 </g>
 
                 {/* === LITTLE FREE LIBRARY near x=1290 === */}
@@ -1695,11 +1720,11 @@ export function ProgressiveSkyline() {
                 {/* Victorian walkways - centered on door (x+17.5), extending to road */}
                 {[820, 1120, 1420, 1720].map((x, i) => (
                   i % 2 === 0 ? (
-                    <path key={`vic-dw-${i}`} d={`M ${x+17.5},212.5 Q ${x+18},225 ${x+17},235 Q ${x+17.5},242 ${x+17.5},250`} stroke="#c8c4bc" strokeWidth="3.5" fill="none" opacity="0.65" strokeLinecap="round" />
+                    <path key={`vic-dw-${i}`} d={`M ${x+17.5},212.5 Q ${x+18},225 ${x+17},235 Q ${x+17.5},242 ${x+17.5},250`} stroke="#d4d0c8" strokeWidth="3.5" fill="none" opacity="0.65" strokeLinecap="round" />
                   ) : (
                     <g key={`vic-dw-${i}`}>
                       {Array.from({length: 14}).map((_, si) => (
-                        <ellipse key={`vic-stone-${i}-${si}`} cx={x+17.5 + (si % 2 === 0 ? 0 : 0.8)} cy={213 + si * 2.8} rx="1.8" ry="1.2" fill="#b8b0a0" opacity="0.6" transform={`rotate(${si * 12 - 10}, ${x+17.5}, ${213 + si * 2.8})`} />
+                        <ellipse key={`vic-stone-${i}-${si}`} cx={x+17.5 + (si % 2 === 0 ? 0 : 0.8)} cy={213 + si * 2.8} rx="1.8" ry="1.2" fill="#d4d0c8" opacity="0.6" transform={`rotate(${si * 12 - 10}, ${x+17.5}, ${213 + si * 2.8})`} />
                       ))}
                     </g>
                   )
@@ -1707,19 +1732,19 @@ export function ProgressiveSkyline() {
                 {/* Colonial walkways - centered on door (x+20), extending to road */}
                 {[1000, 1300, 1600, 1900].map((x, i) => (
                   i % 2 === 0 ? (
-                    <rect key={`col-dw-${i}`} x={x+18.5} y="212.5" width="3.5" height="37.5" rx="0.5" fill="#c8c4bc" opacity="0.6" />
+                    <rect key={`col-dw-${i}`} x={x+18.5} y="212.5" width="3.5" height="37.5" rx="0.5" fill="#d4d0c8" opacity="0.6" />
                   ) : (
-                    <path key={`col-dw-${i}`} d={`M ${x+20},212.5 Q ${x+21},225 ${x+19},238 Q ${x+20},245 ${x+20},250`} stroke="#c8c4bc" strokeWidth="3.5" fill="none" opacity="0.6" strokeLinecap="round" />
+                    <path key={`col-dw-${i}`} d={`M ${x+20},212.5 Q ${x+21},225 ${x+19},238 Q ${x+20},245 ${x+20},250`} stroke="#d4d0c8" strokeWidth="3.5" fill="none" opacity="0.6" strokeLinecap="round" />
                   )
                 ))}
                 {/* Ranch walkways - centered on door (x+21.5), extending to road */}
                 {[880, 1180, 1480, 1780].map((x, i) => (
                   i % 2 === 0 ? (
-                    <rect key={`ranch-dw-${i}`} x={x+20} y="210" width="3.5" height="40" rx="0.5" fill="#c8c4bc" opacity="0.6" />
+                    <rect key={`ranch-dw-${i}`} x={x+20} y="210" width="3.5" height="40" rx="0.5" fill="#d4d0c8" opacity="0.6" />
                   ) : (
                     <g key={`ranch-dw-${i}`}>
                       {Array.from({length: 15}).map((_, si) => (
-                        <rect key={`ranch-stone-${i}-${si}`} x={x+20 + (si % 2 === 0 ? 0 : 0.5)} y={211 + si * 2.6} width="3" height="1.8" rx="0.8" fill="#b0a898" opacity="0.55" />
+                        <rect key={`ranch-stone-${i}-${si}`} x={x+20 + (si % 2 === 0 ? 0 : 0.5)} y={211 + si * 2.6} width="3" height="1.8" rx="0.8" fill="#d4d0c8" opacity="0.55" />
                       ))}
                     </g>
                   )
@@ -1730,7 +1755,7 @@ export function ProgressiveSkyline() {
                     {Array.from({length: 14}).map((_, si) => {
                       const wobble = Math.sin(si * 1.3 + i) * 1.2;
                       return (
-                        <ellipse key={`cot-step-${i}-${si}`} cx={x+15 + wobble} cy={213 + si * 2.7} rx="2" ry="1.3" fill="#a8a090" opacity="0.55" transform={`rotate(${si * 15 + i * 8}, ${x+15 + wobble}, ${213 + si * 2.7})`} />
+                        <ellipse key={`cot-step-${i}-${si}`} cx={x+15 + wobble} cy={213 + si * 2.7} rx="2" ry="1.3" fill="#d4d0c8" opacity="0.55" transform={`rotate(${si * 15 + i * 8}, ${x+15 + wobble}, ${213 + si * 2.7})`} />
                       );
                     })}
                   </g>
@@ -1738,9 +1763,9 @@ export function ProgressiveSkyline() {
                 {/* Modern walkways - centered on door (x+16.5), extending to road */}
                 {[940, 1240, 1540, 1840].map((x, i) => (
                   i % 2 === 0 ? (
-                    <path key={`mod-dw-${i}`} d={`M ${x+16.5},210 Q ${x+17},225 ${x+16},238 Q ${x+16.5},245 ${x+16.5},250`} stroke="#a0a098" strokeWidth="3" fill="none" opacity="0.6" strokeLinecap="round" />
+                    <path key={`mod-dw-${i}`} d={`M ${x+16.5},210 Q ${x+17},225 ${x+16},238 Q ${x+16.5},245 ${x+16.5},250`} stroke="#d4d0c8" strokeWidth="3" fill="none" opacity="0.6" strokeLinecap="round" />
                   ) : (
-                    <rect key={`mod-dw-${i}`} x={x+15} y="210" width="3" height="40" rx="0.3" fill="#a0a098" opacity="0.55" />
+                    <rect key={`mod-dw-${i}`} x={x+15} y="210" width="3" height="40" rx="0.3" fill="#d4d0c8" opacity="0.55" />
                   )
                 ))}
               </g>
@@ -1749,15 +1774,15 @@ export function ProgressiveSkyline() {
               <g opacity="0.75">
                 {/* Ranch garage driveways - centered on garage door (x+39 to x+46, center=x+42.5) */}
                 {[880, 1180, 1480, 1780].map((x, i) => (
-                  <rect key={`ranch-gdw-${i}`} x={x+39.5} y="206" width="7" height="44" rx="0.5" fill="#c4c0b8" opacity="0.7" />
+                  <rect key={`ranch-gdw-${i}`} x={x+39.5} y="206" width="7" height="44" rx="0.5" fill="#d4d0c8" opacity="0.7" />
                 ))}
                 {/* Colonial driveways to shed/garage (shed center at x-6) */}
                 {[1000, 1300, 1600, 1900].map((x, i) => (
-                  <path key={`col-gdw-${i}`} d={`M ${x-6},208 Q ${x-5},225 ${x-7},240 Q ${x-6},246 ${x-6},250`} stroke="#c4c0b8" strokeWidth="6" fill="none" opacity="0.6" strokeLinecap="round" />
+                  <path key={`col-gdw-${i}`} d={`M ${x-6},208 Q ${x-5},225 ${x-7},240 Q ${x-6},246 ${x-6},250`} stroke="#d4d0c8" strokeWidth="6" fill="none" opacity="0.6" strokeLinecap="round" />
                 ))}
                 {/* Modern driveways to studio/garage (studio center at x-5) */}
                 {[940, 1240, 1540, 1840].map((x, i) => (
-                  <rect key={`mod-gdw-${i}`} x={x-7} y="207" width="6" height="43" rx="0.3" fill="#b0b0a8" opacity="0.55" />
+                  <rect key={`mod-gdw-${i}`} x={x-7} y="207" width="6" height="43" rx="0.3" fill="#d4d0c8" opacity="0.55" />
                 ))}
               </g>
 
@@ -3248,18 +3273,6 @@ export function ProgressiveSkyline() {
               <path d="M 4469,204 Q 4500,207 4520,205 Q 4550,204 4570,205" stroke="#b89a6a" strokeWidth="2" fill="none" opacity="0.5" />
               <path d="M 4709,203 Q 4730,206 4750,204 Q 4770,203 4780,204" stroke="#b89a6a" strokeWidth="2" fill="none" opacity="0.5" />
 
-              {/* Crop field rows */}
-              <g opacity="0.7">
-                {/* Wheat field near Barn #1 */}
-                <rect x="4100" y="201" width="30" height="8" fill="#d4b87a" opacity="0.4" rx="1" />
-                {Array.from({length: 7}).map((_, i) => (
-                  <g key={`wheat-end-${i}`}>
-                    <rect x={4102 + i * 4} y="199" width="1" height="8" fill="#c9a855" opacity="0.8" rx="0.5" />
-                    <ellipse cx={4102.5 + i * 4} cy="198.5" rx="1" ry="0.8" fill="#d4b87a" opacity="0.7" />
-                  </g>
-                ))}
-              </g>
-
               {/* Farm pond with cattails - 2/3 scale */}
               <g>
                 <ellipse cx="4830" cy="217" rx="15" ry="4" fill="#5a7a5a" opacity="0.4" />
@@ -3274,17 +3287,47 @@ export function ProgressiveSkyline() {
                 <ellipse cx="4841.3" cy="213.2" rx="0.8" ry="1.3" fill="#6b5a3a" opacity="0.8" />
               </g>
 
-              {/* Wildflower patches */}
+              {/* Wildflower patches - actual petal flowers */}
               <g opacity="0.9">
-                {[3850, 3853, 3857, 3860, 3852, 3858].map((fx, fi) => (
-                  <circle key={`flower-d-${fi}`} cx={fx} cy={213 + (fi % 3) * 1.5} r="0.8" fill={['#ff69b4', '#ffd700', '#9370db', '#ff6347', '#ffd700', '#ff69b4'][fi]} opacity="1" />
-                ))}
-                {[4300, 4303, 4307, 4310, 4302, 4308].map((fx, fi) => (
-                  <circle key={`flower-e-${fi}`} cx={fx} cy={212 + (fi % 3) * 1.5} r="0.8" fill={['#ffd700', '#ff69b4', '#ff6347', '#9370db', '#ff69b4', '#ffd700'][fi]} opacity="1" />
-                ))}
-                {[4600, 4603, 4607, 4610, 4602, 4608].map((fx, fi) => (
-                  <circle key={`flower-f-${fi}`} cx={fx} cy={213 + (fi % 3) * 1.5} r="0.8" fill={['#9370db', '#ffd700', '#ff69b4', '#ffd700', '#ff6347', '#9370db'][fi]} opacity="1" />
-                ))}
+                {[3850, 3853, 3857, 3860, 3852, 3858].map((fx, fi) => {
+                  const cy = 213 + (fi % 3) * 1.5;
+                  const color = ['#ff69b4', '#ffd700', '#9370db', '#ff6347', '#ffd700', '#ff69b4'][fi];
+                  return (
+                    <g key={`flower-d-${fi}`}>
+                      <rect x={fx - 0.15} y={cy} width="0.3" height="1.5" fill="#4a7a3a" opacity="0.7" />
+                      {[0, 72, 144, 216, 288].map((angle, pi) => (
+                        <ellipse key={pi} cx={fx + Math.cos(angle * Math.PI / 180) * 0.7} cy={cy - 0.3 + Math.sin(angle * Math.PI / 180) * 0.7} rx="0.5" ry="0.3" fill={color} transform={`rotate(${angle}, ${fx + Math.cos(angle * Math.PI / 180) * 0.7}, ${cy - 0.3 + Math.sin(angle * Math.PI / 180) * 0.7})`} />
+                      ))}
+                      <circle cx={fx} cy={cy - 0.3} r="0.3" fill="#ffd700" opacity="0.9" />
+                    </g>
+                  );
+                })}
+                {[4300, 4303, 4307, 4310, 4302, 4308].map((fx, fi) => {
+                  const cy = 212 + (fi % 3) * 1.5;
+                  const color = ['#ffd700', '#ff69b4', '#ff6347', '#9370db', '#ff69b4', '#ffd700'][fi];
+                  return (
+                    <g key={`flower-e-${fi}`}>
+                      <rect x={fx - 0.15} y={cy} width="0.3" height="1.5" fill="#4a7a3a" opacity="0.7" />
+                      {[0, 72, 144, 216, 288].map((angle, pi) => (
+                        <ellipse key={pi} cx={fx + Math.cos(angle * Math.PI / 180) * 0.7} cy={cy - 0.3 + Math.sin(angle * Math.PI / 180) * 0.7} rx="0.5" ry="0.3" fill={color} transform={`rotate(${angle}, ${fx + Math.cos(angle * Math.PI / 180) * 0.7}, ${cy - 0.3 + Math.sin(angle * Math.PI / 180) * 0.7})`} />
+                      ))}
+                      <circle cx={fx} cy={cy - 0.3} r="0.3" fill="#ffd700" opacity="0.9" />
+                    </g>
+                  );
+                })}
+                {[4600, 4603, 4607, 4610, 4602, 4608].map((fx, fi) => {
+                  const cy = 213 + (fi % 3) * 1.5;
+                  const color = ['#9370db', '#ffd700', '#ff69b4', '#ffd700', '#ff6347', '#9370db'][fi];
+                  return (
+                    <g key={`flower-f-${fi}`}>
+                      <rect x={fx - 0.15} y={cy} width="0.3" height="1.5" fill="#4a7a3a" opacity="0.7" />
+                      {[0, 72, 144, 216, 288].map((angle, pi) => (
+                        <ellipse key={pi} cx={fx + Math.cos(angle * Math.PI / 180) * 0.7} cy={cy - 0.3 + Math.sin(angle * Math.PI / 180) * 0.7} rx="0.5" ry="0.3" fill={color} transform={`rotate(${angle}, ${fx + Math.cos(angle * Math.PI / 180) * 0.7}, ${cy - 0.3 + Math.sin(angle * Math.PI / 180) * 0.7})`} />
+                      ))}
+                      <circle cx={fx} cy={cy - 0.3} r="0.3" fill="#ffd700" opacity="0.9" />
+                    </g>
+                  );
+                })}
               </g>
 
               {/* White picket fences with sturdy posts - CONTINUOUS */}
@@ -3571,8 +3614,8 @@ export function ProgressiveSkyline() {
                 <g><rect x="3859" y="193" width="4" height="12" fill="#5a4a35" /><circle cx="3861" cy="189" r="9" fill="#4a7a4a" /><circle cx="3855" cy="191" r="6" fill="#5a8a5a" /><circle cx="3867" cy="191" r="6" fill="#5a8a5a" /></g>
                 {/* Evergreen pine - 3910 */}
                 <g><rect x="3910" y="196" width="2.5" height="9" fill="#5a4a35" /><path d="M 3903,205 L 3911.25,187 L 3919.5,205 Z" fill="#3a6a3a" /><path d="M 3905,200 L 3911.25,185 L 3917.5,200 Z" fill="#4a7a4a" /><path d="M 3907,195 L 3911.25,183 L 3915.5,195 Z" fill="#5a8a5a" /></g>
-                {/* Small young tree - 3965 */}
-                <g><rect x="3965" y="198" width="2" height="7" fill="#6b5a45" /><circle cx="3966" cy="196" r="4" fill="#6a9a6a" /><circle cx="3964" cy="197" r="3" fill="#7aaa7a" /></g>
+                {/* Small young tree - 3940 (moved from 3965 to avoid Barn#1) */}
+                <g><rect x="3940" y="198" width="2" height="7" fill="#6b5a45" /><circle cx="3941" cy="196" r="4" fill="#6a9a6a" /><circle cx="3939" cy="197" r="3" fill="#7aaa7a" /></g>
                 {/* Large maple - 4120 */}
                 <g><rect x="4119" y="194" width="4" height="11" fill="#5a4a35" /><circle cx="4121" cy="190" r="8" fill="#5a8a5a" /><circle cx="4115" cy="192" r="5.5" fill="#6a9a6a" /><circle cx="4127" cy="192" r="5.5" fill="#6a9a6a" /><circle cx="4121" cy="186" r="4.5" fill="#8ab88a" /></g>
                 {/* Medium deciduous - 4210 */}
@@ -3661,15 +3704,15 @@ export function ProgressiveSkyline() {
               <g>
                 {[
                   {x: 3850, dir: -1, y: 1, color: '#654321', chest: '#7a5230'},
-                  {x: 4150, dir: 1, y: -2, color: '#8b6f47', chest: '#9a7a55'},
+                  {x: 4160, dir: 1, y: -2, color: '#8b6f47', chest: '#9a7a55'},
                   {x: 4330, dir: -1, y: 3, color: '#4a3520', chest: '#5a3a25'},
                   {x: 4520, dir: -1, y: -1, color: '#654321', chest: '#7a5230'},
                   {x: 4900, dir: 1, y: 2, color: '#8b6f47', chest: '#9a7a55'},
                 ].map((h, i) => (
                   <g key={`horse-end-${i}`} transform={`translate(0, ${h.y})`}>
-                  <g className={h.dir > 0 ? "animal-horse-left" : "animal-horse"} style={{animationDelay: `${i * 2.5}s`}}>
+                  <g className={h.dir > 0 ? "animal-horse-left" : "animal-horse"} style={{animationDelay: `${i * 4.1}s`, animationDuration: `${h.dir > 0 ? 30 + i * 6 : 26 + i * 5}s`}}>
                   <g transform={`translate(${h.x}, 203)`}>
-                  <g className={h.dir > 0 ? "face-horse-left" : "face-horse"} style={{animationDelay: `${i * 2.5}s`}}>
+                  <g style={{animation: `faceFlip ${h.dir > 0 ? 30 + i * 6 : 26 + i * 5}s linear infinite`, animationDelay: `${i * 4.1}s`}}>
                   <g transform={`translate(${-h.x}, -203)`} opacity="1">
                     <rect x={h.x - 6} y="201" width="12" height="7" fill={h.color} />
                     <rect x={h.x + (h.dir > 0 ? -6 : 2)} y="201" width="4" height="7" fill={h.chest} />
@@ -3706,9 +3749,9 @@ export function ProgressiveSkyline() {
                   {x: 4700, dir: 1, y: -2},
                 ].map((c, i) => (
                   <g key={`cow-end-${i}`} transform={`translate(0, ${c.y})`}>
-                  <g className={c.dir > 0 ? "animal-cow-left" : "animal-cow"} style={{animationDelay: `${i * 3}s`}}>
+                  <g className={c.dir > 0 ? "animal-cow-left" : "animal-cow"} style={{animationDelay: `${i * 5.7}s`, animationDuration: `${c.dir > 0 ? 28 + i * 8 : 33 + i * 5}s`}}>
                   <g transform={`translate(${c.x}, 203)`}>
-                  <g className={c.dir > 0 ? "face-cow-left" : "face-cow"} style={{animationDelay: `${i * 3}s`}}>
+                  <g style={{animation: `faceFlip ${c.dir > 0 ? 28 + i * 8 : 33 + i * 5}s linear infinite`, animationDelay: `${i * 5.7}s`}}>
                   <g transform={`translate(${-c.x}, -203)`} opacity="1">
                     <rect x={c.x - 5} y="201" width="11" height="7" fill="#f5f5f5" />
                     <rect x={c.x - 3.5} y="202" width="3" height="2.5" fill="#2f2f2f" />
@@ -3746,12 +3789,12 @@ export function ProgressiveSkyline() {
                   {x: 4115, dir: -1, y: 4},
                   {x: 4300, dir: 1, y: -3},
                   {x: 4560, dir: -1, y: 0},
-                  {x: 4790, dir: 1, y: -2},
+                  {x: 4810, dir: 1, y: -2},
                 ].map((s, i) => (
                   <g key={`sheep-end-${i}`} transform={`translate(0, ${s.y})`}>
-                  <g className={s.dir > 0 ? "animal-sheep-left" : "animal-sheep"} style={{animationDelay: `${i * 3.5}s`}}>
+                  <g className={s.dir > 0 ? "animal-sheep-left" : "animal-sheep"} style={{animationDelay: `${i * 4.7}s`, animationDuration: `${s.dir > 0 ? 24 + i * 5 : 27 + i * 4}s`}}>
                   <g transform={`translate(${s.x}, 206)`}>
-                  <g className={s.dir > 0 ? "face-sheep-left" : "face-sheep"} style={{animationDelay: `${i * 3.5}s`}}>
+                  <g style={{animation: `faceFlip ${s.dir > 0 ? 24 + i * 5 : 27 + i * 4}s linear infinite`, animationDelay: `${i * 4.7}s`}}>
                   <g transform={`translate(${-s.x}, -206)`} opacity="1">
                     <rect x={s.x - 5} y="203" width="10" height="6" fill="#f5f5f5" />
                     <rect x={s.x - 4} y="203.5" width="2" height="1.5" fill="#e8e8e8" />
@@ -3785,9 +3828,9 @@ export function ProgressiveSkyline() {
                   {x: 4825, y: 1, dir: -1},
                 ].map((ch, i) => (
                   <g key={`chicken-end-${i}`} transform={`translate(0, ${ch.y})`}>
-                  <g className={ch.dir > 0 ? "animal-chicken-left" : "animal-chicken"} style={{animationDelay: `${i * 1.5}s`}}>
+                  <g className={ch.dir > 0 ? "animal-chicken-left" : "animal-chicken"} style={{animationDelay: `${i * 2.9}s`, animationDuration: `${ch.dir > 0 ? 19 + i * 4 : 17 + i * 3}s`}}>
                   <g transform={`translate(${ch.x}, 208)`}>
-                  <g className={ch.dir > 0 ? "face-chicken-left" : "face-chicken"} style={{animationDelay: `${i * 1.5}s`}}>
+                  <g style={{animation: `faceFlip ${ch.dir > 0 ? 19 + i * 4 : 17 + i * 3}s linear infinite`, animationDelay: `${i * 2.9}s`}}>
                   <g transform={`translate(${-ch.x}, -208)`} opacity="1">
                     <rect x={ch.x - 2.5} y="207.5" width="5" height="3.5" fill="#d4a574" />
                     <rect x={ch.x + (ch.dir > 0 ? 0 : -2)} y="208" width="2" height="2" fill="#b8946a" />
