@@ -263,22 +263,109 @@ export function ProgressiveSkyline() {
           97% { transform: translateY(0.5px); }
         }
 
-        @keyframes chickenRoam {
-          0% { transform: translateX(0px); }
-          5% { transform: translateX(10px); }
-          20% { transform: translateX(40px); }
-          35% { transform: translateX(60px); }
-          45% { transform: translateX(55px); }
-          55% { transform: translateX(65px); }
-          70% { transform: translateX(40px); }
-          85% { transform: translateX(15px); }
-          95% { transform: translateX(5px); }
-          100% { transform: translateX(0px); }
+        /* === 7-chicken coop roaming system ===
+           Each chicken cycles: roam outside → walk to door → hide inside → walk out → repeat
+           Staggered delays keep 3-5 visible outside at any time */
+
+        @keyframes coopChicken1 {
+          0% { transform: translateX(8px) translateY(-1px); opacity: 1; }
+          12% { transform: translateX(22px) translateY(0px); opacity: 1; }
+          28% { transform: translateX(35px) translateY(-2px); opacity: 1; }
+          42% { transform: translateX(18px) translateY(0px); opacity: 1; }
+          56% { transform: translateX(6px) translateY(-1px); opacity: 1; }
+          64% { transform: translateX(0px) translateY(0px); opacity: 1; }
+          68% { transform: translateX(-3px) translateY(0px); opacity: 0; }
+          82% { transform: translateX(-3px) translateY(0px); opacity: 0; }
+          86% { transform: translateX(0px) translateY(0px); opacity: 1; }
+          100% { transform: translateX(8px) translateY(-1px); opacity: 1; }
+        }
+        @keyframes coopChicken2 {
+          0% { transform: translateX(15px) translateY(0px); opacity: 1; }
+          10% { transform: translateX(28px) translateY(-1px); opacity: 1; }
+          25% { transform: translateX(42px) translateY(1px); opacity: 1; }
+          40% { transform: translateX(30px) translateY(-1px); opacity: 1; }
+          55% { transform: translateX(12px) translateY(0px); opacity: 1; }
+          63% { transform: translateX(0px) translateY(0px); opacity: 1; }
+          67% { transform: translateX(-3px) translateY(0px); opacity: 0; }
+          80% { transform: translateX(-3px) translateY(0px); opacity: 0; }
+          84% { transform: translateX(0px) translateY(0px); opacity: 1; }
+          92% { transform: translateX(10px) translateY(-1px); opacity: 1; }
+          100% { transform: translateX(15px) translateY(0px); opacity: 1; }
+        }
+        @keyframes coopChicken3 {
+          0% { transform: translateX(20px) translateY(1px); opacity: 1; }
+          15% { transform: translateX(38px) translateY(-1px); opacity: 1; }
+          30% { transform: translateX(50px) translateY(0px); opacity: 1; }
+          48% { transform: translateX(25px) translateY(1px); opacity: 1; }
+          60% { transform: translateX(5px) translateY(0px); opacity: 1; }
+          66% { transform: translateX(0px) translateY(0px); opacity: 1; }
+          70% { transform: translateX(-3px) translateY(0px); opacity: 0; }
+          84% { transform: translateX(-3px) translateY(0px); opacity: 0; }
+          88% { transform: translateX(0px) translateY(0px); opacity: 1; }
+          100% { transform: translateX(20px) translateY(1px); opacity: 1; }
+        }
+        @keyframes coopChicken4 {
+          0% { transform: translateX(12px) translateY(-1px); opacity: 1; }
+          8% { transform: translateX(5px) translateY(0px); opacity: 1; }
+          14% { transform: translateX(0px) translateY(0px); opacity: 1; }
+          18% { transform: translateX(-3px) translateY(0px); opacity: 0; }
+          32% { transform: translateX(-3px) translateY(0px); opacity: 0; }
+          36% { transform: translateX(0px) translateY(0px); opacity: 1; }
+          50% { transform: translateX(18px) translateY(-1px); opacity: 1; }
+          65% { transform: translateX(32px) translateY(1px); opacity: 1; }
+          78% { transform: translateX(45px) translateY(-1px); opacity: 1; }
+          90% { transform: translateX(25px) translateY(0px); opacity: 1; }
+          100% { transform: translateX(12px) translateY(-1px); opacity: 1; }
+        }
+        @keyframes coopChicken5 {
+          0% { transform: translateX(30px) translateY(0px); opacity: 1; }
+          14% { transform: translateX(45px) translateY(-2px); opacity: 1; }
+          26% { transform: translateX(55px) translateY(0px); opacity: 1; }
+          40% { transform: translateX(35px) translateY(1px); opacity: 1; }
+          52% { transform: translateX(15px) translateY(-1px); opacity: 1; }
+          62% { transform: translateX(3px) translateY(0px); opacity: 1; }
+          67% { transform: translateX(0px) translateY(0px); opacity: 1; }
+          71% { transform: translateX(-3px) translateY(0px); opacity: 0; }
+          83% { transform: translateX(-3px) translateY(0px); opacity: 0; }
+          87% { transform: translateX(0px) translateY(0px); opacity: 1; }
+          94% { transform: translateX(15px) translateY(-1px); opacity: 1; }
+          100% { transform: translateX(30px) translateY(0px); opacity: 1; }
+        }
+        @keyframes coopChicken6 {
+          0% { transform: translateX(5px) translateY(0px); opacity: 1; }
+          6% { transform: translateX(0px) translateY(0px); opacity: 1; }
+          10% { transform: translateX(-3px) translateY(0px); opacity: 0; }
+          22% { transform: translateX(-3px) translateY(0px); opacity: 0; }
+          26% { transform: translateX(0px) translateY(0px); opacity: 1; }
+          38% { transform: translateX(20px) translateY(-1px); opacity: 1; }
+          52% { transform: translateX(40px) translateY(1px); opacity: 1; }
+          68% { transform: translateX(55px) translateY(-1px); opacity: 1; }
+          80% { transform: translateX(35px) translateY(0px); opacity: 1; }
+          92% { transform: translateX(15px) translateY(1px); opacity: 1; }
+          100% { transform: translateX(5px) translateY(0px); opacity: 1; }
+        }
+        @keyframes coopChicken7 {
+          0% { transform: translateX(25px) translateY(-1px); opacity: 1; }
+          12% { transform: translateX(40px) translateY(1px); opacity: 1; }
+          24% { transform: translateX(48px) translateY(-1px); opacity: 1; }
+          36% { transform: translateX(30px) translateY(0px); opacity: 1; }
+          48% { transform: translateX(10px) translateY(1px); opacity: 1; }
+          58% { transform: translateX(3px) translateY(0px); opacity: 1; }
+          64% { transform: translateX(0px) translateY(0px); opacity: 1; }
+          68% { transform: translateX(-3px) translateY(0px); opacity: 0; }
+          78% { transform: translateX(-3px) translateY(0px); opacity: 0; }
+          82% { transform: translateX(0px) translateY(0px); opacity: 1; }
+          90% { transform: translateX(12px) translateY(-1px); opacity: 1; }
+          100% { transform: translateX(25px) translateY(-1px); opacity: 1; }
         }
 
-        .chicken-roam {
-          animation: chickenRoam 22s ease-in-out infinite;
-        }
+        .coop-chicken-1 { animation: coopChicken1 26s ease-in-out infinite; }
+        .coop-chicken-2 { animation: coopChicken2 28s ease-in-out infinite; }
+        .coop-chicken-3 { animation: coopChicken3 30s ease-in-out infinite; }
+        .coop-chicken-4 { animation: coopChicken4 25s ease-in-out infinite; }
+        .coop-chicken-5 { animation: coopChicken5 32s ease-in-out infinite; }
+        .coop-chicken-6 { animation: coopChicken6 27s ease-in-out infinite; }
+        .coop-chicken-7 { animation: coopChicken7 29s ease-in-out infinite; }
 
         .chicken-bathing {
           animation: chickenBathe 3s ease-in-out infinite;
@@ -923,24 +1010,30 @@ export function ProgressiveSkyline() {
                 <path d="M 150,205.5 L 152.5,205.5 M 151.25,204.5 L 151.25,206.5" stroke="#6a5a4a" strokeWidth="0.3" />
                 {/* Ramp from door to ground */}
                 <rect x="156" y="210.5" width="5" height="0.6" fill="#7a5a3a" opacity="0.9" transform="rotate(-15, 158.5, 210.5)" />
-                {/* Nesting chicken inside coop */}
-                <g style={{animation: 'chickenPeck 6s ease-in-out infinite'}}>
-                  <rect x="152" y="208" width="3.5" height="2.5" fill="#d4a574" opacity="0.9" />
-                  <rect x="155.5" y="207.5" width="2" height="2" fill="#d4a574" opacity="0.9" />
-                  <rect x="156.5" y="206.5" width="1.2" height="1.2" fill="#cc3333" opacity="0.9" />
-                  <rect x="157.5" y="208" width="1" height="0.5" fill="#ffd700" opacity="0.9" />
-                </g>
                 {/* Hay/straw around coop */}
                 <rect x="147" y="210" width="15" height="1" rx="0.5" fill="#d4b874" opacity="0.4" />
-                {/* Roaming chickens - stay near coop at ground level */}
-                {[0, 7, 14].map((delay, ci) => (
-                  <g key={`roam-ch-1-${ci}`} className="chicken-roam" style={{animationDelay: `${delay}s`, animationDuration: `${18 + ci * 4}s`}}>
-                    <rect x={159 + ci * 3} y="208" width="4" height="3" fill={ci === 1 ? '#f5f5f0' : '#d4a574'} />
-                    <rect x={163 + ci * 3} y="207" width="2" height="2.5" fill={ci === 1 ? '#f5f5f0' : '#d4a574'} />
-                    <rect x={164 + ci * 3} y="206" width="1.2" height="1" fill="#cc3333" />
-                    <rect x={165 + ci * 3} y="207.5" width="1" height="0.5" fill="#ffd700" />
-                    <rect x={160 + ci * 3} y="210.5" width="0.6" height="1.5" fill="#e8a020" />
-                    <rect x={161.5 + ci * 3} y="210.5" width="0.6" height="1.5" fill="#e8a020" />
+                {/* 7 chickens cycling in and out of coop - origin at door (x=159, y=208) */}
+                {[
+                  {cls: 'coop-chicken-1', delay: 0, color: '#d4a574'},
+                  {cls: 'coop-chicken-2', delay: 4, color: '#f5f5f0'},
+                  {cls: 'coop-chicken-3', delay: 8, color: '#d4a574'},
+                  {cls: 'coop-chicken-4', delay: 12, color: '#c49464'},
+                  {cls: 'coop-chicken-5', delay: 16, color: '#d4a574'},
+                  {cls: 'coop-chicken-6', delay: 20, color: '#f5f5f0'},
+                  {cls: 'coop-chicken-7', delay: 24, color: '#c49464'},
+                ].map((ch, ci) => (
+                  <g key={`coop1-ch-${ci}`} className={ch.cls} style={{animationDelay: `${ch.delay}s`}}>
+                    {/* Body */}
+                    <rect x="159" y="208" width="4" height="3" fill={ch.color} />
+                    {/* Head */}
+                    <rect x="163" y="207" width="2" height="2.5" fill={ch.color} />
+                    {/* Comb */}
+                    <rect x="164" y="206" width="1.2" height="1" fill="#cc3333" />
+                    {/* Beak */}
+                    <rect x="165" y="207.5" width="1" height="0.5" fill="#ffd700" />
+                    {/* Legs */}
+                    <rect x="160" y="210.5" width="0.6" height="1.5" fill="#e8a020" />
+                    <rect x="161.5" y="210.5" width="0.6" height="1.5" fill="#e8a020" />
                   </g>
                 ))}
               </g>
@@ -3941,24 +4034,30 @@ export function ProgressiveSkyline() {
                 <path d="M 4218,205.5 L 4220.5,205.5 M 4219.25,204.5 L 4219.25,206.5" stroke="#6a5a4a" strokeWidth="0.3" />
                 {/* Ramp */}
                 <rect x="4224" y="210.5" width="5" height="0.6" fill="#7a5a3a" opacity="0.9" transform="rotate(-15, 4226.5, 210.5)" />
-                {/* Nesting chicken */}
-                <g style={{animation: 'chickenPeck 7s ease-in-out infinite', animationDelay: '2s'}}>
-                  <rect x="4220" y="208" width="3.5" height="2.5" fill="#d4a574" opacity="0.9" />
-                  <rect x="4223.5" y="207.5" width="2" height="2" fill="#d4a574" opacity="0.9" />
-                  <rect x="4224.5" y="206.5" width="1.2" height="1.2" fill="#cc3333" opacity="0.9" />
-                  <rect x="4225.5" y="208" width="1" height="0.5" fill="#ffd700" opacity="0.9" />
-                </g>
                 {/* Hay/straw around coop */}
                 <rect x="4215" y="210" width="15" height="1" rx="0.5" fill="#d4b874" opacity="0.4" />
-                {/* Roaming chickens - stay near coop at ground level */}
-                {[0, 7, 14].map((delay, ci) => (
-                  <g key={`roam-ch-2-${ci}`} className="chicken-roam" style={{animationDelay: `${delay}s`, animationDuration: `${20 + ci * 3}s`}}>
-                    <rect x={4227 + ci * 3} y="208" width="4" height="3" fill={ci === 0 ? '#f5f5f0' : '#d4a574'} />
-                    <rect x={4231 + ci * 3} y="207" width="2" height="2.5" fill={ci === 0 ? '#f5f5f0' : '#d4a574'} />
-                    <rect x={4232 + ci * 3} y="206" width="1.2" height="1" fill="#cc3333" />
-                    <rect x={4233 + ci * 3} y="207.5" width="1" height="0.5" fill="#ffd700" />
-                    <rect x={4228 + ci * 3} y="210.5" width="0.6" height="1.5" fill="#e8a020" />
-                    <rect x={4229.5 + ci * 3} y="210.5" width="0.6" height="1.5" fill="#e8a020" />
+                {/* 7 chickens cycling in and out of coop - origin at door (x=4227, y=208) */}
+                {[
+                  {cls: 'coop-chicken-1', delay: 2, color: '#f5f5f0'},
+                  {cls: 'coop-chicken-2', delay: 6, color: '#d4a574'},
+                  {cls: 'coop-chicken-3', delay: 10, color: '#c49464'},
+                  {cls: 'coop-chicken-4', delay: 14, color: '#d4a574'},
+                  {cls: 'coop-chicken-5', delay: 18, color: '#f5f5f0'},
+                  {cls: 'coop-chicken-6', delay: 22, color: '#d4a574'},
+                  {cls: 'coop-chicken-7', delay: 26, color: '#c49464'},
+                ].map((ch, ci) => (
+                  <g key={`coop2-ch-${ci}`} className={ch.cls} style={{animationDelay: `${ch.delay}s`}}>
+                    {/* Body */}
+                    <rect x="4227" y="208" width="4" height="3" fill={ch.color} />
+                    {/* Head */}
+                    <rect x="4231" y="207" width="2" height="2.5" fill={ch.color} />
+                    {/* Comb */}
+                    <rect x="4232" y="206" width="1.2" height="1" fill="#cc3333" />
+                    {/* Beak */}
+                    <rect x="4233" y="207.5" width="1" height="0.5" fill="#ffd700" />
+                    {/* Legs */}
+                    <rect x="4228" y="210.5" width="0.6" height="1.5" fill="#e8a020" />
+                    <rect x="4229.5" y="210.5" width="0.6" height="1.5" fill="#e8a020" />
                   </g>
                 ))}
               </g>
