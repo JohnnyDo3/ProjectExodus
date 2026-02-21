@@ -863,12 +863,12 @@ export function ProgressiveSkyline() {
               {/* Chickens - Minecraft blocky style, de-crowded */}
               <g>
                 {[
-                  {x: 15, y: 1, dir: 1},
+                  {x: 45, y: 1, dir: 1},
                   {x: 245, y: -1, dir: -1},
                   {x: 380, y: 2, dir: 1},
                   {x: 500, y: -1, dir: -1},
                   {x: 630, y: 1, dir: 1},
-                  {x: 790, y: 0, dir: -1},
+                  {x: 760, y: 0, dir: -1},
                 ].map((ch, i) => (
                   <g key={`chicken-${i}`} transform={`translate(0, ${ch.y})`}>
                   <g className={ch.dir > 0 ? "animal-chicken-left" : "animal-chicken"} style={{animationDelay: `${i * 1.5}s`}}>
@@ -2300,6 +2300,9 @@ export function ProgressiveSkyline() {
                         return (
                           <g opacity="1">
                             {/* TYPE B: Garden roof + planters + antenna */}
+                            {/* Antenna - rendered first so it appears behind planters */}
+                            <rect x={bldg.x + bldg.w - 8} y={roofY - 14} width="1" height="12" fill="#8a8a8a" opacity="1" />
+                            <circle cx={bldg.x + bldg.w - 7.5} cy={roofY - 14} r="2" fill="#8a8a8a" opacity="1" />
                             {/* Lush garden roof strip */}
                             <rect x={bldg.x + 2} y={roofY - 2} width={bldg.w - 4} height="2" fill="#5a9a4a" opacity="1" />
                             {/* Planter boxes */}
@@ -2312,15 +2315,16 @@ export function ProgressiveSkyline() {
                                 <circle cx={bldg.x + 9 + p * 16} cy={roofY - 7} r="1" fill="#ff69b4" opacity="0.8" />
                               </g>
                             ))}
-                            {/* Antenna */}
-                            <rect x={bldg.x + bldg.w - 8} y={roofY - 14} width="1" height="12" fill="#8a8a8a" opacity="1" />
-                            <circle cx={bldg.x + bldg.w - 7.5} cy={roofY - 14} r="2" fill="#8a8a8a" opacity="1" />
                           </g>
                         )
                       } else {
                         return (
                           <g opacity="1">
                             {/* TYPE C: HVAC + water tower + antenna */}
+                            {/* Antenna - rendered first so it appears behind other items */}
+                            <rect x={bldg.x + bldg.w/2} y={roofY - 13} width="1" height="10" fill="#8a8a8a" opacity="1" />
+                            <rect x={bldg.x + bldg.w/2 - 2} y={roofY - 11} width="5" height="0.5" fill="#8a8a8a" opacity="1" />
+                            <rect x={bldg.x + bldg.w/2 - 1.5} y={roofY - 9} width="4" height="0.5" fill="#8a8a8a" opacity="1" />
                             {/* HVAC unit */}
                             <rect x={bldg.x + bldg.w - 14} y={roofY - 7} width="10" height="6" fill="#a8a8a8" opacity="1" />
                             <rect x={bldg.x + bldg.w - 13} y={roofY - 8} width="3" height="2" fill="#909090" opacity="1" />
@@ -2329,14 +2333,10 @@ export function ProgressiveSkyline() {
                               <rect key={`vent-${i}-${v}`} x={bldg.x + bldg.w - 13 + v * 3} y={roofY - 5} width="2" height="0.5" fill="#808080" opacity="1" />
                             ))}
                             {/* Water tower */}
-                            <rect x={bldg.x + 8} y={roofY - 12} width="2" height="8" fill="#7a7a7a" opacity="1" />
-                            <rect x={bldg.x + 12} y={roofY - 12} width="2" height="8" fill="#7a7a7a" opacity="1" />
+                            <rect x={bldg.x + 8} y={roofY - 12} width="2" height="12" fill="#7a7a7a" opacity="1" />
+                            <rect x={bldg.x + 12} y={roofY - 12} width="2" height="12" fill="#7a7a7a" opacity="1" />
                             <rect x={bldg.x + 6} y={roofY - 16} width="10" height="5" rx="1" fill="#a0a0a0" opacity="1" />
                             <ellipse cx={bldg.x + 11} cy={roofY - 16} rx="5" ry="1.5" fill="#b0b0b0" opacity="1" />
-                            {/* Antenna */}
-                            <rect x={bldg.x + bldg.w/2} y={roofY - 13} width="1" height="10" fill="#8a8a8a" opacity="1" />
-                            <rect x={bldg.x + bldg.w/2 - 2} y={roofY - 11} width="5" height="0.5" fill="#8a8a8a" opacity="1" />
-                            <rect x={bldg.x + bldg.w/2 - 1.5} y={roofY - 9} width="4" height="0.5" fill="#8a8a8a" opacity="1" />
                           </g>
                         )
                       }
@@ -2345,7 +2345,7 @@ export function ProgressiveSkyline() {
                     {/* Window flower boxes on select buildings - below 2nd row window sills */}
                     {[0, 2, 3, 5, 7, 9, 11, 13, 16, 19].includes(i) && (() => {
                       // Position below 2nd row window sills: topMargin + 1 row + windowHeight + sill
-                      const boxY = 215 - bldg.h + topMargin + (windowHeight + windowGapY) + windowHeight + 1
+                      const boxY = 215 - bldg.h + topMargin + (windowHeight + windowGapY) + windowHeight - 7
                       const flowerColors = [
                         ['#ff69b4', '#ffd700', '#ff69b4'],
                         ['#cc99ff', '#ff6347', '#cc99ff'],
@@ -2663,6 +2663,26 @@ export function ProgressiveSkyline() {
                     <rect key={`baluster1-${b}`} x={2272 + b * 4.5} y="137.5" width="1.2" height="5.5" fill="#e8e0d8" opacity="0.7" />
                   ))}
 
+                  {/* Indoor garden - rendered before columns so trees appear behind pillars */}
+                  <rect x="2291" y="134" width="1.5" height="4" fill="#6b5a45" opacity="0.8" />
+                  <circle cx="2291.5" cy="131.5" r="2.5" fill="#4a7c2f" opacity="0.7" />
+                  <circle cx="2289.5" cy="133" r="1.7" fill="#5a8a5a" opacity="0.7" />
+                  <rect x="2314" y="134" width="1.5" height="4" fill="#6b5a45" opacity="0.8" />
+                  <circle cx="2314.5" cy="131.5" r="2.5" fill="#4a7c2f" opacity="0.7" />
+                  <circle cx="2316.5" cy="133" r="1.7" fill="#5a8a5a" opacity="0.7" />
+                  <rect x="2302" y="133" width="2" height="5" fill="#6b5a45" opacity="0.8" />
+                  <circle cx="2303" cy="129.5" r="3.5" fill="#5a8a5a" opacity="0.7" />
+                  <circle cx="2300" cy="131.5" r="2.2" fill="#4a7c2f" opacity="0.7" />
+                  <circle cx="2306" cy="131.5" r="2.2" fill="#4a7c2f" opacity="0.7" />
+                  <ellipse cx="2282" cy="137" rx="2.2" ry="1.3" fill="#5a9a5a" opacity="0.6" />
+                  <ellipse cx="2324" cy="137" rx="2.2" ry="1.3" fill="#5a9a5a" opacity="0.6" />
+                  <circle cx="2295" cy="136" r="0.8" fill="#ff9999" opacity="0.7" />
+                  <circle cx="2303" cy="135" r="1" fill="#ffcc66" opacity="0.7" />
+                  <circle cx="2311" cy="136" r="0.8" fill="#cc99ff" opacity="0.7" />
+                  <rect x="2296" y="136.5" width="14" height="0.8" fill="#d0c8c0" opacity="0.4" rx="0.3" />
+                  <rect x="2283" y="136.8" width="6" height="0.6" fill="#d0c8c0" opacity="0.3" rx="0.2" />
+                  <rect x="2317" y="136.8" width="6" height="0.6" fill="#d0c8c0" opacity="0.3" rx="0.2" />
+
                   {/* Roman columns supporting the dome */}
                   <rect x="2270" y="120" width="6" height="20" fill="#d8d0c8" opacity="1" />
                   <rect x="2286" y="120" width="6" height="20" fill="#d8d0c8" opacity="1" />
@@ -2748,29 +2768,6 @@ export function ProgressiveSkyline() {
                   <line x1="2303" y1="72.5" x2="2303" y2="73.5" stroke="#d8d0c8" strokeWidth="0.8" opacity="0.8" />
                   <circle cx="2303" cy="72" r="0.7" fill="#f0e8e0" opacity="1" />
 
-                  {/* Indoor garden visible through glass - scaled */}
-                  <rect x="2291" y="134" width="1.5" height="4" fill="#6b5a45" opacity="0.8" />
-                  <circle cx="2291.5" cy="131.5" r="2.5" fill="#4a7c2f" opacity="0.7" />
-                  <circle cx="2289.5" cy="133" r="1.7" fill="#5a8a5a" opacity="0.7" />
-                  <rect x="2314" y="134" width="1.5" height="4" fill="#6b5a45" opacity="0.8" />
-                  <circle cx="2314.5" cy="131.5" r="2.5" fill="#4a7c2f" opacity="0.7" />
-                  <circle cx="2316.5" cy="133" r="1.7" fill="#5a8a5a" opacity="0.7" />
-                  {/* Central tree */}
-                  <rect x="2302" y="133" width="2" height="5" fill="#6b5a45" opacity="0.8" />
-                  <circle cx="2303" cy="129.5" r="3.5" fill="#5a8a5a" opacity="0.7" />
-                  <circle cx="2300" cy="131.5" r="2.2" fill="#4a7c2f" opacity="0.7" />
-                  <circle cx="2306" cy="131.5" r="2.2" fill="#4a7c2f" opacity="0.7" />
-                  {/* Shrubs */}
-                  <ellipse cx="2282" cy="137" rx="2.2" ry="1.3" fill="#5a9a5a" opacity="0.6" />
-                  <ellipse cx="2324" cy="137" rx="2.2" ry="1.3" fill="#5a9a5a" opacity="0.6" />
-                  {/* Flowers */}
-                  <circle cx="2295" cy="136" r="0.8" fill="#ff9999" opacity="0.7" />
-                  <circle cx="2303" cy="135" r="1" fill="#ffcc66" opacity="0.7" />
-                  <circle cx="2311" cy="136" r="0.8" fill="#cc99ff" opacity="0.7" />
-                  {/* Garden walkway */}
-                  <rect x="2296" y="136.5" width="14" height="0.8" fill="#d0c8c0" opacity="0.4" rx="0.3" />
-                  <rect x="2283" y="136.8" width="6" height="0.6" fill="#d0c8c0" opacity="0.3" rx="0.2" />
-                  <rect x="2317" y="136.8" width="6" height="0.6" fill="#d0c8c0" opacity="0.3" rx="0.2" />
                 </g>
 
                 {/* Bridge 2 over Park 2 - Roman columns + fully enclosed glass dome */}
@@ -2812,6 +2809,24 @@ export function ProgressiveSkyline() {
                   {Array.from({length: 17}).map((_, b) => (
                     <rect key={`baluster2-${b}`} x={2740 + b * 4.7} y="142.5" width="1.2" height="5.5" fill="#e8e0d8" opacity="0.7" />
                   ))}
+
+                  {/* Indoor garden - rendered before columns so trees appear behind pillars */}
+                  <rect x="2759" y="138" width="1.5" height="4" fill="#6b5a45" opacity="0.8" />
+                  <circle cx="2759.5" cy="135.5" r="2.5" fill="#4a7c2f" opacity="0.7" />
+                  <rect x="2798" y="138" width="1.5" height="4" fill="#6b5a45" opacity="0.8" />
+                  <circle cx="2798.5" cy="135.5" r="2.5" fill="#4a7c2f" opacity="0.7" />
+                  <rect x="2778" y="137" width="2" height="5" fill="#6b5a45" opacity="0.8" />
+                  <circle cx="2779" cy="133.5" r="3.8" fill="#5a8a5a" opacity="0.7" />
+                  <circle cx="2776" cy="135.5" r="2.2" fill="#4a7c2f" opacity="0.7" />
+                  <circle cx="2782" cy="135.5" r="2.2" fill="#4a7c2f" opacity="0.7" />
+                  <ellipse cx="2750" cy="142" rx="2.2" ry="1.3" fill="#5a9a5a" opacity="0.6" />
+                  <ellipse cx="2808" cy="142" rx="2.2" ry="1.3" fill="#5a9a5a" opacity="0.6" />
+                  <circle cx="2768" cy="140" r="0.8" fill="#cc99ff" opacity="0.7" />
+                  <circle cx="2779" cy="139" r="1" fill="#ffcc66" opacity="0.7" />
+                  <circle cx="2790" cy="140" r="0.8" fill="#ff9999" opacity="0.7" />
+                  <rect x="2770" y="141" width="18" height="0.8" fill="#d0c8c0" opacity="0.4" rx="0.3" />
+                  <rect x="2751" y="141.3" width="8" height="0.6" fill="#d0c8c0" opacity="0.3" rx="0.2" />
+                  <rect x="2799" y="141.3" width="8" height="0.6" fill="#d0c8c0" opacity="0.3" rx="0.2" />
 
                   {/* Roman columns */}
                   <rect x="2738" y="125" width="6" height="20" fill="#d8d0c8" opacity="1" />
@@ -2896,27 +2911,6 @@ export function ProgressiveSkyline() {
                   <line x1="2779" y1="74.5" x2="2779" y2="75.5" stroke="#d8d0c8" strokeWidth="0.8" opacity="0.8" />
                   <circle cx="2779" cy="74" r="0.7" fill="#f0e8e0" opacity="1" />
 
-                  {/* Indoor garden - scaled */}
-                  <rect x="2759" y="138" width="1.5" height="4" fill="#6b5a45" opacity="0.8" />
-                  <circle cx="2759.5" cy="135.5" r="2.5" fill="#4a7c2f" opacity="0.7" />
-                  <rect x="2798" y="138" width="1.5" height="4" fill="#6b5a45" opacity="0.8" />
-                  <circle cx="2798.5" cy="135.5" r="2.5" fill="#4a7c2f" opacity="0.7" />
-                  {/* Central tree */}
-                  <rect x="2778" y="137" width="2" height="5" fill="#6b5a45" opacity="0.8" />
-                  <circle cx="2779" cy="133.5" r="3.8" fill="#5a8a5a" opacity="0.7" />
-                  <circle cx="2776" cy="135.5" r="2.2" fill="#4a7c2f" opacity="0.7" />
-                  <circle cx="2782" cy="135.5" r="2.2" fill="#4a7c2f" opacity="0.7" />
-                  {/* Shrubs */}
-                  <ellipse cx="2750" cy="142" rx="2.2" ry="1.3" fill="#5a9a5a" opacity="0.6" />
-                  <ellipse cx="2808" cy="142" rx="2.2" ry="1.3" fill="#5a9a5a" opacity="0.6" />
-                  {/* Flowers */}
-                  <circle cx="2768" cy="140" r="0.8" fill="#cc99ff" opacity="0.7" />
-                  <circle cx="2779" cy="139" r="1" fill="#ffcc66" opacity="0.7" />
-                  <circle cx="2790" cy="140" r="0.8" fill="#ff9999" opacity="0.7" />
-                  {/* Garden walkway */}
-                  <rect x="2770" y="141" width="18" height="0.8" fill="#d0c8c0" opacity="0.4" rx="0.3" />
-                  <rect x="2751" y="141.3" width="8" height="0.6" fill="#d0c8c0" opacity="0.3" rx="0.2" />
-                  <rect x="2799" y="141.3" width="8" height="0.6" fill="#d0c8c0" opacity="0.3" rx="0.2" />
                 </g>
 
                 {/* Bridge 3 over Park 3 - Roman columns + fully enclosed glass dome */}
@@ -2958,6 +2952,27 @@ export function ProgressiveSkyline() {
                   {Array.from({length: 15}).map((_, b) => (
                     <rect key={`baluster3-${b}`} x={3366 + b * 4.7} y="140.5" width="1.2" height="5.5" fill="#e8e0d8" opacity="0.7" />
                   ))}
+
+                  {/* Indoor garden - rendered before columns so trees appear behind pillars */}
+                  <rect x="3384" y="135" width="1.5" height="4.5" fill="#6b5a45" opacity="0.8" />
+                  <circle cx="3384.5" cy="132" r="3" fill="#4a7c2f" opacity="0.7" />
+                  <circle cx="3382" cy="133.5" r="1.8" fill="#5a8a5a" opacity="0.7" />
+                  <rect x="3416" y="135" width="1.5" height="4.5" fill="#6b5a45" opacity="0.8" />
+                  <circle cx="3416.5" cy="132" r="3" fill="#4a7c2f" opacity="0.7" />
+                  <circle cx="3419" cy="133.5" r="1.8" fill="#5a8a5a" opacity="0.7" />
+                  <rect x="3400" y="134" width="2" height="6" fill="#6b5a45" opacity="0.8" />
+                  <circle cx="3401" cy="130" r="4" fill="#5a8a5a" opacity="0.7" />
+                  <circle cx="3397.5" cy="132" r="2.5" fill="#4a7c2f" opacity="0.7" />
+                  <circle cx="3404.5" cy="132" r="2.5" fill="#4a7c2f" opacity="0.7" />
+                  <circle cx="3401" cy="127" r="2" fill="#6a9a6a" opacity="0.7" />
+                  <ellipse cx="3374" cy="140" rx="2.2" ry="1.3" fill="#5a9a5a" opacity="0.6" />
+                  <ellipse cx="3428" cy="140" rx="2.2" ry="1.3" fill="#5a9a5a" opacity="0.6" />
+                  <circle cx="3393" cy="139" r="0.8" fill="#ff9999" opacity="0.7" />
+                  <circle cx="3401" cy="137" r="1" fill="#66ccff" opacity="0.7" />
+                  <circle cx="3409" cy="139" r="0.8" fill="#cc99ff" opacity="0.7" />
+                  <rect x="3393" y="139.5" width="16" height="0.8" fill="#d0c8c0" opacity="0.4" rx="0.3" />
+                  <rect x="3375" y="139.8" width="7" height="0.6" fill="#d0c8c0" opacity="0.3" rx="0.2" />
+                  <rect x="3420" y="139.8" width="7" height="0.6" fill="#d0c8c0" opacity="0.3" rx="0.2" />
 
                   {/* Roman columns */}
                   <rect x="3364" y="122" width="6" height="21" fill="#d8d0c8" opacity="1" />
@@ -3042,30 +3057,6 @@ export function ProgressiveSkyline() {
                   <line x1="3401" y1="67.5" x2="3401" y2="68.5" stroke="#d8d0c8" strokeWidth="0.8" opacity="0.8" />
                   <circle cx="3401" cy="67" r="0.7" fill="#f0e8e0" opacity="1" />
 
-                  {/* Indoor garden - scaled */}
-                  <rect x="3384" y="135" width="1.5" height="4.5" fill="#6b5a45" opacity="0.8" />
-                  <circle cx="3384.5" cy="132" r="3" fill="#4a7c2f" opacity="0.7" />
-                  <circle cx="3382" cy="133.5" r="1.8" fill="#5a8a5a" opacity="0.7" />
-                  <rect x="3416" y="135" width="1.5" height="4.5" fill="#6b5a45" opacity="0.8" />
-                  <circle cx="3416.5" cy="132" r="3" fill="#4a7c2f" opacity="0.7" />
-                  <circle cx="3419" cy="133.5" r="1.8" fill="#5a8a5a" opacity="0.7" />
-                  {/* Central tree */}
-                  <rect x="3400" y="134" width="2" height="6" fill="#6b5a45" opacity="0.8" />
-                  <circle cx="3401" cy="130" r="4" fill="#5a8a5a" opacity="0.7" />
-                  <circle cx="3397.5" cy="132" r="2.5" fill="#4a7c2f" opacity="0.7" />
-                  <circle cx="3404.5" cy="132" r="2.5" fill="#4a7c2f" opacity="0.7" />
-                  <circle cx="3401" cy="127" r="2" fill="#6a9a6a" opacity="0.7" />
-                  {/* Shrubs */}
-                  <ellipse cx="3374" cy="140" rx="2.2" ry="1.3" fill="#5a9a5a" opacity="0.6" />
-                  <ellipse cx="3428" cy="140" rx="2.2" ry="1.3" fill="#5a9a5a" opacity="0.6" />
-                  {/* Flowers */}
-                  <circle cx="3393" cy="139" r="0.8" fill="#ff9999" opacity="0.7" />
-                  <circle cx="3401" cy="137" r="1" fill="#66ccff" opacity="0.7" />
-                  <circle cx="3409" cy="139" r="0.8" fill="#cc99ff" opacity="0.7" />
-                  {/* Garden walkway */}
-                  <rect x="3393" y="139.5" width="16" height="0.8" fill="#d0c8c0" opacity="0.4" rx="0.3" />
-                  <rect x="3375" y="139.8" width="7" height="0.6" fill="#d0c8c0" opacity="0.3" rx="0.2" />
-                  <rect x="3420" y="139.8" width="7" height="0.6" fill="#d0c8c0" opacity="0.3" rx="0.2" />
                 </g>
               </g>
 
@@ -3174,27 +3165,6 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
-              {/* Street lamps along sidewalk - ~12 lamp posts every ~150px */}
-              <g opacity="1">
-                {[2050, 2200, 2350, 2500, 2650, 2800, 2950, 3100, 3250, 3400, 3550, 3700].map((x, li) => (
-                  <g key={`lamp-${li}`}>
-                    {/* Lamp pole */}
-                    <rect x={x + 20} y="198" width="1.5" height="18" fill="#5a5a5a" opacity="1" />
-                    {/* Curved arm */}
-                    <path d={`M ${x + 21.5},200 Q ${x + 26},198 ${x + 27},200`} stroke="#5a5a5a" strokeWidth="1.2" fill="none" />
-                    {/* Lamp head */}
-                    <rect x={x + 24.5} y="199" width="5" height="3" rx="1" fill="#6a6a6a" opacity="1" />
-                    {/* Lamp glass */}
-                    <rect x={x + 25} y="199.5" width="4" height="2" rx="0.5" fill={isNightTime ? "#FFD700" : "#e8e0c8"} opacity={isNightTime ? "1" : "0.8"} />
-                    {/* Lamp glow at night */}
-                    {isNightTime && (
-                      <ellipse cx={x + 27} cy="206" rx="6" ry="8" fill="#FFD700" opacity="0.08" />
-                    )}
-                    {/* Base plate - centered on sidewalk */}
-                    <rect x={x + 19.5} y="215.5" width="3" height="1" rx="0.5" fill="#5a5a5a" opacity="1" />
-                  </g>
-                ))}
-              </g>
 
               {/* Pedestrians walking */}
               <g opacity="1">
@@ -3807,7 +3777,7 @@ export function ProgressiveSkyline() {
               {/* Chickens - de-crowded */}
               <g>
                 {[
-                  {x: 3815, y: 2, dir: 1},
+                  {x: 3845, y: 2, dir: 1},
                   {x: 3955, y: -2, dir: -1},
                   {x: 4185, y: 1, dir: 1},
                   {x: 4435, y: -1, dir: -1},
