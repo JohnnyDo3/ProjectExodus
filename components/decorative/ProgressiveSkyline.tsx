@@ -227,15 +227,16 @@ export function ProgressiveSkyline() {
         }
 
         /* Drinking animation - head bobs up and down to water */
-        @keyframes animalDrink {
-          0%, 15% { transform: translateX(0px) translateY(-6px); }
-          22% { transform: translateX(-1px) translateY(-2px); }
-          30% { transform: translateX(-2px) translateY(1px); }
-          40% { transform: translateX(-3px) translateY(2px); }
-          50% { transform: translateX(-2px) translateY(1px); }
-          58%, 78% { transform: translateX(0px) translateY(-6px); }
-          85% { transform: translateX(-1px) translateY(-3px); }
-          92% { transform: translateX(-2px) translateY(1px); }
+        @keyframes headRaise {
+          0%, 30% { transform: rotate(0deg); }
+          40%, 60% { transform: rotate(-35deg); }
+          70%, 100% { transform: rotate(0deg); }
+        }
+
+        @keyframes headRaiseRight {
+          0%, 30% { transform: rotate(0deg); }
+          40%, 60% { transform: rotate(35deg); }
+          70%, 100% { transform: rotate(0deg); }
         }
 
         @keyframes chickenBathe {
@@ -247,8 +248,11 @@ export function ProgressiveSkyline() {
           75% { transform: translateY(2px); }
         }
 
-        .animal-drinking {
-          animation: animalDrink 8s ease-in-out infinite;
+        .drinking-head-left {
+          animation: headRaise 8s ease-in-out infinite;
+        }
+        .drinking-head-right {
+          animation: headRaiseRight 8s ease-in-out infinite;
         }
 
         @keyframes chickenPeck {
@@ -961,75 +965,61 @@ export function ProgressiveSkyline() {
 
               {/* FOREGROUND: Drinking animals at pond - Minecraft blocky style */}
               <g>
-                {/* Cow drinking at pond - head lowered toward water */}
-                <g className="animal-drinking" style={{animationDelay: '0s', animationDuration: '12s'}}>
-                  {/* Body block */}
+                {/* Cow drinking at pond - only head/neck raises */}
+                <g>
+                  {/* Static body */}
                   <rect x={143} y="207" width="11" height="7" fill="#f5f5f5" />
-                  {/* Black spots */}
                   <rect x={144.5} y="208" width="3" height="2.5" fill="#2f2f2f" />
                   <rect x={149} y="207.5" width="3.5" height="2.5" fill="#2f2f2f" />
-                  {/* Neck - angled down toward water */}
-                  <rect x={139} y="210" width="4.5" height="3" fill="#f5f5f5" />
-                  {/* Head - lowered to water level */}
-                  <rect x={135} y="211" width="5" height="4.5" fill="#f5f5f5" />
-                  {/* Face spot */}
-                  <rect x={135.5} y="211.5" width="2" height="1.5" fill="#2f2f2f" />
-                  {/* Snout - pink */}
-                  <rect x={133.5} y="213.5" width="2" height="2" fill="#ffb6c1" />
-                  {/* Eye */}
-                  <rect x={137.5} y="212" width="1" height="1" fill="#2f2f2f" />
-                  {/* Water ripple */}
-                  <rect x={133} y="216" width="6" height="0.5" fill="#6a9aba" opacity="0.4" />
-                  <rect x={132} y="216.5" width="8" height="0.5" fill="#6a9aba" opacity="0.2" />
-                  {/* Udder */}
                   <rect x={147} y="213" width="3" height="1.5" fill="#ffb6c1" />
-                  {/* Legs */}
                   <rect x={144} y="213.5" width="1.3" height="3" fill="#e8e8e8" />
                   <rect x={146} y="213.5" width="1.3" height="3" fill="#e8e8e8" />
                   <rect x={150} y="213.5" width="1.3" height="3" fill="#e8e8e8" />
                   <rect x={152} y="213.5" width="1.3" height="3" fill="#e8e8e8" />
-                  {/* Hooves */}
                   <rect x={144} y="216" width="1.3" height="0.7" fill="#2f2f2f" />
                   <rect x={146} y="216" width="1.3" height="0.7" fill="#2f2f2f" />
                   <rect x={150} y="216" width="1.3" height="0.7" fill="#2f2f2f" />
                   <rect x={152} y="216" width="1.3" height="0.7" fill="#2f2f2f" />
-                  {/* Tail */}
                   <rect x={153.5} y="208" width="1" height="5" fill="#2f2f2f" />
+                  {/* Animated head/neck - pivots at neck-body joint */}
+                  <g className="drinking-head-left" style={{animationDuration: '12s', animationDelay: '0s', transformOrigin: '143px 210px'}}>
+                    <rect x={139} y="210" width="4.5" height="3" fill="#f5f5f5" />
+                    <rect x={135} y="211" width="5" height="4.5" fill="#f5f5f5" />
+                    <rect x={135.5} y="211.5" width="2" height="1.5" fill="#2f2f2f" />
+                    <rect x={133.5} y="213.5" width="2" height="2" fill="#ffb6c1" />
+                    <rect x={137.5} y="212" width="1" height="1" fill="#2f2f2f" />
+                  </g>
+                  {/* Water ripple - static */}
+                  <rect x={133} y="216" width="6" height="0.5" fill="#6a9aba" opacity="0.4" />
+                  <rect x={132} y="216.5" width="8" height="0.5" fill="#6a9aba" opacity="0.2" />
                 </g>
 
-                {/* Horse drinking at opposite side - head lowered */}
-                <g className="animal-drinking" style={{animationDelay: '4s', animationDuration: '10s'}}>
-                  {/* Body block */}
+                {/* Horse drinking at opposite side - only head/neck raises */}
+                <g>
+                  {/* Static body */}
                   <rect x={109} y="204" width="12" height="7" fill="#654321" />
-                  {/* Chest */}
                   <rect x={117} y="204" width="4" height="7" fill="#7a5230" />
-                  {/* Neck - angled down to water */}
-                  <rect x={120} y="208" width="3" height="5" fill="#654321" />
-                  {/* Head - lowered */}
-                  <rect x={120} y="211" width="6" height="4" fill="#654321" />
-                  {/* Muzzle */}
-                  <rect x={124.5} y="213" width="2" height="2" fill="#7a5230" />
-                  {/* Eye */}
-                  <rect x={123} y="212" width="1" height="1" fill="#2f2f2f" />
-                  {/* Nostril */}
-                  <rect x={125.5} y="214" width="0.5" height="0.5" fill="#3a2a1a" />
-                  {/* Water ripple */}
-                  <rect x={123} y="215.5" width="5" height="0.5" fill="#6a9aba" opacity="0.4" />
-                  <rect x={122} y="216" width="7" height="0.5" fill="#6a9aba" opacity="0.2" />
-                  {/* Legs */}
                   <rect x={110} y="210.5" width="1.3" height="4.5" fill="#654321" />
                   <rect x={112.5} y="210.5" width="1.3" height="4.5" fill="#654321" />
                   <rect x={115} y="210.5" width="1.3" height="4.5" fill="#654321" />
                   <rect x={117.5} y="210.5" width="1.3" height="4.5" fill="#654321" />
-                  {/* Hooves */}
                   <rect x={110} y="214.5" width="1.3" height="0.7" fill="#2f2f2f" />
                   <rect x={112.5} y="214.5" width="1.3" height="0.7" fill="#2f2f2f" />
                   <rect x={115} y="214.5" width="1.3" height="0.7" fill="#2f2f2f" />
                   <rect x={117.5} y="214.5" width="1.3" height="0.7" fill="#2f2f2f" />
-                  {/* Tail */}
                   <rect x={108} y="205" width="1.5" height="5" fill="#4a3520" />
-                  {/* Mane */}
-                  <rect x={120} y="208" width="1" height="4" fill="#4a3520" />
+                  {/* Animated head/neck - pivots at shoulder */}
+                  <g className="drinking-head-right" style={{animationDuration: '10s', animationDelay: '4s', transformOrigin: '120px 208px'}}>
+                    <rect x={120} y="208" width="3" height="5" fill="#654321" />
+                    <rect x={120} y="211" width="6" height="4" fill="#654321" />
+                    <rect x={124.5} y="213" width="2" height="2" fill="#7a5230" />
+                    <rect x={123} y="212" width="1" height="1" fill="#2f2f2f" />
+                    <rect x={125.5} y="214" width="0.5" height="0.5" fill="#3a2a1a" />
+                    <rect x={120} y="208" width="1" height="4" fill="#4a3520" />
+                  </g>
+                  {/* Water ripple - static */}
+                  <rect x={123} y="215.5" width="5" height="0.5" fill="#6a9aba" opacity="0.4" />
+                  <rect x={122} y="216" width="7" height="0.5" fill="#6a9aba" opacity="0.2" />
                 </g>
 
                 {/* Chickens bathing in shallow water - Minecraft blocky style */}
@@ -3955,18 +3945,12 @@ export function ProgressiveSkyline() {
 
               {/* FOREGROUND: Drinking animals at ending pond - Minecraft blocky style */}
               <g>
-                {/* Cow drinking - head lowered to water */}
-                <g className="animal-drinking" style={{animationDelay: '2s', animationDuration: '11s'}}>
+                {/* Cow drinking - only head/neck raises */}
+                <g>
+                  {/* Static body */}
                   <rect x={4843} y="207" width="11" height="7" fill="#f5f5f5" />
                   <rect x={4844.5} y="208" width="3" height="2.5" fill="#2f2f2f" />
                   <rect x={4849} y="207.5" width="3.5" height="2.5" fill="#2f2f2f" />
-                  <rect x={4839} y="210" width="4.5" height="3" fill="#f5f5f5" />
-                  <rect x={4835} y="211" width="5" height="4.5" fill="#f5f5f5" />
-                  <rect x={4835.5} y="211.5" width="2" height="1.5" fill="#2f2f2f" />
-                  <rect x={4833.5} y="213.5" width="2" height="2" fill="#ffb6c1" />
-                  <rect x={4837.5} y="212" width="1" height="1" fill="#2f2f2f" />
-                  <rect x={4833} y="216" width="6" height="0.5" fill="#6a9aba" opacity="0.4" />
-                  <rect x={4832} y="216.5" width="8" height="0.5" fill="#6a9aba" opacity="0.2" />
                   <rect x={4847} y="213" width="3" height="1.5" fill="#ffb6c1" />
                   <rect x={4844} y="213.5" width="1.3" height="3" fill="#e8e8e8" />
                   <rect x={4846} y="213.5" width="1.3" height="3" fill="#e8e8e8" />
@@ -3977,19 +3961,23 @@ export function ProgressiveSkyline() {
                   <rect x={4850} y="216" width="1.3" height="0.7" fill="#2f2f2f" />
                   <rect x={4852} y="216" width="1.3" height="0.7" fill="#2f2f2f" />
                   <rect x={4853.5} y="208" width="1" height="5" fill="#2f2f2f" />
+                  {/* Animated head/neck - pivots at neck-body joint */}
+                  <g className="drinking-head-left" style={{animationDuration: '11s', animationDelay: '2s', transformOrigin: '4843px 210px'}}>
+                    <rect x={4839} y="210" width="4.5" height="3" fill="#f5f5f5" />
+                    <rect x={4835} y="211" width="5" height="4.5" fill="#f5f5f5" />
+                    <rect x={4835.5} y="211.5" width="2" height="1.5" fill="#2f2f2f" />
+                    <rect x={4833.5} y="213.5" width="2" height="2" fill="#ffb6c1" />
+                    <rect x={4837.5} y="212" width="1" height="1" fill="#2f2f2f" />
+                  </g>
+                  <rect x={4833} y="216" width="6" height="0.5" fill="#6a9aba" opacity="0.4" />
+                  <rect x={4832} y="216.5" width="8" height="0.5" fill="#6a9aba" opacity="0.2" />
                 </g>
 
-                {/* Horse drinking - head lowered */}
-                <g className="animal-drinking" style={{animationDelay: '6s', animationDuration: '9s'}}>
+                {/* Horse drinking - only head/neck raises */}
+                <g>
+                  {/* Static body */}
                   <rect x={4809} y="204" width="12" height="7" fill="#654321" />
                   <rect x={4817} y="204" width="4" height="7" fill="#7a5230" />
-                  <rect x={4820} y="208" width="3" height="5" fill="#654321" />
-                  <rect x={4820} y="211" width="6" height="4" fill="#654321" />
-                  <rect x={4824.5} y="213" width="2" height="2" fill="#7a5230" />
-                  <rect x={4823} y="212" width="1" height="1" fill="#2f2f2f" />
-                  <rect x={4825.5} y="214" width="0.5" height="0.5" fill="#3a2a1a" />
-                  <rect x={4823} y="215.5" width="5" height="0.5" fill="#6a9aba" opacity="0.4" />
-                  <rect x={4822} y="216" width="7" height="0.5" fill="#6a9aba" opacity="0.2" />
                   <rect x={4810} y="210.5" width="1.3" height="4.5" fill="#654321" />
                   <rect x={4812.5} y="210.5" width="1.3" height="4.5" fill="#654321" />
                   <rect x={4815} y="210.5" width="1.3" height="4.5" fill="#654321" />
@@ -3999,7 +3987,17 @@ export function ProgressiveSkyline() {
                   <rect x={4815} y="214.5" width="1.3" height="0.7" fill="#2f2f2f" />
                   <rect x={4817.5} y="214.5" width="1.3" height="0.7" fill="#2f2f2f" />
                   <rect x={4808} y="205" width="1.5" height="5" fill="#4a3520" />
-                  <rect x={4820} y="208" width="1" height="4" fill="#4a3520" />
+                  {/* Animated head/neck - pivots at shoulder */}
+                  <g className="drinking-head-right" style={{animationDuration: '9s', animationDelay: '6s', transformOrigin: '4820px 208px'}}>
+                    <rect x={4820} y="208" width="3" height="5" fill="#654321" />
+                    <rect x={4820} y="211" width="6" height="4" fill="#654321" />
+                    <rect x={4824.5} y="213" width="2" height="2" fill="#7a5230" />
+                    <rect x={4823} y="212" width="1" height="1" fill="#2f2f2f" />
+                    <rect x={4825.5} y="214" width="0.5" height="0.5" fill="#3a2a1a" />
+                    <rect x={4820} y="208" width="1" height="4" fill="#4a3520" />
+                  </g>
+                  <rect x={4823} y="215.5" width="5" height="0.5" fill="#6a9aba" opacity="0.4" />
+                  <rect x={4822} y="216" width="7" height="0.5" fill="#6a9aba" opacity="0.2" />
                 </g>
 
                 {/* Chickens bathing - Minecraft blocky style */}
