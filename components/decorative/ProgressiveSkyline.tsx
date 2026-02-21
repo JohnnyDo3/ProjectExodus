@@ -1771,39 +1771,37 @@ export function ProgressiveSkyline() {
                 };
                 return (
                   <>
-                  {/* Front door walkways */}
+                  {/* Front door walkways - all square-ended, extend halfway into sidewalk */}
                   <g>
-                    {/* Victorian walkways */}
+                    {/* Victorian walkways - straight rects, no rounded corners */}
                     {[820, 1120, 1420, 1720].map((x, wi) => {
                       const swY = sidewalkY(x + 17.5);
                       return wi % 2 === 0 ? (
-                        <path key={`vic-dw-${wi}`} d={`M ${x+17.5},212.5 Q ${x+17.8},${(212.5+swY)/2} ${x+17.5},${swY}`} stroke="#d4d0c8" strokeWidth="3.5" fill="none" opacity="0.85" strokeLinecap="round" />
+                        <rect key={`vic-dw-${wi}`} x={x+15.75} y={212.5} width="3.5" height={swY - 212.5} fill="#d4d0c8" opacity="0.85" />
                       ) : (
                         <g key={`vic-dw-${wi}`}>
                           {Array.from({length: 5}).map((_, si) => (
-                            <ellipse key={`vic-stone-${wi}-${si}`} cx={x+17.5 + (si % 2 === 0 ? 0 : 0.8)} cy={213 + si * ((swY - 213) / 5)} rx="1.8" ry="1.2" fill="#d4d0c8" opacity="0.85" transform={`rotate(${si * 12 - 10}, ${x+17.5}, ${213 + si * ((swY - 213) / 5)})`} />
+                            <rect key={`vic-stone-${wi}-${si}`} x={x+15.75 + (si % 2 === 0 ? 0 : 0.8)} y={213 + si * ((swY - 213) / 5)} width="3.5" height="1.8" fill="#d4d0c8" opacity="0.85" />
                           ))}
                         </g>
                       );
                     })}
-                    {/* Colonial walkways */}
+                    {/* Colonial walkways - straight rects */}
                     {[1000, 1300, 1600, 1900].map((x, wi) => {
                       const swY = sidewalkY(x + 20);
-                      return wi % 2 === 0 ? (
-                        <rect key={`col-dw-${wi}`} x={x+18.5} y="212.5" width="3.5" height={swY - 212.5} rx="0.5" fill="#d4d0c8" opacity="0.85" />
-                      ) : (
-                        <path key={`col-dw-${wi}`} d={`M ${x+20},212.5 Q ${x+20.5},${(212.5+swY)/2} ${x+20},${swY}`} stroke="#d4d0c8" strokeWidth="3.5" fill="none" opacity="0.85" strokeLinecap="round" />
+                      return (
+                        <rect key={`col-dw-${wi}`} x={x+18.5} y={212.5} width="3.5" height={swY - 212.5} fill="#d4d0c8" opacity="0.85" />
                       );
                     })}
-                    {/* Ranch walkways */}
+                    {/* Ranch walkways - straight rects */}
                     {[880, 1180, 1480, 1780].map((x, wi) => {
                       const swY = sidewalkY(x + 21.5);
                       return wi % 2 === 0 ? (
-                        <rect key={`ranch-dw-${wi}`} x={x+20} y="210" width="3.5" height={swY - 210} rx="0.5" fill="#d4d0c8" opacity="0.85" />
+                        <rect key={`ranch-dw-${wi}`} x={x+20} y={210} width="3.5" height={swY - 210} fill="#d4d0c8" opacity="0.85" />
                       ) : (
                         <g key={`ranch-dw-${wi}`}>
                           {Array.from({length: 5}).map((_, si) => (
-                            <rect key={`ranch-stone-${wi}-${si}`} x={x+20 + (si % 2 === 0 ? 0 : 0.5)} y={211 + si * ((swY - 211) / 5)} width="3" height="1.8" rx="0.8" fill="#d4d0c8" opacity="0.85" />
+                            <rect key={`ranch-stone-${wi}-${si}`} x={x+20 + (si % 2 === 0 ? 0 : 0.5)} y={211 + si * ((swY - 211) / 5)} width="3" height="1.8" fill="#d4d0c8" opacity="0.85" />
                           ))}
                         </g>
                       );
@@ -1816,43 +1814,41 @@ export function ProgressiveSkyline() {
                           {Array.from({length: 5}).map((_, si) => {
                             const wobble = Math.sin(si * 1.3 + wi) * 1.2;
                             return (
-                              <ellipse key={`cot-step-${wi}-${si}`} cx={x+15 + wobble} cy={213 + si * ((swY - 213) / 5)} rx="2" ry="1.3" fill="#d4d0c8" opacity="0.85" transform={`rotate(${si * 15 + wi * 8}, ${x+15 + wobble}, ${213 + si * ((swY - 213) / 5)})`} />
+                              <rect key={`cot-step-${wi}-${si}`} x={x+13 + wobble} y={213 + si * ((swY - 213) / 5)} width="4" height="1.8" fill="#d4d0c8" opacity="0.85" />
                             );
                           })}
                         </g>
                       );
                     })}
-                    {/* Modern walkways */}
+                    {/* Modern walkways - straight rects */}
                     {[940, 1240, 1540, 1840].map((x, wi) => {
                       const swY = sidewalkY(x + 16.5);
-                      return wi % 2 === 0 ? (
-                        <path key={`mod-dw-${wi}`} d={`M ${x+16.5},210 Q ${x+16.8},${(210+swY)/2} ${x+16.5},${swY}`} stroke="#d4d0c8" strokeWidth="3" fill="none" opacity="0.85" strokeLinecap="round" />
-                      ) : (
-                        <rect key={`mod-dw-${wi}`} x={x+15} y="210" width="3" height={swY - 210} rx="0.3" fill="#d4d0c8" opacity="0.85" />
+                      return (
+                        <rect key={`mod-dw-${wi}`} x={x+15} y={210} width="3" height={swY - 210} fill="#d4d0c8" opacity="0.85" />
                       );
                     })}
                   </g>
-                  {/* Garage driveways - also end at sidewalk top edge */}
+                  {/* Garage driveways - square-ended, extend halfway into sidewalk */}
                   <g>
                     {/* Ranch garage driveways */}
                     {[880, 1180, 1480, 1780].map((x, wi) => {
                       const swY = sidewalkY(x + 42);
                       return (
-                        <rect key={`ranch-gdw-${wi}`} x={x+39} y="206" width="7" height={swY - 206} rx="0.5" fill="#d4d0c8" opacity="0.85" />
+                        <rect key={`ranch-gdw-${wi}`} x={x+39} y={206} width="7" height={swY - 206} fill="#d4d0c8" opacity="0.85" />
                       );
                     })}
                     {/* Colonial driveways */}
                     {[1000, 1300, 1600, 1900].map((x, wi) => {
                       const swY = sidewalkY(x - 6);
                       return (
-                        <path key={`col-gdw-${wi}`} d={`M ${x-6},208 Q ${x-5.5},${(208+swY)/2} ${x-6},${swY}`} stroke="#d4d0c8" strokeWidth="6" fill="none" opacity="0.85" strokeLinecap="round" />
+                        <rect key={`col-gdw-${wi}`} x={x-9} y={208} width="6" height={swY - 208} fill="#d4d0c8" opacity="0.85" />
                       );
                     })}
                     {/* Modern driveways */}
                     {[940, 1240, 1540, 1840].map((x, wi) => {
                       const swY = sidewalkY(x - 5);
                       return (
-                        <rect key={`mod-gdw-${wi}`} x={x-8} y="207" width="6" height={swY - 207} rx="0.3" fill="#d4d0c8" opacity="0.85" />
+                        <rect key={`mod-gdw-${wi}`} x={x-8} y={207} width="6" height={swY - 207} fill="#d4d0c8" opacity="0.85" />
                       );
                     })}
                   </g>
