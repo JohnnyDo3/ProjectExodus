@@ -3931,38 +3931,38 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
-              {/* Chicken coop - to the LEFT of Barn 1 (section 2) */}
+              {/* Chicken coop - to the RIGHT of Windmill 2 */}
               <g>
                 {/* Coop body */}
-                <rect x="3948" y="203" width="12" height="8" fill="#8a6a4a" opacity="1" />
+                <rect x="4216" y="203" width="12" height="8" fill="#8a6a4a" opacity="1" />
                 {/* Roof */}
-                <path d="M 3946,203 L 3954,197 L 3962,203 Z" fill="#6a4a2a" opacity="1" />
-                <rect x="3946" y="202.5" width="16" height="1" fill="#5a3a1a" opacity="1" />
-                {/* Door opening - faces right toward barn */}
-                <rect x="3956" y="206" width="3.5" height="5" fill="#3a2a1a" opacity="1" />
+                <path d="M 4214,203 L 4222,197 L 4230,203 Z" fill="#6a4a2a" opacity="1" />
+                <rect x="4214" y="202.5" width="16" height="1" fill="#5a3a1a" opacity="1" />
+                {/* Door opening - faces right */}
+                <rect x="4224" y="206" width="3.5" height="5" fill="#3a2a1a" opacity="1" />
                 {/* Small window */}
-                <rect x="3950" y="204.5" width="2.5" height="2" fill="#4a4a4a" opacity="0.7" />
-                <path d="M 3950,205.5 L 3952.5,205.5 M 3951.25,204.5 L 3951.25,206.5" stroke="#6a5a4a" strokeWidth="0.3" />
+                <rect x="4218" y="204.5" width="2.5" height="2" fill="#4a4a4a" opacity="0.7" />
+                <path d="M 4218,205.5 L 4220.5,205.5 M 4219.25,204.5 L 4219.25,206.5" stroke="#6a5a4a" strokeWidth="0.3" />
                 {/* Ramp */}
-                <rect x="3956" y="210.5" width="5" height="0.6" fill="#7a5a3a" opacity="0.9" transform="rotate(-15, 3958.5, 210.5)" />
+                <rect x="4224" y="210.5" width="5" height="0.6" fill="#7a5a3a" opacity="0.9" transform="rotate(-15, 4226.5, 210.5)" />
                 {/* Nesting chicken */}
                 <g style={{animation: 'chickenPeck 7s ease-in-out infinite', animationDelay: '2s'}}>
-                  <rect x="3952" y="208" width="3.5" height="2.5" fill="#d4a574" opacity="0.9" />
-                  <rect x="3955.5" y="207.5" width="2" height="2" fill="#d4a574" opacity="0.9" />
-                  <rect x="3956.5" y="206.5" width="1.2" height="1.2" fill="#cc3333" opacity="0.9" />
-                  <rect x="3957.5" y="208" width="1" height="0.5" fill="#ffd700" opacity="0.9" />
+                  <rect x="4220" y="208" width="3.5" height="2.5" fill="#d4a574" opacity="0.9" />
+                  <rect x="4223.5" y="207.5" width="2" height="2" fill="#d4a574" opacity="0.9" />
+                  <rect x="4224.5" y="206.5" width="1.2" height="1.2" fill="#cc3333" opacity="0.9" />
+                  <rect x="4225.5" y="208" width="1" height="0.5" fill="#ffd700" opacity="0.9" />
                 </g>
                 {/* Hay/straw around coop */}
-                <rect x="3947" y="210" width="15" height="1" rx="0.5" fill="#d4b874" opacity="0.4" />
+                <rect x="4215" y="210" width="15" height="1" rx="0.5" fill="#d4b874" opacity="0.4" />
                 {/* Roaming chickens - stay near coop at ground level */}
                 {[0, 7, 14].map((delay, ci) => (
                   <g key={`roam-ch-2-${ci}`} className="chicken-roam" style={{animationDelay: `${delay}s`, animationDuration: `${20 + ci * 3}s`}}>
-                    <rect x={3959 + ci * 3} y="208" width="4" height="3" fill={ci === 0 ? '#f5f5f0' : '#d4a574'} />
-                    <rect x={3963 + ci * 3} y="207" width="2" height="2.5" fill={ci === 0 ? '#f5f5f0' : '#d4a574'} />
-                    <rect x={3964 + ci * 3} y="206" width="1.2" height="1" fill="#cc3333" />
-                    <rect x={3965 + ci * 3} y="207.5" width="1" height="0.5" fill="#ffd700" />
-                    <rect x={3960 + ci * 3} y="210.5" width="0.6" height="1.5" fill="#e8a020" />
-                    <rect x={3961.5 + ci * 3} y="210.5" width="0.6" height="1.5" fill="#e8a020" />
+                    <rect x={4227 + ci * 3} y="208" width="4" height="3" fill={ci === 0 ? '#f5f5f0' : '#d4a574'} />
+                    <rect x={4231 + ci * 3} y="207" width="2" height="2.5" fill={ci === 0 ? '#f5f5f0' : '#d4a574'} />
+                    <rect x={4232 + ci * 3} y="206" width="1.2" height="1" fill="#cc3333" />
+                    <rect x={4233 + ci * 3} y="207.5" width="1" height="0.5" fill="#ffd700" />
+                    <rect x={4228 + ci * 3} y="210.5" width="0.6" height="1.5" fill="#e8a020" />
+                    <rect x={4229.5 + ci * 3} y="210.5" width="0.6" height="1.5" fill="#e8a020" />
                   </g>
                 ))}
               </g>
