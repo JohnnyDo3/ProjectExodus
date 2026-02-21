@@ -2414,9 +2414,9 @@ export function ProgressiveSkyline() {
                             {/* Solar panels - raised above cornice, angled on small supports */}
                             {Array.from({length: Math.max(1, Math.floor((bldg.w - 18) / 12))}).map((_, panel) => (
                               <g key={`roof-solar-${i}-${panel}`}>
-                                {/* Panel support legs */}
-                                <rect x={bldg.x + 4 + panel * 12} y={roofY - 7} width="0.8" height="3" fill="#8a8a8a" opacity="0.8" />
-                                <rect x={bldg.x + 12 + panel * 12} y={roofY - 8} width="0.8" height="4" fill="#8a8a8a" opacity="0.8" />
+                                {/* Panel support legs - extend from panel down to roof surface */}
+                                <rect x={bldg.x + 4 + panel * 12} y={roofY - 7} width="0.8" height="4" fill="#8a8a8a" opacity="0.8" />
+                                <rect x={bldg.x + 12 + panel * 12} y={roofY - 8} width="0.8" height="5" fill="#8a8a8a" opacity="0.8" />
                                 {/* Panel - tilted via trapezoid shape */}
                                 <path d={`M ${bldg.x + 3 + panel * 12},${roofY - 7} L ${bldg.x + 4 + panel * 12},${roofY - 10} L ${bldg.x + 13 + panel * 12},${roofY - 10} L ${bldg.x + 14 + panel * 12},${roofY - 7} Z`} fill="#2f4f7f" stroke="#1a2f4f" strokeWidth="0.4" />
                                 {/* Panel grid lines */}
