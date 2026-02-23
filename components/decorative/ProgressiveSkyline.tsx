@@ -3799,6 +3799,156 @@ export function ProgressiveSkyline() {
                 <rect x="4919.5" y="183" width="1.5" height="19" fill="#a83232" opacity="0.8" />
               </g>
 
+              {/* ===== FENCED HORSE PASTURE - connected to left side of Barn 1 (x=3969) ===== */}
+              <g>
+                {/* Pasture grass - lush green patch */}
+                <ellipse cx="3922" cy="208" rx="48" ry="5" fill="#8ab88a" opacity="0.5" />
+                <ellipse cx="3922" cy="209" rx="42" ry="3.5" fill="#7aaa7a" opacity="0.3" />
+
+                {/* Hay pile in corner near barn */}
+                <ellipse cx="3963" cy="208" rx="5" ry="2" fill="#d4b874" opacity="0.6" />
+                <ellipse cx="3963" cy="207" rx="4" ry="1.5" fill="#c8a860" opacity="0.5" />
+
+                {/* Water trough near fence */}
+                <rect x="3880" y="208" width="8" height="3" rx="0.5" fill="#7a8a9a" opacity="0.9" />
+                <rect x="3881" y="208.5" width="6" height="2" rx="0.3" fill="#5a8aaa" opacity="0.7" />
+                {/* Trough legs */}
+                <rect x="3882" y="211" width="1" height="1.5" fill="#5a6a6a" opacity="0.8" />
+                <rect x="3886" y="211" width="1" height="1.5" fill="#5a6a6a" opacity="0.8" />
+
+                {/* Static horses grazing/standing in pasture */}
+                {/* Horse 1 - dark brown, facing right, grazing */}
+                <g>
+                  <rect x="3893" y="201" width="12" height="7" fill="#654321" />
+                  <rect x="3901" y="201" width="4" height="7" fill="#7a5230" />
+                  {/* Neck angled down (grazing) */}
+                  <rect x="3905" y="204" width="2.5" height="5" fill="#654321" transform="rotate(25, 3905, 204)" />
+                  {/* Head down near grass */}
+                  <rect x="3907" y="208" width="4.5" height="3.5" fill="#654321" />
+                  <rect x="3910.5" y="210" width="1.5" height="1.5" fill="#7a5230" />
+                  <rect x="3909" y="209" width="0.8" height="0.8" fill="#2f2f2f" />
+                  <rect x="3911.5" y="210.5" width="0.4" height="0.4" fill="#3a2a1a" />
+                  {/* Ears */}
+                  <rect x="3907.5" y="206.5" width="0.8" height="1.5" fill="#654321" />
+                  <rect x="3909" y="206.5" width="0.8" height="1.5" fill="#654321" />
+                  {/* Mane */}
+                  <rect x="3905" y="203.5" width="1" height="4" fill="#4a3520" />
+                  {/* Legs */}
+                  <rect x="3894" y="207.5" width="1.3" height="4" fill="#654321" />
+                  <rect x="3896" y="207.5" width="1.3" height="4" fill="#7a5230" />
+                  <rect x="3901" y="207.5" width="1.3" height="4" fill="#654321" />
+                  <rect x="3903" y="207.5" width="1.3" height="4" fill="#7a5230" />
+                  {/* Hooves */}
+                  <rect x="3894" y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                  <rect x="3896" y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                  <rect x="3901" y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                  <rect x="3903" y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                  {/* Tail */}
+                  <rect x="3892" y="201.5" width="1.5" height="5.5" fill="#4a3520" />
+                </g>
+
+                {/* Horse 2 - chestnut, facing left, standing alert */}
+                <g>
+                  <rect x="3920" y="201" width="12" height="7" fill="#8b6f47" />
+                  <rect x="3920" y="201" width="4" height="7" fill="#9a7a55" />
+                  {/* Neck upright */}
+                  <rect x="3917.5" y="197.5" width="2.5" height="4.5" fill="#8b6f47" />
+                  {/* Head facing left */}
+                  <rect x="3913.5" y="195.5" width="4.5" height="3.5" fill="#8b6f47" />
+                  <rect x="3912" y="197" width="1.5" height="2" fill="#9a7a55" />
+                  {/* Eye */}
+                  <rect x="3915" y="196.5" width="0.8" height="0.8" fill="#2f2f2f" />
+                  <rect x="3915.2" y="196.5" width="0.3" height="0.4" fill="#ffffff" />
+                  {/* Ears */}
+                  <rect x="3914.5" y="194" width="0.8" height="1.8" fill="#8b6f47" />
+                  <rect x="3916" y="194" width="0.8" height="1.8" fill="#8b6f47" />
+                  {/* Nostril */}
+                  <rect x="3913" y="198" width="0.4" height="0.4" fill="#3a2a1a" />
+                  {/* Mane */}
+                  <rect x="3917" y="195.5" width="1" height="6" fill="#6a4a28" />
+                  {/* Legs */}
+                  <rect x="3921" y="207.5" width="1.3" height="4" fill="#8b6f47" />
+                  <rect x="3923" y="207.5" width="1.3" height="4" fill="#9a7a55" />
+                  <rect x="3928" y="207.5" width="1.3" height="4" fill="#8b6f47" />
+                  <rect x="3930" y="207.5" width="1.3" height="4" fill="#9a7a55" />
+                  {/* Hooves */}
+                  <rect x="3921" y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                  <rect x="3923" y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                  <rect x="3928" y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                  <rect x="3930" y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                  {/* Tail */}
+                  <rect x="3931" y="201.5" width="1.5" height="5.5" fill="#6a4a28" />
+                </g>
+
+                {/* Horse 3 - dark bay, facing right, standing calm */}
+                <g>
+                  <rect x="3944" y="201" width="12" height="7" fill="#4a3520" />
+                  <rect x="3952" y="201" width="4" height="7" fill="#5a3a25" />
+                  {/* Neck */}
+                  <rect x="3956" y="197.5" width="2.5" height="4.5" fill="#4a3520" />
+                  {/* Head facing right */}
+                  <rect x="3957.5" y="195.5" width="4.5" height="3.5" fill="#4a3520" />
+                  <rect x="3961" y="197" width="1.5" height="2" fill="#5a3a25" />
+                  {/* Eye */}
+                  <rect x="3959.5" y="196.5" width="0.8" height="0.8" fill="#2f2f2f" />
+                  <rect x="3959.7" y="196.5" width="0.3" height="0.4" fill="#ffffff" />
+                  {/* Ears */}
+                  <rect x="3958" y="194" width="0.8" height="1.8" fill="#4a3520" />
+                  <rect x="3959.5" y="194" width="0.8" height="1.8" fill="#4a3520" />
+                  {/* Nostril */}
+                  <rect x="3962" y="198" width="0.4" height="0.4" fill="#3a2a1a" />
+                  {/* Mane */}
+                  <rect x="3956.5" y="195.5" width="1" height="6" fill="#3a2a1a" />
+                  {/* Legs */}
+                  <rect x="3945" y="207.5" width="1.3" height="4" fill="#4a3520" />
+                  <rect x="3947" y="207.5" width="1.3" height="4" fill="#5a3a25" />
+                  <rect x="3952" y="207.5" width="1.3" height="4" fill="#4a3520" />
+                  <rect x="3954" y="207.5" width="1.3" height="4" fill="#5a3a25" />
+                  {/* Hooves */}
+                  <rect x="3945" y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                  <rect x="3947" y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                  <rect x="3952" y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                  <rect x="3954" y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                  {/* Tail */}
+                  <rect x="3943" y="201.5" width="1.5" height="5.5" fill="#3a2a1a" />
+                </g>
+
+                {/* Wooden fence - ranch-style split rail, connected to barn left wall */}
+                {/* Fence posts */}
+                {[3875, 3898, 3921, 3944].map((px, pi) => (
+                  <g key={`pasture-post-${pi}`}>
+                    <rect x={px} y="203" width="2" height="10" fill="#8b7355" opacity="1" />
+                    {/* Post cap - slightly wider */}
+                    <rect x={px - 0.3} y="202.5" width="2.6" height="1" fill="#7a6345" opacity="1" />
+                  </g>
+                ))}
+                {/* Connection post at barn wall */}
+                <rect x="3968" y="203" width="2" height="10" fill="#8b7355" opacity="1" />
+                <rect x="3967.7" y="202.5" width="2.6" height="1" fill="#7a6345" opacity="1" />
+
+                {/* Top rail */}
+                <rect x="3875" y="205" width="95" height="1.2" fill="#a08060" opacity="1" />
+                {/* Bottom rail */}
+                <rect x="3875" y="209" width="95" height="1.2" fill="#a08060" opacity="1" />
+
+                {/* Rail wood grain detail */}
+                <path d="M 3880,205.6 L 3920,205.4 M 3925,205.5 L 3965,205.7" stroke="#8a6a4a" strokeWidth="0.2" opacity="0.5" />
+                <path d="M 3880,209.6 L 3920,209.4 M 3925,209.5 L 3965,209.7" stroke="#8a6a4a" strokeWidth="0.2" opacity="0.5" />
+
+                {/* Gate on the left end - slightly ajar for visual interest */}
+                <rect x="3873" y="203" width="2" height="10" fill="#8b7355" opacity="1" />
+                <rect x="3872.7" y="202.5" width="2.6" height="1" fill="#7a6345" opacity="1" />
+                {/* Gate planks - vertical boards */}
+                <rect x="3869" y="205" width="1" height="5.2" fill="#a08060" opacity="0.9" />
+                <rect x="3870.5" y="205" width="1" height="5.2" fill="#a08060" opacity="0.9" />
+                <rect x="3872" y="205" width="1" height="5.2" fill="#a08060" opacity="0.9" />
+                {/* Gate diagonal brace */}
+                <path d="M 3869,205 L 3873,210" stroke="#8a6a4a" strokeWidth="0.6" opacity="0.7" />
+                {/* Gate hinge hardware */}
+                <rect x="3873" y="206" width="0.5" height="0.5" fill="#4a4a4a" opacity="0.8" />
+                <rect x="3873" y="209" width="0.5" height="0.5" fill="#4a4a4a" opacity="0.8" />
+              </g>
+
               {/* Enhanced Farmhouses with porches, shutters, smoke */}
               <g>
                 {/* Farmhouse #1 - larger with full detail (matching Phase 1 Farmhouse #1) */}
@@ -3870,10 +4020,7 @@ export function ProgressiveSkyline() {
               <g>
                 {/* Large oak - 3860 */}
                 <g><rect x="3859" y="193" width="4" height="12" fill="#5a4a35" /><circle cx="3861" cy="189" r="9" fill="#4a7a4a" /><circle cx="3855" cy="191" r="6" fill="#5a8a5a" /><circle cx="3867" cy="191" r="6" fill="#5a8a5a" /></g>
-                {/* Evergreen pine - 3910 */}
-                <g><rect x="3910" y="196" width="2.5" height="14" fill="#5a4a35" /><path d="M 3903,205 L 3911.25,187 L 3919.5,205 Z" fill="#3a6a3a" /><path d="M 3905,200 L 3911.25,185 L 3917.5,200 Z" fill="#4a7a4a" /><path d="M 3907,195 L 3911.25,183 L 3915.5,195 Z" fill="#5a8a5a" /></g>
-                {/* Small young tree - 3940 (moved from 3965 to avoid Barn#1) */}
-                <g><rect x="3940" y="198" width="2" height="7" fill="#6b5a45" /><circle cx="3941" cy="196" r="4" fill="#6a9a6a" /><circle cx="3939" cy="197" r="3" fill="#7aaa7a" /></g>
+                {/* (Pine at 3910 and small tree at 3940 moved to foreground) */}
                 {/* Large maple - 4120 */}
                 <g><rect x="4119" y="194" width="4" height="11" fill="#5a4a35" /><circle cx="4121" cy="190" r="8" fill="#5a8a5a" /><circle cx="4115" cy="192" r="5.5" fill="#6a9a6a" /><circle cx="4127" cy="192" r="5.5" fill="#6a9a6a" /><circle cx="4121" cy="186" r="4.5" fill="#8ab88a" /></g>
                 {/* Medium deciduous - 4210 */}
@@ -3958,45 +4105,7 @@ export function ProgressiveSkyline() {
 
               {/* FARM ANIMALS - Minecraft/voxel style, matching opening biome */}
 
-              {/* Horses - improved proportions, de-crowded */}
-              <g>
-                {[
-                  {x: 3850, dir: -1, y: 1, color: '#654321', chest: '#7a5230'},
-                  {x: 4160, dir: 1, y: -2, color: '#8b6f47', chest: '#9a7a55'},
-                  {x: 4330, dir: -1, y: 3, color: '#4a3520', chest: '#5a3a25'},
-                  {x: 4520, dir: -1, y: -1, color: '#654321', chest: '#7a5230'},
-                  {x: 4900, dir: 1, y: 2, color: '#8b6f47', chest: '#9a7a55'},
-                ].map((h, i) => (
-                  <g key={`horse-end-${i}`} transform={`translate(0, ${h.y + 12})`}>
-                  <g className={h.dir > 0 ? "animal-horse-left" : "animal-horse"} style={{animationDelay: `${i * 4.1}s`, animationDuration: `${h.dir > 0 ? 30 + i * 6 : 26 + i * 5}s`}}>
-                  <g transform={`translate(${h.x}, 203)`}>
-                  <g style={{animation: `faceFlip ${h.dir > 0 ? 30 + i * 6 : 26 + i * 5}s linear infinite`, animationDelay: `${i * 4.1}s`}}>
-                  <g transform={`translate(${-h.x}, -203)`} opacity="1">
-                    <rect x={h.x - 6} y="201" width="12" height="7" fill={h.color} />
-                    <rect x={h.x + (h.dir > 0 ? -6 : 2)} y="201" width="4" height="7" fill={h.chest} />
-                    <rect x={h.x + (h.dir > 0 ? -8 : 5)} y="197.5" width="2.5" height="4.5" fill={h.color} />
-                    <rect x={h.x + (h.dir > 0 ? -11.5 : 6.5)} y="195.5" width="4.5" height="3.5" fill={h.color} />
-                    <rect x={h.x + (h.dir > 0 ? -12.5 : 10)} y="197" width="1.5" height="2" fill={h.chest} />
-                    <rect x={h.x + (h.dir > 0 ? -10 : 8.5)} y="196.5" width="0.8" height="0.8" fill="#2f2f2f" />
-                    <rect x={h.x + (h.dir > 0 ? -9.8 : 8.7)} y="196.5" width="0.3" height="0.4" fill="#ffffff" />
-                    <rect x={h.x + (h.dir > 0 ? -11 : 7.5)} y="194" width="1" height="1.8" fill={h.color} />
-                    <rect x={h.x + (h.dir > 0 ? -9.5 : 9)} y="194" width="1" height="1.8" fill={h.color} />
-                    <rect x={h.x + (h.dir > 0 ? -12 : 11)} y="198" width="0.5" height="0.5" fill="#3a2a1a" />
-                    <rect x={h.x + 3} y="207.5" width="1.3" height="4" fill={h.color} />
-                    <rect x={h.x + 5} y="207.5" width="1.3" height="4" fill={h.chest} />
-                    <rect x={h.x - 5.3} y="207.5" width="1.3" height="4" fill={h.color} />
-                    <rect x={h.x - 3.3} y="207.5" width="1.3" height="4" fill={h.chest} />
-                    <rect x={h.x + 3} y="211" width="1.3" height="0.7" fill="#2f2f2f" />
-                    <rect x={h.x + 5} y="211" width="1.3" height="0.7" fill="#2f2f2f" />
-                    <rect x={h.x - 5.3} y="211" width="1.3" height="0.7" fill="#2f2f2f" />
-                    <rect x={h.x - 3.3} y="211" width="1.3" height="0.7" fill="#2f2f2f" />
-                    <rect x={h.x + (h.dir > 0 ? 5.5 : -7)} y="201.5" width="1.5" height="5.5" fill="#4a3520" />
-                    <rect x={h.x + (h.dir > 0 ? -8 : 7)} y="195.5" width="1" height="6" fill="#4a3520" />
-                  </g></g></g>
-                  </g>
-                  </g>
-                ))}
-              </g>
+              {/* Horses - now housed in fenced pasture next to Barn 1 (see above) */}
 
               {/* Cows - in pairs */}
               <g>
@@ -4278,6 +4387,25 @@ export function ProgressiveSkyline() {
                     <rect x={cx + 1.5} y="215.5" width="0.5" height="0.5" fill="#6a9aba" opacity="0.5" />
                   </g>
                 ))}
+              </g>
+
+              {/* ========== FOREGROUND TREES - Near Barn 1 pasture area (relocated from background) ========== */}
+              {/* These trees sit in front of the barn scene, giving depth to the pasture view */}
+              <g opacity="1">
+                {/* Foreground evergreen pine - originally at x=3910, now larger and lower */}
+                <g>
+                  <rect x="3905" y="220" width="3" height="16" fill="#5a4a35" />
+                  <path d="M 3896,231 L 3906.5,210 L 3917,231 Z" fill="#3a6a3a" />
+                  <path d="M 3898,226 L 3906.5,207 L 3915,226 Z" fill="#4a7a4a" />
+                  <path d="M 3900,221 L 3906.5,205 L 3913,221 Z" fill="#5a8a5a" />
+                </g>
+                {/* Foreground young deciduous - originally at x=3940, now larger and lower */}
+                <g>
+                  <rect x="3947" y="222" width="2.5" height="10" fill="#6b5a45" />
+                  <circle cx="3948" cy="218" r="6" fill="#6a9a6a" />
+                  <circle cx="3945" cy="220" r="4.5" fill="#7aaa7a" />
+                  <circle cx="3952" cy="220" r="4.5" fill="#7aaa7a" />
+                </g>
               </g>
 
               {/* ========== FOREGROUND: GRASS STRIP WITH VARIETY TREES ========== */}
