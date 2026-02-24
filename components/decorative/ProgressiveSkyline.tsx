@@ -3809,12 +3809,12 @@ export function ProgressiveSkyline() {
                 <ellipse cx="3963" cy="208" rx="5" ry="2" fill="#d4b874" opacity="0.6" />
                 <ellipse cx="3963" cy="207" rx="4" ry="1.5" fill="#c8a860" opacity="0.5" />
 
-                {/* Water trough near fence */}
-                <rect x="3880" y="208" width="8" height="3" rx="0.5" fill="#7a8a9a" opacity="0.9" />
-                <rect x="3881" y="208.5" width="6" height="2" rx="0.3" fill="#5a8aaa" opacity="0.7" />
+                {/* Water trough - positioned behind fence (rendered before fence) */}
+                <rect x="3895" y="207.5" width="8" height="3" rx="0.5" fill="#7a8a9a" opacity="0.9" />
+                <rect x="3896" y="208" width="6" height="2" rx="0.3" fill="#5a8aaa" opacity="0.7" />
                 {/* Trough legs */}
-                <rect x="3882" y="211" width="1" height="1.5" fill="#5a6a6a" opacity="0.8" />
-                <rect x="3886" y="211" width="1" height="1.5" fill="#5a6a6a" opacity="0.8" />
+                <rect x="3897" y="210.5" width="1" height="1.5" fill="#5a6a6a" opacity="0.8" />
+                <rect x="3901" y="210.5" width="1" height="1.5" fill="#5a6a6a" opacity="0.8" />
 
                 {/* Static horses grazing/standing in pasture */}
                 {/* Horse 1 - dark brown, facing right, grazing */}
@@ -3935,18 +3935,26 @@ export function ProgressiveSkyline() {
                 <path d="M 3880,205.6 L 3920,205.4 M 3925,205.5 L 3965,205.7" stroke="#8a6a4a" strokeWidth="0.2" opacity="0.5" />
                 <path d="M 3880,209.6 L 3920,209.4 M 3925,209.5 L 3965,209.7" stroke="#8a6a4a" strokeWidth="0.2" opacity="0.5" />
 
-                {/* Gate on the left end - slightly ajar for visual interest */}
-                <rect x="3873" y="203" width="2" height="10" fill="#8b7355" opacity="1" />
-                <rect x="3872.7" y="202.5" width="2.6" height="1" fill="#7a6345" opacity="1" />
-                {/* Gate planks - vertical boards */}
-                <rect x="3869" y="205" width="1" height="5.2" fill="#a08060" opacity="0.9" />
-                <rect x="3870.5" y="205" width="1" height="5.2" fill="#a08060" opacity="0.9" />
-                <rect x="3872" y="205" width="1" height="5.2" fill="#a08060" opacity="0.9" />
-                {/* Gate diagonal brace */}
-                <path d="M 3869,205 L 3873,210" stroke="#8a6a4a" strokeWidth="0.6" opacity="0.7" />
-                {/* Gate hinge hardware */}
-                <rect x="3873" y="206" width="0.5" height="0.5" fill="#4a4a4a" opacity="0.8" />
-                <rect x="3873" y="209" width="0.5" height="0.5" fill="#4a4a4a" opacity="0.8" />
+                {/* Gate - closed, flush with fence line */}
+                {/* Gate hinge post (left side) */}
+                <rect x="3869" y="203" width="2" height="10" fill="#8b7355" opacity="1" />
+                <rect x="3868.7" y="202.5" width="2.6" height="1" fill="#7a6345" opacity="1" />
+                {/* Gate latch post (connects to first fence post at 3875) */}
+                {/* Gate frame - horizontal top and bottom rails */}
+                <rect x="3871" y="205" width="4" height="1" fill="#a08060" opacity="1" />
+                <rect x="3871" y="209.2" width="4" height="1" fill="#a08060" opacity="1" />
+                {/* Gate vertical boards */}
+                <rect x="3871.2" y="205" width="0.8" height="5.2" fill="#9a7050" opacity="1" />
+                <rect x="3872.5" y="205" width="0.8" height="5.2" fill="#a08060" opacity="1" />
+                <rect x="3873.8" y="205" width="0.8" height="5.2" fill="#9a7050" opacity="1" />
+                {/* Gate diagonal brace - Z pattern for strength */}
+                <path d="M 3871,205.5 L 3875,207.5 L 3871,209.5" stroke="#8a6a4a" strokeWidth="0.5" fill="none" opacity="0.7" />
+                {/* Hinge hardware on hinge post */}
+                <rect x="3870.5" y="205.5" width="1" height="0.6" fill="#3a3a3a" opacity="0.9" />
+                <rect x="3870.5" y="209" width="1" height="0.6" fill="#3a3a3a" opacity="0.9" />
+                {/* Latch on right side */}
+                <rect x="3874.5" y="207" width="1" height="0.5" fill="#3a3a3a" opacity="0.9" />
+                <circle cx="3875" cy="207.25" r="0.3" fill="#5a5a5a" opacity="0.8" />
               </g>
 
               {/* Enhanced Farmhouses with porches, shutters, smoke */}
@@ -4018,9 +4026,12 @@ export function ProgressiveSkyline() {
 
               {/* Varied trees - deciduous and evergreen mix */}
               <g>
+                {/* Evergreen pine - x=3818, left of pasture fence, behind white fence */}
+                <g><rect x="3818" y="196" width="2.5" height="14" fill="#5a4a35" /><path d="M 3811,205 L 3819.25,187 L 3827.5,205 Z" fill="#3a6a3a" /><path d="M 3813,200 L 3819.25,185 L 3825.5,200 Z" fill="#4a7a4a" /><path d="M 3815,195 L 3819.25,183 L 3823.5,195 Z" fill="#5a8a5a" /></g>
+                {/* Young deciduous - x=3842, staggered from pine */}
+                <g><rect x="3842" y="198" width="2" height="7" fill="#6b5a45" /><circle cx="3843" cy="196" r="4" fill="#6a9a6a" /><circle cx="3841" cy="197" r="3" fill="#7aaa7a" /><circle cx="3846" cy="197" r="3" fill="#7aaa7a" /></g>
                 {/* Large oak - 3860 */}
                 <g><rect x="3859" y="193" width="4" height="12" fill="#5a4a35" /><circle cx="3861" cy="189" r="9" fill="#4a7a4a" /><circle cx="3855" cy="191" r="6" fill="#5a8a5a" /><circle cx="3867" cy="191" r="6" fill="#5a8a5a" /></g>
-                {/* (Pine at 3910 and small tree at 3940 moved to foreground) */}
                 {/* Large maple - 4120 */}
                 <g><rect x="4119" y="194" width="4" height="11" fill="#5a4a35" /><circle cx="4121" cy="190" r="8" fill="#5a8a5a" /><circle cx="4115" cy="192" r="5.5" fill="#6a9a6a" /><circle cx="4127" cy="192" r="5.5" fill="#6a9a6a" /><circle cx="4121" cy="186" r="4.5" fill="#8ab88a" /></g>
                 {/* Medium deciduous - 4210 */}
@@ -4110,8 +4121,8 @@ export function ProgressiveSkyline() {
               {/* Cows - in pairs */}
               <g>
                 {[
-                  {x: 3930, dir: 1, y: 3},
-                  {x: 3948, dir: 1, y: 0},
+                  {x: 4035, dir: 1, y: 3},
+                  {x: 4053, dir: 1, y: 0},
                   {x: 4220, dir: -1, y: -1},
                   {x: 4238, dir: -1, y: 2},
                   {x: 4700, dir: 1, y: -2},
@@ -4228,8 +4239,8 @@ export function ProgressiveSkyline() {
               {/* Chickens - de-crowded */}
               <g>
                 {[
-                  {x: 3845, y: 2, dir: 1},
-                  {x: 3955, y: -2, dir: -1},
+                  {x: 4040, y: 2, dir: 1},
+                  {x: 4060, y: -2, dir: -1},
                   {x: 4185, y: 1, dir: 1},
                   {x: 4435, y: -1, dir: -1},
                   {x: 4630, y: -1, dir: 1},
@@ -4387,25 +4398,6 @@ export function ProgressiveSkyline() {
                     <rect x={cx + 1.5} y="215.5" width="0.5" height="0.5" fill="#6a9aba" opacity="0.5" />
                   </g>
                 ))}
-              </g>
-
-              {/* ========== FOREGROUND TREES - Near Barn 1 pasture area (relocated from background) ========== */}
-              {/* These trees sit in front of the barn scene, giving depth to the pasture view */}
-              <g opacity="1">
-                {/* Foreground evergreen pine - originally at x=3910, now larger and lower */}
-                <g>
-                  <rect x="3905" y="220" width="3" height="16" fill="#5a4a35" />
-                  <path d="M 3896,231 L 3906.5,210 L 3917,231 Z" fill="#3a6a3a" />
-                  <path d="M 3898,226 L 3906.5,207 L 3915,226 Z" fill="#4a7a4a" />
-                  <path d="M 3900,221 L 3906.5,205 L 3913,221 Z" fill="#5a8a5a" />
-                </g>
-                {/* Foreground young deciduous - originally at x=3940, now larger and lower */}
-                <g>
-                  <rect x="3947" y="222" width="2.5" height="10" fill="#6b5a45" />
-                  <circle cx="3948" cy="218" r="6" fill="#6a9a6a" />
-                  <circle cx="3945" cy="220" r="4.5" fill="#7aaa7a" />
-                  <circle cx="3952" cy="220" r="4.5" fill="#7aaa7a" />
-                </g>
               </g>
 
               {/* ========== FOREGROUND: GRASS STRIP WITH VARIETY TREES ========== */}
