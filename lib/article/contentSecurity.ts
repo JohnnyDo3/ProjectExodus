@@ -322,8 +322,15 @@ export function sanitizeHtml(html: string): string {
   cleaned = cleaned.replace(/src\s*=\s*["']?\s*javascript:[^"'\s>]*/gi, 'src=""')
   cleaned = cleaned.replace(/src\s*=\s*["']?\s*data:text\/html[^"'\s>]*/gi, 'src=""')
 
-  // Remove style attributes (can contain expressions)
-  cleaned = cleaned.replace(/\s+style\s*=\s*["'][^"']*["']/gi, '')
+  // Sanitize style attributes - keep safe formatting, strip dangerous CSS
+  cleaned = cleaned.replace(/\s+style\s*=\s*"([^"]*)"/gi, (_match, styles) => {
+    const sanitized = sanitizeStyleAttribute(styles)
+    return sanitized ? ` style="${sanitized}"` : ''
+  })
+  cleaned = cleaned.replace(/\s+style\s*=\s*'([^']*)'/gi, (_match, styles) => {
+    const sanitized = sanitizeStyleAttribute(styles)
+    return sanitized ? ` style="${sanitized}"` : ''
+  })
 
   // Remove dangerous tags entirely
   const dangerousTags = ['script', 'iframe', 'object', 'embed', 'form', 'input', 'button', 'select', 'textarea', 'meta', 'link', 'base']
