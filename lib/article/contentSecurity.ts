@@ -12,15 +12,19 @@
 export const CONTENT_LIMITS = {
   // Word count limits
   MIN_WORDS: 50,           // Minimum words for an article
-  MAX_WORDS: 50000,        // Maximum words (roughly 100 pages)
+  MAX_WORDS: Infinity,     // No upper word limit - accept papers of any length
 
   // Character limits
   MAX_TITLE_LENGTH: 200,
   MAX_EXCERPT_LENGTH: 500,
-  MAX_CONTENT_LENGTH: 500000,  // ~500KB of text
+  MAX_CONTENT_LENGTH: 5000000,  // ~5MB of text (supports long papers with embedded image links)
   MAX_REFERENCE_TITLE: 300,
   MAX_REFERENCE_URL: 2000,
   MAX_REFERENCES: 100,
+
+  // File upload limits
+  MAX_TEXT_FILE_SIZE: 1024 * 1024,       // 1MB for .txt/.md
+  MAX_PDF_FILE_SIZE: 20 * 1024 * 1024,   // 20MB for .pdf
 
   // Rate limiting hints (implement in API)
   MAX_ARTICLES_PER_DAY: 10,
@@ -78,6 +82,108 @@ const SUSPICIOUS_PATTERNS = [
   // Meta refresh (redirects)
   /<meta[^>]+http-equiv\s*=\s*['"]?refresh/gi,
 ]
+
+// =============================================================================
+// CODE LANGUAGE DETECTION - Block programming code submissions
+// =============================================================================
+
+const CODE_PATTERNS = [
+  /\bfunction\s+\w+\s*\(/g,
+  /\b(?:const|let|var)\s+\w+\s*=\s*(?:function|\(|require|new\b|\[|\{)/g,
+  /\bimport\s+(?:\{[^}]+\}|\w+)\s+from\s+['"]/g,
+  /\brequire\s*\(\s*['"]/g,
+  /\bclass\s+\w+\s*(?:extends\s+\w+\s*)?\{/g,
+  /\bdef\s+\w+\s*\(.*\)\s*:/g,
+  /\b(?:public|private|protected)\s+(?:static\s+)?(?:void|int|string|boolean|float|double)\s+\w+/gi,
+  /\b#include\s*<\w+/g,
+  /\bpackage\s+\w+\.\w+;/g,
+  /\busing\s+namespace\s+\w+/g,
+  /\bfrom\s+\w+\s+import\s+/g,
+  /=>\s*\{/g,
+  /\bcatch\s*\(\s*\w+\s*\)\s*\{/g,
+  /\bthrow\s+new\s+\w+/g,
+  /\b(?:console|System|std)\.(?:log|out|err|cout|cerr)\b/g,
+  /\breturn\s+(?:new\s+\w+|null|undefined|false|true)\s*;/g,
+  /\b(?:async|await)\s+(?:function|\w+\s*\()/g,
+  /\b(?:elif|elsif|elseif)\b/g,
+  /\b(?:println!|fmt\.Print|printf)\b/g,
+]
+
+/**
+ * Detect if content is primarily programming code
+ * Returns true if content appears to be a code file rather than an article
+ */
+export function containsCodeLanguage(content: string): { isCode: boolean; score: number; detail?: string } {
+  const plainText = content.replace(/<[^>]*>/g, ' ')
+  const words = plainText.split(/\s+/).filter(Boolean)
+  if (words.length < 20) return { isCode: false, score: 0 }
+
+  let codeHits = 0
+  for (const pattern of CODE_PATTERNS) {
+    pattern.lastIndex = 0
+    const matches = plainText.match(pattern)
+    if (matches) codeHits += matches.length
+  }
+
+  // Count semicolons at end of lines (common in code, rare in prose)
+  const semicolonLines = (plainText.match(/;\s*$/gm) || []).length
+  // Count curly brace pairs
+  const braces = (plainText.match(/[{}]/g) || []).length
+
+  const totalSignals = codeHits + Math.floor(semicolonLines / 2) + Math.floor(braces / 4)
+  // Score: signals per 100 words
+  const score = (totalSignals / words.length) * 100
+
+  // Threshold: if more than 8 code signals per 100 words, it's likely code
+  if (score > 8) {
+    return {
+      isCode: true,
+      score,
+      detail: `Content appears to be programming code (${codeHits} code patterns detected). Articles about code topics are fine — please write about the topic rather than pasting raw source code.`,
+    }
+  }
+
+  return { isCode: false, score }
+}
+
+// =============================================================================
+// SAFE CSS STYLE SANITIZATION - Preserve formatting while blocking attacks
+// =============================================================================
+
+const SAFE_CSS_PROPERTIES = new Set([
+  'text-align', 'text-indent', 'text-decoration', 'text-transform',
+  'margin-left', 'margin-right', 'margin-top', 'margin-bottom',
+  'padding-left', 'padding-right', 'padding-top', 'padding-bottom',
+  'font-size', 'font-weight', 'font-style', 'font-family',
+  'line-height', 'letter-spacing', 'word-spacing',
+  'color', 'background-color',
+  'border-left', 'border-right', 'border-bottom', 'border-top',
+  'list-style-type',
+])
+
+const DANGEROUS_CSS_VALUES = /expression|javascript|url\s*\(|import|eval|behavior|binding|-moz-binding/i
+
+/**
+ * Sanitize a CSS style attribute value, keeping only safe properties
+ */
+function sanitizeStyleAttribute(style: string): string {
+  const declarations = style.split(';').filter(s => s.trim())
+  const safe: string[] = []
+
+  for (const decl of declarations) {
+    const colonIndex = decl.indexOf(':')
+    if (colonIndex === -1) continue
+
+    const prop = decl.slice(0, colonIndex).trim().toLowerCase()
+    const value = decl.slice(colonIndex + 1).trim()
+
+    if (!SAFE_CSS_PROPERTIES.has(prop)) continue
+    if (DANGEROUS_CSS_VALUES.test(value)) continue
+    safe.push(`${prop}: ${value}`)
+  }
+
+  return safe.join('; ')
+}
 
 // =============================================================================
 // ALLOWED HTML TAGS (whitelist approach)
