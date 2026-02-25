@@ -4064,7 +4064,7 @@ export function ProgressiveSkyline() {
                   {x: 4140, dir: 1, y: -1, color: '#8b6f47', chest: '#9a7a55'},
                   {x: 4185, dir: -1, y: 1, color: '#4a3520', chest: '#5a3a25'},
                 ].map((h, i) => (
-                  <g key={`horse-end-${i}`} transform={`translate(0, ${h.y + 12})`}>
+                  <g key={`horse-end-${i}`} transform={`translate(0, ${h.y})`}>
                   <g className={h.dir > 0 ? "animal-horse-left" : "animal-horse"} style={{animationDelay: `${i * 3.7}s`, animationDuration: `${h.dir > 0 ? 32 + i * 5 : 28 + i * 7}s`}}>
                   <g transform={`translate(${h.x}, 203)`}>
                   <g style={{animation: `faceFlip ${h.dir > 0 ? 32 + i * 5 : 28 + i * 7}s linear infinite`, animationDelay: `${i * 3.7}s`}}>
@@ -4099,14 +4099,14 @@ export function ProgressiveSkyline() {
               {/* Cows - in pairs */}
               <g>
                 {[
-                  {x: 3900, dir: 1, y: 3},
-                  {x: 3935, dir: -1, y: 0},
+                  {x: 3900, dir: 1, y: 3, inPasture: true},
+                  {x: 3935, dir: -1, y: 0, inPasture: true},
                   {x: 4430, dir: -1, y: -1},
                   {x: 4450, dir: -1, y: 2},
                   {x: 4700, dir: 1, y: -2},
                   {x: 4718, dir: 1, y: 1},
                 ].map((c, i) => (
-                  <g key={`cow-end-${i}`} transform={`translate(0, ${c.y + 12})`}>
+                  <g key={`cow-end-${i}`} transform={`translate(0, ${c.y + (c.inPasture ? 0 : 12)})`}>
                   <g className={c.dir > 0 ? "animal-cow-left" : "animal-cow"} style={{animationDelay: `${i * 5.7}s`, animationDuration: `${c.dir > 0 ? 28 + i * 8 : 33 + i * 5}s`}}>
                   <g transform={`translate(${c.x}, 203)`}>
                   <g style={{animation: `faceFlip ${c.dir > 0 ? 28 + i * 8 : 33 + i * 5}s linear infinite`, animationDelay: `${i * 5.7}s`}}>
@@ -4152,7 +4152,7 @@ export function ProgressiveSkyline() {
                     const sx = 4280 + m.dx;
                     const dir = -1;
                     return (
-                      <g key={`flock2-sheep-${mi}`} transform={`translate(0, ${m.dy + 12})`}>
+                      <g key={`flock2-sheep-${mi}`} transform={`translate(0, ${m.dy})`}>
                       <g transform={`translate(${sx}, 206)`}>
                       <g style={{animation: 'faceFlip 42s linear infinite', animationDelay: `${mi * 0.5}s`}}>
                       <g transform={`translate(${-sx}, -206)`} opacity="1">
