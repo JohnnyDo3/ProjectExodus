@@ -6,8 +6,7 @@ import { useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
-import { parseContent, type ParsedContent, type ParsedReference } from '@/lib/article/contentParser'
-import { sanitizeArticleContent } from '@/lib/sanitize'
+import { parseContent, type ParsedReference } from '@/lib/article/contentParser'
 import {
   quickValidatePastedContent,
   validateArticleContent,
@@ -457,7 +456,6 @@ export default function WriteArticlePage() {
             format: r.format || '',
           })),
           tags: articleData.tags.split(',').map(t => t.trim()).filter(Boolean).slice(0, 20),
-          widgetOrder: widgets.filter(w => w.enabled).map(w => w.id),
         }),
       })
 
@@ -1001,26 +999,6 @@ function ReferencesPreview({
           )}
         </CardContent>
       )}
-    </Card>
-  )
-}
-
-// Discussion Preview Widget
-function DiscussionPreview() {
-  return (
-    <Card className="border-4 border-[var(--border)]">
-      <CardHeader>
-        <CardTitle className="text-base flex items-center gap-2 text-[var(--foreground)]">
-          <MessageCircle className="w-4 h-4 text-[var(--primary)]" />
-          Round Table Discussion
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="text-center py-6 text-[var(--muted-foreground)]">
-          <MessageCircle className="w-8 h-8 mx-auto mb-2 opacity-50" />
-          <p className="text-sm">Discussion will appear here after publishing</p>
-        </div>
-      </CardContent>
     </Card>
   )
 }

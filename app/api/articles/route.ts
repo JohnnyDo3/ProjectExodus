@@ -357,6 +357,34 @@ export async function POST(request: NextRequest) {
         }))
       : []
 
+    // Process tags - find or create Tag records
+    const tagNames: string[] = Array.isArray(body.tags)
+      ? body.tags.filter((t: any) => typeof t === 'string' && t.trim()).slice(0, 20)
+      : []
+
+    const tagConnections: { articleId: string; tagId: string }[] = []
+
+    if (tagNames.length > 0) {
+      for (const tagName of tagNames) {
+        const trimmed = tagName.trim().slice(0, 50)
+        if (!trimmed) continue
+
+        const tagSlug = trimmed.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+
+        // Upsert: find existing tag or create new one
+        const tag = await prisma.tag.upsert({
+          where: { slug: tagSlug },
+          update: {},
+          create: {
+            name: trimmed,
+            slug: tagSlug,
+          },
+        })
+
+        tagConnections.push({ articleId: '', tagId: tag.id }) // articleId filled after create
+      }
+    }
+
     const article = await prisma.article.create({
       data: {
         title,
@@ -375,6 +403,9 @@ export async function POST(request: NextRequest) {
         references: referencesData.length > 0 ? {
           create: referencesData,
         } : undefined,
+        tags: tagConnections.length > 0 ? {
+          create: tagConnections.map(tc => ({ tagId: tc.tagId })),
+        } : undefined,
       },
       include: {
         category: true,
@@ -387,6 +418,9 @@ export async function POST(request: NextRequest) {
           },
         },
         references: true,
+        tags: {
+          include: { tag: true },
+        },
       },
     })
 
