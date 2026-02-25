@@ -149,6 +149,39 @@ export function ProgressiveSkyline() {
           80% { transform: translateX(-35px) translateY(-2px); }
         }
 
+        /* Constrained pasture roaming - shorter distance to stay within fences */
+        @keyframes pastureRoam {
+          0%, 100% { transform: translateX(0px) translateY(0); }
+          25% { transform: translateX(12px) translateY(-1px); }
+          50% { transform: translateX(25px) translateY(0); }
+          75% { transform: translateX(12px) translateY(-1px); }
+        }
+        @keyframes pastureRoamLeft {
+          0%, 100% { transform: translateX(0px) translateY(0); }
+          25% { transform: translateX(-12px) translateY(-1px); }
+          50% { transform: translateX(-25px) translateY(0); }
+          75% { transform: translateX(-12px) translateY(-1px); }
+        }
+        @keyframes sheepPastureRoam {
+          0%, 100% { transform: translateX(0px) translateY(0); }
+          25% { transform: translateX(10px) translateY(-1px); }
+          50% { transform: translateX(20px) translateY(0); }
+          75% { transform: translateX(10px) translateY(-1px); }
+        }
+
+        .animal-cow-pasture {
+          animation: pastureRoam 35s ease-in-out infinite;
+        }
+        .animal-cow-pasture-left {
+          animation: pastureRoamLeft 30s ease-in-out infinite;
+        }
+        .animal-sheep-pasture {
+          animation: sheepPastureRoam 25s ease-in-out infinite;
+        }
+        .face-cow-pasture { animation: faceFlip 35s linear infinite; }
+        .face-cow-pasture-left { animation: faceFlip 30s linear infinite; }
+        .face-sheep-pasture { animation: faceFlip 25s linear infinite; }
+
         .animal-horse {
           animation: roamWide 28s ease-in-out infinite;
         }
@@ -4062,7 +4095,7 @@ export function ProgressiveSkyline() {
                 {[
                   {x: 4070, dir: -1, y: -3, color: '#654321', chest: '#7a5230'},
                   {x: 4140, dir: 1, y: -1, color: '#8b6f47', chest: '#9a7a55'},
-                  {x: 4185, dir: -1, y: 1, color: '#4a3520', chest: '#5a3a25'},
+                  {x: 4185, dir: 1, y: 1, color: '#4a3520', chest: '#5a3a25'},
                 ].map((h, i) => (
                   <g key={`horse-end-${i}`} transform={`translate(0, ${h.y})`}>
                   <g className={h.dir > 0 ? "animal-horse-left" : "animal-horse"} style={{animationDelay: `${i * 3.7}s`, animationDuration: `${h.dir > 0 ? 32 + i * 5 : 28 + i * 7}s`}}>
@@ -4107,7 +4140,7 @@ export function ProgressiveSkyline() {
                   {x: 4718, dir: 1, y: 1},
                 ].map((c, i) => (
                   <g key={`cow-end-${i}`} transform={`translate(0, ${c.y + (c.inPasture ? 0 : 12)})`}>
-                  <g className={c.dir > 0 ? "animal-cow-left" : "animal-cow"} style={{animationDelay: `${i * 5.7}s`, animationDuration: `${c.dir > 0 ? 28 + i * 8 : 33 + i * 5}s`}}>
+                  <g className={c.inPasture ? (c.dir > 0 ? "animal-cow-pasture-left" : "animal-cow-pasture") : (c.dir > 0 ? "animal-cow-left" : "animal-cow")} style={{animationDelay: `${i * 5.7}s`, animationDuration: `${c.dir > 0 ? 28 + i * 8 : 33 + i * 5}s`}}>
                   <g transform={`translate(${c.x}, 203)`}>
                   <g style={{animation: `faceFlip ${c.dir > 0 ? 28 + i * 8 : 33 + i * 5}s linear infinite`, animationDelay: `${i * 5.7}s`}}>
                   <g transform={`translate(${-c.x}, -203)`} opacity="1">
@@ -4143,7 +4176,7 @@ export function ProgressiveSkyline() {
               {/* Sheep FLOCKS - Flock 2 in sheep pasture x=4245-4315, Flock 3 near x=4700 */}
               {/* Flock 2 - inside sheep pasture, grazing near x=4280 */}
               <g>
-                <g className="animal-sheep" style={{animationDuration: '42s'}}>
+                <g className="animal-sheep-pasture" style={{animationDuration: '42s'}}>
                   {[
                     {dx: -12, dy: 1},
                     {dx: 0, dy: -3},
