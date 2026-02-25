@@ -43,6 +43,14 @@ export async function POST(request: NextRequest) {
     const arrayBuffer = await file.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)
 
+    // Validate DOCX magic bytes (ZIP/PK signature)
+    if (buffer.length < 4 || buffer[0] !== 0x50 || buffer[1] !== 0x4B || buffer[2] !== 0x03 || buffer[3] !== 0x04) {
+      return NextResponse.json(
+        { success: false, error: 'File does not appear to be a valid .docx document' },
+        { status: 400 }
+      )
+    }
+
     // Extract HTML from docx using mammoth
     const result = await mammoth.convertToHtml({ buffer })
     const html = result.value || ''

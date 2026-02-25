@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
+import { sanitizeHtml, isValidUrl } from '@/lib/article/contentSecurity'
+
+/** Strip HTML tags from plain-text fields */
+function stripHtml(text: string): string {
+  return text.replace(/<[^>]*>/g, '').trim()
+}
 
 // Type for peer review with like count
 interface PeerReviewWithCount {
@@ -265,15 +271,15 @@ export async function PUT(
     const updatedArticle = await prisma.article.update({
       where: { id: article.id },
       data: {
-        title: body.title,
-        excerpt: body.excerpt,
-        content: body.content,
-        coverImage: body.coverImage,
+        title: body.title ? stripHtml(body.title) : undefined,
+        excerpt: body.excerpt ? stripHtml(body.excerpt) : undefined,
+        content: body.content ? sanitizeHtml(body.content) : undefined,
+        coverImage: body.coverImage ? (isValidUrl(body.coverImage) ? body.coverImage : null) : undefined,
         readTime,
         status: body.status,
         publishedAt: body.status === 'PUBLISHED' && !body.publishedAt ? new Date() : undefined,
-        seoTitle: body.seoTitle,
-        seoDescription: body.seoDescription,
+        seoTitle: body.seoTitle ? stripHtml(body.seoTitle) : undefined,
+        seoDescription: body.seoDescription ? stripHtml(body.seoDescription) : undefined,
       },
       include: {
         category: true,

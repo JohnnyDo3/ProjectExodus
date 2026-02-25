@@ -134,9 +134,10 @@ export function ReferencesWidget({ references = [], articleContent }: References
         </p>
 
         {displayedRefs.map((ref, index) => {
-          const hasUrl = ref.url && ref.url.trim().length > 0
-          const Wrapper = hasUrl ? 'a' : 'div'
-          const wrapperProps = hasUrl
+          // Only allow http/https URLs — block javascript:, data:, vbscript: etc.
+          const isSafeUrl = ref.url && ref.url.trim().length > 0 && /^https?:\/\//i.test(ref.url.trim())
+          const Wrapper = isSafeUrl ? 'a' : 'div'
+          const wrapperProps = isSafeUrl
             ? { href: ref.url!, target: '_blank', rel: 'noopener noreferrer' }
             : {}
 
@@ -152,7 +153,7 @@ export function ReferencesWidget({ references = [], articleContent }: References
             >
               {/* Icon */}
               <div className="w-6 h-6 rounded bg-[var(--background)] flex items-center justify-center flex-shrink-0 mt-0.5">
-                {hasUrl ? (
+                {isSafeUrl ? (
                   <>
                     <img
                       src={getFaviconUrl(ref.url!)}
@@ -173,7 +174,7 @@ export function ReferencesWidget({ references = [], articleContent }: References
                 <p className="font-bold text-sm text-[var(--foreground)] group-hover:text-theme-primary line-clamp-1">
                   {ref.title}
                 </p>
-                {hasUrl && (
+                {isSafeUrl && (
                   <p className="text-xs text-theme-muted truncate mt-0.5">
                     {getDomainFromUrl(ref.url!)}
                   </p>
@@ -190,7 +191,7 @@ export function ReferencesWidget({ references = [], articleContent }: References
                 )}
               </div>
 
-              {hasUrl && (
+              {isSafeUrl && (
                 <ExternalLink className="w-4 h-4 text-theme-muted group-hover:text-theme-primary flex-shrink-0 mt-1 opacity-0 group-hover:opacity-100 transition-opacity" />
               )}
             </Wrapper>

@@ -294,7 +294,7 @@ function containsSuspiciousPatterns(content: string): string[] {
 /**
  * Validate URL for safe protocols
  */
-function isValidUrl(url: string): boolean {
+export function isValidUrl(url: string): boolean {
   try {
     const parsed = new URL(url)
     // Only allow safe protocols

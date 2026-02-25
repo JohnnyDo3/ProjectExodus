@@ -45,6 +45,14 @@ export async function POST(request: NextRequest) {
     const arrayBuffer = await file.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)
 
+    // Validate PDF magic bytes (%PDF-)
+    if (buffer.length < 5 || buffer.subarray(0, 5).toString('ascii') !== '%PDF-') {
+      return NextResponse.json(
+        { success: false, error: 'File does not appear to be a valid PDF' },
+        { status: 400 }
+      )
+    }
+
     // Parse PDF using pdf-parse v2 API
     parser = new PDFParse({ data: buffer })
 
@@ -65,11 +73,18 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Get metadata if available
-    let info: Record<string, any> = {}
+    // Get metadata if available — sanitize string values to prevent XSS
+    let info: Record<string, string> = {}
     try {
       const infoResult = await parser.getInfo()
-      info = infoResult.info || {}
+      const rawInfo = infoResult.info || {}
+      // Only extract known safe string fields, strip any HTML
+      const safeFields = ['Title', 'Author', 'Subject', 'Creator', 'Producer']
+      for (const field of safeFields) {
+        if (rawInfo[field] && typeof rawInfo[field] === 'string') {
+          info[field] = rawInfo[field].replace(/<[^>]*>/g, '').slice(0, 500)
+        }
+      }
     } catch {
       // Info extraction is optional
     }

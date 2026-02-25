@@ -4,8 +4,20 @@ import { auth } from '@/auth'
 import {
   validateArticleContent,
   sanitizeHtml,
+  escapeHtml,
+  isValidUrl,
   CONTENT_LIMITS,
 } from '@/lib/article/contentSecurity'
+
+/** Strip HTML tags from plain-text fields to prevent stored XSS */
+function stripHtml(text: string): string {
+  return text.replace(/<[^>]*>/g, '').trim()
+}
+
+/** Sanitize a URL to only allow safe protocols, returns empty string for dangerous ones */
+function sanitizeUrl(url: string): string {
+  return isValidUrl(url) ? url : ''
+}
 
 // Type for article query results
 interface ArticleQueryResult {
@@ -250,9 +262,9 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Enforce length limits
-    const title = body.title.slice(0, CONTENT_LIMITS.MAX_TITLE_LENGTH)
-    const excerpt = (body.excerpt || '').slice(0, CONTENT_LIMITS.MAX_EXCERPT_LENGTH)
+    // Enforce length limits and strip HTML from plain-text fields
+    const title = stripHtml(body.title.slice(0, CONTENT_LIMITS.MAX_TITLE_LENGTH))
+    const excerpt = stripHtml((body.excerpt || '').slice(0, CONTENT_LIMITS.MAX_EXCERPT_LENGTH))
     const content = body.content.slice(0, CONTENT_LIMITS.MAX_CONTENT_LENGTH)
 
     // Full content validation
@@ -318,11 +330,12 @@ export async function POST(request: NextRequest) {
         categoryId = existingCategory.id
       } else {
         // Category doesn't exist, create it
+        const safeCategoryName = stripHtml(categoryId).slice(0, 100)
         const newCategory = await prisma.articleCategory.create({
           data: {
-            name: categoryId.charAt(0).toUpperCase() + categoryId.slice(1),
-            slug: categoryId.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-            description: `Articles about ${categoryId}`,
+            name: safeCategoryName.charAt(0).toUpperCase() + safeCategoryName.slice(1),
+            slug: safeCategoryName.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+            description: `Articles about ${safeCategoryName}`,
           },
         })
         categoryId = newCategory.id
@@ -347,12 +360,12 @@ export async function POST(request: NextRequest) {
     // Build references data if provided
     const referencesData = Array.isArray(body.references)
       ? body.references.slice(0, CONTENT_LIMITS.MAX_REFERENCES).map((ref: any, index: number) => ({
-          title: String(ref.title || 'Untitled').slice(0, CONTENT_LIMITS.MAX_REFERENCE_TITLE),
-          authors: ref.authors ? String(ref.authors).slice(0, 500) : null,
-          year: ref.year ? String(ref.year).slice(0, 10) : null,
-          url: ref.url ? String(ref.url).slice(0, CONTENT_LIMITS.MAX_REFERENCE_URL) : null,
-          publisher: ref.publisher ? String(ref.publisher).slice(0, 300) : null,
-          format: ref.format ? String(ref.format).slice(0, 20) : null,
+          title: stripHtml(String(ref.title || 'Untitled')).slice(0, CONTENT_LIMITS.MAX_REFERENCE_TITLE),
+          authors: ref.authors ? stripHtml(String(ref.authors)).slice(0, 500) : null,
+          year: ref.year ? String(ref.year).replace(/[^0-9\-\/\s]/g, '').slice(0, 10) : null,
+          url: ref.url ? sanitizeUrl(String(ref.url).slice(0, CONTENT_LIMITS.MAX_REFERENCE_URL)) || null : null,
+          publisher: ref.publisher ? stripHtml(String(ref.publisher)).slice(0, 300) : null,
+          format: ref.format ? stripHtml(String(ref.format)).slice(0, 20) : null,
           order: index,
         }))
       : []
@@ -366,7 +379,7 @@ export async function POST(request: NextRequest) {
 
     if (tagNames.length > 0) {
       for (const tagName of tagNames) {
-        const trimmed = tagName.trim().slice(0, 50)
+        const trimmed = stripHtml(tagName.trim()).slice(0, 50)
         if (!trimmed) continue
 
         const tagSlug = trimmed.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
@@ -391,15 +404,15 @@ export async function POST(request: NextRequest) {
         slug,
         excerpt: excerpt || sanitizedContent.replace(/<[^>]*>/g, '').substring(0, 200) + '...',
         content: sanitizedContent, // Use sanitized content
-        coverImage: body.coverImage || null,
+        coverImage: body.coverImage ? sanitizeUrl(String(body.coverImage)) || null : null,
         readTime,
         status: body.status || 'PUBLISHED',
         featured: false, // Only admins can feature articles
         publishedAt: body.status === 'DRAFT' ? null : new Date(),
         categoryId,
         authorId: session.user.id,
-        seoTitle: body.seoTitle || title,
-        seoDescription: body.seoDescription || excerpt,
+        seoTitle: stripHtml(String(body.seoTitle || title)).slice(0, CONTENT_LIMITS.MAX_TITLE_LENGTH),
+        seoDescription: stripHtml(String(body.seoDescription || excerpt)).slice(0, CONTENT_LIMITS.MAX_EXCERPT_LENGTH),
         references: referencesData.length > 0 ? {
           create: referencesData,
         } : undefined,
