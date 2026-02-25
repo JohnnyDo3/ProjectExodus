@@ -489,6 +489,71 @@ function suggestCategory(content: string): string | undefined {
 }
 
 /**
+ * Normalize PDF-extracted text to restore paragraph structure.
+ * PDF text extraction often collapses paragraph breaks to single newlines
+ * and introduces artifacts like page numbers, headers/footers, and
+ * inconsistent spacing.
+ */
+function normalizePdfText(text: string): string {
+  let result = text
+
+  // Remove common PDF artifacts: standalone page numbers
+  result = result.replace(/^\s*\d{1,4}\s*$/gm, '')
+
+  // Remove page boundary markers (e.g. "-- 1 of 10 --")
+  result = result.replace(/^-{2,}\s*\d+\s*(?:of|\/)\s*\d+\s*-{2,}$/gm, '')
+
+  // Detect if text uses single newlines between paragraphs (no double newlines at all)
+  const hasDoubleNewlines = /\n\s*\n/.test(result)
+
+  if (!hasDoubleNewlines) {
+    // Heuristic: if a line ends with sentence-ending punctuation and the
+    // next line starts with a capital letter or indent, treat it as a paragraph break.
+    // Also treat short lines followed by longer lines as breaks (headings, etc).
+    const lines = result.split('\n')
+    const normalized: string[] = []
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i]
+      const trimmed = line.trim()
+      const nextLine = i + 1 < lines.length ? lines[i + 1]?.trim() : ''
+
+      normalized.push(trimmed)
+
+      if (!trimmed) continue
+
+      // Insert paragraph break if:
+      // 1. Line ends with sentence punctuation and next starts with uppercase
+      const endsWithPunctuation = /[.!?:]\s*$/.test(trimmed)
+      const nextStartsWithCap = /^[A-Z"'\u201C\u201D]/.test(nextLine)
+
+      // 2. Short line (likely heading) followed by longer content
+      const isShortLine = trimmed.length < 60 && !endsWithPunctuation
+      const nextIsLonger = nextLine.length > 80
+
+      // 3. Line is a likely section header (all caps, short, no punctuation)
+      const isAllCaps = trimmed === trimmed.toUpperCase() && /[A-Z]/.test(trimmed) && trimmed.length < 80
+
+      if (
+        nextLine &&
+        ((endsWithPunctuation && nextStartsWithCap) ||
+         (isShortLine && nextIsLonger) ||
+         isAllCaps)
+      ) {
+        normalized.push('') // Insert blank line = paragraph break
+      }
+    }
+
+    result = normalized.join('\n')
+  }
+
+  // Clean up excessive blank lines (3+ → 2)
+  result = result.replace(/\n{3,}/g, '\n\n')
+
+  return result.trim()
+}
+
+/**
  * Convert plain text to basic HTML
  */
 function textToHtml(text: string): string {
@@ -542,7 +607,10 @@ function textToHtml(text: string): string {
  */
 export function parseContent(rawContent: string): ParsedContent {
   // Normalize line endings
-  const normalized = rawContent.replace(/\r\n/g, '\n').replace(/\r/g, '\n')
+  let normalized = rawContent.replace(/\r\n/g, '\n').replace(/\r/g, '\n')
+
+  // Normalize PDF-extracted text (restores paragraph breaks, removes artifacts)
+  normalized = normalizePdfText(normalized)
 
   // Extract works cited section
   const { body: bodyWithRefs, references } = extractWorksCited(normalized)

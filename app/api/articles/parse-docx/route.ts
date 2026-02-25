@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
+import { CONTENT_LIMITS } from '@/lib/article/contentSecurity'
 import mammoth from 'mammoth'
-
-const MAX_DOCX_FILE_SIZE = 20 * 1024 * 1024 // 20MB
 
 export async function POST(request: NextRequest) {
   try {
@@ -33,9 +32,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate file size
-    if (file.size > MAX_DOCX_FILE_SIZE) {
+    if (file.size > CONTENT_LIMITS.MAX_DOCX_FILE_SIZE) {
       return NextResponse.json(
-        { success: false, error: `File is too large (max ${MAX_DOCX_FILE_SIZE / (1024 * 1024)}MB)` },
+        { success: false, error: `File is too large (max ${CONTENT_LIMITS.MAX_DOCX_FILE_SIZE / (1024 * 1024)}MB)` },
         { status: 400 }
       )
     }

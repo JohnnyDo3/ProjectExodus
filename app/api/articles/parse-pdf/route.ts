@@ -45,25 +45,31 @@ export async function POST(request: NextRequest) {
     const arrayBuffer = await file.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)
 
-    // Parse PDF
+    // Parse PDF using pdf-parse v2 API
     parser = new PDFParse({ data: buffer })
-    const textResult = await parser.getText()
+
+    // Extract text — getText() returns TextResult { text, pages, total }
+    const textResult = await parser.getText({
+      lineEnforce: true,
+      lineThreshold: 4.6,
+      pageJoiner: '\n\n',
+    })
 
     const text = textResult.text || ''
-    const numPages = textResult.total || textResult.pages?.length || 0
+    const numPages = textResult.total || 0
 
     if (!text.trim()) {
       return NextResponse.json(
-        { success: false, error: 'Could not extract text from PDF. The file may be image-only or corrupted.' },
+        { success: false, error: 'Could not extract text from PDF. The file may be image-only or corrupted. Try copying and pasting your content instead.' },
         { status: 400 }
       )
     }
 
     // Get metadata if available
-    let info = {}
+    let info: Record<string, any> = {}
     try {
       const infoResult = await parser.getInfo()
-      info = infoResult || {}
+      info = infoResult.info || {}
     } catch {
       // Info extraction is optional
     }
