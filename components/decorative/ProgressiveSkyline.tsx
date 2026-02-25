@@ -3812,48 +3812,6 @@ export function ProgressiveSkyline() {
                 <rect x="3897" y="210.5" width="1" height="1.5" fill="#5a6a6a" opacity="0.8" />
                 <rect x="3901" y="210.5" width="1" height="1.5" fill="#5a6a6a" opacity="0.8" />
 
-                {/* Wooden fence - ranch-style split rail, connected to barn left wall */}
-                {/* Fence posts */}
-                {[3875, 3898, 3921, 3944].map((px, pi) => (
-                  <g key={`pasture-post-${pi}`}>
-                    <rect x={px} y="203" width="2" height="10" fill="#8b7355" opacity="1" />
-                    {/* Post cap - slightly wider */}
-                    <rect x={px - 0.3} y="202.5" width="2.6" height="1" fill="#7a6345" opacity="1" />
-                  </g>
-                ))}
-                {/* Connection post at barn wall */}
-                <rect x="3968" y="203" width="2" height="10" fill="#8b7355" opacity="1" />
-                <rect x="3967.7" y="202.5" width="2.6" height="1" fill="#7a6345" opacity="1" />
-
-                {/* Top rail */}
-                <rect x="3875" y="205" width="95" height="1.2" fill="#a08060" opacity="1" />
-                {/* Bottom rail */}
-                <rect x="3875" y="209" width="95" height="1.2" fill="#a08060" opacity="1" />
-
-                {/* Rail wood grain detail */}
-                <path d="M 3880,205.6 L 3920,205.4 M 3925,205.5 L 3965,205.7" stroke="#8a6a4a" strokeWidth="0.2" opacity="0.5" />
-                <path d="M 3880,209.6 L 3920,209.4 M 3925,209.5 L 3965,209.7" stroke="#8a6a4a" strokeWidth="0.2" opacity="0.5" />
-
-                {/* Gate - closed, flush with fence line */}
-                {/* Gate hinge post (left side) */}
-                <rect x="3869" y="203" width="2" height="10" fill="#8b7355" opacity="1" />
-                <rect x="3868.7" y="202.5" width="2.6" height="1" fill="#7a6345" opacity="1" />
-                {/* Gate latch post (connects to first fence post at 3875) */}
-                {/* Gate frame - horizontal top and bottom rails */}
-                <rect x="3871" y="205" width="4" height="1" fill="#a08060" opacity="1" />
-                <rect x="3871" y="209.2" width="4" height="1" fill="#a08060" opacity="1" />
-                {/* Gate vertical boards */}
-                <rect x="3871.2" y="205" width="0.8" height="5.2" fill="#9a7050" opacity="1" />
-                <rect x="3872.5" y="205" width="0.8" height="5.2" fill="#a08060" opacity="1" />
-                <rect x="3873.8" y="205" width="0.8" height="5.2" fill="#9a7050" opacity="1" />
-                {/* Gate diagonal brace - Z pattern for strength */}
-                <path d="M 3871,205.5 L 3875,207.5 L 3871,209.5" stroke="#8a6a4a" strokeWidth="0.5" fill="none" opacity="0.7" />
-                {/* Hinge hardware on hinge post */}
-                <rect x="3870.5" y="205.5" width="1" height="0.6" fill="#3a3a3a" opacity="0.9" />
-                <rect x="3870.5" y="209" width="1" height="0.6" fill="#3a3a3a" opacity="0.9" />
-                {/* Latch on right side */}
-                <rect x="3874.5" y="207" width="1" height="0.5" fill="#3a3a3a" opacity="0.9" />
-                <circle cx="3875" cy="207.25" r="0.3" fill="#5a5a5a" opacity="0.8" />
               </g>
 
               {/* ===== MERGED HORSE PASTURE - right of Barn 1 silo (x=4040-4205) ===== */}
@@ -3871,20 +3829,6 @@ export function ProgressiveSkyline() {
                 <rect x="4151" y="208" width="6" height="2" rx="0.3" fill="#5a8aaa" opacity="0.7" />
                 <rect x="4152" y="210.5" width="1" height="1.5" fill="#5a6a6a" opacity="0.8" />
                 <rect x="4156" y="210.5" width="1" height="1.5" fill="#5a6a6a" opacity="0.8" />
-                {/* Fence posts - continuous from x=4040 to x=4205 */}
-                {[4040, 4055, 4070, 4085, 4100, 4115, 4130, 4145, 4160, 4175, 4190, 4205].map((px, i) => (
-                  <g key={`horse-pasture-post-${i}`}>
-                    <rect x={px - 1} y="203" width="2.5" height="10" fill="#8b7355" opacity="1" />
-                    <rect x={px - 1.3} y="202.5" width="3" height="1" fill="#7a6345" opacity="1" />
-                  </g>
-                ))}
-                {/* Top rail - full span */}
-                <rect x="4040" y="205" width="165" height="1.2" fill="#a08060" opacity="1" />
-                {/* Bottom rail - full span */}
-                <rect x="4040" y="209" width="165" height="1.2" fill="#a08060" opacity="1" />
-                {/* Rail wood grain */}
-                <path d="M 4045,205.6 L 4085,205.4 M 4090,205.5 L 4130,205.7 M 4135,205.5 L 4175,205.3 M 4180,205.6 L 4200,205.4" stroke="#8a6a4a" strokeWidth="0.2" opacity="0.5" />
-                <path d="M 4045,209.6 L 4085,209.4 M 4090,209.5 L 4130,209.7 M 4135,209.5 L 4175,209.3 M 4180,209.6 L 4200,209.4" stroke="#8a6a4a" strokeWidth="0.2" opacity="0.5" />
               </g>
 
               {/* ===== SHEEP PASTURE - left of farmhouse (x=4245-4315) ===== */}
@@ -3895,20 +3839,6 @@ export function ProgressiveSkyline() {
                 {/* Small hay scatter */}
                 <ellipse cx="4258" cy="209" rx="3" ry="1" fill="#d4b874" opacity="0.35" />
                 <ellipse cx="4300" cy="208.5" rx="3.5" ry="1.2" fill="#d4b874" opacity="0.35" />
-                {/* Fence posts */}
-                {[4245, 4260, 4275, 4290, 4305, 4315].map((px, i) => (
-                  <g key={`sheep-pasture-post-${i}`}>
-                    <rect x={px - 1} y="203" width="2.5" height="10" fill="#8b7355" opacity="1" />
-                    <rect x={px - 1.3} y="202.5" width="3" height="1" fill="#7a6345" opacity="1" />
-                  </g>
-                ))}
-                {/* Top rail */}
-                <rect x="4245" y="205" width="70" height="1.2" fill="#a08060" opacity="1" />
-                {/* Bottom rail */}
-                <rect x="4245" y="209" width="70" height="1.2" fill="#a08060" opacity="1" />
-                {/* Rail wood grain */}
-                <path d="M 4250,205.6 L 4280,205.4 M 4285,205.5 L 4310,205.7" stroke="#8a6a4a" strokeWidth="0.2" opacity="0.5" />
-                <path d="M 4250,209.6 L 4280,209.4 M 4285,209.5 L 4310,209.7" stroke="#8a6a4a" strokeWidth="0.2" opacity="0.5" />
               </g>
 
               {/* Enhanced Farmhouses with porches, shutters, smoke */}
@@ -4357,6 +4287,70 @@ export function ProgressiveSkyline() {
                     <rect x="4393.5" y="210.5" width="0.6" height="1.5" fill="#e8a020" />
                   </g>
                 ))}
+              </g>
+
+              {/* ===== PASTURE FENCES - rendered AFTER animals so fences appear in front ===== */}
+
+              {/* COW PASTURE fence (x=3869-3968) */}
+              <g>
+                {/* Fence posts */}
+                {[3875, 3898, 3921, 3944].map((px, pi) => (
+                  <g key={`pasture-post-${pi}`}>
+                    <rect x={px} y="203" width="2" height="10" fill="#8b7355" opacity="1" />
+                    <rect x={px - 0.3} y="202.5" width="2.6" height="1" fill="#7a6345" opacity="1" />
+                  </g>
+                ))}
+                {/* Connection post at barn wall */}
+                <rect x="3968" y="203" width="2" height="10" fill="#8b7355" opacity="1" />
+                <rect x="3967.7" y="202.5" width="2.6" height="1" fill="#7a6345" opacity="1" />
+                {/* Top rail */}
+                <rect x="3875" y="205" width="95" height="1.2" fill="#a08060" opacity="1" />
+                {/* Bottom rail */}
+                <rect x="3875" y="209" width="95" height="1.2" fill="#a08060" opacity="1" />
+                {/* Rail wood grain */}
+                <path d="M 3880,205.6 L 3920,205.4 M 3925,205.5 L 3965,205.7" stroke="#8a6a4a" strokeWidth="0.2" opacity="0.5" />
+                <path d="M 3880,209.6 L 3920,209.4 M 3925,209.5 L 3965,209.7" stroke="#8a6a4a" strokeWidth="0.2" opacity="0.5" />
+                {/* Gate */}
+                <rect x="3869" y="203" width="2" height="10" fill="#8b7355" opacity="1" />
+                <rect x="3868.7" y="202.5" width="2.6" height="1" fill="#7a6345" opacity="1" />
+                <rect x="3871" y="205" width="4" height="1" fill="#a08060" opacity="1" />
+                <rect x="3871" y="209.2" width="4" height="1" fill="#a08060" opacity="1" />
+                <rect x="3871.2" y="205" width="0.8" height="5.2" fill="#9a7050" opacity="1" />
+                <rect x="3872.5" y="205" width="0.8" height="5.2" fill="#a08060" opacity="1" />
+                <rect x="3873.8" y="205" width="0.8" height="5.2" fill="#9a7050" opacity="1" />
+                <path d="M 3871,205.5 L 3875,207.5 L 3871,209.5" stroke="#8a6a4a" strokeWidth="0.5" fill="none" opacity="0.7" />
+                <rect x="3870.5" y="205.5" width="1" height="0.6" fill="#3a3a3a" opacity="0.9" />
+                <rect x="3870.5" y="209" width="1" height="0.6" fill="#3a3a3a" opacity="0.9" />
+                <rect x="3874.5" y="207" width="1" height="0.5" fill="#3a3a3a" opacity="0.9" />
+                <circle cx="3875" cy="207.25" r="0.3" fill="#5a5a5a" opacity="0.8" />
+              </g>
+
+              {/* HORSE PASTURE fence (x=4040-4205) */}
+              <g>
+                {[4040, 4055, 4070, 4085, 4100, 4115, 4130, 4145, 4160, 4175, 4190, 4205].map((px, i) => (
+                  <g key={`horse-pasture-post-${i}`}>
+                    <rect x={px - 1} y="203" width="2.5" height="10" fill="#8b7355" opacity="1" />
+                    <rect x={px - 1.3} y="202.5" width="3" height="1" fill="#7a6345" opacity="1" />
+                  </g>
+                ))}
+                <rect x="4040" y="205" width="165" height="1.2" fill="#a08060" opacity="1" />
+                <rect x="4040" y="209" width="165" height="1.2" fill="#a08060" opacity="1" />
+                <path d="M 4045,205.6 L 4085,205.4 M 4090,205.5 L 4130,205.7 M 4135,205.5 L 4175,205.3 M 4180,205.6 L 4200,205.4" stroke="#8a6a4a" strokeWidth="0.2" opacity="0.5" />
+                <path d="M 4045,209.6 L 4085,209.4 M 4090,209.5 L 4130,209.7 M 4135,209.5 L 4175,209.3 M 4180,209.6 L 4200,209.4" stroke="#8a6a4a" strokeWidth="0.2" opacity="0.5" />
+              </g>
+
+              {/* SHEEP PASTURE fence (x=4245-4315) */}
+              <g>
+                {[4245, 4260, 4275, 4290, 4305, 4315].map((px, i) => (
+                  <g key={`sheep-pasture-post-${i}`}>
+                    <rect x={px - 1} y="203" width="2.5" height="10" fill="#8b7355" opacity="1" />
+                    <rect x={px - 1.3} y="202.5" width="3" height="1" fill="#7a6345" opacity="1" />
+                  </g>
+                ))}
+                <rect x="4245" y="205" width="70" height="1.2" fill="#a08060" opacity="1" />
+                <rect x="4245" y="209" width="70" height="1.2" fill="#a08060" opacity="1" />
+                <path d="M 4250,205.6 L 4280,205.4 M 4285,205.5 L 4310,205.7" stroke="#8a6a4a" strokeWidth="0.2" opacity="0.5" />
+                <path d="M 4250,209.6 L 4280,209.4 M 4285,209.5 L 4310,209.7" stroke="#8a6a4a" strokeWidth="0.2" opacity="0.5" />
               </g>
 
               {/* White picket fences - rendered AFTER animals so fence appears in front */}
