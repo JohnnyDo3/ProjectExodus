@@ -1,0 +1,84 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { auth } from '@/auth'
+import { CONTENT_LIMITS } from '@/lib/article/contentSecurity'
+import { PDFParse } from 'pdf-parse'
+
+export async function POST(request: NextRequest) {
+  try {
+    const session = await auth()
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
+    const formData = await request.formData()
+    const file = formData.get('pdf') as File | null
+
+    if (!file) {
+      return NextResponse.json(
+        { success: false, error: 'No PDF file provided' },
+        { status: 400 }
+      )
+    }
+
+    // Validate file type
+    if (!file.name.toLowerCase().endsWith('.pdf')) {
+      return NextResponse.json(
+        { success: false, error: 'File must be a PDF' },
+        { status: 400 }
+      )
+    }
+
+    // Validate file size
+    if (file.size > CONTENT_LIMITS.MAX_PDF_FILE_SIZE) {
+      return NextResponse.json(
+        { success: false, error: `PDF is too large (max ${CONTENT_LIMITS.MAX_PDF_FILE_SIZE / (1024 * 1024)}MB)` },
+        { status: 400 }
+      )
+    }
+
+    // Read file into buffer
+    const arrayBuffer = await file.arrayBuffer()
+    const buffer = Buffer.from(arrayBuffer)
+
+    // Parse PDF using pdf-parse class API
+    const parser = new PDFParse({ data: buffer })
+    const textResult = await parser.getText()
+
+    const text = textResult.text || ''
+    const numPages = textResult.pages?.length || 0
+
+    if (!text.trim()) {
+      return NextResponse.json(
+        { success: false, error: 'Could not extract text from PDF. The file may be image-only or corrupted.' },
+        { status: 400 }
+      )
+    }
+
+    // Get metadata if available
+    let info = {}
+    try {
+      const infoResult = await parser.getInfo()
+      info = infoResult || {}
+    } catch {
+      // Info extraction is optional
+    }
+
+    return NextResponse.json({
+      success: true,
+      data: {
+        text,
+        numPages,
+        info,
+      },
+    })
+  } catch (error) {
+    console.error('PDF parse error:', error)
+    return NextResponse.json(
+      { success: false, error: 'Failed to parse PDF. Please try copying and pasting your content instead.' },
+      { status: 500 }
+    )
+  }
+}

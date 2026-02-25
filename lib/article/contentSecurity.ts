@@ -424,14 +424,18 @@ function validateContent(content: string): { errors: string[]; warnings: string[
     errors.push(`Article must have at least ${CONTENT_LIMITS.MIN_WORDS} words (currently ${wordCount})`)
   }
 
-  if (wordCount > CONTENT_LIMITS.MAX_WORDS) {
-    errors.push(`Article exceeds maximum of ${CONTENT_LIMITS.MAX_WORDS} words (currently ${wordCount})`)
-  }
+  // No max word limit - accept papers of any length
 
   // Check for dangerous patterns
   const dangerous = containsDangerousPatterns(content)
   if (dangerous.length > 0) {
     errors.push(...dangerous.map(d => `Security violation: ${d}`))
+  }
+
+  // Check for programming code content
+  const codeCheck = containsCodeLanguage(content)
+  if (codeCheck.isCode) {
+    errors.push(`Security violation: ${codeCheck.detail}`)
   }
 
   // Check for suspicious patterns (warnings only)
@@ -579,36 +583,37 @@ export function validateFileUpload(file: {
   name: string
   size: number
   type: string
-}): { isValid: boolean; error?: string } {
-  // Allowed file types
-  const allowedTypes = [
-    'text/plain',
-    'text/markdown',
-    'application/octet-stream',  // Some .md files
-  ]
+}): { isValid: boolean; error?: string; isPdf?: boolean } {
+  const lowerName = file.name.toLowerCase()
 
+  // PDF files
+  if (lowerName.endsWith('.pdf')) {
+    if (file.size > CONTENT_LIMITS.MAX_PDF_FILE_SIZE) {
+      return {
+        isValid: false,
+        error: `PDF is too large (max ${CONTENT_LIMITS.MAX_PDF_FILE_SIZE / (1024 * 1024)}MB).`,
+      }
+    }
+    return { isValid: true, isPdf: true }
+  }
+
+  // Text/Markdown files
   const allowedExtensions = ['.txt', '.md']
-
-  // Check extension
-  const hasValidExtension = allowedExtensions.some(ext =>
-    file.name.toLowerCase().endsWith(ext)
-  )
+  const hasValidExtension = allowedExtensions.some(ext => lowerName.endsWith(ext))
 
   if (!hasValidExtension) {
     return {
       isValid: false,
-      error: 'Only .txt and .md files are allowed. Please copy and paste your content instead.'
+      error: 'Only .txt, .md, and .pdf files are allowed.',
     }
   }
 
-  // Check size (max 1MB)
-  const maxSize = 1024 * 1024  // 1MB
-  if (file.size > maxSize) {
+  if (file.size > CONTENT_LIMITS.MAX_TEXT_FILE_SIZE) {
     return {
       isValid: false,
-      error: 'File is too large (max 1MB). Please copy and paste your content instead.'
+      error: `File is too large (max ${CONTENT_LIMITS.MAX_TEXT_FILE_SIZE / (1024 * 1024)}MB). Please copy and paste your content instead.`,
     }
   }
 
-  return { isValid: true }
+  return { isValid: true, isPdf: false }
 }

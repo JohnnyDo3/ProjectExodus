@@ -12,7 +12,7 @@ import Subscript from '@tiptap/extension-subscript'
 import Superscript from '@tiptap/extension-superscript'
 import { TextStyle } from '@tiptap/extension-text-style'
 import { Color } from '@tiptap/extension-color'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useRef } from 'react'
 import {
   Bold,
   Italic,
@@ -26,6 +26,7 @@ import {
   Heading3,
   Link as LinkIcon,
   Image as ImageIcon,
+  Upload,
   Undo,
   Redo,
   Code,
@@ -133,7 +134,10 @@ export default function TipTapEditor({
   onPaste,
 }: TipTapEditorProps) {
   const [showColorPicker, setShowColorPicker] = useState(false)
+  const [showImageMenu, setShowImageMenu] = useState(false)
+  const [imageUploading, setImageUploading] = useState(false)
   const [citationNotification, setCitationNotification] = useState<ParsedCitation | null>(null)
+  const imageInputRef = useRef<HTMLInputElement>(null)
 
   const editor = useEditor({
     extensions: [
@@ -220,10 +224,57 @@ export default function TipTapEditor({
     }
   }
 
-  const addImage = () => {
+  const addImageFromUrl = () => {
     const url = window.prompt('Enter image URL:')
     if (url) {
       editor.chain().focus().setImage({ src: url }).run()
+    }
+    setShowImageMenu(false)
+  }
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp']
+    if (!allowedTypes.includes(file.type)) {
+      alert('Only JPEG, PNG, and WebP images are allowed.')
+      e.target.value = ''
+      return
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image must be under 5MB.')
+      e.target.value = ''
+      return
+    }
+
+    setImageUploading(true)
+    setShowImageMenu(false)
+    try {
+      const reader = new FileReader()
+      const base64 = await new Promise<string>((resolve, reject) => {
+        reader.onload = () => resolve(reader.result as string)
+        reader.onerror = reject
+        reader.readAsDataURL(file)
+      })
+
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: base64, folder: 'articles' }),
+      })
+
+      const data = await res.json()
+      if (data.success && data.data?.url) {
+        editor.chain().focus().setImage({ src: data.data.url }).run()
+      } else {
+        alert(data.error || 'Failed to upload image.')
+      }
+    } catch {
+      alert('Failed to upload image. Please try again.')
+    } finally {
+      setImageUploading(false)
+      e.target.value = ''
     }
   }
 
@@ -532,14 +583,45 @@ export default function TipTapEditor({
           >
             <LinkIcon size={18} />
           </button>
-          <button
-            type="button"
-            onClick={addImage}
-            className="toolbar-btn"
-            title="Add Image"
-          >
-            <ImageIcon size={18} />
-          </button>
+          <div className="image-picker-wrapper">
+            <button
+              type="button"
+              onClick={() => setShowImageMenu(!showImageMenu)}
+              className={`toolbar-btn ${imageUploading ? 'active' : ''}`}
+              title="Add Image"
+              disabled={imageUploading}
+            >
+              {imageUploading ? <Upload size={18} className="animate-pulse" /> : <ImageIcon size={18} />}
+            </button>
+            {showImageMenu && (
+              <div className="image-picker-dropdown">
+                <button
+                  type="button"
+                  onClick={addImageFromUrl}
+                  className="image-picker-option"
+                >
+                  <LinkIcon size={14} />
+                  <span>From URL</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { imageInputRef.current?.click(); }}
+                  className="image-picker-option"
+                >
+                  <Upload size={14} />
+                  <span>Upload File</span>
+                </button>
+              </div>
+            )}
+            <input
+              ref={imageInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              onChange={handleImageUpload}
+              className="hidden"
+              style={{ display: 'none' }}
+            />
+          </div>
         </div>
 
         <div className="toolbar-divider" />
@@ -689,8 +771,45 @@ export default function TipTapEditor({
           cursor: not-allowed;
         }
 
-        .color-picker-wrapper {
+        .color-picker-wrapper,
+        .image-picker-wrapper {
           position: relative;
+        }
+
+        .image-picker-dropdown {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          z-index: 50;
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          padding: 6px;
+          background: var(--card);
+          border: 1px solid var(--border);
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          margin-top: 4px;
+          min-width: 140px;
+        }
+
+        .image-picker-option {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 8px 12px;
+          font-size: 13px;
+          color: var(--foreground);
+          background: transparent;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          white-space: nowrap;
+          transition: background 0.15s ease;
+        }
+
+        .image-picker-option:hover {
+          background: var(--muted);
         }
 
         .color-picker-dropdown {

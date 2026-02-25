@@ -277,15 +277,7 @@ export default function WriteArticlePage() {
           { icon: <Sparkles className="w-4 h-4" /> }
         )
 
-        // Show word count warning if too short
-        if (wordCount < CONTENT_LIMITS.MIN_WORDS) {
-          setTimeout(() => {
-            toast(
-              `Article needs at least ${CONTENT_LIMITS.MIN_WORDS} words to publish (currently ${wordCount}).`,
-              { icon: '📝', duration: 6000 }
-            )
-          }, 1000)
-        }
+        // Note: no max word warning - papers of any length are accepted
       } catch (error) {
         console.error('Parse error:', error)
         toast.error('Failed to parse content. Please try again.')
@@ -295,7 +287,7 @@ export default function WriteArticlePage() {
     }, 500)
   }, [pastedContent])
 
-  // Handle file upload with security validation
+  // Handle file upload with security validation (supports .txt, .md, .pdf)
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
@@ -309,24 +301,56 @@ export default function WriteArticlePage() {
 
     if (!fileValidation.isValid) {
       toast.error(fileValidation.error || 'Invalid file')
-      // Clear the input
       e.target.value = ''
       return
     }
 
     try {
-      const text = await file.text()
+      // PDF files need server-side parsing
+      if (fileValidation.isPdf) {
+        toast('Extracting text from PDF...', { icon: '📄', duration: 4000 })
+        const formData = new FormData()
+        formData.append('pdf', file)
 
-      // Quick security check on file contents
-      const contentCheck = quickValidatePastedContent(text)
-      if (!contentCheck.isValid) {
-        toast.error(contentCheck.error || 'File contains invalid content')
-        e.target.value = ''
-        return
+        const res = await fetch('/api/articles/parse-pdf', {
+          method: 'POST',
+          body: formData,
+        })
+
+        const data = await res.json()
+        if (!data.success) {
+          toast.error(data.error || 'Failed to parse PDF')
+          e.target.value = ''
+          return
+        }
+
+        setPastedContent(data.data.text)
+        toast.success(
+          `PDF loaded! ${data.data.numPages} page(s) extracted. Click "Parse & Preview" to continue.`
+        )
+        if (data.data.numPages > 5) {
+          setTimeout(() => {
+            toast(
+              'Tip: If your paper has images, you can add them in the editor after parsing using the image button.',
+              { icon: '🖼️', duration: 8000 }
+            )
+          }, 1500)
+        }
+      } else {
+        // Text/Markdown files
+        const text = await file.text()
+
+        // Quick security check on file contents
+        const contentCheck = quickValidatePastedContent(text)
+        if (!contentCheck.isValid) {
+          toast.error(contentCheck.error || 'File contains invalid content')
+          e.target.value = ''
+          return
+        }
+
+        setPastedContent(text)
+        toast.success('File loaded! Click "Parse & Preview" to continue.')
       }
-
-      setPastedContent(text)
-      toast.success('File loaded! Click "Parse & Preview" to continue.')
     } catch (error) {
       console.error('File read error:', error)
       toast.error('Failed to read file. Please try copying and pasting instead.')
@@ -529,7 +553,7 @@ export default function WriteArticlePage() {
                   Paste Your Work
                 </h2>
                 <p className="text-lg text-[var(--muted-foreground)] max-w-2xl mx-auto">
-                  Copy and paste your research paper, essay, or article below.
+                  Copy and paste your research paper, essay, or article below, or upload a PDF.
                   We'll automatically detect your title, content, and works cited section.
                 </p>
               </div>
@@ -585,7 +609,7 @@ We support MLA, APA, and Chicago citation formats."
                 <input
                   ref={fileInputRef}
                   type="file"
-                  accept=".txt,.md"
+                  accept=".txt,.md,.pdf"
                   onChange={handleFileUpload}
                   className="hidden"
                 />
@@ -595,8 +619,23 @@ We support MLA, APA, and Chicago citation formats."
               <div className="mt-12 p-6 bg-[var(--muted)]/50 rounded-xl">
                 <h3 className="font-bold text-[var(--foreground)] mb-4 flex items-center gap-2">
                   <BookOpen className="w-5 h-5 text-[var(--primary)]" />
-                  Supported Citation Formats
+                  Supported Formats
                 </h3>
+                <div className="grid sm:grid-cols-2 gap-4 mb-4">
+                  <div className="p-4 bg-[var(--background)] rounded-lg">
+                    <h4 className="font-bold text-[var(--foreground)] mb-2">File Uploads</h4>
+                    <p className="text-sm text-[var(--muted-foreground)]">
+                      PDF, TXT, and Markdown (.md) files. PDFs up to 20MB with text extraction.
+                    </p>
+                  </div>
+                  <div className="p-4 bg-[var(--background)] rounded-lg">
+                    <h4 className="font-bold text-[var(--foreground)] mb-2">Images</h4>
+                    <p className="text-sm text-[var(--muted-foreground)]">
+                      Add images in the editor via upload or URL. JPEG, PNG, and WebP supported.
+                    </p>
+                  </div>
+                </div>
+                <h4 className="font-semibold text-[var(--foreground)] mb-3 text-sm">Citation Formats</h4>
                 <div className="grid sm:grid-cols-3 gap-4">
                   <div className="p-4 bg-[var(--background)] rounded-lg">
                     <h4 className="font-bold text-[var(--foreground)] mb-2">MLA</h4>

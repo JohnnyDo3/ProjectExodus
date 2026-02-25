@@ -273,7 +273,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // For publishing, enforce minimum word count
+    // For publishing, enforce minimum word count (no maximum - accept papers of any length)
     const isPublishing = body.status !== 'DRAFT'
     if (isPublishing && validation.stats.wordCount < CONTENT_LIMITS.MIN_WORDS) {
       return NextResponse.json(
