@@ -3622,7 +3622,7 @@ export function ProgressiveSkyline() {
                 <ellipse cx="4717.5" cy="203" rx="6" ry="2" fill="#2f3f2f" />
                 <ellipse cx="4908" cy="203" rx="18" ry="2.5" fill="#2f3f2f" />
                 {/* Farmhouse shadows */}
-                <ellipse cx="4089" cy="206" rx="12" ry="2" fill="#2f3f2f" />
+                <ellipse cx="4352" cy="206" rx="22" ry="2.5" fill="#2f3f2f" />
                 <ellipse cx="4857" cy="206" rx="9" ry="2" fill="#2f3f2f" />
                 {/* Tractor shadows */}
                 <ellipse cx="4059" cy="208" rx="10" ry="2" fill="#2f3f2f" />
@@ -3799,15 +3799,11 @@ export function ProgressiveSkyline() {
                 <rect x="4919.5" y="183" width="1.5" height="19" fill="#a83232" opacity="0.8" />
               </g>
 
-              {/* ===== FENCED HORSE PASTURE - connected to left side of Barn 1 (x=3969) ===== */}
+              {/* ===== FENCED COW PASTURE - connected to left side of Barn 1 (x=3969) ===== */}
               <g>
                 {/* Pasture grass - lush green patch */}
                 <ellipse cx="3922" cy="208" rx="48" ry="5" fill="#8ab88a" opacity="0.5" />
                 <ellipse cx="3922" cy="209" rx="42" ry="3.5" fill="#7aaa7a" opacity="0.3" />
-
-                {/* Hay pile in corner near barn */}
-                <ellipse cx="3963" cy="208" rx="5" ry="2" fill="#d4b874" opacity="0.6" />
-                <ellipse cx="3963" cy="207" rx="4" ry="1.5" fill="#c8a860" opacity="0.5" />
 
                 {/* Water trough - positioned behind fence (rendered before fence) */}
                 <rect x="3895" y="207.5" width="8" height="3" rx="0.5" fill="#7a8a9a" opacity="0.9" />
@@ -3815,103 +3811,6 @@ export function ProgressiveSkyline() {
                 {/* Trough legs */}
                 <rect x="3897" y="210.5" width="1" height="1.5" fill="#5a6a6a" opacity="0.8" />
                 <rect x="3901" y="210.5" width="1" height="1.5" fill="#5a6a6a" opacity="0.8" />
-
-                {/* Static horses grazing/standing in pasture */}
-                {/* Horse 1 - dark brown, facing right, grazing */}
-                <g>
-                  <rect x="3893" y="201" width="12" height="7" fill="#654321" />
-                  <rect x="3901" y="201" width="4" height="7" fill="#7a5230" />
-                  {/* Neck angled down (grazing) */}
-                  <rect x="3905" y="204" width="2.5" height="5" fill="#654321" transform="rotate(25, 3905, 204)" />
-                  {/* Head down near grass */}
-                  <rect x="3907" y="208" width="4.5" height="3.5" fill="#654321" />
-                  <rect x="3910.5" y="210" width="1.5" height="1.5" fill="#7a5230" />
-                  <rect x="3909" y="209" width="0.8" height="0.8" fill="#2f2f2f" />
-                  <rect x="3911.5" y="210.5" width="0.4" height="0.4" fill="#3a2a1a" />
-                  {/* Ears */}
-                  <rect x="3907.5" y="206.5" width="0.8" height="1.5" fill="#654321" />
-                  <rect x="3909" y="206.5" width="0.8" height="1.5" fill="#654321" />
-                  {/* Mane */}
-                  <rect x="3905" y="203.5" width="1" height="4" fill="#4a3520" />
-                  {/* Legs */}
-                  <rect x="3894" y="207.5" width="1.3" height="4" fill="#654321" />
-                  <rect x="3896" y="207.5" width="1.3" height="4" fill="#7a5230" />
-                  <rect x="3901" y="207.5" width="1.3" height="4" fill="#654321" />
-                  <rect x="3903" y="207.5" width="1.3" height="4" fill="#7a5230" />
-                  {/* Hooves */}
-                  <rect x="3894" y="211" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x="3896" y="211" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x="3901" y="211" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x="3903" y="211" width="1.3" height="0.7" fill="#2f2f2f" />
-                  {/* Tail */}
-                  <rect x="3892" y="201.5" width="1.5" height="5.5" fill="#4a3520" />
-                </g>
-
-                {/* Horse 2 - chestnut, facing left, standing alert */}
-                <g>
-                  <rect x="3920" y="201" width="12" height="7" fill="#8b6f47" />
-                  <rect x="3920" y="201" width="4" height="7" fill="#9a7a55" />
-                  {/* Neck upright */}
-                  <rect x="3917.5" y="197.5" width="2.5" height="4.5" fill="#8b6f47" />
-                  {/* Head facing left */}
-                  <rect x="3913.5" y="195.5" width="4.5" height="3.5" fill="#8b6f47" />
-                  <rect x="3912" y="197" width="1.5" height="2" fill="#9a7a55" />
-                  {/* Eye */}
-                  <rect x="3915" y="196.5" width="0.8" height="0.8" fill="#2f2f2f" />
-                  <rect x="3915.2" y="196.5" width="0.3" height="0.4" fill="#ffffff" />
-                  {/* Ears */}
-                  <rect x="3914.5" y="194" width="0.8" height="1.8" fill="#8b6f47" />
-                  <rect x="3916" y="194" width="0.8" height="1.8" fill="#8b6f47" />
-                  {/* Nostril */}
-                  <rect x="3913" y="198" width="0.4" height="0.4" fill="#3a2a1a" />
-                  {/* Mane */}
-                  <rect x="3917" y="195.5" width="1" height="6" fill="#6a4a28" />
-                  {/* Legs */}
-                  <rect x="3921" y="207.5" width="1.3" height="4" fill="#8b6f47" />
-                  <rect x="3923" y="207.5" width="1.3" height="4" fill="#9a7a55" />
-                  <rect x="3928" y="207.5" width="1.3" height="4" fill="#8b6f47" />
-                  <rect x="3930" y="207.5" width="1.3" height="4" fill="#9a7a55" />
-                  {/* Hooves */}
-                  <rect x="3921" y="211" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x="3923" y="211" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x="3928" y="211" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x="3930" y="211" width="1.3" height="0.7" fill="#2f2f2f" />
-                  {/* Tail */}
-                  <rect x="3931" y="201.5" width="1.5" height="5.5" fill="#6a4a28" />
-                </g>
-
-                {/* Horse 3 - dark bay, facing right, standing calm */}
-                <g>
-                  <rect x="3944" y="201" width="12" height="7" fill="#4a3520" />
-                  <rect x="3952" y="201" width="4" height="7" fill="#5a3a25" />
-                  {/* Neck */}
-                  <rect x="3956" y="197.5" width="2.5" height="4.5" fill="#4a3520" />
-                  {/* Head facing right */}
-                  <rect x="3957.5" y="195.5" width="4.5" height="3.5" fill="#4a3520" />
-                  <rect x="3961" y="197" width="1.5" height="2" fill="#5a3a25" />
-                  {/* Eye */}
-                  <rect x="3959.5" y="196.5" width="0.8" height="0.8" fill="#2f2f2f" />
-                  <rect x="3959.7" y="196.5" width="0.3" height="0.4" fill="#ffffff" />
-                  {/* Ears */}
-                  <rect x="3958" y="194" width="0.8" height="1.8" fill="#4a3520" />
-                  <rect x="3959.5" y="194" width="0.8" height="1.8" fill="#4a3520" />
-                  {/* Nostril */}
-                  <rect x="3962" y="198" width="0.4" height="0.4" fill="#3a2a1a" />
-                  {/* Mane */}
-                  <rect x="3956.5" y="195.5" width="1" height="6" fill="#3a2a1a" />
-                  {/* Legs */}
-                  <rect x="3945" y="207.5" width="1.3" height="4" fill="#4a3520" />
-                  <rect x="3947" y="207.5" width="1.3" height="4" fill="#5a3a25" />
-                  <rect x="3952" y="207.5" width="1.3" height="4" fill="#4a3520" />
-                  <rect x="3954" y="207.5" width="1.3" height="4" fill="#5a3a25" />
-                  {/* Hooves */}
-                  <rect x="3945" y="211" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x="3947" y="211" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x="3952" y="211" width="1.3" height="0.7" fill="#2f2f2f" />
-                  <rect x="3954" y="211" width="1.3" height="0.7" fill="#2f2f2f" />
-                  {/* Tail */}
-                  <rect x="3943" y="201.5" width="1.5" height="5.5" fill="#3a2a1a" />
-                </g>
 
                 {/* Wooden fence - ranch-style split rail, connected to barn left wall */}
                 {/* Fence posts */}
@@ -3957,152 +3856,154 @@ export function ProgressiveSkyline() {
                 <circle cx="3875" cy="207.25" r="0.3" fill="#5a5a5a" opacity="0.8" />
               </g>
 
-              {/* ===== COW PASTURE - to the right of Barn 1 silo (x=4040-4115) ===== */}
+              {/* ===== MERGED HORSE PASTURE - right of Barn 1 silo (x=4040-4205) ===== */}
               <g>
-                {/* Pasture grass */}
-                <ellipse cx="4077" cy="208" rx="38" ry="4.5" fill="#8ab88a" opacity="0.45" />
-                <ellipse cx="4077" cy="209" rx="32" ry="3" fill="#7aaa7a" opacity="0.25" />
-                {/* Hay pile inside */}
-                <ellipse cx="4100" cy="208" rx="4" ry="1.5" fill="#d4b874" opacity="0.5" />
-                <ellipse cx="4100" cy="207.5" rx="3" ry="1" fill="#c8a860" opacity="0.4" />
-                {/* Water trough */}
-                <rect x="4048" y="207.5" width="7" height="2.5" rx="0.5" fill="#7a8a9a" opacity="0.9" />
-                <rect x="4049" y="208" width="5" height="1.5" rx="0.3" fill="#5a8aaa" opacity="0.7" />
-                <rect x="4050" y="210" width="1" height="1.2" fill="#5a6a6a" opacity="0.8" />
-                <rect x="4053" y="210" width="1" height="1.2" fill="#5a6a6a" opacity="0.8" />
-                {/* Fence posts */}
-                {[4040, 4055, 4070, 4085, 4100, 4115].map((px, i) => (
-                  <g key={`cow-pasture-post-${i}`}>
+                {/* Pasture grass - wide continuous patch */}
+                <ellipse cx="4122" cy="208" rx="85" ry="5.5" fill="#8ab88a" opacity="0.5" />
+                <ellipse cx="4122" cy="209" rx="75" ry="4" fill="#7aaa7a" opacity="0.3" />
+                {/* Hay pile - moved from old horse pasture */}
+                <ellipse cx="4060" cy="208" rx="5" ry="2" fill="#d4b874" opacity="0.6" />
+                <ellipse cx="4060" cy="207" rx="4" ry="1.5" fill="#c8a860" opacity="0.5" />
+                {/* Second hay scatter */}
+                <ellipse cx="4185" cy="208.5" rx="3.5" ry="1.2" fill="#d4b874" opacity="0.4" />
+                {/* Water trough - moved from old horse pasture */}
+                <rect x="4150" y="207.5" width="8" height="3" rx="0.5" fill="#7a8a9a" opacity="0.9" />
+                <rect x="4151" y="208" width="6" height="2" rx="0.3" fill="#5a8aaa" opacity="0.7" />
+                <rect x="4152" y="210.5" width="1" height="1.5" fill="#5a6a6a" opacity="0.8" />
+                <rect x="4156" y="210.5" width="1" height="1.5" fill="#5a6a6a" opacity="0.8" />
+                {/* Fence posts - continuous from x=4040 to x=4205 */}
+                {[4040, 4055, 4070, 4085, 4100, 4115, 4130, 4145, 4160, 4175, 4190, 4205].map((px, i) => (
+                  <g key={`horse-pasture-post-${i}`}>
                     <rect x={px - 1} y="203" width="2.5" height="10" fill="#8b7355" opacity="1" />
                     <rect x={px - 1.3} y="202.5" width="3" height="1" fill="#7a6345" opacity="1" />
                   </g>
                 ))}
-                {/* Top rail */}
-                <rect x="4040" y="205" width="75" height="1.2" fill="#a08060" opacity="1" />
-                {/* Bottom rail */}
-                <rect x="4040" y="209" width="75" height="1.2" fill="#a08060" opacity="1" />
+                {/* Top rail - full span */}
+                <rect x="4040" y="205" width="165" height="1.2" fill="#a08060" opacity="1" />
+                {/* Bottom rail - full span */}
+                <rect x="4040" y="209" width="165" height="1.2" fill="#a08060" opacity="1" />
                 {/* Rail wood grain */}
-                <path d="M 4045,205.6 L 4075,205.4 M 4080,205.5 L 4110,205.7" stroke="#8a6a4a" strokeWidth="0.2" opacity="0.5" />
-                <path d="M 4045,209.6 L 4075,209.4 M 4080,209.5 L 4110,209.7" stroke="#8a6a4a" strokeWidth="0.2" opacity="0.5" />
+                <path d="M 4045,205.6 L 4085,205.4 M 4090,205.5 L 4130,205.7 M 4135,205.5 L 4175,205.3 M 4180,205.6 L 4200,205.4" stroke="#8a6a4a" strokeWidth="0.2" opacity="0.5" />
+                <path d="M 4045,209.6 L 4085,209.4 M 4090,209.5 L 4130,209.7 M 4135,209.5 L 4175,209.3 M 4180,209.6 L 4200,209.4" stroke="#8a6a4a" strokeWidth="0.2" opacity="0.5" />
               </g>
 
-              {/* ===== SHEEP PASTURE - to the right of cow pasture (x=4130-4205) ===== */}
+              {/* ===== SHEEP PASTURE - left of farmhouse (x=4245-4315) ===== */}
               <g>
                 {/* Pasture grass */}
-                <ellipse cx="4167" cy="208" rx="38" ry="4.5" fill="#8ab88a" opacity="0.45" />
-                <ellipse cx="4167" cy="209" rx="32" ry="3" fill="#7aaa7a" opacity="0.25" />
+                <ellipse cx="4280" cy="208" rx="38" ry="4.5" fill="#8ab88a" opacity="0.45" />
+                <ellipse cx="4280" cy="209" rx="32" ry="3" fill="#7aaa7a" opacity="0.25" />
                 {/* Small hay scatter */}
-                <ellipse cx="4145" cy="209" rx="3" ry="1" fill="#d4b874" opacity="0.35" />
-                <ellipse cx="4190" cy="208.5" rx="3.5" ry="1.2" fill="#d4b874" opacity="0.35" />
+                <ellipse cx="4258" cy="209" rx="3" ry="1" fill="#d4b874" opacity="0.35" />
+                <ellipse cx="4300" cy="208.5" rx="3.5" ry="1.2" fill="#d4b874" opacity="0.35" />
                 {/* Fence posts */}
-                {[4130, 4145, 4160, 4175, 4190, 4205].map((px, i) => (
+                {[4245, 4260, 4275, 4290, 4305, 4315].map((px, i) => (
                   <g key={`sheep-pasture-post-${i}`}>
                     <rect x={px - 1} y="203" width="2.5" height="10" fill="#8b7355" opacity="1" />
                     <rect x={px - 1.3} y="202.5" width="3" height="1" fill="#7a6345" opacity="1" />
                   </g>
                 ))}
                 {/* Top rail */}
-                <rect x="4130" y="205" width="75" height="1.2" fill="#a08060" opacity="1" />
+                <rect x="4245" y="205" width="70" height="1.2" fill="#a08060" opacity="1" />
                 {/* Bottom rail */}
-                <rect x="4130" y="209" width="75" height="1.2" fill="#a08060" opacity="1" />
+                <rect x="4245" y="209" width="70" height="1.2" fill="#a08060" opacity="1" />
                 {/* Rail wood grain */}
-                <path d="M 4135,205.6 L 4165,205.4 M 4170,205.5 L 4200,205.7" stroke="#8a6a4a" strokeWidth="0.2" opacity="0.5" />
-                <path d="M 4135,209.6 L 4165,209.4 M 4170,209.5 L 4200,209.7" stroke="#8a6a4a" strokeWidth="0.2" opacity="0.5" />
+                <path d="M 4250,205.6 L 4280,205.4 M 4285,205.5 L 4310,205.7" stroke="#8a6a4a" strokeWidth="0.2" opacity="0.5" />
+                <path d="M 4250,209.6 L 4280,209.4 M 4285,209.5 L 4310,209.7" stroke="#8a6a4a" strokeWidth="0.2" opacity="0.5" />
               </g>
 
               {/* Enhanced Farmhouses with porches, shutters, smoke */}
               <g>
-                {/* ===== AMERICAN FARMHOUSE - classic 2-story white clapboard (x=4250-4285) ===== */}
+                {/* ===== AMERICAN FARMHOUSE - classic 2-story white clapboard (x=4335-4370) ===== */}
                 {/* Foundation - stone base */}
-                <rect x="4248" y="204" width="39" height="2.5" fill="#7a7a6a" opacity="0.9" />
-                <rect x="4249" y="204.5" width="37" height="1.5" fill="#8a8a7a" opacity="0.6" />
+                <rect x="4333" y="204" width="39" height="2.5" fill="#7a7a6a" opacity="0.9" />
+                <rect x="4334" y="204.5" width="37" height="1.5" fill="#8a8a7a" opacity="0.6" />
                 {/* Stone texture on foundation */}
-                <path d="M 4252,205 L 4256,205 M 4260,204.8 L 4264,204.8 M 4268,205.2 L 4272,205.2 M 4276,205 L 4280,205" stroke="#6a6a5a" strokeWidth="0.4" opacity="0.5" />
+                <path d="M 4337,205 L 4341,205 M 4345,204.8 L 4349,204.8 M 4353,205.2 L 4357,205.2 M 4361,205 L 4365,205" stroke="#6a6a5a" strokeWidth="0.4" opacity="0.5" />
                 {/* Main body - 2 stories, white clapboard */}
-                <rect x="4250" y="183" width="35" height="22" fill="#f5f0e8" opacity="1" />
+                <rect x="4335" y="183" width="35" height="22" fill="#f5f0e8" opacity="1" />
                 {/* Clapboard siding lines - horizontal */}
-                <path d="M 4251,186 L 4284,186 M 4251,188.5 L 4284,188.5 M 4251,191 L 4284,191 M 4251,193.5 L 4284,193.5 M 4251,196 L 4284,196 M 4251,198.5 L 4284,198.5 M 4251,201 L 4284,201 M 4251,203.5 L 4284,203.5" stroke="#e8e0d0" strokeWidth="0.4" opacity="0.7" />
+                <path d="M 4336,186 L 4369,186 M 4336,188.5 L 4369,188.5 M 4336,191 L 4369,191 M 4336,193.5 L 4369,193.5 M 4336,196 L 4369,196 M 4336,198.5 L 4369,198.5 M 4336,201 L 4369,201 M 4336,203.5 L 4369,203.5" stroke="#e8e0d0" strokeWidth="0.4" opacity="0.7" />
                 {/* Corner boards */}
-                <rect x="4250" y="183" width="1.5" height="22" fill="#e8e0d0" opacity="1" />
-                <rect x="4283.5" y="183" width="1.5" height="22" fill="#e8e0d0" opacity="1" />
+                <rect x="4335" y="183" width="1.5" height="22" fill="#e8e0d0" opacity="1" />
+                <rect x="4368.5" y="183" width="1.5" height="22" fill="#e8e0d0" opacity="1" />
                 {/* Steep gable roof - dark grey */}
-                <path d="M 4246,183 L 4267.5,165 L 4289,183 Z" fill="#4a4a4a" opacity="1" />
+                <path d="M 4331,183 L 4352.5,165 L 4374,183 Z" fill="#4a4a4a" opacity="1" />
                 {/* Roof shingle texture */}
-                <path d="M 4249,180 L 4267.5,167 L 4286,180" stroke="#3a3a3a" strokeWidth="0.4" fill="none" opacity="0.6" />
-                <path d="M 4252,177 L 4267.5,169 L 4283,177" stroke="#3a3a3a" strokeWidth="0.4" fill="none" opacity="0.5" />
-                <path d="M 4255,174 L 4267.5,171 L 4280,174" stroke="#3a3a3a" strokeWidth="0.4" fill="none" opacity="0.4" />
+                <path d="M 4334,180 L 4352.5,167 L 4371,180" stroke="#3a3a3a" strokeWidth="0.4" fill="none" opacity="0.6" />
+                <path d="M 4337,177 L 4352.5,169 L 4368,177" stroke="#3a3a3a" strokeWidth="0.4" fill="none" opacity="0.5" />
+                <path d="M 4340,174 L 4352.5,171 L 4365,174" stroke="#3a3a3a" strokeWidth="0.4" fill="none" opacity="0.4" />
                 {/* Roof ridge cap */}
-                <path d="M 4265.5,165 L 4267.5,163 L 4269.5,165" fill="#3a3a3a" opacity="0.8" />
+                <path d="M 4350.5,165 L 4352.5,163 L 4354.5,165" fill="#3a3a3a" opacity="0.8" />
                 {/* Roof eave overhang */}
-                <path d="M 4246,183 L 4289,183" stroke="#3a3a3a" strokeWidth="1.5" opacity="1" />
+                <path d="M 4331,183 L 4374,183" stroke="#3a3a3a" strokeWidth="1.5" opacity="1" />
                 {/* Dormer window - centered */}
-                <path d="M 4263,178 L 4267.5,173 L 4272,178 Z" fill="#4a4a4a" opacity="1" />
-                <rect x="4264.5" y="175" width="6" height="3.5" fill="#f5f0e8" opacity="1" />
-                <rect x="4265" y="175.5" width="5" height="2.5" fill="#6b8ea8" opacity="1" />
-                <path d="M 4267.5,175.5 L 4267.5,178 M 4265,176.8 L 4270,176.8" stroke="#e8e0d0" strokeWidth="0.3" />
+                <path d="M 4348,178 L 4352.5,173 L 4357,178 Z" fill="#4a4a4a" opacity="1" />
+                <rect x="4349.5" y="175" width="6" height="3.5" fill="#f5f0e8" opacity="1" />
+                <rect x="4350" y="175.5" width="5" height="2.5" fill="#6b8ea8" opacity="1" />
+                <path d="M 4352.5,175.5 L 4352.5,178 M 4350,176.8 L 4355,176.8" stroke="#e8e0d0" strokeWidth="0.3" />
                 {/* === Second floor windows (3) with shutters === */}
                 {/* Window 1 - left */}
-                <rect x="4255" y="185" width="3.5" height="5" fill="#6b8ea8" opacity="1" />
-                <rect x="4254.3" y="185" width="0.7" height="5" fill="#3a5a3a" opacity="1" />
-                <rect x="4258.5" y="185" width="0.7" height="5" fill="#3a5a3a" opacity="1" />
-                <path d="M 4256.75,185 L 4256.75,190 M 4255,187.5 L 4258.5,187.5" stroke="#4a6a7a" strokeWidth="0.3" />
+                <rect x="4340" y="185" width="3.5" height="5" fill="#6b8ea8" opacity="1" />
+                <rect x="4339.3" y="185" width="0.7" height="5" fill="#3a5a3a" opacity="1" />
+                <rect x="4343.5" y="185" width="0.7" height="5" fill="#3a5a3a" opacity="1" />
+                <path d="M 4341.75,185 L 4341.75,190 M 4340,187.5 L 4343.5,187.5" stroke="#4a6a7a" strokeWidth="0.3" />
                 {/* Window 2 - center */}
-                <rect x="4265.5" y="185" width="3.5" height="5" fill="#6b8ea8" opacity="1" />
-                <rect x="4264.8" y="185" width="0.7" height="5" fill="#3a5a3a" opacity="1" />
-                <rect x="4269" y="185" width="0.7" height="5" fill="#3a5a3a" opacity="1" />
-                <path d="M 4267.25,185 L 4267.25,190 M 4265.5,187.5 L 4269,187.5" stroke="#4a6a7a" strokeWidth="0.3" />
+                <rect x="4350.5" y="185" width="3.5" height="5" fill="#6b8ea8" opacity="1" />
+                <rect x="4349.8" y="185" width="0.7" height="5" fill="#3a5a3a" opacity="1" />
+                <rect x="4354" y="185" width="0.7" height="5" fill="#3a5a3a" opacity="1" />
+                <path d="M 4352.25,185 L 4352.25,190 M 4350.5,187.5 L 4354,187.5" stroke="#4a6a7a" strokeWidth="0.3" />
                 {/* Window 3 - right */}
-                <rect x="4276" y="185" width="3.5" height="5" fill="#6b8ea8" opacity="1" />
-                <rect x="4275.3" y="185" width="0.7" height="5" fill="#3a5a3a" opacity="1" />
-                <rect x="4279.5" y="185" width="0.7" height="5" fill="#3a5a3a" opacity="1" />
-                <path d="M 4277.75,185 L 4277.75,190 M 4276,187.5 L 4279.5,187.5" stroke="#4a6a7a" strokeWidth="0.3" />
+                <rect x="4361" y="185" width="3.5" height="5" fill="#6b8ea8" opacity="1" />
+                <rect x="4360.3" y="185" width="0.7" height="5" fill="#3a5a3a" opacity="1" />
+                <rect x="4364.5" y="185" width="0.7" height="5" fill="#3a5a3a" opacity="1" />
+                <path d="M 4362.75,185 L 4362.75,190 M 4361,187.5 L 4364.5,187.5" stroke="#4a6a7a" strokeWidth="0.3" />
                 {/* === First floor - door and 2 windows with shutters === */}
                 {/* Front door - paneled with frame */}
-                <rect x="4264" y="195" width="7" height="10" fill="#5a3a2a" opacity="1" />
-                <rect x="4263.5" y="194.5" width="8" height="1" fill="#6d4428" opacity="1" />
+                <rect x="4349" y="195" width="7" height="10" fill="#5a3a2a" opacity="1" />
+                <rect x="4348.5" y="194.5" width="8" height="1" fill="#6d4428" opacity="1" />
                 {/* Door panels */}
-                <rect x="4265" y="196" width="2" height="3.5" fill="#4a2a1a" opacity="0.6" />
-                <rect x="4268" y="196" width="2" height="3.5" fill="#4a2a1a" opacity="0.6" />
-                <rect x="4265" y="200.5" width="2" height="3.5" fill="#4a2a1a" opacity="0.6" />
-                <rect x="4268" y="200.5" width="2" height="3.5" fill="#4a2a1a" opacity="0.6" />
+                <rect x="4350" y="196" width="2" height="3.5" fill="#4a2a1a" opacity="0.6" />
+                <rect x="4353" y="196" width="2" height="3.5" fill="#4a2a1a" opacity="0.6" />
+                <rect x="4350" y="200.5" width="2" height="3.5" fill="#4a2a1a" opacity="0.6" />
+                <rect x="4353" y="200.5" width="2" height="3.5" fill="#4a2a1a" opacity="0.6" />
                 {/* Door knob */}
-                <circle cx="4270" cy="200" r="0.5" fill="#d4af37" opacity="1" />
+                <circle cx="4355" cy="200" r="0.5" fill="#d4af37" opacity="1" />
                 {/* Transom window above door */}
-                <rect x="4264.5" y="193" width="6" height="1.5" fill="#6b8ea8" opacity="0.8" />
+                <rect x="4349.5" y="193" width="6" height="1.5" fill="#6b8ea8" opacity="0.8" />
                 {/* Window left of door */}
-                <rect x="4254" y="196" width="4" height="5" fill="#6b8ea8" opacity="1" />
-                <rect x="4253.3" y="196" width="0.7" height="5" fill="#3a5a3a" opacity="1" />
-                <rect x="4258" y="196" width="0.7" height="5" fill="#3a5a3a" opacity="1" />
-                <path d="M 4256,196 L 4256,201 M 4254,198.5 L 4258,198.5" stroke="#4a6a7a" strokeWidth="0.3" />
+                <rect x="4339" y="196" width="4" height="5" fill="#6b8ea8" opacity="1" />
+                <rect x="4338.3" y="196" width="0.7" height="5" fill="#3a5a3a" opacity="1" />
+                <rect x="4343" y="196" width="0.7" height="5" fill="#3a5a3a" opacity="1" />
+                <path d="M 4341,196 L 4341,201 M 4339,198.5 L 4343,198.5" stroke="#4a6a7a" strokeWidth="0.3" />
                 {/* Window right of door */}
-                <rect x="4276" y="196" width="4" height="5" fill="#6b8ea8" opacity="1" />
-                <rect x="4275.3" y="196" width="0.7" height="5" fill="#3a5a3a" opacity="1" />
-                <rect x="4280" y="196" width="0.7" height="5" fill="#3a5a3a" opacity="1" />
-                <path d="M 4278,196 L 4278,201 M 4276,198.5 L 4280,198.5" stroke="#4a6a7a" strokeWidth="0.3" />
+                <rect x="4361" y="196" width="4" height="5" fill="#6b8ea8" opacity="1" />
+                <rect x="4360.3" y="196" width="0.7" height="5" fill="#3a5a3a" opacity="1" />
+                <rect x="4365" y="196" width="0.7" height="5" fill="#3a5a3a" opacity="1" />
+                <path d="M 4363,196 L 4363,201 M 4361,198.5 L 4365,198.5" stroke="#4a6a7a" strokeWidth="0.3" />
                 {/* === Full-width front porch === */}
                 {/* Porch floor */}
-                <rect x="4248" y="204" width="39" height="2" fill="#c9b18f" opacity="1" />
-                <path d="M 4250,204.5 L 4285,204.5 M 4250,205 L 4285,205" stroke="#b8a07a" strokeWidth="0.3" opacity="0.5" />
+                <rect x="4333" y="204" width="39" height="2" fill="#c9b18f" opacity="1" />
+                <path d="M 4335,204.5 L 4370,204.5 M 4335,205 L 4370,205" stroke="#b8a07a" strokeWidth="0.3" opacity="0.5" />
                 {/* Porch roof */}
-                <rect x="4247" y="193" width="41" height="1" fill="#5a5a5a" opacity="0.7" />
+                <rect x="4332" y="193" width="41" height="1" fill="#5a5a5a" opacity="0.7" />
                 {/* Porch support posts (5) */}
-                {[4250, 4259, 4267.5, 4276, 4285].map((px, i) => (
+                {[4335, 4344, 4352.5, 4361, 4370].map((px, i) => (
                   <rect key={`porch-post-${i}`} x={px - 0.5} y="193.5" width="1" height="11" fill="#e8e0d0" opacity="0.9" />
                 ))}
                 {/* Porch railing between posts */}
-                <rect x="4250" y="200" width="35" height="0.8" fill="#e8e0d0" opacity="0.7" />
+                <rect x="4335" y="200" width="35" height="0.8" fill="#e8e0d0" opacity="0.7" />
                 {/* Brick chimney - right side */}
-                <rect x="4280" y="168" width="3.5" height="15" fill="#a85757" opacity="1" />
+                <rect x="4365" y="168" width="3.5" height="15" fill="#a85757" opacity="1" />
                 {/* Chimney cap */}
-                <rect x="4279.5" y="167.5" width="4.5" height="1.2" fill="#8a4a4a" opacity="1" />
+                <rect x="4364.5" y="167.5" width="4.5" height="1.2" fill="#8a4a4a" opacity="1" />
                 {/* Brick texture */}
-                <path d="M 4280.5,170 L 4283,170 M 4280.5,172 L 4283,172 M 4280.5,174 L 4283,174 M 4280.5,176 L 4283,176 M 4280.5,178 L 4283,178" stroke="#964747" strokeWidth="0.3" opacity="0.5" />
+                <path d="M 4365.5,170 L 4368,170 M 4365.5,172 L 4368,172 M 4365.5,174 L 4368,174 M 4365.5,176 L 4368,176 M 4365.5,178 L 4368,178" stroke="#964747" strokeWidth="0.3" opacity="0.5" />
                 {/* Smoke wisps */}
-                <ellipse cx="4282" cy="165" rx="2" ry="2.5" fill="#c4c4c4" opacity="0.25" />
-                <ellipse cx="4283" cy="161" rx="1.5" ry="2" fill="#c4c4c4" opacity="0.15" />
+                <ellipse cx="4367" cy="165" rx="2" ry="2.5" fill="#c4c4c4" opacity="0.25" />
+                <ellipse cx="4368" cy="161" rx="1.5" ry="2" fill="#c4c4c4" opacity="0.15" />
                 {/* Steps at front door */}
-                <rect x="4263" y="205.5" width="9" height="1.2" fill="#8a8a7a" opacity="0.8" />
-                <rect x="4262" y="206.5" width="11" height="1.2" fill="#8a8a7a" opacity="0.7" />
+                <rect x="4348" y="205.5" width="9" height="1.2" fill="#8a8a7a" opacity="0.8" />
+                <rect x="4347" y="206.5" width="11" height="1.2" fill="#8a8a7a" opacity="0.7" />
 
                 {/* Farmhouse #4 - with full detail */}
                 {/* Foundation */}
@@ -4146,8 +4047,8 @@ export function ProgressiveSkyline() {
                 <g><rect x="4121" y="190" width="5" height="15" fill="#5a4a35" /><circle cx="4123.5" cy="185" r="11" fill="#5a8a5a" /><circle cx="4115" cy="188" r="7.5" fill="#6a9a6a" /><circle cx="4132" cy="188" r="7.5" fill="#6a9a6a" /><circle cx="4123.5" cy="181" r="6" fill="#8ab88a" /></g>
                 {/* Large oak - 4210, after sheep pasture (tad large) */}
                 <g><rect x="4209" y="190" width="5" height="15" fill="#5a4a35" /><circle cx="4211.5" cy="186" r="10" fill="#4a7a4a" /><circle cx="4205" cy="189" r="7" fill="#5a8a5a" /><circle cx="4218" cy="189" r="7" fill="#5a8a5a" /><circle cx="4211.5" cy="182" r="5.5" fill="#6a9a6a" /></g>
-                {/* Tall spruce - 4340, after chicken coop */}
-                <g><rect x="4340" y="195" width="2.5" height="16" fill="#4a3a25" /><path d="M 4333,206 L 4341.25,185 L 4349.5,206 Z" fill="#2f5f2f" /><path d="M 4335,200 L 4341.25,182 L 4347.5,200 Z" fill="#3a6a3a" /><path d="M 4337,195 L 4341.25,180 L 4345.5,195 Z" fill="#4a7a4a" /></g>
+                {/* Tall spruce - 4425, after chicken coop */}
+                <g><rect x="4425" y="195" width="2.5" height="16" fill="#4a3a25" /><path d="M 4418,206 L 4426.25,185 L 4434.5,206 Z" fill="#2f5f2f" /><path d="M 4420,200 L 4426.25,182 L 4432.5,200 Z" fill="#3a6a3a" /><path d="M 4422,195 L 4426.25,180 L 4430.5,195 Z" fill="#4a7a4a" /></g>
                 {/* Small evergreen - 4410 */}
                 <g><rect x="4410" y="198" width="2" height="12" fill="#4a3a25" /><path d="M 4405,205 L 4411,192 L 4417,205 Z" fill="#3a6a3a" /><path d="M 4407,201 L 4411,190 L 4415,201 Z" fill="#4a7a4a" /></g>
                 {/* Large oak - 4490 */}
@@ -4226,15 +4127,52 @@ export function ProgressiveSkyline() {
 
               {/* FARM ANIMALS - Minecraft/voxel style, matching opening biome */}
 
-              {/* Horses - now housed in fenced pasture next to Barn 1 (see above) */}
+              {/* Horses - 3 animated in merged horse pasture (x=4040-4205) */}
+              <g>
+                {[
+                  {x: 4070, dir: -1, y: -3, color: '#654321', chest: '#7a5230'},
+                  {x: 4140, dir: 1, y: -1, color: '#8b6f47', chest: '#9a7a55'},
+                  {x: 4185, dir: -1, y: 1, color: '#4a3520', chest: '#5a3a25'},
+                ].map((h, i) => (
+                  <g key={`horse-end-${i}`} transform={`translate(0, ${h.y + 12})`}>
+                  <g className={h.dir > 0 ? "animal-horse-left" : "animal-horse"} style={{animationDelay: `${i * 3.7}s`, animationDuration: `${h.dir > 0 ? 32 + i * 5 : 28 + i * 7}s`}}>
+                  <g transform={`translate(${h.x}, 203)`}>
+                  <g style={{animation: `faceFlip ${h.dir > 0 ? 32 + i * 5 : 28 + i * 7}s linear infinite`, animationDelay: `${i * 3.7}s`}}>
+                  <g transform={`translate(${-h.x}, -203)`} opacity="1">
+                    {/* Body block */}
+                    <rect x={h.x - 6} y="201" width="12" height="7" fill={h.color} />
+                    <rect x={h.x + (h.dir > 0 ? -6 : 2)} y="201" width="4" height="7" fill={h.chest} />
+                    <rect x={h.x + (h.dir > 0 ? -8 : 5)} y="197.5" width="2.5" height="4.5" fill={h.color} />
+                    <rect x={h.x + (h.dir > 0 ? -11.5 : 6.5)} y="195.5" width="4.5" height="3.5" fill={h.color} />
+                    <rect x={h.x + (h.dir > 0 ? -12.5 : 10)} y="197" width="1.5" height="2" fill={h.chest} />
+                    <rect x={h.x + (h.dir > 0 ? -10 : 8.5)} y="196.5" width="0.8" height="0.8" fill="#2f2f2f" />
+                    <rect x={h.x + (h.dir > 0 ? -9.8 : 8.7)} y="196.5" width="0.3" height="0.4" fill="#ffffff" />
+                    <rect x={h.x + (h.dir > 0 ? -11 : 7.5)} y="194" width="1" height="1.8" fill={h.color} />
+                    <rect x={h.x + (h.dir > 0 ? -9.5 : 9)} y="194" width="1" height="1.8" fill={h.color} />
+                    <rect x={h.x + (h.dir > 0 ? -12 : 11)} y="198" width="0.5" height="0.5" fill="#3a2a1a" />
+                    <rect x={h.x + 3} y="207.5" width="1.3" height="4" fill={h.color} />
+                    <rect x={h.x + 5} y="207.5" width="1.3" height="4" fill={h.chest} />
+                    <rect x={h.x - 5.3} y="207.5" width="1.3" height="4" fill={h.color} />
+                    <rect x={h.x - 3.3} y="207.5" width="1.3" height="4" fill={h.chest} />
+                    <rect x={h.x + 3} y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                    <rect x={h.x + 5} y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                    <rect x={h.x - 5.3} y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                    <rect x={h.x - 3.3} y="211" width="1.3" height="0.7" fill="#2f2f2f" />
+                    <rect x={h.x + (h.dir > 0 ? 5.5 : -7)} y="201.5" width="1.5" height="5.5" fill="#4a3520" />
+                    <rect x={h.x + (h.dir > 0 ? -8 : 7)} y="195.5" width="1" height="6" fill="#4a3520" />
+                  </g></g></g>
+                  </g>
+                  </g>
+                ))}
+              </g>
 
               {/* Cows - in pairs */}
               <g>
                 {[
-                  {x: 4060, dir: 1, y: 3},
-                  {x: 4095, dir: -1, y: 0},
-                  {x: 4350, dir: -1, y: -1},
-                  {x: 4368, dir: -1, y: 2},
+                  {x: 3900, dir: 1, y: 3},
+                  {x: 3935, dir: -1, y: 0},
+                  {x: 4430, dir: -1, y: -1},
+                  {x: 4450, dir: -1, y: 2},
                   {x: 4700, dir: 1, y: -2},
                   {x: 4718, dir: 1, y: 1},
                 ].map((c, i) => (
@@ -4272,8 +4210,8 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
-              {/* Sheep FLOCKS - Flock 2 in sheep pasture x=4130-4205, Flock 3 near x=4700 */}
-              {/* Flock 2 - inside sheep pasture, grazing near x=4155 */}
+              {/* Sheep FLOCKS - Flock 2 in sheep pasture x=4245-4315, Flock 3 near x=4700 */}
+              {/* Flock 2 - inside sheep pasture, grazing near x=4280 */}
               <g>
                 <g className="animal-sheep" style={{animationDuration: '42s'}}>
                   {[
@@ -4281,7 +4219,7 @@ export function ProgressiveSkyline() {
                     {dx: 0, dy: -3},
                     {dx: 12, dy: 2},
                   ].map((m, mi) => {
-                    const sx = 4155 + m.dx;
+                    const sx = 4280 + m.dx;
                     const dir = -1;
                     return (
                       <g key={`flock2-sheep-${mi}`} transform={`translate(0, ${m.dy + 12})`}>
@@ -4349,10 +4287,10 @@ export function ProgressiveSkyline() {
               {/* Chickens - de-crowded */}
               <g>
                 {[
-                  {x: 4300, y: 2, dir: 1},
-                  {x: 4320, y: -2, dir: -1},
-                  {x: 4335, y: 1, dir: 1},
-                  {x: 4435, y: -1, dir: -1},
+                  {x: 4385, y: 2, dir: 1},
+                  {x: 4405, y: -2, dir: -1},
+                  {x: 4420, y: 1, dir: 1},
+                  {x: 4470, y: -1, dir: -1},
                   {x: 4630, y: -1, dir: 1},
                   {x: 4825, y: 1, dir: -1},
                 ].map((ch, i) => (
@@ -4379,23 +4317,23 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
-              {/* Chicken coop - to the RIGHT of American farmhouse (x=4295) */}
+              {/* Chicken coop - to the RIGHT of American farmhouse (x=4380) */}
               <g>
                 {/* Coop body */}
-                <rect x="4295" y="203" width="12" height="8" fill="#8a6a4a" opacity="1" />
+                <rect x="4380" y="203" width="12" height="8" fill="#8a6a4a" opacity="1" />
                 {/* Roof */}
-                <path d="M 4293,203 L 4301,197 L 4309,203 Z" fill="#6a4a2a" opacity="1" />
-                <rect x="4293" y="202.5" width="16" height="1" fill="#5a3a1a" opacity="1" />
+                <path d="M 4378,203 L 4386,197 L 4394,203 Z" fill="#6a4a2a" opacity="1" />
+                <rect x="4378" y="202.5" width="16" height="1" fill="#5a3a1a" opacity="1" />
                 {/* Door opening - faces right */}
-                <rect x="4303" y="206" width="3.5" height="5" fill="#3a2a1a" opacity="1" />
+                <rect x="4388" y="206" width="3.5" height="5" fill="#3a2a1a" opacity="1" />
                 {/* Small window */}
-                <rect x="4297" y="204.5" width="2.5" height="2" fill="#4a4a4a" opacity="0.7" />
-                <path d="M 4297,205.5 L 4299.5,205.5 M 4298.25,204.5 L 4298.25,206.5" stroke="#6a5a4a" strokeWidth="0.3" />
+                <rect x="4382" y="204.5" width="2.5" height="2" fill="#4a4a4a" opacity="0.7" />
+                <path d="M 4382,205.5 L 4384.5,205.5 M 4383.25,204.5 L 4383.25,206.5" stroke="#6a5a4a" strokeWidth="0.3" />
                 {/* Ramp */}
-                <rect x="4303" y="210.5" width="5" height="0.6" fill="#7a5a3a" opacity="0.9" transform="rotate(-15, 4305.5, 210.5)" />
+                <rect x="4388" y="210.5" width="5" height="0.6" fill="#7a5a3a" opacity="0.9" transform="rotate(-15, 4390.5, 210.5)" />
                 {/* Hay/straw around coop */}
-                <rect x="4294" y="210" width="15" height="1" rx="0.5" fill="#d4b874" opacity="0.4" />
-                {/* 7 chickens cycling in and out of coop - origin at door (x=4306, y=208) */}
+                <rect x="4379" y="210" width="15" height="1" rx="0.5" fill="#d4b874" opacity="0.4" />
+                {/* 7 chickens cycling in and out of coop - origin at door (x=4391, y=208) */}
                 {[
                   {cls: 'coop-chicken-1', delay: 2, color: '#f5f5f0'},
                   {cls: 'coop-chicken-2', delay: 6, color: '#d4a574'},
@@ -4407,16 +4345,16 @@ export function ProgressiveSkyline() {
                 ].map((ch, ci) => (
                   <g key={`coop2-ch-${ci}`} className={ch.cls} style={{animationDelay: `${ch.delay}s`}}>
                     {/* Body */}
-                    <rect x="4306" y="208" width="4" height="3" fill={ch.color} />
+                    <rect x="4391" y="208" width="4" height="3" fill={ch.color} />
                     {/* Head */}
-                    <rect x="4310" y="207" width="2" height="2.5" fill={ch.color} />
+                    <rect x="4395" y="207" width="2" height="2.5" fill={ch.color} />
                     {/* Comb */}
-                    <rect x="4311" y="206" width="1.2" height="1" fill="#cc3333" />
+                    <rect x="4396" y="206" width="1.2" height="1" fill="#cc3333" />
                     {/* Beak */}
-                    <rect x="4312" y="207.5" width="1" height="0.5" fill="#ffd700" />
+                    <rect x="4397" y="207.5" width="1" height="0.5" fill="#ffd700" />
                     {/* Legs */}
-                    <rect x="4307" y="210.5" width="0.6" height="1.5" fill="#e8a020" />
-                    <rect x="4308.5" y="210.5" width="0.6" height="1.5" fill="#e8a020" />
+                    <rect x="4392" y="210.5" width="0.6" height="1.5" fill="#e8a020" />
+                    <rect x="4393.5" y="210.5" width="0.6" height="1.5" fill="#e8a020" />
                   </g>
                 ))}
               </g>
