@@ -25,6 +25,7 @@ export const CONTENT_LIMITS = {
   // File upload limits
   MAX_TEXT_FILE_SIZE: 1024 * 1024,       // 1MB for .txt/.md
   MAX_PDF_FILE_SIZE: 20 * 1024 * 1024,   // 20MB for .pdf
+  MAX_DOCX_FILE_SIZE: 20 * 1024 * 1024,  // 20MB for .docx
 
   // Rate limiting hints (implement in API)
   MAX_ARTICLES_PER_DAY: 10,
@@ -583,7 +584,7 @@ export function validateFileUpload(file: {
   name: string
   size: number
   type: string
-}): { isValid: boolean; error?: string; isPdf?: boolean } {
+}): { isValid: boolean; error?: string; isPdf?: boolean; isDocx?: boolean } {
   const lowerName = file.name.toLowerCase()
 
   // PDF files
@@ -597,6 +598,17 @@ export function validateFileUpload(file: {
     return { isValid: true, isPdf: true }
   }
 
+  // DOCX files
+  if (lowerName.endsWith('.docx')) {
+    if (file.size > CONTENT_LIMITS.MAX_DOCX_FILE_SIZE) {
+      return {
+        isValid: false,
+        error: `Document is too large (max ${CONTENT_LIMITS.MAX_DOCX_FILE_SIZE / (1024 * 1024)}MB).`,
+      }
+    }
+    return { isValid: true, isDocx: true }
+  }
+
   // Text/Markdown files
   const allowedExtensions = ['.txt', '.md']
   const hasValidExtension = allowedExtensions.some(ext => lowerName.endsWith(ext))
@@ -604,7 +616,7 @@ export function validateFileUpload(file: {
   if (!hasValidExtension) {
     return {
       isValid: false,
-      error: 'Only .txt, .md, and .pdf files are allowed.',
+      error: 'Only .txt, .md, .docx, and .pdf files are allowed.',
     }
   }
 
@@ -615,5 +627,5 @@ export function validateFileUpload(file: {
     }
   }
 
-  return { isValid: true, isPdf: false }
+  return { isValid: true, isPdf: false, isDocx: false }
 }

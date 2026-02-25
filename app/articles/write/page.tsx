@@ -336,6 +336,26 @@ export default function WriteArticlePage() {
             )
           }, 1500)
         }
+      } else if (fileValidation.isDocx) {
+        // DOCX files need server-side parsing
+        toast('Extracting text from document...', { icon: '📝', duration: 4000 })
+        const formData = new FormData()
+        formData.append('docx', file)
+
+        const res = await fetch('/api/articles/parse-docx', {
+          method: 'POST',
+          body: formData,
+        })
+
+        const data = await res.json()
+        if (!data.success) {
+          toast.error(data.error || 'Failed to parse document')
+          e.target.value = ''
+          return
+        }
+
+        setPastedContent(data.data.text)
+        toast.success('Document loaded! Click "Parse & Preview" to continue.')
       } else {
         // Text/Markdown files
         const text = await file.text()
@@ -431,7 +451,10 @@ export default function WriteArticlePage() {
           references: articleData.references.slice(0, CONTENT_LIMITS.MAX_REFERENCES).map(r => ({
             title: (r.title || '').slice(0, CONTENT_LIMITS.MAX_REFERENCE_TITLE),
             url: (r.url || '').slice(0, CONTENT_LIMITS.MAX_REFERENCE_URL),
-            description: r.authors ? `${r.authors}${r.year ? ` (${r.year})` : ''}`.slice(0, 500) : '',
+            authors: r.authors || '',
+            year: r.year || '',
+            publisher: r.publisher || '',
+            format: r.format || '',
           })),
           tags: articleData.tags.split(',').map(t => t.trim()).filter(Boolean).slice(0, 20),
           widgetOrder: widgets.filter(w => w.enabled).map(w => w.id),
@@ -553,7 +576,7 @@ export default function WriteArticlePage() {
                   Paste Your Work
                 </h2>
                 <p className="text-lg text-[var(--muted-foreground)] max-w-2xl mx-auto">
-                  Copy and paste your research paper, essay, or article below, or upload a PDF.
+                  Copy and paste your research paper, essay, or article below, or upload a file.
                   We'll automatically detect your title, content, and works cited section.
                 </p>
               </div>
@@ -609,7 +632,7 @@ We support MLA, APA, and Chicago citation formats."
                 <input
                   ref={fileInputRef}
                   type="file"
-                  accept=".txt,.md,.pdf"
+                  accept=".txt,.md,.pdf,.docx"
                   onChange={handleFileUpload}
                   className="hidden"
                 />
@@ -625,7 +648,7 @@ We support MLA, APA, and Chicago citation formats."
                   <div className="p-4 bg-[var(--background)] rounded-lg">
                     <h4 className="font-bold text-[var(--foreground)] mb-2">File Uploads</h4>
                     <p className="text-sm text-[var(--muted-foreground)]">
-                      PDF, TXT, and Markdown (.md) files. PDFs up to 20MB with text extraction.
+                      PDF, Word (.docx), TXT, and Markdown (.md) files. PDFs and DOCX up to 20MB with text extraction.
                     </p>
                   </div>
                   <div className="p-4 bg-[var(--background)] rounded-lg">

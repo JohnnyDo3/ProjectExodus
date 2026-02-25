@@ -203,6 +203,17 @@ export default function TipTapEditor({
     },
   })
 
+  // Sync editor content when the prop changes externally (e.g. re-parse)
+  useEffect(() => {
+    if (editor && content !== undefined) {
+      const currentContent = editor.getHTML()
+      // Only update if the content actually differs (avoids cursor reset on self-edits)
+      if (currentContent !== content) {
+        editor.commands.setContent(content, { emitUpdate: false })
+      }
+    }
+  }, [editor, content])
+
   // Dismiss citation notification
   const dismissCitation = useCallback(() => {
     setCitationNotification(null)

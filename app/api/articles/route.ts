@@ -344,6 +344,19 @@ export async function POST(request: NextRequest) {
       categoryId = generalCategory.id
     }
 
+    // Build references data if provided
+    const referencesData = Array.isArray(body.references)
+      ? body.references.slice(0, CONTENT_LIMITS.MAX_REFERENCES).map((ref: any, index: number) => ({
+          title: String(ref.title || 'Untitled').slice(0, CONTENT_LIMITS.MAX_REFERENCE_TITLE),
+          authors: ref.authors ? String(ref.authors).slice(0, 500) : null,
+          year: ref.year ? String(ref.year).slice(0, 10) : null,
+          url: ref.url ? String(ref.url).slice(0, CONTENT_LIMITS.MAX_REFERENCE_URL) : null,
+          publisher: ref.publisher ? String(ref.publisher).slice(0, 300) : null,
+          format: ref.format ? String(ref.format).slice(0, 20) : null,
+          order: index,
+        }))
+      : []
+
     const article = await prisma.article.create({
       data: {
         title,
@@ -359,6 +372,9 @@ export async function POST(request: NextRequest) {
         authorId: session.user.id,
         seoTitle: body.seoTitle || title,
         seoDescription: body.seoDescription || excerpt,
+        references: referencesData.length > 0 ? {
+          create: referencesData,
+        } : undefined,
       },
       include: {
         category: true,
@@ -370,6 +386,7 @@ export async function POST(request: NextRequest) {
             guardianArchetype: true,
           },
         },
+        references: true,
       },
     })
 

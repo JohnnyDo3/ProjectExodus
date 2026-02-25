@@ -241,7 +241,7 @@ function parseCitation(raw: string, index: number): ParsedReference {
   // If still no title, use a cleaned portion of raw text
   if (!title) {
     // Remove URL and author portion, use what's left
-    let remaining = trimmed
+    const remaining = trimmed
       .replace(/https?:\/\/[^\s]+/g, '')
       .replace(/^[^.]+\.\s*/, '')
       .trim()
@@ -501,13 +501,31 @@ function textToHtml(text: string): string {
   const paragraphs = text.split(/\n\s*\n/)
 
   return paragraphs
-    .map(p => {
+    .map((p, index) => {
       const trimmed = p.trim()
       if (!trimmed) return ''
 
-      // Check if it's a heading (short line followed by longer content)
-      if (trimmed.length < 100 && !trimmed.endsWith('.')) {
-        // Could be a subheading
+      // Only treat as heading if it looks like an actual heading:
+      // - Single line (no line breaks within the block)
+      // - Short (under 80 chars)
+      // - No ending punctuation (., ?, !, :, ;)
+      // - Not a number-only line
+      // - Starts with a capital letter or markdown heading marker
+      const isSingleLine = !trimmed.includes('\n')
+      const isShort = trimmed.length < 80
+      const hasNoPunctuation = !/[.?!;:,]$/.test(trimmed)
+      const startsWithCapOrMarker = /^(?:#{1,3}\s+)?[A-Z]/.test(trimmed)
+      const isNotNumberOnly = !/^\d+\.?\s*$/.test(trimmed)
+      const hasMultipleWords = trimmed.split(/\s+/).length >= 2
+
+      // Handle markdown-style headings explicitly
+      const markdownHeading = trimmed.match(/^(#{1,3})\s+(.+)$/)
+      if (markdownHeading) {
+        const level = markdownHeading[1].length
+        return `<h${level + 1}>${markdownHeading[2]}</h${level + 1}>`
+      }
+
+      if (isSingleLine && isShort && hasNoPunctuation && startsWithCapOrMarker && isNotNumberOnly && hasMultipleWords) {
         return `<h2>${trimmed}</h2>`
       }
 

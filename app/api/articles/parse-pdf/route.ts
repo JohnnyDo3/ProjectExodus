@@ -4,6 +4,8 @@ import { CONTENT_LIMITS } from '@/lib/article/contentSecurity'
 import { PDFParse } from 'pdf-parse'
 
 export async function POST(request: NextRequest) {
+  let parser: PDFParse | null = null
+
   try {
     const session = await auth()
     if (!session?.user?.id) {
@@ -43,12 +45,12 @@ export async function POST(request: NextRequest) {
     const arrayBuffer = await file.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)
 
-    // Parse PDF using pdf-parse class API
-    const parser = new PDFParse({ data: buffer })
+    // Parse PDF
+    parser = new PDFParse({ data: buffer })
     const textResult = await parser.getText()
 
     const text = textResult.text || ''
-    const numPages = textResult.pages?.length || 0
+    const numPages = textResult.total || textResult.pages?.length || 0
 
     if (!text.trim()) {
       return NextResponse.json(
@@ -80,5 +82,14 @@ export async function POST(request: NextRequest) {
       { success: false, error: 'Failed to parse PDF. Please try copying and pasting your content instead.' },
       { status: 500 }
     )
+  } finally {
+    // Clean up parser resources
+    if (parser) {
+      try {
+        await parser.destroy()
+      } catch {
+        // Ignore cleanup errors
+      }
+    }
   }
 }

@@ -109,6 +109,11 @@ export async function GET(
             createdAt: 'desc',
           },
         },
+        references: {
+          orderBy: {
+            order: 'asc',
+          },
+        },
       },
     })
 

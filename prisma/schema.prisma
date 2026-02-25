@@ -492,6 +492,9 @@ model Article {
   // Recommendations
   recommendations     ArticleRecommendation[]  @relation("ArticleRecommendations")
 
+  // References / Works Cited
+  references          ArticleReference[]
+
   @@index([slug])
   @@index([authorId])
   @@index([categoryId])
@@ -522,6 +525,22 @@ model ArticleCategory {
   updatedAt   DateTime  @updatedAt
 
   @@index([slug])
+}
+
+model ArticleReference {
+  id          String   @id @default(cuid())
+  articleId   String
+  article     Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  title       String
+  authors     String?
+  year        String?
+  url         String?
+  publisher   String?
+  format      String?  // MLA, APA, Chicago, Unknown
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  @@index([articleId])
 }
 
 model ArticleTag {
