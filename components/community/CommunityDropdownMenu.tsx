@@ -15,7 +15,7 @@ interface CommunityDropdownMenuProps {
 const menuItems = [
   {
     label: 'Discussions',
-    href: '/community/feed',
+    href: '/community/discussions',
     icon: MessageSquare,
     description: 'Join the conversation'
   },

@@ -154,7 +154,7 @@ export function Header() {
   ]
 
   const communityMenuItems = [
-    { label: 'Discussions', href: '/community/feed', myLabel: 'Discussions' },
+    { label: 'Discussions', href: '/community/discussions', myLabel: 'Discussions' },
     { label: 'Projects', href: '/community/projects', myLabel: 'Projects' },
     { label: 'Network', href: '/network', myLabel: 'Network' },
   ]
