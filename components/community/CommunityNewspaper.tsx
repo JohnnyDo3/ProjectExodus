@@ -478,7 +478,7 @@ export function CommunityNewspaper({
                     <p className="text-xs text-theme-muted leading-relaxed">
                       Every perspective enriches our collective wisdom. Share your insights with the community.
                     </p>
-                    <Link href="/community/feed">
+                    <Link href="/community/discussions">
                       <Button size="sm" className="w-full h-9 text-xs font-semibold bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 rounded-lg">
                         Join the Round Table
                         <ChevronRight className="w-3.5 h-3.5 ml-1" />
@@ -885,7 +885,7 @@ export function CommunityNewspaper({
                           </div>
                         </div>
                       </Link>
-                      <Link href="/community/feed">
+                      <Link href="/community/discussions">
                         <div className="group relative p-3 rounded-lg bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-500/20 hover:border-blue-500/40 transition-all">
                           <div className="absolute top-0 right-0 w-12 h-12 bg-blue-500/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                           <div className="relative flex flex-col items-center gap-2 text-center">

@@ -241,28 +241,28 @@ export default async function CommunityPage() {
               <div className="relative lg:pl-4">
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-3">
-                    <div className="p-4 bg-[var(--card)] rounded-xl border border-[var(--border)] shadow-sm">
+                    <Link href="/community/discussions" className="block p-4 bg-[var(--card)] rounded-xl border border-[var(--border)] shadow-sm hover:shadow-md transition-shadow">
                       <MessageSquare className="w-6 h-6 text-theme-primary mb-2" />
                       <h3 className="text-sm font-semibold text-[var(--foreground)]">Round Table</h3>
                       <p className="text-xs text-theme-muted mt-0.5">Share ideas daily</p>
-                    </div>
-                    <div className="p-4 bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] rounded-xl text-white shadow-sm">
+                    </Link>
+                    <Link href="/community/projects" className="block p-4 bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] rounded-xl text-white shadow-sm hover:shadow-md transition-shadow">
                       <Rocket className="w-6 h-6 mb-2 opacity-90" />
                       <h3 className="text-sm font-semibold">Projects</h3>
                       <p className="text-xs mt-0.5 opacity-80">Launch initiatives</p>
-                    </div>
+                    </Link>
                   </div>
                   <div className="space-y-3 mt-6">
-                    <div className="p-4 bg-[var(--muted)] rounded-xl">
+                    <Link href="/articles" className="block p-4 bg-[var(--muted)] rounded-xl hover:shadow-md transition-shadow">
                       <BookOpen className="w-6 h-6 text-theme-accent mb-2" />
                       <h3 className="text-sm font-semibold text-[var(--foreground)]">Articles</h3>
                       <p className="text-xs text-theme-muted mt-0.5">Share knowledge</p>
-                    </div>
-                    <div className="p-4 bg-[var(--card)] rounded-xl border border-[var(--border)] shadow-sm">
+                    </Link>
+                    <Link href="/community/users" className="block p-4 bg-[var(--card)] rounded-xl border border-[var(--border)] shadow-sm hover:shadow-md transition-shadow">
                       <Users className="w-6 h-6 text-theme-secondary mb-2" />
                       <h3 className="text-sm font-semibold text-[var(--foreground)]">Network</h3>
                       <p className="text-xs text-theme-muted mt-0.5">Find your people</p>
-                    </div>
+                    </Link>
                   </div>
                 </div>
 
@@ -302,21 +302,21 @@ export default async function CommunityPage() {
 
             <div className="flex gap-3 overflow-x-auto pb-3 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-3 lg:grid-cols-6 sm:overflow-visible">
               {[
-                { icon: MessageSquare, title: 'Round Table', color: 'bg-blue-500' },
-                { icon: Rocket, title: 'Projects', color: 'bg-orange-500' },
-                { icon: BookOpen, title: 'Articles', color: 'bg-emerald-500' },
-                { icon: Users, title: 'Network', color: 'bg-purple-500' },
-                { icon: Award, title: 'Badges', color: 'bg-amber-500' },
-                { icon: Heart, title: 'Feed', color: 'bg-rose-500' },
+                { icon: MessageSquare, title: 'Round Table', color: 'bg-blue-500', href: '/community/discussions' },
+                { icon: Rocket, title: 'Projects', color: 'bg-orange-500', href: '/community/projects' },
+                { icon: BookOpen, title: 'Articles', color: 'bg-emerald-500', href: '/articles' },
+                { icon: Users, title: 'Network', color: 'bg-purple-500', href: '/community/users' },
+                { icon: Award, title: 'Badges', color: 'bg-amber-500', href: '/community/leaderboard' },
+                { icon: Heart, title: 'Feed', color: 'bg-rose-500', href: '/community/feed' },
               ].map((item, i) => (
-                <div key={i} className="flex-shrink-0 w-24 sm:w-auto snap-start">
-                  <div className="flex flex-col items-center p-3 bg-[var(--card)] rounded-lg border border-[var(--border)] hover:shadow transition-shadow">
+                <Link key={i} href={item.href} className="flex-shrink-0 w-24 sm:w-auto snap-start">
+                  <div className="flex flex-col items-center p-3 bg-[var(--card)] rounded-lg border border-[var(--border)] hover:shadow-md transition-shadow">
                     <div className={`w-9 h-9 ${item.color} rounded-lg flex items-center justify-center mb-2`}>
                       <item.icon className="w-4 h-4 text-white" />
                     </div>
                     <span className="text-xs font-medium text-[var(--foreground)]">{item.title}</span>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
