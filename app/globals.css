@@ -993,6 +993,145 @@ main, section, article, aside, header, footer, nav, div {
   }
 }
 
+/* ========================================
+   Discussions Hub: "The Living Pulse"
+   Curvilinear animations & organic shapes
+   ======================================== */
+
+/* Blob morph — organic shape cycling */
+@keyframes blob-morph {
+  0%, 100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+  25%      { border-radius: 58% 42% 46% 54% / 54% 60% 40% 46%; }
+  50%      { border-radius: 50% 50% 36% 64% / 44% 54% 46% 56%; }
+  75%      { border-radius: 42% 58% 60% 40% / 60% 34% 66% 40%; }
+}
+
+.blob-shape {
+  animation: blob-morph 10s ease-in-out infinite;
+}
+
+/* Island float — subtle vertical drift */
+@keyframes island-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+
+.island-float {
+  animation: island-float 8s ease-in-out infinite;
+}
+
+/* Breathing idle — imperceptible scale pulse */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.005); }
+}
+
+.card-breathe {
+  animation: breathe 6s ease-in-out infinite;
+}
+
+/* Pulse ring — expanding outward */
+@keyframes pulse-ring {
+  0%   { transform: scale(0.9); opacity: 0.8; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+.pulse-ring {
+  animation: pulse-ring 3s ease-out infinite;
+}
+
+.pulse-ring-fast {
+  animation: pulse-ring 1.5s ease-out infinite;
+}
+
+/* Ripple — for new activity arrival */
+@keyframes ripple {
+  0%   { transform: scale(1); opacity: 0.4; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+.activity-ripple {
+  animation: ripple 1.5s ease-out forwards;
+}
+
+/* Ticker scroll — continuous horizontal */
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.ticker-scroll {
+  animation: ticker-scroll 40s linear infinite;
+}
+
+.ticker-scroll:hover {
+  animation-play-state: paused;
+}
+
+/* Stagger entrance — slides up with fade */
+@keyframes stagger-in {
+  0%   { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.stagger-in {
+  opacity: 0;
+  animation: stagger-in 0.5s ease-out forwards;
+}
+
+/* Slide in from right — new items */
+@keyframes slide-in-right {
+  0%   { opacity: 0; transform: translateX(40px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+.slide-in-right {
+  animation: slide-in-right 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Constellation node glow (night theme) */
+@keyframes node-glow {
+  0%, 100% { filter: drop-shadow(0 0 2px currentColor); }
+  50%      { filter: drop-shadow(0 0 8px currentColor); }
+}
+
+.night .constellation-node {
+  animation: node-glow 4s ease-in-out infinite;
+}
+
+/* Curved bento card radius variations */
+.bento-card-a { border-radius: 1.5rem 0.5rem 1.5rem 0.5rem; }
+.bento-card-b { border-radius: 0.5rem 1.5rem 0.5rem 1.5rem; }
+.bento-card-c { border-radius: 1rem 1rem 2rem 0.25rem; }
+.bento-card-d { border-radius: 2rem 0.25rem 1rem 1rem; }
+
+/* Wave clip path for section dividers */
+.wave-top {
+  clip-path: polygon(0% 15%, 3% 12%, 8% 8%, 15% 5%, 25% 8%, 35% 12%, 45% 10%, 55% 6%, 65% 3%, 75% 6%, 85% 10%, 92% 8%, 97% 5%, 100% 8%, 100% 100%, 0% 100%);
+}
+
+.wave-bottom {
+  clip-path: polygon(0% 0%, 100% 0%, 100% 85%, 97% 90%, 92% 95%, 85% 92%, 75% 88%, 65% 92%, 55% 96%, 45% 93%, 35% 88%, 25% 92%, 15% 95%, 8% 92%, 3% 88%, 0% 90%);
+}
+
+/* Disable all hub animations for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .blob-shape,
+  .island-float,
+  .card-breathe,
+  .pulse-ring,
+  .pulse-ring-fast,
+  .ticker-scroll,
+  .stagger-in,
+  .slide-in-right,
+  .night .constellation-node {
+    animation: none;
+  }
+  .stagger-in {
+    opacity: 1;
+  }
+}
+
 /* Cork board texture background */
 .canvas-background {
   background-color: #f5ebe0;
