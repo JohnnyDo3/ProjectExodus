@@ -943,6 +943,56 @@ main, section, article, aside, header, footer, nav, div {
   font-family: 'Caveat', cursive;
 }
 
+/* ========================================
+   Newspaper / Broadsheet Typography
+   Editorial display and body fonts
+   ======================================== */
+
+.font-headline {
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+}
+
+.font-body-serif {
+  font-family: 'Lora', Georgia, 'Times New Roman', serif;
+}
+
+/* Newspaper justified text with hyphenation */
+.newspaper-justify {
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+/* Column rule for newspaper grid gutters */
+.col-rule {
+  border-right: 1px solid var(--border);
+}
+
+/* Daily Prophet photo frame — Ken Burns hover */
+.prophet-frame {
+  overflow: hidden;
+}
+
+.prophet-frame img,
+.prophet-frame video {
+  transition: transform 6s ease;
+}
+
+.prophet-frame:hover img,
+.prophet-frame:hover video {
+  transform: scale(1.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prophet-frame img,
+  .prophet-frame video,
+  .prophet-frame:hover img,
+  .prophet-frame:hover video {
+    transition: none;
+    transform: none;
+  }
+}
+
 /* Cork board texture background */
 .canvas-background {
   background-color: #f5ebe0;
