@@ -19,6 +19,8 @@ interface HubData {
   hourlyActivity: number[]
   trending: { tag: string; count: number }[]
   totalActivity: number
+  weeklyActivity: number
+  latestAt: string | null
 }
 
 export default function DiscussionsHubPage() {
@@ -205,7 +207,13 @@ export default function DiscussionsHubPage() {
 
           <div className="border-t border-b-2 border-[var(--foreground)] py-1">
             <div className="flex items-center justify-center gap-6 text-[10px] font-bold tracking-wider uppercase text-[var(--muted-foreground)]">
-              <span>{data.totalActivity} updates this week</span>
+              <span>
+                {data.weeklyActivity > 0
+                  ? `${data.weeklyActivity} updates this week`
+                  : data.latestAt
+                    ? `Latest activity: ${new Date(data.latestAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
+                    : `${data.totalActivity} total updates`}
+              </span>
               {data.trending.length > 0 && (
                 <>
                   <span className="text-[var(--border)]">|</span>

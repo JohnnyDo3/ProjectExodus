@@ -8,9 +8,8 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const limit = Math.min(parseInt(searchParams.get('limit') || '40'), 80)
     const category = searchParams.get('category') // optional filter
-    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
 
-    // ── Parallel fetch all activity sources ──────────────────────────────
+    // ── Parallel fetch all activity sources (most recent, no date cutoff) ─
 
     const [
       recentUsers,
@@ -24,13 +23,12 @@ export async function GET(request: NextRequest) {
       trending,
     ] = await Promise.all([
       prisma.user.findMany({
-        where: { createdAt: { gte: sevenDaysAgo } },
         select: { id: true, name: true, image: true, createdAt: true },
         orderBy: { createdAt: 'desc' },
         take: 10,
       }),
       prisma.socialPost.findMany({
-        where: { visibility: 'PUBLIC', createdAt: { gte: sevenDaysAgo } },
+        where: { visibility: 'PUBLIC' },
         select: {
           id: true, content: true, createdAt: true, mediaUrl: true,
           user: { select: { id: true, name: true, image: true } },
@@ -40,7 +38,6 @@ export async function GET(request: NextRequest) {
         take: 15,
       }),
       prisma.project.findMany({
-        where: { createdAt: { gte: sevenDaysAgo } },
         select: {
           id: true, name: true, slug: true, description: true, createdAt: true,
           creator: { select: { id: true, name: true, image: true } },
@@ -50,7 +47,7 @@ export async function GET(request: NextRequest) {
         take: 10,
       }),
       prisma.article.findMany({
-        where: { status: 'PUBLISHED', createdAt: { gte: sevenDaysAgo } },
+        where: { status: 'PUBLISHED' },
         select: {
           id: true, title: true, slug: true, excerpt: true, coverImage: true, createdAt: true,
           author: { select: { id: true, name: true, image: true } },
@@ -59,7 +56,6 @@ export async function GET(request: NextRequest) {
         take: 10,
       }),
       prisma.event.findMany({
-        where: { createdAt: { gte: sevenDaysAgo } },
         select: {
           id: true, title: true, description: true, createdAt: true,
           creator: { select: { id: true, name: true, image: true } },
@@ -68,7 +64,6 @@ export async function GET(request: NextRequest) {
         take: 10,
       }),
       prisma.userFollow.findMany({
-        where: { createdAt: { gte: sevenDaysAgo } },
         select: {
           id: true, createdAt: true,
           follower: { select: { id: true, name: true, image: true } },
@@ -78,7 +73,6 @@ export async function GET(request: NextRequest) {
         take: 10,
       }),
       prisma.socialComment.findMany({
-        where: { createdAt: { gte: sevenDaysAgo } },
         select: {
           id: true, content: true, createdAt: true,
           user: { select: { id: true, name: true, image: true } },
@@ -87,7 +81,6 @@ export async function GET(request: NextRequest) {
         take: 10,
       }),
       prisma.forumPost.findMany({
-        where: { createdAt: { gte: sevenDaysAgo } },
         select: {
           id: true, title: true, content: true, createdAt: true,
           author: { select: { id: true, name: true, image: true } },
@@ -247,6 +240,14 @@ export async function GET(request: NextRequest) {
       }
     }
 
+    // ── Weekly count & latest timestamp ──────────────────────────────────
+
+    const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000
+    const weeklyActivity = items.filter(
+      i => new Date(i.createdAt).getTime() >= sevenDaysAgo
+    ).length
+    const latestAt = items.length > 0 ? items[0].createdAt : null
+
     return NextResponse.json({
       success: true,
       data: {
@@ -255,6 +256,8 @@ export async function GET(request: NextRequest) {
         hourlyActivity,
         trending: trending.map((t: { tag: string; postCount: number }) => ({ tag: t.tag, count: t.postCount })),
         totalActivity: items.length,
+        weeklyActivity,
+        latestAt,
       },
     })
   } catch (error) {
