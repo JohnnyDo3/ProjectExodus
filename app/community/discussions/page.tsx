@@ -23,10 +23,19 @@ interface HubData {
   latestAt: string | null
 }
 
+const EMPTY_HUB: HubData = {
+  items: [],
+  categoryCounts: {},
+  hourlyActivity: new Array(24).fill(0),
+  trending: [],
+  totalActivity: 0,
+  weeklyActivity: 0,
+  latestAt: null,
+}
+
 export default function DiscussionsHubPage() {
   const [data, setData] = useState<HubData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState(false)
   const [activeCategory, setActiveCategory] = useState('all')
   const [hubView, setHubView] = useState<HubView>('river')
   const [newItems, setNewItems] = useState<Set<string>>(new Set())
@@ -44,13 +53,12 @@ export default function DiscussionsHubPage() {
       const json = await res.json()
       if (json.success) {
         setData(json.data)
-        setError(false)
       } else {
-        setError(true)
+        setData(prev => prev ?? EMPTY_HUB)
       }
     } catch (err) {
       console.error('Hub fetch error:', err)
-      setError(true)
+      setData(prev => prev ?? EMPTY_HUB)
     } finally {
       setIsLoading(false)
     }
@@ -132,7 +140,7 @@ export default function DiscussionsHubPage() {
 
   // ── Loading state ──────────────────────────────────────────────────────
 
-  if (isLoading) {
+  if (!data) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
         <div className="text-center space-y-4">
@@ -142,33 +150,6 @@ export default function DiscussionsHubPage() {
             <div className="absolute inset-8 rounded-full bg-[var(--primary)] opacity-30 pulse-ring" style={{ animationDelay: '1s' }} />
           </div>
           <p className="font-body-serif italic text-sm text-[var(--muted-foreground)]">Tuning into the community pulse...</p>
-        </div>
-      </div>
-    )
-  }
-
-  if (error || !data) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
-        <div className="text-center space-y-4 max-w-md px-4">
-          <h2 className="font-headline text-2xl font-black text-[var(--foreground)]">
-            The Pulse is Quiet
-          </h2>
-          <p className="font-body-serif italic text-sm text-[var(--muted-foreground)]">
-            {error
-              ? 'We couldn\u2019t load the community activity right now. This may be a temporary issue.'
-              : 'No community activity to show yet. Be the first to get things started!'}
-          </p>
-          <div className="flex gap-3 justify-center pt-2">
-            <Button onClick={() => { setIsLoading(true); setError(false); fetchData() }} className="font-bold text-xs uppercase tracking-wider">
-              Try Again
-            </Button>
-            <Link href="/community">
-              <Button variant="outline" className="font-bold text-xs uppercase tracking-wider">
-                Back to Community
-              </Button>
-            </Link>
-          </div>
         </div>
       </div>
     )
