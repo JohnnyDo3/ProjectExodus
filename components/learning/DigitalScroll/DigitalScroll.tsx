@@ -196,7 +196,7 @@ export function DigitalScroll({
   const [selectedLevel, setSelectedLevel] = useState<LearningLevel>(initialLevel)
   const [showOpenAnimation, setShowOpenAnimation] = useState(true)
   const [isRapidFlipping, setIsRapidFlipping] = useState(false)
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(true)
 
   // Toggle body class to hide site header when expanded
   useEffect(() => {
