@@ -191,10 +191,22 @@ export function ConstellationMap({ items }: ConstellationMapProps) {
 
   const handleMouseUp = useCallback(() => setIsDragging(false), [])
 
-  const handleWheel = useCallback((e: React.WheelEvent) => {
-    e.preventDefault()
-    const delta = e.deltaY > 0 ? -0.08 : 0.08
-    setScale(s => Math.min(Math.max(s + delta, 0.25), 2.5))
+  // Wheel zoom — must use native addEventListener with { passive: false }
+  // because React 19 registers wheel as passive, making preventDefault() a no-op.
+  const viewportRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const el = viewportRef.current
+    if (!el) return
+
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault()
+      const delta = e.deltaY > 0 ? -0.08 : 0.08
+      setScale(s => Math.min(Math.max(s + delta, 0.25), 2.5))
+    }
+
+    el.addEventListener('wheel', onWheel, { passive: false })
+    return () => el.removeEventListener('wheel', onWheel)
   }, [])
 
   // Touch support
@@ -291,13 +303,13 @@ export function ConstellationMap({ items }: ConstellationMapProps) {
 
       {/* Map viewport */}
       <div
+        ref={viewportRef}
         className="relative overflow-hidden border border-[var(--border)] bg-[#0a0e1a] select-none"
         style={{ height: containerSize.height, cursor: isDragging ? 'grabbing' : 'grab' }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
-        onWheel={handleWheel}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
