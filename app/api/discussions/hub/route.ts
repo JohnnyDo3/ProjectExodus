@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
       prisma.user.findMany({
         select: { id: true, name: true, image: true, createdAt: true },
         orderBy: { createdAt: 'desc' },
-        take: 10,
+        take: 3,
       }),
       prisma.socialPost.findMany({
         where: { visibility: 'PUBLIC' },
@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
           _count: { select: { comments: true, likes: true } },
         },
         orderBy: { createdAt: 'desc' },
-        take: 15,
+        take: 5,
       }),
       prisma.project.findMany({
         select: {
@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
           _count: { select: { members: true } },
         },
         orderBy: { createdAt: 'desc' },
-        take: 10,
+        take: 5,
       }),
       prisma.article.findMany({
         where: { status: 'PUBLISHED' },
@@ -56,7 +56,7 @@ export async function GET(request: NextRequest) {
           _count: { select: { comments: true } },
         },
         orderBy: { createdAt: 'desc' },
-        take: 10,
+        take: 5,
       }),
       prisma.event.findMany({
         select: {
@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
           creator: { select: { id: true, name: true, image: true } },
         },
         orderBy: { createdAt: 'desc' },
-        take: 10,
+        take: 3,
       }),
       prisma.userFollow.findMany({
         select: {
@@ -73,7 +73,7 @@ export async function GET(request: NextRequest) {
           following: { select: { id: true, name: true } },
         },
         orderBy: { createdAt: 'desc' },
-        take: 10,
+        take: 3,
       }),
       prisma.socialComment.findMany({
         select: {
@@ -82,7 +82,7 @@ export async function GET(request: NextRequest) {
           post: { select: { id: true } },
         },
         orderBy: { createdAt: 'desc' },
-        take: 10,
+        take: 5,
       }),
       prisma.comment.findMany({
         select: {
@@ -91,7 +91,7 @@ export async function GET(request: NextRequest) {
           article: { select: { id: true, slug: true, title: true } },
         },
         orderBy: { createdAt: 'desc' },
-        take: 10,
+        take: 5,
       }),
       prisma.projectDiscussion.findMany({
         select: {
@@ -101,7 +101,7 @@ export async function GET(request: NextRequest) {
           _count: { select: { replies: true } },
         },
         orderBy: { createdAt: 'desc' },
-        take: 10,
+        take: 5,
       }),
       prisma.moduleDiscussion.findMany({
         select: {
@@ -111,7 +111,7 @@ export async function GET(request: NextRequest) {
           _count: { select: { replies: true } },
         },
         orderBy: { createdAt: 'desc' },
-        take: 10,
+        take: 5,
       }),
     ])
 
@@ -267,21 +267,31 @@ export async function GET(request: NextRequest) {
       .slice(0, 10)
       .map(([tag, count]) => ({ tag, count }))
 
-    // ── Filter by category if requested ──────────────────────────────────
+    // ── Deduplicate: one card per unique item (keep most recent) ─────────
 
-    let filtered = items
-    if (category && category !== 'all') {
-      filtered = items.filter(i => i.category === category)
+    items.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    const seen = new Set<string>()
+    const deduped: HubItem[] = []
+    for (const item of items) {
+      if (!seen.has(item.id)) {
+        seen.add(item.id)
+        deduped.push(item)
+      }
     }
 
-    // Sort by date, limit
-    filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    // ── Filter by category if requested ──────────────────────────────────
+
+    let filtered = deduped
+    if (category && category !== 'all') {
+      filtered = deduped.filter(i => i.category === category)
+    }
+
     const limited = filtered.slice(0, limit)
 
     // ── Category counts for Archipelago ──────────────────────────────────
 
     const categoryCounts: Record<string, number> = {}
-    for (const item of items) {
+    for (const item of deduped) {
       categoryCounts[item.category] = (categoryCounts[item.category] || 0) + 1
     }
 
@@ -289,7 +299,7 @@ export async function GET(request: NextRequest) {
 
     const hourlyActivity: number[] = new Array(24).fill(0)
     const now = Date.now()
-    for (const item of items) {
+    for (const item of deduped) {
       const hoursAgo = Math.floor((now - new Date(item.createdAt).getTime()) / (1000 * 60 * 60))
       if (hoursAgo >= 0 && hoursAgo < 24) {
         hourlyActivity[23 - hoursAgo]++
@@ -299,10 +309,10 @@ export async function GET(request: NextRequest) {
     // ── Weekly count & latest timestamp ──────────────────────────────────
 
     const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000
-    const weeklyActivity = items.filter(
+    const weeklyActivity = deduped.filter(
       i => new Date(i.createdAt).getTime() >= sevenDaysAgo
     ).length
-    const latestAt = items.length > 0 ? items[0].createdAt : null
+    const latestAt = deduped.length > 0 ? deduped[0].createdAt : null
 
     return NextResponse.json({
       success: true,
@@ -311,7 +321,7 @@ export async function GET(request: NextRequest) {
         categoryCounts,
         hourlyActivity,
         trending,
-        totalActivity: items.length,
+        totalActivity: deduped.length,
         weeklyActivity,
         latestAt,
       },
