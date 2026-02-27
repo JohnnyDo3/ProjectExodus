@@ -18,9 +18,10 @@ export async function GET(request: NextRequest) {
       recentArticles,
       recentEvents,
       recentFollows,
-      recentComments,
-      forumPosts,
-      trending,
+      recentSocialComments,
+      recentArticleComments,
+      recentProjectDiscussions,
+      recentModuleDiscussions,
     ] = await Promise.all([
       prisma.user.findMany({
         select: { id: true, name: true, image: true, createdAt: true },
@@ -30,7 +31,8 @@ export async function GET(request: NextRequest) {
       prisma.socialPost.findMany({
         where: { visibility: 'PUBLIC' },
         select: {
-          id: true, content: true, createdAt: true, mediaUrl: true,
+          id: true, content: true, createdAt: true, hashtags: true,
+          media: { select: { url: true }, take: 1 },
           user: { select: { id: true, name: true, image: true } },
           _count: { select: { comments: true, likes: true } },
         },
@@ -51,6 +53,7 @@ export async function GET(request: NextRequest) {
         select: {
           id: true, title: true, slug: true, excerpt: true, coverImage: true, createdAt: true,
           author: { select: { id: true, name: true, image: true } },
+          _count: { select: { comments: true } },
         },
         orderBy: { createdAt: 'desc' },
         take: 10,
@@ -76,24 +79,39 @@ export async function GET(request: NextRequest) {
         select: {
           id: true, content: true, createdAt: true,
           user: { select: { id: true, name: true, image: true } },
+          post: { select: { id: true } },
         },
         orderBy: { createdAt: 'desc' },
         take: 10,
       }),
-      prisma.forumPost.findMany({
+      prisma.comment.findMany({
+        select: {
+          id: true, content: true, createdAt: true,
+          user: { select: { id: true, name: true, image: true } },
+          article: { select: { id: true, slug: true, title: true } },
+        },
+        orderBy: { createdAt: 'desc' },
+        take: 10,
+      }),
+      prisma.projectDiscussion.findMany({
         select: {
           id: true, title: true, content: true, createdAt: true,
           author: { select: { id: true, name: true, image: true } },
-          category: { select: { name: true } },
-          _count: { select: { replies: true, likes: true } },
+          project: { select: { slug: true, name: true } },
+          _count: { select: { replies: true } },
         },
         orderBy: { createdAt: 'desc' },
         take: 10,
       }),
-      prisma.hashtag.findMany({
-        orderBy: { postCount: 'desc' },
+      prisma.moduleDiscussion.findMany({
+        select: {
+          id: true, title: true, content: true, createdAt: true,
+          author: { select: { id: true, name: true, image: true } },
+          article: { select: { slug: true, title: true } },
+          _count: { select: { replies: true } },
+        },
+        orderBy: { createdAt: 'desc' },
         take: 10,
-        select: { id: true, tag: true, postCount: true },
       }),
     ])
 
@@ -128,12 +146,13 @@ export async function GET(request: NextRequest) {
     }
 
     for (const p of recentPosts) {
+      const firstMedia = p.media?.[0]?.url || null
       items.push({
         id: `post-${p.id}`, type: 'post', category: 'discussions',
         title: `${p.user.name || 'Someone'} shared a post`,
         preview: p.content.slice(0, 160),
         userName: p.user.name || 'Anonymous', userImage: p.user.image, userId: p.user.id,
-        targetUrl: `/social`, imageUrl: p.mediaUrl,
+        targetUrl: `/social`, imageUrl: firstMedia,
         engagement: p._count.comments + p._count.likes,
         createdAt: p.createdAt.toISOString(),
       })
@@ -158,7 +177,7 @@ export async function GET(request: NextRequest) {
         preview: a.excerpt?.slice(0, 160) || '',
         userName: a.author.name || 'Anonymous', userImage: a.author.image, userId: a.author.id,
         targetUrl: `/articles/${a.slug}`, imageUrl: a.coverImage,
-        engagement: 0,
+        engagement: a._count.comments,
         createdAt: a.createdAt.toISOString(),
       })
     }
@@ -187,10 +206,10 @@ export async function GET(request: NextRequest) {
       })
     }
 
-    for (const c of recentComments) {
+    for (const c of recentSocialComments) {
       items.push({
         id: `comment-${c.id}`, type: 'comment', category: 'discussions',
-        title: `${c.user.name || 'Someone'} commented`,
+        title: `${c.user.name || 'Someone'} commented on a post`,
         preview: c.content.slice(0, 120),
         userName: c.user.name || 'Anonymous', userImage: c.user.image, userId: c.user.id,
         targetUrl: `/social`, imageUrl: null,
@@ -199,17 +218,54 @@ export async function GET(request: NextRequest) {
       })
     }
 
-    for (const fp of forumPosts) {
+    for (const c of recentArticleComments) {
       items.push({
-        id: `forum-${fp.id}`, type: 'forum_post', category: 'forums',
-        title: fp.title,
-        preview: fp.content.replace(/<[^>]*>/g, '').slice(0, 160),
-        userName: fp.author.name || 'Anonymous', userImage: fp.author.image, userId: fp.author.id,
-        targetUrl: `/community/forum/${fp.id}`, imageUrl: null,
-        engagement: fp._count.replies + fp._count.likes,
-        createdAt: fp.createdAt.toISOString(),
+        id: `article-comment-${c.id}`, type: 'comment', category: 'articles',
+        title: `${c.user.name || 'Someone'} commented on "${c.article.title}"`,
+        preview: c.content.slice(0, 120),
+        userName: c.user.name || 'Anonymous', userImage: c.user.image, userId: c.user.id,
+        targetUrl: `/articles/${c.article.slug}`, imageUrl: null,
+        engagement: 0,
+        createdAt: c.createdAt.toISOString(),
       })
     }
+
+    for (const d of recentProjectDiscussions) {
+      items.push({
+        id: `proj-disc-${d.id}`, type: 'forum_post', category: 'discussions',
+        title: d.title,
+        preview: d.content.replace(/<[^>]*>/g, '').slice(0, 160),
+        userName: d.author.name || 'Anonymous', userImage: d.author.image, userId: d.author.id,
+        targetUrl: `/community/projects/${d.project.slug}`, imageUrl: null,
+        engagement: d._count.replies,
+        createdAt: d.createdAt.toISOString(),
+      })
+    }
+
+    for (const d of recentModuleDiscussions) {
+      items.push({
+        id: `mod-disc-${d.id}`, type: 'forum_post', category: 'discussions',
+        title: d.title,
+        preview: d.content.replace(/<[^>]*>/g, '').slice(0, 160),
+        userName: d.author.name || 'Anonymous', userImage: d.author.image, userId: d.author.id,
+        targetUrl: `/articles/${d.article.slug}`, imageUrl: null,
+        engagement: d._count.replies,
+        createdAt: d.createdAt.toISOString(),
+      })
+    }
+
+    // ── Build trending from SocialPost hashtags ────────────────────────────
+
+    const tagCounts: Record<string, number> = {}
+    for (const p of recentPosts) {
+      for (const tag of (p.hashtags || [])) {
+        tagCounts[tag] = (tagCounts[tag] || 0) + 1
+      }
+    }
+    const trending = Object.entries(tagCounts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([tag, count]) => ({ tag, count }))
 
     // ── Filter by category if requested ──────────────────────────────────
 
@@ -254,7 +310,7 @@ export async function GET(request: NextRequest) {
         items: limited,
         categoryCounts,
         hourlyActivity,
-        trending: trending.map((t: { tag: string; postCount: number }) => ({ tag: t.tag, count: t.postCount })),
+        trending,
         totalActivity: items.length,
         weeklyActivity,
         latestAt,

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import { useSession } from 'next-auth/react'
 import { BackButton } from '@/components/navigation/BackButton'
 import { Button } from '@/components/ui/Button'
 import { PulseHeader } from '@/components/discussions/PulseHeader'
@@ -8,7 +9,7 @@ import { Archipelago } from '@/components/discussions/Archipelago'
 import { ActivityRiver } from '@/components/discussions/ActivityRiver'
 import { ConstellationMap } from '@/components/discussions/ConstellationMap'
 import type { ActivityItem } from '@/components/discussions/ActivityCard'
-import { MessageSquare, Network } from 'lucide-react'
+import { MessageSquare, Network, Send, ChevronDown, ChevronUp } from 'lucide-react'
 import Link from 'next/link'
 
 type HubView = 'river' | 'constellation'
@@ -34,11 +35,38 @@ const EMPTY_HUB: HubData = {
 }
 
 export default function DiscussionsHubPage() {
+  const { data: session } = useSession()
   const [data, setData] = useState<HubData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [activeCategory, setActiveCategory] = useState('all')
   const [hubView, setHubView] = useState<HubView>('river')
   const [newItems, setNewItems] = useState<Set<string>>(new Set())
+  const [composeOpen, setComposeOpen] = useState(false)
+  const [composeContent, setComposeContent] = useState('')
+  const [composeLoading, setComposeLoading] = useState(false)
+
+  const handlePost = async () => {
+    if (!composeContent.trim() || !session?.user) return
+    setComposeLoading(true)
+    try {
+      const hashtags = (composeContent.match(/#[\w]+/g) || []).map(t => t.substring(1))
+      const mentions = (composeContent.match(/@[\w]+/g) || []).map(m => m.substring(1))
+      const res = await fetch('/api/social/post', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: composeContent, visibility: 'PUBLIC', hashtags, mentions }),
+      })
+      if (res.ok) {
+        setComposeContent('')
+        setComposeOpen(false)
+        fetchData(activeCategory)
+      }
+    } catch (err) {
+      console.error('Post error:', err)
+    } finally {
+      setComposeLoading(false)
+    }
+  }
 
   // ── Fetch hub data ─────────────────────────────────────────────────────
 
@@ -226,6 +254,52 @@ export default function DiscussionsHubPage() {
         />
       </section>
 
+      {/* ═══ START A DISCUSSION ═══ */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        {session?.user ? (
+          <div className="border border-[var(--border)] bg-[var(--background)]">
+            <button
+              onClick={() => setComposeOpen(!composeOpen)}
+              className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-[var(--muted)] transition-colors"
+            >
+              <span className="flex items-center gap-2">
+                <Send className="w-4 h-4 text-[var(--primary)]" />
+                <span className="font-headline font-bold text-sm text-[var(--foreground)]">Start a Discussion</span>
+              </span>
+              {composeOpen ? <ChevronUp className="w-4 h-4 text-[var(--muted-foreground)]" /> : <ChevronDown className="w-4 h-4 text-[var(--muted-foreground)]" />}
+            </button>
+            {composeOpen && (
+              <div className="px-4 pb-4 border-t border-[var(--border)]">
+                <textarea
+                  value={composeContent}
+                  onChange={(e) => setComposeContent(e.target.value)}
+                  placeholder="Share a thought, ask a question, start a conversation... Use #hashtags and @mentions"
+                  className="w-full mt-3 px-3 py-2 text-sm bg-[var(--muted)] border border-[var(--border)] rounded focus:border-[var(--primary)] focus:outline-none text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] resize-none font-body-serif"
+                  rows={3}
+                  maxLength={5000}
+                />
+                <div className="flex items-center justify-between mt-2">
+                  <span className="text-[10px] text-[var(--muted-foreground)]">{composeContent.length} / 5000</span>
+                  <Button
+                    onClick={handlePost}
+                    disabled={!composeContent.trim() || composeLoading}
+                    className="font-bold text-xs uppercase tracking-wider"
+                  >
+                    {composeLoading ? 'Posting...' : 'Post to Community'}
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="border border-dashed border-[var(--border)] px-4 py-3 text-center">
+            <p className="font-body-serif italic text-sm text-[var(--muted-foreground)]">
+              <Link href="/auth/login" className="underline hover:text-[var(--primary)]">Sign in</Link> to start a discussion or comment on posts
+            </p>
+          </div>
+        )}
+      </section>
+
       {/* ═══ VIEW TOGGLE ═══ */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -287,14 +361,25 @@ export default function DiscussionsHubPage() {
             Every voice adds to the living pulse of this community.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            {session?.user ? (
+              <Button onClick={() => { setComposeOpen(true); window.scrollTo({ top: 0, behavior: 'smooth' }) }} className="font-bold text-xs uppercase tracking-wider">
+                Start a Discussion
+              </Button>
+            ) : (
+              <Link href="/auth/login">
+                <Button className="font-bold text-xs uppercase tracking-wider">
+                  Sign In to Discuss
+                </Button>
+              </Link>
+            )}
             <Link href="/social">
-              <Button className="font-bold text-xs uppercase tracking-wider">
-                Share a Post
+              <Button variant="outline" className="font-bold text-xs uppercase tracking-wider">
+                Social Feed
               </Button>
             </Link>
-            <Link href="/community/forum">
+            <Link href="/articles">
               <Button variant="outline" className="font-bold text-xs uppercase tracking-wider">
-                Browse Forums
+                Browse Articles
               </Button>
             </Link>
           </div>
