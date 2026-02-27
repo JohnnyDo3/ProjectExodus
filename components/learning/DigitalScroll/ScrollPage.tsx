@@ -7,7 +7,7 @@ import { sanitizeHtml } from '@/lib/utils/sanitize'
 // Each page: paper texture, content area, watermark
 // ============================================
 
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { forwardRef, ReactNode, useState, useEffect, useRef } from 'react'
 import { cn } from '@/lib/utils/cn'
 import {

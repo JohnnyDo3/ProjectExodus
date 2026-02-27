@@ -15,7 +15,6 @@ interface ScrollCoverProps {
   topicSlug: string
   topicTitle: string
   isOpen: boolean
-  isAnimating?: boolean
   onOpenComplete?: () => void
   className?: string
 }
@@ -24,12 +23,11 @@ export function ScrollCover({
   topicSlug,
   topicTitle,
   isOpen,
-  isAnimating,
   onOpenComplete,
   className,
 }: ScrollCoverProps) {
   const controls = useAnimation()
-  const [coverState, setCoverState] = useState<'closed' | 'opening' | 'open'>('closed')
+  const [coverState, setCoverState] = useState<'closed' | 'opening' | 'closing' | 'open'>('closed')
 
   const topicIcon = CORE_TOPIC_ICONS[topicSlug] || '📖'
 
@@ -54,7 +52,7 @@ export function ScrollCover({
       })
     } else if (!isOpen && coverState === 'open') {
       // Close the book
-      setCoverState('opening')
+      setCoverState('closing')
 
       controls.start({
         rotateY: 0,
@@ -82,7 +80,6 @@ export function ScrollCover({
       )}
       style={{
         transformStyle: 'preserve-3d',
-        backfaceVisibility: 'hidden',
       }}
       initial={{ rotateY: 0 }}
       animate={controls}

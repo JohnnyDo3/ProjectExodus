@@ -137,18 +137,25 @@ export function PageFlip({
     const threshold = containerWidth * 0.25
 
     // Determine if we should complete the flip
+    let flipped = false
     if (info.offset.x < -threshold || velocity < -500) {
       if (canFlipNext) {
         flipToNext()
+        flipped = true
       }
     } else if (info.offset.x > threshold || velocity > 500) {
       if (canFlipPrev) {
         flipToPrev()
+        flipped = true
       }
     }
 
-    setFlipState('idle')
-    setDragProgress(0)
+    // Only reset to idle if no flip was triggered — otherwise flipToNext/flipToPrev
+    // sets the correct state and we must not clobber it
+    if (!flipped) {
+      setFlipState('idle')
+      setDragProgress(0)
+    }
   }
 
   // ============================================

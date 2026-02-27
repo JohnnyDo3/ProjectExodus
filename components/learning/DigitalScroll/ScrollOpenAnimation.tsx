@@ -6,7 +6,7 @@
 // ============================================
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { cn } from '@/lib/utils/cn'
 import { SCROLL_DIMENSIONS, CORE_TOPIC_ICONS, getDeviceType } from './scrollConstants'
 
@@ -18,7 +18,6 @@ interface ScrollOpenAnimationProps {
   topicSlug: string
   topicTitle: string
   topicDescription?: string
-  targetPage: number
   onAnimationComplete: () => void
   reducedMotion?: boolean
   className?: string
@@ -57,13 +56,13 @@ export function ScrollOpenAnimation({
   }, [])
 
   // Handle final completion
-  const handleComplete = () => {
+  const handleComplete = useCallback(() => {
     if (!completedRef.current) {
       completedRef.current = true
       setPhase('complete')
       onAnimationComplete()
     }
-  }
+  }, [onAnimationComplete])
 
   // Handle proceed from instructions to title
   const handleProceedToTitle = (e: React.MouseEvent) => {
@@ -86,7 +85,7 @@ export function ScrollOpenAnimation({
     if (reducedMotion) {
       handleComplete()
     }
-  }, [reducedMotion])
+  }, [reducedMotion, handleComplete])
 
   // Animation timeline: descend → opening → instructions (wait for click)
   useEffect(() => {
@@ -129,7 +128,7 @@ export function ScrollOpenAnimation({
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [phase])
+  }, [phase, handleComplete])
 
   if (reducedMotion || phase === 'complete') {
     return null
@@ -155,18 +154,22 @@ export function ScrollOpenAnimation({
         Skip <span className="opacity-60 ml-1">ESC</span>
       </button>
 
-      {/* Phase text */}
-      <motion.div
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 text-white/70 text-lg tracking-widest uppercase font-serif"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.5 }}
-      >
-        {phase === 'descend' && 'The book descends...'}
-        {phase === 'opening' && 'The revelation begins...'}
-        {phase === 'instructions' && 'Learn the sacred ways...'}
-        {phase === 'title' && 'Your journey awaits...'}
-      </motion.div>
+      {/* Phase text - key forces re-animation on phase change */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={phase}
+          className="absolute top-1/4 left-1/2 -translate-x-1/2 text-white/70 text-lg tracking-widest uppercase font-serif"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.5 }}
+        >
+          {phase === 'descend' && 'The book descends...'}
+          {phase === 'opening' && 'The revelation begins...'}
+          {phase === 'instructions' && 'Learn the sacred ways...'}
+          {phase === 'title' && 'Your journey awaits...'}
+        </motion.div>
+      </AnimatePresence>
 
       {/* Book Container - matches main book dimensions */}
       <div

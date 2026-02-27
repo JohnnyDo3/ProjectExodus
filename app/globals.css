@@ -1030,6 +1030,17 @@ main, section, article, aside, header, footer, nav, div {
   animation: breathe 6s ease-in-out infinite;
 }
 
+/* Yin-Yang ribbon gradient rotation — replaces JS setInterval */
+@property --yinyang-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes yinyang-rotate {
+  to { --yinyang-angle: 360deg; }
+}
+
 /* Pulse ring — expanding outward */
 @keyframes pulse-ring {
   0%   { transform: scale(0.9); opacity: 0.8; }

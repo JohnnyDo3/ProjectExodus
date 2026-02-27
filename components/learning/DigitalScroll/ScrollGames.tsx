@@ -140,18 +140,19 @@ export function MatchingGame({
   const handleDefinitionClick = (defId: string) => {
     if (!selectedTerm || matchedPairs.includes(defId)) return
 
-    setAttempts(prev => prev + 1)
-
     if (selectedTerm === defId) {
-      // Correct match
+      // Correct match — don't count as a penalized attempt
       setMatchedPairs(prev => [...prev, defId])
       setSelectedTerm(null)
 
       if (matchedPairs.length + 1 === gameItems.length) {
+        // Only penalize wrong attempts
         const score = Math.max(0, 100 - (attempts * 5))
         onComplete?.(score)
       }
     } else {
+      // Wrong match — count as penalized attempt
+      setAttempts(prev => prev + 1)
       // Wrong match
       setWrongPair(defId)
       setTimeout(() => {
@@ -325,26 +326,32 @@ export function ScrollFlashcards({
   const handleFlip = () => setIsFlipped(!isFlipped)
 
   const handleKnown = () => {
+    const newKnown = currentCard && !knownCards.includes(currentCard.id)
+      ? [...knownCards, currentCard.id]
+      : knownCards
     if (currentCard && !knownCards.includes(currentCard.id)) {
-      setKnownCards(prev => [...prev, currentCard.id])
+      setKnownCards(newKnown)
     }
-    nextCard()
+    setIsFlipped(false)
+    setTimeout(() => {
+      if (currentIndex < cards.length - 1) {
+        setCurrentIndex(prev => prev + 1)
+      } else {
+        const score = Math.round((newKnown.length / cards.length) * 100)
+        onComplete?.(score)
+      }
+    }, 200)
   }
 
   const handleStudyAgain = () => {
     if (currentCard && !studyAgain.includes(currentCard.id)) {
       setStudyAgain(prev => [...prev, currentCard.id])
     }
-    nextCard()
-  }
-
-  const nextCard = () => {
     setIsFlipped(false)
     setTimeout(() => {
       if (currentIndex < cards.length - 1) {
         setCurrentIndex(prev => prev + 1)
       } else {
-        // Complete
         const score = Math.round((knownCards.length / cards.length) * 100)
         onComplete?.(score)
       }
@@ -797,9 +804,10 @@ export function FillInBlank({
     const answer = userInput.trim().toLowerCase()
     const defWords = currentQuestion.definition.toLowerCase().split(' ')
     const keyWords = defWords.filter(w => w.length > 4)
+    const requiredMatches = keyWords.length > 0 ? Math.min(2, keyWords.length) : 1
     const matches = keyWords.filter(w => answer.includes(w))
 
-    const isRight = matches.length >= Math.min(2, keyWords.length) ||
+    const isRight = (keyWords.length > 0 && matches.length >= requiredMatches) ||
       answer === currentQuestion.term.toLowerCase()
 
     setIsCorrect(isRight)
@@ -815,7 +823,9 @@ export function FillInBlank({
       setIsCorrect(null)
       setShowAnswer(false)
     } else {
-      onComplete?.(Math.round(score / questions.length * 100))
+      // Use isCorrect from current render to compute correct final score
+      const finalScore = score + (isCorrect ? 0 : 0) // score already includes current answer
+      onComplete?.(Math.round(finalScore / questions.length * 100))
     }
   }
 
@@ -1094,10 +1104,11 @@ export function GradedQuiz({
       setShowResult(false)
     } else {
       setQuizComplete(true)
-      const score = answers.filter(a => a.correct).length + (selectedAnswer === questions[currentQuestion].correctAnswer ? 1 : 0)
+      // answers already includes the current answer (added in handleAnswer)
+      const score = answers.filter(a => a.correct).length
       onComplete?.(score, 5)
     }
-  }, [currentQuestion, questions.length, answers, selectedAnswer, onComplete])
+  }, [currentQuestion, questions.length, answers, onComplete])
 
   const restartQuiz = useCallback(() => {
     setCurrentQuestion(0)

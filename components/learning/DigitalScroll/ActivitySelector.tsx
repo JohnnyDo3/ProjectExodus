@@ -6,7 +6,7 @@
 // Allows users to choose practice activities
 // ============================================
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils/cn'
 import {
@@ -141,7 +141,15 @@ function MiniMatching({ items, topicColor, onComplete, onClose }: MiniMatchingPr
   const [incorrect, setIncorrect] = useState<Set<string>>(new Set())
 
   const gameItems = items.slice(0, 4)
-  const shuffledDefs = [...gameItems].sort(() => Math.random() - 0.5)
+  // Memoize shuffled definitions so they don't re-shuffle on every render
+  const shuffledDefs = useMemo(() => {
+    const arr = [...gameItems]
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]]
+    }
+    return arr
+  }, [gameItems.map(g => g.id).join(',')])
 
   const handleTermClick = (id: string) => {
     if (matched.has(id)) return
@@ -243,15 +251,18 @@ function MiniFlashcards({ items, topicColor, onComplete, onClose }: MiniFlashcar
   const currentItem = gameItems[currentIndex]
 
   const handleKnew = () => {
-    setKnown(prev => prev + 1)
-    advance()
+    const newKnown = known + 1
+    setKnown(newKnown)
+    if (currentIndex + 1 >= gameItems.length) {
+      const score = Math.round((newKnown / gameItems.length) * 100)
+      onComplete(score)
+    } else {
+      setIsFlipped(false)
+      setCurrentIndex(prev => prev + 1)
+    }
   }
 
   const handleDidntKnow = () => {
-    advance()
-  }
-
-  const advance = () => {
     if (currentIndex + 1 >= gameItems.length) {
       const score = Math.round((known / gameItems.length) * 100)
       onComplete(score)
@@ -438,11 +449,20 @@ function MiniWordScramble({ items, topicColor, onComplete, onClose }: MiniWordSc
   const gameItems = items.slice(0, 4)
   const currentItem = gameItems[currentIndex]
 
-  const scrambledWord = currentItem.term
-    .split('')
-    .sort(() => Math.random() - 0.5)
-    .join('')
-    .toUpperCase()
+  // Memoize scramble so it doesn't re-shuffle on every render/keystroke
+  const scrambledWord = useMemo(() => {
+    const letters = currentItem.term.split('')
+    for (let i = letters.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [letters[i], letters[j]] = [letters[j], letters[i]]
+    }
+    const result = letters.join('').toUpperCase()
+    // If shuffle produced the original word, reverse it
+    if (result === currentItem.term.toUpperCase()) {
+      return letters.reverse().join('').toUpperCase()
+    }
+    return result
+  }, [currentItem.id])
 
   const handleSubmit = () => {
     const isCorrect = userInput.toLowerCase().trim() === currentItem.term.toLowerCase()
@@ -535,22 +555,24 @@ export function ActivitySelector({
   const allCompleted = completedCount === ACTIVITY_OPTIONS.length
 
   const handleActivityComplete = useCallback((type: ActivityType, score: number) => {
-    const newState = {
-      ...completionState,
-      [pageId]: {
-        ...pageCompletion,
-        [type]: {
-          completed: true,
-          score,
-          completedAt: new Date().toISOString(),
+    setCompletionState(prev => {
+      const newState = {
+        ...prev,
+        [pageId]: {
+          ...(prev[pageId] || {}),
+          [type]: {
+            completed: true,
+            score,
+            completedAt: new Date().toISOString(),
+          },
         },
-      },
-    }
-    setCompletionState(newState)
-    saveCompletionState(newState)
+      }
+      saveCompletionState(newState)
+      return newState
+    })
     setSelectedActivity(null)
     onActivityComplete?.(type, score)
-  }, [pageId, pageCompletion, completionState, onActivityComplete])
+  }, [pageId, onActivityComplete])
 
   const handleClose = useCallback(() => {
     setSelectedActivity(null)

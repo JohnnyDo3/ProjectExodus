@@ -59,11 +59,13 @@ export interface ScrollState {
 // INITIAL STATE
 // ============================================
 
-const DEFAULT_POSITION: ReadingPosition = {
-  chapter: 0,
-  verse: 0,
-  page: 0,
-  lastRead: new Date().toISOString(),
+function createDefaultPosition(): ReadingPosition {
+  return {
+    chapter: 0,
+    verse: 0,
+    page: 0,
+    lastRead: new Date().toISOString(),
+  }
 }
 
 const DEFAULT_PREFERENCES: ScrollPreferences = {
@@ -134,6 +136,11 @@ export function useScrollState() {
       {}
     )
 
+    const topicProgress = getFromStorage<Record<string, TopicProgress>>(
+      'exodus_book_topic_progress',
+      {}
+    )
+
     const preferences = getFromStorage<ScrollPreferences>(
       STORAGE_KEYS.preferences,
       DEFAULT_PREFERENCES
@@ -146,6 +153,7 @@ export function useScrollState() {
       ...prev,
       unlockState,
       readingPositions,
+      topicProgress,
       preferences: {
         ...preferences,
         reducedMotion: prefersReducedMotion || preferences.reducedMotion,
@@ -184,40 +192,43 @@ export function useScrollState() {
   // ============================================
 
   const openScroll = useCallback((topic: string) => {
-    const position = state.readingPositions[topic] || { ...DEFAULT_POSITION }
-
-    setState(prev => ({
-      ...prev,
-      currentTopic: topic,
-      currentPosition: position,
-      isScrollOpen: true,
-      isAnimating: true,
-    }))
-  }, [state.readingPositions])
+    setState(prev => {
+      const position = prev.readingPositions[topic] || createDefaultPosition()
+      return {
+        ...prev,
+        currentTopic: topic,
+        currentPosition: position,
+        isScrollOpen: true,
+        isAnimating: true,
+      }
+    })
+  }, [])
 
   // ============================================
   // CLOSE THE BOOK
   // ============================================
 
   const closeScroll = useCallback(() => {
-    // Save current position before closing
-    if (state.currentTopic && state.currentPosition) {
-      const updatedPositions = {
-        ...state.readingPositions,
-        [state.currentTopic]: {
-          ...state.currentPosition,
-          lastRead: new Date().toISOString(),
-        },
+    setState(prev => {
+      // Save current position before closing — use prev to avoid stale closures
+      if (prev.currentTopic && prev.currentPosition) {
+        const updatedPositions = {
+          ...prev.readingPositions,
+          [prev.currentTopic]: {
+            ...prev.currentPosition,
+            lastRead: new Date().toISOString(),
+          },
+        }
+        setToStorage(STORAGE_KEYS.readingPositions, updatedPositions)
       }
-      setToStorage(STORAGE_KEYS.readingPositions, updatedPositions)
-    }
 
-    setState(prev => ({
-      ...prev,
-      isScrollOpen: false,
-      isAnimating: true,
-    }))
-  }, [state.currentTopic, state.currentPosition, state.readingPositions])
+      return {
+        ...prev,
+        isScrollOpen: false,
+        isAnimating: true,
+      }
+    })
+  }, [])
 
   // ============================================
   // NAVIGATION
@@ -250,16 +261,37 @@ export function useScrollState() {
   }, [])
 
   const nextPage = useCallback(() => {
-    goToPosition({
-      page: (state.currentPosition?.page ?? 0) + 1,
+    setState(prev => {
+      if (!prev.currentTopic) return prev
+      const currentPage = prev.currentPosition?.page ?? 0
+      const newPosition: ReadingPosition = {
+        chapter: prev.currentPosition?.chapter ?? 0,
+        verse: prev.currentPosition?.verse ?? 0,
+        page: currentPage + 1,
+        lastRead: new Date().toISOString(),
+      }
+      const updatedPositions = { ...prev.readingPositions, [prev.currentTopic]: newPosition }
+      setToStorage(STORAGE_KEYS.readingPositions, updatedPositions)
+      return { ...prev, currentPosition: newPosition, readingPositions: updatedPositions }
     })
-  }, [state.currentPosition, goToPosition])
+  }, [])
 
   const prevPage = useCallback(() => {
-    goToPosition({
-      page: Math.max(0, (state.currentPosition?.page ?? 0) - 1),
+    setState(prev => {
+      if (!prev.currentTopic) return prev
+      const currentPage = prev.currentPosition?.page ?? 0
+      if (currentPage <= 0) return prev
+      const newPosition: ReadingPosition = {
+        chapter: prev.currentPosition?.chapter ?? 0,
+        verse: prev.currentPosition?.verse ?? 0,
+        page: currentPage - 1,
+        lastRead: new Date().toISOString(),
+      }
+      const updatedPositions = { ...prev.readingPositions, [prev.currentTopic]: newPosition }
+      setToStorage(STORAGE_KEYS.readingPositions, updatedPositions)
+      return { ...prev, currentPosition: newPosition, readingPositions: updatedPositions }
     })
-  }, [state.currentPosition, goToPosition])
+  }, [])
 
   const goToChapter = useCallback((chapterIndex: number) => {
     goToPosition({
@@ -281,7 +313,7 @@ export function useScrollState() {
   // ============================================
 
   const getContinuePosition = useCallback((topic: string): ReadingPosition => {
-    return state.readingPositions[topic] || { ...DEFAULT_POSITION }
+    return state.readingPositions[topic] || createDefaultPosition()
   }, [state.readingPositions])
 
   const continueReading = useCallback(() => {
@@ -309,17 +341,18 @@ export function useScrollState() {
       }
 
       const updatedVerses = [...currentProgress.completedVerses, verse]
-
-      return {
-        ...prev,
-        topicProgress: {
-          ...prev.topicProgress,
-          [prev.currentTopic]: {
-            ...currentProgress,
-            completedVerses: updatedVerses,
-          },
+      const newTopicProgress = {
+        ...prev.topicProgress,
+        [prev.currentTopic]: {
+          ...currentProgress,
+          completedVerses: updatedVerses,
         },
       }
+
+      // Persist to localStorage
+      setToStorage('exodus_book_topic_progress', newTopicProgress)
+
+      return { ...prev, topicProgress: newTopicProgress }
     })
   }, [])
 
@@ -338,17 +371,18 @@ export function useScrollState() {
       }
 
       const updatedChapters = [...currentProgress.completedChapters, chapterIndex]
-
-      return {
-        ...prev,
-        topicProgress: {
-          ...prev.topicProgress,
-          [prev.currentTopic]: {
-            ...currentProgress,
-            completedChapters: updatedChapters,
-          },
+      const newTopicProgress = {
+        ...prev.topicProgress,
+        [prev.currentTopic]: {
+          ...currentProgress,
+          completedChapters: updatedChapters,
         },
       }
+
+      // Persist to localStorage
+      setToStorage('exodus_book_topic_progress', newTopicProgress)
+
+      return { ...prev, topicProgress: newTopicProgress }
     })
   }, [])
 

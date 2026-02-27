@@ -21,8 +21,6 @@ import { PageFlip, RapidPageFlip, usePageTurnSound } from './PageFlip'
 import { ScrollOpenAnimation } from './ScrollOpenAnimation'
 import { useScrollState } from './useScrollState'
 import { ScrollGameSelector, GradedQuiz } from './ScrollGames'
-import { CrosswordPuzzle } from './CrosswordPuzzle'
-import { ActivitySelector } from './ActivitySelector'
 
 // Game item type for interactive activities
 interface GameItem {
@@ -124,10 +122,10 @@ function AncientBorder({ className }: { className?: string }) {
   )
 }
 
-function HieroglyphicDivider({ color }: { color?: string }) {
-  // Ancient-inspired decorative symbols
+function HieroglyphicDivider({ color, index = 0 }: { color?: string; index?: number }) {
+  // Ancient-inspired decorative symbols — deterministic selection based on index
   const symbols = ['☥', '𓂀', '☀', '✦', '◈', '❋', '⚜']
-  const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)]
+  const randomSymbol = symbols[Math.abs(index) % symbols.length]
 
   return (
     <div className="flex items-center justify-center gap-4 my-6">
@@ -149,33 +147,6 @@ function HieroglyphicDivider({ color }: { color?: string }) {
           background: `linear-gradient(to left, transparent, ${color || 'var(--border)'}, transparent)`,
         }}
       />
-    </div>
-  )
-}
-
-function AncientPageNumber({ number, total }: { number: number; total: number }) {
-  // Roman numeral conversion for page numbers
-  const toRoman = (num: number): string => {
-    const romanNumerals: [number, string][] = [
-      [1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'],
-      [100, 'C'], [90, 'XC'], [50, 'L'], [40, 'XL'],
-      [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']
-    ]
-    let result = ''
-    for (const [value, symbol] of romanNumerals) {
-      while (num >= value) {
-        result += symbol
-        num -= value
-      }
-    }
-    return result
-  }
-
-  return (
-    <div className="text-center text-xs text-[var(--muted-foreground)]/60 font-serif">
-      <span className="tracking-widest">{toRoman(number)}</span>
-      <span className="mx-2 opacity-30">·</span>
-      <span className="tracking-widest">{toRoman(total)}</span>
     </div>
   )
 }
@@ -448,7 +419,7 @@ export function DigitalScroll({
     })
 
     return pages
-  }, [modules, selectedLevel])
+  }, [modules, selectedLevel, topic.id])
 
   // ============================================
   // NAVIGATION STATE
@@ -560,12 +531,15 @@ export function DigitalScroll({
   // UNLOCK & OPEN ANIMATION
   // ============================================
 
+  // Unlock and open on mount — only depends on topic.id and stable function refs
+  // to avoid infinite re-render loops (scrollState object changes on every state update)
   useEffect(() => {
     if (!scrollState.unlockState.isUnlocked) {
       scrollState.unlockScroll(topic.id)
     }
     scrollState.openScroll(topic.id)
-  }, [topic.id, scrollState])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [topic.id])
 
   const handleAnimationComplete = useCallback(() => {
     setShowOpenAnimation(false)
@@ -968,7 +942,7 @@ export function DigitalScroll({
                   onComplete={(score) => {
                     // Mark games as completed for this chapter
                     setCompletedGames(prev => ({ ...prev, [chapterIdx]: true }))
-                    console.log(`Game completed with score: ${score}`)
+                    // Game completed — score tracked in completedGames state
                   }}
                 />
               ) : (
@@ -1356,7 +1330,7 @@ export function DigitalScroll({
                   chapterIndex={quizChapterIdx}
                   onComplete={(score, total) => {
                     const percentage = Math.round((score / total) * 100)
-                    console.log(`Quiz completed: ${score}/${total} (${percentage}%)`)
+                    // Quiz completed — persist via API below
 
                     // Mark chapter as complete in local scroll state if passing score (>=70%)
                     if (percentage >= 70 && quizChapterIdx !== undefined) {
@@ -1426,7 +1400,6 @@ export function DigitalScroll({
             topicSlug={topic.id}
             topicTitle={topic.title}
             topicDescription={topic.description}
-            targetPage={currentPageIndex}
             onAnimationComplete={handleAnimationComplete}
             reducedMotion={scrollState.preferences.reducedMotion}
           />
@@ -1529,8 +1502,8 @@ export function DigitalScroll({
             <PageEdges pageCount={totalPages} />
           </ScrollWrapper>
 
-          {/* Navigation Footer - Minimal, shows on hover */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 z-30 opacity-30 hover:opacity-100 transition-opacity duration-300">
+          {/* Navigation Footer - visible enough for touch, fades up on hover */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 z-30 opacity-60 hover:opacity-100 transition-opacity duration-300">
             <button
               onClick={prevPage}
               disabled={currentPageIndex === 0}
@@ -1621,6 +1594,14 @@ export function DigitalScroll({
                 y: prev.y + info.offset.y,
               }))
             }}
+            onKeyDown={(e: React.KeyboardEvent) => {
+              if (e.key === 'Escape') {
+                e.stopPropagation()
+                setShowDiscussion(false)
+              }
+            }}
+            role="dialog"
+            aria-label={`${topic.title} Discussion`}
           >
             {/* Drag Handle Header */}
             <div
@@ -1643,6 +1624,7 @@ export function DigitalScroll({
               <button
                 onClick={() => setShowDiscussion(false)}
                 className="p-1.5 rounded-lg hover:bg-[var(--background)] transition-colors"
+                aria-label="Close discussion"
               >
                 <X className="w-4 h-4 text-[var(--muted-foreground)]" />
               </button>
@@ -1673,11 +1655,13 @@ export function DigitalScroll({
                 <div className="flex gap-3">
                   <textarea
                     placeholder="Share your thoughts on this chapter..."
+                    aria-label="Discussion message"
                     className="flex-1 px-3 py-2 text-sm rounded-lg bg-[var(--background)] border border-[var(--border)] focus:outline-none focus:border-[var(--primary)] resize-none"
                     rows={2}
                   />
                   <div className="flex flex-col gap-2">
                     <button
+                      onClick={() => window.open(`/community/forum?topic=${topic.id}`, '_blank')}
                       className="px-4 py-2 text-xs font-medium rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)]"
                     >
                       Post

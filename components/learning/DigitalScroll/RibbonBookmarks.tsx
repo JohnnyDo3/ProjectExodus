@@ -75,9 +75,7 @@ export function RibbonBookmarks({
       className={cn(
         'z-40',
         // Desktop: ribbons at top of book, extending upward
-        isDesktop && !isExpanded && 'absolute top-0 left-8 flex flex-row gap-1.5',
-        // Desktop expanded: same positioning relative to book
-        isDesktop && isExpanded && 'absolute top-0 left-8 flex flex-row gap-1.5',
+        isDesktop && 'absolute top-0 left-8 flex flex-row gap-1.5',
         // Tablet: horizontal strip at top
         deviceType === 'tablet' && 'flex flex-row justify-center gap-1 py-2 bg-[var(--muted)]',
         // Mobile: compact horizontal strip
@@ -87,7 +85,7 @@ export function RibbonBookmarks({
       style={isDesktop ? {
         // Position ribbons so they extend upward from the top edge of the book
         // -75% means 75% sticks out above, 25% is "inside" the book
-        transform: isExpanded ? 'translateY(-75%)' : 'translateY(-75%)',
+        transform: isExpanded ? 'translateY(-85%)' : 'translateY(-75%)',
       } : undefined}
       role="navigation"
       aria-label="Chapter bookmarks"
@@ -334,16 +332,6 @@ function YinYangRibbon({
   const dimensions = SCROLL_DIMENSIONS[deviceType]
   const isDesktop = deviceType === 'desktop'
 
-  // Animated gradient for yin-yang effect
-  const [gradientPhase, setGradientPhase] = useState(0)
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setGradientPhase((prev) => (prev + 1) % 360)
-    }, 50)
-    return () => clearInterval(interval)
-  }, [])
-
   return (
     <motion.button
       className={cn(
@@ -352,13 +340,15 @@ function YinYangRibbon({
         'focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-black',
         // Separator before yin-yang
         isDesktop && 'ml-4',
-        !isDesktop && 'ml-2 rounded-md'
+        !isDesktop && 'ml-2 rounded-md',
+        // CSS-based gradient animation instead of JS interval (was 20 re-renders/sec)
+        'animate-[yinyang-rotate_7s_linear_infinite]'
       )}
       style={{
         width: dimensions.ribbonWidth,
         height: dimensions.ribbonHeight,
-        // Animated gradient
-        background: `linear-gradient(${gradientPhase}deg, #000000, #ffffff, #000000)`,
+        // Use CSS custom property for the animated gradient
+        background: 'linear-gradient(var(--yinyang-angle, 0deg), #000000, #ffffff, #000000)',
         // Desktop: pointed ribbon shape
         ...(isDesktop && {
           clipPath: 'polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%)',
