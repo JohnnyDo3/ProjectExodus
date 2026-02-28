@@ -827,15 +827,53 @@ const TracerySVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="tracery-halo" intensity={1} />}
     <g filter={showHalo ? "url(#tracery-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Cathedral wall */}
-      <g strokeWidth="0.8" strokeDasharray="3 2" opacity="0.4">
-        {/* Wall sections */}
+      {/* CONTEXT: Cathedral nave wall with buttresses and light effects */}
+      <g strokeWidth="0.8" strokeDasharray="3 2" opacity="0.35">
+        {/* Thick nave walls extending off-page */}
+        <path d="M-5 -5 L-5 105" strokeWidth="0.6" />
+        <path d="M0 -5 L0 105" strokeWidth="0.7" />
         <path d="M5 20 L5 95 L10 95 L10 35" />
         <path d="M90 35 L90 95 L95 95 L95 20" />
-        {/* Floor */}
-        <path d="M5 95 L95 95" />
-        {/* Wall above arch */}
-        <path d="M10 5 Q50 0, 90 5" />
+        <path d="M100 -5 L100 105" strokeWidth="0.7" />
+        <path d="M105 -5 L105 105" strokeWidth="0.6" />
+
+        {/* Stone coursing on wall */}
+        <path d="M-5 25 L5 25" strokeWidth="0.4" opacity="0.5" />
+        <path d="M95 25 L105 25" strokeWidth="0.4" opacity="0.5" />
+        <path d="M-5 55 L5 55" strokeWidth="0.4" opacity="0.5" />
+        <path d="M95 55 L105 55" strokeWidth="0.4" opacity="0.5" />
+        <path d="M-5 80 L5 80" strokeWidth="0.4" opacity="0.5" />
+        <path d="M95 80 L105 80" strokeWidth="0.4" opacity="0.5" />
+
+        {/* Buttress hints on exterior */}
+        <path d="M-8 -5 L-8 105" strokeWidth="0.5" opacity="0.4" />
+        <path d="M108 -5 L108 105" strokeWidth="0.5" opacity="0.4" />
+
+        {/* Wall above arch / vault spring */}
+        <path d="M5 5 Q50 -5, 95 5" strokeWidth="0.6" />
+        <path d="M0 2 Q50 -8, 100 2" strokeWidth="0.5" opacity="0.5" />
+
+        {/* Floor paving */}
+        <path d="M-5 95 L105 95" />
+        <path d="M-5 98 L105 98" strokeWidth="0.5" opacity="0.5" />
+        <path d="M25 95 L25 102" strokeWidth="0.3" opacity="0.3" />
+        <path d="M50 95 L50 102" strokeWidth="0.3" opacity="0.3" />
+        <path d="M75 95 L75 102" strokeWidth="0.3" opacity="0.3" />
+      </g>
+
+      {/* CONTEXT: Light streaming through tracery */}
+      <g opacity="0.15" strokeWidth="0.6">
+        <path d="M35 50 L25 80" />
+        <path d="M50 35 L40 75" />
+        <path d="M65 50 L55 80" />
+        <path d="M50 22 L42 65" />
+        <path d="M25 50 L18 78" />
+        <path d="M75 50 L68 78" />
+        {/* Dust motes in light */}
+        <circle cx="35" cy="70" r="0.6" opacity="0.3" />
+        <circle cx="52" cy="60" r="0.5" opacity="0.25" />
+        <circle cx="45" cy="75" r="0.4" opacity="0.2" />
+        <circle cx="60" cy="68" r="0.5" opacity="0.3" />
       </g>
 
       {/* PRIMARY: Tracery window */}

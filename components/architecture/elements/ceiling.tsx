@@ -124,10 +124,31 @@ const CofferedCeilingSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="coffer-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#coffer-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Wall edges visible at corners */}
+      {/* CONTEXT - Room walls with crown molding and floor reference */}
       <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
-        <path d="M0 100 L0 90 L10 80" />
-        <path d="M100 100 L100 90 L90 80" />
+        {/* Wall corners with full wall surfaces */}
+        <path d="M0 100 L0 82 L10 72" />
+        <path d="M100 100 L100 82 L90 72" />
+        <path d="M0 100 L100 100" />
+
+        {/* Crown molding at wall-ceiling junction */}
+        <path d="M0 86 Q5 84, 10 78" strokeWidth="0.7" opacity="0.5" />
+        <path d="M100 86 Q95 84, 90 78" strokeWidth="0.7" opacity="0.5" />
+        <path d="M10 72 L25 63" strokeWidth="0.5" opacity="0.4" />
+        <path d="M90 72 L75 63" strokeWidth="0.5" opacity="0.4" />
+
+        {/* Floor line at bottom */}
+        <path d="M-5 100 L105 100" strokeWidth="0.5" opacity="0.4" />
+
+        {/* Column capital hints at corners */}
+        <path d="M2 88 L8 88" strokeWidth="0.5" opacity="0.4" />
+        <path d="M2 92 L2 88 L8 88 L8 92" strokeWidth="0.4" opacity="0.3" />
+        <path d="M92 88 L98 88" strokeWidth="0.5" opacity="0.4" />
+        <path d="M92 92 L92 88 L98 88 L98 92" strokeWidth="0.4" opacity="0.3" />
+
+        {/* Ceiling surface continuing beyond visible coffers */}
+        <path d="M-5 20 L5 30" strokeWidth="0.4" opacity="0.3" />
+        <path d="M105 20 L95 30" strokeWidth="0.4" opacity="0.3" />
       </g>
 
       {/* PRIMARY - Coffered grid in perspective (converging to center) */}
@@ -729,9 +750,30 @@ const ReflectedCeilingPlanSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="rcp-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#rcp-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Room outline (walls as dashed reference) */}
+      {/* CONTEXT - Room outline with wall thickness, door opening, and column grid */}
       <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.8">
+        {/* Outer wall (thick wall representation) */}
+        <rect x="7" y="7" width="86" height="86" />
+        {/* Inner wall face */}
         <rect x="10" y="10" width="80" height="80" />
+
+        {/* Door opening with swing arc (bottom wall) */}
+        <line x1="35" y1="90" x2="35" y2="93" strokeWidth="0.6" />
+        <line x1="50" y1="90" x2="50" y2="93" strokeWidth="0.6" />
+        <path d="M 35 90 Q 35 80, 45 80" strokeWidth="0.4" opacity="0.5" strokeDasharray="1 2" />
+
+        {/* Column grid reference markers */}
+        <circle cx="7" cy="3" r="2.5" strokeWidth="0.5" opacity="0.5" />
+        <text x="7" y="4" fontSize="2.5" textAnchor="middle" fill="currentColor" opacity="0.4" fontWeight="bold">A</text>
+        <circle cx="93" cy="3" r="2.5" strokeWidth="0.5" opacity="0.5" />
+        <text x="93" y="4" fontSize="2.5" textAnchor="middle" fill="currentColor" opacity="0.4" fontWeight="bold">B</text>
+        <circle cx="3" cy="10" r="2.5" strokeWidth="0.5" opacity="0.5" />
+        <text x="3" y="11" fontSize="2.5" textAnchor="middle" fill="currentColor" opacity="0.4" fontWeight="bold">1</text>
+        <circle cx="3" cy="90" r="2.5" strokeWidth="0.5" opacity="0.5" />
+        <text x="3" y="91" fontSize="2.5" textAnchor="middle" fill="currentColor" opacity="0.4" fontWeight="bold">2</text>
+
+        {/* Ceiling height annotation */}
+        <text x="88" y="97" fontSize="2" fill="currentColor" opacity="0.4">9&apos;-0&quot; AFF</text>
       </g>
 
       {/* PRIMARY - Ceiling grid (2'x2' acoustical tile) */}

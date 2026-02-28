@@ -108,9 +108,40 @@ const ArabesqueSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="arabesque-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#arabesque-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Decorative frame/border */}
+      {/* CONTEXT - Mosque/palace wall with tile panel surround */}
       <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
+        {/* Wall surface extending off-page */}
+        <path d="M-5 0 L105 0" />
+        <path d="M-5 100 L105 100" />
+        <path d="M-5 0 L-5 100" />
+        <path d="M105 0 L105 100" />
+
+        {/* Masonry mortar lines on wall */}
+        <path d="M-5 15 L6 15" opacity="0.5" />
+        <path d="M94 15 L105 15" opacity="0.5" />
+        <path d="M-5 50 L6 50" opacity="0.5" />
+        <path d="M94 50 L105 50" opacity="0.5" />
+        <path d="M-5 85 L6 85" opacity="0.5" />
+        <path d="M94 85 L105 85" opacity="0.5" />
+
+        {/* Beveled frame with depth around the panel */}
+        <path d="M6 6 L94 6 L94 94 L6 94 Z" strokeWidth="0.8" />
         <path d="M8 8 L92 8 L92 92 L8 92 Z" />
+
+        {/* Adjacent panel hint on left */}
+        <path d="M-12 8 L4 8 L4 92 L-12 92 Z" opacity="0.4" />
+        {/* Adjacent panel hint on right */}
+        <path d="M96 8 L112 8 L112 92 L96 92 Z" opacity="0.4" />
+
+        {/* Calligraphic band above panels */}
+        <path d="M-5 3 L105 3" strokeWidth="0.5" />
+        <path d="M-5 6 L105 6" strokeWidth="0.5" />
+
+        {/* Floor tiles below */}
+        <path d="M-5 97 L105 97" strokeWidth="0.5" />
+        <path d="M20 97 L20 105" strokeWidth="0.3" opacity="0.4" />
+        <path d="M50 97 L50 105" strokeWidth="0.3" opacity="0.4" />
+        <path d="M80 97 L80 105" strokeWidth="0.3" opacity="0.4" />
       </g>
 
       {/* PRIMARY - Arabesque interlacing in perspective */}
@@ -318,11 +349,38 @@ const CorniceSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="cornice-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#cornice-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Wall surface below */}
+      {/* CONTEXT - Building wall with columns and roof above */}
       <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
-        <path d="M0 100 L0 70" />
-        <path d="M100 100 L100 70" />
-        <path d="M0 100 L100 100" />
+        {/* Roof/parapet above cornice - extending off-page */}
+        <path d="M-10 28 L110 28" strokeWidth="0.5" />
+        <path d="M-10 25 L110 25" strokeWidth="0.7" />
+
+        {/* Wall surface below - extending off-page */}
+        <path d="M-10 100 L-10 72" strokeWidth="0.6" />
+        <path d="M110 100 L110 72" strokeWidth="0.6" />
+        <path d="M-10 100 L110 100" strokeWidth="0.6" />
+
+        {/* Masonry coursing on wall */}
+        <path d="M-10 80 L110 80" strokeWidth="0.4" opacity="0.5" />
+        <path d="M-10 88 L110 88" strokeWidth="0.4" opacity="0.5" />
+        <path d="M-10 96 L110 96" strokeWidth="0.4" opacity="0.5" />
+
+        {/* Column capital tops below architrave */}
+        <path d="M5 72 L5 85" strokeWidth="0.7" opacity="0.6" />
+        <path d="M12 72 L12 85" strokeWidth="0.7" opacity="0.6" />
+        <path d="M5 75 L12 75" strokeWidth="0.4" opacity="0.4" />
+
+        <path d="M45 72 L45 85" strokeWidth="0.7" opacity="0.6" />
+        <path d="M55 72 L55 85" strokeWidth="0.7" opacity="0.6" />
+        <path d="M45 75 L55 75" strokeWidth="0.4" opacity="0.4" />
+
+        <path d="M88 72 L88 85" strokeWidth="0.7" opacity="0.6" />
+        <path d="M95 72 L95 85" strokeWidth="0.7" opacity="0.6" />
+        <path d="M88 75 L95 75" strokeWidth="0.4" opacity="0.4" />
+
+        {/* Window hint between columns */}
+        <path d="M20 78 L20 95 L38 95 L38 78 Z" strokeWidth="0.4" opacity="0.4" />
+        <path d="M62 78 L62 95 L80 95 L80 78 Z" strokeWidth="0.4" opacity="0.4" />
       </g>
 
       {/* PRIMARY - Cornice profile in perspective */}
@@ -630,11 +688,35 @@ const GargoyleSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="gargoyle-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#gargoyle-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Cathedral wall behind */}
+      {/* CONTEXT - Cathedral wall, parapet, and buttress */}
       <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
-        <path d="M85 10 L85 95" />
-        <path d="M90 15 L90 90" />
-        <path d="M95 20 L95 85" />
+        {/* Cathedral wall face behind gargoyle */}
+        <path d="M78 -5 L78 100" strokeWidth="0.8" />
+        <path d="M85 -5 L85 100" strokeWidth="0.7" />
+        <path d="M92 -5 L92 100" strokeWidth="0.6" />
+
+        {/* Stone coursing on wall */}
+        <path d="M78 10 L100 10" strokeWidth="0.4" opacity="0.6" />
+        <path d="M78 25 L100 25" strokeWidth="0.4" opacity="0.6" />
+        <path d="M78 40 L100 40" strokeWidth="0.4" opacity="0.6" />
+        <path d="M78 60 L100 60" strokeWidth="0.4" opacity="0.6" />
+        <path d="M78 75 L100 75" strokeWidth="0.4" opacity="0.6" />
+        <path d="M78 90 L100 90" strokeWidth="0.4" opacity="0.6" />
+
+        {/* Parapet/cornice from which gargoyle projects */}
+        <path d="M75 35 L100 35" strokeWidth="0.9" opacity="0.7" />
+        <path d="M73 38 L100 38" strokeWidth="0.7" opacity="0.5" />
+
+        {/* Gutter channel leading to gargoyle mounting point */}
+        <path d="M100 36 L82 36 L82 42" strokeWidth="0.5" opacity="0.5" />
+
+        {/* Buttress outline on right side */}
+        <path d="M92 -5 L92 100" strokeWidth="0.9" opacity="0.5" />
+        <path d="M100 -5 L100 100" strokeWidth="0.9" opacity="0.5" />
+        <path d="M92 0 Q96 15, 100 30" strokeWidth="0.5" opacity="0.4" />
+
+        {/* Roof slope above parapet */}
+        <path d="M75 35 L65 20 L55 10" strokeWidth="0.5" opacity="0.4" />
       </g>
 
       {/* PRIMARY - Gargoyle projecting into space */}
@@ -701,9 +783,38 @@ const GrotesqueSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="grotesque-halo" intensity={0.88} />}
     <g filter={showHalo ? "url(#grotesque-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Architectural frame */}
+      {/* CONTEXT - Cathedral facade wall with string courses */}
       <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
-        <path d="M10 10 L90 10 L90 90 L10 90 Z" />
+        {/* Wall surface extending off-page */}
+        <path d="M-5 -5 L105 -5" />
+        <path d="M-5 105 L105 105" />
+        <path d="M-5 -5 L-5 105" />
+        <path d="M105 -5 L105 105" />
+
+        {/* Stone coursing on wall */}
+        <path d="M-5 8 L8 8" opacity="0.5" />
+        <path d="M92 8 L105 8" opacity="0.5" />
+        <path d="M-5 25 L8 25" opacity="0.5" />
+        <path d="M92 25 L105 25" opacity="0.5" />
+        <path d="M-5 50 L8 50" opacity="0.5" />
+        <path d="M92 50 L105 50" opacity="0.5" />
+        <path d="M-5 75 L8 75" opacity="0.5" />
+        <path d="M92 75 L105 75" opacity="0.5" />
+        <path d="M-5 92 L8 92" opacity="0.5" />
+        <path d="M92 92 L105 92" opacity="0.5" />
+
+        {/* String course / corbel table above medallion */}
+        <path d="M-5 5 L105 5" strokeWidth="0.8" opacity="0.6" />
+        {/* String course below medallion */}
+        <path d="M-5 95 L105 95" strokeWidth="0.8" opacity="0.6" />
+
+        {/* Adjacent medallion hint on left */}
+        <circle cx="-15" cy="50" r="18" opacity="0.3" />
+        {/* Adjacent medallion hint on right */}
+        <circle cx="115" cy="50" r="18" opacity="0.3" />
+
+        {/* Molded frame around medallion (beveled) */}
+        <path d="M8 8 L92 8 L92 92 L8 92 Z" strokeWidth="0.7" />
       </g>
 
       {/* PRIMARY - Grotesque hybrid figure */}
@@ -771,10 +882,29 @@ const GuillocheSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="guilloche-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#guilloche-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Molding borders */}
+      {/* CONTEXT - Doorframe surround with adjacent molding profiles */}
       <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
-        <path d="M0 25 L100 25" />
-        <path d="M0 75 L100 75" />
+        {/* Door frame jambs on left and right */}
+        <path d="M-5 0 L-5 100" strokeWidth="0.8" opacity="0.5" />
+        <path d="M105 0 L105 100" strokeWidth="0.8" opacity="0.5" />
+
+        {/* Upper fillet molding */}
+        <path d="M-5 22 L105 22" strokeWidth="0.5" opacity="0.5" />
+        <path d="M-5 25 L105 25" strokeWidth="0.6" />
+
+        {/* Astragal / bead-and-reel molding above guilloche */}
+        <path d="M0 27 Q5 26, 10 27 Q15 28, 20 27 Q25 26, 30 27 Q35 28, 40 27 Q45 26, 50 27 Q55 28, 60 27 Q65 26, 70 27 Q75 28, 80 27 Q85 26, 90 27 Q95 28, 100 27" strokeWidth="0.5" opacity="0.5" />
+
+        {/* Lower fillet and ovolo molding below guilloche */}
+        <path d="M-5 75 L105 75" strokeWidth="0.6" />
+        <path d="M-5 78 L105 78" strokeWidth="0.5" opacity="0.5" />
+        <path d="M0 76 Q3 75, 6 76 Q9 77, 12 76 Q15 75, 18 76 Q21 77, 24 76 Q27 75, 30 76 Q33 77, 36 76 Q39 75, 42 76 Q45 77, 48 76 Q51 75, 54 76 Q57 77, 60 76 Q63 75, 66 76 Q69 77, 72 76 Q75 75, 78 76 Q81 77, 84 76 Q87 75, 90 76 Q93 77, 96 76 Q99 75, 100 76" strokeWidth="0.4" opacity="0.4" />
+
+        {/* Wall surface / column drum behind */}
+        <path d="M-5 0 L105 0" strokeWidth="0.5" opacity="0.4" />
+        <path d="M-5 100 L105 100" strokeWidth="0.5" opacity="0.4" />
+        <path d="M-5 10 L105 10" strokeWidth="0.3" opacity="0.3" />
+        <path d="M-5 90 L105 90" strokeWidth="0.3" opacity="0.3" />
       </g>
 
       {/* PRIMARY - Guilloche interlacing pattern */}
@@ -911,10 +1041,46 @@ const RosetteSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="rosette-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#rosette-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Coffer or panel frame */}
+      {/* CONTEXT - Coffered ceiling with beam grid and adjacent coffers */}
       <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
-        <path d="M10 10 L90 10 L90 90 L10 90 Z" />
+        {/* Beam grid structure dividing coffers */}
+        <path d="M8 8 L92 8" strokeWidth="1" opacity="0.5" />
+        <path d="M8 92 L92 92" strokeWidth="1" opacity="0.5" />
+        <path d="M8 8 L8 92" strokeWidth="1" opacity="0.5" />
+        <path d="M92 8 L92 92" strokeWidth="1" opacity="0.5" />
+
+        {/* Recession/depth lines showing coffer is recessed */}
+        <path d="M8 8 L15 15" strokeWidth="0.5" opacity="0.4" />
+        <path d="M92 8 L85 15" strokeWidth="0.5" opacity="0.4" />
+        <path d="M8 92 L15 85" strokeWidth="0.5" opacity="0.4" />
+        <path d="M92 92 L85 85" strokeWidth="0.5" opacity="0.4" />
+
+        {/* Inner coffer frame */}
         <path d="M15 15 L85 15 L85 85 L15 85 Z" />
+
+        {/* Adjacent coffer hints extending beyond frame */}
+        {/* Top neighbor */}
+        <path d="M8 -5 L92 -5" strokeWidth="0.8" opacity="0.3" />
+        <path d="M15 -5 L15 8" strokeWidth="0.4" opacity="0.3" />
+        <path d="M50 -5 L50 8" strokeWidth="0.4" opacity="0.3" />
+        <path d="M85 -5 L85 8" strokeWidth="0.4" opacity="0.3" />
+        {/* Bottom neighbor */}
+        <path d="M8 105 L92 105" strokeWidth="0.8" opacity="0.3" />
+        <path d="M15 92 L15 105" strokeWidth="0.4" opacity="0.3" />
+        <path d="M85 92 L85 105" strokeWidth="0.4" opacity="0.3" />
+        {/* Left neighbor */}
+        <path d="M-5 8 L8 8" strokeWidth="0.8" opacity="0.3" />
+        <path d="M-5 50 L8 50" strokeWidth="0.4" opacity="0.3" />
+        <path d="M-5 92 L8 92" strokeWidth="0.8" opacity="0.3" />
+        {/* Right neighbor */}
+        <path d="M92 8 L105 8" strokeWidth="0.8" opacity="0.3" />
+        <path d="M92 50 L105 50" strokeWidth="0.4" opacity="0.3" />
+        <path d="M92 92 L105 92" strokeWidth="0.8" opacity="0.3" />
+
+        {/* Neighboring rosette hints */}
+        <circle cx="-10" cy="50" r="6" opacity="0.2" />
+        <circle cx="110" cy="50" r="6" opacity="0.2" />
+        <circle cx="50" cy="-10" r="6" opacity="0.2" />
       </g>
 
       {/* PRIMARY - Rosette in 3D relief */}

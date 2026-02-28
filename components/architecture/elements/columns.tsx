@@ -672,19 +672,46 @@ export const PilasterSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT: Wall behind pilaster - dashed ghost lines */}
-    <path d="M 8 5 L 8 95" strokeWidth="0.7" fill="none" opacity="0.3" strokeDasharray="4 2" />
-    <path d="M 92 5 L 92 95" strokeWidth="0.7" fill="none" opacity="0.3" strokeDasharray="4 2" />
-    <path d="M 8 5 L 92 5" strokeWidth="0.6" fill="none" opacity="0.25" strokeDasharray="3 2" />
-    <path d="M 8 95 L 92 95" strokeWidth="0.6" fill="none" opacity="0.25" strokeDasharray="3 2" />
+    {/* CONTEXT: Renaissance facade wall - extends off-page */}
+    <g opacity="0.3" strokeDasharray="3 2">
+      {/* Wall boundary extending beyond frame */}
+      <path d="M -5 2 L 105 2" strokeWidth="0.7" fill="none" />
+      <path d="M -5 98 L 105 98" strokeWidth="0.7" fill="none" />
+      <path d="M -5 2 L -5 98" strokeWidth="0.7" fill="none" />
+      <path d="M 105 2 L 105 98" strokeWidth="0.7" fill="none" />
 
-    {/* Wall surface texture - very light dashed */}
-    <path d="M 15 20 L 85 20" strokeWidth="0.4" fill="none" opacity="0.15" strokeDasharray="2 4" />
-    <path d="M 15 40 L 28 40" strokeWidth="0.4" fill="none" opacity="0.15" strokeDasharray="2 4" />
-    <path d="M 72 40 L 85 40" strokeWidth="0.4" fill="none" opacity="0.15" strokeDasharray="2 4" />
-    <path d="M 15 60 L 28 60" strokeWidth="0.4" fill="none" opacity="0.15" strokeDasharray="2 4" />
-    <path d="M 72 60 L 85 60" strokeWidth="0.4" fill="none" opacity="0.15" strokeDasharray="2 4" />
-    <path d="M 15 80 L 85 80" strokeWidth="0.4" fill="none" opacity="0.15" strokeDasharray="2 4" />
+      {/* Cornice/entablature above */}
+      <path d="M -5 3 L 105 3" strokeWidth="0.8" fill="none" />
+      <path d="M -5 5 L 105 5" strokeWidth="0.5" fill="none" />
+
+      {/* Stone coursing on wall surface */}
+      <path d="M -5 20 L 28 20" strokeWidth="0.4" fill="none" opacity="0.6" />
+      <path d="M 72 20 L 105 20" strokeWidth="0.4" fill="none" opacity="0.6" />
+      <path d="M -5 40 L 28 40" strokeWidth="0.4" fill="none" opacity="0.6" />
+      <path d="M 72 40 L 105 40" strokeWidth="0.4" fill="none" opacity="0.6" />
+      <path d="M -5 60 L 28 60" strokeWidth="0.4" fill="none" opacity="0.6" />
+      <path d="M 72 60 L 105 60" strokeWidth="0.4" fill="none" opacity="0.6" />
+      <path d="M -5 80 L 28 80" strokeWidth="0.4" fill="none" opacity="0.6" />
+      <path d="M 72 80 L 105 80" strokeWidth="0.4" fill="none" opacity="0.6" />
+
+      {/* Adjacent pilaster hints on left and right */}
+      <path d="M -2 95 L -2 8" strokeWidth="1" fill="none" opacity="0.5" />
+      <path d="M 5 95 L 5 8" strokeWidth="1" fill="none" opacity="0.5" />
+      <path d="M 95 95 L 95 8" strokeWidth="1" fill="none" opacity="0.5" />
+      <path d="M 102 95 L 102 8" strokeWidth="1" fill="none" opacity="0.5" />
+
+      {/* Window opening between pilasters on left side */}
+      <path d="M -8 35 L -8 70 L 2 70 L 2 35 Z" strokeWidth="0.5" fill="none" opacity="0.5" />
+      {/* Window opening between pilasters on right side */}
+      <path d="M 98 35 L 98 70 L 108 70 L 108 35 Z" strokeWidth="0.5" fill="none" opacity="0.5" />
+
+      {/* Floor/base course */}
+      <path d="M -5 95 L 105 95" strokeWidth="0.6" fill="none" />
+      <path d="M -5 97 L 105 97" strokeWidth="0.5" fill="none" opacity="0.5" />
+
+      {/* Pilaster projection shadow (right side) */}
+      <path d="M 66 20 L 68 20 L 68 87 L 66 87" strokeWidth="0.4" fill="none" opacity="0.4" />
+    </g>
 
     {/* PRIMARY: THE PILASTER */}
     <g filter={showHalo ? "url(#col-halo)" : undefined}>
@@ -725,16 +752,43 @@ export const EntasisSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT: Construction/measurement lines - dashed */}
-    <path d="M 10 94 L 90 94" strokeWidth="0.8" fill="none" opacity="0.4" strokeDasharray="4 2" />
-    <path d="M 22 7 L 78 7" strokeWidth="0.6" fill="none" opacity="0.3" strokeDasharray="3 2" />
+    {/* CONTEXT: Greek temple colonnade - architectural setting */}
+    <g opacity="0.25" strokeDasharray="3 2">
+      {/* Entablature above - extending off-page */}
+      <path d="M -10 4 L 110 4" strokeWidth="0.8" fill="none" />
+      <path d="M -10 7 L 110 7" strokeWidth="0.6" fill="none" />
 
-    {/* Horizontal measurement lines showing entasis bulge - dashed */}
+      {/* Neighboring columns (left) showing entasis for comparison */}
+      <path d="M -4 90 Q -7 70, -8 50 Q -9 35, -6 20 L -3 15" strokeWidth="0.8" fill="none" opacity="0.6" />
+      <path d="M 10 90 Q 7 70, 6 50 Q 5 35, 8 20 L 11 15" strokeWidth="0.8" fill="none" opacity="0.6" />
+      {/* Neighboring columns (right) */}
+      <path d="M 90 90 Q 93 70, 94 50 Q 95 35, 92 20 L 89 15" strokeWidth="0.8" fill="none" opacity="0.6" />
+      <path d="M 104 90 Q 107 70, 108 50 Q 109 35, 106 20 L 103 15" strokeWidth="0.8" fill="none" opacity="0.6" />
+
+      {/* Neighbor capitals */}
+      <path d="M -6 15 L 13 15" strokeWidth="0.5" fill="none" opacity="0.5" />
+      <path d="M -8 11 L 15 11" strokeWidth="0.5" fill="none" opacity="0.5" />
+      <path d="M 87 15 L 106 15" strokeWidth="0.5" fill="none" opacity="0.5" />
+      <path d="M 85 11 L 108 11" strokeWidth="0.5" fill="none" opacity="0.5" />
+
+      {/* Stylobate steps */}
+      <path d="M -10 94 L 110 94" strokeWidth="0.7" fill="none" />
+      <path d="M -10 97 L 110 97" strokeWidth="0.5" fill="none" opacity="0.6" />
+      <path d="M -10 100 L 110 100" strokeWidth="0.5" fill="none" opacity="0.4" />
+
+      {/* Floor/marble paving beyond stylobate */}
+      <path d="M 20 100 L 20 105" strokeWidth="0.3" fill="none" opacity="0.3" />
+      <path d="M 50 100 L 50 105" strokeWidth="0.3" fill="none" opacity="0.3" />
+      <path d="M 80 100 L 80 105" strokeWidth="0.3" fill="none" opacity="0.3" />
+    </g>
+
+    {/* ANALYTICAL: Measurement/comparison lines (educational overlay) */}
+    {/* Horizontal measurement lines showing entasis bulge */}
     <path d="M 22 30 L 78 30" strokeWidth="0.5" fill="none" opacity="0.35" strokeDasharray="3 2" />
     <path d="M 20 50 L 80 50" strokeWidth="0.5" fill="none" opacity="0.35" strokeDasharray="3 2" />
     <path d="M 22 70 L 78 70" strokeWidth="0.5" fill="none" opacity="0.35" strokeDasharray="3 2" />
 
-    {/* Theoretical straight line for comparison - dashed */}
+    {/* Theoretical straight line for comparison */}
     <path d="M 32 90 L 36 15" strokeWidth="0.6" fill="none" opacity="0.25" strokeDasharray="2 2" />
     <path d="M 68 90 L 64 15" strokeWidth="0.6" fill="none" opacity="0.25" strokeDasharray="2 2" />
 

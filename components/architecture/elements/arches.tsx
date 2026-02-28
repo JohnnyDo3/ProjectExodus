@@ -589,14 +589,50 @@ export const TrefoilArchSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT: Ground and outer frame - dashed */}
-    <path d="M 5 94 L 95 94" strokeWidth="0.8" fill="none" opacity="0.4" strokeDasharray="4 2" />
-    {/* Outer containing arch - context */}
-    <path d="M 18 58 Q 8 32, 24 14 Q 38 2, 50 2 Q 62 2, 76 14 Q 92 32, 82 58"
-          strokeWidth="1" fill="none" opacity="0.35" strokeDasharray="3 2" />
-    <g opacity="0.4" strokeDasharray="3 2">
-      <path d="M 18 94 L 18 58" strokeWidth="1.2" fill="none" />
-      <path d="M 82 94 L 82 58" strokeWidth="1.2" fill="none" />
+    {/* CONTEXT: Gothic cloister arcade with tracery windows */}
+    <g opacity="0.3" strokeDasharray="3 2">
+      {/* Cloister walls extending off-page */}
+      <path d="M -10 -5 L -10 100" strokeWidth="0.7" fill="none" />
+      <path d="M -5 -5 L -5 100" strokeWidth="0.7" fill="none" />
+      <path d="M 105 -5 L 105 100" strokeWidth="0.7" fill="none" />
+      <path d="M 110 -5 L 110 100" strokeWidth="0.7" fill="none" />
+
+      {/* Stone coursing on walls */}
+      <path d="M -10 20 L 8 20" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 92 20 L 110 20" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M -10 50 L 8 50" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 92 50 L 110 50" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M -10 75 L 8 75" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 92 75 L 110 75" strokeWidth="0.4" fill="none" opacity="0.5" />
+
+      {/* Floor paving */}
+      <path d="M -10 94 L 110 94" strokeWidth="0.8" fill="none" />
+      <path d="M -10 97 L 110 97" strokeWidth="0.5" fill="none" opacity="0.5" />
+      <path d="M 20 94 L 20 100" strokeWidth="0.3" fill="none" opacity="0.4" />
+      <path d="M 50 94 L 50 100" strokeWidth="0.3" fill="none" opacity="0.4" />
+      <path d="M 80 94 L 80 100" strokeWidth="0.3" fill="none" opacity="0.4" />
+
+      {/* Ceiling/vault above */}
+      <path d="M -10 -2 L 110 -2" strokeWidth="0.6" fill="none" />
+
+      {/* Adjacent arch hint on left */}
+      <path d="M -20 58 Q -28 32, -12 14 Q -2 2, 5 2" strokeWidth="0.6" fill="none" opacity="0.4" />
+      {/* Adjacent arch hint on right */}
+      <path d="M 120 58 Q 128 32, 112 14 Q 102 2, 95 2" strokeWidth="0.6" fill="none" opacity="0.4" />
+
+      {/* Outer containing arch with voussoir lines */}
+      <path d="M 18 58 Q 8 32, 24 14 Q 38 2, 50 2 Q 62 2, 76 14 Q 92 32, 82 58"
+            strokeWidth="1" fill="none" opacity="0.8" />
+      {/* Voussoir lines on outer arch */}
+      <path d="M 22 42 L 28 32" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 72 32 L 78 42" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 48 4 L 52 4" strokeWidth="0.5" fill="none" opacity="0.5" />
+
+      {/* Piers with depth */}
+      <path d="M 14 94 L 14 58" strokeWidth="1" fill="none" />
+      <path d="M 18 94 L 18 58" strokeWidth="1.2" fill="none" opacity="0.8" />
+      <path d="M 82 94 L 82 58" strokeWidth="1.2" fill="none" opacity="0.8" />
+      <path d="M 86 94 L 86 58" strokeWidth="1" fill="none" />
     </g>
 
     {/* PRIMARY: THE TREFOIL - Three lobes/foils */}
@@ -637,18 +673,56 @@ export const TudorArchSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT: Ground and piers - dashed */}
-    <path d="M 5 94 L 95 94" strokeWidth="0.8" fill="none" opacity="0.4" strokeDasharray="4 2" />
-    <g opacity="0.4" strokeDasharray="3 2">
-      <path d="M 10 94 L 10 48" strokeWidth="1.5" fill="none" />
-      <path d="M 16 94 L 16 48" strokeWidth="1" fill="none" />
-      <path d="M 90 94 L 90 48" strokeWidth="1.5" fill="none" />
-      <path d="M 84 94 L 84 48" strokeWidth="1" fill="none" />
-    </g>
+    {/* CONTEXT: Hampton Court arcade wall with hood mold */}
+    <g opacity="0.3" strokeDasharray="3 2">
+      {/* Walls extending off-page */}
+      <path d="M -10 -5 L -10 100" strokeWidth="0.7" fill="none" />
+      <path d="M 0 -5 L 0 100" strokeWidth="0.7" fill="none" />
+      <path d="M 100 -5 L 100 100" strokeWidth="0.7" fill="none" />
+      <path d="M 110 -5 L 110 100" strokeWidth="0.7" fill="none" />
 
-    {/* CONTEXT: Spandrel decoration (Tudor rose motif) - dashed */}
-    <circle cx="24" cy="32" r="5" strokeWidth="0.6" fill="none" opacity="0.3" strokeDasharray="2 2" />
-    <circle cx="76" cy="32" r="5" strokeWidth="0.6" fill="none" opacity="0.3" strokeDasharray="2 2" />
+      {/* Wall face / spandrel rectangle enclosing the arch */}
+      <path d="M -10 20 L 110 20" strokeWidth="0.7" fill="none" opacity="0.6" />
+      <path d="M -10 94 L 110 94" strokeWidth="0.8" fill="none" />
+
+      {/* Stone coursing on wall face */}
+      <path d="M -10 25 L 5 25" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 95 25 L 110 25" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M -10 35 L 5 35" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 95 35 L 110 35" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M -10 60 L 5 60" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 95 60 L 110 60" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M -10 80 L 5 80" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 95 80 L 110 80" strokeWidth="0.4" fill="none" opacity="0.5" />
+
+      {/* Hood mold / drip molding above the arch */}
+      <path d="M 6 46 Q 20 38, 36 36 Q 44 28, 50 26 Q 56 28, 64 36 Q 80 38, 94 46"
+            strokeWidth="0.7" fill="none" opacity="0.6" />
+
+      {/* Floor paving */}
+      <path d="M -10 97 L 110 97" strokeWidth="0.5" fill="none" opacity="0.5" />
+      <path d="M 25 94 L 25 100" strokeWidth="0.3" fill="none" opacity="0.4" />
+      <path d="M 50 94 L 50 100" strokeWidth="0.3" fill="none" opacity="0.4" />
+      <path d="M 75 94 L 75 100" strokeWidth="0.3" fill="none" opacity="0.4" />
+
+      {/* Adjacent Tudor arch hints */}
+      <path d="M -30 48 Q -20 44, -14 40 Q -6 32, 0 30" strokeWidth="0.5" fill="none" opacity="0.4" />
+      <path d="M 100 30 Q 106 32, 114 40 Q 120 44, 130 48" strokeWidth="0.5" fill="none" opacity="0.4" />
+
+      {/* Piers extending full height with depth */}
+      <path d="M 7 -5 L 7 94" strokeWidth="1.2" fill="none" />
+      <path d="M 10 -5 L 10 94" strokeWidth="1.5" fill="none" opacity="0.8" />
+      <path d="M 16 -5 L 16 94" strokeWidth="1" fill="none" />
+      <path d="M 84 -5 L 84 94" strokeWidth="1" fill="none" />
+      <path d="M 90 -5 L 90 94" strokeWidth="1.5" fill="none" opacity="0.8" />
+      <path d="M 93 -5 L 93 94" strokeWidth="1.2" fill="none" />
+
+      {/* Spandrel Tudor rose motifs with petal detail */}
+      <circle cx="24" cy="32" r="5" strokeWidth="0.6" fill="none" opacity="0.7" />
+      <path d="M 24 28 L 24 27 M 20 32 L 19 32 M 28 32 L 29 32 M 24 36 L 24 37" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <circle cx="76" cy="32" r="5" strokeWidth="0.6" fill="none" opacity="0.7" />
+      <path d="M 76 28 L 76 27 M 72 32 L 71 32 M 80 32 L 81 32 M 76 36 L 76 37" strokeWidth="0.4" fill="none" opacity="0.5" />
+    </g>
 
     {/* PRIMARY: THE TUDOR ARCH - wide, 4-centered flattened pointed arch */}
     <g filter={showHalo ? "url(#arch-halo)" : undefined}>
@@ -759,11 +833,48 @@ export const VoussoirSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT: Ground and piers - dashed */}
-    <path d="M 5 92 L 95 92" strokeWidth="0.8" fill="none" opacity="0.4" strokeDasharray="4 2" />
-    <g opacity="0.35" strokeDasharray="3 2">
-      <path d="M 10 92 L 10 78" strokeWidth="1.2" fill="none" />
-      <path d="M 90 92 L 90 78" strokeWidth="1.2" fill="none" />
+    {/* CONTEXT: Wall, piers, and spandrel structure */}
+    <g opacity="0.3" strokeDasharray="3 2">
+      {/* Wall face / spandrel rectangle above and around the arch */}
+      <path d="M -10 5 L 110 5" strokeWidth="0.7" fill="none" />
+      <path d="M -10 5 L -10 100" strokeWidth="0.7" fill="none" />
+      <path d="M 110 5 L 110 100" strokeWidth="0.7" fill="none" />
+
+      {/* Stone coursing on wall/spandrel */}
+      <path d="M -10 15 L 30 15" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 70 15 L 110 15" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M -10 25 L 20 25" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 80 25 L 110 25" strokeWidth="0.4" fill="none" opacity="0.5" />
+
+      {/* Full-height piers with depth */}
+      <path d="M 6 -5 L 6 100" strokeWidth="1" fill="none" />
+      <path d="M 10 -5 L 10 100" strokeWidth="1.4" fill="none" opacity="0.7" />
+      <path d="M 15 -5 L 15 100" strokeWidth="0.8" fill="none" />
+      <path d="M 85 -5 L 85 100" strokeWidth="0.8" fill="none" />
+      <path d="M 90 -5 L 90 100" strokeWidth="1.4" fill="none" opacity="0.7" />
+      <path d="M 94 -5 L 94 100" strokeWidth="1" fill="none" />
+
+      {/* Impost moldings at spring line */}
+      <path d="M 4 78 L 18 78" strokeWidth="0.8" fill="none" opacity="0.6" />
+      <path d="M 82 78 L 96 78" strokeWidth="0.8" fill="none" opacity="0.6" />
+      <path d="M 5 80 L 17 80" strokeWidth="0.5" fill="none" opacity="0.4" />
+      <path d="M 83 80 L 95 80" strokeWidth="0.5" fill="none" opacity="0.4" />
+
+      {/* Floor paving */}
+      <path d="M -10 92 L 110 92" strokeWidth="0.8" fill="none" />
+      <path d="M -10 95 L 110 95" strokeWidth="0.5" fill="none" opacity="0.5" />
+      <path d="M -10 98 L 110 98" strokeWidth="0.4" fill="none" opacity="0.3" />
+      <path d="M 30 92 L 30 100" strokeWidth="0.3" fill="none" opacity="0.4" />
+      <path d="M 50 92 L 50 100" strokeWidth="0.3" fill="none" opacity="0.4" />
+      <path d="M 70 92 L 70 100" strokeWidth="0.3" fill="none" opacity="0.4" />
+
+      {/* Adjacent arch hint on left */}
+      <path d="M -30 78 Q -20 40, 0 28" strokeWidth="0.5" fill="none" opacity="0.4" />
+      {/* Adjacent arch hint on right */}
+      <path d="M 100 28 Q 120 40, 130 78" strokeWidth="0.5" fill="none" opacity="0.4" />
+
+      {/* Centering/formwork line (construction context) */}
+      <path d="M 10 78 Q 50 20, 90 78" strokeWidth="0.4" fill="none" opacity="0.3" strokeDasharray="1 3" />
     </g>
 
     {/* PRIMARY: Multiple VOUSSOIRS forming arch - each wedge is solid */}
