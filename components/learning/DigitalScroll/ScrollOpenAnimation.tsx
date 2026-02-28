@@ -91,19 +91,19 @@ export function ScrollOpenAnimation({
   useEffect(() => {
     if (reducedMotion || completedRef.current) return
 
-    // Timeline:
-    // 0ms: Book starts descending
-    // 1500ms: Cover starts opening
-    // 3300ms: Cover fully open, show instructions
+    // Timeline (shortened for snappier entry):
+    // 0ms: Book starts descending (800ms duration)
+    // 600ms: Cover starts opening
+    // 1500ms: Cover open, show instructions
 
     const openCoverTimer = setTimeout(() => {
       setCoverOpen(true)
       setPhase('opening')
-    }, 1500)
+    }, 600)
 
     const showInstructionsTimer = setTimeout(() => {
       setPhase('instructions')
-    }, 3300)
+    }, 1500)
 
     return () => {
       clearTimeout(openCoverTimer)
@@ -185,7 +185,7 @@ export function ScrollOpenAnimation({
         <motion.div
           className="relative w-full h-full"
           style={{ transformStyle: 'preserve-3d' }}
-          initial={{ y: '-120%', rotateX: 25, scale: 0.7, opacity: 0 }}
+          initial={{ y: '-80%', rotateX: 15, scale: 0.85, opacity: 0 }}
           animate={{
             y: 0,
             rotateX: 0,
@@ -193,7 +193,7 @@ export function ScrollOpenAnimation({
             opacity: 1
           }}
           transition={{
-            duration: 1.4,
+            duration: 0.8,
             ease: [0.22, 1, 0.36, 1],
           }}
         >
@@ -359,7 +359,7 @@ export function ScrollOpenAnimation({
               initial={{ rotateY: 0 }}
               animate={{ rotateY: coverOpen ? -160 : 0 }}
               transition={{
-                duration: 1.8,
+                duration: 0.9,
                 ease: [0.25, 0.1, 0.25, 1],
               }}
             >

@@ -167,6 +167,7 @@ export function DigitalScroll({
   const [selectedLevel, setSelectedLevel] = useState<LearningLevel>(initialLevel)
   const [showOpenAnimation, setShowOpenAnimation] = useState(true)
   const [isRapidFlipping, setIsRapidFlipping] = useState(false)
+  const [isFlipping, setIsFlipping] = useState(false)
   const [isExpanded, setIsExpanded] = useState(true)
 
   // Toggle body class to hide site header when expanded
@@ -807,88 +808,29 @@ export function DigitalScroll({
           allLessons.reduce((sum, l) => sum + (l.duration || 0), 0)
 
         return (
-          <div className="w-full h-full flex flex-col relative px-3 py-2">
+          <div className="w-full h-full flex flex-col relative px-4 py-3">
             <AncientBorder />
 
             {/* Header */}
-            <div className="text-center pb-2 shrink-0">
+            <div className="text-center pb-3 shrink-0">
               <h3 className="text-lg font-serif font-bold text-[var(--book-text,var(--foreground))]">
-                Chapter {(page.chapterIndex ?? 0) + 1} Outline
+                Chapter {(page.chapterIndex ?? 0) + 1}
               </h3>
-              <p className="text-sm text-[var(--muted-foreground)]">
-                {totalDuration} min • {allLessons.length} lessons
+              <p className="text-base font-medium text-[var(--book-text,var(--foreground))] mt-1">
+                {chapterModule?.title}
               </p>
               <div
-                className="w-16 h-0.5 mx-auto mt-2"
+                className="w-16 h-0.5 mx-auto mt-3"
                 style={{
                   background: `linear-gradient(to right, transparent, ${introColor}, transparent)`,
                 }}
               />
             </div>
 
-            {/* Full Curriculum Outline - fills available space */}
-            <div className="flex-1 min-h-0 flex flex-col justify-evenly overflow-hidden">
-              {/* LESSONS SECTION */}
-              <div>
-                <p className="text-xs font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                  <span className="text-sm">📚</span> Lessons
-                </p>
-                <div className="space-y-1.5">
-                  {allLessons.slice(0, 5).map((lesson, idx) => (
-                    <div
-                      key={lesson.id || idx}
-                      className="flex items-center gap-2 py-1.5 px-2 rounded bg-[var(--muted)]/15"
-                    >
-                      <div
-                        className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
-                        style={{ background: introColor }}
-                      >
-                        {idx + 1}
-                      </div>
-                      <p className="flex-1 text-sm font-medium text-[var(--book-text,var(--foreground))] truncate">
-                        {lesson.title}
-                      </p>
-                      <span className="text-xs text-[var(--muted-foreground)] shrink-0">
-                        {lesson.duration}m
-                      </span>
-                      {lesson.hasActivity && (
-                        <span className="text-sm" title="Includes activity">⚡</span>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* GAME & QUIZ ROW */}
-              <div className="flex gap-3">
-                {/* Game */}
-                {chapterGame && (
-                  <div className="flex-1 p-3 rounded-lg bg-[var(--muted)]/20">
-                    <p className="text-xs font-bold text-[var(--muted-foreground)] uppercase flex items-center gap-1 mb-1">
-                      <span className="text-base">🎮</span> Game
-                    </p>
-                    <p className="text-sm font-medium text-[var(--book-text,var(--foreground))]">
-                      {chapterGame.title}
-                    </p>
-                  </div>
-                )}
-
-                {/* Quiz */}
-                {chapterQuiz && (
-                  <div className="flex-1 p-3 rounded-lg bg-[var(--muted)]/20">
-                    <p className="text-xs font-bold text-[var(--muted-foreground)] uppercase flex items-center gap-1 mb-1">
-                      <span className="text-base">✅</span> Quiz
-                    </p>
-                    <p className="text-sm font-medium text-[var(--book-text,var(--foreground))]">
-                      {chapterQuiz.questions?.length || 0} questions
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              {/* Module Description */}
+            {/* Description - the heart of the intro */}
+            <div className="flex-1 min-h-0 flex flex-col justify-center overflow-hidden">
               {chapterModule?.description && (
-                <div className="p-3 rounded-lg bg-[var(--muted)]/10 border-l-3" style={{ borderColor: introColor }}>
+                <div className="p-4 rounded-lg bg-[var(--muted)]/10 border-l-3 mb-4" style={{ borderColor: introColor }}>
                   <p className="text-sm italic text-[var(--muted-foreground)] leading-relaxed">
                     {typeof chapterModule.description === 'string'
                       ? chapterModule.description
@@ -896,10 +838,37 @@ export function DigitalScroll({
                   </p>
                 </div>
               )}
+
+              {/* Compact stats row */}
+              <div className="flex items-center justify-center gap-4 text-xs text-[var(--muted-foreground)]">
+                <span className="flex items-center gap-1">
+                  <span>📚</span> {allLessons.length} lessons
+                </span>
+                <span className="text-[var(--border)]">•</span>
+                <span className="flex items-center gap-1">
+                  <span>⏱</span> {totalDuration} min
+                </span>
+                {chapterGame && (
+                  <>
+                    <span className="text-[var(--border)]">•</span>
+                    <span className="flex items-center gap-1">
+                      <span>🎮</span> Practice
+                    </span>
+                  </>
+                )}
+                {chapterQuiz && (
+                  <>
+                    <span className="text-[var(--border)]">•</span>
+                    <span className="flex items-center gap-1">
+                      <span>✅</span> Quiz
+                    </span>
+                  </>
+                )}
+              </div>
             </div>
 
             {/* Footer */}
-            <div className="shrink-0 text-center pt-2 border-t border-[var(--border)]/20">
+            <div className="shrink-0 text-center pt-3 border-t border-[var(--border)]/20">
               <p className="text-xs text-[var(--muted-foreground)]">
                 Turn the page to begin →
               </p>
@@ -1410,10 +1379,11 @@ export function DigitalScroll({
       <AnimatePresence>
         {isRapidFlipping && (
           <motion.div
-            className="fixed inset-0 z-[60] bg-black/50 flex items-center justify-center"
+            className="fixed inset-0 z-[60] bg-[var(--book-paper,var(--card))]/70 backdrop-blur-sm flex items-center justify-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
           >
             <RapidPageFlip
               fromSpread={Math.floor(currentPageIndex / 2)}
@@ -1442,6 +1412,7 @@ export function DigitalScroll({
               onContinueClick={continueReading}
               continuePosition={scrollState.currentPosition || undefined}
               isExpanded={isExpanded}
+              isFlipping={isFlipping || isRapidFlipping}
             />
 
             {/* Page Flip Container */}
@@ -1486,7 +1457,9 @@ export function DigitalScroll({
               }
               currentSpread={Math.floor(currentPageIndex / 2)}
               totalSpreads={Math.ceil(totalPages / 2)}
+              onFlipStart={() => setIsFlipping(true)}
               onFlipComplete={(direction) => {
+                setIsFlipping(false)
                 if (direction === 'next') {
                   setCurrentPageIndex((prev) => Math.min(prev + (isDesktop ? 2 : 1), totalPages - 1))
                 } else {
@@ -1503,7 +1476,7 @@ export function DigitalScroll({
           </ScrollWrapper>
 
           {/* Navigation Footer - visible enough for touch, fades up on hover */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 z-30 opacity-60 hover:opacity-100 transition-opacity duration-300">
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 z-30 opacity-90 hover:opacity-100 transition-opacity duration-300">
             <button
               onClick={prevPage}
               disabled={currentPageIndex === 0}

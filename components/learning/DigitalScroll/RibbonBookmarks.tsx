@@ -35,6 +35,7 @@ interface RibbonBookmarksProps {
     page: number
   }
   isExpanded?: boolean
+  isFlipping?: boolean
   className?: string
 }
 
@@ -49,6 +50,7 @@ export function RibbonBookmarks({
   onContinueClick,
   continuePosition,
   isExpanded = false,
+  isFlipping = false,
   className,
 }: RibbonBookmarksProps) {
   const [deviceType, setDeviceType] = useState<'desktop' | 'tablet' | 'mobile'>('desktop')
@@ -108,6 +110,7 @@ export function RibbonBookmarks({
             onMouseEnter={() => setHoveredRibbon(ribbon.id)}
             onMouseLeave={() => setHoveredRibbon(null)}
             isExpanded={isExpanded}
+            isFlipping={isFlipping}
           />
         )
       })}
@@ -122,6 +125,7 @@ export function RibbonBookmarks({
         onMouseLeave={() => setHoveredRibbon(null)}
         isHovered={hoveredRibbon === 'continue'}
         isExpanded={isExpanded}
+        isFlipping={isFlipping}
       />
     </div>
   )
@@ -141,6 +145,7 @@ interface RibbonProps {
   onMouseEnter: () => void
   onMouseLeave: () => void
   isExpanded?: boolean
+  isFlipping?: boolean
 }
 
 function Ribbon({
@@ -153,6 +158,7 @@ function Ribbon({
   onMouseEnter,
   onMouseLeave,
   isExpanded = false,
+  isFlipping = false,
 }: RibbonProps) {
   const Icon = ribbon.icon
   const isDesktop = deviceType === 'desktop'
@@ -190,22 +196,18 @@ function Ribbon({
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      whileHover={isDesktop ? { y: isExpanded ? 35 : 20, scale: 1.05 } : { scale: 1.15 }}
+      whileHover={isDesktop ? { y: isExpanded ? 12 : 8 } : { scale: 1.08 }}
       whileTap={{ scale: 0.95 }}
       animate={
-        isActive
+        isActive && !isFlipping
           ? {
-              y: isDesktop ? [0, 6, 0] : 0,
-            }
-          : {}
-      }
-      transition={
-        isActive
-          ? {
-              y: {
-                duration: 2,
-                repeat: Infinity,
-                ease: 'easeInOut',
+              y: isDesktop ? [0, 4, 0] : 0,
+              transition: {
+                y: {
+                  duration: 1.2,
+                  repeat: 0,
+                  ease: 'easeOut',
+                },
               },
             }
           : {}
@@ -246,10 +248,10 @@ function Ribbon({
         {isHovered && isDesktop && (
           <motion.div
             className="absolute left-full ml-3 top-1/2 -translate-y-1/2 z-50"
-            initial={{ opacity: 0, x: -15, scale: 0.9 }}
+            initial={{ opacity: 0, x: -8, scale: 0.95 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: -15, scale: 0.9 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+            exit={{ opacity: 0, x: -8, scale: 0.95 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
           >
             {/* Archetype Card with Logo */}
             <div
@@ -317,6 +319,7 @@ interface YinYangRibbonProps {
   onMouseLeave: () => void
   isHovered: boolean
   isExpanded?: boolean
+  isFlipping?: boolean
 }
 
 function YinYangRibbon({
@@ -328,6 +331,7 @@ function YinYangRibbon({
   onMouseLeave,
   isHovered,
   isExpanded = false,
+  isFlipping = false,
 }: YinYangRibbonProps) {
   const dimensions = SCROLL_DIMENSIONS[deviceType]
   const isDesktop = deviceType === 'desktop'
@@ -360,19 +364,8 @@ function YinYangRibbon({
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      whileHover={isDesktop ? { y: 10 } : { scale: 1.1 }}
+      whileHover={isDesktop ? { y: 8 } : { scale: 1.06 }}
       whileTap={{ scale: 0.95 }}
-      animate={{
-        // Gentle pulse
-        scale: [1, 1.02, 1],
-      }}
-      transition={{
-        scale: {
-          duration: 2,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        },
-      }}
       aria-label={A11Y_CONFIG.ariaLabels.continueRibbon}
       title={
         continuePosition

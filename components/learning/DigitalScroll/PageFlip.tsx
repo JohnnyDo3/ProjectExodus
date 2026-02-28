@@ -273,7 +273,7 @@ export function PageFlip({
 
         {/* Navigation Zones (click to flip) */}
         <button
-          className="absolute left-0 top-0 w-16 h-full cursor-pointer opacity-0 hover:opacity-100 transition-opacity z-30 flex items-center justify-start pl-2"
+          className="absolute left-0 top-0 w-16 h-full cursor-pointer opacity-[0.15] hover:opacity-100 transition-opacity duration-200 z-30 flex items-center justify-start pl-2"
           onClick={() => flipToPrev()}
           disabled={!canFlipPrev || flipState !== 'idle'}
           aria-label="Previous page"
@@ -286,7 +286,7 @@ export function PageFlip({
         </button>
 
         <button
-          className="absolute right-0 top-0 w-16 h-full cursor-pointer opacity-0 hover:opacity-100 transition-opacity z-30 flex items-center justify-end pr-2"
+          className="absolute right-0 top-0 w-16 h-full cursor-pointer opacity-[0.15] hover:opacity-100 transition-opacity duration-200 z-30 flex items-center justify-end pr-2"
           onClick={() => flipToNext()}
           disabled={!canFlipNext || flipState !== 'idle'}
           aria-label="Next page"
@@ -401,26 +401,29 @@ export function RapidPageFlip({ fromSpread, toSpread, onComplete, className }: R
     return () => clearTimeout(timer)
   }, [currentSpread, toSpread, fromSpread, direction, totalFlips, onComplete])
 
-  return (
-    <div className={cn('relative w-full h-full overflow-hidden', className)}>
-      {/* Rapid flip animation visualization */}
-      <motion.div
-        className="absolute inset-0 flex items-center justify-center"
-        animate={{
-          rotateY: [0, direction * -15, 0],
-        }}
-        transition={{
-          duration: 0.15,
-          repeat: Infinity,
-          ease: 'linear',
-        }}
-      >
-        <div className="text-4xl">📖</div>
-      </motion.div>
+  const progress = totalFlips > 0
+    ? Math.abs(currentSpread - fromSpread) / totalFlips
+    : 0
 
-      {/* Progress indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-sm text-white/80">
-        Turning to page {(toSpread + 1) * 2}...
+  return (
+    <div className={cn('relative w-full h-full overflow-hidden flex items-center justify-center', className)}>
+      {/* Calm progress visualization */}
+      <div className="flex flex-col items-center gap-4">
+        <div className="text-3xl opacity-60">📖</div>
+
+        {/* Progress bar */}
+        <div className="w-32 h-1 rounded-full bg-white/20 overflow-hidden">
+          <motion.div
+            className="h-full rounded-full bg-white/60"
+            initial={{ width: '0%' }}
+            animate={{ width: `${progress * 100}%` }}
+            transition={{ duration: 0.1, ease: 'linear' }}
+          />
+        </div>
+
+        <p className="text-xs text-white/60">
+          Turning to page {(toSpread + 1) * 2}
+        </p>
       </div>
     </div>
   )

@@ -204,22 +204,22 @@ export const SCROLL_DIMENSIONS = {
 // ============================================
 
 export const ANIMATION_TIMINGS = {
-  // Act I: The Descent
+  // Act I: The Descent (shortened for snappier entry)
   descent: {
-    duration: 600,
+    duration: 400,
     bounce: {
-      count: 2,
-      duration: 150,
+      count: 1,
+      duration: 100,
     },
   },
   // Act II: The Pause
   pause: {
-    duration: 400,
+    duration: 200,
   },
   // Act III: The Opening
   opening: {
-    duration: 800,
-    coverRotation: 180,
+    duration: 500,
+    coverRotation: 160,
   },
   // Act IV: The Seeking
   seeking: {
