@@ -25,14 +25,26 @@ export const BarrelVaultSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT: Side walls and ground - dashed blueprint */}
-    <g strokeDasharray="3 2" opacity="0.4">
-      <path d="M 6 92 L 6 48" strokeWidth="1.2" fill="none" />
-      <path d="M 94 92 L 94 48" strokeWidth="1.2" fill="none" />
-      <path d="M 5 92 L 95 92" strokeWidth="0.8" fill="none" />
-      {/* Wall thickness */}
-      <path d="M 12 92 L 12 50" strokeWidth="0.6" fill="none" opacity="0.7" />
-      <path d="M 88 92 L 88 50" strokeWidth="0.6" fill="none" opacity="0.7" />
+    {/* CONTEXT: Romanesque nave interior - walls, floor, arcade */}
+    <g strokeDasharray="3 2" opacity="0.35" fill="none">
+      {/* Side walls */}
+      <path d="M 6 92 L 6 48" strokeWidth="1.2" />
+      <path d="M 94 92 L 94 48" strokeWidth="1.2" />
+      {/* Wall thickness / inner wall surface */}
+      <path d="M 12 92 L 12 50" strokeWidth="0.6" opacity="0.7" />
+      <path d="M 88 92 L 88 50" strokeWidth="0.6" opacity="0.7" />
+      {/* Floor with pavement lines receding into depth */}
+      <path d="M 5 92 L 95 92" strokeWidth="0.8" />
+      <path d="M 20 92 L 40 72" strokeWidth="0.3" />
+      <path d="M 50 92 L 50 68" strokeWidth="0.3" />
+      <path d="M 80 92 L 60 72" strokeWidth="0.3" />
+      {/* Arcade openings in walls (clerestory or aisle arcade) */}
+      <path d="M 8 80 Q 10 72, 12 80" strokeWidth="0.4" />
+      <path d="M 8 68 Q 10 60, 12 68" strokeWidth="0.4" />
+      <path d="M 88 80 Q 90 72, 92 80" strokeWidth="0.4" />
+      <path d="M 88 68 Q 90 60, 92 68" strokeWidth="0.4" />
+      {/* Far end wall (apse) barely visible */}
+      <path d="M 40 65 Q 50 58, 60 65" strokeWidth="0.3" opacity="0.5" />
     </g>
 
     {/* PRIMARY: THE BARREL VAULT - continuous tunnel shape */}
@@ -69,14 +81,26 @@ export const GroinVaultSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT: Corner piers and ground - dashed blueprint */}
-    <g strokeDasharray="3 2" opacity="0.4">
-      <path d="M 8 92 L 8 58" strokeWidth="1.5" fill="none" />
-      <path d="M 92 92 L 92 58" strokeWidth="1.5" fill="none" />
-      <path d="M 8 92 L 92 92" strokeWidth="0.8" fill="none" />
-      {/* Inner pier faces */}
-      <path d="M 14 92 L 14 60" strokeWidth="0.8" fill="none" opacity="0.7" />
-      <path d="M 86 92 L 86 60" strokeWidth="0.8" fill="none" opacity="0.7" />
+    {/* CONTEXT: Complete structural bay — four piers, walls, and floor */}
+    <g strokeDasharray="3 2" opacity="0.35" fill="none">
+      {/* Four corner piers — the structural supports for the vault */}
+      <path d="M 8 92 L 8 58" strokeWidth="1.5" />
+      <path d="M 92 92 L 92 58" strokeWidth="1.5" />
+      <path d="M 14 92 L 14 60" strokeWidth="0.8" opacity="0.7" />
+      <path d="M 86 92 L 86 60" strokeWidth="0.8" opacity="0.7" />
+      {/* Rear piers (depth perspective) */}
+      <path d="M 38 76 L 38 58" strokeWidth="0.5" opacity="0.5" />
+      <path d="M 62 76 L 62 58" strokeWidth="0.5" opacity="0.5" />
+      {/* Floor pavement */}
+      <path d="M 8 92 L 92 92" strokeWidth="0.8" />
+      <path d="M 14 92 L 38 76" strokeWidth="0.3" />
+      <path d="M 86 92 L 62 76" strokeWidth="0.3" />
+      <path d="M 50 92 L 50 76" strokeWidth="0.3" />
+      {/* Transverse arches connecting piers (wall arches) */}
+      <path d="M 8 58 Q 50 42, 92 58" strokeWidth="0.5" opacity="0.4" />
+      {/* Impost capitals on piers */}
+      <path d="M 5 58 L 17 58" strokeWidth="0.5" />
+      <path d="M 83 58 L 95 58" strokeWidth="0.5" />
     </g>
 
     {/* PRIMARY: THE GROIN VAULT - X-shaped intersection of two tunnels */}
@@ -111,12 +135,28 @@ export const RibVaultSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT: Corner piers and responds - dashed blueprint */}
-    <g strokeDasharray="3 2" opacity="0.4">
-      <path d="M 8 92 L 8 58" strokeWidth="2" fill="none" />
-      <path d="M 92 92 L 92 58" strokeWidth="2" fill="none" />
-      <path d="M 50 92 L 50 78" strokeWidth="1.5" fill="none" />
-      <path d="M 8 92 L 92 92" strokeWidth="0.8" fill="none" />
+    {/* CONTEXT: Gothic cathedral bay — clustered piers, pointed wall arches, floor */}
+    <g strokeDasharray="3 2" opacity="0.35" fill="none">
+      {/* Clustered piers (compound pillars with attached shafts) */}
+      <path d="M 8 92 L 8 58" strokeWidth="2" />
+      <path d="M 92 92 L 92 58" strokeWidth="2" />
+      <path d="M 11 92 L 11 60" strokeWidth="0.6" opacity="0.6" />
+      <path d="M 89 92 L 89 60" strokeWidth="0.6" opacity="0.6" />
+      {/* Wall respond (half-column on wall) */}
+      <path d="M 50 92 L 50 78" strokeWidth="1.5" />
+      <path d="M 48 92 L 48 80" strokeWidth="0.5" opacity="0.5" />
+      <path d="M 52 92 L 52 80" strokeWidth="0.5" opacity="0.5" />
+      {/* Pointed wall arches (nave arcade below) */}
+      <path d="M 8 58 Q 30 40, 50 58" strokeWidth="0.5" opacity="0.5" />
+      <path d="M 50 58 Q 70 40, 92 58" strokeWidth="0.5" opacity="0.5" />
+      {/* Floor with tile pattern */}
+      <path d="M 8 92 L 92 92" strokeWidth="0.8" />
+      <path d="M 25 92 L 25 95" strokeWidth="0.3" />
+      <path d="M 50 92 L 50 95" strokeWidth="0.3" />
+      <path d="M 75 92 L 75 95" strokeWidth="0.3" />
+      {/* Springer capitals */}
+      <path d="M 5 58 L 15 58" strokeWidth="0.6" />
+      <path d="M 85 58 L 95 58" strokeWidth="0.6" />
     </g>
 
     {/* PRIMARY: THE RIB VAULT - prominent structural stone ribs */}

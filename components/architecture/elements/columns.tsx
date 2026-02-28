@@ -382,9 +382,23 @@ export const CorinthianColumnSVG = ({ showHalo = false }: SVGProps) => (
     <MaterialPatterns />
     <HaloFilter />
 
-    {/* CONTEXT: Ground and entablature - refined */}
-    <path d="M 10 96 L 90 96" strokeWidth="0.7" fill="none" opacity="0.35" strokeDasharray="4 2" />
-    <path d="M 18 4 L 82 4" strokeWidth="0.5" fill="none" opacity="0.25" strokeDasharray="3 2" />
+    {/* CONTEXT: Temple colonnade with entablature and stylobate */}
+    <g opacity="0.3" strokeDasharray="4 2" fill="none">
+      {/* Entablature above */}
+      <path d="M 0 2 L 100 2" strokeWidth="1" />
+      <path d="M 5 4 L 95 4" strokeWidth="0.7" />
+      {/* Frieze with relief hint */}
+      <path d="M 8 6 L 92 6" strokeWidth="0.5" />
+      {/* Stylobate / ground platform */}
+      <path d="M 0 96 L 100 96" strokeWidth="0.8" />
+      <path d="M 2 98 L 98 98" strokeWidth="0.6" />
+      <path d="M 4 100 L 96 100" strokeWidth="0.5" />
+      {/* Adjacent column shafts (colonnade receding) */}
+      <path d="M 5 92 Q 4 55, 8 20" strokeWidth="0.5" />
+      <path d="M 12 92 Q 11 55, 14 20" strokeWidth="0.5" />
+      <path d="M 88 92 Q 89 55, 86 20" strokeWidth="0.5" />
+      <path d="M 95 92 Q 96 55, 92 20" strokeWidth="0.5" />
+    </g>
 
     {/* PRIMARY: THE CORINTHIAN COLUMN - FINEST STONE */}
     <g filter={showHalo ? "url(#col-halo)" : undefined}>
@@ -453,9 +467,21 @@ export const CompositeColumnSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT: Ground and entablature - dashed */}
-    <path d="M 10 96 L 90 96" strokeWidth="0.8" fill="none" opacity="0.4" strokeDasharray="4 2" />
-    <path d="M 14 4 L 86 4" strokeWidth="0.6" fill="none" opacity="0.3" strokeDasharray="3 2" />
+    {/* CONTEXT: Roman triumphal arch arcade */}
+    <g opacity="0.3" strokeDasharray="4 2" fill="none">
+      {/* Arch springing from capital */}
+      <path d="M 0 4 L 100 4" strokeWidth="0.8" />
+      <path d="M 5 8 Q 50 -5, 95 8" strokeWidth="0.6" />
+      {/* Pier/wall behind column */}
+      <path d="M 10 96 L 10 8" strokeWidth="0.5" />
+      <path d="M 90 96 L 90 8" strokeWidth="0.5" />
+      {/* Pavement */}
+      <path d="M 0 96 L 100 96" strokeWidth="0.8" />
+      <path d="M 0 99 L 100 99" strokeWidth="0.5" />
+      {/* Adjacent column hint */}
+      <path d="M 2 92 Q 2 55, 5 20" strokeWidth="0.4" />
+      <path d="M 98 92 Q 98 55, 95 20" strokeWidth="0.4" />
+    </g>
 
     {/* PRIMARY: THE COMPOSITE COLUMN */}
     <g filter={showHalo ? "url(#col-halo)" : undefined}>
@@ -508,9 +534,23 @@ export const TuscanColumnSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT: Ground and entablature - dashed */}
-    <path d="M 10 94 L 90 94" strokeWidth="0.8" fill="none" opacity="0.4" strokeDasharray="4 2" />
-    <path d="M 22 8 L 78 8" strokeWidth="0.6" fill="none" opacity="0.3" strokeDasharray="3 2" />
+    {/* CONTEXT: Roman farmhouse portico */}
+    <g opacity="0.3" strokeDasharray="4 2" fill="none">
+      {/* Entablature (plain, no ornament — Tuscan simplicity) */}
+      <path d="M 0 4 L 100 4" strokeWidth="1" />
+      <path d="M 2 8 L 98 8" strokeWidth="0.6" />
+      {/* Ground level */}
+      <path d="M 0 94 L 100 94" strokeWidth="0.8" />
+      <path d="M 0 97 L 100 97" strokeWidth="0.5" />
+      {/* Wall behind portico */}
+      <path d="M 0 8 L 0 94" strokeWidth="0.5" />
+      <path d="M 100 8 L 100 94" strokeWidth="0.5" />
+      {/* Door opening in wall */}
+      <path d="M 40 94 L 40 55 L 60 55 L 60 94" strokeWidth="0.4" />
+      {/* Adjacent column */}
+      <path d="M 4 90 Q 3 55, 6 18" strokeWidth="0.4" />
+      <path d="M 96 90 Q 97 55, 94 18" strokeWidth="0.4" />
+    </g>
 
     {/* PRIMARY: THE TUSCAN COLUMN */}
     <g filter={showHalo ? "url(#col-halo)" : undefined}>
@@ -550,10 +590,25 @@ export const CaryatidSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT: Ground platform and entablature - dashed */}
-    <path d="M 15 96 L 85 96" strokeWidth="0.8" fill="none" opacity="0.4" strokeDasharray="4 2" />
-    <path d="M 25 93 L 75 93" strokeWidth="0.6" fill="none" opacity="0.3" strokeDasharray="3 2" />
-    <path d="M 32 5 L 68 5" strokeWidth="0.6" fill="none" opacity="0.3" strokeDasharray="3 2" />
+    {/* CONTEXT: Erechtheion Porch of the Maidens */}
+    <g opacity="0.3" strokeDasharray="4 2" fill="none">
+      {/* Entablature above all caryatids */}
+      <path d="M 0 3 L 100 3" strokeWidth="1" />
+      <path d="M 2 5 L 98 5" strokeWidth="0.7" />
+      {/* Stepped platform */}
+      <path d="M 5 96 L 95 96" strokeWidth="0.8" />
+      <path d="M 8 93 L 92 93" strokeWidth="0.6" />
+      <path d="M 3 99 L 97 99" strokeWidth="0.5" />
+      {/* Neighboring caryatid figure hints (left and right) */}
+      <path d="M 8 90 Q 6 60, 10 30" strokeWidth="0.5" />
+      <path d="M 16 90 Q 14 60, 16 30" strokeWidth="0.5" />
+      <path d="M 12 18 Q 14 12, 12 8" strokeWidth="0.4" />
+      <path d="M 84 90 Q 86 60, 84 30" strokeWidth="0.5" />
+      <path d="M 92 90 Q 94 60, 92 30" strokeWidth="0.5" />
+      <path d="M 88 18 Q 86 12, 88 8" strokeWidth="0.4" />
+      {/* Temple cella wall behind */}
+      <path d="M 100 5 L 100 96" strokeWidth="0.4" />
+    </g>
 
     {/* PRIMARY: THE CARYATID FIGURE */}
     <g filter={showHalo ? "url(#col-halo)" : undefined}>

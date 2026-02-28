@@ -55,12 +55,24 @@ const CasementSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M 67 28 Q 69 35, 71 42" strokeWidth="0.3" opacity="0.15" />
       </g>
 
-      {/* CONTEXT: Surrounding wall */}
+      {/* CONTEXT: Surrounding wall with lintel, sill, and reveal depth */}
       <g strokeWidth="0.8" strokeDasharray="3 2" opacity="0.4">
+        {/* Wall surface flanking window */}
         <path d="M5 10 L5 90 L18 90 L18 10 Z" />
         <path d="M82 10 L82 90 L95 90 L95 10 Z" />
-        <path d="M5 10 L95 10" />
-        <path d="M5 90 L95 90" />
+        {/* Stone lintel above window */}
+        <path d="M5 10 L95 10" strokeWidth="1" />
+        <path d="M3 7 L97 7" strokeWidth="0.6" />
+        {/* Stone sill below window */}
+        <path d="M5 90 L95 90" strokeWidth="1" />
+        <path d="M8 93 L92 93" strokeWidth="0.6" />
+        {/* Drip edge on sill */}
+        <path d="M10 93 Q50 95, 90 93" strokeWidth="0.4" />
+        {/* Wall continues above/below (full structure) */}
+        <path d="M0 0 L100 0" strokeWidth="0.5" opacity="0.3" />
+        <path d="M0 100 L100 100" strokeWidth="0.5" opacity="0.3" />
+        <path d="M0 0 L0 100" strokeWidth="0.4" opacity="0.3" />
+        <path d="M100 0 L100 100" strokeWidth="0.4" opacity="0.3" />
       </g>
 
       {/* PRIMARY: Casement window frame and sashes */}

@@ -40,14 +40,25 @@ const CeilingRoseSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="rose-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#rose-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Ceiling plane receding (perspective grid) */}
+      {/* CONTEXT - Room interior showing walls meeting ceiling */}
       <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
+        {/* Ceiling plane receding in perspective */}
         <path d="M0 95 L50 50 L100 95" />
         <path d="M0 85 L50 50 L100 85" />
         <path d="M20 100 L50 50 L80 100" />
-        {/* Corner of room */}
-        <path d="M0 0 L0 95" />
-        <path d="M0 0 L100 0" />
+        {/* Left wall */}
+        <path d="M0 0 L0 95" strokeWidth="0.8" />
+        {/* Top wall (far) */}
+        <path d="M0 0 L100 0" strokeWidth="0.8" />
+        {/* Right wall going to corner */}
+        <path d="M100 0 L100 95" strokeWidth="0.5" />
+        {/* Crown molding at wall-ceiling junction */}
+        <path d="M0 88 Q25 80, 50 72 Q75 80, 100 88" strokeWidth="0.5" />
+        {/* Picture rail on wall below */}
+        <path d="M0 92 L5 92" strokeWidth="0.4" />
+        <path d="M95 92 L100 92" strokeWidth="0.4" />
+        {/* Window/door hint on far wall */}
+        <path d="M35 0 L35 6 L65 6 L65 0" strokeWidth="0.3" />
       </g>
 
       {/* PRIMARY - Ceiling rose in perspective (elliptical, tilted) */}
@@ -553,9 +564,22 @@ const MuqarnasSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="muqarnas-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#muqarnas-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Archway frame below */}
+      {/* CONTEXT - Islamic dome/iwan chamber with walls and arches */}
       <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
-        <path d="M0 100 L0 80 Q50 75, 100 80 L100 100" />
+        {/* Dome or squinch base (octagonal transition zone) */}
+        <path d="M5 82 L15 78 L30 80 L50 78 L70 80 L85 78 L95 82" strokeWidth="0.7" />
+        {/* Four walls/arches of chamber */}
+        <path d="M0 100 L0 82" strokeWidth="0.8" />
+        <path d="M100 100 L100 82" strokeWidth="0.8" />
+        <path d="M0 82 Q50 75, 100 82" strokeWidth="0.7" />
+        {/* Floor */}
+        <path d="M0 100 L100 100" strokeWidth="0.5" />
+        {/* Tilework band at transition */}
+        <path d="M0 85 L100 85" strokeWidth="0.3" />
+        <path d="M0 88 L100 88" strokeWidth="0.3" />
+        {/* Column/pier corners */}
+        <path d="M3 100 L3 82" strokeWidth="0.4" />
+        <path d="M97 100 L97 82" strokeWidth="0.4" />
       </g>
 
       {/* PRIMARY - Muqarnas honeycomb cells from below */}
@@ -622,10 +646,21 @@ const TrayCeilingSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="tray-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#tray-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Room walls below */}
+      {/* CONTEXT - Formal room with walls, crown molding, and window hints */}
       <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
-        <path d="M0 100 L15 80" />
-        <path d="M100 100 L85 80" />
+        {/* Walls converging in perspective */}
+        <path d="M0 100 L15 80" strokeWidth="0.7" />
+        <path d="M100 100 L85 80" strokeWidth="0.7" />
+        {/* Floor line */}
+        <path d="M0 100 L100 100" strokeWidth="0.5" />
+        {/* Crown molding at wall-ceiling junction */}
+        <path d="M5 82 L95 82" strokeWidth="0.5" />
+        <path d="M8 80 L92 80" strokeWidth="0.3" />
+        {/* Wainscoting / wall panel hints */}
+        <path d="M2 90 L6 86" strokeWidth="0.3" />
+        <path d="M94 86 L98 90" strokeWidth="0.3" />
+        {/* Window between wall panels */}
+        <path d="M40 100 L42 88 L58 88 L60 100" strokeWidth="0.3" />
       </g>
 
       {/* PRIMARY - Stepped tray ceiling with perspective */}

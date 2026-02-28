@@ -39,11 +39,23 @@ const AcanthusSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="acanthus-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#acanthus-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Stone background/capital edge */}
-      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
-        <path d="M5 95 L95 95" />
-        <path d="M10 95 L10 85" />
-        <path d="M90 95 L90 85" />
+      {/* CONTEXT - Corinthian capital and column shaft */}
+      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.7">
+        {/* Abacus (top slab of capital) */}
+        <path d="M2 8 L98 8" strokeWidth="1" />
+        <path d="M5 12 L95 12" strokeWidth="0.8" />
+        {/* Column shaft below */}
+        <path d="M30 92 L30 100" />
+        <path d="M70 92 L70 100" />
+        <path d="M32 92 L32 100" opacity="0.2" />
+        <path d="M68 92 L68 100" opacity="0.2" />
+        {/* Capital bell (kalathos) outline */}
+        <path d="M28 92 Q28 80, 35 72 Q42 65, 50 60" strokeWidth="0.5" />
+        <path d="M72 92 Q72 80, 65 72 Q58 65, 50 60" strokeWidth="0.5" />
+        {/* Neighboring leaf hint (left) */}
+        <path d="M8 92 Q5 75, 12 65" strokeWidth="0.5" />
+        {/* Neighboring leaf hint (right) */}
+        <path d="M92 92 Q95 75, 88 65" strokeWidth="0.5" />
       </g>
 
       {/* PRIMARY - Acanthus leaf in 3D relief */}
@@ -232,10 +244,22 @@ const CartoucheSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="cartouche-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#cartouche-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Wall surface */}
+      {/* CONTEXT - Building facade with rusticated stonework */}
       <g strokeDasharray="3 2" opacity="0.25" strokeWidth="0.5">
+        {/* Cornice line above */}
+        <path d="M0 3 L100 3" strokeWidth="0.8" />
+        <path d="M0 6 L100 6" strokeWidth="0.6" />
+        {/* Rusticated stone courses (wall surface) */}
         <path d="M0 0 L100 0" />
         <path d="M0 100 L100 100" />
+        <path d="M0 8 L8 8 M15 8 L30 8 M38 8 L55 8 M62 8 L78 8 M85 8 L100 8" strokeWidth="0.3" />
+        <path d="M0 95 L12 95 M20 95 L40 95 M48 95 L68 95 M76 95 L100 95" strokeWidth="0.3" />
+        {/* Window opening below */}
+        <path d="M35 92 L35 100 M65 92 L65 100" strokeWidth="0.4" />
+        <path d="M35 92 L65 92" strokeWidth="0.4" />
+        {/* Pilaster hints on sides */}
+        <path d="M5 0 L5 100" strokeWidth="0.4" />
+        <path d="M95 0 L95 100" strokeWidth="0.4" />
       </g>
 
       {/* PRIMARY - Ornate cartouche frame in 3D */}
@@ -366,10 +390,22 @@ const DentilSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="dentil-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#dentil-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Surrounding moldings */}
-      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
-        <path d="M0 25 L100 25" />
-        <path d="M0 75 L100 75" />
+      {/* CONTEXT - Full entablature section showing where dentils sit */}
+      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.7">
+        {/* Cornice/corona above */}
+        <path d="M0 10 L100 10" strokeWidth="1.2" />
+        <path d="M0 15 L100 15" strokeWidth="0.8" />
+        {/* Cyma molding above dentils */}
+        <path d="M0 22 Q10 18, 20 22 Q30 18, 40 22 Q50 18, 60 22 Q70 18, 80 22 Q90 18, 100 22" strokeWidth="0.5" />
+        {/* Architrave/wall below */}
+        <path d="M0 78 L100 78" strokeWidth="0.8" />
+        <path d="M0 82 L100 82" strokeWidth="1" />
+        {/* Column capitals below */}
+        <path d="M10 82 L10 100" strokeWidth="0.5" />
+        <path d="M25 82 L25 100" strokeWidth="0.5" />
+        <path d="M50 82 L50 100" strokeWidth="0.5" />
+        <path d="M75 82 L75 100" strokeWidth="0.5" />
+        <path d="M90 82 L90 100" strokeWidth="0.5" />
       </g>
 
       {/* PRIMARY - Dentil blocks in 3D perspective */}
@@ -437,10 +473,22 @@ const EggAndDartSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="eggdart-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#eggdart-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Molding frame */}
-      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
-        <path d="M0 20 L100 20" />
-        <path d="M0 80 L100 80" />
+      {/* CONTEXT - Entablature on column capital showing where egg-and-dart sits */}
+      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.7">
+        {/* Corona/cornice above */}
+        <path d="M0 12 L100 12" strokeWidth="1" />
+        <path d="M0 16 L100 16" strokeWidth="0.8" />
+        {/* Frieze band below the egg-and-dart */}
+        <path d="M0 82 L100 82" strokeWidth="0.8" />
+        <path d="M0 88 L100 88" strokeWidth="0.6" />
+        {/* Column capital tops below entablature */}
+        <path d="M8 88 Q8 94, 15 96 L15 100" strokeWidth="0.5" />
+        <path d="M35 88 L35 100" strokeWidth="0.5" />
+        <path d="M65 88 L65 100" strokeWidth="0.5" />
+        <path d="M92 88 Q92 94, 85 96 L85 100" strokeWidth="0.5" />
+        {/* Echinus curve hint (where egg-and-dart pattern would sit on column) */}
+        <path d="M15 96 Q25 92, 35 96" strokeWidth="0.4" />
+        <path d="M65 96 Q75 92, 85 96" strokeWidth="0.4" />
       </g>
 
       {/* PRIMARY - Egg and dart pattern in 3D */}
@@ -506,10 +554,25 @@ const FinialSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="finial-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#finial-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Roof/gable below */}
+      {/* CONTEXT - Gothic pinnacle and buttress structure below */}
       <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.7">
-        <path d="M20 95 L50 80 L80 95" />
-        <path d="M30 95 L50 82 L70 95" />
+        {/* Gable/pediment */}
+        <path d="M22 95 L50 80 L78 95" strokeWidth="0.8" />
+        {/* Pinnacle shaft tapering */}
+        <path d="M40 82 L40 100" strokeWidth="0.6" />
+        <path d="M60 82 L60 100" strokeWidth="0.6" />
+        {/* Crocket ornaments on gable edges */}
+        <path d="M30 90 Q28 88, 30 86" strokeWidth="0.4" />
+        <path d="M36 87 Q34 85, 36 83" strokeWidth="0.4" />
+        <path d="M70 90 Q72 88, 70 86" strokeWidth="0.4" />
+        <path d="M64 87 Q66 85, 64 83" strokeWidth="0.4" />
+        {/* Buttress wall beneath */}
+        <path d="M35 100 L35 95 L65 95 L65 100" strokeWidth="0.5" />
+        {/* Adjacent pinnacle hint */}
+        <path d="M5 70 L5 100" strokeWidth="0.4" />
+        <path d="M95 70 L95 100" strokeWidth="0.4" />
+        <path d="M2 70 L8 70" strokeWidth="0.4" />
+        <path d="M92 70 L98 70" strokeWidth="0.4" />
       </g>
 
       {/* PRIMARY - Finial ornament in 3D */}
@@ -774,9 +837,24 @@ const DecorativeMuqarnasSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="muqarnas-dec-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#muqarnas-dec-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Archway frame */}
-      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
-        <path d="M10 95 L10 50 Q50 20, 90 50 L90 95" />
+      {/* CONTEXT - Islamic iwan (vaulted portal) with surrounding walls */}
+      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.7">
+        {/* Outer rectangular frame (iwan facade) */}
+        <path d="M3 3 L97 3 L97 97 L3 97 Z" strokeWidth="0.6" />
+        {/* Inner pointed arch of iwan */}
+        <path d="M10 95 L10 50 Q50 15, 90 50 L90 95" strokeWidth="0.8" />
+        {/* Spandrel decoration hints (geometric tiles) */}
+        <path d="M6 20 L10 20" strokeWidth="0.3" />
+        <path d="M6 35 L10 35" strokeWidth="0.3" />
+        <path d="M90 20 L94 20" strokeWidth="0.3" />
+        <path d="M90 35 L94 35" strokeWidth="0.3" />
+        {/* Calligraphic band around arch */}
+        <path d="M12 48 Q50 18, 88 48" strokeWidth="0.4" />
+        {/* Floor tiles below */}
+        <path d="M10 95 L90 95" strokeWidth="0.5" />
+        <path d="M30 95 L30 100" strokeWidth="0.3" />
+        <path d="M50 95 L50 100" strokeWidth="0.3" />
+        <path d="M70 95 L70 100" strokeWidth="0.3" />
       </g>
 
       {/* PRIMARY - Muqarnas niche cells */}
@@ -895,11 +973,26 @@ const VoluteSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="volute-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#volute-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Capital/echinus below */}
-      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
-        <path d="M20 85 L80 85" />
-        <path d="M25 90 L75 90" />
-        <path d="M30 95 L70 95" />
+      {/* CONTEXT - Ionic capital with abacus above and column shaft below */}
+      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.7">
+        {/* Abacus (flat slab atop capital) */}
+        <path d="M5 5 L95 5" strokeWidth="1" />
+        <path d="M8 10 L92 10" strokeWidth="0.8" />
+        {/* Entablature hint above */}
+        <path d="M0 2 L100 2" strokeWidth="0.6" />
+        {/* Echinus (egg-and-dart molding under abacus) */}
+        <path d="M15 14 Q20 12, 25 14 Q30 12, 35 14 Q40 12, 45 14" strokeWidth="0.4" />
+        <path d="M55 14 Q60 12, 65 14 Q70 12, 75 14 Q80 12, 85 14" strokeWidth="0.4" />
+        {/* Column shaft below */}
+        <path d="M30 88 L30 100" strokeWidth="0.8" />
+        <path d="M70 88 L70 100" strokeWidth="0.8" />
+        {/* Fluting on shaft */}
+        <path d="M35 92 L35 100" strokeWidth="0.3" />
+        <path d="M40 94 L40 100" strokeWidth="0.3" />
+        <path d="M60 94 L60 100" strokeWidth="0.3" />
+        <path d="M65 92 L65 100" strokeWidth="0.3" />
+        {/* Opposite volute hint */}
+        <path d="M90 50 Q92 35, 88 25" strokeWidth="0.4" />
       </g>
 
       {/* PRIMARY - Volute spiral in 3D */}

@@ -691,27 +691,36 @@ export const KeystoneSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT: Partial arch showing position - dashed */}
-    <g opacity="0.4" strokeDasharray="3 2">
-      {/* Left side of arch */}
-      <path d="M 8 88 Q 8 52, 30 30" strokeWidth="1.2" fill="none" />
-      <path d="M 16 88 Q 16 56, 36 36" strokeWidth="1" fill="none" />
+    {/* CONTEXT: Complete arch structure — piers, wall, and adjacent masonry */}
+    <g opacity="0.35" strokeDasharray="3 2" fill="none">
+      {/* Full arch showing where keystone sits at crown */}
+      <path d="M 8 88 Q 8 52, 30 30" strokeWidth="1.2" />
+      <path d="M 16 88 Q 16 56, 36 36" strokeWidth="1" />
+      <path d="M 92 88 Q 92 52, 70 30" strokeWidth="1.2" />
+      <path d="M 84 88 Q 84 56, 64 36" strokeWidth="1" />
 
-      {/* Right side of arch */}
-      <path d="M 92 88 Q 92 52, 70 30" strokeWidth="1.2" fill="none" />
-      <path d="M 84 88 Q 84 56, 64 36" strokeWidth="1" fill="none" />
+      {/* Adjacent voussoirs flanking keystone */}
+      <path d="M 30 30 L 36 36 L 40 26 L 34 22 Z" strokeWidth="0.8" />
+      <path d="M 70 30 L 64 36 L 60 26 L 66 22 Z" strokeWidth="0.8" />
 
-      {/* Adjacent voussoirs */}
-      <path d="M 30 30 L 36 36 L 40 26 L 34 22 Z" strokeWidth="0.8" fill="none" />
-      <path d="M 70 30 L 64 36 L 60 26 L 66 22 Z" strokeWidth="0.8" fill="none" />
+      {/* Full piers/columns supporting the arch */}
+      <path d="M 8 88 L 8 98" strokeWidth="1.2" />
+      <path d="M 16 88 L 16 98" strokeWidth="0.8" />
+      <path d="M 92 88 L 92 98" strokeWidth="1.2" />
+      <path d="M 84 88 L 84 98" strokeWidth="0.8" />
 
-      {/* Pier suggestions */}
-      <path d="M 8 88 L 8 95" strokeWidth="1" fill="none" />
-      <path d="M 92 88 L 92 95" strokeWidth="1" fill="none" />
+      {/* Wall/spandrel above arch */}
+      <path d="M 0 5 L 100 5" strokeWidth="0.8" />
+      <path d="M 0 5 L 0 98" strokeWidth="0.6" />
+      <path d="M 100 5 L 100 98" strokeWidth="0.6" />
+
+      {/* Ground pavement */}
+      <path d="M 0 98 L 100 98" strokeWidth="0.8" />
+
+      {/* Impost moldings at spring points */}
+      <path d="M 4 88 L 20 88" strokeWidth="0.6" />
+      <path d="M 80 88 L 96 88" strokeWidth="0.6" />
     </g>
-
-    {/* Ground */}
-    <path d="M 5 95 L 95 95" strokeWidth="0.8" fill="none" opacity="0.4" strokeDasharray="4 2" />
 
     {/* PRIMARY: THE KEYSTONE - central wedge-shaped stone */}
     <g filter={showHalo ? "url(#arch-halo)" : undefined}>
