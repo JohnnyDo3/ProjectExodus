@@ -40,25 +40,35 @@ const CeilingRoseSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="rose-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#rose-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Room interior showing walls meeting ceiling */}
-      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
-        {/* Ceiling plane receding in perspective */}
-        <path d="M0 95 L50 50 L100 95" />
-        <path d="M0 85 L50 50 L100 85" />
-        <path d="M20 100 L50 50 L80 100" />
-        {/* Left wall */}
-        <path d="M0 0 L0 95" strokeWidth="0.8" />
-        {/* Top wall (far) */}
-        <path d="M0 0 L100 0" strokeWidth="0.8" />
-        {/* Right wall going to corner */}
-        <path d="M100 0 L100 95" strokeWidth="0.5" />
-        {/* Crown molding at wall-ceiling junction */}
-        <path d="M0 88 Q25 80, 50 72 Q75 80, 100 88" strokeWidth="0.5" />
-        {/* Picture rail on wall below */}
-        <path d="M0 92 L5 92" strokeWidth="0.4" />
-        <path d="M95 92 L100 92" strokeWidth="0.4" />
-        {/* Window/door hint on far wall */}
-        <path d="M35 0 L35 6 L65 6 L65 0" strokeWidth="0.3" />
+      {/* CONTEXT - View from doorway looking up into parlor room */}
+      <g strokeDasharray="3 2" opacity="0.25" strokeWidth="0.6">
+        {/* DOORWAY FRAME at viewer's position (bottom of view) */}
+        <path d="M0 100 L0 92 L100 92 L100 100" strokeWidth="0.8" />
+        <path d="M5 100 L5 94 L95 94 L95 100" strokeWidth="0.5" opacity="0.6" />
+        {/* Door frame header */}
+        <path d="M0 92 L100 92" strokeWidth="0.9" />
+
+        {/* Walls converging to vanishing point ~(50, 5) */}
+        {/* Left wall rising from doorway to ceiling */}
+        <path d="M0 92 L0 5" strokeWidth="0.7" />
+        <path d="M5 94 L10 10" strokeWidth="0.5" opacity="0.5" />
+        {/* Right wall rising from doorway to ceiling */}
+        <path d="M100 92 L100 5" strokeWidth="0.7" />
+        <path d="M95 94 L90 10" strokeWidth="0.5" opacity="0.5" />
+        {/* Far wall (top of view) */}
+        <path d="M0 5 L100 5" strokeWidth="0.6" />
+
+        {/* Crown molding where walls meet ceiling (converging) */}
+        <path d="M0 8 Q25 6, 50 5 Q75 6, 100 8" strokeWidth="0.5" />
+        <path d="M5 80 L10 70" strokeWidth="0.4" opacity="0.4" />
+        <path d="M95 80 L90 70" strokeWidth="0.4" opacity="0.4" />
+
+        {/* Picture rail on near walls */}
+        <path d="M0 85 L5 82" strokeWidth="0.3" opacity="0.4" />
+        <path d="M100 85 L95 82" strokeWidth="0.3" opacity="0.4" />
+
+        {/* Window on far wall letting in light */}
+        <path d="M35 5 L35 12 L65 12 L65 5" strokeWidth="0.4" opacity="0.4" />
       </g>
 
       {/* PRIMARY - Ceiling rose in perspective (elliptical, tilted) */}
@@ -124,31 +134,32 @@ const CofferedCeilingSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="coffer-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#coffer-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Room walls with crown molding and floor reference */}
-      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
-        {/* Wall corners with full wall surfaces */}
-        <path d="M0 100 L0 82 L10 72" />
-        <path d="M100 100 L100 82 L90 72" />
-        <path d="M0 100 L100 100" />
+      {/* CONTEXT - View from end of grand hall looking up at Pantheon-style ceiling */}
+      <g strokeDasharray="3 2" opacity="0.25" strokeWidth="0.6">
+        {/* HALLWAY ENTRANCE at viewer's position (bottom of view) */}
+        <path d="M-5 100 L-5 90 L105 90 L105 100" strokeWidth="0.7" />
+        <path d="M0 100 L0 92 L100 92 L100 100" strokeWidth="0.5" opacity="0.6" />
+        <path d="M-5 90 L105 90" strokeWidth="0.8" />
 
-        {/* Crown molding at wall-ceiling junction */}
-        <path d="M0 86 Q5 84, 10 78" strokeWidth="0.7" opacity="0.5" />
-        <path d="M100 86 Q95 84, 90 78" strokeWidth="0.7" opacity="0.5" />
-        <path d="M10 72 L25 63" strokeWidth="0.5" opacity="0.4" />
-        <path d="M90 72 L75 63" strokeWidth="0.5" opacity="0.4" />
+        {/* Walls converging to vanishing point ~(50, 0) */}
+        {/* Left wall */}
+        <path d="M-5 90 L-5 -5" strokeWidth="0.6" />
+        <path d="M0 92 L5 5" strokeWidth="0.5" opacity="0.5" />
+        {/* Right wall */}
+        <path d="M105 90 L105 -5" strokeWidth="0.6" />
+        <path d="M100 92 L95 5" strokeWidth="0.5" opacity="0.5" />
+        {/* Far wall */}
+        <path d="M-5 -5 L105 -5" strokeWidth="0.5" />
 
-        {/* Floor line at bottom */}
-        <path d="M-5 100 L105 100" strokeWidth="0.5" opacity="0.4" />
+        {/* Cornice/entablature where walls meet ceiling */}
+        <path d="M0 82 L5 72" strokeWidth="0.5" opacity="0.5" />
+        <path d="M100 82 L95 72" strokeWidth="0.5" opacity="0.5" />
+        <path d="M5 72 L25 60" strokeWidth="0.4" opacity="0.4" />
+        <path d="M95 72 L75 60" strokeWidth="0.4" opacity="0.4" />
 
-        {/* Column capital hints at corners */}
-        <path d="M2 88 L8 88" strokeWidth="0.5" opacity="0.4" />
-        <path d="M2 92 L2 88 L8 88 L8 92" strokeWidth="0.4" opacity="0.3" />
-        <path d="M92 88 L98 88" strokeWidth="0.5" opacity="0.4" />
-        <path d="M92 92 L92 88 L98 88 L98 92" strokeWidth="0.4" opacity="0.3" />
-
-        {/* Ceiling surface continuing beyond visible coffers */}
-        <path d="M-5 20 L5 30" strokeWidth="0.4" opacity="0.3" />
-        <path d="M105 20 L95 30" strokeWidth="0.4" opacity="0.3" />
+        {/* Column capitals at transition to ceiling */}
+        <path d="M2 85 L8 85 L8 82 L2 82" strokeWidth="0.5" opacity="0.4" />
+        <path d="M92 85 L98 85 L98 82 L92 82" strokeWidth="0.5" opacity="0.4" />
       </g>
 
       {/* PRIMARY - Coffered grid in perspective (converging to center) */}
@@ -218,15 +229,30 @@ const CovedCeilingSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="coved-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#coved-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Room corner walls */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
-        {/* Left wall */}
-        <path d="M0 100 L0 55" />
-        <path d="M0 70 L8 70" strokeWidth="0.5" />
-        <path d="M0 80 L6 80" strokeWidth="0.5" />
-        {/* Right wall in perspective */}
-        <path d="M0 100 L100 85" />
-        <path d="M100 85 L100 45" />
+      {/* CONTEXT - View from doorway into room with coved ceiling */}
+      <g strokeDasharray="3 2" opacity="0.25" strokeWidth="0.6">
+        {/* DOORWAY at viewer's position */}
+        <path d="M-5 100 L-5 88 L105 88 L105 100" strokeWidth="0.7" />
+        <path d="M0 100 L0 90 L100 90 L100 100" strokeWidth="0.5" opacity="0.6" />
+        <path d="M-5 88 L105 88" strokeWidth="0.8" />
+
+        {/* Left wall converging up and in */}
+        <path d="M0 90 L0 55" strokeWidth="0.6" />
+        <path d="M5 90 L5 58" strokeWidth="0.4" opacity="0.5" />
+        {/* Wall detail */}
+        <path d="M0 70 L5 70" strokeWidth="0.4" opacity="0.4" />
+        <path d="M0 80 L5 80" strokeWidth="0.4" opacity="0.4" />
+
+        {/* Right wall converging toward vanishing point */}
+        <path d="M100 90 L100 45" strokeWidth="0.6" />
+        <path d="M95 90 L95 48" strokeWidth="0.4" opacity="0.5" />
+
+        {/* Far wall (top of view) */}
+        <path d="M0 45 L100 42" strokeWidth="0.5" opacity="0.4" />
+
+        {/* Chair rail on near walls */}
+        <path d="M0 82 L5 82" strokeWidth="0.3" opacity="0.3" />
+        <path d="M95 82 L100 82" strokeWidth="0.3" opacity="0.3" />
       </g>
 
       {/* PRIMARY - Coved ceiling curves in perspective */}
@@ -280,11 +306,25 @@ const DroppedCeilingSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="drop-halo" intensity={0.75} />}
     <g filter={showHalo ? "url(#drop-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Office walls at edges */}
-      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
-        <path d="M0 100 L20 70" />
-        <path d="M100 100 L80 70" />
-        <path d="M0 100 L100 100" />
+      {/* CONTEXT - View from office doorway looking up at suspended ceiling */}
+      <g strokeDasharray="3 2" opacity="0.25" strokeWidth="0.6">
+        {/* OFFICE DOORWAY at viewer's position */}
+        <path d="M10 100 L10 92 L90 92 L90 100" strokeWidth="0.7" />
+        <path d="M15 100 L15 94 L85 94 L85 100" strokeWidth="0.5" opacity="0.6" />
+        <path d="M10 92 L90 92" strokeWidth="0.8" />
+
+        {/* Walls converging toward vanishing point ~(50, 5) */}
+        <path d="M10 92 L15 68 L20 50" strokeWidth="0.5" />
+        <path d="M90 92 L85 68 L80 50" strokeWidth="0.5" />
+        <path d="M0 100 L20 68" strokeWidth="0.4" opacity="0.4" />
+        <path d="M100 100 L80 68" strokeWidth="0.4" opacity="0.4" />
+
+        {/* Far wall */}
+        <path d="M20 50 L80 50" strokeWidth="0.4" opacity="0.4" />
+
+        {/* Exposed ceiling edge showing plenum above grid */}
+        <path d="M15 70 L20 68" strokeWidth="0.3" opacity="0.3" />
+        <path d="M85 70 L80 68" strokeWidth="0.3" opacity="0.3" />
       </g>
 
       {/* PRIMARY - Suspended grid in steep perspective */}
@@ -585,22 +625,33 @@ const MuqarnasSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="muqarnas-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#muqarnas-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Islamic dome/iwan chamber with walls and arches */}
-      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
-        {/* Dome or squinch base (octagonal transition zone) */}
-        <path d="M5 82 L15 78 L30 80 L50 78 L70 80 L85 78 L95 82" strokeWidth="0.7" />
-        {/* Four walls/arches of chamber */}
-        <path d="M0 100 L0 82" strokeWidth="0.8" />
-        <path d="M100 100 L100 82" strokeWidth="0.8" />
-        <path d="M0 82 Q50 75, 100 82" strokeWidth="0.7" />
-        {/* Floor */}
-        <path d="M0 100 L100 100" strokeWidth="0.5" />
-        {/* Tilework band at transition */}
-        <path d="M0 85 L100 85" strokeWidth="0.3" />
-        <path d="M0 88 L100 88" strokeWidth="0.3" />
-        {/* Column/pier corners */}
-        <path d="M3 100 L3 82" strokeWidth="0.4" />
-        <path d="M97 100 L97 82" strokeWidth="0.4" />
+      {/* CONTEXT - View through pointed iwan arch into muqarnas dome chamber */}
+      <g strokeDasharray="3 2" opacity="0.25" strokeWidth="0.6">
+        {/* IWAN ENTRANCE ARCH at viewer's position */}
+        <path d="M-5 100 L-5 85 Q50 70, 105 85 L105 100" strokeWidth="0.8" />
+        <path d="M0 100 L0 87 Q50 74, 100 87 L100 100" strokeWidth="0.5" opacity="0.6" />
+
+        {/* Walls of square chamber converging upward */}
+        <path d="M0 87 L0 82" strokeWidth="0.7" />
+        <path d="M100 87 L100 82" strokeWidth="0.7" />
+        <path d="M5 90 L5 80" strokeWidth="0.5" opacity="0.5" />
+        <path d="M95 90 L95 80" strokeWidth="0.5" opacity="0.5" />
+
+        {/* Octagonal transition zone (squinches/pendentives) */}
+        <path d="M5 82 L15 78 L30 80 L50 78 L70 80 L85 78 L95 82" strokeWidth="0.6" opacity="0.5" />
+
+        {/* Tilework bands at transition */}
+        <path d="M0 85 L100 85" strokeWidth="0.3" opacity="0.4" />
+        <path d="M0 88 L100 88" strokeWidth="0.3" opacity="0.4" />
+        {/* Geometric tile pattern between bands */}
+        <path d="M10 85 L15 88 L20 85 L25 88 L30 85 L35 88 L40 85 L45 88 L50 85 L55 88 L60 85 L65 88 L70 85 L75 88 L80 85 L85 88 L90 85" strokeWidth="0.2" opacity="0.3" />
+
+        {/* Column/pier corners at chamber entrance */}
+        <path d="M0 100 L0 85 L5 85 L5 100" strokeWidth="0.5" opacity="0.4" />
+        <path d="M95 100 L95 85 L100 85 L100 100" strokeWidth="0.5" opacity="0.4" />
+
+        {/* Mosaic floor tile hint */}
+        <path d="M20 95 L30 100 M50 95 L50 100 M70 95 L80 100" strokeWidth="0.3" opacity="0.25" />
       </g>
 
       {/* PRIMARY - Muqarnas honeycomb cells from below */}
@@ -667,21 +718,33 @@ const TrayCeilingSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="tray-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#tray-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Formal room with walls, crown molding, and window hints */}
-      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
-        {/* Walls converging in perspective */}
-        <path d="M0 100 L15 80" strokeWidth="0.7" />
-        <path d="M100 100 L85 80" strokeWidth="0.7" />
-        {/* Floor line */}
-        <path d="M0 100 L100 100" strokeWidth="0.5" />
-        {/* Crown molding at wall-ceiling junction */}
-        <path d="M5 82 L95 82" strokeWidth="0.5" />
-        <path d="M8 80 L92 80" strokeWidth="0.3" />
-        {/* Wainscoting / wall panel hints */}
-        <path d="M2 90 L6 86" strokeWidth="0.3" />
-        <path d="M94 86 L98 90" strokeWidth="0.3" />
-        {/* Window between wall panels */}
-        <path d="M40 100 L42 88 L58 88 L60 100" strokeWidth="0.3" />
+      {/* CONTEXT - View from double-door entrance into formal dining room looking up */}
+      <g strokeDasharray="3 2" opacity="0.25" strokeWidth="0.6">
+        {/* DOUBLE DOOR ENTRANCE at viewer's position */}
+        <path d="M5 100 L5 88 L95 88 L95 100" strokeWidth="0.7" />
+        <path d="M10 100 L10 90 L90 90 L90 100" strokeWidth="0.5" opacity="0.6" />
+        <path d="M5 88 L95 88" strokeWidth="0.9" />
+        {/* Door panel hints */}
+        <path d="M48 90 L48 100 M52 90 L52 100" strokeWidth="0.4" opacity="0.3" />
+
+        {/* Walls converging to vanishing point ~(50, 5) */}
+        <path d="M5 88 L5 5" strokeWidth="0.6" />
+        <path d="M10 90 L15 10" strokeWidth="0.5" opacity="0.5" />
+        <path d="M95 88 L95 5" strokeWidth="0.6" />
+        <path d="M90 90 L85 10" strokeWidth="0.5" opacity="0.5" />
+        {/* Far wall */}
+        <path d="M5 5 L95 5" strokeWidth="0.5" />
+
+        {/* Crown molding at wall-ceiling junction (converging) */}
+        <path d="M8 82 L95 82" strokeWidth="0.4" opacity="0.5" />
+        <path d="M12 80 L88 80" strokeWidth="0.3" opacity="0.4" />
+
+        {/* Wainscoting panels on near walls */}
+        <path d="M5 90 L10 86 L10 90" strokeWidth="0.3" opacity="0.3" />
+        <path d="M95 90 L90 86 L90 90" strokeWidth="0.3" opacity="0.3" />
+
+        {/* Window on far wall (light source) */}
+        <path d="M35 5 L35 15 L65 15 L65 5" strokeWidth="0.4" opacity="0.4" />
       </g>
 
       {/* PRIMARY - Stepped tray ceiling with perspective */}

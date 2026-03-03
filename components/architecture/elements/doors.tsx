@@ -39,20 +39,39 @@ const ArchedDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="arched-halo" intensity={1} />}
     <g filter={showHalo ? "url(#arched-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Stone wall and pavement */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
-        {/* Wall masonry pattern */}
-        <path d="M2 5 L2 95 L98 95 L98 5" />
-        <path d="M5 15 L95 15 M5 25 L95 25" />
-        <path d="M15 5 L15 15 M40 5 L40 15 M65 5 L65 15 M90 5 L90 15" />
-        <path d="M25 15 L25 25 M50 15 L50 25 M75 15 L75 25" />
-        {/* Side wall stones */}
-        <path d="M5 35 L10 35 M90 35 L95 35" />
-        <path d="M5 55 L10 55 M90 55 L95 55" />
-        <path d="M5 75 L10 75 M90 75 L95 75" />
-        {/* Stone pavement */}
-        <path d="M10 88 L90 88 L90 95 L10 95 Z" />
-        <path d="M30 88 L30 95 M50 88 L50 95 M70 88 L70 95" />
+      {/* CONTEXT: Deep Romanesque portal with receding archivolts and stone facade */}
+      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+        {/* Massive stone facade extending beyond frame */}
+        <path d="M-5 0 L105 0 L105 98 L-5 98 Z" strokeWidth="0.5" />
+
+        {/* Buttress on left side */}
+        <path d="M-8 0 L-8 98 L2 98 L2 0 Z" strokeWidth="0.7" opacity="0.5" />
+        <path d="M-4 0 L-4 98" strokeWidth="0.4" opacity="0.4" />
+
+        {/* Buttress on right side */}
+        <path d="M98 0 L98 98 L108 98 L108 0 Z" strokeWidth="0.7" opacity="0.5" />
+        <path d="M104 0 L104 98" strokeWidth="0.4" opacity="0.4" />
+
+        {/* Rose window above portal */}
+        <circle cx="50" cy="-8" r="12" strokeWidth="0.6" opacity="0.4" />
+        <circle cx="50" cy="-8" r="8" strokeWidth="0.4" opacity="0.3" />
+
+        {/* Stone coursing - ashlar masonry */}
+        <path d="M2 5 L7 5 M93 5 L98 5" strokeWidth="0.4" opacity="0.5" />
+        <path d="M2 15 L6 15 M94 15 L98 15" strokeWidth="0.4" opacity="0.5" />
+        <path d="M2 30 L5 30 M95 30 L98 30" strokeWidth="0.4" opacity="0.5" />
+        <path d="M2 55 L5 55 M95 55 L98 55" strokeWidth="0.4" opacity="0.5" />
+        <path d="M2 75 L5 75 M95 75 L98 75" strokeWidth="0.4" opacity="0.5" />
+
+        {/* Ascending stone steps - 3 tiers */}
+        <path d="M5 98 L95 98" strokeWidth="0.8" />
+        <path d="M8 95 L92 95" strokeWidth="0.7" opacity="0.7" />
+        <path d="M10 92 L90 92" strokeWidth="0.6" opacity="0.6" />
+        <path d="M12 90 L88 90" strokeWidth="0.5" opacity="0.5" />
+
+        {/* DEPTH: Wall thickness visible at doorway edges */}
+        <path d="M8 40 L5 42 L5 90 L8 90" strokeWidth="0.8" opacity="0.6" />
+        <path d="M92 40 L95 42 L95 90 L92 90" strokeWidth="0.8" opacity="0.6" />
       </g>
 
       {/* PRIMARY: Romanesque arched doorway */}
@@ -123,19 +142,39 @@ const BifoldDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="bifold-halo" intensity={0.75} />}
     <g filter={showHalo ? "url(#bifold-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Closet interior and walls */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
-        {/* Room walls */}
-        <path d="M5 10 L5 95 L95 95 L95 10" />
-        {/* Closet opening frame */}
-        <path d="M12 15 L12 88 L88 88 L88 15" />
-        {/* Interior shelving visible */}
-        <path d="M15 25 L25 25 M75 25 L85 25" />
-        <path d="M15 40 L25 40 M75 40 L85 40" />
-        <path d="M15 55 L25 55 M75 55 L85 55" />
-        {/* Floor */}
-        <path d="M12 85 L88 85 L88 92 L12 92 Z" />
-        <path d="M30 85 L30 92 M50 85 L50 92 M70 85 L70 92" />
+      {/* CONTEXT: Modern bedroom - closet in drywall with carpet floor */}
+      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+        {/* Room ceiling visible above */}
+        <path d="M-5 5 L105 5" strokeWidth="0.5" />
+
+        {/* Drywall surface - clean, no masonry */}
+        <path d="M-5 5 L-5 98 L105 98 L105 5" strokeWidth="0.5" />
+
+        {/* DEPTH: Header jamb showing wall thickness above track */}
+        <path d="M10 10 L10 15 L90 15 L90 10" strokeWidth="0.7" opacity="0.6" />
+        <path d="M8 10 L92 10" strokeWidth="0.8" opacity="0.5" />
+
+        {/* DEPTH: Side jamb reveals showing wall thickness */}
+        <path d="M8 10 L10 15 L10 88 L8 90" strokeWidth="0.6" opacity="0.5" />
+        <path d="M92 10 L90 15 L90 88 L92 90" strokeWidth="0.6" opacity="0.5" />
+
+        {/* Closet interior visible - shelving and rod */}
+        <path d="M15 20 L20 20 M80 20 L85 20" strokeWidth="0.4" opacity="0.4" />
+        <path d="M15 35 L20 35 M80 35 L85 35" strokeWidth="0.4" opacity="0.4" />
+        <path d="M15 50 L20 50 M80 50 L85 50" strokeWidth="0.4" opacity="0.4" />
+        {/* Closet rod */}
+        <path d="M18 22 L82 22" strokeWidth="0.3" opacity="0.3" />
+
+        {/* Carpet floor texture (different from hardwood/stone) */}
+        <path d="M-5 90 L105 90" strokeWidth="0.5" opacity="0.4" />
+        <path d="M10 92 L12 94 M30 91 L32 93 M50 92 L52 94 M70 91 L72 93 M85 92 L87 94" strokeWidth="0.3" opacity="0.25" />
+
+        {/* Baseboard molding on flanking walls */}
+        <path d="M-5 88 L8 88" strokeWidth="0.5" opacity="0.4" />
+        <path d="M92 88 L105 88" strokeWidth="0.5" opacity="0.4" />
+
+        {/* Light switch on left wall */}
+        <path d="M2 45 L2 50 L5 50 L5 45 Z" strokeWidth="0.3" opacity="0.3" />
       </g>
 
       {/* PRIMARY: Bifold door panels (partially folded open) */}
@@ -203,22 +242,41 @@ const DutchDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="dutch-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#dutch-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Farmhouse wall and stable yard */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
-        {/* Clapboard siding */}
-        <path d="M2 5 L2 95 L98 95 L98 5" />
-        <path d="M5 15 L10 15 M90 15 L95 15" />
-        <path d="M5 22 L10 22 M90 22 L95 22" />
-        <path d="M5 29 L10 29 M90 29 L95 29" />
-        <path d="M5 36 L10 36 M90 36 L95 36" />
-        <path d="M5 43 L10 43 M90 43 L95 43" />
-        <path d="M5 57 L10 57 M90 57 L95 57" />
-        <path d="M5 70 L10 70 M90 70 L95 70" />
-        {/* Door frame trim */}
-        <path d="M10 8 L10 92 L15 92 L15 8" />
-        <path d="M85 8 L85 92 L90 92 L90 8" />
-        {/* Stone threshold */}
-        <path d="M10 88 L90 88 L90 95 L10 95 Z" />
+      {/* CONTEXT: Colonial farmhouse with timber frame and garden path */}
+      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+        {/* Timber-frame structure visible */}
+        <path d="M-5 0 L105 0" strokeWidth="0.5" opacity="0.4" />
+        <path d="M-5 0 L-5 98" strokeWidth="0.5" opacity="0.4" />
+        <path d="M105 0 L105 98" strokeWidth="0.5" opacity="0.4" />
+
+        {/* Roof overhang / eave */}
+        <path d="M-8 3 L50 -5 L108 3" strokeWidth="0.7" opacity="0.5" />
+        <path d="M-5 3 L105 3" strokeWidth="0.5" opacity="0.4" />
+
+        {/* Clapboard siding (horizontal boards) */}
+        <path d="M-5 12 L8 12 M92 12 L105 12" strokeWidth="0.3" opacity="0.4" />
+        <path d="M-5 19 L8 19 M92 19 L105 19" strokeWidth="0.3" opacity="0.4" />
+        <path d="M-5 26 L8 26 M92 26 L105 26" strokeWidth="0.3" opacity="0.4" />
+        <path d="M-5 35 L8 35 M92 35 L105 35" strokeWidth="0.3" opacity="0.4" />
+        <path d="M-5 60 L8 60 M92 60 L105 60" strokeWidth="0.3" opacity="0.4" />
+        <path d="M-5 75 L8 75 M92 75 L105 75" strokeWidth="0.3" opacity="0.4" />
+
+        {/* DEPTH: Door frame trim with reveal/depth */}
+        <path d="M8 5 L8 92 L12 92 L12 5 Z" strokeWidth="0.8" opacity="0.5" />
+        <path d="M88 5 L88 92 L92 92 L92 5 Z" strokeWidth="0.8" opacity="0.5" />
+        <path d="M8 5 L92 5" strokeWidth="0.8" opacity="0.5" />
+
+        {/* Flower box under window on left */}
+        <path d="M-5 45 L3 45 L3 50 L-5 50" strokeWidth="0.4" opacity="0.4" />
+        <path d="M-3 42 L-1 45 M0 43 L1 45" strokeWidth="0.3" opacity="0.3" />
+
+        {/* Stone step / threshold with depth */}
+        <path d="M8 90 L92 90 L94 92 L6 92 Z" strokeWidth="0.5" opacity="0.5" />
+        <path d="M6 92 L94 92 L96 95 L4 95 Z" strokeWidth="0.4" opacity="0.4" />
+
+        {/* Garden path leading to door */}
+        <path d="M35 95 L30 100 M50 95 L50 100 M65 95 L70 100" strokeWidth="0.4" opacity="0.3" />
+        <path d="M40 97 L38 100 M60 97 L62 100" strokeWidth="0.3" opacity="0.25" />
       </g>
 
       {/* PRIMARY: Dutch door with top half open */}
@@ -290,22 +348,43 @@ const FrenchDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="french-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#french-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Garden terrace and balustrade */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
-        {/* Interior wall */}
-        <path d="M5 5 L5 90 L95 90 L95 5" />
-        {/* Wall paneling */}
-        <path d="M8 20 L12 20 M88 20 L92 20" />
-        <path d="M8 40 L12 40 M88 40 L92 40" />
-        <path d="M8 60 L12 60 M88 60 L92 60" />
-        {/* Stone terrace beyond */}
-        <path d="M5 85 L95 85 L95 95 L5 95 Z" />
-        <path d="M5 90 L95 90" />
-        <path d="M20 85 L20 95 M40 85 L40 95 M60 85 L60 95 M80 85 L80 95" />
-        {/* Garden balustrade suggestion */}
-        <path d="M2 70 L8 70 M92 70 L98 70" />
-        <circle cx="5" cy="70" r="1.5" />
-        <circle cx="95" cy="70" r="1.5" />
+      {/* CONTEXT: Versailles-style salon opening to formal garden terrace */}
+      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+        {/* Interior: ornate plaster wall with wainscoting */}
+        <path d="M-5 2 L105 2" strokeWidth="0.5" opacity="0.4" />
+        <path d="M-5 2 L-5 98" strokeWidth="0.5" opacity="0.4" />
+        <path d="M105 2 L105 98" strokeWidth="0.5" opacity="0.4" />
+
+        {/* Wall paneling / boiserie on flanking walls */}
+        <path d="M-3 15 L10 15 L10 75 L-3 75 Z" strokeWidth="0.4" opacity="0.35" />
+        <path d="M90 15 L103 15 L103 75 L90 75 Z" strokeWidth="0.4" opacity="0.35" />
+
+        {/* Cornice above */}
+        <path d="M-5 4 L105 4" strokeWidth="0.4" opacity="0.4" />
+
+        {/* DEPTH: Deep reveals at sides showing wall thickness */}
+        <path d="M10 5 L13 8 L13 88 L10 90" strokeWidth="0.7" opacity="0.5" />
+        <path d="M90 5 L87 8 L87 88 L90 90" strokeWidth="0.7" opacity="0.5" />
+
+        {/* Exterior: Flagstone terrace beyond the door */}
+        <path d="M13 86 L87 86 L90 90 L10 90" strokeWidth="0.5" opacity="0.5" />
+        <path d="M10 90 L90 90 L95 95 L5 95 Z" strokeWidth="0.4" opacity="0.4" />
+        <path d="M30 90 L28 95 M50 90 L50 95 M70 90 L72 95" strokeWidth="0.3" opacity="0.3" />
+
+        {/* Garden beyond: balustrade with finials */}
+        <path d="M5 95 L95 95" strokeWidth="0.5" opacity="0.5" />
+        <path d="M15 95 L15 98 M25 95 L25 98 M35 95 L35 98 M65 95 L65 98 M75 95 L75 98 M85 95 L85 98" strokeWidth="0.4" opacity="0.3" />
+        <path d="M5 98 L95 98" strokeWidth="0.4" opacity="0.3" />
+        {/* Topiary spheres beyond */}
+        <circle cx="20" cy="100" r="3" strokeWidth="0.3" opacity="0.2" />
+        <circle cx="80" cy="100" r="3" strokeWidth="0.3" opacity="0.2" />
+
+        {/* Shutters flanking doorway */}
+        <path d="M5 8 L10 8 L10 85 L5 85" strokeWidth="0.5" opacity="0.4" />
+        <path d="M90 8 L95 8 L95 85 L90 85" strokeWidth="0.5" opacity="0.4" />
+        {/* Shutter louvers */}
+        <path d="M6 20 L9 20 M6 30 L9 30 M6 40 L9 40" strokeWidth="0.25" opacity="0.3" />
+        <path d="M91 20 L94 20 M91 30 L94 30 M91 40 L94 40" strokeWidth="0.25" opacity="0.3" />
       </g>
 
       {/* PRIMARY: French doors with glass panes */}
@@ -394,21 +473,48 @@ const PanelDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="panel-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#panel-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Brick townhouse facade */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
-        {/* Brick pattern */}
-        <path d="M2 5 L2 95 L98 95 L98 5" />
-        <path d="M5 12 L95 12 M5 19 L95 19 M5 26 L95 26" />
-        <path d="M15 5 L15 12 M35 5 L35 12 M55 5 L55 12 M75 5 L75 12 M92 5 L92 12" />
-        <path d="M8 12 L8 19 M25 12 L25 19 M45 12 L45 19 M65 12 L65 19 M85 12 L85 19" />
-        <path d="M15 19 L15 26 M35 19 L35 26 M55 19 L55 26 M75 19 L75 26 M92 19 L92 26" />
-        {/* Side walls */}
-        <path d="M5 35 L10 35 M90 35 L95 35" />
-        <path d="M5 55 L10 55 M90 55 L95 55" />
-        <path d="M5 75 L10 75 M90 75 L95 75" />
-        {/* Stone steps */}
-        <path d="M8 88 L92 88 L92 92 L8 92 Z" />
-        <path d="M12 92 L88 92 L88 95 L12 95 Z" />
+      {/* CONTEXT: Georgian townhouse entrance with fanlight and pilasters */}
+      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+        {/* Brick facade extending off-frame */}
+        <path d="M-5 -5 L105 -5 L105 98 L-5 98 Z" strokeWidth="0.5" opacity="0.3" />
+
+        {/* Flemish bond brickwork on facade */}
+        <path d="M-5 -2 L5 -2 M95 -2 L105 -2" strokeWidth="0.3" opacity="0.35" />
+        <path d="M-5 4 L5 4 M95 4 L105 4" strokeWidth="0.3" opacity="0.35" />
+        <path d="M-5 30 L5 30 M95 30 L105 30" strokeWidth="0.3" opacity="0.35" />
+        <path d="M-5 55 L5 55 M95 55 L105 55" strokeWidth="0.3" opacity="0.35" />
+        <path d="M-5 75 L5 75 M95 75 L105 75" strokeWidth="0.3" opacity="0.35" />
+
+        {/* Pilasters flanking doorway (3D classical columns) */}
+        <path d="M5 5 L5 88 L10 88 L10 5 Z" strokeWidth="0.7" opacity="0.5" />
+        <path d="M7 5 L7 88" strokeWidth="0.4" opacity="0.3" />
+        <path d="M90 5 L90 88 L95 88 L95 5 Z" strokeWidth="0.7" opacity="0.5" />
+        <path d="M93 5 L93 88" strokeWidth="0.4" opacity="0.3" />
+
+        {/* Pilaster capitals */}
+        <path d="M3 5 L12 5 L11 8 L4 8 Z" strokeWidth="0.5" opacity="0.4" />
+        <path d="M88 5 L97 5 L96 8 L89 8 Z" strokeWidth="0.5" opacity="0.4" />
+
+        {/* Fanlight transom above door (semi-circular) */}
+        <path d="M12 8 Q50 -8, 88 8" strokeWidth="0.8" opacity="0.5" />
+        <path d="M30 5 L50 -4 M50 -4 L70 5 M50 -4 L50 8" strokeWidth="0.3" opacity="0.4" />
+
+        {/* DEPTH: Recessed doorway showing wall thickness */}
+        <path d="M10 8 L12 10 L12 88 L10 88" strokeWidth="0.6" opacity="0.5" />
+        <path d="M90 8 L88 10 L88 88 L90 88" strokeWidth="0.6" opacity="0.5" />
+
+        {/* Stone steps with iron railings */}
+        <path d="M10 90 L90 90 L92 93 L8 93 Z" strokeWidth="0.5" opacity="0.5" />
+        <path d="M8 93 L92 93 L94 96 L6 96 Z" strokeWidth="0.4" opacity="0.4" />
+        {/* Iron area railing on left */}
+        <path d="M-5 90 L5 90 L5 82 L-5 82" strokeWidth="0.4" opacity="0.35" />
+        <path d="M-3 82 L-3 90 M0 82 L0 90 M3 82 L3 90" strokeWidth="0.25" opacity="0.25" />
+        {/* Iron area railing on right */}
+        <path d="M95 90 L105 90 L105 82 L95 82" strokeWidth="0.4" opacity="0.35" />
+        <path d="M97 82 L97 90 M100 82 L100 90 M103 82 L103 90" strokeWidth="0.25" opacity="0.25" />
+
+        {/* Boot scraper on step */}
+        <path d="M82 90 L84 88 L86 90" strokeWidth="0.4" opacity="0.3" />
       </g>
 
       {/* PRIMARY: Georgian panel door */}
@@ -490,18 +596,38 @@ const PivotDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="pivot-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#pivot-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Modern minimalist entrance */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
-        {/* Concrete wall panels */}
-        <path d="M2 5 L2 95 L98 95 L98 5" />
-        <path d="M5 5 L5 92 L10 92 L10 5" />
-        <path d="M90 5 L90 92 L95 92 L95 5" />
-        {/* Panel seams */}
-        <path d="M2 35 L10 35 M90 35 L98 35" />
-        <path d="M2 65 L10 65 M90 65 L98 65" />
-        {/* Polished floor */}
-        <path d="M2 88 L98 88 L98 95 L2 95 Z" />
-        <path d="M2 90 L98 90" />
+      {/* CONTEXT: Museum gallery entrance - glass curtain wall and polished concrete */}
+      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+        {/* Board-formed concrete wall - texture lines */}
+        <path d="M-5 -5 L105 -5 L105 100 L-5 100 Z" strokeWidth="0.5" opacity="0.3" />
+        <path d="M-5 5 L8 5 M92 5 L105 5" strokeWidth="0.3" opacity="0.3" />
+        <path d="M-5 20 L8 20 M92 20 L105 20" strokeWidth="0.3" opacity="0.3" />
+        <path d="M-5 40 L8 40 M92 40 L105 40" strokeWidth="0.3" opacity="0.3" />
+        <path d="M-5 60 L8 60 M92 60 L105 60" strokeWidth="0.3" opacity="0.3" />
+        <path d="M-5 80 L8 80 M92 80 L105 80" strokeWidth="0.3" opacity="0.3" />
+
+        {/* Tie-holes from concrete formwork (unique texture) */}
+        <circle cx="2" cy="25" r="0.8" strokeWidth="0.3" opacity="0.25" />
+        <circle cx="98" cy="25" r="0.8" strokeWidth="0.3" opacity="0.25" />
+        <circle cx="2" cy="55" r="0.8" strokeWidth="0.3" opacity="0.25" />
+        <circle cx="98" cy="55" r="0.8" strokeWidth="0.3" opacity="0.25" />
+
+        {/* Glass sidelight on right side */}
+        <path d="M92 8 L92 88 L98 88 L98 8 Z" strokeWidth="0.5" opacity="0.4" />
+        <path d="M95 15 L95 82" strokeWidth="0.3" opacity="0.3" />
+
+        {/* DEPTH: Deep jamb reveal showing thick wall */}
+        <path d="M8 5 L12 8 L12 88 L8 92" strokeWidth="0.7" opacity="0.5" />
+        <path d="M92 5 L88 8 L88 88 L92 92" strokeWidth="0.7" opacity="0.5" />
+
+        {/* Polished concrete floor with control joints */}
+        <path d="M-5 90 L105 90" strokeWidth="0.5" opacity="0.5" />
+        <path d="M-5 92 L105 92" strokeWidth="0.3" opacity="0.3" />
+        <path d="M30 90 L28 100 M60 90 L62 100" strokeWidth="0.3" opacity="0.2" />
+
+        {/* Recessed ceiling with LED strip */}
+        <path d="M10 3 L90 3" strokeWidth="0.4" opacity="0.3" />
+        <path d="M12 5 L88 5" strokeWidth="0.3" opacity="0.4" strokeDasharray="1 1" />
       </g>
 
       {/* PRIMARY: Pivot door (shown at angle) */}
@@ -568,21 +694,40 @@ const PocketDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="pocket-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#pocket-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Victorian parlor walls and pocket */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
-        {/* Wall with wainscoting - left side */}
-        <path d="M2 10 L2 95 L28 95 L28 10" />
-        <path d="M5 60 L25 60" />
-        <path d="M8 30 L8 60 M14 30 L14 60 M20 30 L20 60" strokeWidth="0.4" />
-        {/* Wall - right side */}
-        <path d="M62 10 L62 95 L98 95 L98 10" />
-        <path d="M65 30 L95 30 M65 50 L95 50 M65 70 L95 70" />
-        {/* Pocket cavity (hollow wall) */}
-        <path d="M5 15 L5 90 L28 90 L28 15" />
-        <path d="M8 20 L25 20 M8 85 L25 85" />
-        {/* Floor */}
-        <path d="M2 88 L98 88 L98 95 L2 95 Z" />
-        <path d="M15 88 L15 95 M45 88 L45 95 M75 88 L75 95" />
+      {/* CONTEXT: Victorian brownstone parlor with cutaway wall showing pocket cavity */}
+      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+        {/* Ceiling with medallion hint */}
+        <path d="M-5 5 L105 5" strokeWidth="0.5" opacity="0.4" />
+        <path d="M-5 8 L105 8" strokeWidth="0.3" opacity="0.3" />
+
+        {/* Left wall: wainscoting detail */}
+        <path d="M-5 5 L-5 98" strokeWidth="0.5" opacity="0.4" />
+        <path d="M-3 60 L25 60" strokeWidth="0.5" opacity="0.4" />
+        <path d="M-3 62 L25 62" strokeWidth="0.3" opacity="0.3" />
+        <path d="M0 65 L0 90 M6 65 L6 90 M12 65 L12 90 M18 65 L18 90 M24 65 L24 90" strokeWidth="0.3" opacity="0.25" />
+
+        {/* CUTAWAY: Pocket cavity showing hollow wall interior */}
+        <path d="M2 15 L2 88 L28 88 L28 15 Z" strokeWidth="0.7" opacity="0.5" />
+        <path d="M4 18 L4 85 L26 85 L26 18 Z" strokeWidth="0.4" opacity="0.3" />
+        {/* Studs visible inside pocket */}
+        <path d="M8 18 L8 85" strokeWidth="0.3" opacity="0.25" />
+        <path d="M16 18 L16 85" strokeWidth="0.3" opacity="0.25" />
+        <path d="M24 18 L24 85" strokeWidth="0.3" opacity="0.25" />
+
+        {/* Right wall with picture rail and wallpaper hint */}
+        <path d="M62 5 L62 98 L105 98 L105 5" strokeWidth="0.5" opacity="0.4" />
+        <path d="M62 25 L98 25" strokeWidth="0.3" opacity="0.3" />
+        {/* Picture frame on wall */}
+        <path d="M72 30 L72 50 L92 50 L92 30 Z" strokeWidth="0.3" opacity="0.25" />
+        <path d="M74 32 L74 48 L90 48 L90 32 Z" strokeWidth="0.2" opacity="0.2" />
+
+        {/* DEPTH: Opening frame with deep reveal */}
+        <path d="M28 8 L30 10 L30 90 L28 92" strokeWidth="0.6" opacity="0.5" />
+        <path d="M62 8 L60 10 L60 90 L62 92" strokeWidth="0.6" opacity="0.5" />
+
+        {/* Herringbone hardwood floor */}
+        <path d="M-5 90 L105 90" strokeWidth="0.5" opacity="0.5" />
+        <path d="M10 90 L14 93 L18 90 M30 90 L34 93 L38 90 M50 90 L54 93 L58 90 M70 90 L74 93 L78 90 M85 90 L89 93 L93 90" strokeWidth="0.25" opacity="0.25" />
       </g>
 
       {/* PRIMARY: Pocket door sliding into wall */}
@@ -652,21 +797,37 @@ const RevolvingDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="revolving-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#revolving-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Art Deco lobby walls and floor */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
-        {/* Entrance wall - left */}
-        <path d="M2 25 L2 75 L12 75 L12 25 Z" />
-        <path d="M5 30 L5 70 L9 70 L9 30" />
-        {/* Exit wall - right */}
-        <path d="M88 25 L88 75 L98 75 L98 25 Z" />
-        <path d="M91 30 L91 70 L95 70 L95 30" />
-        {/* Marble floor pattern */}
-        <ellipse cx="50" cy="90" rx="42" ry="5" />
-        <path d="M10 90 L90 90" />
-        {/* Art Deco sunburst on floor */}
-        <path d="M50 85 L45 90 M50 85 L50 90 M50 85 L55 90" />
-        {/* Ceiling detail */}
-        <path d="M15 20 L85 20 L85 25 L15 25 Z" />
+      {/* CONTEXT: Art Deco hotel lobby - marble, brass, and geometric patterns */}
+      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+        {/* Grand lobby ceiling with Deco coffers */}
+        <path d="M5 5 L95 5" strokeWidth="0.5" opacity="0.4" />
+        <path d="M10 8 L90 8" strokeWidth="0.4" opacity="0.3" />
+        {/* Geometric Deco ceiling pattern */}
+        <path d="M35 5 L35 8 M50 5 L50 8 M65 5 L65 8" strokeWidth="0.3" opacity="0.3" />
+
+        {/* DEPTH: Curved entrance walls wrapping around (plan view impression) */}
+        <path d="M0 15 L0 85 L12 80 L12 20 Z" strokeWidth="0.7" opacity="0.5" />
+        <path d="M100 15 L100 85 L88 80 L88 20 Z" strokeWidth="0.7" opacity="0.5" />
+
+        {/* Fluted pilasters flanking the revolving door */}
+        <path d="M10 20 L10 80" strokeWidth="0.8" opacity="0.5" />
+        <path d="M12 22 L12 78" strokeWidth="0.5" opacity="0.3" />
+        <path d="M88 22 L88 78" strokeWidth="0.5" opacity="0.3" />
+        <path d="M90 20 L90 80" strokeWidth="0.8" opacity="0.5" />
+
+        {/* Marble floor: compass rose / terrazzo pattern */}
+        <ellipse cx="50" cy="92" rx="42" ry="5" strokeWidth="0.5" opacity="0.4" />
+        <path d="M10 92 L90 92" strokeWidth="0.3" opacity="0.3" />
+        {/* Deco sunburst in floor */}
+        <path d="M50 87 L45 92 M50 87 L50 92 M50 87 L55 92 M50 87 L42 90 M50 87 L58 90" strokeWidth="0.3" opacity="0.3" />
+
+        {/* Brass door mat rail */}
+        <path d="M20 92 L80 92 L80 95 L20 95 Z" strokeWidth="0.3" opacity="0.3" />
+        <path d="M22 93 L78 93 M22 94 L78 94" strokeWidth="0.2" opacity="0.2" />
+
+        {/* Canopy above entrance */}
+        <path d="M5 18 L95 18 L98 20 L2 20 Z" strokeWidth="0.5" opacity="0.4" />
+        <path d="M5 15 L95 15" strokeWidth="0.4" opacity="0.3" />
       </g>
 
       {/* PRIMARY: Revolving door mechanism */}
@@ -751,20 +912,38 @@ const SlidingDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="sliding-halo" intensity={0.75} />}
     <g filter={showHalo ? "url(#sliding-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Japanese interior with tatami */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
-        {/* Room wall structure */}
-        <path d="M2 8 L2 92 L98 92 L98 8" />
-        {/* Wall posts (hashira) */}
-        <path d="M8 10 L8 90 M92 10 L92 90" />
-        {/* Tatami mat edges on floor */}
-        <path d="M10 85 L48 85 M52 85 L90 85" />
-        <path d="M10 88 L90 88 L90 95 L10 95 Z" />
-        <path d="M30 85 L30 95 M50 85 L50 95 M70 85 L70 95" />
-        {/* Adjacent shoji visible in background */}
-        <path d="M5 15 L8 15 M92 15 L95 15" />
-        <path d="M5 35 L8 35 M92 35 L95 35" />
-        <path d="M5 55 L8 55 M92 55 L95 55" />
+      {/* CONTEXT: Traditional Japanese machiya - timber frame, engawa, garden view */}
+      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+        {/* Timber ceiling beams (taruki) above */}
+        <path d="M-5 3 L105 3" strokeWidth="0.5" opacity="0.4" />
+        <path d="M10 3 L10 8 M30 3 L30 8 M50 3 L50 8 M70 3 L70 8 M90 3 L90 8" strokeWidth="0.3" opacity="0.3" />
+
+        {/* Structural posts (hashira) - thick timber */}
+        <path d="M6 3 L6 95 L10 95 L10 3 Z" strokeWidth="0.7" opacity="0.5" />
+        <path d="M90 3 L90 95 L94 95 L94 3 Z" strokeWidth="0.7" opacity="0.5" />
+
+        {/* Nageshi (horizontal connecting beam above screens) */}
+        <path d="M6 8 L94 8" strokeWidth="0.8" opacity="0.5" />
+        <path d="M6 10 L94 10" strokeWidth="0.4" opacity="0.3" />
+
+        {/* DEPTH: Track grooves showing depth of the wall/post */}
+        <path d="M10 10 L12 12 L12 85 L10 87" strokeWidth="0.5" opacity="0.4" />
+        <path d="M90 10 L88 12 L88 85 L90 87" strokeWidth="0.5" opacity="0.4" />
+
+        {/* Tatami floor - precise module layout */}
+        <path d="M10 87 L90 87 L90 95 L10 95 Z" strokeWidth="0.5" opacity="0.4" />
+        <path d="M50 87 L50 95" strokeWidth="0.4" opacity="0.3" />
+        <path d="M10 91 L50 91 M50 91 L90 91" strokeWidth="0.3" opacity="0.25" />
+
+        {/* Engawa (veranda) beyond screens - visible through washi */}
+        <path d="M12 88 L88 88" strokeWidth="0.3" opacity="0.2" />
+        {/* Garden hint: stone lantern beyond engawa */}
+        <path d="M78 92 L78 95 M76 95 L80 95" strokeWidth="0.3" opacity="0.2" />
+        <path d="M77 90 L79 90 L79 92 L77 92" strokeWidth="0.2" opacity="0.15" />
+
+        {/* Adjacent fusuma (opaque sliding panel) on far wall */}
+        <path d="M2 12 L6 12 L6 85 L2 85 Z" strokeWidth="0.3" opacity="0.25" />
+        <path d="M94 12 L98 12 L98 85 L94 85 Z" strokeWidth="0.3" opacity="0.25" />
       </g>
 
       {/* PRIMARY: Shoji sliding screen doors */}
@@ -852,23 +1031,52 @@ const StableDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="stable-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#stable-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Stable building and straw */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
-        {/* Brick stable wall */}
-        <path d="M2 5 L2 95 L98 95 L98 5" />
-        <path d="M5 15 L95 15 M5 25 L95 25 M5 35 L95 35" />
-        <path d="M15 5 L15 15 M35 5 L35 15 M55 5 L55 15 M75 5 L75 15 M92 5 L92 15" />
-        <path d="M8 15 L8 25 M25 15 L25 25 M45 15 L45 25 M65 15 L65 25 M85 15 L85 25" />
-        {/* Side walls */}
-        <path d="M5 45 L10 45 M90 45 L95 45" />
-        <path d="M5 65 L10 65 M90 65 L95 65" />
-        {/* Cobblestone threshold */}
-        <path d="M10 88 L90 88 L90 95 L10 95 Z" />
-        <path d="M15 90 L18 92 M22 89 L25 91 M28 90 L31 92" />
-        <path d="M72 90 L75 92 M78 89 L81 91 M85 90 L88 92" />
-        {/* Hay/straw on floor inside */}
-        <path d="M15 80 L20 82 M18 78 L23 80" />
-        <path d="M75 80 L80 82 M78 78 L83 80" />
+      {/* CONTEXT: Cotswold stable yard - half-timber, hay loft, adjacent stalls */}
+      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+        {/* Timber-frame and stone stable building */}
+        <path d="M-5 -5 L105 -5" strokeWidth="0.5" opacity="0.3" />
+
+        {/* Steeply pitched roof with eave */}
+        <path d="M-8 2 L50 -10 L108 2" strokeWidth="0.7" opacity="0.5" />
+        <path d="M-5 2 L105 2" strokeWidth="0.5" opacity="0.4" />
+
+        {/* Half-timber framing */}
+        <path d="M-5 2 L-5 98" strokeWidth="0.5" opacity="0.3" />
+        <path d="M105 2 L105 98" strokeWidth="0.5" opacity="0.3" />
+        {/* Diagonal braces in timber frame */}
+        <path d="M2 2 L8 30" strokeWidth="0.4" opacity="0.3" />
+        <path d="M98 2 L92 30" strokeWidth="0.4" opacity="0.3" />
+
+        {/* Hay loft opening above door */}
+        <path d="M30 -2 L30 5 L70 5 L70 -2 Z" strokeWidth="0.5" opacity="0.4" />
+        <path d="M35 -2 L35 3 L65 3 L65 -2 Z" strokeWidth="0.3" opacity="0.3" />
+
+        {/* Stone rubble lower wall (Cotswold limestone) */}
+        <path d="M-5 35 L5 35 M95 35 L105 35" strokeWidth="0.3" opacity="0.3" />
+        <path d="M-5 55 L5 55 M95 55 L105 55" strokeWidth="0.3" opacity="0.3" />
+        <path d="M-5 70 L5 70 M95 70 L105 70" strokeWidth="0.3" opacity="0.3" />
+
+        {/* Adjacent stall door on left (closed) */}
+        <path d="M-12 8 L-12 88 L-2 88 L-2 8 Z" strokeWidth="0.5" opacity="0.35" />
+        <path d="M-10 45 L-4 45" strokeWidth="0.4" opacity="0.3" />
+
+        {/* Adjacent stall door on right (closed) */}
+        <path d="M102 8 L102 88 L112 88 L112 8 Z" strokeWidth="0.5" opacity="0.35" />
+        <path d="M104 45 L110 45" strokeWidth="0.4" opacity="0.3" />
+
+        {/* DEPTH: Deep frame with worn stone surround */}
+        <path d="M8 5 L10 8 L10 88 L8 90" strokeWidth="0.7" opacity="0.5" />
+        <path d="M92 5 L90 8 L90 88 L92 90" strokeWidth="0.7" opacity="0.5" />
+
+        {/* Cobblestone yard */}
+        <path d="M-5 90 L105 90" strokeWidth="0.5" opacity="0.5" />
+        <path d="M15 92 L18 94 M25 91 L28 93 M35 92 L38 94 M65 91 L68 93 M75 92 L78 94 M85 91 L88 93" strokeWidth="0.3" opacity="0.25" />
+
+        {/* Hay/straw on stable floor */}
+        <path d="M15 82 L20 84 M18 80 L23 82 M75 82 L80 84 M78 80 L83 82" strokeWidth="0.3" opacity="0.25" />
+
+        {/* Water trough at side */}
+        <path d="M96 88 L96 92 L105 92 L105 88 Z" strokeWidth="0.3" opacity="0.25" />
       </g>
 
       {/* PRIMARY: Stable door with horse visible */}
@@ -962,22 +1170,38 @@ const TrapdoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="trapdoor-halo" intensity={0.95} />}
     <g filter={showHalo ? "url(#trapdoor-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Stone castle floor and walls */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
-        {/* Stone floor flagstones */}
-        <path d="M2 2 L2 98 L98 98 L98 2 Z" />
-        <path d="M2 25 L35 25 M40 25 L98 25" />
-        <path d="M2 55 L60 55 M65 55 L98 55" />
-        <path d="M2 78 L45 78 M50 78 L98 78" />
-        <path d="M35 2 L35 25 M60 2 L60 25" />
-        <path d="M15 25 L15 55 M75 25 L75 55" />
-        <path d="M30 55 L30 78 M85 55 L85 78" />
-        <path d="M20 78 L20 98 M70 78 L70 98" />
-        {/* Stone texture marks */}
-        <path d="M8 10 L12 14 M50 8 L54 12 M82 15 L86 19" />
-        <path d="M10 62 L14 66 M55 68 L59 72 M88 62 L92 66" />
-        {/* Wall edge visible */}
-        <path d="M2 2 L8 8 L92 8 L98 2" />
+      {/* CONTEXT: Medieval castle keep - stone floor, barrel vault above, torch sconces */}
+      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+        {/* Stone floor flagstones (irregular, worn) */}
+        <path d="M-5 -5 L105 -5 L105 105 L-5 105 Z" strokeWidth="0.4" opacity="0.3" />
+        <path d="M-5 22 L32 22 M42 22 L105 22" strokeWidth="0.4" opacity="0.35" />
+        <path d="M-5 50 L58 50 M68 50 L105 50" strokeWidth="0.4" opacity="0.35" />
+        <path d="M-5 75 L42 75 M52 75 L105 75" strokeWidth="0.4" opacity="0.35" />
+        <path d="M32 -5 L32 22 M58 -5 L58 22" strokeWidth="0.4" opacity="0.35" />
+        <path d="M15 22 L15 50 M72 22 L72 50" strokeWidth="0.4" opacity="0.35" />
+        <path d="M28 50 L28 75 M82 50 L82 75" strokeWidth="0.4" opacity="0.35" />
+        <path d="M18 75 L18 105 M68 75 L68 105" strokeWidth="0.4" opacity="0.35" />
+
+        {/* Vaulted ceiling above (barrel vault ribs) */}
+        <path d="M-5 -8 Q50 -20, 105 -8" strokeWidth="0.6" opacity="0.4" />
+        <path d="M5 -5 Q50 -15, 95 -5" strokeWidth="0.4" opacity="0.3" />
+
+        {/* Thick castle walls at edges */}
+        <path d="M-5 -5 L5 5 L5 105" strokeWidth="0.7" opacity="0.5" />
+        <path d="M105 -5 L95 5 L95 105" strokeWidth="0.7" opacity="0.5" />
+
+        {/* Torch sconces on walls */}
+        <path d="M2 30 L6 28 L6 35 L2 33" strokeWidth="0.4" opacity="0.35" />
+        <path d="M4 26 L4 22" strokeWidth="0.3" opacity="0.3" />
+        <path d="M98 30 L94 28 L94 35 L98 33" strokeWidth="0.4" opacity="0.35" />
+
+        {/* Worn stone texture marks */}
+        <path d="M8 10 L12 14 M50 8 L54 12 M82 15 L86 19" strokeWidth="0.3" opacity="0.25" />
+        <path d="M10 62 L14 66 M55 68 L59 72 M88 62 L92 66" strokeWidth="0.3" opacity="0.25" />
+
+        {/* Drain grate nearby */}
+        <circle cx="90" cy="90" r="3" strokeWidth="0.4" opacity="0.3" />
+        <path d="M88 90 L92 90 M90 88 L90 92" strokeWidth="0.3" opacity="0.25" />
       </g>
 
       {/* PRIMARY: Trapdoor with iron reinforcement */}
