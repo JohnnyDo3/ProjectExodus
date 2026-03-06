@@ -90,46 +90,58 @@ export const HipRoofSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT: Building walls - dashed blueprint */}
+    {/* CONTEXT: Building walls in 3/4 perspective - dashed blueprint */}
     <g strokeDasharray="3 2" opacity="0.4">
-      <path d="M 12 92 L 12 58" strokeWidth="1.2" fill="none" />
-      <path d="M 88 92 L 88 58" strokeWidth="1.2" fill="none" />
-      <path d="M 12 58 L 88 58" strokeWidth="1" fill="none" />
-      <path d="M 10 92 L 90 92" strokeWidth="0.8" fill="none" />
+      {/* Front wall */}
+      <path d="M 8 92 L 8 60" strokeWidth="1.2" fill="none" />
+      <path d="M 78 92 L 78 60" strokeWidth="1.2" fill="none" />
+      <path d="M 8 60 L 78 60" strokeWidth="1" fill="none" />
+      <path d="M 8 92 L 78 92" strokeWidth="0.8" fill="none" />
+      {/* Visible right side wall (3/4 perspective) */}
+      <path d="M 78 92 L 94 82" strokeWidth="1" fill="none" />
+      <path d="M 78 60 L 94 50" strokeWidth="1" fill="none" />
+      <path d="M 94 82 L 94 50" strokeWidth="1.2" fill="none" />
     </g>
 
-    {/* PRIMARY: THE HIP ROOF - slopes on all sides, no gable */}
+    {/* PRIMARY: THE HIP ROOF - 3/4 view showing slopes on all four sides */}
     <g filter={showHalo ? "url(#roof-halo)" : undefined}>
-      {/* Ridge line (shorter than building width) */}
-      <path d="M 34 20 L 66 20" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      {/* Ridge line (shorter than building, centered) */}
+      <path d="M 30 22 L 58 22" strokeWidth="2.2" fill="none" strokeLinecap="round" />
 
-      {/* Front slope - from eave to ridge */}
-      <path d="M 12 58 L 34 20" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-      <path d="M 88 58 L 66 20" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      {/* Front slope - trapezoidal face */}
+      <path d="M 6 60 L 30 22" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      <path d="M 80 60 L 58 22" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      <path d="M 6 60 L 80 60" strokeWidth="2" fill="none" strokeLinecap="round" />
 
-      {/* Eave line */}
-      <path d="M 10 58 L 90 58" strokeWidth="2" fill="none" strokeLinecap="round" />
+      {/* Right side slope - triangular hip face (visible in 3/4 view) */}
+      <path d="M 80 60 L 96 50" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M 58 22 L 74 14" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M 96 50 L 74 14" strokeWidth="2.2" fill="none" strokeLinecap="round" />
 
-      {/* Hip edges (diagonal from corners to ridge ends) */}
-      <path d="M 12 58 L 34 20" strokeWidth="1.8" fill="none" opacity="0.8" />
-      <path d="M 88 58 L 66 20" strokeWidth="1.8" fill="none" opacity="0.8" />
+      {/* Back ridge to back-right corner (partially visible) */}
+      <path d="M 74 14 L 46 14" strokeWidth="1.8" fill="none" strokeLinecap="round" opacity="0.5" />
 
-      {/* CLAY TILE TEXTURE - horizontal rows following roof slope */}
-      <path d="M 15 54 L 85 54" strokeWidth="0.5" fill="none" opacity="0.35" />
-      <path d="M 18 50 L 82 50" strokeWidth="0.5" fill="none" opacity="0.35" />
-      <path d="M 21 46 L 79 46" strokeWidth="0.5" fill="none" opacity="0.35" />
-      <path d="M 24 42 L 76 42" strokeWidth="0.5" fill="none" opacity="0.35" />
-      <path d="M 27 38 L 73 38" strokeWidth="0.5" fill="none" opacity="0.3" />
-      <path d="M 30 34 L 70 34" strokeWidth="0.5" fill="none" opacity="0.3" />
-      <path d="M 34 30 L 66 30" strokeWidth="0.5" fill="none" opacity="0.3" />
-      <path d="M 38 26 L 62 26" strokeWidth="0.5" fill="none" opacity="0.25" />
-      <path d="M 43 22 L 57 22" strokeWidth="0.5" fill="none" opacity="0.25" />
-      {/* Individual tile edges/shadows */}
-      <path d="M 30 48 L 31 47" strokeWidth="0.25" opacity="0.3" />
-      <path d="M 50 44 L 51 43" strokeWidth="0.25" opacity="0.3" />
-      <path d="M 70 48 L 69 47" strokeWidth="0.25" opacity="0.3" />
-      <path d="M 45 30 L 46 29" strokeWidth="0.25" opacity="0.25" />
-      <path d="M 55 30 L 54 29" strokeWidth="0.25" opacity="0.25" />
+      {/* Back-left hip edge (partially visible, dashed) */}
+      <path d="M 46 14 L 22 52" strokeWidth="1.2" fill="none" opacity="0.35" strokeDasharray="3 2" />
+
+      {/* CLAY TILE TEXTURE - front slope */}
+      <path d="M 10 56 L 77 56" strokeWidth="0.5" fill="none" opacity="0.35" />
+      <path d="M 14 52 L 76 52" strokeWidth="0.5" fill="none" opacity="0.35" />
+      <path d="M 18 48 L 74 48" strokeWidth="0.5" fill="none" opacity="0.35" />
+      <path d="M 22 44 L 72 44" strokeWidth="0.5" fill="none" opacity="0.3" />
+      <path d="M 26 40 L 70 40" strokeWidth="0.5" fill="none" opacity="0.3" />
+      <path d="M 30 36 L 66 36" strokeWidth="0.5" fill="none" opacity="0.3" />
+      <path d="M 34 32 L 62 32" strokeWidth="0.5" fill="none" opacity="0.25" />
+      <path d="M 38 28 L 58 28" strokeWidth="0.5" fill="none" opacity="0.25" />
+      <path d="M 43 24 L 55 24" strokeWidth="0.5" fill="none" opacity="0.2" />
+
+      {/* TILE TEXTURE - right side hip slope */}
+      <path d="M 82 56 L 93 48" strokeWidth="0.5" fill="none" opacity="0.3" />
+      <path d="M 80 50 L 90 43" strokeWidth="0.5" fill="none" opacity="0.3" />
+      <path d="M 76 44 L 86 38" strokeWidth="0.5" fill="none" opacity="0.25" />
+      <path d="M 72 38 L 82 32" strokeWidth="0.5" fill="none" opacity="0.25" />
+      <path d="M 68 32 L 78 26" strokeWidth="0.5" fill="none" opacity="0.2" />
+      <path d="M 64 26 L 74 20" strokeWidth="0.5" fill="none" opacity="0.2" />
     </g>
   </svg>
 )
