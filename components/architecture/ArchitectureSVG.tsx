@@ -703,26 +703,26 @@ const DoorSVG = ({ showHalo = false }: { showHalo?: boolean }) => (
 
     {/* Six-panel door - HIGHLIGHTED (Georgian/Federal style) */}
     <g filter={showHalo ? "url(#halo-glow)" : undefined}>
-      {/* Upper panels (smaller) */}
-      <rect x="27" y="30" width="18" height="22" strokeWidth="2" fill="none" rx="1" />
-      <rect x="55" y="30" width="18" height="22" strokeWidth="2" fill="none" rx="1" />
+      {/* Upper panels (shortest - traditional Georgian proportions) */}
+      <rect x="27" y="30" width="18" height="14" strokeWidth="2" fill="none" rx="1" />
+      <rect x="55" y="30" width="18" height="14" strokeWidth="2" fill="none" rx="1" />
 
-      {/* Middle panels */}
-      <rect x="27" y="55" width="18" height="18" strokeWidth="2" fill="none" rx="1" />
-      <rect x="55" y="55" width="18" height="18" strokeWidth="2" fill="none" rx="1" />
+      {/* Middle panels (medium) */}
+      <rect x="27" y="47" width="18" height="18" strokeWidth="2" fill="none" rx="1" />
+      <rect x="55" y="47" width="18" height="18" strokeWidth="2" fill="none" rx="1" />
 
-      {/* Lower panels (tallest) */}
-      <rect x="27" y="76" width="18" height="16" strokeWidth="2" fill="none" rx="1" />
-      <rect x="55" y="76" width="18" height="16" strokeWidth="2" fill="none" rx="1" />
+      {/* Lower panels (tallest - correct Georgian proportions) */}
+      <rect x="27" y="68" width="18" height="24" strokeWidth="2" fill="none" rx="1" />
+      <rect x="55" y="68" width="18" height="24" strokeWidth="2" fill="none" rx="1" />
 
       {/* Raised panel detail (inset) */}
-      <rect x="30" y="33" width="12" height="16" strokeWidth="1" fill="none" opacity="0.6" rx="0.5" />
-      <rect x="58" y="33" width="12" height="16" strokeWidth="1" fill="none" opacity="0.6" rx="0.5" />
-      <rect x="30" y="58" width="12" height="12" strokeWidth="1" fill="none" opacity="0.6" rx="0.5" />
-      <rect x="58" y="58" width="12" height="12" strokeWidth="1" fill="none" opacity="0.6" rx="0.5" />
+      <rect x="30" y="33" width="12" height="8" strokeWidth="1" fill="none" opacity="0.6" rx="0.5" />
+      <rect x="58" y="33" width="12" height="8" strokeWidth="1" fill="none" opacity="0.6" rx="0.5" />
+      <rect x="30" y="50" width="12" height="12" strokeWidth="1" fill="none" opacity="0.6" rx="0.5" />
+      <rect x="58" y="50" width="12" height="12" strokeWidth="1" fill="none" opacity="0.6" rx="0.5" />
 
-      {/* Lock rail (horizontal member) */}
-      <path d="M 27 74 L 73 74" strokeWidth="1.5" fill="none" opacity="0.5" />
+      {/* Lock rail (horizontal member between middle and lower panels) */}
+      <path d="M 27 66 L 73 66" strokeWidth="1.5" fill="none" opacity="0.5" />
     </g>
 
     {/* Transom window - context (semicircular fanlight) */}
@@ -984,89 +984,71 @@ const FloorSVG = ({ showHalo = false }: { showHalo?: boolean }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* Central newel (core around which staircases spiral) - context */}
+    {/* Side/section view of double-helix staircase showing two interleaving flights */}
+
+    {/* Central cylindrical tower/newel - context */}
     <g opacity="0.4">
-      <circle cx="50" cy="50" r="12" strokeWidth="2" fill="none" />
-      <circle cx="50" cy="50" r="8" strokeWidth="1.5" fill="none" />
+      {/* Tower walls */}
+      <path d="M 20 92 L 20 10" strokeWidth="1.5" fill="none" />
+      <path d="M 80 92 L 80 10" strokeWidth="1.5" fill="none" />
+      {/* Central newel column */}
+      <path d="M 48 92 L 48 10" strokeWidth="1.2" fill="none" strokeDasharray="3 2" />
+      <path d="M 52 92 L 52 10" strokeWidth="1.2" fill="none" strokeDasharray="3 2" />
     </g>
 
-    {/* First helix (ascending clockwise) - HIGHLIGHTED */}
-    <g filter={showHalo ? "url(#halo-glow)" : undefined}>
-      {/* Spiral path 1 - outer helix */}
-      <path d="M 62 50 Q 62 35, 50 28 Q 38 35, 38 50 Q 38 65, 50 72 Q 62 65, 62 50" strokeWidth="3" fill="none" opacity="0.9" />
-
-      {/* Treads of first helix */}
-      <path d="M 62 50 L 70 50" strokeWidth="2.5" fill="none" />
-      <path d="M 56 38 L 62 32" strokeWidth="2.5" fill="none" />
-      <path d="M 44 32 L 50 28" strokeWidth="2.5" fill="none" />
-      <path d="M 32 44 L 28 38" strokeWidth="2.5" fill="none" />
-      <path d="M 38 62 L 32 68" strokeWidth="2.5" fill="none" />
-      <path d="M 50 68 L 50 75" strokeWidth="2.5" fill="none" />
-
-      {/* Handrail of first helix */}
-      <path d="M 64 48 Q 64 33, 52 26 Q 40 33, 40 48 Q 40 63, 52 70 Q 64 63, 64 48" strokeWidth="1.8" fill="none" opacity="0.7" />
+    {/* Floor level lines - context */}
+    <g opacity="0.3">
+      <path d="M 15 92 L 85 92" strokeWidth="1" fill="none" />
+      <path d="M 15 52 L 85 52" strokeWidth="1" fill="none" strokeDasharray="4 2" />
+      <path d="M 15 12 L 85 12" strokeWidth="1" fill="none" />
     </g>
 
-    {/* Second helix (descending/ascending counter-clockwise) - HIGHLIGHTED */}
+    {/* First helix (Flight A - solid lines, ascending left-to-right) - HIGHLIGHTED */}
     <g filter={showHalo ? "url(#halo-glow)" : undefined}>
-      {/* Spiral path 2 - interlocking helix */}
-      <path d="M 38 50 Q 38 35, 50 28 Q 62 35, 62 50 Q 62 65, 50 72 Q 38 65, 38 50" strokeWidth="3" fill="none" opacity="0.85" strokeDasharray="6 4" />
+      {/* Treads crossing from wall to newel, ascending */}
+      <path d="M 20 88 L 48 85" strokeWidth="2.5" fill="none" />
+      <path d="M 48 80 L 80 77" strokeWidth="2.5" fill="none" />
+      <path d="M 20 72 L 48 69" strokeWidth="2.5" fill="none" />
+      <path d="M 48 64 L 80 61" strokeWidth="2.5" fill="none" />
+      <path d="M 20 56 L 48 53" strokeWidth="2.5" fill="none" />
+      <path d="M 48 48 L 80 45" strokeWidth="2.5" fill="none" />
+      <path d="M 20 40 L 48 37" strokeWidth="2.5" fill="none" />
+      <path d="M 48 32 L 80 29" strokeWidth="2.5" fill="none" />
+      <path d="M 20 24 L 48 21" strokeWidth="2.5" fill="none" />
+      <path d="M 48 16 L 80 13" strokeWidth="2.5" fill="none" />
 
-      {/* Treads of second helix (offset from first) */}
-      <path d="M 38 50 L 30 50" strokeWidth="2.5" fill="none" />
-      <path d="M 44 62 L 38 68" strokeWidth="2.5" fill="none" />
-      <path d="M 56 68 L 50 72" strokeWidth="2.5" fill="none" />
-      <path d="M 68 56 L 72 62" strokeWidth="2.5" fill="none" />
-      <path d="M 62 38 L 68 32" strokeWidth="2.5" fill="none" />
-      <path d="M 50 32 L 50 25" strokeWidth="2.5" fill="none" />
-
-      {/* Handrail of second helix */}
-      <path d="M 36 52 Q 36 37, 48 30 Q 60 37, 60 52 Q 60 67, 48 74 Q 36 67, 36 52" strokeWidth="1.8" fill="none" opacity="0.6" strokeDasharray="4 3" />
+      {/* Handrail - continuous curve connecting tread ends */}
+      <path d="M 20 88 Q 34 84, 48 80 Q 64 76, 80 72 Q 34 68, 48 64 Q 64 60, 80 56 Q 34 52, 48 48" strokeWidth="1.5" fill="none" opacity="0.7" />
     </g>
 
-    {/* Central column detail - HIGHLIGHTED */}
+    {/* Second helix (Flight B - dashed, ascending opposite direction, offset half-level) - HIGHLIGHTED */}
     <g filter={showHalo ? "url(#halo-glow)" : undefined}>
-      {/* Opening in central newel (viewing aperture between helixes) */}
-      <path d="M 45 45 L 45 55 L 55 55 L 55 45 Z" strokeWidth="1.5" fill="none" opacity="0.6" />
+      {/* Treads crossing from newel to wall, ascending offset by half a story */}
+      <path d="M 52 84 L 80 81" strokeWidth="2.5" fill="none" strokeDasharray="6 3" />
+      <path d="M 20 76 L 52 73" strokeWidth="2.5" fill="none" strokeDasharray="6 3" />
+      <path d="M 52 68 L 80 65" strokeWidth="2.5" fill="none" strokeDasharray="6 3" />
+      <path d="M 20 60 L 52 57" strokeWidth="2.5" fill="none" strokeDasharray="6 3" />
+      <path d="M 52 52 L 80 49" strokeWidth="2.5" fill="none" strokeDasharray="6 3" />
+      <path d="M 20 44 L 52 41" strokeWidth="2.5" fill="none" strokeDasharray="6 3" />
+      <path d="M 52 36 L 80 33" strokeWidth="2.5" fill="none" strokeDasharray="6 3" />
+      <path d="M 20 28 L 52 25" strokeWidth="2.5" fill="none" strokeDasharray="6 3" />
+      <path d="M 52 20 L 80 17" strokeWidth="2.5" fill="none" strokeDasharray="6 3" />
 
-      {/* Decorative Renaissance ornament on newel */}
-      <circle cx="50" cy="50" r="4" strokeWidth="1.5" fill="none" />
-      <path d="M 50 46 L 50 48 M 50 52 L 50 54 M 46 50 L 48 50 M 52 50 L 54 50" strokeWidth="1" fill="none" />
+      {/* Handrail for second helix */}
+      <path d="M 52 84 Q 66 80, 80 76 Q 36 72, 52 68 Q 66 64, 80 60 Q 36 56, 52 52" strokeWidth="1.5" fill="none" opacity="0.6" strokeDasharray="4 3" />
     </g>
 
     {/* Lantern above (Chambord's signature element) - context */}
     <g opacity="0.4">
-      <path d="M 44 20 L 44 8 L 56 8 L 56 20" strokeWidth="1.5" fill="none" />
-      <path d="M 42 8 L 58 8" strokeWidth="1.5" fill="none" />
+      <path d="M 35 10 L 35 3 L 65 3 L 65 10" strokeWidth="1.5" fill="none" />
+      <path d="M 33 3 L 67 3" strokeWidth="1.5" fill="none" />
 
       {/* Lantern windows */}
-      <rect x="46" y="12" width="3" height="5" strokeWidth="0.8" fill="none" />
-      <rect x="51" y="12" width="3" height="5" strokeWidth="0.8" fill="none" />
+      <rect x="40" y="5" width="4" height="4" strokeWidth="0.8" fill="none" />
+      <rect x="56" y="5" width="4" height="4" strokeWidth="0.8" fill="none" />
 
-      {/* Fleur-de-lis finial (French royal symbol) */}
-      <path d="M 50 8 L 50 4" strokeWidth="1.2" fill="none" />
-      <path d="M 50 4 Q 47 2, 48 0 M 50 4 Q 50 1, 50 0 M 50 4 Q 53 2, 52 0" strokeWidth="1" fill="none" />
-    </g>
-
-    {/* Floor level indicators - context */}
-    <g opacity="0.3">
-      {/* Ground floor */}
-      <path d="M 5 88 L 30 88" strokeWidth="1.5" fill="none" />
-      <path d="M 70 88 L 95 88" strokeWidth="1.5" fill="none" />
-
-      {/* Upper floor */}
-      <path d="M 5 25 L 30 25" strokeWidth="1.5" fill="none" />
-      <path d="M 70 25 L 95 25" strokeWidth="1.5" fill="none" />
-
-      {/* Floor labels */}
-      <circle cx="15" cy="88" r="2" strokeWidth="1" fill="none" />
-      <circle cx="15" cy="25" r="2" strokeWidth="1" fill="none" />
-    </g>
-
-    {/* Intertwining indication (shows the helixes never meet) */}
-    <g opacity="0.25">
-      <path d="M 50 28 L 50 20" strokeWidth="1" fill="none" strokeDasharray="2 2" />
-      <path d="M 50 72 L 50 80" strokeWidth="1" fill="none" strokeDasharray="2 2" />
+      {/* Fleur-de-lis finial */}
+      <path d="M 50 3 L 50 0" strokeWidth="1.2" fill="none" />
     </g>
   </svg>
 )
@@ -1232,14 +1214,16 @@ const GardenSVG = ({ showHalo = false }: { showHalo?: boolean }) => (
       <path d="M 10 42 L 90 42" strokeWidth="2.5" fill="none" strokeLinecap="round" />
       <path d="M 10 36 L 90 36" strokeWidth="2" fill="none" strokeLinecap="round" />
 
-      {/* Cross rafters */}
-      <path d="M 25 36 L 25 26" strokeWidth="1.5" fill="none" />
-      <path d="M 40 36 L 40 26" strokeWidth="1.5" fill="none" />
-      <path d="M 55 36 L 55 26" strokeWidth="1.5" fill="none" />
-      <path d="M 70 36 L 70 26" strokeWidth="1.5" fill="none" />
+      {/* Cross rafters (horizontal, perpendicular to main beams, extending beyond posts) */}
+      <path d="M 8 33 L 92 33" strokeWidth="1.5" fill="none" />
+      <path d="M 8 37 L 92 37" strokeWidth="1.5" fill="none" />
+      <path d="M 8 40 L 92 40" strokeWidth="1.5" fill="none" />
 
-      {/* Top cross beam */}
-      <path d="M 20 26 L 80 26" strokeWidth="1.5" fill="none" />
+      {/* Rafter tail ends (characteristic overhang beyond posts) */}
+      <path d="M 8 33 L 6 33" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M 92 33 L 94 33" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M 8 40 L 6 40" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M 92 40 L 94 40" strokeWidth="2" fill="none" strokeLinecap="round" />
     </g>
 
     {/* Vines - context */}
@@ -1265,7 +1249,7 @@ const GardenSVG = ({ showHalo = false }: { showHalo?: boolean }) => (
       {/* Water spray */}
       <path d="M 50 50 Q 44 44, 40 50" strokeWidth="0.8" fill="none" opacity="0.6" />
       <path d="M 50 50 Q 56 44, 60 50" strokeWidth="0.8" fill="none" opacity="0.6" />
-      <path d="M 50 50 Q 50 42, 50 50" strokeWidth="0.8" fill="none" opacity="0.6" />
+      <path d="M 50 50 Q 50 40, 50 44" strokeWidth="0.8" fill="none" opacity="0.6" />
     </g>
   </svg>
 )
