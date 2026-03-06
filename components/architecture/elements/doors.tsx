@@ -31,102 +31,112 @@ interface SVGProps {
 
 // ============================================================================
 // 1. ARCHED DOOR
-// Romanesque church entrance with rounded stone arch and heavy wooden doors
-// Reference: San Clemente Basilica (Rome), Durham Cathedral (England)
+// Romanesque church portal with multiple receding archivolts and sculpted tympanum
+// Reference: Moissac Abbey (France), Vézelay Basilica, Autun Cathedral portal
 // ============================================================================
 const ArchedDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="arched-halo" intensity={1} />}
     <g filter={showHalo ? "url(#arched-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Deep Romanesque portal with receding archivolts and stone facade */}
+      {/* CONTEXT: Massive Romanesque church facade with twin towers hint */}
       <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
-        {/* Massive stone facade extending beyond frame */}
-        <path d="M-5 0 L105 0 L105 98 L-5 98 Z" strokeWidth="0.5" />
+        {/* Tower masses flanking portal */}
+        <path d="M-8 -5 L-8 98 L6 98 L6 -5 Z" strokeWidth="0.8" opacity="0.5" />
+        <path d="M94 -5 L94 98 L108 98 L108 -5 Z" strokeWidth="0.8" opacity="0.5" />
+        {/* Tower window slits */}
+        <path d="M-2 15 L-2 25" strokeWidth="0.4" opacity="0.3" />
+        <path d="M100 15 L100 25" strokeWidth="0.4" opacity="0.3" />
+        <path d="M-2 40 L-2 50" strokeWidth="0.4" opacity="0.3" />
+        <path d="M100 40 L100 50" strokeWidth="0.4" opacity="0.3" />
 
-        {/* Buttress on left side */}
-        <path d="M-8 0 L-8 98 L2 98 L2 0 Z" strokeWidth="0.7" opacity="0.5" />
-        <path d="M-4 0 L-4 98" strokeWidth="0.4" opacity="0.4" />
+        {/* Rose window above portal — radiating spokes */}
+        <circle cx="50" cy="-3" r="14" strokeWidth="0.7" opacity="0.45" />
+        <circle cx="50" cy="-3" r="10" strokeWidth="0.4" opacity="0.3" />
+        <path d="M50 -17 L50 11 M36 -3 L64 -3" strokeWidth="0.3" opacity="0.25" />
+        <path d="M40 -13 L60 7 M60 -13 L40 7" strokeWidth="0.3" opacity="0.25" />
 
-        {/* Buttress on right side */}
-        <path d="M98 0 L98 98 L108 98 L108 0 Z" strokeWidth="0.7" opacity="0.5" />
-        <path d="M104 0 L104 98" strokeWidth="0.4" opacity="0.4" />
+        {/* Blind arcade above portal (Romanesque wall decoration) */}
+        <path d="M10 -5 Q20 -10 30 -5" strokeWidth="0.4" opacity="0.3" />
+        <path d="M70 -5 Q80 -10 90 -5" strokeWidth="0.4" opacity="0.3" />
 
-        {/* Rose window above portal */}
-        <circle cx="50" cy="-8" r="12" strokeWidth="0.6" opacity="0.4" />
-        <circle cx="50" cy="-8" r="8" strokeWidth="0.4" opacity="0.3" />
-
-        {/* Stone coursing - ashlar masonry */}
-        <path d="M2 5 L7 5 M93 5 L98 5" strokeWidth="0.4" opacity="0.5" />
-        <path d="M2 15 L6 15 M94 15 L98 15" strokeWidth="0.4" opacity="0.5" />
-        <path d="M2 30 L5 30 M95 30 L98 30" strokeWidth="0.4" opacity="0.5" />
-        <path d="M2 55 L5 55 M95 55 L98 55" strokeWidth="0.4" opacity="0.5" />
-        <path d="M2 75 L5 75 M95 75 L98 75" strokeWidth="0.4" opacity="0.5" />
-
-        {/* Ascending stone steps - 3 tiers */}
-        <path d="M5 98 L95 98" strokeWidth="0.8" />
-        <path d="M8 95 L92 95" strokeWidth="0.7" opacity="0.7" />
-        <path d="M10 92 L90 92" strokeWidth="0.6" opacity="0.6" />
-        <path d="M12 90 L88 90" strokeWidth="0.5" opacity="0.5" />
-
-        {/* DEPTH: Wall thickness visible at doorway edges */}
-        <path d="M8 40 L5 42 L5 90 L8 90" strokeWidth="0.8" opacity="0.6" />
-        <path d="M92 40 L95 42 L95 90 L92 90" strokeWidth="0.8" opacity="0.6" />
+        {/* Ascending stone steps — wide ceremonial */}
+        <path d="M0 95 L100 95" strokeWidth="0.8" opacity="0.5" />
+        <path d="M3 92 L97 92" strokeWidth="0.6" opacity="0.4" />
+        <path d="M6 89 L94 89" strokeWidth="0.5" opacity="0.35" />
       </g>
 
-      {/* PRIMARY: Romanesque arched doorway */}
+      {/* PRIMARY: Deep Romanesque portal with 4 receding archivolt orders */}
       <g strokeWidth="0.8">
-        {/* Outer arch - massive stone */}
-        <path d="M8 90 L8 40 Q50 8, 92 40 L92 90" strokeWidth="1.5" />
-        {/* Middle arch ring */}
-        <path d="M14 88 L14 42 Q50 15, 86 42 L86 88" strokeWidth="1.2" />
-        {/* Inner arch - voussoirs visible */}
-        <path d="M20 86 L20 45 Q50 22, 80 45 L80 86" />
+        {/* Outermost arch (1st order) — heavy stone */}
+        <path d="M6 89 L6 38 Q50 2, 94 38 L94 89" strokeWidth="1.8" />
+        {/* 2nd archivolt order */}
+        <path d="M13 87 L13 40 Q50 9, 87 40 L87 87" strokeWidth="1.4" />
+        {/* 3rd archivolt order */}
+        <path d="M20 85 L20 42 Q50 16, 80 42 L80 85" strokeWidth="1.1" />
+        {/* 4th archivolt (innermost) */}
+        <path d="M27 83 L27 44 Q50 22, 73 44 L73 83" strokeWidth="0.9" />
 
-        {/* Voussoir stones in arch */}
-        <path d="M50 22 L50 28" />
-        <path d="M42 24 L44 30" />
-        <path d="M58 24 L56 30" />
-        <path d="M34 28 L37 34" />
-        <path d="M66 28 L63 34" />
-        <path d="M27 35 L31 40" />
-        <path d="M73 35 L69 40" />
+        {/* Carved ornament bands on archivolts — zigzag (chevron) Romanesque motif */}
+        <path d="M10 50 L12 47 L14 50 L16 47 L18 50" strokeWidth="0.5" opacity="0.6" />
+        <path d="M82 50 L84 47 L86 50 L88 47 L90 50" strokeWidth="0.5" opacity="0.6" />
+        {/* Billet mold pattern on 2nd order */}
+        <path d="M15 55 L16 55 M17 55 L18 55 M19 55 L20 55" strokeWidth="1" opacity="0.5" />
+        <path d="M80 55 L81 55 M82 55 L83 55 M84 55 L85 55" strokeWidth="1" opacity="0.5" />
 
-        {/* Keystone at apex */}
-        <path d="M47 20 L47 28 L53 28 L53 20 Z" />
+        {/* Voussoir stones radiating in arch */}
+        <path d="M50 18 L50 25" strokeWidth="0.6" />
+        <path d="M42 20 L43 27" strokeWidth="0.5" />
+        <path d="M58 20 L57 27" strokeWidth="0.5" />
+        <path d="M35 25 L37 32" strokeWidth="0.5" />
+        <path d="M65 25 L63 32" strokeWidth="0.5" />
 
-        {/* Columns/Jambs */}
-        <path d="M20 45 L20 90 L28 90 L28 45" />
-        <path d="M72 45 L72 90 L80 90 L80 45" />
+        {/* Keystone — trapezoidal */}
+        <path d="M47 17 L47 26 L53 26 L53 17 Z" strokeWidth="0.9" />
 
-        {/* Column capitals */}
-        <path d="M18 45 L18 48 L30 48 L30 45" />
-        <path d="M70 45 L70 48 L82 48 L82 45" />
+        {/* TYMPANUM — carved scene above lintel (Christ in Majesty) */}
+        <path d="M29 46 L73 46" strokeWidth="1.2" />
+        {/* Mandorla (almond shape around central figure) */}
+        <ellipse cx="51" cy="36" rx="10" ry="9" strokeWidth="0.7" opacity="0.5" />
+        {/* Central figure suggestion */}
+        <path d="M51 30 L51 42" strokeWidth="0.5" opacity="0.4" />
+        <path d="M46 35 L56 35" strokeWidth="0.5" opacity="0.4" />
+        {/* Surrounding carved figures */}
+        <path d="M33 38 L33 45 M38 36 L38 45 M64 36 L64 45 M69 38 L69 45" strokeWidth="0.4" opacity="0.35" />
 
-        {/* Column bases */}
-        <path d="M18 86 L30 86 L30 90 L18 90" />
-        <path d="M70 86 L82 86 L82 90 L70 90" />
+        {/* TRUMEAU — central pillar dividing doorway */}
+        <path d="M48 46 L48 83 L52 83 L52 46" strokeWidth="1" />
+        {/* Trumeau carved figure */}
+        <path d="M50 52 L50 78" strokeWidth="0.5" opacity="0.4" />
+        <circle cx="50" cy="50" r="2" strokeWidth="0.5" opacity="0.4" />
 
-        {/* Heavy wooden double doors */}
-        <path d="M32 50 L32 88 L48 88 L48 50 Z" strokeWidth="1" />
-        <path d="M52 50 L52 88 L68 88 L68 50 Z" strokeWidth="1" />
+        {/* Jamb columns — colonettes (slender columns in reveals) */}
+        <path d="M27 46 L27 83 L31 83 L31 46" strokeWidth="0.8" />
+        <path d="M69 46 L69 83 L73 83 L73 46" strokeWidth="0.8" />
+        {/* Jamb column capitals — carved leaf pattern */}
+        <path d="M25 44 L33 44 L33 46 L25 46" strokeWidth="0.6" />
+        <path d="M67 44 L75 44 L75 46 L67 46" strokeWidth="0.6" />
+        <path d="M27 44 L29 42 L31 44" strokeWidth="0.4" opacity="0.5" />
+        <path d="M69 44 L71 42 L73 44" strokeWidth="0.4" opacity="0.5" />
 
-        {/* Vertical planks on doors */}
-        <path d="M36 52 L36 86 M40 52 L40 86 M44 52 L44 86" strokeWidth="0.4" />
-        <path d="M56 52 L56 86 M60 52 L60 86 M64 52 L64 86" strokeWidth="0.4" />
+        {/* Double doors — heavy oak with iron */}
+        <path d="M33 48 L33 83 L47 83 L47 48 Z" strokeWidth="0.9" />
+        <path d="M53 48 L53 83 L67 83 L67 48 Z" strokeWidth="0.9" />
 
-        {/* Iron strap hinges */}
-        <path d="M28 58 L45 58" strokeWidth="1.5" />
-        <path d="M28 72 L45 72" strokeWidth="1.5" />
-        <path d="M72 58 L55 58" strokeWidth="1.5" />
-        <path d="M72 72 L55 72" strokeWidth="1.5" />
+        {/* Iron strap hinges — decorative Romanesque with fleur-de-lis ends */}
+        <path d="M27 56 L44 56" strokeWidth="1.6" />
+        <path d="M28 56 L35 53 M28 56 L35 59" strokeWidth="0.6" />
+        <path d="M27 70 L44 70" strokeWidth="1.6" />
+        <path d="M28 70 L35 67 M28 70 L35 73" strokeWidth="0.6" />
+        <path d="M73 56 L56 56" strokeWidth="1.6" />
+        <path d="M72 56 L65 53 M72 56 L65 59" strokeWidth="0.6" />
+        <path d="M73 70 L56 70" strokeWidth="1.6" />
 
-        {/* Iron ring handles */}
-        <circle cx="45" cy="65" r="3" strokeWidth="1.2" />
-        <circle cx="55" cy="65" r="3" strokeWidth="1.2" />
-
-        {/* Tympanum suggestion */}
-        <path d="M30 45 Q50 30, 70 45" strokeDasharray="2,2" opacity="0.5" />
+        {/* Iron ring pull handles */}
+        <circle cx="44" cy="63" r="3.5" strokeWidth="1.3" />
+        <path d="M44 59 L44 58" strokeWidth="1" />
+        <circle cx="56" cy="63" r="3.5" strokeWidth="1.3" />
+        <path d="M56 59 L56 58" strokeWidth="1" />
       </g>
     </g>
   </svg>
@@ -134,99 +144,101 @@ const ArchedDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
 
 // ============================================================================
 // 2. BIFOLD DOOR
-// Modern interior closet with folding mechanism, showing panels hinged together
-// Reference: Contemporary residential closets, California Closets designs
+// Modern exterior patio bifold with aluminum-framed glass panels in concertina fold
+// Reference: Origin Bifolds, Schuco ASS 70 FD, contemporary open-plan living
 // ============================================================================
 const BifoldDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="bifold-halo" intensity={0.75} />}
     <g filter={showHalo ? "url(#bifold-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Modern bedroom - closet in drywall with carpet floor */}
+      {/* CONTEXT: Modern open-plan room opening to patio/garden */}
       <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
-        {/* Room ceiling visible above */}
-        <path d="M-5 5 L105 5" strokeWidth="0.5" />
+        {/* Flat modern roof/soffit with clean edge */}
+        <path d="M-5 6 L105 6" strokeWidth="0.8" opacity="0.5" />
+        {/* Recessed ceiling with downlights */}
+        <circle cx="15" cy="3" r="1" strokeWidth="0.3" opacity="0.3" />
+        <circle cx="85" cy="3" r="1" strokeWidth="0.3" opacity="0.3" />
 
-        {/* Drywall surface - clean, no masonry */}
-        <path d="M-5 5 L-5 98 L105 98 L105 5" strokeWidth="0.5" />
+        {/* Interior: polished concrete floor */}
+        <path d="M-5 92 L105 92" strokeWidth="0.5" opacity="0.4" />
+        {/* Floor control joints */}
+        <path d="M-5 94 L20 94 M80 94 L105 94" strokeWidth="0.3" opacity="0.2" />
 
-        {/* DEPTH: Header jamb showing wall thickness above track */}
-        <path d="M10 10 L10 15 L90 15 L90 10" strokeWidth="0.7" opacity="0.6" />
-        <path d="M8 10 L92 10" strokeWidth="0.8" opacity="0.5" />
+        {/* Exterior: timber deck beyond opening */}
+        <path d="M25 93 L75 93" strokeWidth="0.4" opacity="0.35" />
+        <path d="M25 95 L75 95 M25 97 L75 97 M25 99 L75 99" strokeWidth="0.3" opacity="0.2" />
 
-        {/* DEPTH: Side jamb reveals showing wall thickness */}
-        <path d="M8 10 L10 15 L10 88 L8 90" strokeWidth="0.6" opacity="0.5" />
-        <path d="M92 10 L90 15 L90 88 L92 90" strokeWidth="0.6" opacity="0.5" />
+        {/* Garden beyond — tree silhouette */}
+        <path d="M60 70 Q65 50 70 55 Q75 45 80 60 Q85 50 82 70" strokeWidth="0.4" opacity="0.2" />
+        <path d="M72 70 L72 85" strokeWidth="0.3" opacity="0.15" />
 
-        {/* Closet interior visible - shelving and rod */}
-        <path d="M15 20 L20 20 M80 20 L85 20" strokeWidth="0.4" opacity="0.4" />
-        <path d="M15 35 L20 35 M80 35 L85 35" strokeWidth="0.4" opacity="0.4" />
-        <path d="M15 50 L20 50 M80 50 L85 50" strokeWidth="0.4" opacity="0.4" />
-        {/* Closet rod */}
-        <path d="M18 22 L82 22" strokeWidth="0.3" opacity="0.3" />
-
-        {/* Carpet floor texture (different from hardwood/stone) */}
-        <path d="M-5 90 L105 90" strokeWidth="0.5" opacity="0.4" />
-        <path d="M10 92 L12 94 M30 91 L32 93 M50 92 L52 94 M70 91 L72 93 M85 92 L87 94" strokeWidth="0.3" opacity="0.25" />
-
-        {/* Baseboard molding on flanking walls */}
-        <path d="M-5 88 L8 88" strokeWidth="0.5" opacity="0.4" />
-        <path d="M92 88 L105 88" strokeWidth="0.5" opacity="0.4" />
-
-        {/* Light switch on left wall */}
-        <path d="M2 45 L2 50 L5 50 L5 45 Z" strokeWidth="0.3" opacity="0.3" />
+        {/* Planter box on deck */}
+        <path d="M30 90 L42 90 L42 93 L30 93 Z" strokeWidth="0.3" opacity="0.25" />
       </g>
 
-      {/* PRIMARY: Bifold door panels (partially folded open) */}
+      {/* PRIMARY: 5-panel bifold partly open in concertina fold */}
       <g strokeWidth="0.8">
-        {/* Track at top */}
-        <path d="M12 15 L88 15" strokeWidth="1.5" />
-        <path d="M12 17 L88 17" strokeWidth="0.4" />
+        {/* Aluminum head track */}
+        <path d="M5 8 L95 8" strokeWidth="2" />
+        <path d="M5 10 L95 10" strokeWidth="0.5" />
 
-        {/* Left bifold set - folded open */}
-        {/* Outer left panel (angled) */}
-        <path d="M12 18 L12 85 L28 85 L32 18 Z" />
-        <path d="M15 22 L15 81 L25 81 L29 22 Z" strokeWidth="0.5" />
+        {/* Bottom sill/threshold — flush */}
+        <path d="M5 90 L95 90" strokeWidth="1.5" />
+        <path d="M5 92 L95 92" strokeWidth="0.5" />
 
-        {/* Inner left panel (angled more) */}
-        <path d="M32 18 L28 85 L42 85 L50 18 Z" />
-        <path d="M35 22 L32 81 L39 81 L47 22 Z" strokeWidth="0.5" />
+        {/* Panel 1 (far left, flat against wall — closed position) */}
+        <path d="M5 10 L5 90 L22 90 L22 10 Z" strokeWidth="1" />
+        {/* Glass pane */}
+        <path d="M7 13 L7 87 L20 87 L20 13 Z" strokeWidth="0.5" />
+        {/* Horizontal transom bar */}
+        <path d="M7 35 L20 35" strokeWidth="0.7" />
 
-        {/* Right bifold set - folded open (mirrored) */}
-        {/* Inner right panel */}
-        <path d="M68 18 L72 85 L58 85 L50 18 Z" />
-        <path d="M65 22 L68 81 L61 81 L53 22 Z" strokeWidth="0.5" />
+        {/* Panel 2 (folding — shown at angle, V-shape with panel 3) */}
+        <path d="M22 10 L22 90 L35 88 L38 12 Z" strokeWidth="1" />
+        <path d="M24 14 L24 86 L33 85 L36 15 Z" strokeWidth="0.5" />
+        <path d="M24 35 L35 35" strokeWidth="0.6" />
 
-        {/* Outer right panel */}
-        <path d="M88 18 L88 85 L72 85 L68 18 Z" />
-        <path d="M85 22 L85 81 L75 81 L71 22 Z" strokeWidth="0.5" />
+        {/* Panel 3 (folding back — creates V with panel 2) */}
+        <path d="M38 12 L35 88 L50 90 L50 10 Z" strokeWidth="1" />
+        <path d="M40 15 L37 85 L48 87 L48 13 Z" strokeWidth="0.5" />
+        <path d="M39 35 L48 35" strokeWidth="0.6" />
 
-        {/* Louvered slats on panels */}
-        <path d="M17 30 L27 30 M17 38 L27 38 M17 46 L27 46 M17 54 L27 54" strokeWidth="0.3" />
-        <path d="M37 30 L45 30 M35 38 L43 38 M33 46 L41 46 M31 54 L39 54" strokeWidth="0.3" />
-        <path d="M55 30 L63 30 M57 38 L65 38 M59 46 L67 46 M61 54 L69 54" strokeWidth="0.3" />
-        <path d="M73 30 L83 30 M73 38 L83 38 M73 46 L83 46 M73 54 L83 54" strokeWidth="0.3" />
+        {/* Hinge connection between panel 2 and 3 (the fold point) */}
+        <path d="M37 12 L36 88" strokeWidth="1.5" />
+        <circle cx="37" cy="12" r="1.5" strokeWidth="0.8" />
+        <circle cx="36" cy="88" r="1.5" strokeWidth="0.8" />
 
-        {/* Pivot hinges - left set */}
-        <circle cx="28" cy="18" r="2" />
-        <circle cx="28" cy="85" r="2" />
+        {/* Panel 4 (mostly open — swung wide) */}
+        <path d="M50 10 L50 90 L68 88 L65 12 Z" strokeWidth="1" />
+        <path d="M52 13 L52 87 L66 86 L63 15 Z" strokeWidth="0.5" />
+        <path d="M52 35 L64 35" strokeWidth="0.6" />
 
-        {/* Pivot hinges - right set */}
-        <circle cx="72" cy="18" r="2" />
-        <circle cx="72" cy="85" r="2" />
+        {/* Panel 5 (traffic door — swung fully open perpendicular) */}
+        <path d="M68 12 L65 88 L78 85 L80 15 Z" strokeWidth="1" />
+        <path d="M70 16 L67 84 L76 82 L78 18 Z" strokeWidth="0.5" />
+        <path d="M69 35 L77 35" strokeWidth="0.6" />
 
-        {/* Track rollers */}
-        <circle cx="15" cy="15" r="1.5" />
-        <circle cx="50" cy="15" r="1.5" />
-        <circle cx="85" cy="15" r="1.5" />
+        {/* Hinge between panels 4 and 5 */}
+        <path d="M66 12 L66 88" strokeWidth="1.5" />
+        <circle cx="66" cy="12" r="1.5" strokeWidth="0.8" />
+        <circle cx="66" cy="88" r="1.5" strokeWidth="0.8" />
 
-        {/* Pull handles */}
-        <path d="M40 50 L43 50 L43 58 L40 58" strokeWidth="1" />
-        <path d="M57 50 L60 50 L60 58 L57 58" strokeWidth="1" />
+        {/* Fixed hinge at panel 1 junction */}
+        <circle cx="22" cy="10" r="1.5" strokeWidth="0.8" />
+        <circle cx="22" cy="90" r="1.5" strokeWidth="0.8" />
 
-        {/* Center fold lines */}
-        <path d="M28 18 L28 85" strokeWidth="1.2" />
-        <path d="M72 18 L72 85" strokeWidth="1.2" />
+        {/* Top guide rollers on track */}
+        <circle cx="8" cy="9" r="1" strokeWidth="0.6" />
+        <circle cx="37" cy="9" r="1" strokeWidth="0.6" />
+        <circle cx="66" cy="9" r="1" strokeWidth="0.6" />
+
+        {/* D-handle on traffic door (panel 5) */}
+        <path d="M73 48 L76 48 L76 56 L73 56" strokeWidth="1.2" />
+
+        {/* Open space beyond (garden visible through gap) */}
+        <path d="M82 30 L95 30" strokeWidth="0.3" opacity="0.3" strokeDasharray="2 2" />
+        <path d="M85 50 L95 50" strokeWidth="0.3" opacity="0.3" strokeDasharray="2 2" />
       </g>
     </g>
   </svg>
@@ -234,105 +246,111 @@ const BifoldDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
 
 // ============================================================================
 // 3. DUTCH DOOR
-// Traditional farmhouse split door allowing top to open independently
-// Reference: Colonial Williamsburg, Pennsylvania Dutch farmhouses
+// Colonial farmhouse split door — top half open for air, bottom keeps animals out
+// Reference: Colonial Williamsburg, Pennsylvania Dutch barns, New Amsterdam houses
 // ============================================================================
 const DutchDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="dutch-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#dutch-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Colonial farmhouse with timber frame and garden path */}
+      {/* CONTEXT: Dutch Colonial farmhouse with gambrel roof and kitchen garden */}
       <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
-        {/* Timber-frame structure visible */}
-        <path d="M-5 0 L105 0" strokeWidth="0.5" opacity="0.4" />
-        <path d="M-5 0 L-5 98" strokeWidth="0.5" opacity="0.4" />
-        <path d="M105 0 L105 98" strokeWidth="0.5" opacity="0.4" />
+        {/* Distinctive GAMBREL ROOF — double slope on each side */}
+        <path d="M-5 8 L20 -5 L50 -12 L80 -5 L105 8" strokeWidth="0.8" opacity="0.5" />
+        <path d="M-5 8 L20 2 L50 -2 L80 2 L105 8" strokeWidth="0.5" opacity="0.35" />
+        {/* Eave overhang with exposed rafter tails */}
+        <path d="M-8 10 L108 10" strokeWidth="0.6" opacity="0.4" />
+        <path d="M5 8 L5 10 M20 6 L20 10 M80 6 L80 10 M95 8 L95 10" strokeWidth="0.3" opacity="0.3" />
 
-        {/* Roof overhang / eave */}
-        <path d="M-8 3 L50 -5 L108 3" strokeWidth="0.7" opacity="0.5" />
-        <path d="M-5 3 L105 3" strokeWidth="0.5" opacity="0.4" />
+        {/* Clapboard siding — weathered horizontal boards */}
+        <path d="M-5 18 L12 18 M88 18 L105 18" strokeWidth="0.3" opacity="0.35" />
+        <path d="M-5 26 L12 26 M88 26 L105 26" strokeWidth="0.3" opacity="0.35" />
+        <path d="M-5 34 L12 34 M88 34 L105 34" strokeWidth="0.3" opacity="0.35" />
+        <path d="M-5 55 L12 55 M88 55 L105 55" strokeWidth="0.3" opacity="0.35" />
+        <path d="M-5 70 L12 70 M88 70 L105 70" strokeWidth="0.3" opacity="0.35" />
 
-        {/* Clapboard siding (horizontal boards) */}
-        <path d="M-5 12 L8 12 M92 12 L105 12" strokeWidth="0.3" opacity="0.4" />
-        <path d="M-5 19 L8 19 M92 19 L105 19" strokeWidth="0.3" opacity="0.4" />
-        <path d="M-5 26 L8 26 M92 26 L105 26" strokeWidth="0.3" opacity="0.4" />
-        <path d="M-5 35 L8 35 M92 35 L105 35" strokeWidth="0.3" opacity="0.4" />
-        <path d="M-5 60 L8 60 M92 60 L105 60" strokeWidth="0.3" opacity="0.4" />
-        <path d="M-5 75 L8 75 M92 75 L105 75" strokeWidth="0.3" opacity="0.4" />
+        {/* Small 6-over-6 sash window on left */}
+        <path d="M-3 30 L7 30 L7 50 L-3 50 Z" strokeWidth="0.4" opacity="0.35" />
+        <path d="M2 30 L2 50 M-3 40 L7 40" strokeWidth="0.25" opacity="0.25" />
 
-        {/* DEPTH: Door frame trim with reveal/depth */}
-        <path d="M8 5 L8 92 L12 92 L12 5 Z" strokeWidth="0.8" opacity="0.5" />
-        <path d="M88 5 L88 92 L92 92 L92 5 Z" strokeWidth="0.8" opacity="0.5" />
-        <path d="M8 5 L92 5" strokeWidth="0.8" opacity="0.5" />
+        {/* Brick chimney on right */}
+        <path d="M96 -8 L96 5 L102 5 L102 -8 Z" strokeWidth="0.5" opacity="0.3" />
 
-        {/* Flower box under window on left */}
-        <path d="M-5 45 L3 45 L3 50 L-5 50" strokeWidth="0.4" opacity="0.4" />
-        <path d="M-3 42 L-1 45 M0 43 L1 45" strokeWidth="0.3" opacity="0.3" />
+        {/* Brick foundation visible at base */}
+        <path d="M-5 85 L12 85 M88 85 L105 85" strokeWidth="0.5" opacity="0.4" />
+        <path d="M-3 85 L-3 98 M1 85 L1 98 M5 85 L5 98 M9 85 L9 98" strokeWidth="0.25" opacity="0.2" />
+        <path d="M91 85 L91 98 M95 85 L95 98 M99 85 L99 98 M103 85 L103 98" strokeWidth="0.25" opacity="0.2" />
 
-        {/* Stone step / threshold with depth */}
-        <path d="M8 90 L92 90 L94 92 L6 92 Z" strokeWidth="0.5" opacity="0.5" />
-        <path d="M6 92 L94 92 L96 95 L4 95 Z" strokeWidth="0.4" opacity="0.4" />
+        {/* Flagstone path to door */}
+        <path d="M35 95 Q40 93 45 95 Q50 97 55 95 Q60 93 65 95" strokeWidth="0.4" opacity="0.3" />
+        {/* Picket fence hint on right */}
+        <path d="M92 80 L92 90 M95 80 L95 90 M98 80 L98 90" strokeWidth="0.3" opacity="0.25" />
+        <path d="M90 83 L100 83" strokeWidth="0.3" opacity="0.2" />
 
-        {/* Garden path leading to door */}
-        <path d="M35 95 L30 100 M50 95 L50 100 M65 95 L70 100" strokeWidth="0.4" opacity="0.3" />
-        <path d="M40 97 L38 100 M60 97 L62 100" strokeWidth="0.3" opacity="0.25" />
+        {/* Cat sitting on step */}
+        <path d="M78 88 Q80 84 82 86 Q84 82 83 88" strokeWidth="0.3" opacity="0.2" />
       </g>
 
-      {/* PRIMARY: Dutch door with top half open */}
+      {/* PRIMARY: Dutch door with top half swung open */}
       <g strokeWidth="0.8">
-        {/* Door frame */}
-        <path d="M16 10 L16 90 L84 90 L84 10 Z" strokeWidth="1" />
+        {/* Door frame with wide colonial casing */}
+        <path d="M14 10 L14 92 L86 92 L86 10 Z" strokeWidth="1.2" />
+        <path d="M12 8 L12 92 L88 92 L88 8 Z" strokeWidth="0.6" />
+        {/* Head casing / lintel */}
+        <path d="M12 8 L88 8 L88 12 L12 12 Z" strokeWidth="0.8" />
 
-        {/* Upper half - OPEN (swung outward, shown at angle) */}
-        <path d="M18 12 L18 48 L45 52 L72 48 L72 12 Z" />
-        {/* Upper half side view showing depth */}
-        <path d="M18 48 L10 46 L10 10 L18 12" />
-        <path d="M10 10 L72 12 M10 46 L45 52" strokeWidth="0.5" />
+        {/* ===== UPPER HALF — SWUNG OPEN (perspective view) ===== */}
+        {/* Top half swung outward showing 3D depth */}
+        <path d="M16 14 L16 48 L50 54 L78 48 L78 14 Z" strokeWidth="0.9" />
+        {/* Side edge of door visible (thickness ~3 inches) */}
+        <path d="M16 48 L8 46 L8 12 L16 14" strokeWidth="0.9" />
+        <path d="M8 12 L78 14" strokeWidth="0.5" opacity="0.5" />
+        <path d="M8 46 L50 54" strokeWidth="0.5" opacity="0.5" />
 
-        {/* Cross-brace on upper half */}
-        <path d="M24 18 L66 42 M66 18 L24 42" strokeWidth="0.5" />
+        {/* Nine-lite window in upper half (3x3 panes) */}
+        <path d="M24 18 L24 42 L70 44 L70 18 Z" strokeWidth="0.7" />
+        <path d="M39 18 L39 43 M54 18 L54 43" strokeWidth="0.5" />
+        <path d="M24 26 L70 27 M24 34 L70 36" strokeWidth="0.5" />
 
-        {/* Window in upper half */}
-        <path d="M30 20 L30 36 L60 38 L60 22 Z" />
-        <path d="M45 20 L45 38 M30 28 L60 30" strokeWidth="0.4" />
+        {/* ===== HORIZONTAL SPLIT — the key feature ===== */}
+        <path d="M14 50 L86 50" strokeWidth="3" />
+        {/* Shelf ledge formed at split */}
+        <path d="M16 50 L84 50 L86 54 L14 54" strokeWidth="0.6" />
+        <path d="M14 54 L86 54" strokeWidth="0.8" />
 
-        {/* Horizontal split (emphasized) */}
-        <path d="M16 50 L84 50" strokeWidth="2.5" />
-        <path d="M16 48 L84 48" strokeWidth="0.5" />
-        <path d="M16 52 L84 52" strokeWidth="0.5" />
+        {/* ===== LOWER HALF — CLOSED ===== */}
+        <path d="M16 54 L16 90 L84 90 L84 54 Z" strokeWidth="1" />
 
-        {/* Shelf ledge on split */}
-        <path d="M18 50 L82 50 L84 54 L16 54 Z" opacity="0.3" />
+        {/* Two raised panels on lower half */}
+        <path d="M22 58 L22 86 L48 86 L48 58 Z" strokeWidth="0.7" />
+        <path d="M24 60 L24 84 L46 84 L46 60 Z" strokeWidth="0.5" />
+        <path d="M52 58 L52 86 L78 86 L78 58 Z" strokeWidth="0.7" />
+        <path d="M54 60 L54 84 L76 84 L76 60 Z" strokeWidth="0.5" />
 
-        {/* Lower half - CLOSED */}
-        <path d="M18 54 L18 88 L82 88 L82 54 Z" />
+        {/* Raised panel shadow on lower panels */}
+        <path d="M24 60 L46 60 L46 84" opacity="0.2" strokeWidth="1" />
+        <path d="M54 60 L76 60 L76 84" opacity="0.2" strokeWidth="1" />
 
-        {/* Vertical planks on lower half */}
-        <path d="M26 56 L26 86 M34 56 L34 86 M42 56 L42 86" strokeWidth="0.4" />
-        <path d="M58 56 L58 86 M66 56 L66 86 M74 56 L74 86" strokeWidth="0.4" />
+        {/* Heavy iron strap hinges — both halves on left side */}
+        <path d="M14 24 L8 24" strokeWidth="2" />
+        <circle cx="10" cy="24" r="2" strokeWidth="1" />
+        <path d="M14 40 L8 42" strokeWidth="2" />
+        <circle cx="10" cy="41" r="2" strokeWidth="1" />
+        <path d="M14 64 L16 64 L30 64" strokeWidth="2" />
+        <circle cx="14" cy="64" r="2" strokeWidth="1" />
+        <path d="M14 82 L16 82 L30 82" strokeWidth="2" />
+        <circle cx="14" cy="82" r="2" strokeWidth="1" />
 
-        {/* Cross-brace on lower half */}
-        <path d="M22 60 L78 82 M78 60 L22 82" strokeWidth="0.5" />
+        {/* Sliding bolt latch connecting the two halves */}
+        <path d="M76 48 L76 56" strokeWidth="1.8" />
+        <circle cx="76" cy="52" r="2.5" strokeWidth="0.8" />
+        {/* Thumb latch on lower half */}
+        <path d="M78 70 L82 70 L82 74 L78 74 Z" strokeWidth="1" />
+        <path d="M80 70 L80 67" strokeWidth="0.8" />
 
-        {/* Hinges on both halves */}
-        <circle cx="18" cy="22" r="2.5" />
-        <circle cx="18" cy="40" r="2.5" />
-        <circle cx="18" cy="62" r="2.5" />
-        <circle cx="18" cy="80" r="2.5" />
-
-        {/* Hinge plates */}
-        <path d="M16 20 L20 20 L20 24 L16 24" strokeWidth="0.4" />
-        <path d="M16 38 L20 38 L20 42 L16 42" strokeWidth="0.4" />
-        <path d="M16 60 L20 60 L20 64 L16 64" strokeWidth="0.4" />
-        <path d="M16 78 L20 78 L20 82 L16 82" strokeWidth="0.4" />
-
-        {/* Handle on lower half */}
-        <path d="M74 70 L78 70 L78 74 L74 74" strokeWidth="1.2" />
-
-        {/* Latch mechanism at split */}
-        <path d="M75 48 L75 54" strokeWidth="1.5" />
-        <circle cx="75" cy="51" r="2" />
+        {/* Threshold — worn stone */}
+        <path d="M14 90 L86 90 L88 93 L12 93 Z" strokeWidth="0.7" />
       </g>
     </g>
   </svg>
@@ -340,124 +358,114 @@ const DutchDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
 
 // ============================================================================
 // 4. FRENCH DOORS
-// Elegant double doors with multiple glass panes opening to garden
-// Reference: Versailles, Georgian townhouses, New Orleans architecture
+// Tall double doors with authentic divided lites and arched transom above
+// Reference: Haussmann Paris apartments, New Orleans Garden District, Marvin doors
 // ============================================================================
 const FrenchDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="french-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#french-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Versailles-style salon opening to formal garden terrace */}
+      {/* CONTEXT: Haussmann-style Parisian interior — herringbone floor, ornate ceiling */}
       <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
-        {/* Interior: ornate plaster wall with wainscoting */}
-        <path d="M-5 2 L105 2" strokeWidth="0.5" opacity="0.4" />
+        {/* Ornate ceiling with cove molding and medallion */}
+        <path d="M-5 2 L105 2" strokeWidth="0.7" opacity="0.5" />
+        <path d="M-5 4 L105 4" strokeWidth="0.4" opacity="0.35" />
+        <path d="M-3 2 Q0 5 3 2" strokeWidth="0.3" opacity="0.3" />
+        <path d="M97 2 Q100 5 103 2" strokeWidth="0.3" opacity="0.3" />
+        {/* Ceiling rose hint above */}
+        <circle cx="50" cy="-5" r="6" strokeWidth="0.4" opacity="0.25" />
+
+        {/* Tall flanking walls with chair rail and picture frame */}
         <path d="M-5 2 L-5 98" strokeWidth="0.5" opacity="0.4" />
         <path d="M105 2 L105 98" strokeWidth="0.5" opacity="0.4" />
+        {/* Chair rail */}
+        <path d="M-5 55 L10 55" strokeWidth="0.4" opacity="0.3" />
+        <path d="M90 55 L105 55" strokeWidth="0.4" opacity="0.3" />
+        {/* Picture frame on left wall */}
+        <path d="M-3 20 L7 20 L7 45 L-3 45 Z" strokeWidth="0.3" opacity="0.25" />
 
-        {/* Wall paneling / boiserie on flanking walls */}
-        <path d="M-3 15 L10 15 L10 75 L-3 75 Z" strokeWidth="0.4" opacity="0.35" />
-        <path d="M90 15 L103 15 L103 75 L90 75 Z" strokeWidth="0.4" opacity="0.35" />
+        {/* Herringbone parquet floor */}
+        <path d="M-5 92 L105 92" strokeWidth="0.5" opacity="0.4" />
+        <path d="M10 92 L14 95 L10 98 M18 92 L22 95 L18 98 M26 92 L30 95 L26 98" strokeWidth="0.25" opacity="0.2" />
+        <path d="M70 92 L74 95 L70 98 M78 92 L82 95 L78 98 M86 92 L90 95 L86 98" strokeWidth="0.25" opacity="0.2" />
 
-        {/* Cornice above */}
-        <path d="M-5 4 L105 4" strokeWidth="0.4" opacity="0.4" />
+        {/* Iron Juliet balcony railing beyond doors */}
+        <path d="M15 90 L85 90 L85 95 L15 95" strokeWidth="0.4" opacity="0.35" />
+        {/* Ornamental ironwork scrolls */}
+        <path d="M25 90 Q25 93 30 93 Q35 93 35 90" strokeWidth="0.3" opacity="0.25" />
+        <path d="M45 90 Q45 93 50 93 Q55 93 55 90" strokeWidth="0.3" opacity="0.25" />
+        <path d="M65 90 Q65 93 70 93 Q75 93 75 90" strokeWidth="0.3" opacity="0.25" />
 
-        {/* DEPTH: Deep reveals at sides showing wall thickness */}
-        <path d="M10 5 L13 8 L13 88 L10 90" strokeWidth="0.7" opacity="0.5" />
-        <path d="M90 5 L87 8 L87 88 L90 90" strokeWidth="0.7" opacity="0.5" />
-
-        {/* Exterior: Flagstone terrace beyond the door */}
-        <path d="M13 86 L87 86 L90 90 L10 90" strokeWidth="0.5" opacity="0.5" />
-        <path d="M10 90 L90 90 L95 95 L5 95 Z" strokeWidth="0.4" opacity="0.4" />
-        <path d="M30 90 L28 95 M50 90 L50 95 M70 90 L72 95" strokeWidth="0.3" opacity="0.3" />
-
-        {/* Garden beyond: balustrade with finials */}
-        <path d="M5 95 L95 95" strokeWidth="0.5" opacity="0.5" />
-        <path d="M15 95 L15 98 M25 95 L25 98 M35 95 L35 98 M65 95 L65 98 M75 95 L75 98 M85 95 L85 98" strokeWidth="0.4" opacity="0.3" />
-        <path d="M5 98 L95 98" strokeWidth="0.4" opacity="0.3" />
-        {/* Topiary spheres beyond */}
-        <circle cx="20" cy="100" r="3" strokeWidth="0.3" opacity="0.2" />
-        <circle cx="80" cy="100" r="3" strokeWidth="0.3" opacity="0.2" />
-
-        {/* Shutters flanking doorway */}
-        <path d="M5 8 L10 8 L10 85 L5 85" strokeWidth="0.5" opacity="0.4" />
-        <path d="M90 8 L95 8 L95 85 L90 85" strokeWidth="0.5" opacity="0.4" />
-        {/* Shutter louvers */}
-        <path d="M6 20 L9 20 M6 30 L9 30 M6 40 L9 40" strokeWidth="0.25" opacity="0.3" />
-        <path d="M91 20 L94 20 M91 30 L94 30 M91 40 L94 40" strokeWidth="0.25" opacity="0.3" />
+        {/* Paris rooftop view beyond balcony */}
+        <path d="M30 98 L35 96 L40 98 L45 95 L50 98" strokeWidth="0.3" opacity="0.15" />
       </g>
 
-      {/* PRIMARY: French doors with glass panes */}
+      {/* PRIMARY: French doors with arched transom and divided lites */}
       <g strokeWidth="0.8">
-        {/* Overall frame */}
-        <path d="M15 8 L15 88 L85 88 L85 8 Z" strokeWidth="1.2" />
+        {/* Arched transom window above doors */}
+        <path d="M12 5 Q50 -8 88 5 L88 18 L12 18 Z" strokeWidth="1.2" />
+        {/* Transom glazing bars — radiating fan pattern */}
+        <path d="M50 -4 L50 18" strokeWidth="0.6" />
+        <path d="M50 -4 L28 18" strokeWidth="0.5" />
+        <path d="M50 -4 L72 18" strokeWidth="0.5" />
+        <path d="M50 -4 L18 12" strokeWidth="0.4" opacity="0.6" />
+        <path d="M50 -4 L82 12" strokeWidth="0.4" opacity="0.6" />
+        {/* Horizontal transom bar */}
+        <path d="M16 10 L84 10" strokeWidth="0.5" />
 
-        {/* Left door */}
-        <path d="M17 10 L17 86 L49 86 L49 10 Z" />
-        {/* Right door */}
-        <path d="M51 10 L51 86 L83 86 L83 10 Z" />
+        {/* Main door frame */}
+        <path d="M12 18 L12 90 L88 90 L88 18 Z" strokeWidth="1.3" />
 
-        {/* Center mullion */}
-        <path d="M49 10 L49 86" strokeWidth="1.5" />
-        <path d="M51 10 L51 86" strokeWidth="1.5" />
-
-        {/* Glass panes - LEFT DOOR */}
-        {/* Row 1 */}
-        <path d="M21 14 L21 26 L45 26 L45 14 Z" />
-        <path d="M33 14 L33 26" strokeWidth="0.5" />
-        {/* Row 2 */}
-        <path d="M21 30 L21 42 L45 42 L45 30 Z" />
-        <path d="M33 30 L33 42" strokeWidth="0.5" />
-        {/* Row 3 */}
-        <path d="M21 46 L21 58 L45 58 L45 46 Z" />
-        <path d="M33 46 L33 58" strokeWidth="0.5" />
-        {/* Row 4 */}
-        <path d="M21 62 L21 74 L45 74 L45 62 Z" />
-        <path d="M33 62 L33 74" strokeWidth="0.5" />
-        {/* Bottom panel */}
-        <path d="M21 78 L21 82 L45 82 L45 78 Z" />
-
-        {/* Glass panes - RIGHT DOOR */}
-        {/* Row 1 */}
-        <path d="M55 14 L55 26 L79 26 L79 14 Z" />
-        <path d="M67 14 L67 26" strokeWidth="0.5" />
-        {/* Row 2 */}
-        <path d="M55 30 L55 42 L79 42 L79 30 Z" />
-        <path d="M67 30 L67 42" strokeWidth="0.5" />
-        {/* Row 3 */}
-        <path d="M55 46 L55 58 L79 58 L79 46 Z" />
-        <path d="M67 46 L67 58" strokeWidth="0.5" />
-        {/* Row 4 */}
-        <path d="M55 62 L55 74 L79 74 L79 62 Z" />
-        <path d="M67 62 L67 74" strokeWidth="0.5" />
-        {/* Bottom panel */}
-        <path d="M55 78 L55 82 L79 82 L79 78 Z" />
-
+        {/* Left door — 10-lite (5 rows x 2 columns) */}
+        <path d="M14 20 L14 88 L49 88 L49 20 Z" strokeWidth="0.9" />
+        {/* Vertical muntin */}
+        <path d="M31 22 L31 76" strokeWidth="0.6" />
         {/* Horizontal muntins */}
-        <path d="M17 26 L49 26 M51 26 L83 26" strokeWidth="0.5" />
-        <path d="M17 42 L49 42 M51 42 L83 42" strokeWidth="0.5" />
-        <path d="M17 58 L49 58 M51 58 L83 58" strokeWidth="0.5" />
-        <path d="M17 74 L49 74 M51 74 L83 74" strokeWidth="0.5" />
+        <path d="M16 32 L47 32" strokeWidth="0.6" />
+        <path d="M16 43 L47 43" strokeWidth="0.6" />
+        <path d="M16 54 L47 54" strokeWidth="0.6" />
+        <path d="M16 65 L47 65" strokeWidth="0.6" />
+        <path d="M16 76 L47 76" strokeWidth="0.6" />
+        {/* Bottom rail (solid, no glass) */}
+        <path d="M16 80 L47 80 L47 86 L16 86 Z" strokeWidth="0.5" />
 
-        {/* Hinges */}
-        <circle cx="17" cy="20" r="2" />
-        <circle cx="17" cy="50" r="2" />
-        <circle cx="17" cy="78" r="2" />
-        <circle cx="83" cy="20" r="2" />
-        <circle cx="83" cy="50" r="2" />
-        <circle cx="83" cy="78" r="2" />
+        {/* Right door — 10-lite (5 rows x 2 columns) */}
+        <path d="M51 20 L51 88 L86 88 L86 20 Z" strokeWidth="0.9" />
+        {/* Vertical muntin */}
+        <path d="M69 22 L69 76" strokeWidth="0.6" />
+        {/* Horizontal muntins */}
+        <path d="M53 32 L84 32" strokeWidth="0.6" />
+        <path d="M53 43 L84 43" strokeWidth="0.6" />
+        <path d="M53 54 L84 54" strokeWidth="0.6" />
+        <path d="M53 65 L84 65" strokeWidth="0.6" />
+        <path d="M53 76 L84 76" strokeWidth="0.6" />
+        {/* Bottom rail */}
+        <path d="M53 80 L84 80 L84 86 L53 86 Z" strokeWidth="0.5" />
 
-        {/* Brass handles with backplates */}
-        <ellipse cx="45" cy="50" rx="2" ry="4" />
-        <path d="M43 48 L43 52 L47 52 L47 48 Z" strokeWidth="0.4" />
-        <ellipse cx="55" cy="50" rx="2" ry="4" />
-        <path d="M53 48 L53 52 L57 52 L57 48 Z" strokeWidth="0.4" />
+        {/* Center astragal molding (meeting stile) */}
+        <path d="M49 20 L49 88" strokeWidth="1.8" />
+        <path d="M51 20 L51 88" strokeWidth="1.8" />
 
-        {/* Astragal molding at center */}
-        <path d="M50 10 L50 86" strokeWidth="2" opacity="0.3" />
+        {/* Cremone bolt hardware — tall lever mechanism */}
+        <path d="M46 48 L46 56" strokeWidth="1.5" />
+        <path d="M44 52 L48 52" strokeWidth="1" />
+        <circle cx="46" cy="52" r="1.5" strokeWidth="0.6" />
+        {/* Matching on right */}
+        <path d="M54 48 L54 56" strokeWidth="1.5" />
+        <path d="M52 52 L56 52" strokeWidth="1" />
+        <circle cx="54" cy="52" r="1.5" strokeWidth="0.6" />
 
-        {/* Threshold */}
-        <path d="M15 86 L85 86 L85 88 L15 88 Z" />
+        {/* Hinges — butt hinges recessed in frame */}
+        <path d="M12 28 L14 28 L14 32 L12 32" strokeWidth="0.8" />
+        <path d="M12 55 L14 55 L14 59 L12 59" strokeWidth="0.8" />
+        <path d="M12 78 L14 78 L14 82 L12 82" strokeWidth="0.8" />
+        <path d="M86 28 L88 28 L88 32 L86 32" strokeWidth="0.8" />
+        <path d="M86 55 L88 55 L88 59 L86 59" strokeWidth="0.8" />
+        <path d="M86 78 L88 78 L88 82 L86 82" strokeWidth="0.8" />
+
+        {/* Threshold — brass weather strip */}
+        <path d="M12 88 L88 88 L88 90 L12 90 Z" strokeWidth="0.7" />
       </g>
     </g>
   </svg>
@@ -465,122 +473,154 @@ const FrenchDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
 
 // ============================================================================
 // 5. PANEL DOOR
-// Classic six-panel Georgian townhouse entrance door
-// Reference: Georgian Dublin, London townhouses, Federal style Boston
+// Classic six-panel Georgian door with full classical doorcase surround
+// Reference: Merrion Square Dublin, Bath Royal Crescent, Federal-style Boston
 // ============================================================================
 const PanelDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="panel-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#panel-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Georgian townhouse entrance with fanlight and pilasters */}
+      {/* CONTEXT: Georgian brick townhouse facade with full classical doorcase */}
       <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
-        {/* Brick facade extending off-frame */}
-        <path d="M-5 -5 L105 -5 L105 98 L-5 98 Z" strokeWidth="0.5" opacity="0.3" />
+        {/* Brick facade — Flemish bond pattern */}
+        <path d="M-5 -5 L105 -5 L105 100 L-5 100 Z" strokeWidth="0.4" opacity="0.25" />
+        {/* Brick courses — alternating headers and stretchers */}
+        <path d="M-5 0 L2 0 M4 0 L8 0" strokeWidth="0.3" opacity="0.3" />
+        <path d="M92 0 L96 0 M98 0 L105 0" strokeWidth="0.3" opacity="0.3" />
+        <path d="M-5 5 L6 5 M92 5 L105 5" strokeWidth="0.3" opacity="0.3" />
+        <path d="M-5 20 L4 20 M96 20 L105 20" strokeWidth="0.3" opacity="0.3" />
+        <path d="M-5 40 L4 40 M96 40 L105 40" strokeWidth="0.3" opacity="0.3" />
+        <path d="M-5 60 L4 60 M96 60 L105 60" strokeWidth="0.3" opacity="0.3" />
+        <path d="M-5 78 L4 78 M96 78 L105 78" strokeWidth="0.3" opacity="0.3" />
 
-        {/* Flemish bond brickwork on facade */}
-        <path d="M-5 -2 L5 -2 M95 -2 L105 -2" strokeWidth="0.3" opacity="0.35" />
-        <path d="M-5 4 L5 4 M95 4 L105 4" strokeWidth="0.3" opacity="0.35" />
-        <path d="M-5 30 L5 30 M95 30 L105 30" strokeWidth="0.3" opacity="0.35" />
-        <path d="M-5 55 L5 55 M95 55 L105 55" strokeWidth="0.3" opacity="0.35" />
-        <path d="M-5 75 L5 75 M95 75 L105 75" strokeWidth="0.3" opacity="0.35" />
+        {/* Sash window on left (12-over-12 panes) */}
+        <path d="M-4 20 L5 20 L5 55 L-4 55 Z" strokeWidth="0.4" opacity="0.35" />
+        <path d="M0 20 L0 55 M-4 37 L5 37" strokeWidth="0.25" opacity="0.25" />
+        {/* Window stone sill */}
+        <path d="M-5 55 L6 55 L6 57 L-5 57 Z" strokeWidth="0.3" opacity="0.3" />
 
-        {/* Pilasters flanking doorway (3D classical columns) */}
-        <path d="M5 5 L5 88 L10 88 L10 5 Z" strokeWidth="0.7" opacity="0.5" />
-        <path d="M7 5 L7 88" strokeWidth="0.4" opacity="0.3" />
-        <path d="M90 5 L90 88 L95 88 L95 5 Z" strokeWidth="0.7" opacity="0.5" />
-        <path d="M93 5 L93 88" strokeWidth="0.4" opacity="0.3" />
+        {/* Sash window on right */}
+        <path d="M95 20 L104 20 L104 55 L95 55 Z" strokeWidth="0.4" opacity="0.35" />
+        <path d="M100 20 L100 55 M95 37 L104 37" strokeWidth="0.25" opacity="0.25" />
+        <path d="M94 55 L105 55 L105 57 L94 57 Z" strokeWidth="0.3" opacity="0.3" />
 
-        {/* Pilaster capitals */}
-        <path d="M3 5 L12 5 L11 8 L4 8 Z" strokeWidth="0.5" opacity="0.4" />
-        <path d="M88 5 L97 5 L96 8 L89 8 Z" strokeWidth="0.5" opacity="0.4" />
+        {/* Stone plinth/water table at base */}
+        <path d="M-5 88 L105 88" strokeWidth="0.5" opacity="0.4" />
 
-        {/* Fanlight transom above door (semi-circular) */}
-        <path d="M12 8 Q50 -8, 88 8" strokeWidth="0.8" opacity="0.5" />
-        <path d="M30 5 L50 -4 M50 -4 L70 5 M50 -4 L50 8" strokeWidth="0.3" opacity="0.4" />
+        {/* Iron area railings — basement light well */}
+        <path d="M-5 88 L-5 98 L3 98 L3 88" strokeWidth="0.3" opacity="0.25" />
+        <path d="M-3 88 L-3 98 M0 88 L0 98" strokeWidth="0.2" opacity="0.2" />
+        <path d="M97 88 L97 98 L105 98 L105 88" strokeWidth="0.3" opacity="0.25" />
+        <path d="M99 88 L99 98 M102 88 L102 98" strokeWidth="0.2" opacity="0.2" />
 
-        {/* DEPTH: Recessed doorway showing wall thickness */}
-        <path d="M10 8 L12 10 L12 88 L10 88" strokeWidth="0.6" opacity="0.5" />
-        <path d="M90 8 L88 10 L88 88 L90 88" strokeWidth="0.6" opacity="0.5" />
-
-        {/* Stone steps with iron railings */}
-        <path d="M10 90 L90 90 L92 93 L8 93 Z" strokeWidth="0.5" opacity="0.5" />
-        <path d="M8 93 L92 93 L94 96 L6 96 Z" strokeWidth="0.4" opacity="0.4" />
-        {/* Iron area railing on left */}
-        <path d="M-5 90 L5 90 L5 82 L-5 82" strokeWidth="0.4" opacity="0.35" />
-        <path d="M-3 82 L-3 90 M0 82 L0 90 M3 82 L3 90" strokeWidth="0.25" opacity="0.25" />
-        {/* Iron area railing on right */}
-        <path d="M95 90 L105 90 L105 82 L95 82" strokeWidth="0.4" opacity="0.35" />
-        <path d="M97 82 L97 90 M100 82 L100 90 M103 82 L103 90" strokeWidth="0.25" opacity="0.25" />
-
-        {/* Boot scraper on step */}
-        <path d="M82 90 L84 88 L86 90" strokeWidth="0.4" opacity="0.3" />
+        {/* Stone steps with York stone treads */}
+        <path d="M22 90 L78 90 L80 93 L20 93 Z" strokeWidth="0.5" opacity="0.4" />
+        <path d="M20 93 L80 93 L82 96 L18 96 Z" strokeWidth="0.4" opacity="0.35" />
+        <path d="M18 96 L82 96 L84 99 L16 99 Z" strokeWidth="0.35" opacity="0.3" />
       </g>
 
-      {/* PRIMARY: Georgian panel door */}
+      {/* PRIMARY: Full Georgian doorcase with fanlight, pilasters, and 6-panel door */}
       <g strokeWidth="0.8">
-        {/* Door frame with architrave */}
-        <path d="M12 8 L12 90 L88 90 L88 8 Z" strokeWidth="1.2" />
-        <path d="M14 10 L14 88 L86 88 L86 10 Z" strokeWidth="0.5" />
+        {/* BROKEN PEDIMENT above doorcase */}
+        <path d="M6 3 L42 3 L42 0 L6 0 Z" strokeWidth="0.7" />
+        <path d="M58 3 L94 3 L94 0 L58 0 Z" strokeWidth="0.7" />
+        {/* Pediment scroll ends */}
+        <path d="M42 1 Q46 -2 48 2" strokeWidth="0.6" />
+        <path d="M58 1 Q54 -2 52 2" strokeWidth="0.6" />
+        {/* Urn in pediment center */}
+        <path d="M48 0 L48 -3 Q50 -5 52 -3 L52 0" strokeWidth="0.5" />
 
-        {/* Door stiles (vertical) */}
-        <path d="M18 12 L18 86 M82 12 L82 86" strokeWidth="1" />
-        {/* Center stile */}
-        <path d="M50 12 L50 86" strokeWidth="1" />
+        {/* PILASTERS (fluted) flanking doorway */}
+        <path d="M6 3 L6 88 L12 88 L12 3 Z" strokeWidth="0.9" />
+        <path d="M8 5 L8 86 M10 5 L10 86" strokeWidth="0.4" opacity="0.4" />
+        <path d="M88 3 L88 88 L94 88 L94 3 Z" strokeWidth="0.9" />
+        <path d="M90 5 L90 86 M92 5 L92 86" strokeWidth="0.4" opacity="0.4" />
+        {/* Pilaster capitals — Ionic volutes */}
+        <path d="M4 3 L14 3 L13 6 L5 6 Z" strokeWidth="0.6" />
+        <path d="M86 3 L96 3 L95 6 L87 6 Z" strokeWidth="0.6" />
+        {/* Pilaster bases */}
+        <path d="M5 86 L13 86 L13 88 L5 88 Z" strokeWidth="0.5" />
+        <path d="M87 86 L95 86 L95 88 L87 88 Z" strokeWidth="0.5" />
 
-        {/* Door rails (horizontal) */}
-        <path d="M18 12 L82 12 M18 86 L82 86" strokeWidth="1" />
-        <path d="M18 30 L82 30 M18 54 L82 54" strokeWidth="0.8" />
+        {/* FANLIGHT — semi-elliptical with radiating glazing bars */}
+        <path d="M14 8 Q50 -8 86 8 L86 18 L14 18 Z" strokeWidth="1.2" />
+        {/* Radiating bars — spider-web pattern */}
+        <path d="M50 -2 L50 18" strokeWidth="0.6" />
+        <path d="M50 -2 L24 15" strokeWidth="0.5" />
+        <path d="M50 -2 L76 15" strokeWidth="0.5" />
+        <path d="M50 -2 L35 8" strokeWidth="0.4" />
+        <path d="M50 -2 L65 8" strokeWidth="0.4" />
+        <path d="M50 -2 L18 10" strokeWidth="0.4" opacity="0.6" />
+        <path d="M50 -2 L82 10" strokeWidth="0.4" opacity="0.6" />
+        {/* Concentric arc within fanlight */}
+        <path d="M22 12 Q50 2 78 12" strokeWidth="0.4" />
 
-        {/* TOP PANELS (small) */}
-        {/* Top left panel */}
-        <path d="M22 16 L22 26 L46 26 L46 16 Z" />
-        <path d="M24 18 L24 24 L44 24 L44 18 Z" strokeWidth="0.5" />
-        {/* Top right panel */}
-        <path d="M54 16 L54 26 L78 26 L78 16 Z" />
-        <path d="M56 18 L56 24 L76 24 L76 18 Z" strokeWidth="0.5" />
+        {/* DOOR FRAME (architrave with crossette) */}
+        <path d="M14 18 L14 88 L86 88 L86 18" strokeWidth="1.3" />
+
+        {/* THE SIX-PANEL DOOR — proper Georgian proportions */}
+        {/* Stiles (vertical frame members) */}
+        <path d="M18 20 L18 86" strokeWidth="1.2" />
+        <path d="M82 20 L82 86" strokeWidth="1.2" />
+        {/* Top rail */}
+        <path d="M18 20 L82 20" strokeWidth="1" />
+        {/* Lock rail */}
+        <path d="M18 50 L82 50" strokeWidth="1" />
+        {/* Bottom rail */}
+        <path d="M18 86 L82 86" strokeWidth="1" />
+        {/* Intermediate rails */}
+        <path d="M18 32 L82 32" strokeWidth="0.8" />
+        <path d="M18 56 L82 56" strokeWidth="0.8" />
+
+        {/* TOP PANELS (smallest — 2 small rectangles) */}
+        <path d="M22 23 L22 29 L48 29 L48 23 Z" strokeWidth="0.7" />
+        <path d="M24 24 L24 28 L46 28 L46 24 Z" strokeWidth="0.4" />
+        <path d="M52 23 L52 29 L78 29 L78 23 Z" strokeWidth="0.7" />
+        <path d="M54 24 L54 28 L76 28 L76 24 Z" strokeWidth="0.4" />
 
         {/* MIDDLE PANELS (medium) */}
-        {/* Middle left panel */}
-        <path d="M22 34 L22 50 L46 50 L46 34 Z" />
-        <path d="M24 36 L24 48 L44 48 L44 36 Z" strokeWidth="0.5" />
-        {/* Middle right panel */}
-        <path d="M54 34 L54 50 L78 50 L78 34 Z" />
-        <path d="M56 36 L56 48 L76 48 L76 36 Z" strokeWidth="0.5" />
+        <path d="M22 35 L22 47 L48 47 L48 35 Z" strokeWidth="0.7" />
+        <path d="M24 37 L24 45 L46 45 L46 37 Z" strokeWidth="0.4" />
+        <path d="M52 35 L52 47 L78 47 L78 35 Z" strokeWidth="0.7" />
+        <path d="M54 37 L54 45 L76 45 L76 37 Z" strokeWidth="0.4" />
 
-        {/* BOTTOM PANELS (large) */}
-        {/* Bottom left panel */}
-        <path d="M22 58 L22 82 L46 82 L46 58 Z" />
-        <path d="M24 60 L24 80 L44 80 L44 60 Z" strokeWidth="0.5" />
-        {/* Bottom right panel */}
-        <path d="M54 58 L54 82 L78 82 L78 58 Z" />
-        <path d="M56 60 L56 80 L76 80 L76 60 Z" strokeWidth="0.5" />
+        {/* BOTTOM PANELS (largest) */}
+        <path d="M22 59 L22 83 L48 83 L48 59 Z" strokeWidth="0.7" />
+        <path d="M24 61 L24 81 L46 81 L46 61 Z" strokeWidth="0.4" />
+        <path d="M52 59 L52 83 L78 83 L78 59 Z" strokeWidth="0.7" />
+        <path d="M54 61 L54 81 L76 81 L76 61 Z" strokeWidth="0.4" />
 
-        {/* Raised panel shadows */}
-        <path d="M24 18 L44 18 L44 24" opacity="0.2" strokeWidth="1" />
-        <path d="M56 18 L76 18 L76 24" opacity="0.2" strokeWidth="1" />
-        <path d="M24 36 L44 36 L44 48" opacity="0.2" strokeWidth="1" />
-        <path d="M56 36 L76 36 L76 48" opacity="0.2" strokeWidth="1" />
-        <path d="M24 60 L44 60 L44 80" opacity="0.2" strokeWidth="1" />
-        <path d="M56 60 L76 60 L76 80" opacity="0.2" strokeWidth="1" />
+        {/* Raised panel shadow (top-left corner darker) */}
+        <path d="M24 24 L46 24 L46 28" opacity="0.25" strokeWidth="1" />
+        <path d="M54 24 L76 24 L76 28" opacity="0.25" strokeWidth="1" />
+        <path d="M24 37 L46 37 L46 45" opacity="0.25" strokeWidth="1" />
+        <path d="M54 37 L76 37 L76 45" opacity="0.25" strokeWidth="1" />
+        <path d="M24 61 L46 61 L46 81" opacity="0.25" strokeWidth="1" />
+        <path d="M54 61 L76 61 L76 81" opacity="0.25" strokeWidth="1" />
 
-        {/* Brass door furniture */}
-        {/* Knob with rosette */}
-        <circle cx="75" cy="54" r="3" strokeWidth="1.2" />
-        <circle cx="75" cy="54" r="5" strokeWidth="0.4" />
+        {/* BRASS DOOR FURNITURE */}
+        {/* Lion-head knocker */}
+        <circle cx="50" cy="38" r="4" strokeWidth="1" />
+        <circle cx="50" cy="38" r="2.5" strokeWidth="0.5" />
+        <path d="M50 42 L50 45" strokeWidth="1.2" />
+
+        {/* Brass knob with rosette backplate */}
+        <circle cx="74" cy="52" r="3.5" strokeWidth="1.2" />
+        <circle cx="74" cy="52" r="5.5" strokeWidth="0.4" />
 
         {/* Keyhole escutcheon */}
-        <circle cx="75" cy="60" r="2.5" strokeWidth="0.8" />
-        <path d="M75 61 L75 64" strokeWidth="1" />
+        <path d="M74 58 Q72 60 74 62 Q76 60 74 58" strokeWidth="0.8" />
+        <path d="M74 61 L74 64" strokeWidth="0.8" />
 
-        {/* Letter slot */}
-        <path d="M40 50 L60 50 L60 54 L40 54 Z" />
-        <path d="M42 51 L58 51 L58 53 L42 53 Z" strokeWidth="0.4" />
+        {/* Letter box / mail slot */}
+        <path d="M38 50 L62 50 L62 53 L38 53 Z" strokeWidth="0.7" />
+        <path d="M40 51 L60 51 L60 52 L40 52 Z" strokeWidth="0.3" />
 
-        {/* Hinges */}
-        <path d="M18 22 L14 22 L14 26 L18 26" strokeWidth="1" />
-        <path d="M18 48 L14 48 L14 52 L18 52" strokeWidth="1" />
-        <path d="M18 74 L14 74 L14 78 L18 78" strokeWidth="1" />
+        {/* Butt hinges */}
+        <path d="M14 26 L18 26 L18 30 L14 30" strokeWidth="0.8" />
+        <path d="M14 48 L18 48 L18 52 L14 52" strokeWidth="0.8" />
+        <path d="M14 76 L18 76 L18 80 L14 80" strokeWidth="0.8" />
       </g>
     </g>
   </svg>
@@ -588,97 +628,98 @@ const PanelDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
 
 // ============================================================================
 // 6. PIVOT DOOR
-// Modern architectural statement with offset pivot and minimal frame
-// Reference: Contemporary museums, high-end residential (Pivot Door Company)
+// Oversized modern pivot entry — 10ft tall, offset axis, frameless appearance
+// Reference: Persepolis Gate of All Nations, FritsJurgens pivot system, Tadao Ando
 // ============================================================================
 const PivotDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="pivot-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#pivot-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Museum gallery entrance - glass curtain wall and polished concrete */}
+      {/* CONTEXT: Minimalist modern residence — Cor-ten steel, water feature, desert landscape */}
       <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
-        {/* Board-formed concrete wall - texture lines */}
-        <path d="M-5 -5 L105 -5 L105 100 L-5 100 Z" strokeWidth="0.5" opacity="0.3" />
-        <path d="M-5 5 L8 5 M92 5 L105 5" strokeWidth="0.3" opacity="0.3" />
-        <path d="M-5 20 L8 20 M92 20 L105 20" strokeWidth="0.3" opacity="0.3" />
-        <path d="M-5 40 L8 40 M92 40 L105 40" strokeWidth="0.3" opacity="0.3" />
-        <path d="M-5 60 L8 60 M92 60 L105 60" strokeWidth="0.3" opacity="0.3" />
-        <path d="M-5 80 L8 80 M92 80 L105 80" strokeWidth="0.3" opacity="0.3" />
+        {/* Cantilevered concrete roof slab — extends beyond walls */}
+        <path d="M-10 5 L110 5" strokeWidth="1" opacity="0.5" />
+        <path d="M-10 7 L110 7" strokeWidth="0.4" opacity="0.3" />
 
-        {/* Tie-holes from concrete formwork (unique texture) */}
-        <circle cx="2" cy="25" r="0.8" strokeWidth="0.3" opacity="0.25" />
-        <circle cx="98" cy="25" r="0.8" strokeWidth="0.3" opacity="0.25" />
-        <circle cx="2" cy="55" r="0.8" strokeWidth="0.3" opacity="0.25" />
-        <circle cx="98" cy="55" r="0.8" strokeWidth="0.3" opacity="0.25" />
+        {/* Cor-ten steel accent wall on left — textured rust */}
+        <path d="M-5 7 L8 7 L8 92 L-5 92 Z" strokeWidth="0.6" opacity="0.4" />
+        <path d="M-3 15 L6 15 M-3 30 L6 30 M-3 50 L6 50 M-3 70 L6 70" strokeWidth="0.25" opacity="0.2" />
 
-        {/* Glass sidelight on right side */}
-        <path d="M92 8 L92 88 L98 88 L98 8 Z" strokeWidth="0.5" opacity="0.4" />
-        <path d="M95 15 L95 82" strokeWidth="0.3" opacity="0.3" />
+        {/* Smooth stucco wall on right */}
+        <path d="M92 7 L105 7 L105 92 L92 92 Z" strokeWidth="0.5" opacity="0.35" />
 
-        {/* DEPTH: Deep jamb reveal showing thick wall */}
-        <path d="M8 5 L12 8 L12 88 L8 92" strokeWidth="0.7" opacity="0.5" />
-        <path d="M92 5 L88 8 L88 88 L92 92" strokeWidth="0.7" opacity="0.5" />
+        {/* Reflecting pool / water feature in foreground */}
+        <path d="M-5 94 L105 94 L105 100 L-5 100 Z" strokeWidth="0.4" opacity="0.3" />
+        {/* Water surface ripple lines */}
+        <path d="M10 96 Q30 95 50 96 Q70 97 90 96" strokeWidth="0.3" opacity="0.2" />
+        <path d="M15 98 Q35 97 55 98 Q75 99 95 98" strokeWidth="0.25" opacity="0.15" />
 
-        {/* Polished concrete floor with control joints */}
-        <path d="M-5 90 L105 90" strokeWidth="0.5" opacity="0.5" />
-        <path d="M-5 92 L105 92" strokeWidth="0.3" opacity="0.3" />
-        <path d="M30 90 L28 100 M60 90 L62 100" strokeWidth="0.3" opacity="0.2" />
+        {/* Stepping stones across water to entry */}
+        <path d="M40 92 L40 94 L48 94 L48 92 Z" strokeWidth="0.3" opacity="0.25" />
+        <path d="M52 92 L52 94 L60 94 L60 92 Z" strokeWidth="0.3" opacity="0.25" />
 
-        {/* Recessed ceiling with LED strip */}
-        <path d="M10 3 L90 3" strokeWidth="0.4" opacity="0.3" />
-        <path d="M12 5 L88 5" strokeWidth="0.3" opacity="0.4" strokeDasharray="1 1" />
+        {/* Desert landscape hint — agave/yucca silhouette on right */}
+        <path d="M98 85 L96 78 M98 85 L100 76 M98 85 L95 82 M98 85 L101 80" strokeWidth="0.3" opacity="0.2" />
       </g>
 
-      {/* PRIMARY: Pivot door (shown at angle) */}
+      {/* PRIMARY: Massive pivot door — oversized, partially open */}
       <g strokeWidth="0.8">
-        {/* Floor track/channel */}
-        <path d="M15 88 L85 88 L85 92 L15 92 Z" strokeWidth="1" />
-        <path d="M25 88 L25 92" strokeWidth="0.4" />
+        {/* Opening in wall — clean frameless slot */}
+        <path d="M10 7 L10 92" strokeWidth="1.5" />
+        <path d="M90 7 L90 92" strokeWidth="1.5" />
 
-        {/* Ceiling track/header */}
-        <path d="M15 8 L85 8 L85 12 L15 12 Z" strokeWidth="1" />
-        <path d="M25 8 L25 12" strokeWidth="0.4" />
+        {/* Flush floor channel (hidden pivot mechanism below) */}
+        <path d="M10 90 L90 90" strokeWidth="1.2" />
+        <path d="M10 92 L90 92" strokeWidth="0.5" />
 
-        {/* The door - shown rotated/pivoting (offset pivot point) */}
-        {/* Door in motion - perspective view */}
-        <path d="M25 12 L25 88 L75 82 L75 18 Z" strokeWidth="1.5" />
+        {/* Flush ceiling slot */}
+        <path d="M10 7 L90 7" strokeWidth="1.2" />
+        <path d="M10 9 L90 9" strokeWidth="0.5" />
 
-        {/* Door thickness visible at edge */}
-        <path d="M25 12 L22 12 L22 88 L25 88" strokeWidth="1" />
+        {/* THE DOOR — massive slab, shown at ~40° open angle */}
+        {/* Door is pivoting on offset axis (1/3 from left edge) */}
+        {/* Part of door swings IN (left section, small) */}
+        <path d="M28 9 L18 14 L18 86 L28 90 Z" strokeWidth="1.2" />
+        {/* Part of door swings OUT (right section, large) */}
+        <path d="M28 9 L72 22 L72 78 L28 90 Z" strokeWidth="1.2" />
 
-        {/* Vertical grain/seams on door */}
-        <path d="M35 14 L35 86" strokeWidth="0.4" opacity="0.6" />
-        <path d="M45 15 L45 85" strokeWidth="0.4" opacity="0.6" />
-        <path d="M55 16 L55 84" strokeWidth="0.4" opacity="0.6" />
-        <path d="M65 17 L65 83" strokeWidth="0.4" opacity="0.6" />
+        {/* Door thickness — 4-inch slab visible at leading edge */}
+        <path d="M72 22 L74 23 L74 77 L72 78" strokeWidth="1" />
 
-        {/* Pivot mechanism at offset (not centered) */}
-        {/* Top pivot - 20% from edge */}
-        <circle cx="25" cy="10" r="3" strokeWidth="1.5" />
-        <circle cx="25" cy="10" r="1.5" strokeWidth="0.8" />
-        <path d="M23 8 L27 8 L27 12 L23 12 Z" strokeWidth="0.4" />
+        {/* Material: blackened steel with horizontal scored lines */}
+        <path d="M30 15 L68 25" strokeWidth="0.35" opacity="0.4" />
+        <path d="M30 25 L70 33" strokeWidth="0.35" opacity="0.4" />
+        <path d="M29 35 L71 42" strokeWidth="0.35" opacity="0.4" />
+        <path d="M29 50 L71 55" strokeWidth="0.35" opacity="0.4" />
+        <path d="M29 65 L71 68" strokeWidth="0.35" opacity="0.4" />
+        <path d="M29 75 L70 76" strokeWidth="0.35" opacity="0.4" />
+        <path d="M29 85 L70 80" strokeWidth="0.35" opacity="0.4" />
 
-        {/* Bottom pivot */}
-        <circle cx="25" cy="90" r="3" strokeWidth="1.5" />
-        <circle cx="25" cy="90" r="1.5" strokeWidth="0.8" />
-        <path d="M23 88 L27 88 L27 92 L23 92 Z" strokeWidth="0.4" />
+        {/* OFFSET PIVOT POINT — 1/3 from left */}
+        {/* Top pivot hardware */}
+        <circle cx="28" cy="9" r="3" strokeWidth="1.5" />
+        <circle cx="28" cy="9" r="1.2" strokeWidth="1" />
+        {/* Bottom pivot hardware */}
+        <circle cx="28" cy="90" r="3" strokeWidth="1.5" />
+        <circle cx="28" cy="90" r="1.2" strokeWidth="1" />
 
-        {/* Pivot axis line */}
-        <path d="M25 12 L25 88" strokeWidth="0.3" strokeDasharray="4,2" opacity="0.5" />
+        {/* Pivot axis — dashed vertical line */}
+        <path d="M28 12 L28 87" strokeDasharray="4 3" opacity="0.3" strokeWidth="0.4" />
 
-        {/* Recessed handle - modern pull */}
-        <path d="M68 45 L72 45 L72 55 L68 55 Z" />
-        <path d="M69 47 L69 53" strokeWidth="2" />
+        {/* Door swing arc — shows rotation path */}
+        <path d="M72 50 Q82 42 88 50" strokeDasharray="2 2" opacity="0.25" strokeWidth="0.4" />
+        <path d="M18 50 Q12 46 10 50" strokeDasharray="2 2" opacity="0.25" strokeWidth="0.4" />
 
-        {/* Door swing radius indicator */}
-        <path d="M25 50 Q50 30, 75 50" strokeDasharray="3,3" opacity="0.3" strokeWidth="0.5" />
+        {/* Flush pull handle — long vertical recess */}
+        <path d="M65 38 L67 39 L67 61 L65 62" strokeWidth="1.5" />
+        <path d="M66 41 L66 59" strokeWidth="0.6" />
 
-        {/* Shadow cast by door */}
-        <path d="M75 18 L80 22 L80 86 L75 82" opacity="0.15" strokeWidth="0" fill="currentColor" />
+        {/* Shadow cast by door on floor */}
+        <path d="M28 90 L72 78 L74 79 L74 92 L28 92 Z" opacity="0.12" fill="currentColor" strokeWidth="0" />
 
-        {/* Minimal threshold */}
-        <path d="M15 88 L85 88" strokeWidth="2" />
+        {/* Light gap at pivot edge — the characteristic reveal */}
+        <path d="M28 9 L28 90" strokeWidth="0.3" opacity="0.5" />
       </g>
     </g>
   </svg>
@@ -686,102 +727,134 @@ const PivotDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
 
 // ============================================================================
 // 7. POCKET DOOR
-// Victorian parlor door sliding into wall cavity
-// Reference: Victorian brownstones, Edwardian homes, Carnegie Hill residences
+// Victorian double parlor pocket doors — cutaway showing wall cavity mechanism
+// Reference: 1880s brownstones, Herter Brothers interiors, Carnegie Hill mansions
 // ============================================================================
 const PocketDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="pocket-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#pocket-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Victorian brownstone parlor with cutaway wall showing pocket cavity */}
+      {/* CONTEXT: Victorian brownstone parlor — cutaway showing wall construction */}
       <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
-        {/* Ceiling with medallion hint */}
+        {/* High ceiling with deep crown molding and picture rail */}
+        <path d="M-5 3 L105 3" strokeWidth="0.7" opacity="0.5" />
         <path d="M-5 5 L105 5" strokeWidth="0.5" opacity="0.4" />
         <path d="M-5 8 L105 8" strokeWidth="0.3" opacity="0.3" />
+        {/* Ceiling medallion fragment */}
+        <path d="M40 -2 Q50 -5 60 -2" strokeWidth="0.3" opacity="0.2" />
 
-        {/* Left wall: wainscoting detail */}
-        <path d="M-5 5 L-5 98" strokeWidth="0.5" opacity="0.4" />
-        <path d="M-3 60 L25 60" strokeWidth="0.5" opacity="0.4" />
-        <path d="M-3 62 L25 62" strokeWidth="0.3" opacity="0.3" />
-        <path d="M0 65 L0 90 M6 65 L6 90 M12 65 L12 90 M18 65 L18 90 M24 65 L24 90" strokeWidth="0.3" opacity="0.25" />
+        {/* CUTAWAY VIEW: Wall split in cross-section showing pocket cavity */}
+        {/* Outer plaster wall face (front parlor side) */}
+        <path d="M-5 8 L-5 93 L18 93 L18 8" strokeWidth="0.6" opacity="0.45" />
+        {/* Inner plaster wall face (back parlor side) */}
+        <path d="M82 8 L82 93 L105 93 L105 8" strokeWidth="0.6" opacity="0.45" />
 
-        {/* CUTAWAY: Pocket cavity showing hollow wall interior */}
-        <path d="M2 15 L2 88 L28 88 L28 15 Z" strokeWidth="0.7" opacity="0.5" />
-        <path d="M4 18 L4 85 L26 85 L26 18 Z" strokeWidth="0.4" opacity="0.3" />
-        {/* Studs visible inside pocket */}
-        <path d="M8 18 L8 85" strokeWidth="0.3" opacity="0.25" />
-        <path d="M16 18 L16 85" strokeWidth="0.3" opacity="0.25" />
-        <path d="M24 18 L24 85" strokeWidth="0.3" opacity="0.25" />
+        {/* Wall cavity — exposed lath and plaster in cutaway */}
+        <path d="M2 12 L2 90 L8 90 L8 12 Z" strokeWidth="0.5" opacity="0.4" />
+        <path d="M92 12 L92 90 L98 90 L98 12 Z" strokeWidth="0.5" opacity="0.4" />
+        {/* Wall studs visible in pocket cavity */}
+        <path d="M4 12 L4 90 M6 12 L6 90" strokeWidth="0.25" opacity="0.2" />
+        <path d="M94 12 L94 90 M96 12 L96 90" strokeWidth="0.25" opacity="0.2" />
 
-        {/* Right wall with picture rail and wallpaper hint */}
-        <path d="M62 5 L62 98 L105 98 L105 5" strokeWidth="0.5" opacity="0.4" />
-        <path d="M62 25 L98 25" strokeWidth="0.3" opacity="0.3" />
-        {/* Picture frame on wall */}
-        <path d="M72 30 L72 50 L92 50 L92 30 Z" strokeWidth="0.3" opacity="0.25" />
-        <path d="M74 32 L74 48 L90 48 L90 32 Z" strokeWidth="0.2" opacity="0.2" />
+        {/* Wainscoting on flanking walls (front parlor) */}
+        <path d="M-3 60 L15 60" strokeWidth="0.4" opacity="0.35" />
+        <path d="M85 60 L103 60" strokeWidth="0.4" opacity="0.35" />
+        {/* Wainscot panels */}
+        <path d="M0 63 L0 88 L6 88 L6 63 Z" strokeWidth="0.25" opacity="0.2" />
+        <path d="M8 63 L8 88 L14 88 L14 63 Z" strokeWidth="0.25" opacity="0.2" />
+        <path d="M86 63 L86 88 L92 88 L92 63 Z" strokeWidth="0.25" opacity="0.2" />
+        <path d="M94 63 L94 88 L100 88 L100 63 Z" strokeWidth="0.25" opacity="0.2" />
 
-        {/* DEPTH: Opening frame with deep reveal */}
-        <path d="M28 8 L30 10 L30 90 L28 92" strokeWidth="0.6" opacity="0.5" />
-        <path d="M62 8 L60 10 L60 90 L62 92" strokeWidth="0.6" opacity="0.5" />
+        {/* Ornate plaster ceiling rosette in front parlor */}
+        <circle cx="10" cy="0" r="4" strokeWidth="0.3" opacity="0.2" />
 
-        {/* Herringbone hardwood floor */}
-        <path d="M-5 90 L105 90" strokeWidth="0.5" opacity="0.5" />
-        <path d="M10 90 L14 93 L18 90 M30 90 L34 93 L38 90 M50 90 L54 93 L58 90 M70 90 L74 93 L78 90 M85 90 L89 93 L93 90" strokeWidth="0.25" opacity="0.25" />
+        {/* Parquet floor with decorative border */}
+        <path d="M-5 90 L105 90" strokeWidth="0.5" opacity="0.45" />
+        <path d="M-5 93 L105 93" strokeWidth="0.4" opacity="0.3" />
+        {/* Floor border pattern */}
+        <path d="M-3 90 L0 93 L3 90 L6 93 L9 90 L12 93 L15 90" strokeWidth="0.25" opacity="0.2" />
+        <path d="M85 90 L88 93 L91 90 L94 93 L97 90 L100 93 L103 90" strokeWidth="0.25" opacity="0.2" />
+
+        {/* Gas lamp sconce on left wall */}
+        <path d="M-2 35 L2 35 L2 40 Q0 42 -2 40 Z" strokeWidth="0.3" opacity="0.25" />
+        <path d="M0 33 L0 35" strokeWidth="0.3" opacity="0.2" />
       </g>
 
-      {/* PRIMARY: Pocket door sliding into wall */}
+      {/* PRIMARY: Double pocket doors — one receding into each side */}
       <g strokeWidth="0.8">
-        {/* Opening frame */}
-        <path d="M28 10 L28 92 L62 92 L62 10" strokeWidth="1" />
+        {/* Overhead track housing spanning full width */}
+        <path d="M5 10 L95 10 L95 15 L5 15 Z" strokeWidth="1.1" />
+        {/* Track rail visible */}
+        <path d="M7 12 L93 12" strokeWidth="0.8" />
 
-        {/* Track housing at top */}
-        <path d="M5 10 L62 10 L62 15 L5 15 Z" strokeWidth="1.2" />
-        <path d="M7 12 L60 12" strokeWidth="0.4" />
+        {/* Opening frame — the doorway itself */}
+        <path d="M20 10 L20 90" strokeWidth="1.2" />
+        <path d="M80 10 L80 90" strokeWidth="1.2" />
 
-        {/* The door - partially recessed into pocket */}
-        <path d="M15 17 L15 88 L52 88 L52 17 Z" strokeWidth="1.2" />
+        {/* LEFT DOOR — 3/4 recessed into left pocket */}
+        <path d="M10 16 L10 88 L42 88 L42 16 Z" strokeWidth="1.2" />
 
-        {/* Victorian panel design */}
-        {/* Top decorative panel */}
-        <path d="M19 21 L19 35 L48 35 L48 21 Z" />
-        <path d="M21 23 L21 33 L46 33 L46 23 Z" strokeWidth="0.5" />
-        <path d="M27 26 L27 30 M33 26 L33 30 M40 26 L40 30" strokeWidth="0.4" />
+        {/* Victorian Eastlake panel design — geometric precision */}
+        {/* Top panel with incised geometric carving */}
+        <path d="M14 20 L14 32 L38 32 L38 20 Z" strokeWidth="0.7" />
+        <path d="M16 22 L16 30 L36 30 L36 22 Z" strokeWidth="0.4" />
+        {/* Incised line pattern (Eastlake aesthetic) */}
+        <path d="M20 24 L20 28 M24 24 L24 28 M28 24 L28 28 M32 24 L32 28" strokeWidth="0.3" opacity="0.5" />
 
-        {/* Middle panel */}
-        <path d="M19 39 L19 58 L48 58 L48 39 Z" />
-        <path d="M21 41 L21 56 L46 56 L46 41 Z" strokeWidth="0.5" />
+        {/* Middle panels (pair) */}
+        <path d="M14 36 L14 56 L24 56 L24 36 Z" strokeWidth="0.7" />
+        <path d="M16 38 L16 54 L22 54 L22 38 Z" strokeWidth="0.4" />
+        <path d="M28 36 L28 56 L38 56 L38 36 Z" strokeWidth="0.7" />
+        <path d="M30 38 L30 54 L36 54 L36 38 Z" strokeWidth="0.4" />
 
         {/* Bottom panel */}
-        <path d="M19 62 L19 84 L48 84 L48 62 Z" />
-        <path d="M21 64 L21 82 L46 82 L46 64 Z" strokeWidth="0.5" />
+        <path d="M14 60 L14 84 L38 84 L38 60 Z" strokeWidth="0.7" />
+        <path d="M16 62 L16 82 L36 82 L36 62 Z" strokeWidth="0.4" />
 
-        {/* Raised panel details */}
-        <path d="M23 43 L23 54 L44 54 L44 43" strokeWidth="0.4" opacity="0.6" />
-        <path d="M23 66 L23 80 L44 80 L44 66" strokeWidth="0.4" opacity="0.6" />
+        {/* RIGHT DOOR — 1/4 recessed (mostly visible) */}
+        <path d="M58 16 L58 88 L90 88 L90 16 Z" strokeWidth="1.2" />
 
-        {/* Recessed pull handle (cup pull) */}
-        <path d="M48 48 L52 48 L52 52 L48 52 Z" />
-        <path d="M49 49 L51 49 Q51 51, 49 51" strokeWidth="1.2" />
+        {/* Matching Victorian panels */}
+        <path d="M62 20 L62 32 L86 32 L86 20 Z" strokeWidth="0.7" />
+        <path d="M64 22 L64 30 L84 30 L84 22 Z" strokeWidth="0.4" />
+        <path d="M68 24 L68 28 M72 24 L72 28 M76 24 L76 28 M80 24 L80 28" strokeWidth="0.3" opacity="0.5" />
 
-        {/* Rollers/hangers visible at top */}
-        <circle cx="22" cy="13" r="1.5" />
-        <circle cx="45" cy="13" r="1.5" />
-        <path d="M22 15 L22 17 M45 15 L45 17" strokeWidth="0.5" />
+        <path d="M62 36 L62 56 L72 56 L72 36 Z" strokeWidth="0.7" />
+        <path d="M64 38 L64 54 L70 54 L70 38 Z" strokeWidth="0.4" />
+        <path d="M76 36 L76 56 L86 56 L86 36 Z" strokeWidth="0.7" />
+        <path d="M78 38 L78 54 L84 54 L84 38 Z" strokeWidth="0.4" />
 
-        {/* Track rail */}
-        <path d="M7 13 L60 13" strokeWidth="1" />
+        <path d="M62 60 L62 84 L86 84 L86 60 Z" strokeWidth="0.7" />
+        <path d="M64 62 L64 82 L84 82 L84 62 Z" strokeWidth="0.4" />
 
-        {/* Floor guide channel */}
-        <path d="M10 88 L55 88 L55 90 L10 90 Z" />
-        <path d="M32 88 L32 90" strokeWidth="0.4" />
+        {/* Recessed cup pulls (Victorian mortise style) */}
+        {/* Left door pull */}
+        <path d="M38 48 L42 48 L42 52 L38 52 Z" strokeWidth="0.8" />
+        <path d="M39 49 L41 49 Q41 51 39 51" strokeWidth="1" />
+        {/* Right door pull */}
+        <path d="M58 48 L54 48 L54 52 L58 52 Z" strokeWidth="0.8" />
+        <path d="M57 49 L55 49 Q55 51 57 51" strokeWidth="1" />
 
-        {/* Movement arrow showing slide direction */}
-        <path d="M35 4 L20 4 M23 2 L20 4 L23 6" strokeDasharray="2,2" opacity="0.5" />
+        {/* Mortise lock between doors */}
+        <path d="M42 44 L42 56 L58 56 L58 44 Z" strokeWidth="0.5" opacity="0.4" />
+        <circle cx="50" cy="50" r="2" strokeWidth="0.6" />
+        <path d="M50 52 L50 54" strokeWidth="0.6" />
 
-        {/* Decorative molding on door frame */}
-        <path d="M28 10 L30 12 L30 90 L28 92" strokeWidth="0.4" />
-        <path d="M62 10 L60 12 L60 90 L62 92" strokeWidth="0.4" />
+        {/* Roller hangers visible at track */}
+        <circle cx="18" cy="12" r="1.5" strokeWidth="0.7" />
+        <circle cx="35" cy="12" r="1.5" strokeWidth="0.7" />
+        <circle cx="65" cy="12" r="1.5" strokeWidth="0.7" />
+        <circle cx="82" cy="12" r="1.5" strokeWidth="0.7" />
+        {/* Hanger rods */}
+        <path d="M18 14 L18 16 M35 14 L35 16 M65 14 L65 16 M82 14 L82 16" strokeWidth="0.5" />
+
+        {/* Floor guide */}
+        <path d="M20 88 L80 88 L80 90 L20 90 Z" strokeWidth="0.6" />
+
+        {/* Movement arrows */}
+        <path d="M30 5 L15 5 M18 3 L15 5 L18 7" strokeDasharray="2 2" opacity="0.4" strokeWidth="0.5" />
+        <path d="M70 5 L85 5 M82 3 L85 5 L82 7" strokeDasharray="2 2" opacity="0.4" strokeWidth="0.5" />
       </g>
     </g>
   </svg>
@@ -797,37 +870,38 @@ const RevolvingDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="revolving-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#revolving-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Art Deco hotel lobby - marble, brass, and geometric patterns */}
+      {/* CONTEXT: Grand Art Deco hotel lobby — Chrysler Building-era opulence */}
       <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
-        {/* Grand lobby ceiling with Deco coffers */}
-        <path d="M5 5 L95 5" strokeWidth="0.5" opacity="0.4" />
-        <path d="M10 8 L90 8" strokeWidth="0.4" opacity="0.3" />
-        {/* Geometric Deco ceiling pattern */}
-        <path d="M35 5 L35 8 M50 5 L50 8 M65 5 L65 8" strokeWidth="0.3" opacity="0.3" />
+        {/* Coffered ceiling with Art Deco geometric pattern */}
+        <path d="M0 3 L100 3" strokeWidth="0.7" opacity="0.5" />
+        <path d="M5 6 L95 6" strokeWidth="0.4" opacity="0.35" />
+        {/* Sunburst ceiling motif */}
+        <path d="M50 0 L45 6 M50 0 L55 6 M50 0 L40 5 M50 0 L60 5" strokeWidth="0.3" opacity="0.25" />
+        <path d="M50 0 L35 4 M50 0 L65 4" strokeWidth="0.25" opacity="0.2" />
 
-        {/* DEPTH: Curved entrance walls wrapping around (plan view impression) */}
-        <path d="M0 15 L0 85 L12 80 L12 20 Z" strokeWidth="0.7" opacity="0.5" />
-        <path d="M100 15 L100 85 L88 80 L88 20 Z" strokeWidth="0.7" opacity="0.5" />
+        {/* Marble-clad walls with Art Deco zigzag inlay */}
+        <path d="M-5 6 L-5 95 L10 95 L10 6" strokeWidth="0.6" opacity="0.45" />
+        <path d="M90 6 L90 95 L105 95 L105 6" strokeWidth="0.6" opacity="0.45" />
+        {/* Zigzag Deco inlay pattern */}
+        <path d="M-3 20 L0 15 L3 20 L6 15 L9 20" strokeWidth="0.3" opacity="0.25" />
+        <path d="M91 20 L94 15 L97 20 L100 15 L103 20" strokeWidth="0.3" opacity="0.25" />
 
-        {/* Fluted pilasters flanking the revolving door */}
-        <path d="M10 20 L10 80" strokeWidth="0.8" opacity="0.5" />
-        <path d="M12 22 L12 78" strokeWidth="0.5" opacity="0.3" />
-        <path d="M88 22 L88 78" strokeWidth="0.5" opacity="0.3" />
-        <path d="M90 20 L90 80" strokeWidth="0.8" opacity="0.5" />
+        {/* Brass elevator doors on left wall */}
+        <path d="M-3 35 L8 35 L8 80 L-3 80 Z" strokeWidth="0.4" opacity="0.3" />
+        <path d="M3 35 L3 80" strokeWidth="0.3" opacity="0.2" />
+        {/* Elevator dial above */}
+        <path d="M0 32 Q3 29 6 32" strokeWidth="0.3" opacity="0.2" />
 
-        {/* Marble floor: compass rose / terrazzo pattern */}
-        <ellipse cx="50" cy="92" rx="42" ry="5" strokeWidth="0.5" opacity="0.4" />
-        <path d="M10 92 L90 92" strokeWidth="0.3" opacity="0.3" />
-        {/* Deco sunburst in floor */}
-        <path d="M50 87 L45 92 M50 87 L50 92 M50 87 L55 92 M50 87 L42 90 M50 87 L58 90" strokeWidth="0.3" opacity="0.3" />
+        {/* Terrazzo floor with brass Art Deco compass star */}
+        <path d="M-5 92 L105 92" strokeWidth="0.5" opacity="0.45" />
+        {/* Star/compass pattern in terrazzo */}
+        <path d="M50 85 L45 92 M50 85 L55 92 M50 85 L50 92" strokeWidth="0.4" opacity="0.3" />
+        <path d="M50 85 L40 90 M50 85 L60 90 M50 85 L35 88 M50 85 L65 88" strokeWidth="0.3" opacity="0.25" />
+        <circle cx="50" cy="85" r="2" strokeWidth="0.3" opacity="0.25" />
 
-        {/* Brass door mat rail */}
-        <path d="M20 92 L80 92 L80 95 L20 95 Z" strokeWidth="0.3" opacity="0.3" />
-        <path d="M22 93 L78 93 M22 94 L78 94" strokeWidth="0.2" opacity="0.2" />
-
-        {/* Canopy above entrance */}
-        <path d="M5 18 L95 18 L98 20 L2 20 Z" strokeWidth="0.5" opacity="0.4" />
-        <path d="M5 15 L95 15" strokeWidth="0.4" opacity="0.3" />
+        {/* Brass-framed glass canopy over entrance */}
+        <path d="M8 10 L92 10 L95 14 L5 14 Z" strokeWidth="0.5" opacity="0.4" />
+        <path d="M20 10 L20 14 M40 10 L40 14 M60 10 L60 14 M80 10 L80 14" strokeWidth="0.3" opacity="0.25" />
       </g>
 
       {/* PRIMARY: Revolving door mechanism */}
@@ -912,38 +986,47 @@ const SlidingDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="sliding-halo" intensity={0.75} />}
     <g filter={showHalo ? "url(#sliding-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Traditional Japanese machiya - timber frame, engawa, garden view */}
+      {/* CONTEXT: Traditional Japanese washitsu (tatami room) — Katsura Imperial Villa */}
       <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
-        {/* Timber ceiling beams (taruki) above */}
-        <path d="M-5 3 L105 3" strokeWidth="0.5" opacity="0.4" />
-        <path d="M10 3 L10 8 M30 3 L30 8 M50 3 L50 8 M70 3 L70 8 M90 3 L90 8" strokeWidth="0.3" opacity="0.3" />
+        {/* Exposed timber ceiling (saobuchi-tenjo) — parallel battens */}
+        <path d="M-5 2 L105 2" strokeWidth="0.6" opacity="0.45" />
+        <path d="M-5 4 L105 4" strokeWidth="0.3" opacity="0.3" />
+        {/* Ceiling battens running perpendicular */}
+        <path d="M15 2 L15 4 M30 2 L30 4 M45 2 L45 4 M60 2 L60 4 M75 2 L75 4 M90 2 L90 4" strokeWidth="0.25" opacity="0.25" />
 
-        {/* Structural posts (hashira) - thick timber */}
-        <path d="M6 3 L6 95 L10 95 L10 3 Z" strokeWidth="0.7" opacity="0.5" />
-        <path d="M90 3 L90 95 L94 95 L94 3 Z" strokeWidth="0.7" opacity="0.5" />
+        {/* Thick square timber posts (hashira) — hand-planed cypress */}
+        <path d="M5 2 L5 96 L10 96 L10 2 Z" strokeWidth="0.7" opacity="0.5" />
+        <path d="M90 2 L90 96 L95 96 L95 2 Z" strokeWidth="0.7" opacity="0.5" />
+        {/* Post chamfer detail */}
+        <path d="M10 2 L10 96" strokeWidth="0.3" opacity="0.3" />
+        <path d="M90 2 L90 96" strokeWidth="0.3" opacity="0.3" />
 
-        {/* Nageshi (horizontal connecting beam above screens) */}
-        <path d="M6 8 L94 8" strokeWidth="0.8" opacity="0.5" />
-        <path d="M6 10 L94 10" strokeWidth="0.4" opacity="0.3" />
+        {/* Nageshi beam (horizontal timber connecting posts) */}
+        <path d="M5 6 L95 6" strokeWidth="0.9" opacity="0.5" />
+        <path d="M5 8 L95 8" strokeWidth="0.4" opacity="0.3" />
 
-        {/* DEPTH: Track grooves showing depth of the wall/post */}
-        <path d="M10 10 L12 12 L12 85 L10 87" strokeWidth="0.5" opacity="0.4" />
-        <path d="M90 10 L88 12 L88 85 L90 87" strokeWidth="0.5" opacity="0.4" />
+        {/* Tokonoma alcove on left (recessed display niche) */}
+        <path d="M-3 10 L5 10 L5 85 L-3 85 Z" strokeWidth="0.4" opacity="0.3" />
+        {/* Hanging scroll in tokonoma */}
+        <path d="M0 15 L0 50" strokeWidth="0.3" opacity="0.2" />
+        <path d="M-1 15 L1 15" strokeWidth="0.3" opacity="0.2" />
+        {/* Ikebana arrangement */}
+        <path d="M0 75 L-2 68 M0 75 L2 66 M0 75 L0 70" strokeWidth="0.25" opacity="0.15" />
 
-        {/* Tatami floor - precise module layout */}
-        <path d="M10 87 L90 87 L90 95 L10 95 Z" strokeWidth="0.5" opacity="0.4" />
-        <path d="M50 87 L50 95" strokeWidth="0.4" opacity="0.3" />
+        {/* Tatami mats — precise module layout with border strips */}
+        <path d="M10 87 L90 87" strokeWidth="0.5" opacity="0.4" />
+        <path d="M10 96 L90 96" strokeWidth="0.5" opacity="0.4" />
+        <path d="M50 87 L50 96" strokeWidth="0.4" opacity="0.3" />
+        {/* Tatami border (heri) */}
+        <path d="M10 88 L50 88 M50 88 L90 88" strokeWidth="0.3" opacity="0.25" />
         <path d="M10 91 L50 91 M50 91 L90 91" strokeWidth="0.3" opacity="0.25" />
 
-        {/* Engawa (veranda) beyond screens - visible through washi */}
-        <path d="M12 88 L88 88" strokeWidth="0.3" opacity="0.2" />
-        {/* Garden hint: stone lantern beyond engawa */}
-        <path d="M78 92 L78 95 M76 95 L80 95" strokeWidth="0.3" opacity="0.2" />
-        <path d="M77 90 L79 90 L79 92 L77 92" strokeWidth="0.2" opacity="0.15" />
-
-        {/* Adjacent fusuma (opaque sliding panel) on far wall */}
-        <path d="M2 12 L6 12 L6 85 L2 85 Z" strokeWidth="0.3" opacity="0.25" />
-        <path d="M94 12 L98 12 L98 85 L94 85 Z" strokeWidth="0.3" opacity="0.25" />
+        {/* Garden view beyond — pine tree silhouette and stepping stones */}
+        <path d="M70 92 L68 85 Q72 78 76 82 Q80 76 78 85 L76 92" strokeWidth="0.3" opacity="0.15" />
+        <path d="M71 92 L71 96" strokeWidth="0.25" opacity="0.12" />
+        {/* Moss-covered stepping stones */}
+        <ellipse cx="65" cy="95" rx="3" ry="1" strokeWidth="0.25" opacity="0.12" />
+        <ellipse cx="60" cy="98" rx="2.5" ry="0.8" strokeWidth="0.2" opacity="0.1" />
       </g>
 
       {/* PRIMARY: Shoji sliding screen doors */}
@@ -1031,52 +1114,58 @@ const StableDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="stable-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#stable-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Cotswold stable yard - half-timber, hay loft, adjacent stalls */}
+      {/* CONTEXT: English equestrian stable block — brick and timber, courtyard */}
       <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
-        {/* Timber-frame and stone stable building */}
-        <path d="M-5 -5 L105 -5" strokeWidth="0.5" opacity="0.3" />
+        {/* Slate roof with decorative ridge tiles and clock tower hint */}
+        <path d="M-8 3 L50 -8 L108 3" strokeWidth="0.8" opacity="0.5" />
+        <path d="M-5 3 L105 3" strokeWidth="0.5" opacity="0.4" />
+        {/* Clock tower / cupola centered above */}
+        <path d="M45 -8 L45 -14 L55 -14 L55 -8" strokeWidth="0.4" opacity="0.3" />
+        <path d="M43 -14 L50 -18 L57 -14" strokeWidth="0.4" opacity="0.3" />
+        {/* Weather vane */}
+        <path d="M50 -18 L50 -22 M48 -20 L52 -20" strokeWidth="0.25" opacity="0.2" />
 
-        {/* Steeply pitched roof with eave */}
-        <path d="M-8 2 L50 -10 L108 2" strokeWidth="0.7" opacity="0.5" />
-        <path d="M-5 2 L105 2" strokeWidth="0.5" opacity="0.4" />
+        {/* English bond brick walls */}
+        <path d="M-5 3 L-5 95" strokeWidth="0.5" opacity="0.35" />
+        <path d="M105 3 L105 95" strokeWidth="0.5" opacity="0.35" />
+        {/* Brick courses — English bond (alternating headers/stretchers) */}
+        <path d="M-5 10 L5 10 M95 10 L105 10" strokeWidth="0.25" opacity="0.25" />
+        <path d="M-5 15 L3 15 M97 15 L105 15" strokeWidth="0.25" opacity="0.25" />
+        <path d="M-5 20 L5 20 M95 20 L105 20" strokeWidth="0.25" opacity="0.25" />
+        <path d="M-5 40 L5 40 M95 40 L105 40" strokeWidth="0.25" opacity="0.25" />
+        <path d="M-5 60 L5 60 M95 60 L105 60" strokeWidth="0.25" opacity="0.25" />
+        <path d="M-5 78 L5 78 M95 78 L105 78" strokeWidth="0.25" opacity="0.25" />
 
-        {/* Half-timber framing */}
-        <path d="M-5 2 L-5 98" strokeWidth="0.5" opacity="0.3" />
-        <path d="M105 2 L105 98" strokeWidth="0.5" opacity="0.3" />
-        {/* Diagonal braces in timber frame */}
-        <path d="M2 2 L8 30" strokeWidth="0.4" opacity="0.3" />
-        <path d="M98 2 L92 30" strokeWidth="0.4" opacity="0.3" />
+        {/* Hay loft door above (pitch opening with hoist beam) */}
+        <path d="M35 -2 L35 5 L65 5 L65 -2 Z" strokeWidth="0.5" opacity="0.4" />
+        <path d="M40 0 L60 0" strokeWidth="0.3" opacity="0.3" />
+        {/* Hoist beam projecting out */}
+        <path d="M50 -2 L50 -5 L55 -5" strokeWidth="0.4" opacity="0.3" />
 
-        {/* Hay loft opening above door */}
-        <path d="M30 -2 L30 5 L70 5 L70 -2 Z" strokeWidth="0.5" opacity="0.4" />
-        <path d="M35 -2 L35 3 L65 3 L65 -2 Z" strokeWidth="0.3" opacity="0.3" />
+        {/* Adjacent stall — closed, with horse head visible */}
+        <path d="M-8 8 L-8 88 L2 88 L2 8 Z" strokeWidth="0.5" opacity="0.35" />
+        <path d="M-8 45 L2 45" strokeWidth="0.4" opacity="0.3" />
+        {/* Horse silhouette peeking over adjacent stall door */}
+        <path d="M-5 30 Q-3 25 -1 28 L-1 40" strokeWidth="0.3" opacity="0.2" />
+        <circle cx="-2" cy="32" r="0.8" strokeWidth="0.2" opacity="0.15" />
 
-        {/* Stone rubble lower wall (Cotswold limestone) */}
-        <path d="M-5 35 L5 35 M95 35 L105 35" strokeWidth="0.3" opacity="0.3" />
-        <path d="M-5 55 L5 55 M95 55 L105 55" strokeWidth="0.3" opacity="0.3" />
-        <path d="M-5 70 L5 70 M95 70 L105 70" strokeWidth="0.3" opacity="0.3" />
+        {/* Tack room door on right (closed, with nameplate) */}
+        <path d="M98 8 L98 88 L108 88 L108 8 Z" strokeWidth="0.5" opacity="0.35" />
+        <path d="M100 35 L106 35 L106 38 L100 38 Z" strokeWidth="0.25" opacity="0.2" />
 
-        {/* Adjacent stall door on left (closed) */}
-        <path d="M-12 8 L-12 88 L-2 88 L-2 8 Z" strokeWidth="0.5" opacity="0.35" />
-        <path d="M-10 45 L-4 45" strokeWidth="0.4" opacity="0.3" />
+        {/* Cobblestone stable yard with drainage channel */}
+        <path d="M-5 90 L105 90" strokeWidth="0.5" opacity="0.45" />
+        <path d="M10 92 Q15 93 20 92 Q25 91 30 92 Q35 93 40 92" strokeWidth="0.3" opacity="0.2" />
+        <path d="M60 92 Q65 91 70 92 Q75 93 80 92 Q85 91 90 92" strokeWidth="0.3" opacity="0.2" />
+        {/* Central drainage gutter */}
+        <path d="M45 90 L45 100 M55 90 L55 100" strokeWidth="0.3" opacity="0.2" />
 
-        {/* Adjacent stall door on right (closed) */}
-        <path d="M102 8 L102 88 L112 88 L112 8 Z" strokeWidth="0.5" opacity="0.35" />
-        <path d="M104 45 L110 45" strokeWidth="0.4" opacity="0.3" />
+        {/* Mounting block near door */}
+        <path d="M90 85 L90 90 L95 90 L95 85 Z" strokeWidth="0.3" opacity="0.25" />
+        <path d="M92 82 L92 85 L93 85 L93 82 Z" strokeWidth="0.25" opacity="0.2" />
 
-        {/* DEPTH: Deep frame with worn stone surround */}
-        <path d="M8 5 L10 8 L10 88 L8 90" strokeWidth="0.7" opacity="0.5" />
-        <path d="M92 5 L90 8 L90 88 L92 90" strokeWidth="0.7" opacity="0.5" />
-
-        {/* Cobblestone yard */}
-        <path d="M-5 90 L105 90" strokeWidth="0.5" opacity="0.5" />
-        <path d="M15 92 L18 94 M25 91 L28 93 M35 92 L38 94 M65 91 L68 93 M75 92 L78 94 M85 91 L88 93" strokeWidth="0.3" opacity="0.25" />
-
-        {/* Hay/straw on stable floor */}
-        <path d="M15 82 L20 84 M18 80 L23 82 M75 82 L80 84 M78 80 L83 82" strokeWidth="0.3" opacity="0.25" />
-
-        {/* Water trough at side */}
-        <path d="M96 88 L96 92 L105 92 L105 88 Z" strokeWidth="0.3" opacity="0.25" />
+        {/* Hanging flower basket on bracket */}
+        <path d="M96 12 L100 12 L100 18 Q98 22 96 18 Z" strokeWidth="0.3" opacity="0.2" />
       </g>
 
       {/* PRIMARY: Stable door with horse visible */}
@@ -1170,38 +1259,48 @@ const TrapdoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="trapdoor-halo" intensity={0.95} />}
     <g filter={showHalo ? "url(#trapdoor-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Medieval castle keep - stone floor, barrel vault above, torch sconces */}
+      {/* CONTEXT: Medieval castle guardroom floor — oubliette access in stone keep */}
       <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
-        {/* Stone floor flagstones (irregular, worn) */}
-        <path d="M-5 -5 L105 -5 L105 105 L-5 105 Z" strokeWidth="0.4" opacity="0.3" />
-        <path d="M-5 22 L32 22 M42 22 L105 22" strokeWidth="0.4" opacity="0.35" />
-        <path d="M-5 50 L58 50 M68 50 L105 50" strokeWidth="0.4" opacity="0.35" />
-        <path d="M-5 75 L42 75 M52 75 L105 75" strokeWidth="0.4" opacity="0.35" />
-        <path d="M32 -5 L32 22 M58 -5 L58 22" strokeWidth="0.4" opacity="0.35" />
-        <path d="M15 22 L15 50 M72 22 L72 50" strokeWidth="0.4" opacity="0.35" />
-        <path d="M28 50 L28 75 M82 50 L82 75" strokeWidth="0.4" opacity="0.35" />
-        <path d="M18 75 L18 105 M68 75 L68 105" strokeWidth="0.4" opacity="0.35" />
+        {/* Massive stone floor — irregular flagstones with worn grooves */}
+        <path d="M-5 -5 L105 -5 L105 105 L-5 105 Z" strokeWidth="0.4" opacity="0.25" />
+        {/* Flagstone joints — irregular, not grid */}
+        <path d="M-5 18 L28 20 M42 18 L70 22 M80 18 L105 20" strokeWidth="0.4" opacity="0.3" />
+        <path d="M-5 48 L20 50 M32 48 L60 52 M72 48 L105 50" strokeWidth="0.4" opacity="0.3" />
+        <path d="M-5 78 L35 76 M48 78 L85 76 M92 78 L105 76" strokeWidth="0.4" opacity="0.3" />
+        <path d="M18 -5 L20 22 M55 -5 L52 18 M85 -5 L82 20" strokeWidth="0.4" opacity="0.3" />
+        <path d="M12 22 L15 50 M68 20 L72 48 M90 22 L88 50" strokeWidth="0.4" opacity="0.3" />
+        <path d="M25 50 L28 78 M62 52 L60 78 M82 50 L85 78" strokeWidth="0.4" opacity="0.3" />
 
-        {/* Vaulted ceiling above (barrel vault ribs) */}
-        <path d="M-5 -8 Q50 -20, 105 -8" strokeWidth="0.6" opacity="0.4" />
-        <path d="M5 -5 Q50 -15, 95 -5" strokeWidth="0.4" opacity="0.3" />
+        {/* Groin vault ceiling — intersecting ribs */}
+        <path d="M-5 -8 Q50 -22 105 -8" strokeWidth="0.7" opacity="0.45" />
+        <path d="M-5 -8 L105 -8" strokeWidth="0.4" opacity="0.3" />
+        {/* Cross ribs of groin vault */}
+        <path d="M-5 -8 L105 -8" strokeWidth="0.3" opacity="0.2" />
+        <path d="M0 -5 L50 -18 L100 -5" strokeWidth="0.4" opacity="0.3" />
 
-        {/* Thick castle walls at edges */}
-        <path d="M-5 -5 L5 5 L5 105" strokeWidth="0.7" opacity="0.5" />
-        <path d="M105 -5 L95 5 L95 105" strokeWidth="0.7" opacity="0.5" />
+        {/* Castle wall — 8-foot thick masonry with splay window */}
+        <path d="M-5 -5 L8 5 L8 105" strokeWidth="0.8" opacity="0.5" />
+        <path d="M105 -5 L92 5 L92 105" strokeWidth="0.8" opacity="0.5" />
+        {/* Arrow slit / splay window on left wall */}
+        <path d="M0 25 L8 20 L8 40 L0 35 Z" strokeWidth="0.4" opacity="0.35" />
+        <path d="M3 28 L3 32" strokeWidth="0.3" opacity="0.3" />
 
-        {/* Torch sconces on walls */}
-        <path d="M2 30 L6 28 L6 35 L2 33" strokeWidth="0.4" opacity="0.35" />
-        <path d="M4 26 L4 22" strokeWidth="0.3" opacity="0.3" />
-        <path d="M98 30 L94 28 L94 35 L98 33" strokeWidth="0.4" opacity="0.35" />
+        {/* Iron torch cressets on walls (not sconces — standing iron baskets) */}
+        <path d="M5 50 L8 48 L8 55 L5 53" strokeWidth="0.5" opacity="0.4" />
+        {/* Flame suggestion */}
+        <path d="M7 46 L6 44 L8 42 L7 46" strokeWidth="0.3" opacity="0.3" />
+        <path d="M95 50 L92 48 L92 55 L95 53" strokeWidth="0.5" opacity="0.4" />
 
-        {/* Worn stone texture marks */}
-        <path d="M8 10 L12 14 M50 8 L54 12 M82 15 L86 19" strokeWidth="0.3" opacity="0.25" />
-        <path d="M10 62 L14 66 M55 68 L59 72 M88 62 L92 66" strokeWidth="0.3" opacity="0.25" />
+        {/* Guard's bench against wall */}
+        <path d="M92 80 L105 80 L105 85 L92 85 Z" strokeWidth="0.3" opacity="0.25" />
 
-        {/* Drain grate nearby */}
-        <circle cx="90" cy="90" r="3" strokeWidth="0.4" opacity="0.3" />
-        <path d="M88 90 L92 90 M90 88 L90 92" strokeWidth="0.3" opacity="0.25" />
+        {/* Iron shackle bolted to wall */}
+        <circle cx="96" cy="35" r="2" strokeWidth="0.3" opacity="0.25" />
+        <path d="M96 37 L96 42" strokeWidth="0.25" opacity="0.2" />
+
+        {/* Worn stone step/platform near trapdoor */}
+        <path d="M-5 90 L15 90 L15 95 L-5 95 Z" strokeWidth="0.4" opacity="0.3" />
+        <path d="M85 90 L105 90 L105 95 L85 95 Z" strokeWidth="0.4" opacity="0.3" />
       </g>
 
       {/* PRIMARY: Trapdoor with iron reinforcement */}
