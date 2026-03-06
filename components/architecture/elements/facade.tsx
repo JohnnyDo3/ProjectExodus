@@ -66,30 +66,49 @@ const AwningSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M2 85 L2 92" />
       </g>
 
-      {/* === PRIMARY: Awning structure === */}
+      {/* === PRIMARY: Haussmann café awning — retractable striped canopy with ornate ironwork === */}
       <g strokeWidth="0.8">
-        {/* Wall attachment bar */}
-        <path d="M15 25 L85 25" strokeWidth="1.2" />
-        {/* Awning fabric with scalloped valance */}
-        <path d="M15 25 L15 45 Q25 55, 35 45 Q45 55, 50 50 Q55 55, 65 45 Q75 55, 85 45 L85 25" strokeWidth="1" />
-        {/* Side support arms */}
-        <path d="M15 25 L15 50" strokeWidth="1.1" />
-        <path d="M85 25 L85 50" strokeWidth="1.1" />
-        {/* Structural ribs */}
-        <path d="M25 25 L20 48" strokeWidth="0.7" />
-        <path d="M40 25 L35 48" strokeWidth="0.7" />
-        <path d="M55 25 L55 50" strokeWidth="0.7" />
-        <path d="M70 25 L75 48" strokeWidth="0.7" />
-        {/* Diagonal support arms to wall */}
-        <path d="M15 35 L5 55" strokeWidth="0.9" />
-        <path d="M85 35 L95 55" strokeWidth="0.9" />
-        {/* Valance scallop details */}
-        <path d="M18 45 Q22 48, 25 45" strokeWidth="0.6" />
-        <path d="M38 45 Q42 48, 45 45" strokeWidth="0.6" />
-        <path d="M55 45 Q58 48, 62 45" strokeWidth="0.6" />
-        <path d="M72 45 Q76 48, 80 45" strokeWidth="0.6" />
-        {/* Bottom edge cord */}
-        <path d="M15 50 L85 50" strokeDasharray="2 2" opacity="0.6" strokeWidth="0.5" />
+        {/* Wrought-iron wall-mounted bracket bar with decorative scrollwork */}
+        <path d="M15 25 L85 25" strokeWidth="1.4" />
+        <path d="M15 24 Q18 22, 21 24" strokeWidth="0.6" />
+        <path d="M79 24 Q82 22, 85 24" strokeWidth="0.6" />
+
+        {/* Fabric canopy — curved projection with alternating stripe texture */}
+        <path d="M15 25 Q15 38, 12 48 Q30 58, 50 52 Q70 58, 88 48 Q85 38, 85 25" strokeWidth="1.2" />
+        {/* Stripe pattern on fabric — alternating bands */}
+        <path d="M20 27 Q20 38, 18 46" strokeWidth="0.4" opacity="0.5" />
+        <path d="M30 26 Q30 40, 25 50" strokeWidth="0.4" opacity="0.5" />
+        <path d="M40 26 Q40 42, 38 52" strokeWidth="0.4" opacity="0.5" />
+        <path d="M50 26 Q50 42, 50 52" strokeWidth="0.4" opacity="0.5" />
+        <path d="M60 26 Q60 42, 62 52" strokeWidth="0.4" opacity="0.5" />
+        <path d="M70 26 Q70 40, 75 50" strokeWidth="0.4" opacity="0.5" />
+        <path d="M80 27 Q80 38, 82 46" strokeWidth="0.4" opacity="0.5" />
+
+        {/* Articulated iron support arms — curved French style */}
+        <path d="M15 25 Q10 35, 12 48" strokeWidth="1.2" />
+        <path d="M85 25 Q90 35, 88 48" strokeWidth="1.2" />
+        {/* Intermediate folding arms */}
+        <path d="M30 25 L25 30 L22 44" strokeWidth="0.8" />
+        <path d="M50 25 L50 32 L50 52" strokeWidth="0.8" />
+        <path d="M70 25 L75 30 L78 44" strokeWidth="0.8" />
+
+        {/* Scalloped valance with pointed lambroquin trim */}
+        <path d="M12 48 Q17 54, 22 48 Q27 54, 32 48 Q37 54, 42 48 Q47 54, 50 52 Q53 54, 58 48 Q63 54, 68 48 Q73 54, 78 48 Q83 54, 88 48" strokeWidth="0.9" />
+        {/* Fringe detail along valance edge */}
+        <path d="M14 50 L14 53 M18 52 L18 55 M22 50 L22 53 M26 52 L26 55" strokeWidth="0.4" opacity="0.5" />
+        <path d="M34 50 L34 53 M38 52 L38 55 M42 50 L42 53 M46 52 L46 55" strokeWidth="0.4" opacity="0.5" />
+        <path d="M56 50 L56 53 M60 52 L60 55 M64 50 L64 53 M68 52 L68 55" strokeWidth="0.4" opacity="0.5" />
+        <path d="M74 50 L74 53 M78 52 L78 55 M82 50 L82 53 M86 52 L86 55" strokeWidth="0.4" opacity="0.5" />
+
+        {/* Iron scroll bracket supports at wall — ornate Parisian wrought-iron */}
+        <path d="M15 25 Q12 28, 10 35 Q8 30, 10 25" strokeWidth="0.7" />
+        <path d="M85 25 Q88 28, 90 35 Q92 30, 90 25" strokeWidth="0.7" />
+
+        {/* Cord and pulley retraction mechanism visible at wall */}
+        <path d="M17 26 L17 22" strokeWidth="0.5" opacity="0.6" />
+        <circle cx="17" cy="22" r="1" strokeWidth="0.5" opacity="0.6" />
+        <path d="M83 26 L83 22" strokeWidth="0.5" opacity="0.6" />
+        <circle cx="83" cy="22" r="1" strokeWidth="0.5" opacity="0.6" />
       </g>
     </g>
   </svg>
@@ -136,31 +155,61 @@ const BayWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M0 94 L100 94" />
       </g>
 
-      {/* === PRIMARY: Bay window projection === */}
+      {/* === PRIMARY: Victorian Painted Lady angled bay window with ornamental woodwork === */}
       <g strokeWidth="0.8">
-        {/* Bay roof */}
-        <path d="M25 15 L30 10 L50 5 L70 10 L75 15 Z" strokeWidth="1.1" />
-        <path d="M28 15 L50 8 L72 15" strokeWidth="0.5" opacity="0.6" />
-        {/* Main angular projection */}
-        <path d="M30 15 L30 80 L40 85 L50 87 L60 85 L70 80 L70 15" strokeWidth="1.2" />
-        {/* Front central window */}
-        <path d="M42 20 L42 75 L58 75 L58 20 Z" strokeWidth="0.9" />
-        <path d="M50 20 L50 75" strokeWidth="0.7" />
-        <path d="M42 45 L58 45" strokeWidth="0.7" />
-        {/* Left angled window */}
-        <path d="M32 20 L32 75 L40 78 L40 20 Z" strokeWidth="0.9" />
-        <path d="M36 20 L36 76" strokeWidth="0.6" />
-        <path d="M32 45 L40 47" strokeWidth="0.6" />
+        {/* Bay roof — steep mini hip with fish-scale shingle texture */}
+        <path d="M25 15 L30 8 L50 3 L70 8 L75 15 Z" strokeWidth="1.2" />
+        {/* Fish-scale shingle pattern on bay roof */}
+        <path d="M33 12 Q36 10, 39 12 Q42 10, 45 12 Q48 10, 51 12 Q54 10, 57 12 Q60 10, 63 12 Q66 10, 69 12" strokeWidth="0.5" opacity="0.6" />
+        <path d="M35 14 Q38 12, 41 14 Q44 12, 47 14 Q50 12, 53 14 Q56 12, 59 14 Q62 12, 65 14" strokeWidth="0.4" opacity="0.5" />
+        {/* Decorative ridge finial */}
+        <path d="M50 3 L50 0" strokeWidth="0.7" />
+        <path d="M49 0 L51 0 L50 -2 Z" strokeWidth="0.5" />
+
+        {/* Main angular projection — three-faceted */}
+        <path d="M30 15 L30 80 L40 85 L50 87 L60 85 L70 80 L70 15" strokeWidth="1.3" />
+
+        {/* Front central window — tall double-hung sash with arch top */}
+        <path d="M42 18 Q50 14, 58 18 L58 75 L42 75 Z" strokeWidth="1" />
+        {/* Sash division */}
+        <path d="M42 45 L58 45" strokeWidth="0.8" />
+        {/* Vertical muntin */}
+        <path d="M50 18 L50 75" strokeWidth="0.7" />
+        {/* Upper sash — 2-over-2 pattern */}
+        <path d="M42 30 L58 30" strokeWidth="0.5" />
+
+        {/* Left angled window — matching proportions */}
+        <path d="M32 18 L32 75 L40 78 L40 18 Z" strokeWidth="1" />
+        <path d="M36 18 L36 76" strokeWidth="0.6" />
+        <path d="M32 45 L40 47" strokeWidth="0.7" />
+        <path d="M32 30 L40 31" strokeWidth="0.5" />
+
         {/* Right angled window */}
-        <path d="M60 20 L60 78 L68 75 L68 20 Z" strokeWidth="0.9" />
-        <path d="M64 20 L64 76" strokeWidth="0.6" />
-        <path d="M60 47 L68 45" strokeWidth="0.6" />
-        {/* Projecting sill/base */}
-        <path d="M28 80 L40 87 L50 90 L60 87 L72 80" strokeWidth="1.1" />
-        <path d="M30 82 L40 88 L50 91 L60 88 L70 82" strokeWidth="0.6" opacity="0.7" />
-        {/* Decorative corbel supports */}
-        <path d="M33 82 Q35 86, 38 85" strokeWidth="0.7" />
-        <path d="M67 82 Q65 86, 62 85" strokeWidth="0.7" />
+        <path d="M60 18 L60 78 L68 75 L68 18 Z" strokeWidth="1" />
+        <path d="M64 18 L64 76" strokeWidth="0.6" />
+        <path d="M60 47 L68 45" strokeWidth="0.7" />
+        <path d="M60 31 L68 30" strokeWidth="0.5" />
+
+        {/* Ornamental spandrel panels between windows and bay corners */}
+        <path d="M30 18 L32 18 L32 22 L30 22 Z" strokeWidth="0.5" opacity="0.6" />
+        <path d="M68 18 L70 18 L70 22 L68 22 Z" strokeWidth="0.5" opacity="0.6" />
+
+        {/* Projecting sill with decorative bracket corbels */}
+        <path d="M28 80 L40 87 L50 90 L60 87 L72 80" strokeWidth="1.2" />
+        {/* Turned spindle brackets — Victorian gingerbread */}
+        <path d="M32 80 Q33 83, 35 85 Q33 87, 36 88" strokeWidth="0.7" />
+        <path d="M38 82 Q39 85, 40 87" strokeWidth="0.6" />
+        <path d="M50 82 L50 90" strokeWidth="0.6" />
+        <path d="M60 87 Q61 85, 62 82" strokeWidth="0.6" />
+        <path d="M68 80 Q67 83, 65 85 Q67 87, 64 88" strokeWidth="0.7" />
+
+        {/* Sunburst panel in gable peak above bay */}
+        <path d="M42 16 Q50 10, 58 16" strokeWidth="0.5" opacity="0.7" />
+        <path d="M50 11 L48 15 M50 11 L52 15 M50 11 L46 14 M50 11 L54 14" strokeWidth="0.4" opacity="0.5" />
+
+        {/* Decorative turned newel post finials at bay corners */}
+        <circle cx="30" cy="15" r="1.5" strokeWidth="0.6" />
+        <circle cx="70" cy="15" r="1.5" strokeWidth="0.6" />
       </g>
     </g>
   </svg>
@@ -197,31 +246,51 @@ const CanopySVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M4 80 Q6 76, 8 80" />
       </g>
 
-      {/* === PRIMARY: Canopy structure === */}
+      {/* === PRIMARY: Mid-century modern canopy — flat concrete slab with thin-edge profile === */}
       <g strokeWidth="0.8">
-        {/* Canopy roof surface */}
-        <path d="M15 35 L85 35 L88 40 L12 40 Z" strokeWidth="1" />
-        {/* Fascia edge */}
-        <path d="M12 40 L88 40 L90 45 L10 45 Z" strokeWidth="1.2" />
-        {/* Support columns */}
-        <path d="M20 45 L20 88" strokeWidth="1.5" />
-        <path d="M80 45 L80 88" strokeWidth="1.5" />
-        {/* Column bases */}
-        <path d="M17 88 L23 88 L23 90 L17 90 Z" strokeWidth="0.9" />
-        <path d="M77 88 L83 88 L83 90 L77 90 Z" strokeWidth="0.9" />
-        {/* Column capitals */}
-        <path d="M18 45 L22 45 L22 48 L18 48 Z" strokeWidth="0.8" />
-        <path d="M78 45 L82 45 L82 48 L78 48 Z" strokeWidth="0.8" />
-        {/* Decorative roof brackets */}
-        <path d="M15 35 Q12 32, 15 30" strokeWidth="0.9" />
-        <path d="M85 35 Q88 32, 85 30" strokeWidth="0.9" />
-        {/* Entry door beneath */}
-        <path d="M40 55 L40 88 L60 88 L60 55 Z" strokeWidth="0.9" />
-        <path d="M50 55 L50 88" strokeWidth="0.7" />
-        <circle cx="57" cy="72" r="1.5" strokeWidth="0.6" />
-        {/* Drainage downspouts */}
-        <path d="M10 45 L8 50 L8 75" strokeDasharray="2 2" opacity="0.5" strokeWidth="0.5" />
-        <path d="M90 45 L92 50 L92 75" strokeDasharray="2 2" opacity="0.5" strokeWidth="0.5" />
+        {/* Cantilevered concrete roof slab — thin edge profile, clean modernist */}
+        <path d="M10 33 L90 33 L92 36 L8 36 Z" strokeWidth="1.2" />
+        {/* Drip edge detail — characteristic thin shadow line */}
+        <path d="M8 36 L92 36" strokeWidth="1.5" />
+        {/* Soffit — smooth concrete underside with recessed lighting channels */}
+        <path d="M12 36 L12 38 L88 38 L88 36" strokeWidth="0.4" opacity="0.5" />
+        {/* Recessed downlights in soffit */}
+        <circle cx="30" cy="37" r="1.5" strokeWidth="0.4" opacity="0.5" />
+        <circle cx="50" cy="37" r="1.5" strokeWidth="0.4" opacity="0.5" />
+        <circle cx="70" cy="37" r="1.5" strokeWidth="0.4" opacity="0.5" />
+
+        {/* Slender steel I-beam columns — minimalist square section */}
+        <path d="M22 38 L22 88" strokeWidth="2" />
+        <path d="M78 38 L78 88" strokeWidth="2" />
+        {/* Column flange detail */}
+        <path d="M20 38 L24 38" strokeWidth="0.8" />
+        <path d="M76 38 L80 38" strokeWidth="0.8" />
+        <path d="M20 88 L24 88" strokeWidth="0.8" />
+        <path d="M76 88 L80 88" strokeWidth="0.8" />
+
+        {/* Tension rod cross-bracing — diagonal structural expression */}
+        <path d="M22 38 L78 58" strokeWidth="0.4" opacity="0.4" />
+        <path d="M78 38 L22 58" strokeWidth="0.4" opacity="0.4" />
+
+        {/* Glass storefront wall set back from canopy edge */}
+        <path d="M30 42 L30 88 L70 88 L70 42 Z" strokeWidth="0.9" />
+        {/* Full-height glass panels with minimal aluminum frames */}
+        <path d="M38 42 L38 88" strokeWidth="0.6" />
+        <path d="M50 42 L50 88" strokeWidth="0.6" />
+        <path d="M62 42 L62 88" strokeWidth="0.6" />
+        {/* Transom bar */}
+        <path d="M30 52 L70 52" strokeWidth="0.6" />
+
+        {/* Flush entry door — frameless glass pivot */}
+        <path d="M44 52 L44 88 L56 88 L56 52 Z" strokeWidth="1" />
+        {/* Minimal pull handle — vertical bar */}
+        <path d="M53 62 L53 78" strokeWidth="1.5" />
+
+        {/* Address numbers on fascia */}
+        <path d="M45 34 L48 34 M52 34 L55 34" strokeWidth="0.5" opacity="0.6" />
+
+        {/* Terrazzo entry platform */}
+        <path d="M8 88 L92 88 L94 92 L6 92 Z" strokeWidth="0.8" />
       </g>
     </g>
   </svg>
@@ -262,32 +331,57 @@ const CorniceSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M75 88 L75 92" strokeWidth="0.4" />
       </g>
 
-      {/* === PRIMARY: Cornice assembly === */}
+      {/* === PRIMARY: Beaux-Arts cornice — heavy projecting crown with modillions, egg-and-dart, and dentils === */}
       <g strokeWidth="0.8">
-        {/* Main cornice projection */}
-        <path d="M10 45 L90 45 L95 55 L5 55 Z" strokeWidth="1.2" />
-        {/* Corona (projecting slab) */}
-        <path d="M8 55 L92 55 L92 60 L8 60 Z" strokeWidth="1.1" />
-        {/* Soffit underside */}
-        <path d="M12 55 L12 58 L88 58 L88 55" strokeDasharray="2 2" opacity="0.5" strokeWidth="0.5" />
-        {/* Cymatium (top crown molding) */}
-        <path d="M10 42 Q30 38, 50 42 Q70 46, 90 42" strokeWidth="0.9" />
-        <path d="M10 45 L90 45" strokeWidth="0.6" opacity="0.7" />
-        {/* Bed mold beneath corona */}
-        <path d="M10 60 Q30 63, 50 60 Q70 57, 90 60" strokeWidth="0.9" />
-        {/* Dentil course */}
+        {/* Cyma recta crown molding — S-curve profile at top */}
+        <path d="M8 40 Q30 36, 50 40 Q70 44, 92 40" strokeWidth="1" />
+        <path d="M8 42 L92 42" strokeWidth="0.7" />
+
+        {/* Corona — main projecting slab with deep shadow */}
+        <path d="M6 42 L94 42 L96 48 L4 48 Z" strokeWidth="1.3" />
+        {/* Drip edge (larmier) — water-shedding profile */}
+        <path d="M4 48 L96 48" strokeWidth="1.5" />
+
+        {/* Soffit with coffered panels */}
+        <path d="M8 48 L8 50 L92 50 L92 48" strokeWidth="0.5" opacity="0.5" />
+        <path d="M20 48 L20 50 M40 48 L40 50 M60 48 L60 50 M80 48 L80 50" strokeWidth="0.3" opacity="0.4" />
+
+        {/* Modillions — ornate scroll brackets supporting corona */}
+        {[14, 26, 38, 50, 62, 74, 86].map((x, i) => (
+          <g key={i}>
+            <path d={`M${x-3} 48 L${x-3} 52 Q${x-5} 55, ${x-3} 58 L${x+3} 58 Q${x+5} 55, ${x+3} 52 L${x+3} 48`} strokeWidth="0.8" />
+            {/* Scroll volute on modillion face */}
+            <path d={`M${x-2} 52 Q${x} 54, ${x+2} 52`} strokeWidth="0.4" opacity="0.5" />
+          </g>
+        ))}
+
+        {/* Dentil course — tightly spaced rectangular blocks */}
+        {[10, 14, 18, 22, 26, 30, 34, 38, 42, 46, 50, 54, 58, 62, 66, 70, 74, 78, 82, 86, 90].map((x, i) => (
+          <path key={`d${i}`} d={`M${x-1} 58 L${x-1} 62 L${x+1} 62 L${x+1} 58 Z`} strokeWidth="0.5" />
+        ))}
+        {/* Dentil band backing */}
+        <path d="M8 58 L92 58" strokeWidth="0.6" />
+        <path d="M8 62 L92 62" strokeWidth="0.6" />
+
+        {/* Egg-and-dart molding beneath dentils */}
         {[15, 25, 35, 45, 55, 65, 75, 85].map((x, i) => (
-          <path key={i} d={`M${x-3} 52 L${x-3} 48 L${x+1} 48 L${x+1} 52 Z`} strokeWidth="0.7" />
+          <g key={`e${i}`}>
+            <ellipse cx={x} cy={64} rx={2.5} ry={1.5} strokeWidth="0.5" />
+            <path d={`M${x+4} 63 L${x+5} 65 L${x+4} 65 Z`} strokeWidth="0.4" opacity="0.6" />
+          </g>
         ))}
-        {/* Modillions (scroll brackets) */}
-        {[20, 40, 60, 80].map((x, i) => (
-          <path key={i} d={`M${x-4} 55 L${x-4} 58 Q${x-6} 62, ${x-4} 65 L${x+2} 65 Q${x+4} 62, ${x+2} 58 L${x+2} 55 Z`} strokeWidth="0.8" />
-        ))}
-        {/* Frieze below */}
-        <path d="M12 65 L88 65 L88 75 L12 75 Z" strokeWidth="0.9" />
-        {/* Architrave base */}
-        <path d="M13 75 L87 75 L87 82 L13 82 Z" strokeWidth="0.9" />
-        <path d="M15 78 L85 78" strokeWidth="0.4" opacity="0.6" />
+
+        {/* Frieze band — smooth or with garland swag relief */}
+        <path d="M10 66 L90 66 L90 76 L10 76 Z" strokeWidth="1" />
+        {/* Carved garland swags */}
+        <path d="M15 69 Q28 74, 40 69 Q52 74, 65 69 Q78 74, 85 69" strokeWidth="0.6" opacity="0.5" />
+        {/* Ribbon ties at swag peaks */}
+        <path d="M15 69 L15 67 M40 69 L40 67 M65 69 L65 67 M85 69 L85 67" strokeWidth="0.4" opacity="0.4" />
+
+        {/* Architrave — three-fasciae classical subdivision */}
+        <path d="M12 76 L88 76 L88 80 L12 80 Z" strokeWidth="0.9" />
+        <path d="M12 80 L88 80 L88 83 L12 83 Z" strokeWidth="0.8" />
+        <path d="M12 83 L88 83 L88 85 L12 85 Z" strokeWidth="0.7" />
       </g>
     </g>
   </svg>
@@ -324,41 +418,77 @@ const EntablatureSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M96 96 Q98 90, 100 86 Q102 82, 98 80" strokeWidth="0.4" opacity="0.25" />
       </g>
 
-      {/* === PRIMARY: Entablature assembly === */}
+      {/* === PRIMARY: Greek Doric entablature — triglyphs, metopes with sculptural relief, mutules === */}
       <g strokeWidth="0.8">
-        {/* CORNICE (top section) */}
-        <path d="M5 15 L95 15 L98 22 L2 22 Z" strokeWidth="1.2" />
-        <path d="M3 22 L97 22 L97 28 L3 28 Z" strokeWidth="1.1" />
-        {/* Cornice cyma reversa molding */}
-        <path d="M5 12 Q50 8, 95 12" strokeWidth="0.8" />
-        {/* Mutules (projecting blocks) */}
-        {[15, 30, 45, 60, 75, 85].map((x, i) => (
-          <path key={i} d={`M${x-3} 22 L${x-3} 26 L${x+3} 26 L${x+3} 22 Z`} opacity="0.7" strokeWidth="0.7" />
-        ))}
-
-        {/* FRIEZE (middle section) */}
-        <path d="M8 30 L92 30 L92 50 L8 50 Z" strokeWidth="1" />
-        {/* Triglyphs (vertical grooved tablets) */}
-        {[20, 40, 60, 80].map((x, i) => (
-          <g key={i}>
-            <path d={`M${x-5} 32 L${x-5} 48 L${x+5} 48 L${x+5} 32 Z`} strokeWidth="0.9" />
-            <path d={`M${x-3} 32 L${x-3} 48`} strokeWidth="0.5" />
-            <path d={`M${x} 32 L${x} 48`} strokeWidth="0.5" />
-            <path d={`M${x+3} 32 L${x+3} 48`} strokeWidth="0.5" />
+        {/* CORNICE — with forward projection and hawk's beak molding */}
+        <path d="M3 12 Q50 8, 97 12" strokeWidth="0.9" />
+        <path d="M2 14 L98 14 L100 20 L0 20 Z" strokeWidth="1.3" />
+        {/* Corona slab */}
+        <path d="M0 20 L100 20 L100 26 L0 26 Z" strokeWidth="1.2" />
+        {/* Mutules with guttae — flat blocks projecting from soffit (Doric only) */}
+        {[12, 28, 44, 60, 76, 90].map((x, i) => (
+          <g key={`m${i}`}>
+            <path d={`M${x-4} 20 L${x-4} 24 L${x+4} 24 L${x+4} 20 Z`} strokeWidth="0.7" opacity="0.7" />
+            {/* Guttae (6 small pegs under each mutule) */}
+            <circle cx={x-3} cy={25} r={0.6} strokeWidth="0.4" />
+            <circle cx={x-1} cy={25} r={0.6} strokeWidth="0.4" />
+            <circle cx={x+1} cy={25} r={0.6} strokeWidth="0.4" />
+            <circle cx={x+3} cy={25} r={0.6} strokeWidth="0.4" />
           </g>
         ))}
-        {/* Metopes (panels between triglyphs) */}
-        <path d="M28 36 L28 44 L35 44 L35 36 Z" opacity="0.5" strokeWidth="0.6" />
-        <path d="M48 36 L48 44 L55 44 L55 36 Z" opacity="0.5" strokeWidth="0.6" />
-        <path d="M68 36 L68 44 L75 44 L75 36 Z" opacity="0.5" strokeWidth="0.6" />
 
-        {/* ARCHITRAVE (bottom section - three fasciae) */}
-        <path d="M10 52 L90 52 L90 58 L10 58 Z" strokeWidth="0.9" />
-        <path d="M10 58 L90 58 L90 63 L10 63 Z" strokeWidth="0.9" />
-        <path d="M10 63 L90 63 L90 68 L10 68 Z" strokeWidth="0.9" />
-        {/* Taenia and regulae */}
-        <path d="M10 68 L90 68 L90 72 L10 72 Z" strokeWidth="0.8" />
-        <path d="M10 72 L90 72" strokeWidth="1.3" />
+        {/* FRIEZE — alternating triglyphs and metopes */}
+        <path d="M5 28 L95 28 L95 52 L5 52 Z" strokeWidth="1.1" />
+
+        {/* Triglyphs — vertical grooved tablets with chamfered edges */}
+        {[12, 28, 44, 60, 76, 90].map((x, i) => (
+          <g key={`t${i}`}>
+            <path d={`M${x-5} 29 L${x-5} 50 L${x+5} 50 L${x+5} 29 Z`} strokeWidth="1" />
+            {/* Three vertical glyphs (channels) */}
+            <path d={`M${x-3} 30 L${x-3} 49`} strokeWidth="0.8" />
+            <path d={`M${x} 30 L${x} 49`} strokeWidth="0.8" />
+            <path d={`M${x+3} 30 L${x+3} 49`} strokeWidth="0.8" />
+            {/* Half-glyphs at edges */}
+            <path d={`M${x-5} 30 L${x-5} 49`} strokeWidth="0.5" opacity="0.6" />
+            <path d={`M${x+5} 30 L${x+5} 49`} strokeWidth="0.5" opacity="0.6" />
+          </g>
+        ))}
+
+        {/* Metopes — sculpted relief panels between triglyphs */}
+        {/* Metope 1: Bull skull (bucranium) */}
+        <path d="M19 35 Q20 33, 22 35 Q24 33, 25 35 L24 42 L20 42 Z" strokeWidth="0.6" opacity="0.6" />
+        {/* Metope 2: Circular shield/patera */}
+        <circle cx={36} cy={40} r={4} strokeWidth="0.6" opacity="0.5" />
+        <circle cx={36} cy={40} r={2} strokeWidth="0.4" opacity="0.4" />
+        {/* Metope 3: Rosette */}
+        <path d="M52 38 Q50 36, 52 34 Q54 36, 56 34 Q54 36, 56 38 Q54 36, 56 40 Q54 38, 52 40 Q50 38, 48 40 Q50 38, 48 38 Q50 36, 52 38" strokeWidth="0.4" opacity="0.5" />
+        {/* Metope 4: Tripod */}
+        <path d="M68 34 L66 44 M68 34 L70 44 M64 44 L72 44 M68 34 L68 32" strokeWidth="0.5" opacity="0.5" />
+        {/* Metope 5: Wreath */}
+        <circle cx={83} cy={40} r={4} strokeWidth="0.5" opacity="0.5" />
+        <path d="M81 38 Q83 36, 85 38 M81 42 Q83 44, 85 42" strokeWidth="0.3" opacity="0.4" />
+
+        {/* Regula blocks with guttae — small blocks under taenia above each triglyph */}
+        <path d="M5 52 L95 52" strokeWidth="1.2" />
+        {[12, 28, 44, 60, 76, 90].map((x, i) => (
+          <g key={`r${i}`}>
+            <path d={`M${x-4} 52 L${x-4} 54 L${x+4} 54 L${x+4} 52 Z`} strokeWidth="0.5" />
+            <circle cx={x-2} cy={55} r={0.5} strokeWidth="0.3" />
+            <circle cx={x} cy={55} r={0.5} strokeWidth="0.3" />
+            <circle cx={x+2} cy={55} r={0.5} strokeWidth="0.3" />
+          </g>
+        ))}
+
+        {/* ARCHITRAVE — plain beam (Doric has no fasciae, unlike Ionic) */}
+        <path d="M8 56 L92 56 L92 68 L8 68 Z" strokeWidth="1" />
+        {/* Subtle horizontal line suggesting stone joints */}
+        <path d="M10 62 L90 62" strokeWidth="0.3" opacity="0.4" />
+
+        {/* Taenia — thin band at top of architrave */}
+        <path d="M8 56 L92 56" strokeWidth="1.4" />
+
+        {/* Architrave to column junction */}
+        <path d="M8 68 L92 68" strokeWidth="1.5" />
       </g>
     </g>
   </svg>
@@ -396,56 +526,99 @@ const FacadeSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M90 90 L90 95" strokeWidth="0.4" />
       </g>
 
-      {/* === PRIMARY: Facade composition === */}
+      {/* === PRIMARY: Georgian townhouse facade — symmetrical 5-bay, sash windows, classical doorcase === */}
       <g strokeWidth="0.8">
         {/* Main building envelope */}
-        <path d="M10 15 L10 90 L90 90 L90 15 Z" strokeWidth="1.2" />
-        {/* Pediment roof */}
-        <path d="M10 15 L50 5 L90 15" strokeWidth="1.1" />
-        <path d="M15 15 L50 8 L85 15" strokeWidth="0.5" opacity="0.6" />
-        {/* Cornice line */}
-        <path d="M8 15 L92 15" strokeWidth="1.3" />
+        <path d="M10 12 L10 90 L90 90 L90 12 Z" strokeWidth="1.3" />
 
-        {/* Second floor windows */}
-        <path d="M18 22 L18 38 L35 38 L35 22 Z" strokeWidth="0.9" />
-        <path d="M42 22 L42 38 L58 38 L58 22 Z" strokeWidth="0.9" />
-        <path d="M65 22 L65 38 L82 38 L82 22 Z" strokeWidth="0.9" />
-        {/* Window muntins */}
-        <path d="M26 22 L26 38" strokeWidth="0.6" />
-        <path d="M50 22 L50 38" strokeWidth="0.6" />
-        <path d="M73 22 L73 38" strokeWidth="0.6" />
-        <path d="M18 30 L35 30" strokeWidth="0.5" opacity="0.7" />
-        <path d="M42 30 L58 30" strokeWidth="0.5" opacity="0.7" />
-        <path d="M65 30 L82 30" strokeWidth="0.5" opacity="0.7" />
+        {/* Hipped roof with parapet wall */}
+        <path d="M8 12 L92 12" strokeWidth="1.5" />
+        <path d="M10 8 L90 8 L90 12 L10 12 Z" strokeWidth="0.9" />
+        {/* Coping stones on parapet */}
+        <path d="M8 8 L92 8" strokeWidth="1" />
 
-        {/* String course (horizontal band) */}
-        <path d="M10 42 L90 42" strokeWidth="1" />
+        {/* Main cornice — projecting with modillions */}
+        <path d="M6 12 L94 12 L94 16 L6 16 Z" strokeWidth="1.1" />
+        {[15, 25, 35, 45, 55, 65, 75, 85].map((x, i) => (
+          <path key={`fm${i}`} d={`M${x-1} 12 L${x-1} 14 L${x+1} 14 L${x+1} 12`} strokeWidth="0.5" />
+        ))}
 
-        {/* First floor windows */}
-        <path d="M18 48 L18 72 L35 72 L35 48 Z" strokeWidth="0.9" />
-        <path d="M65 48 L65 72 L82 72 L82 48 Z" strokeWidth="0.9" />
-        <path d="M26 48 L26 72" strokeWidth="0.6" />
-        <path d="M73 48 L73 72" strokeWidth="0.6" />
-        <path d="M18 60 L35 60" strokeWidth="0.5" opacity="0.7" />
-        <path d="M65 60 L82 60" strokeWidth="0.5" opacity="0.7" />
+        {/* Second floor — 5 tall sash windows (6-over-6 panes) */}
+        {[18, 32, 46, 60, 74].map((x, i) => (
+          <g key={`w2${i}`}>
+            <path d={`M${x} 20 L${x} 38 L${x+12} 38 L${x+12} 20 Z`} strokeWidth="0.9" />
+            {/* Vertical muntin */}
+            <path d={`M${x+6} 20 L${x+6} 38`} strokeWidth="0.5" />
+            {/* Sash meeting rail */}
+            <path d={`M${x} 29 L${x+12} 29`} strokeWidth="0.6" />
+            {/* Horizontal muntins — upper sash */}
+            <path d={`M${x} 24 L${x+12} 24`} strokeWidth="0.35" opacity="0.5" />
+            {/* Horizontal muntins — lower sash */}
+            <path d={`M${x} 33 L${x+12} 33`} strokeWidth="0.35" opacity="0.5" />
+            {/* Stone lintel */}
+            <path d={`M${x-1} 19 L${x+13} 19 L${x+13} 20 L${x-1} 20 Z`} strokeWidth="0.5" />
+            {/* Stone sill */}
+            <path d={`M${x-1} 38 L${x+13} 38 L${x+13} 39 L${x-1} 39 Z`} strokeWidth="0.5" />
+          </g>
+        ))}
 
-        {/* Central entrance door with arch */}
-        <path d="M40 50 L40 88 L60 88 L60 50 Q50 45, 40 50" strokeWidth="1.1" />
-        <path d="M50 50 L50 88" strokeWidth="0.7" />
-        <circle cx="56" cy="70" r="1.5" strokeWidth="0.6" />
-        {/* Door pediment */}
-        <path d="M38 50 L50 42 L62 50 Z" strokeWidth="0.9" />
+        {/* String course between floors */}
+        <path d="M10 42 L90 42" strokeWidth="1.1" />
 
-        {/* Corner quoins (alternating stone blocks) */}
-        <path d="M10 20 L15 20 L15 30 L10 30 Z" opacity="0.6" strokeWidth="0.7" />
-        <path d="M10 35 L15 35 L15 45 L10 45 Z" opacity="0.6" strokeWidth="0.7" />
-        <path d="M10 50 L15 50 L15 60 L10 60 Z" opacity="0.6" strokeWidth="0.7" />
-        <path d="M85 20 L90 20 L90 30 L85 30 Z" opacity="0.6" strokeWidth="0.7" />
-        <path d="M85 35 L90 35 L90 45 L85 45 Z" opacity="0.6" strokeWidth="0.7" />
-        <path d="M85 50 L90 50 L90 60 L85 60 Z" opacity="0.6" strokeWidth="0.7" />
+        {/* First floor — 4 sash windows flanking central door */}
+        {[18, 32, 60, 74].map((x, i) => (
+          <g key={`w1${i}`}>
+            <path d={`M${x} 48 L${x} 72 L${x+12} 72 L${x+12} 48 Z`} strokeWidth="0.9" />
+            <path d={`M${x+6} 48 L${x+6} 72`} strokeWidth="0.5" />
+            <path d={`M${x} 60 L${x+12} 60`} strokeWidth="0.6" />
+            <path d={`M${x} 54 L${x+12} 54`} strokeWidth="0.35" opacity="0.5" />
+            <path d={`M${x} 66 L${x+12} 66`} strokeWidth="0.35" opacity="0.5" />
+            {/* Lintel and sill */}
+            <path d={`M${x-1} 47 L${x+13} 47 L${x+13} 48 L${x-1} 48 Z`} strokeWidth="0.5" />
+            <path d={`M${x-1} 72 L${x+13} 72 L${x+13} 73 L${x-1} 73 Z`} strokeWidth="0.5" />
+          </g>
+        ))}
 
-        {/* Water table/base course */}
-        <path d="M10 90 L90 90" strokeWidth="1.4" />
+        {/* Classical doorcase with fanlight */}
+        {/* Fanlight — semi-elliptical with radiating bars */}
+        <path d="M44 48 Q50 42, 56 48 L56 52 L44 52 Z" strokeWidth="1" />
+        <path d="M50 43 L50 52" strokeWidth="0.5" />
+        <path d="M50 43 L46 50" strokeWidth="0.4" />
+        <path d="M50 43 L54 50" strokeWidth="0.4" />
+        {/* Door frame with pilasters */}
+        <path d="M42 48 L42 88 L58 88 L58 48" strokeWidth="1.2" />
+        {/* Pilasters */}
+        <path d="M42 48 L44 48 L44 88 L42 88 Z" strokeWidth="0.6" />
+        <path d="M56 48 L58 48 L58 88 L56 88 Z" strokeWidth="0.6" />
+        {/* Six-panel door */}
+        <path d="M45 52 L45 88 L55 88 L55 52 Z" strokeWidth="0.9" />
+        <path d="M50 52 L50 88" strokeWidth="0.7" />
+        {/* Door panels */}
+        <path d="M46 54 L46 60 L49 60 L49 54 Z" strokeWidth="0.4" />
+        <path d="M51 54 L51 60 L54 60 L54 54 Z" strokeWidth="0.4" />
+        <path d="M46 64 L46 74 L49 74 L49 64 Z" strokeWidth="0.4" />
+        <path d="M51 64 L51 74 L54 74 L54 64 Z" strokeWidth="0.4" />
+        <path d="M46 78 L46 86 L49 86 L49 78 Z" strokeWidth="0.4" />
+        <path d="M51 78 L51 86 L54 86 L54 78 Z" strokeWidth="0.4" />
+        {/* Door knocker */}
+        <circle cx="53" cy="69" r="1.5" strokeWidth="0.7" />
+        {/* Pediment over door */}
+        <path d="M40 48 L50 42 L60 48 Z" strokeWidth="1" />
+
+        {/* Corner quoins — alternating large/small stone blocks */}
+        {[18, 30, 42, 54, 66, 78].map((y, i) => (
+          <g key={`q${i}`}>
+            <path d={`M10 ${y} L${i % 2 === 0 ? 15 : 14} ${y} L${i % 2 === 0 ? 15 : 14} ${y+6} L10 ${y+6} Z`} opacity="0.5" strokeWidth="0.6" />
+            <path d={`M${i % 2 === 0 ? 86 : 85} ${y} L90 ${y} L90 ${y+6} L${i % 2 === 0 ? 86 : 85} ${y+6} Z`} opacity="0.5" strokeWidth="0.6" />
+          </g>
+        ))}
+
+        {/* Plinth/water table */}
+        <path d="M10 84 L90 84" strokeWidth="0.7" opacity="0.6" />
+        <path d="M10 90 L90 90" strokeWidth="1.5" />
+        {/* Steps to door */}
+        <path d="M40 88 L40 92 L60 92 L60 88" strokeWidth="0.7" />
+        <path d="M42 90 L58 90" strokeWidth="0.4" />
       </g>
     </g>
   </svg>
@@ -486,45 +659,85 @@ const LoggiaSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M60 92 L62 96 L64 92 L66 96 L68 92" strokeWidth="0.3" />
       </g>
 
-      {/* === PRIMARY: Loggia arcade === */}
+      {/* === PRIMARY: Renaissance palazzo loggia — round arches on Corinthian columns with coffered vault === */}
       <g strokeWidth="0.8">
-        {/* Entablature/cornice */}
-        <path d="M5 25 L95 25" strokeWidth="1.6" />
-        <path d="M3 28 L97 28" strokeWidth="1.1" />
-
-        {/* Arcade arches (rounded classical arches) */}
-        <path d="M8 28 L8 85 Q25 50, 42 85 L42 28" strokeWidth="1.2" />
-        <path d="M42 28 L42 85 Q58 50, 75 85 L75 28" strokeWidth="1.2" />
-        <path d="M75 28 L75 85 Q92 50, 92 85" strokeWidth="1.2" />
-
-        {/* Columns */}
-        <path d="M8 28 L8 88" strokeWidth="1.8" />
-        <path d="M42 28 L42 88" strokeWidth="1.8" />
-        <path d="M75 28 L75 88" strokeWidth="1.8" />
-        <path d="M92 28 L92 88" strokeWidth="1.8" />
-
-        {/* Column bases (Attic style) */}
-        <path d="M5 88 L11 88 L11 92 L5 92 Z" strokeWidth="0.9" />
-        <path d="M39 88 L45 88 L45 92 L39 92 Z" strokeWidth="0.9" />
-        <path d="M72 88 L78 88 L78 92 L72 92 Z" strokeWidth="0.9" />
-        <path d="M89 88 L95 88 L95 92 L89 92 Z" strokeWidth="0.9" />
-
-        {/* Capitals (simplified Doric) */}
-        <path d="M5 28 L11 28 L12 32 L4 32 Z" strokeWidth="0.9" />
-        <path d="M39 28 L45 28 L46 32 L38 32 Z" strokeWidth="0.9" />
-        <path d="M72 28 L78 28 L79 32 L71 32 Z" strokeWidth="0.9" />
-        <path d="M89 28 L95 28 L96 32 L88 32 Z" strokeWidth="0.9" />
-
-        {/* Balustrade in first bay */}
-        <path d="M12 75 L38 75" strokeWidth="0.8" />
-        <path d="M12 85 L38 85" strokeWidth="0.8" />
-        {[18, 25, 32].map((x, i) => (
-          <path key={i} d={`M${x} 75 Q${x-2} 80, ${x} 85`} strokeWidth="0.6" />
+        {/* Heavy entablature with projecting cornice */}
+        <path d="M2 22 L98 22 L98 26 L2 26 Z" strokeWidth="1.2" />
+        <path d="M0 20 L100 20 L100 22 L0 22 Z" strokeWidth="1.4" />
+        {/* Dentil molding on cornice */}
+        {[8, 14, 20, 26, 32, 38, 44, 50, 56, 62, 68, 74, 80, 86, 92].map((x, i) => (
+          <path key={`ld${i}`} d={`M${x-1} 22 L${x-1} 24 L${x+1} 24 L${x+1} 22`} strokeWidth="0.4" />
         ))}
 
-        {/* Arch keystones */}
-        <path d="M24 50 L26 50 L26 55 L24 55 Z" strokeWidth="0.6" opacity="0.7" />
-        <path d="M58 50 L60 50 L60 55 L58 55 Z" strokeWidth="0.6" opacity="0.7" />
+        {/* Three round arches — proper semicircular with voussoirs */}
+        {/* Left arch */}
+        <path d="M8 28 Q25 10, 42 28" strokeWidth="1.4" />
+        <path d="M8 28 L8 85" strokeWidth="1" />
+        <path d="M42 28 L42 85" strokeWidth="1" />
+        {/* Voussoir stones radiating in arch */}
+        <path d="M25 12 L25 18" strokeWidth="0.5" />
+        <path d="M18 16 L19 22" strokeWidth="0.4" />
+        <path d="M32 16 L31 22" strokeWidth="0.4" />
+        {/* Keystone — carved and projecting */}
+        <path d="M23 11 L23 19 L27 19 L27 11 Z" strokeWidth="0.7" />
+
+        {/* Center arch */}
+        <path d="M42 28 Q58 10, 75 28" strokeWidth="1.4" />
+        <path d="M58 12 L58 18" strokeWidth="0.5" />
+        <path d="M51 16 L52 22" strokeWidth="0.4" />
+        <path d="M65 16 L64 22" strokeWidth="0.4" />
+        <path d="M56 11 L56 19 L60 19 L60 11 Z" strokeWidth="0.7" />
+
+        {/* Right arch */}
+        <path d="M75 28 Q92 10, 92 28" strokeWidth="1.4" />
+        <path d="M83 14 L83 20" strokeWidth="0.5" />
+        <path d="M80 16 L81 22" strokeWidth="0.4" />
+        <path d="M87 18 L86 23" strokeWidth="0.4" />
+        <path d="M82 13 L82 21 L85 21 L85 13 Z" strokeWidth="0.7" />
+
+        {/* Corinthian columns — with fluted shafts and acanthus capitals */}
+        {[8, 42, 75, 92].map((x, i) => (
+          <g key={`lc${i}`}>
+            {/* Column shaft */}
+            <path d={`M${x-3} 28 L${x-3} 85`} strokeWidth="1.2" />
+            <path d={`M${x+3} 28 L${x+3} 85`} strokeWidth="1.2" />
+            {/* Fluting lines */}
+            <path d={`M${x-1} 32 L${x-1} 82`} strokeWidth="0.3" opacity="0.4" />
+            <path d={`M${x+1} 32 L${x+1} 82`} strokeWidth="0.3" opacity="0.4" />
+            {/* Entasis — slight swelling at 1/3 height */}
+            <path d={`M${x-3.5} 48 Q${x-4} 55, ${x-3.5} 62`} strokeWidth="0.3" opacity="0.3" />
+            <path d={`M${x+3.5} 48 Q${x+4} 55, ${x+3.5} 62`} strokeWidth="0.3" opacity="0.3" />
+
+            {/* Corinthian capital — acanthus leaves and volutes */}
+            <path d={`M${x-5} 28 L${x+5} 28`} strokeWidth="1" />
+            <path d={`M${x-5} 28 L${x-6} 32 L${x+6} 32 L${x+5} 28`} strokeWidth="0.8" />
+            <path d={`M${x-4} 29 Q${x-2} 27, ${x} 29 Q${x+2} 27, ${x+4} 29`} strokeWidth="0.4" opacity="0.6" />
+
+            {/* Attic base — torus, scotia, torus */}
+            <path d={`M${x-5} 85 L${x+5} 85 L${x+5} 87 L${x-5} 87 Z`} strokeWidth="0.7" />
+            <path d={`M${x-4} 87 L${x+4} 87 L${x+4} 89 L${x-4} 89 Z`} strokeWidth="0.6" />
+            <path d={`M${x-5} 89 L${x+5} 89 L${x+6} 92 L${x-6} 92 Z`} strokeWidth="0.8" />
+          </g>
+        ))}
+
+        {/* Impost blocks at arch springs */}
+        {[8, 42, 75, 92].map((x, i) => (
+          <path key={`li${i}`} d={`M${x-5} 26 L${x+5} 26 L${x+5} 28 L${x-5} 28 Z`} strokeWidth="0.6" />
+        ))}
+
+        {/* Stone balustrade in first bay — turned balusters */}
+        <path d="M12 72 L38 72" strokeWidth="0.9" />
+        <path d="M12 82 L38 82" strokeWidth="0.9" />
+        {[16, 21, 26, 31, 36].map((x, i) => (
+          <g key={`lb${i}`}>
+            <path d={`M${x} 72 Q${x-1} 77, ${x} 82`} strokeWidth="0.6" />
+            <path d={`M${x} 72 Q${x+1} 77, ${x} 82`} strokeWidth="0.6" />
+          </g>
+        ))}
+
+        {/* Coffered vault pattern visible inside arches */}
+        <path d="M15 22 Q25 15, 35 22" strokeWidth="0.3" opacity="0.3" />
+        <path d="M48 22 Q58 15, 68 22" strokeWidth="0.3" opacity="0.3" />
       </g>
     </g>
   </svg>
@@ -568,47 +781,71 @@ const MarqueeSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M5 93 L95 93" strokeWidth="0.4" />
       </g>
 
-      {/* === PRIMARY: Marquee structure === */}
+      {/* === PRIMARY: Art Deco cinema marquee — stepped massing, chevrons, neon, blade sign === */}
       <g strokeWidth="0.8">
-        {/* Main canopy projection */}
-        <path d="M15 40 L85 40 L88 48 L12 48 Z" strokeWidth="1.2" />
-        {/* Stepped fascia edge */}
-        <path d="M12 48 L12 52 L88 52 L88 48" strokeWidth="1.1" />
-        <path d="M15 52 L15 55 L85 55 L85 52" strokeWidth="1" />
+        {/* Vertical blade/tower sign — dominant Art Deco element rising above roofline */}
+        <path d="M43 10 L43 40 L57 40 L57 10 Z" strokeWidth="1.3" />
+        {/* Stepped/setback crown on blade sign */}
+        <path d="M45 10 L45 6 L55 6 L55 10" strokeWidth="1" />
+        <path d="M47 6 L47 3 L53 3 L53 6" strokeWidth="0.8" />
+        {/* Neon border on blade sign */}
+        <path d="M44 12 L44 38 L56 38 L56 12 Z" strokeWidth="0.5" opacity="0.6" />
+        {/* Vertical lettering lines */}
+        <path d="M48 14 L48 36" strokeWidth="0.6" opacity="0.5" />
+        <path d="M50 14 L50 36" strokeWidth="0.6" opacity="0.5" />
+        <path d="M52 14 L52 36" strokeWidth="0.6" opacity="0.5" />
 
-        {/* Decorative light bulbs */}
-        {[20, 30, 40, 50, 60, 70, 80].map((x, i) => (
-          <circle key={i} cx={x} cy="50" r="2" strokeWidth="0.7" />
+        {/* Main canopy — deep projecting marquee with stepped fascia */}
+        <path d="M12 40 L88 40 L90 46 L10 46 Z" strokeWidth="1.3" />
+        {/* Stepped fascia layers — characteristic Art Deco setback profile */}
+        <path d="M10 46 L10 50 L90 50 L90 46" strokeWidth="1.2" />
+        <path d="M13 50 L13 53 L87 53 L87 50" strokeWidth="1" />
+        <path d="M16 53 L16 55 L84 55 L84 53" strokeWidth="0.9" />
+
+        {/* Chase light bulbs along marquee edges */}
+        {[18, 24, 30, 36, 42, 50, 58, 64, 70, 76, 82].map((x, i) => (
+          <circle key={`b1${i}`} cx={x} cy="48" r="1.5" strokeWidth="0.6" />
+        ))}
+        {/* Second row of bulbs */}
+        {[20, 28, 36, 44, 52, 60, 68, 76, 84].map((x, i) => (
+          <circle key={`b2${i}`} cx={x} cy="52" r="1" strokeWidth="0.5" opacity="0.7" />
         ))}
 
-        {/* Wall mounting brackets */}
-        <path d="M20 40 L20 35 Q18 33, 20 32" strokeWidth="1" />
-        <path d="M80 40 L80 35 Q82 33, 80 32" strokeWidth="1" />
+        {/* NOW SHOWING panel — illuminated letter board */}
+        <path d="M20 42 L42 42 L42 45 L20 45 Z" strokeWidth="0.7" opacity="0.6" />
+        <path d="M58 42 L80 42 L80 45 L58 45 Z" strokeWidth="0.7" opacity="0.6" />
 
-        {/* Vertical blade sign */}
-        <path d="M45 25 L45 40 L55 40 L55 25 Z" strokeWidth="1.1" />
-        <path d="M48 28 L48 38" strokeWidth="0.6" opacity="0.6" />
-        <path d="M52 28 L52 38" strokeWidth="0.6" opacity="0.6" />
+        {/* Chevron/zigzag ornamental band — characteristic Art Deco motif */}
+        <path d="M16 55 L20 57 L24 55 L28 57 L32 55 L36 57 L40 55 L44 57 L48 55 L52 57 L56 55 L60 57 L64 55 L68 57 L72 55 L76 57 L80 55 L84 57" strokeWidth="0.7" />
 
-        {/* Theater name panels */}
-        <path d="M25 42 L40 42 L40 46 L25 46 Z" opacity="0.6" strokeWidth="0.7" />
-        <path d="M60 42 L75 42 L75 46 L60 46 Z" opacity="0.6" strokeWidth="0.7" />
+        {/* Sunburst/fan motif above entry */}
+        <path d="M50 60 L42 68 M50 60 L46 70 M50 60 L50 72 M50 60 L54 70 M50 60 L58 68" strokeWidth="0.5" opacity="0.6" />
+        <path d="M50 60 L40 66 M50 60 L60 66" strokeWidth="0.4" opacity="0.4" />
 
-        {/* Entry doors beneath */}
-        <path d="M35 58 L35 88 L65 88 L65 58 Z" strokeWidth="1" />
-        {/* Double door division */}
-        <path d="M38 62 L38 88 L50 88 L50 62 Z" strokeWidth="0.9" />
-        <path d="M50 62 L50 88 L62 88 L62 62 Z" strokeWidth="0.9" />
-        <circle cx="47" cy="75" r="1.5" strokeWidth="0.6" />
-        <circle cx="53" cy="75" r="1.5" strokeWidth="0.6" />
+        {/* Fluted pilasters flanking entrance */}
+        <path d="M30 55 L30 88 L34 88 L34 55 Z" strokeWidth="0.9" />
+        <path d="M31 57 L31 86 M32 57 L32 86 M33 57 L33 86" strokeWidth="0.3" opacity="0.4" />
+        <path d="M66 55 L66 88 L70 88 L70 55 Z" strokeWidth="0.9" />
+        <path d="M67 57 L67 86 M68 57 L68 86 M69 57 L69 86" strokeWidth="0.3" opacity="0.4" />
 
-        {/* Neon accent edges */}
-        <path d="M12 48 L12 55" strokeWidth="2" opacity="0.7" />
-        <path d="M88 48 L88 55" strokeWidth="2" opacity="0.7" />
+        {/* Double entry doors with Art Deco glazing pattern */}
+        <path d="M36 60 L36 88 L64 88 L64 60 Z" strokeWidth="1.1" />
+        <path d="M50 60 L50 88" strokeWidth="1" />
+        {/* Geometric glazing — speed lines/stepped pattern */}
+        <path d="M38 64 L48 64 L48 72 L38 72 Z" strokeWidth="0.7" />
+        <path d="M40 66 L46 66 L46 70 L40 70 Z" strokeWidth="0.4" />
+        <path d="M52 64 L62 64 L62 72 L52 72 Z" strokeWidth="0.7" />
+        <path d="M54 66 L60 66 L60 70 L54 70 Z" strokeWidth="0.4" />
+        {/* Push bars */}
+        <path d="M42 78 L48 78" strokeWidth="1.5" />
+        <path d="M52 78 L58 78" strokeWidth="1.5" />
 
-        {/* Art Deco corner details */}
-        <path d="M15 40 L12 40 L12 43" strokeWidth="0.6" opacity="0.6" />
-        <path d="M85 40 L88 40 L88 43" strokeWidth="0.6" opacity="0.6" />
+        {/* Neon vertical accent strips — speed lines */}
+        <path d="M10 46 L10 55" strokeWidth="2.5" opacity="0.6" />
+        <path d="M90 46 L90 55" strokeWidth="2.5" opacity="0.6" />
+
+        {/* Terrazzo entry step */}
+        <path d="M30 88 L70 88 L72 92 L28 92 Z" strokeWidth="0.8" />
       </g>
     </g>
   </svg>
@@ -647,48 +884,77 @@ const PorticoSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M-5 96 L105 96" strokeWidth="0.4" />
       </g>
 
-      {/* === PRIMARY: Portico structure === */}
+      {/* === PRIMARY: Neoclassical hexastyle portico — 6 Ionic columns, sculpted pediment, deep porch === */}
       <g strokeWidth="0.8">
-        {/* Triangular pediment */}
-        <path d="M10 25 L50 8 L90 25 Z" strokeWidth="1.3" />
-        <path d="M15 25 L50 12 L85 25" strokeWidth="0.5" opacity="0.6" />
-        {/* Tympanum ornament */}
-        <circle cx="50" cy="20" r="4" strokeWidth="0.7" />
+        {/* Triangular pediment with raking cornice */}
+        <path d="M5 25 L50 5 L95 25 Z" strokeWidth="1.5" />
+        {/* Inner tympanum field */}
+        <path d="M12 25 L50 10 L88 25" strokeWidth="0.6" opacity="0.6" />
+        {/* Sculptural relief in tympanum — central figure with flanking recumbent figures */}
+        <path d="M50 14 L50 22" strokeWidth="0.6" opacity="0.5" />
+        <path d="M48 16 L52 16" strokeWidth="0.5" opacity="0.5" />
+        <path d="M38 22 Q40 18, 44 20" strokeWidth="0.4" opacity="0.4" />
+        <path d="M62 22 Q60 18, 56 20" strokeWidth="0.4" opacity="0.4" />
+        {/* Reclining river god figures at pediment corners */}
+        <path d="M18 24 Q22 20, 28 23" strokeWidth="0.4" opacity="0.35" />
+        <path d="M82 24 Q78 20, 72 23" strokeWidth="0.4" opacity="0.35" />
+        {/* Acroteria — corner and apex ornaments */}
+        <path d="M50 5 L50 2" strokeWidth="0.7" />
+        <path d="M49 2 L51 2 L50 0 Z" strokeWidth="0.5" />
+        <path d="M6 25 L4 23" strokeWidth="0.5" />
+        <path d="M94 25 L96 23" strokeWidth="0.5" />
 
-        {/* Entablature */}
-        <path d="M8 25 L92 25" strokeWidth="1.7" />
-        <path d="M10 28 L90 28 L90 35 L10 35 Z" strokeWidth="1" />
+        {/* Cornice/geison — projecting with mutules */}
+        <path d="M3 25 L97 25" strokeWidth="2" />
+        {/* Raking cornice molding */}
+        <path d="M5 25 L50 6" strokeWidth="0.5" opacity="0.5" />
+        <path d="M95 25 L50 6" strokeWidth="0.5" opacity="0.5" />
 
-        {/* Four columns (Ionic order) */}
-        <path d="M18 35 L18 85" strokeWidth="2.2" />
-        <path d="M38 35 L38 85" strokeWidth="2.2" />
-        <path d="M62 35 L62 85" strokeWidth="2.2" />
-        <path d="M82 35 L82 85" strokeWidth="2.2" />
+        {/* Entablature — frieze and architrave */}
+        <path d="M5 27 L95 27 L95 32 L5 32 Z" strokeWidth="1" />
+        {/* Frieze — continuous band with relief inscription suggestion */}
+        <path d="M10 28 L90 28" strokeWidth="0.4" opacity="0.5" />
+        <path d="M10 31 L90 31" strokeWidth="0.4" opacity="0.5" />
+        {/* Architrave */}
+        <path d="M5 32 L95 32 L95 36 L5 36 Z" strokeWidth="0.9" />
 
-        {/* Ionic capitals with volutes */}
-        {[18, 38, 62, 82].map((x, i) => (
-          <g key={i}>
-            <path d={`M${x-5} 35 L${x+5} 35`} strokeWidth="1" />
-            {/* Left volute */}
-            <path d={`M${x-6} 38 Q${x-8} 36, ${x-8} 38 Q${x-8} 40, ${x-6} 38`} strokeWidth="0.6" />
-            {/* Right volute */}
-            <path d={`M${x+6} 38 Q${x+8} 36, ${x+8} 38 Q${x+8} 40, ${x+6} 38`} strokeWidth="0.6" />
+        {/* Six Ionic columns — hexastyle arrangement */}
+        {[12, 28, 42, 58, 72, 88].map((x, i) => (
+          <g key={`pc${i}`}>
+            {/* Column shaft with slight entasis */}
+            <path d={`M${x-3} 36 L${x-3.5} 55 L${x-3} 82`} strokeWidth="1.3" />
+            <path d={`M${x+3} 36 L${x+3.5} 55 L${x+3} 82`} strokeWidth="1.3" />
+            {/* Fluting */}
+            <path d={`M${x-1} 38 L${x-1} 80`} strokeWidth="0.3" opacity="0.35" />
+            <path d={`M${x+1} 38 L${x+1} 80`} strokeWidth="0.3" opacity="0.35" />
+
+            {/* Ionic capital — abacus, echinus, and volute scrolls */}
+            <path d={`M${x-5} 36 L${x+5} 36`} strokeWidth="1.1" />
+            {/* Volute scrolls */}
+            <path d={`M${x-5} 38 Q${x-7} 36, ${x-7} 38 Q${x-7} 40, ${x-5} 39`} strokeWidth="0.6" />
+            <path d={`M${x+5} 38 Q${x+7} 36, ${x+7} 38 Q${x+7} 40, ${x+5} 39`} strokeWidth="0.6" />
+            {/* Echinus (egg-and-dart band) */}
+            <path d={`M${x-4} 37 Q${x-2} 38, ${x} 37 Q${x+2} 38, ${x+4} 37`} strokeWidth="0.4" opacity="0.5" />
+
+            {/* Attic base — torus, scotia, torus, plinth */}
+            <path d={`M${x-4} 82 L${x+4} 82 L${x+5} 84 L${x-5} 84 Z`} strokeWidth="0.8" />
+            <path d={`M${x-4} 84 L${x+4} 84 L${x+4} 85 L${x-4} 85 Z`} strokeWidth="0.5" />
+            <path d={`M${x-5} 85 L${x+5} 85 L${x+6} 87 L${x-6} 87 Z`} strokeWidth="0.8" />
           </g>
         ))}
 
-        {/* Column bases (Attic style) */}
-        {[18, 38, 62, 82].map((x, i) => (
-          <path key={i} d={`M${x-4} 85 L${x+4} 85 L${x+5} 88 L${x-5} 88 Z`} strokeWidth="0.9" />
-        ))}
+        {/* Three-stepped crepidoma/stylobate */}
+        <path d="M2 87 L98 87" strokeWidth="1.3" />
+        <path d="M0 91 L100 91" strokeWidth="1.2" />
+        <path d="M-2 95 L102 95" strokeWidth="1.4" />
+        {/* Step risers */}
+        <path d="M2 87 L2 91 M98 87 L98 91" strokeWidth="0.5" />
+        <path d="M0 91 L0 95 M100 91 L100 95" strokeWidth="0.5" />
 
-        {/* Stylobate (stepped platform) */}
-        <path d="M5 88 L95 88" strokeWidth="1.2" />
-        <path d="M3 92 L97 92" strokeWidth="1.1" />
-        <path d="M0 96 L100 96" strokeWidth="1.3" />
-
-        {/* Door behind columns */}
-        <path d="M42 45 L42 85 L58 85 L58 45 Q50 40, 42 45" opacity="0.6" strokeWidth="0.8" />
-        <path d="M50 45 L50 85" opacity="0.5" strokeWidth="0.5" />
+        {/* Cella wall and door behind columns */}
+        <path d="M20 36 L20 85 L80 85 L80 36" strokeWidth="0.5" opacity="0.4" />
+        <path d="M42 42 L42 85 L58 85 L58 42 Q50 38, 42 42" opacity="0.5" strokeWidth="0.7" />
+        <path d="M50 42 L50 85" opacity="0.4" strokeWidth="0.4" />
       </g>
     </g>
   </svg>
@@ -733,48 +999,78 @@ const StorefrontSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M2 72 Q-1 65, 2 60 Q5 55, 2 50" strokeWidth="0.4" opacity="0.25" />
       </g>
 
-      {/* === PRIMARY: Storefront system === */}
+      {/* === PRIMARY: SoHo cast-iron storefront — modular iron columns, arched transoms, wide plate glass === */}
       <g strokeWidth="0.8">
-        {/* Cornice/signband */}
-        <path d="M8 30 L92 30 L92 40 L8 40 Z" strokeWidth="1.2" />
-        <path d="M15 33 L85 33 L85 38 L15 38 Z" opacity="0.6" strokeWidth="0.7" />
+        {/* Ornate cast-iron signboard cornice — pressed metal with scrolled brackets */}
+        <path d="M8 28 L92 28 L92 32 L8 32 Z" strokeWidth="1.2" />
+        <path d="M6 26 L94 26 L94 28 L6 28 Z" strokeWidth="1" />
+        {/* Scrolled bracket supports under cornice */}
+        <path d="M15 32 Q13 35, 15 38" strokeWidth="0.7" />
+        <path d="M35 32 Q33 35, 35 38" strokeWidth="0.7" />
+        <path d="M65 32 Q63 35, 65 38" strokeWidth="0.7" />
+        <path d="M85 32 Q83 35, 85 38" strokeWidth="0.7" />
+        {/* Signboard panel — painted store name */}
+        <path d="M15 29 L85 29 L85 31 L15 31 Z" strokeWidth="0.5" opacity="0.6" />
 
-        {/* Large display windows */}
-        <path d="M12 43 L12 82 L42 82 L42 43 Z" strokeWidth="1.1" />
-        <path d="M58 43 L58 82 L88 82 L88 43 Z" strokeWidth="1.1" />
+        {/* Slender cast-iron Corinthian pilasters dividing bays */}
+        {[10, 35, 50, 65, 90].map((x, i) => (
+          <g key={`sp${i}`}>
+            <path d={`M${x-1.5} 32 L${x-1.5} 88`} strokeWidth="1.2" />
+            <path d={`M${x+1.5} 32 L${x+1.5} 88`} strokeWidth="1.2" />
+            {/* Cast column fluting */}
+            <path d={`M${x} 36 L${x} 85`} strokeWidth="0.3" opacity="0.4" />
+            {/* Composite capital */}
+            <path d={`M${x-3} 32 L${x+3} 32 L${x+3} 35 L${x-3} 35 Z`} strokeWidth="0.6" />
+            <path d={`M${x-2} 33 Q${x} 31, ${x+2} 33`} strokeWidth="0.3" opacity="0.5" />
+            {/* Base */}
+            <path d={`M${x-2} 86 L${x+2} 86 L${x+2} 88 L${x-2} 88 Z`} strokeWidth="0.5" />
+          </g>
+        ))}
 
-        {/* Vertical mullions */}
-        <path d="M27 43 L27 82" strokeWidth="0.9" />
-        <path d="M73 43 L73 82" strokeWidth="0.9" />
+        {/* Large plate-glass display windows — unusually wide for the era */}
+        {/* Left bay */}
+        <path d="M12 38 L12 82 L33 82 L33 38 Z" strokeWidth="1" />
+        {/* Segmental arch transom */}
+        <path d="M12 38 Q22 32, 33 38" strokeWidth="0.9" />
+        <path d="M22 34 L22 38" strokeWidth="0.4" />
+        {/* Display glass */}
+        <path d="M14 42 L14 80 L31 80 L31 42 Z" strokeWidth="0.5" />
 
-        {/* Transom windows above */}
-        <path d="M12 43 L42 43 L42 52 L12 52 Z" strokeWidth="0.9" />
-        <path d="M58 43 L88 43 L88 52 L58 52 Z" strokeWidth="0.9" />
-        <path d="M27 43 L27 52" strokeWidth="0.6" />
-        <path d="M73 43 L73 52" strokeWidth="0.6" />
+        {/* Right bay */}
+        <path d="M37 38 L37 82 L48 82 L48 38 Z" strokeWidth="1" />
+        <path d="M37 38 Q42 34, 48 38" strokeWidth="0.9" />
 
-        {/* Recessed entry door */}
-        <path d="M44 50 L44 88 L56 88 L56 50 Z" strokeWidth="1" />
-        <path d="M46 53 L46 88 L54 88 L54 53 Z" strokeWidth="1" />
-        <circle cx="52" cy="72" r="1.5" strokeWidth="0.6" />
-        {/* Door push bar */}
-        <path d="M48 70 L52 70" strokeWidth="0.5" opacity="0.6" />
+        {/* Center entry — recessed with tiled floor */}
+        <path d="M52 38 L52 88 L63 88 L63 38 Z" strokeWidth="1" />
+        <path d="M52 38 Q57 34, 63 38" strokeWidth="0.9" />
+        {/* Entry door */}
+        <path d="M54 48 L54 88 L61 88 L61 48 Z" strokeWidth="0.9" />
+        <path d="M57 48 L57 88" strokeWidth="0.6" />
+        <circle cx="59" cy="70" r="1.5" strokeWidth="0.6" />
+        {/* Tiled entry floor */}
+        <path d="M52 86 L63 86" strokeWidth="0.3" opacity="0.4" />
+        <path d="M52 84 L63 84" strokeWidth="0.3" opacity="0.4" />
 
-        {/* Bulkhead/kickplate panels */}
-        <path d="M12 82 L42 82 L42 88 L12 88 Z" strokeWidth="0.9" />
-        <path d="M58 82 L88 82 L88 88 L58 88 Z" strokeWidth="0.9" />
-        <path d="M27 82 L27 88" strokeWidth="0.6" />
-        <path d="M73 82 L73 88" strokeWidth="0.6" />
+        {/* Right display bay */}
+        <path d="M67 38 L67 82 L88 82 L88 38 Z" strokeWidth="1" />
+        <path d="M67 38 Q77 32, 88 38" strokeWidth="0.9" />
+        <path d="M77 34 L77 38" strokeWidth="0.4" />
+        <path d="M69 42 L69 80 L86 80 L86 42 Z" strokeWidth="0.5" />
+
+        {/* Cast-iron bulkhead/kickplates — paneled */}
+        <path d="M12 82 L33 82 L33 88 L12 88 Z" strokeWidth="0.9" />
+        <path d="M14 83 L14 87 L22 87 L22 83 Z" strokeWidth="0.4" opacity="0.5" />
+        <path d="M24 83 L24 87 L31 87 L31 83 Z" strokeWidth="0.4" opacity="0.5" />
+        <path d="M67 82 L88 82 L88 88 L67 88 Z" strokeWidth="0.9" />
+        <path d="M69 83 L69 87 L77 87 L77 83 Z" strokeWidth="0.4" opacity="0.5" />
+        <path d="M79 83 L79 87 L86 87 L86 83 Z" strokeWidth="0.4" opacity="0.5" />
 
         {/* Sidewalk/threshold */}
-        <path d="M5 88 L95 88" strokeWidth="1.4" />
-        <path d="M5 92 L95 92" strokeWidth="0.6" opacity="0.6" />
+        <path d="M5 88 L95 88" strokeWidth="1.5" />
 
-        {/* Display merchandise suggestion */}
-        <path d="M18 70 L22 65 L26 70 Z" opacity="0.5" strokeWidth="0.6" />
-        <path d="M64 68 L68 62 L72 68 Z" opacity="0.5" strokeWidth="0.6" />
-        <path d="M32 72 L36 67 L32 72" opacity="0.4" strokeWidth="0.5" />
-        <path d="M78 70 L82 65 L78 70" opacity="0.4" strokeWidth="0.5" />
+        {/* Display merchandise silhouettes */}
+        <path d="M18 70 L22 64 L26 70 Z" opacity="0.4" strokeWidth="0.5" />
+        <path d="M72 68 L76 62 L80 68 Z" opacity="0.4" strokeWidth="0.5" />
       </g>
     </g>
   </svg>
@@ -820,58 +1116,87 @@ const VerandaSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M-10 92 L110 92" />
       </g>
 
-      {/* === PRIMARY: Veranda structure === */}
+      {/* === PRIMARY: Southern antebellum gallery — tall classical columns, wrap-around, ceiling fans === */}
       <g strokeWidth="0.8">
-        {/* Sloped roof */}
-        <path d="M5 25 L50 15 L95 25 L95 35 L5 35 Z" strokeWidth="1.2" />
-        <path d="M8 30 Q50 22, 92 30" strokeWidth="0.5" opacity="0.6" />
-
-        {/* Exposed rafters */}
-        {[15, 30, 50, 70, 85].map((x, i) => (
-          <path key={i} d={`M${x} 25 L${x} 35`} opacity="0.5" strokeWidth="0.6" />
+        {/* Hipped gallery roof with wide overhang */}
+        <path d="M2 22 L50 12 L98 22 L98 30 L2 30 Z" strokeWidth="1.2" />
+        {/* Roof depth/soffit */}
+        <path d="M2 30 L98 30" strokeWidth="1.4" />
+        {/* Exposed rafter tails at eave */}
+        {[8, 18, 28, 38, 48, 58, 68, 78, 88].map((x, i) => (
+          <path key={`vr${i}`} d={`M${x} 26 L${x} 30`} strokeWidth="0.5" opacity="0.5" />
         ))}
 
-        {/* Fascia board */}
-        <path d="M5 35 L95 35" strokeWidth="1.2" />
-
-        {/* Decorative fretwork/valance */}
-        <path d="M8 38 Q15 42, 22 38 Q29 42, 36 38 Q43 42, 50 38 Q57 42, 64 38 Q71 42, 78 38 Q85 42, 92 38" strokeWidth="0.8" />
-
-        {/* Vertical support posts */}
-        <path d="M12 35 L12 85" strokeWidth="1.4" />
-        <path d="M35 35 L35 85" strokeWidth="1.4" />
-        <path d="M65 35 L65 85" strokeWidth="1.4" />
-        <path d="M88 35 L88 85" strokeWidth="1.4" />
-
-        {/* Decorative post brackets */}
-        {[12, 35, 65, 88].map((x, i) => (
-          <g key={i}>
-            <path d={`M${x} 38 Q${x-4} 42, ${x-4} 48`} strokeWidth="0.7" />
-            <path d={`M${x} 38 Q${x+4} 42, ${x+4} 48`} strokeWidth="0.7" />
+        {/* Six tall classical columns — full-height Doric order */}
+        {[8, 24, 40, 60, 76, 92].map((x, i) => (
+          <g key={`vc${i}`}>
+            {/* Column shaft — tapered with entasis */}
+            <path d={`M${x-2.5} 30 L${x-2} 55 L${x-2.5} 82`} strokeWidth="1.5" />
+            <path d={`M${x+2.5} 30 L${x+2} 55 L${x+2.5} 82`} strokeWidth="1.5" />
+            {/* Fluting suggestion */}
+            <path d={`M${x} 33 L${x} 80`} strokeWidth="0.3" opacity="0.3" />
+            {/* Simple Doric capital — echinus and abacus */}
+            <path d={`M${x-4} 30 L${x+4} 30`} strokeWidth="1" />
+            <path d={`M${x-3.5} 31 Q${x} 33, ${x+3.5} 31`} strokeWidth="0.5" opacity="0.5" />
+            {/* Column base */}
+            <path d={`M${x-3} 82 L${x+3} 82 L${x+4} 84 L${x-4} 84 Z`} strokeWidth="0.8" />
           </g>
         ))}
 
-        {/* Railing system */}
-        <path d="M12 65 L88 65" strokeWidth="1" />
-        <path d="M12 82 L88 82" strokeWidth="1" />
-
-        {/* Turned balusters */}
-        {[20, 28, 42, 50, 58, 72, 80].map((x, i) => (
-          <path key={i} d={`M${x} 65 Q${x-1} 73, ${x} 82`} strokeWidth="0.7" />
+        {/* Upper gallery railing — classical balustrade between columns */}
+        <path d="M8 64 L92 64" strokeWidth="1" />
+        <path d="M8 80 L92 80" strokeWidth="1" />
+        {/* Turned wooden balusters */}
+        {[12, 16, 20, 28, 32, 36, 44, 48, 52, 56, 64, 68, 72, 80, 84, 88].map((x, i) => (
+          <g key={`vb${i}`}>
+            <path d={`M${x} 64 L${x} 66`} strokeWidth="0.8" />
+            <path d={`M${x} 66 Q${x-0.8} 72, ${x} 78`} strokeWidth="0.6" />
+            <path d={`M${x} 78 L${x} 80`} strokeWidth="0.8" />
+          </g>
         ))}
 
-        {/* Deck floor */}
-        <path d="M5 85 L95 85" strokeWidth="1.4" />
-        <path d="M8 88 L92 88" strokeWidth="0.7" opacity="0.7" />
-
-        {/* Floorboard lines */}
-        {[15, 25, 40, 60, 75, 90].map((x, i) => (
-          <path key={i} d={`M${x} 85 L${x} 88`} strokeWidth="0.4" opacity="0.4" />
+        {/* Gallery floor — wide plank decking */}
+        <path d="M2 84 L98 84" strokeWidth="1.5" />
+        {/* Plank lines */}
+        {[10, 20, 30, 40, 50, 60, 70, 80, 90].map((x, i) => (
+          <path key={`vp${i}`} d={`M${x} 82 L${x} 84`} strokeWidth="0.3" opacity="0.4" />
         ))}
 
-        {/* Entry steps */}
-        <path d="M40 85 L40 92 L60 92 L60 85" strokeWidth="0.9" />
-        <path d="M42 88 L58 88" strokeWidth="0.5" opacity="0.6" />
+        {/* Ceiling fan suggestion between columns */}
+        <path d="M32 30 L28 32 M32 30 L36 32 M32 30 L32 33" strokeWidth="0.4" opacity="0.4" />
+        <circle cx="32" cy="30" r="1" strokeWidth="0.4" opacity="0.4" />
+        <path d="M68 30 L64 32 M68 30 L72 32 M68 30 L68 33" strokeWidth="0.4" opacity="0.4" />
+        <circle cx="68" cy="30" r="1" strokeWidth="0.4" opacity="0.4" />
+
+        {/* Central entry — double doors with sidelights and fanlight transom */}
+        {/* Fanlight transom above door */}
+        <path d="M38 42 Q50 35, 62 42 L62 48 L38 48 Z" strokeWidth="0.9" />
+        <path d="M50 37 L50 48" strokeWidth="0.4" />
+        <path d="M50 37 L42 46" strokeWidth="0.3" />
+        <path d="M50 37 L58 46" strokeWidth="0.3" />
+        {/* Door frame */}
+        <path d="M38 42 L38 84 L62 84 L62 42" strokeWidth="1" />
+        {/* Double doors */}
+        <path d="M40 48 L40 82 L50 82 L50 48 Z" strokeWidth="0.8" />
+        <path d="M50 48 L50 82 L60 82 L60 48 Z" strokeWidth="0.8" />
+        {/* Door panels */}
+        <path d="M42 52 L42 62 L48 62 L48 52 Z" strokeWidth="0.4" />
+        <path d="M42 66 L42 80 L48 80 L48 66 Z" strokeWidth="0.4" />
+        <path d="M52 52 L52 62 L58 62 L58 52 Z" strokeWidth="0.4" />
+        <path d="M52 66 L52 80 L58 80 L58 66 Z" strokeWidth="0.4" />
+        {/* Door hardware */}
+        <circle cx="48" cy="68" r="1.2" strokeWidth="0.6" />
+        <circle cx="52" cy="68" r="1.2" strokeWidth="0.6" />
+        {/* Sidelights */}
+        <path d="M34 48 L34 82 L38 82 L38 48 Z" strokeWidth="0.7" />
+        <path d="M62 48 L62 82 L66 82 L66 48 Z" strokeWidth="0.7" />
+        <path d="M34 60 L38 60 M34 72 L38 72" strokeWidth="0.4" />
+        <path d="M62 60 L66 60 M62 72 L66 72" strokeWidth="0.4" />
+
+        {/* Grand entry steps — full width, stone treads */}
+        <path d="M2 84 L98 84 L100 88 L0 88 Z" strokeWidth="0.9" />
+        <path d="M0 88 L100 88 L102 92 L-2 92 Z" strokeWidth="0.8" />
+        <path d="M-2 92 L102 92 L104 96 L-4 96 Z" strokeWidth="0.7" />
       </g>
     </g>
   </svg>
