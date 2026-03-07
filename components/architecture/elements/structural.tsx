@@ -1560,75 +1560,129 @@ export const LatticeTrussSVG: React.FC<SVGProps> = ({ showHalo }) => (
 )
 
 /**
- * BALTIMORE TRUSS - Subdivided Pratt truss for long spans
- * Adds intermediate diagonals to reduce unsupported member lengths
- * Shows: Pratt pattern with subdivided panels
- * Used for: Railroad bridges, long-span applications (1850s+)
+ * BALTIMORE TRUSS - Subdivided Pratt with extra sub-struts in each panel
+ * 3/4 isometric view. More complex than Pratt with additional intermediate members.
+ * Sub-verticals and sub-diagonals subdivide each main panel.
  */
 export const BaltimoreTrussSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="baltimore-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#baltimore-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
-      {/* CONTEXT (near): Support points */}
+      {/* CONTEXT (near): Ground line */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        <path d="M5 72 L95 72" />
+        <path d="M1 78 L68 78" />
+        <path d="M68 78 L97 70" />
       </g>
 
-      {/* PRIMARY - Main chords */}
+      {/* FAR-SIDE TRUSS (back face) */}
+      <g opacity={0.18} strokeWidth={S.P.strokeWidthLight}>
+        <path d="M16 28 L92 28" />
+        <path d="M16 70 L92 70" />
+        <path d="M16 28 L16 70" />
+        <path d="M35 28 L35 70" />
+        <path d="M54 28 L54 70" />
+        <path d="M73 28 L73 70" />
+        <path d="M92 28 L92 70" />
+        {/* Back main Pratt diags */}
+        <path d="M16 70 L35 28" />
+        <path d="M35 70 L54 28" />
+        <path d="M73 28 L54 70" />
+        <path d="M92 28 L73 70" />
+        {/* Back sub-strut horizontal */}
+        <path d="M16 49 L92 49" />
+      </g>
+
+      {/* Shadow fill */}
+      <rect x="16" y="28" width="76" height="42" fill="currentColor" opacity={S.E.fillOpacity} />
+
+      {/* CROSS MEMBERS (depth connectors) */}
+      <g strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle}>
+        <path d="M3 32 L16 28" />
+        <path d="M22 32 L35 28" />
+        <path d="M41 32 L54 28" />
+        <path d="M60 32 L73 28" />
+        <path d="M79 32 L92 28" />
+        <path d="M3 74 L16 70" />
+        <path d="M22 74 L35 70" />
+        <path d="M41 74 L54 70" />
+        <path d="M60 74 L73 70" />
+        <path d="M79 74 L92 70" />
+      </g>
+
+      {/* NEAR-SIDE: Main chords */}
       <g strokeWidth={S.P.strokeWidthBold}>
-        {/* Top chord */}
-        <path d="M8 25 L92 25" />
-        {/* Bottom chord */}
-        <path d="M8 68 L92 68" />
+        <path d="M3 32 L79 32" />
+        <path d="M3 74 L79 74" />
       </g>
 
-      {/* MAIN VERTICALS - Full-height posts */}
+      {/* MAIN VERTICALS (full height) */}
+      <g strokeWidth={S.P.strokeWidthBold}>
+        <path d="M3 32 L3 74" />
+        <path d="M22 32 L22 74" />
+        <path d="M41 32 L41 74" />
+        <path d="M60 32 L60 74" />
+        <path d="M79 32 L79 74" />
+      </g>
+
+      {/* MAIN DIAGONALS - Pratt-style toward center */}
       <g strokeWidth={S.P.strokeWidth}>
-        <path d="M8 25 L8 68" />
-        <path d="M29 25 L29 68" />
-        <path d="M50 25 L50 68" />
-        <path d="M71 25 L71 68" />
-        <path d="M92 25 L92 68" />
+        <path d="M3 74 L22 32" />
+        <path d="M22 74 L41 32" />
+        <path d="M60 32 L41 74" />
+        <path d="M79 32 L60 74" />
       </g>
 
-      {/* MAIN DIAGONALS - Pratt-style (tension diagonals) */}
-      <g strokeWidth={S.P.strokeWidth}>
-        <path d="M8 68 L29 25" />
-        <path d="M29 68 L50 25" />
-        <path d="M71 25 L50 68" />
-        <path d="M92 25 L71 68" />
+      {/* SUB-STRUT HORIZONTAL at mid-height */}
+      <g strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity}>
+        <path d="M3 53 L79 53" />
       </g>
 
-      {/* SUB-VERTICALS - Key Baltimore feature: intermediate posts */}
-      <g strokeWidth={S.P.strokeWidth} opacity={S.D.opacityStrong}>
-        <path d="M18.5 25 L18.5 46.5" />
-        <path d="M39.5 25 L39.5 46.5" />
-        <path d="M60.5 25 L60.5 46.5" />
-        <path d="M81.5 25 L81.5 46.5" />
+      {/* SUB-VERTICALS - Baltimore feature: intermediate half-height posts */}
+      <g strokeWidth={S.P.strokeWidthLight} opacity={S.D.opacityStrong}>
+        <path d="M12.5 32 L12.5 53" />
+        <path d="M31.5 32 L31.5 53" />
+        <path d="M50.5 32 L50.5 53" />
+        <path d="M69.5 32 L69.5 53" />
       </g>
 
-      {/* SUB-DIAGONALS - Subdivide the panels */}
-      <g strokeWidth={S.P.strokeWidth} opacity={S.D.opacityStrong}>
-        <path d="M8 46.5 L18.5 25" />
-        <path d="M18.5 46.5 L29 25" />
-        <path d="M29 46.5 L39.5 25" />
-        <path d="M39.5 46.5 L50 25" />
-        <path d="M60.5 25 L50 46.5" />
-        <path d="M71 25 L60.5 46.5" />
-        <path d="M81.5 25 L71 46.5" />
-        <path d="M92 25 L81.5 46.5" />
+      {/* SUB-DIAGONALS - subdivide each main panel */}
+      <g strokeWidth={S.P.strokeWidthLight} opacity={S.D.opacityStrong}>
+        {/* Left half sub-diagonals */}
+        <path d="M3 53 L12.5 32" />
+        <path d="M12.5 53 L22 32" />
+        <path d="M22 53 L31.5 32" />
+        <path d="M31.5 53 L41 32" />
+        {/* Right half sub-diagonals (mirrored) */}
+        <path d="M50.5 32 L41 53" />
+        <path d="M60 32 L50.5 53" />
+        <path d="M69.5 32 L60 53" />
+        <path d="M79 32 L69.5 53" />
       </g>
 
-      {/* Sub-strut (horizontal at mid-height) */}
-      <g strokeWidth={S.D.strokeWidth} opacity={S.D.opacity}>
-        <path d="M8 46.5 L92 46.5" />
+      {/* Gusset plates at main joints */}
+      <g fill="currentColor" opacity={S.D.opacity} strokeWidth={S.D.strokeWidthFine}>
+        <circle cx="3" cy="32" r="2" />
+        <circle cx="22" cy="32" r="2" />
+        <circle cx="41" cy="32" r="2" />
+        <circle cx="60" cy="32" r="2" />
+        <circle cx="79" cy="32" r="2" />
+        <circle cx="3" cy="74" r="2" />
+        <circle cx="22" cy="74" r="2" />
+        <circle cx="41" cy="74" r="2" />
+        <circle cx="60" cy="74" r="2" />
+        <circle cx="79" cy="74" r="2" />
+        {/* Sub-joint dots */}
+        <circle cx="12.5" cy="32" r="1.2" />
+        <circle cx="31.5" cy="32" r="1.2" />
+        <circle cx="50.5" cy="32" r="1.2" />
+        <circle cx="69.5" cy="32" r="1.2" />
       </g>
 
       {/* Support symbols */}
       <g strokeWidth={S.P.strokeWidth}>
-        <path d="M3 71 L13 71 L8 68 Z" />
-        <circle cx="92" cy="71" r="2" />
-        <path d="M87 73 L97 73" />
+        <path d="M-2 77 L8 77 L3 74 Z" />
+        <circle cx="79" cy="77" r="2" />
+        <path d="M74 79 L84 79" />
       </g>
     </g>
   </svg>
