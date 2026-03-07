@@ -635,32 +635,37 @@ export const TrefoilArchSVG = ({ showHalo = false }: SVGProps) => (
       <path d="M 86 94 L 86 58" strokeWidth="1" fill="none" />
     </g>
 
-    {/* PRIMARY: THE TREFOIL - Three lobes/foils */}
+    {/* PRIMARY: THE TREFOIL - Three lobes (left, right, crown) like a 3-leaf clover */}
     <g filter={showHalo ? "url(#arch-halo)" : undefined}>
-      {/* Left lobe */}
-      <path d="M 18 58 Q 12 48, 18 38 Q 24 28, 36 32 Q 42 36, 40 44"
+      {/* Left lobe - bulges outward to the left from the pier */}
+      <path d="M 18 58 Q 8 48, 12 36 Q 16 24, 30 24 Q 40 24, 42 34"
             strokeWidth="2" fill="none" strokeLinecap="round" />
 
-      {/* Right lobe */}
-      <path d="M 82 58 Q 88 48, 82 38 Q 76 28, 64 32 Q 58 36, 60 44"
+      {/* Right lobe - bulges outward to the right from the pier */}
+      <path d="M 82 58 Q 92 48, 88 36 Q 84 24, 70 24 Q 60 24, 58 34"
             strokeWidth="2" fill="none" strokeLinecap="round" />
 
-      {/* Center/bottom lobe connecting left and right */}
-      <path d="M 40 44 Q 36 52, 44 58 Q 50 62, 56 58 Q 64 52, 60 44"
+      {/* Crown lobe - arches upward between left and right lobes */}
+      <path d="M 42 34 Q 42 16, 50 10 Q 58 16, 58 34"
             strokeWidth="2" fill="none" strokeLinecap="round" />
 
-      {/* Top lobe arching up */}
-      <path d="M 36 36 Q 38 20, 50 14 Q 62 20, 64 36"
-            strokeWidth="2" fill="none" strokeLinecap="round" />
+      {/* Cusps where the three lobes meet - pointed projections */}
+      {/* Left cusp (between left lobe and crown lobe) */}
+      <path d="M 40 36 L 42 30 L 44 36" strokeWidth="1.2" fill="none" opacity="0.8" />
+      {/* Right cusp (between crown lobe and right lobe) */}
+      <path d="M 56 36 L 58 30 L 60 36" strokeWidth="1.2" fill="none" opacity="0.8" />
 
-      {/* Cusps where lobes meet - decorative points */}
-      <path d="M 38 42 L 40 38 L 42 42" strokeWidth="1" fill="none" opacity="0.7" />
-      <path d="M 58 42 L 60 38 L 62 42" strokeWidth="1" fill="none" opacity="0.7" />
-      <path d="M 48 54 L 50 50 L 52 54" strokeWidth="1" fill="none" opacity="0.7" />
+      {/* Inner trefoil outline for depth/thickness */}
+      <path d="M 22 56 Q 14 48, 17 38 Q 20 28, 32 28 Q 40 28, 42 36"
+            strokeWidth="1.2" fill="none" opacity="0.6" />
+      <path d="M 78 56 Q 86 48, 83 38 Q 80 28, 68 28 Q 60 28, 58 36"
+            strokeWidth="1.2" fill="none" opacity="0.6" />
+      <path d="M 42 36 Q 42 20, 50 14 Q 58 20, 58 36"
+            strokeWidth="1.2" fill="none" opacity="0.6" />
 
       {/* Finial at top */}
-      <path d="M 50 14 L 50 8" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      <path d="M 47 8 L 50 4 L 53 8" strokeWidth="1.2" fill="none" strokeLinejoin="round" />
+      <path d="M 50 10 L 50 4" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <path d="M 47 4 L 50 0 L 53 4" strokeWidth="1.2" fill="none" strokeLinejoin="round" />
     </g>
   </svg>
 )
