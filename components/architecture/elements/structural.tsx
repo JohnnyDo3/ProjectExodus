@@ -1775,74 +1775,114 @@ export const ScissorsTrussSVG: React.FC<SVGProps> = ({ showHalo }) => (
 )
 
 /**
- * GAMBREL TRUSS - Barn-roof double-slope design
- * Two different slopes per side maximize attic/loft space
- * Shows: Characteristic barn roof profile
- * Used for: Barns, Dutch Colonial houses, agricultural buildings
+ * GAMBREL TRUSS - Barn-roof profile with two slopes per side
+ * 3/4 isometric view. Steep lower slope + shallow upper slope = Mansard-like profile.
+ * The break in slope angle at the knee is the defining feature.
  */
 export const GambrelTrussSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="gambrel-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#gambrel-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
-      {/* CONTEXT (near): Support/wall line */}
+      {/* CONTEXT (near): Ground / wall line */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        <path d="M5 88 L95 88" />
+        <path d="M3 90 L72 90" />
+        <path d="M72 90 L97 82" />
       </g>
 
-      {/* PRIMARY - Bottom chord (tie beam) */}
+      {/* FAR-SIDE TRUSS (back face) */}
+      <g opacity={0.2} strokeWidth={S.P.strokeWidthLight}>
+        {/* Back bottom chord */}
+        <path d="M22 84 L90 84" />
+        {/* Back gambrel profile: steep-shallow-shallow-steep */}
+        <path d="M22 84 L35 54" />
+        <path d="M35 54 L56 28" />
+        <path d="M56 28 L77 54" />
+        <path d="M77 54 L90 84" />
+        {/* Back collar beam */}
+        <path d="M35 54 L77 54" />
+        {/* Back verticals */}
+        <path d="M35 54 L35 84" />
+        <path d="M77 54 L77 84" />
+        <path d="M56 28 L56 54" />
+      </g>
+
+      {/* Shadow fill */}
+      <path d="M22 84 L35 54 L56 28 L77 54 L90 84 Z" fill="currentColor" opacity={S.E.fillOpacity} />
+
+      {/* CROSS MEMBERS (depth connectors) */}
+      <g strokeWidth={S.D.strokeWidth} opacity={S.D.opacity}>
+        <path d="M8 88 L22 84" />
+        <path d="M78 88 L90 84" />
+        <path d="M44 32 L56 28" />
+        {/* Knee cross ties */}
+        <path d="M22 58 L35 54" />
+        <path d="M65 58 L77 54" />
+        {/* Collar beam cross tie */}
+        <path d="M22 58 L35 54" />
+      </g>
+
+      {/* NEAR-SIDE: Bottom chord (tie beam) */}
       <g strokeWidth={S.P.strokeWidthBold}>
-        <path d="M10 80 L90 80" />
+        <path d="M8 88 L78 88" />
       </g>
 
-      {/* GAMBREL RAFTERS - Key feature: two slopes per side */}
+      {/* GAMBREL RAFTERS - Key feature: TWO slopes per side */}
+      <g strokeWidth={S.P.strokeWidthHeavy}>
+        {/* Left steep lower slope */}
+        <path d="M8 88 L22 58" />
+        {/* Left shallow upper slope */}
+        <path d="M22 58 L44 32" />
+        {/* Right shallow upper slope */}
+        <path d="M44 32 L65 58" />
+        {/* Right steep lower slope */}
+        <path d="M65 58 L78 88" />
+      </g>
+
+      {/* Collar beam at knee points */}
       <g strokeWidth={S.P.strokeWidthBold}>
-        {/* Left side - steep lower slope */}
-        <path d="M10 80 L25 50" />
-        {/* Left side - shallow upper slope */}
-        <path d="M25 50 L50 25" />
-        {/* Right side - shallow upper slope */}
-        <path d="M50 25 L75 50" />
-        {/* Right side - steep lower slope */}
-        <path d="M75 50 L90 80" />
+        <path d="M22 58 L65 58" />
       </g>
 
-      {/* Collar beam at knee point */}
+      {/* Vertical posts at knees (COMPRESSION) */}
+      <g strokeWidth={S.P.strokeWidthBold}>
+        <path d="M22 58 L22 88" />
+        <path d="M65 58 L65 88" />
+      </g>
+
+      {/* King post from ridge to collar */}
       <g strokeWidth={S.P.strokeWidth}>
-        <path d="M25 50 L75 50" />
+        <path d="M44 32 L44 58" />
       </g>
 
-      {/* Vertical posts at knees */}
-      <g strokeWidth={S.P.strokeWidth}>
-        <path d="M25 50 L25 80" />
-        <path d="M75 50 L75 80" />
+      {/* Diagonal bracing in upper section */}
+      <g strokeWidth={S.P.strokeWidthLight} opacity={S.D.opacity}>
+        <path d="M22 58 L44 42" />
+        <path d="M65 58 L44 42" />
       </g>
 
-      {/* King post from ridge */}
-      <g strokeWidth={S.P.strokeWidth}>
-        <path d="M50 25 L50 50" />
+      {/* Gusset plates at key joints */}
+      <g fill="currentColor" opacity={S.D.opacity} strokeWidth={S.D.strokeWidthFine}>
+        {/* Ridge */}
+        <path d="M41 32 L47 32 L44 28 Z" />
+        {/* Knee joints (the slope break - most important visual) */}
+        <path d="M19 58 L25 58 L22 55 Z" />
+        <path d="M62 58 L68 58 L65 55 Z" />
+        {/* Supports */}
+        <path d="M5 88 L11 88 L8 85 Z" />
+        <path d="M75 88 L81 88 L78 85 Z" />
+        {/* King post base */}
+        <circle cx="44" cy="58" r="1.5" />
       </g>
 
-      {/* Optional diagonal bracing in upper section */}
-      <g strokeWidth={S.P.strokeWidth} opacity={S.D.opacity}>
-        <path d="M25 50 L50 35" />
-        <path d="M75 50 L50 35" />
-      </g>
-
-      {/* Loft space indication (the usable area gained) */}
-      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
-        <rect x="28" y="52" width="44" height="25" />
-        <text x="50" y="67" fontSize="5" textAnchor="middle" fill="currentColor">LOFT</text>
+      {/* Loft space indication */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidthFine}>
+        <rect x="25" y="60" width="37" height="25" />
       </g>
 
       {/* Support symbols */}
       <g strokeWidth={S.P.strokeWidth}>
-        <path d="M5 83 L15 83 L10 80 Z" />
-        <path d="M85 83 L95 83 L90 80 Z" />
-      </g>
-
-      {/* Ridge cap */}
-      <g strokeWidth={S.D.strokeWidth}>
-        <circle cx="50" cy="25" r="2" fill="currentColor" opacity={S.D.opacity} />
+        <path d="M3 91 L13 91 L8 88 Z" />
+        <path d="M73 91 L83 91 L78 88 Z" />
       </g>
     </g>
   </svg>
