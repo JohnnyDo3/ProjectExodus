@@ -2130,66 +2130,125 @@ const TransomSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="transom-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#transom-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
 
-      {/* CONTEXT (far): Brick wall coursing above */}
+      {/* CONTEXT (far): Brick wall pattern above and around */}
       <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
-        <path d="M-5 8 L105 8" />
-        <path d="M-5 12 L105 12" strokeWidth={S.CF.strokeWidthFine} />
-        <path d="M-5 16 L105 16" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
-        {/* Brick vertical joints */}
-        <path d="M15 8 L15 12 M35 8 L35 12 M55 8 L55 12 M75 8 L75 12" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
-        <path d="M25 12 L25 16 M45 12 L45 16 M65 12 L65 16 M85 12 L85 16" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Brick courses above arch */}
+        <path d="M-5 18 L15 18 M20 18 L40 18 M45 18 L65 18 M70 18 L90 18 M95 18 L105 18" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M-5 14 L10 14 M15 14 L35 14 M40 14 L60 14 M65 14 L85 14 M90 14 L105 14" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M-5 10 L20 10 M25 10 L45 10 M50 10 L70 10 M75 10 L95 10 M100 10 L105 10" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M-5 6 L12 6 M17 6 L37 6 M42 6 L62 6 M67 6 L87 6 M92 6 L105 6" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M-5 2 L25 2 M30 2 L50 2 M55 2 L75 2 M80 2 L105 2" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Vertical brick joints (staggered) */}
+        <path d="M15 18 L15 14 M40 18 L40 14 M65 18 L65 14 M90 18 L90 14" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M10 14 L10 10 M35 14 L35 10 M60 14 L60 10 M85 14 L85 10" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M20 10 L20 6 M45 10 L45 6 M70 10 L70 6 M95 10 L95 6" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+
+        {/* Brick on sides beside frame */}
+        <path d="M-5 30 L8 30 M92 30 L105 30" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M-5 34 L8 34 M92 34 L105 34" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M-5 38 L8 38 M92 38 L105 38" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M-5 42 L8 42 M92 42 L105 42" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M-5 46 L8 46 M92 46 L105 46" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M-5 50 L8 50 M92 50 L105 50" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
       </g>
 
-      {/* CONTEXT (near): Door frame below, wall on either side */}
+      {/* CONTEXT (near): Door frame below — top of the door */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        {/* Wall on left and right */}
-        <path d="M-5 8 L8 8 L8 98 L-5 98 Z" strokeWidth={S.CN.strokeWidthFine} />
-        <path d="M92 8 L105 8 L105 98 L92 98 Z" strokeWidth={S.CN.strokeWidthFine} />
-        {/* Door top rail below transom */}
-        <path d="M12 68 L88 68" />
-        {/* Upper door panels hint */}
-        <path d="M16 72 L42 72 L42 95 L16 95 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
-        <path d="M58 72 L84 72 L84 95 L58 95 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
-        {/* Door center stile */}
-        <path d="M49 68 L49 98" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
-        <path d="M51 68 L51 98" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Door frame jambs */}
+        <path d="M12 60 L12 105" />
+        <path d="M88 60 L88 105" />
+        {/* Door stiles */}
+        <path d="M15 62 L15 105" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M85 62 L85 105" strokeWidth={S.CN.strokeWidthFine} />
+
+        {/* Door top rail */}
+        <path d="M15 62 L85 62" strokeWidth={S.CN.strokeWidthFine} />
+
+        {/* Upper door panels (partially visible) */}
+        <path d="M20 65 L20 85 L48 85 L48 65 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M52 65 L52 85 L80 85 L80 65 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+
+        {/* Door knob suggestion */}
+        <circle cx="80" cy="80" r="1.5" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+
+        {/* Lower door panels (partially visible) */}
+        <path d="M20 88 L20 102 L48 102 L48 88 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M52 88 L52 102 L80 102 L80 88 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+
+        {/* Wall surface flanking frame */}
+        <path d="M-5 60 L10 60 M90 60 L105 60" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
-      {/* PRIMARY: Semicircular fanlight transom */}
+      {/* PRIMARY: Semicircular fanlight transom window */}
       <g strokeWidth={S.D.strokeWidth}>
-        {/* Outer frame — semicircular arch */}
-        <path d="M10 65 L10 35 Q50 -5 90 35 L90 65 Z" strokeWidth={S.P.strokeWidthBold} />
-        {/* Inner frame edge */}
-        <path d="M14 63 L14 37 Q50 0 86 37 L86 63 Z" strokeWidth={S.D.strokeWidth} />
+        {/* Horizontal transom bar separating fanlight from door */}
+        <path d="M10 60 L90 60" strokeWidth={S.P.strokeWidthBold} />
+        <path d="M10 58 L90 58" strokeWidth={S.P.strokeWidthLight} />
 
-        {/* Horizontal transom bar */}
-        <path d="M10 63 L90 63" strokeWidth={S.P.strokeWidth} />
-        <path d="M10 65 L90 65" strokeWidth={S.P.strokeWidth} />
+        {/* Outer arch frame — semicircular */}
+        <path d="M10 60 Q10 20 50 20 Q90 20 90 60" strokeWidth={S.P.strokeWidthBold} />
+        {/* Inner arch frame */}
+        <path d="M14 58 Q14 24 50 24 Q86 24 86 58" strokeWidth={S.P.strokeWidth} />
 
-        {/* Radiating glazing bars — fan pattern from center bottom */}
-        <path d="M50 63 L50 5" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M50 63 L30 12" strokeWidth={S.D.strokeWidth} />
-        <path d="M50 63 L70 12" strokeWidth={S.D.strokeWidth} />
-        <path d="M50 63 L18 28" strokeWidth={S.D.strokeWidth} />
-        <path d="M50 63 L82 28" strokeWidth={S.D.strokeWidth} />
-        <path d="M50 63 L12 48" strokeWidth={S.D.strokeWidth} />
-        <path d="M50 63 L88 48" strokeWidth={S.D.strokeWidth} />
+        {/* Decorative keystone at arch apex */}
+        <path d="M46 20 L46 16 L50 14 L54 16 L54 20" strokeWidth={S.P.strokeWidthBold} />
+        <path d="M47 24 L47 20 L53 20 L53 24" strokeWidth={S.P.strokeWidthLight} />
+        {/* Keystone face detail */}
+        <path d="M48 17 L50 16 L52 17" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
 
-        {/* Curved horizontal bars — concentric arcs */}
-        <path d="M20 50 Q50 30 80 50" strokeWidth={S.D.strokeWidthFine} />
-        <path d="M14 55 Q50 38 86 55" strokeWidth={S.D.strokeWidthFine} />
+        {/* Radiating glazing bars (muntins) — fan pattern from center bottom */}
+        {/* Center vertical */}
+        <path d="M50 58 L50 24" strokeWidth={S.P.strokeWidth} />
+        {/* Fan bars radiating outward — left side */}
+        <path d="M50 58 L30 28" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M50 58 L20 38" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M50 58 L14 50" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M50 58 L40 25" strokeWidth={S.P.strokeWidthLight} />
+        {/* Fan bars radiating outward — right side */}
+        <path d="M50 58 L70 28" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M50 58 L80 38" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M50 58 L86 50" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M50 58 L60 25" strokeWidth={S.P.strokeWidthLight} />
 
-        {/* Keystone at apex */}
-        <path d="M46 5 L46 14 L54 14 L54 5" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M48 8 L52 8" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+        {/* Curved horizontal glazing bars (concentric arcs) */}
+        <path d="M22 48 Q36 36 50 34 Q64 36 78 48" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M16 54 Q33 42 50 40 Q67 42 84 54" strokeWidth={S.D.strokeWidth} />
 
-        {/* Sill profile — drip molding */}
-        <path d="M8 65 L92 65" strokeWidth={S.D.strokeWidthFine} />
-        <path d="M8 67 L92 67" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        {/* Springer blocks at arch base — left */}
+        <path d="M10 60 L10 54 L14 54 L14 58" strokeWidth={S.P.strokeWidth} />
+        {/* Springer blocks at arch base — right */}
+        <path d="M90 60 L90 54 L86 54 L86 58" strokeWidth={S.P.strokeWidth} />
 
-        {/* Side pilaster capitals */}
-        <path d="M10 32 L14 32 L14 36 L10 36 Z" strokeWidth={S.D.strokeWidth} />
-        <path d="M86 32 L90 32 L90 36 L86 36 Z" strokeWidth={S.D.strokeWidth} />
+        {/* Frame jamb capitals (small molding at spring point) */}
+        <path d="M8 54 L16 54" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M84 54 L92 54" strokeWidth={S.P.strokeWidthLight} />
+
+        {/* DETAIL: Leading lines between glazing bars */}
+        <path d="M14 56 L14 58" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+        <path d="M86 56 L86 58" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+
+        {/* Sill profile — molding below transom bar */}
+        <path d="M8 60 L8 62 L92 62 L92 60" strokeWidth={S.D.strokeWidth} opacity={S.D.opacityStrong} />
+        <path d="M10 61 L90 61" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+
+        {/* Glass pane details — subtle fill to suggest glazing */}
+        <path d="M50 34 Q44 36 38 42" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        <path d="M50 34 Q56 36 62 42" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+
+        {/* Individual pane leading — small details at intersections */}
+        <circle cx="50" cy="34" r="0.8" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+        <circle cx="40" cy="25" r="0.6" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        <circle cx="60" cy="25" r="0.6" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        <circle cx="30" cy="28" r="0.6" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        <circle cx="70" cy="28" r="0.6" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+
+        {/* Arch extrados molding */}
+        <path d="M8 60 Q8 18 50 18 Q92 18 92 60" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+
+        {/* Light effect through glass */}
+        <path d="M35 40 L40 36" strokeDasharray={S.E.dash} strokeWidth={S.E.strokeWidth} opacity={S.E.opacity} />
+        <path d="M60 36 L65 40" strokeDasharray={S.E.dash} strokeWidth={S.E.strokeWidth} opacity={S.E.opacity} />
+        <path d="M48 28 L52 28" strokeDasharray={S.E.dash} strokeWidth={S.E.strokeWidth} opacity={S.E.opacity} />
       </g>
     </g>
   </svg>
