@@ -398,41 +398,76 @@ const SquareSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="square-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#square-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Buildings around square */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
-        <path d="M5 10 L5 90 L15 90 L15 15 L5 10" />
-        <path d="M95 10 L95 90 L85 90 L85 15 L95 10" />
-        <path d="M15 10 L85 10 L85 15 L15 15 Z" />
-        <path d="M10 5 L50 5 L90 5 M15 90 L50 90 L85 90" />
+      {/* CONTEXT - Surrounding street */}
+      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.5">
+        <path d="M0 5 L100 5" />
+        <path d="M0 95 L100 95" />
       </g>
 
-      {/* PRIMARY - Square boundary and space */}
+      {/* PRIMARY - Formal public square with building facades */}
       <g strokeWidth="1">
-        {/* Square perimeter */}
-        <path d="M15 15 L15 85 L85 85 L85 15 Z" strokeWidth="1.2" />
+        {/* Building facades enclosing the square (Place des Vosges style) */}
+        {/* Left facade with arcade */}
+        <path d="M5 10 L5 90" strokeWidth="1.8" />
+        <path d="M15 10 L15 90" strokeWidth="1.5" />
+        {/* Arcade arches */}
+        <path d="M5 25 Q10 20, 15 25" strokeWidth="0.8" />
+        <path d="M5 40 Q10 35, 15 40" strokeWidth="0.8" />
+        <path d="M5 55 Q10 50, 15 55" strokeWidth="0.8" />
+        <path d="M5 70 Q10 65, 15 70" strokeWidth="0.8" />
+        {/* Upper windows */}
+        <path d="M7 15 L13 15 L13 22 L7 22 Z" strokeWidth="0.5" opacity="0.5" />
 
-        {/* Central monument */}
-        <path d="M45 40 L45 65 L55 65 L55 40" strokeWidth="1.2" />
-        <path d="M42 65 L42 72 L58 72 L58 65" strokeWidth="1" />
-        <path d="M50 40 L50 30" strokeWidth="1.2" />
-        <path d="M47 32 L53 32" strokeWidth="1" />
-        <circle cx="50" cy="30" r="2" strokeWidth="0.8" />
+        {/* Right facade with arcade */}
+        <path d="M85 10 L85 90" strokeWidth="1.5" />
+        <path d="M95 10 L95 90" strokeWidth="1.8" />
+        <path d="M85 25 Q90 20, 95 25" strokeWidth="0.8" />
+        <path d="M85 40 Q90 35, 95 40" strokeWidth="0.8" />
+        <path d="M85 55 Q90 50, 95 55" strokeWidth="0.8" />
+        <path d="M85 70 Q90 65, 95 70" strokeWidth="0.8" />
+        <path d="M87 15 L93 15 L93 22 L87 22 Z" strokeWidth="0.5" opacity="0.5" />
+
+        {/* Top facade */}
+        <path d="M15 10 L85 10" strokeWidth="1.5" />
+        <path d="M15 18 L85 18" strokeWidth="1" />
+        <path d="M25 10 Q30 6, 35 10" strokeWidth="0.7" />
+        <path d="M45 10 Q50 6, 55 10" strokeWidth="0.7" />
+        <path d="M65 10 Q70 6, 75 10" strokeWidth="0.7" />
+
+        {/* Bottom facade */}
+        <path d="M15 90 L85 90" strokeWidth="1.5" />
+        <path d="M15 82 L85 82" strokeWidth="1" />
+        <path d="M25 90 Q30 86, 35 90" strokeWidth="0.7" />
+        <path d="M45 90 Q50 86, 55 90" strokeWidth="0.7" />
+        <path d="M65 90 Q70 86, 75 90" strokeWidth="0.7" />
+
+        {/* Central monument/equestrian statue */}
+        <path d="M45 42 L45 62 L55 62 L55 42" strokeWidth="1.2" />
+        <path d="M42 62 L42 68 L58 68 L58 62" strokeWidth="1" />
+        <path d="M50 42 L50 32" strokeWidth="1.2" />
+        <path d="M47 34 L53 34" strokeWidth="1" />
+        <circle cx="50" cy="32" r="2" strokeWidth="0.8" />
       </g>
 
-      {/* Paths crossing square */}
-      <g strokeDasharray="2 2" strokeWidth="0.8" opacity="0.6">
-        <path d="M50 15 L50 40" />
-        <path d="M50 72 L50 85" />
+      {/* Paths crossing square in cruciform */}
+      <g strokeDasharray="2 2" strokeWidth="0.8" opacity="0.5">
+        <path d="M50 18 L50 42" />
+        <path d="M50 68 L50 82" />
         <path d="M15 50 L42 50" />
         <path d="M58 50 L85 50" />
       </g>
 
-      {/* Corner gardens/features */}
-      <g strokeWidth="0.6" opacity="0.3">
-        <circle cx="30" cy="30" r="8" />
-        <circle cx="70" cy="30" r="8" />
-        <circle cx="30" cy="70" r="8" />
-        <circle cx="70" cy="70" r="8" />
+      {/* Formal garden beds in quadrants */}
+      <g strokeWidth="0.6" opacity="0.35">
+        <path d="M22 26 L38 26 L38 42 L22 42 Z" />
+        <path d="M62 26 L78 26 L78 42 L62 42 Z" />
+        <path d="M22 58 L38 58 L38 74 L22 74 Z" />
+        <path d="M62 58 L78 58 L78 74 L62 74 Z" />
+        {/* Hedge/tree dots */}
+        <circle cx="30" cy="34" r="4" />
+        <circle cx="70" cy="34" r="4" />
+        <circle cx="30" cy="66" r="4" />
+        <circle cx="70" cy="66" r="4" />
       </g>
     </g>
   </svg>

@@ -316,32 +316,46 @@ const MasonrySVG: React.FC<SVGProps> = ({ showHalo }) => (
         <text x="45" y="2" fontSize="3" opacity="0.6">WALL</text>
       </g>
 
-      {/* PRIMARY: Mixed masonry pattern */}
+      {/* PRIMARY: Mixed/coursed rubble masonry - irregular stones with rough courses */}
       <g strokeWidth="0.8">
-        {/* First course - large stones */}
-        <path d="M10 10 L45 10 L45 25 L10 25 Z" />
-        <path d="M47 10 L90 10 L90 25 L47 25 Z" />
-        {/* Second course */}
-        <path d="M10 27 L30 27 L30 40 L10 40 Z" />
-        <path d="M32 27 L65 27 L65 40 L32 40 Z" />
-        <path d="M67 27 L90 27 L90 40 L67 40 Z" />
-        {/* Third course */}
-        <path d="M10 42 L50 42 L50 55 L10 55 Z" />
-        <path d="M52 42 L90 42 L90 55 L52 55 Z" />
-        {/* Fourth course */}
-        <path d="M10 57 L35 57 L35 70 L10 70 Z" />
-        <path d="M37 57 L70 57 L70 70 L37 70 Z" />
-        <path d="M72 57 L90 57 L90 70 L72 70 Z" />
-        {/* Fifth course */}
-        <path d="M10 72 L55 72 L55 85 L10 85 Z" />
-        <path d="M57 72 L90 72 L90 85 L57 85 Z" />
         {/* Wall outline */}
         <path d="M10 10 L90 10 L90 90 L10 90 Z" strokeWidth="1.2" />
-        {/* Texture marks */}
-        <path d="M20 16 L28 18" opacity="0.3" />
-        <path d="M55 32 L62 35" opacity="0.3" />
-        <path d="M25 48 L32 50" opacity="0.3" />
-        <path d="M78 62 L84 64" opacity="0.3" />
+
+        {/* First course - large irregular stones */}
+        <path d="M10 10 L42 10 L44 14 L42 25 L10 24 Z" />
+        <path d="M44 10 L90 10 L90 22 L46 24 L44 14 Z" />
+
+        {/* Second course - mixed sizes, slightly irregular */}
+        <path d="M10 26 L28 25 L30 28 L32 38 L10 40 Z" />
+        <path d="M32 25 L58 24 L60 30 L62 39 L34 38 Z" />
+        <path d="M60 24 L90 23 L90 37 L64 39 L60 30 Z" />
+        {/* Small infill stone */}
+        <path d="M30 30 L34 29 L34 34 L30 35 Z" strokeWidth="0.6" opacity="0.7" />
+
+        {/* Third course - varied heights */}
+        <path d="M10 42 L48 40 L50 44 L48 56 L10 55 Z" />
+        <path d="M50 40 L90 38 L90 52 L52 55 L50 44 Z" />
+        {/* Small wedge stone */}
+        <path d="M48 44 L52 43 L52 48 L48 49 Z" strokeWidth="0.6" opacity="0.7" />
+
+        {/* Fourth course - rougher shapes */}
+        <path d="M10 57 L32 56 L35 60 L33 70 L10 71 Z" />
+        <path d="M35 56 L66 55 L68 58 L70 69 L37 70 Z" />
+        <path d="M68 55 L90 54 L90 68 L72 69 L68 58 Z" />
+
+        {/* Fifth course - with small fill stones */}
+        <path d="M10 73 L52 71 L55 75 L53 85 L10 86 Z" />
+        <path d="M55 71 L90 70 L90 84 L57 85 L55 75 Z" />
+        {/* Fill/pinning stones in gaps */}
+        <path d="M52 73 L55 72 L55 76 L52 77 Z" strokeWidth="0.5" opacity="0.6" />
+        <path d="M33 70 L37 69 L37 73 L33 74 Z" strokeWidth="0.5" opacity="0.6" />
+
+        {/* Rough stone texture marks */}
+        <path d="M20 16 L26 19" opacity="0.3" />
+        <path d="M55 32 L60 36" opacity="0.3" />
+        <path d="M25 48 L30 52" opacity="0.3" />
+        <path d="M78 62 L82 65" opacity="0.3" />
+        <path d="M42 78 L46 80" opacity="0.3" />
       </g>
     </g>
   </svg>

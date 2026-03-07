@@ -292,42 +292,59 @@ const TowerSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M25 95 L75 95" />
       </g>
 
-      {/* PRIMARY: Tower structure - SOLID emphasized lines */}
+      {/* PRIMARY: Circular tower structure */}
       <g strokeWidth="1.2">
-        {/* Main tower body */}
-        <path d="M25 95 L25 35 L75 35 L75 95" strokeWidth="2" />
+        {/* Main cylindrical tower body - curved walls showing roundness */}
+        <path d="M25 95 L25 38" strokeWidth="2" />
+        <path d="M75 95 L75 38" strokeWidth="2" />
+        {/* Curved top showing cylindrical form */}
+        <ellipse cx="50" cy="38" rx="25" ry="6" strokeWidth="1.8" />
 
-        {/* Battlements - crenelated top */}
-        <path d="M23 35 L23 25 L32 25 L32 32 L42 32 L42 25 L52 25 L52 32 L62 32 L62 25 L72 25 L72 32 L77 32 L77 35" strokeWidth="1.8" />
+        {/* Conical roof */}
+        <path d="M25 38 Q25 32, 50 15 Q75 32, 75 38" strokeWidth="1.5" />
+        <path d="M50 15 L50 10" strokeWidth="1.2" />
 
-        {/* Machicolations - projecting defensive structure */}
-        <path d="M20 40 L25 40 L25 35" strokeWidth="1.5" />
-        <path d="M80 40 L75 40 L75 35" strokeWidth="1.5" />
-        <path d="M22 40 L22 45 L25 45" strokeWidth="1.5" />
-        <path d="M78 40 L78 45 L75 45" strokeWidth="1.5" />
+        {/* Battlements around top - on the elliptical parapet */}
+        <path d="M26 35 L26 30 L32 30 L32 34" strokeWidth="1.5" />
+        <path d="M36 33 L36 28 L42 28 L42 32" strokeWidth="1.5" />
+        <path d="M46 32 L46 27 L54 27 L54 32" strokeWidth="1.5" />
+        <path d="M58 32 L58 28 L64 28 L64 33" strokeWidth="1.5" />
+        <path d="M68 34 L68 30 L74 30 L74 35" strokeWidth="1.5" />
 
-        {/* Arrow slits - upper level */}
-        <path d="M35 50 L35 60" strokeWidth="2.5" />
-        <path d="M50 50 L50 60" strokeWidth="2.5" />
-        <path d="M65 50 L65 60" strokeWidth="2.5" />
+        {/* Machicolations - projecting corbelled gallery with floor openings */}
+        <path d="M20 42 L80 42" strokeWidth="1.2" />
+        <path d="M20 42 L20 46 L25 46" strokeWidth="1.3" />
+        <path d="M80 42 L80 46 L75 46" strokeWidth="1.3" />
+        {/* Corbel brackets supporting the gallery */}
+        <path d="M28 42 Q26 44, 25 46" strokeWidth="0.8" />
+        <path d="M38 42 Q36 44, 35 46" strokeWidth="0.8" />
+        <path d="M50 42 Q48 44, 47 46" strokeWidth="0.8" />
+        <path d="M62 42 Q60 44, 59 46" strokeWidth="0.8" />
+        <path d="M72 42 Q70 44, 69 46" strokeWidth="0.8" />
+        {/* Murder holes (floor openings between corbels) */}
+        <path d="M30 44 L30 46" strokeWidth="0.5" opacity="0.6" />
+        <path d="M43 44 L43 46" strokeWidth="0.5" opacity="0.6" />
+        <path d="M55 44 L55 46" strokeWidth="0.5" opacity="0.6" />
+        <path d="M66 44 L66 46" strokeWidth="0.5" opacity="0.6" />
 
-        {/* Arrow slits - middle level */}
-        <path d="M42 70 L42 80" strokeWidth="2.5" />
-        <path d="M58 70 L58 80" strokeWidth="2.5" />
+        {/* Arrow slits - narrow cross-shaped */}
+        <path d="M36 55 L36 65" strokeWidth="2" />
+        <path d="M33 60 L39 60" strokeWidth="1" />
+        <path d="M64 55 L64 65" strokeWidth="2" />
+        <path d="M61 60 L67 60" strokeWidth="1" />
+
+        {/* Arrow slit - lower level */}
+        <path d="M50 72 L50 82" strokeWidth="2" />
+        <path d="M47 77 L53 77" strokeWidth="1" />
 
         {/* Entrance archway at base */}
-        <path d="M40 78 L40 95 L60 95 L60 78 Q50 72, 40 78" strokeWidth="1.8" />
+        <path d="M40 80 L40 95 L60 95 L60 80 Q50 74, 40 80" strokeWidth="1.8" />
 
-        {/* Stone coursing - structural detail */}
-        <path d="M25 55 L75 55" strokeWidth="0.8" />
-        <path d="M25 75 L40 75" strokeWidth="0.8" />
-        <path d="M60 75 L75 75" strokeWidth="0.8" />
-
-        {/* Corner quoins - dressed stones */}
-        <path d="M25 40 L28 40 L28 48 L25 48" strokeWidth="1" />
-        <path d="M72 40 L75 40 L75 48 L72 48" strokeWidth="1" />
-        <path d="M25 85 L28 85 L28 92 L25 92" strokeWidth="1" />
-        <path d="M72 85 L75 85 L75 92 L72 92" strokeWidth="1" />
+        {/* Stone coursing curves showing cylindrical form */}
+        <path d="M25 55 Q50 58, 75 55" strokeWidth="0.8" opacity="0.6" />
+        <path d="M25 70 Q50 73, 75 70" strokeWidth="0.8" opacity="0.6" />
+        <path d="M25 85 L40 85" strokeWidth="0.8" opacity="0.6" />
+        <path d="M60 85 L75 85" strokeWidth="0.8" opacity="0.6" />
       </g>
     </g>
   </svg>

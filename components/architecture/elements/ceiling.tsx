@@ -654,55 +654,56 @@ const MuqarnasSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M20 95 L30 100 M50 95 L50 100 M70 95 L80 100" strokeWidth="0.3" opacity="0.25" />
       </g>
 
-      {/* PRIMARY - Muqarnas honeycomb cells from below */}
+      {/* PRIMARY - Muqarnas concave honeycomb cells from below */}
       <g strokeWidth="1">
         {/* Central opening (oculus or lantern) */}
         <circle cx="50" cy="25" r="8" strokeWidth="1.8" />
         <circle cx="50" cy="25" r="5" strokeWidth="1" />
 
-        {/* First tier of cells around center (8 cells) */}
-        {/* Each cell is a pointed niche shape */}
-        <path d="M42 25 L35 18 L30 25 L35 32 L42 25" strokeWidth="1.2" />
-        <path d="M58 25 L65 18 L70 25 L65 32 L58 25" strokeWidth="1.2" />
-        <path d="M50 17 L43 10 L50 5 L57 10 L50 17" strokeWidth="1.2" />
-        <path d="M50 33 L43 40 L50 45 L57 40 L50 33" strokeWidth="1.2" />
+        {/* First tier - 8 concave niche cells around center with pointed-arch tops */}
+        {/* Cardinal cells */}
+        <path d="M30 20 Q35 15, 42 20 L42 30 Q35 35, 30 30 Z" strokeWidth="1.2" />
+        <path d="M30 23 Q35 19, 42 23" strokeWidth="0.5" opacity="0.5" />
+        <path d="M58 20 Q65 15, 70 20 L70 30 Q65 35, 58 30 Z" strokeWidth="1.2" />
+        <path d="M58 23 Q65 19, 70 23" strokeWidth="0.5" opacity="0.5" />
+        <path d="M45 5 Q50 0, 55 5 L55 17 Q50 22, 45 17 Z" strokeWidth="1.2" />
+        <path d="M45 8 Q50 4, 55 8" strokeWidth="0.5" opacity="0.5" />
+        <path d="M45 33 Q50 28, 55 33 L55 45 Q50 50, 45 45 Z" strokeWidth="1.2" />
+        <path d="M45 36 Q50 32, 55 36" strokeWidth="0.5" opacity="0.5" />
 
         {/* Diagonal cells */}
-        <path d="M42 17 L35 10 L42 5 L48 12 L42 17" strokeWidth="1.1" />
-        <path d="M58 17 L65 10 L58 5 L52 12 L58 17" strokeWidth="1.1" />
-        <path d="M42 33 L35 40 L42 45 L48 38 L42 33" strokeWidth="1.1" />
-        <path d="M58 33 L65 40 L58 45 L52 38 L58 33" strokeWidth="1.1" />
+        <path d="M33 8 Q38 4, 43 8 L43 16 Q38 20, 33 16 Z" strokeWidth="1.1" />
+        <path d="M57 8 Q62 4, 67 8 L67 16 Q62 20, 57 16 Z" strokeWidth="1.1" />
+        <path d="M33 34 Q38 30, 43 34 L43 42 Q38 46, 33 42 Z" strokeWidth="1.1" />
+        <path d="M57 34 Q62 30, 67 34 L67 42 Q62 46, 57 42 Z" strokeWidth="1.1" />
 
-        {/* Second tier - larger cells radiating out */}
-        <path d="M25 25 L18 18 L10 22 L15 32 L25 25" strokeWidth="1.3" />
-        <path d="M75 25 L82 18 L90 22 L85 32 L75 25" strokeWidth="1.3" />
-        <path d="M50 50 L40 55 L50 62 L60 55 L50 50" strokeWidth="1.3" />
+        {/* Second tier - larger concave cells radiating out */}
+        <path d="M10 16 Q18 10, 26 16 L26 30 Q18 36, 10 30 Z" strokeWidth="1.3" />
+        <path d="M10 20 Q18 15, 26 20" strokeWidth="0.6" opacity="0.5" />
+        <path d="M74 16 Q82 10, 90 16 L90 30 Q82 36, 74 30 Z" strokeWidth="1.3" />
+        <path d="M74 20 Q82 15, 90 20" strokeWidth="0.6" opacity="0.5" />
+        <path d="M38 48 Q50 42, 62 48 L62 60 Q50 66, 38 60 Z" strokeWidth="1.3" />
+        <path d="M38 52 Q50 47, 62 52" strokeWidth="0.6" opacity="0.5" />
 
-        {/* Third tier - corner stalactite projections */}
-        <path d="M20 12 L12 8 L5 15 L12 20 L20 12" strokeWidth="1.1" />
-        <path d="M80 12 L88 8 L95 15 L88 20 L80 12" strokeWidth="1.1" />
-        <path d="M30 48 L22 52 L28 60 L35 55 L30 48" strokeWidth="1.2" />
-        <path d="M70 48 L78 52 L72 60 L65 55 L70 48" strokeWidth="1.2" />
+        {/* Third tier - corner cells (largest, closest to viewer) */}
+        <path d="M5 40 Q15 32, 25 40 L25 58 Q15 64, 5 58 Z" strokeWidth="1.4" />
+        <path d="M5 45 Q15 38, 25 45" strokeWidth="0.7" opacity="0.5" />
+        <path d="M75 40 Q85 32, 95 40 L95 58 Q85 64, 75 58 Z" strokeWidth="1.4" />
+        <path d="M75 45 Q85 38, 95 45" strokeWidth="0.7" opacity="0.5" />
+        <path d="M30 60 Q50 52, 70 60 L70 76 Q50 82, 30 76 Z" strokeWidth="1.5" />
+        <path d="M30 65 Q50 58, 70 65" strokeWidth="0.7" opacity="0.5" />
 
-        {/* Bottom row - closest cells (largest) */}
-        <path d="M15 55 L8 62 L5 75 L15 70 L22 60 L15 55" strokeWidth="1.4" />
-        <path d="M85 55 L92 62 L95 75 L85 70 L78 60 L85 55" strokeWidth="1.4" />
-        <path d="M40 62 L35 72 L45 78 L55 78 L65 72 L60 62 L50 68 L40 62" strokeWidth="1.5" />
+        {/* Horizontal shelf lines between tiers */}
+        <path d="M26 20 L30 20" strokeWidth="0.8" opacity="0.6" />
+        <path d="M70 20 L74 20" strokeWidth="0.8" opacity="0.6" />
+        <path d="M25 40 L30 42" strokeWidth="0.8" opacity="0.6" />
+        <path d="M70 42 L75 40" strokeWidth="0.8" opacity="0.6" />
 
-        {/* Cell depth shadows */}
-        <path d="M32 22 L28 25" strokeWidth="0.5" opacity="0.5" />
-        <path d="M68 22 L72 25" strokeWidth="0.5" opacity="0.5" />
-        <path d="M50 38 L50 42" strokeWidth="0.5" opacity="0.5" />
-
-        {/* Inner cell articulation */}
-        <path d="M36 20 L33 25 L36 30" strokeWidth="0.6" opacity="0.6" />
-        <path d="M64 20 L67 25 L64 30" strokeWidth="0.6" opacity="0.6" />
-
-        {/* Star pattern in center cell */}
+        {/* Star pattern in center */}
         <path d="M47 25 L50 22 L53 25 L50 28 Z" strokeWidth="0.7" />
 
         {/* Transition zone to base arch */}
-        <path d="M5 75 Q25 72, 40 75 Q50 77, 60 75 Q75 72, 95 75" strokeWidth="1" opacity="0.7" />
+        <path d="M5 75 Q25 70, 40 75 Q50 78, 60 75 Q75 70, 95 75" strokeWidth="1" opacity="0.7" />
       </g>
     </g>
   </svg>

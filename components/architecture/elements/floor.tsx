@@ -312,46 +312,42 @@ const GrandStaircaseSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M53 25 L53 28" />
       </g>
 
-      {/* PRIMARY - Grand sweeping staircase */}
+      {/* PRIMARY - Grand sweeping double staircase */}
       <g strokeWidth="1.2">
         {/* Upper landing / gallery level */}
         <path d="M15 18 L85 18 L88 22 L12 22 Z" strokeWidth="1.8" />
 
-        {/* Left stair flight descending */}
-        <path d="M12 22 L12 35 L5 45 L5 95 L35 95 L35 65" strokeWidth="1.5" />
-        {/* Left treads */}
-        <path d="M12 28 L30 28" strokeWidth="1.2" />
-        <path d="M10 35 L28 35" strokeWidth="1.2" />
-        <path d="M8 42 L26 42" strokeWidth="1.2" />
-        <path d="M6 50 L24 50" strokeWidth="1.1" />
-        <path d="M5 58 L22 58" strokeWidth="1.1" />
-        <path d="M5 66 L20 66" strokeWidth="1" />
-        <path d="M5 74 L18 74" strokeWidth="1" />
-        <path d="M5 82 L35 82" strokeWidth="1" />
+        {/* Left stair flight - sweeping curve descending with stepped profile */}
+        <path d="M12 22 Q8 32, 5 45 Q4 58, 5 70 L5 95 L35 95 L35 65" strokeWidth="1.5" />
+        {/* Left treads - stepped profile connecting to stair curve */}
+        <path d="M12 22 L12 28 L28 28 L28 22" strokeWidth="1" />
+        <path d="M10 28 L10 35 L26 35 L26 28" strokeWidth="1" />
+        <path d="M8 35 L8 42 L24 42 L24 35" strokeWidth="1" />
+        <path d="M6 42 L6 50 L22 50 L22 42" strokeWidth="0.9" />
+        <path d="M5 50 L5 58 L20 58 L20 50" strokeWidth="0.9" />
+        <path d="M5 58 L5 66 L18 66 L18 58" strokeWidth="0.9" />
+        <path d="M5 66 L5 74 L16 74 L16 66" strokeWidth="0.8" />
 
-        {/* Right stair flight descending */}
-        <path d="M88 22 L88 35 L95 45 L95 95 L65 95 L65 65" strokeWidth="1.5" />
+        {/* Right stair flight - sweeping curve descending with stepped profile */}
+        <path d="M88 22 Q92 32, 95 45 Q96 58, 95 70 L95 95 L65 95 L65 65" strokeWidth="1.5" />
         {/* Right treads */}
-        <path d="M70 28 L88 28" strokeWidth="1.2" />
-        <path d="M72 35 L90 35" strokeWidth="1.2" />
-        <path d="M74 42 L92 42" strokeWidth="1.2" />
-        <path d="M76 50 L94 50" strokeWidth="1.1" />
-        <path d="M78 58 L95 58" strokeWidth="1.1" />
-        <path d="M80 66 L95 66" strokeWidth="1" />
-        <path d="M82 74 L95 74" strokeWidth="1" />
-        <path d="M65 82 L95 82" strokeWidth="1" />
+        <path d="M88 22 L88 28 L72 28 L72 22" strokeWidth="1" />
+        <path d="M90 28 L90 35 L74 35 L74 28" strokeWidth="1" />
+        <path d="M92 35 L92 42 L76 42 L76 35" strokeWidth="1" />
+        <path d="M94 42 L94 50 L78 50 L78 42" strokeWidth="0.9" />
+        <path d="M95 50 L95 58 L80 58 L80 50" strokeWidth="0.9" />
+        <path d="M95 58 L95 66 L82 66 L82 58" strokeWidth="0.9" />
+        <path d="M95 66 L95 74 L84 74 L84 66" strokeWidth="0.8" />
 
         {/* Central landing platform */}
         <path d="M35 65 L65 65 L65 95 L35 95 Z" strokeWidth="1.6" />
         <path d="M40 75 L60 75 L60 90 L40 90 Z" strokeWidth="0.8" opacity="0.4" />
 
-        {/* Left balustrade rail */}
-        <path d="M12 15 L5 40 L5 60" strokeWidth="1.8" />
-        <path d="M35 60 L35 95" strokeWidth="1.5" />
-
-        {/* Right balustrade rail */}
-        <path d="M88 15 L95 40 L95 60" strokeWidth="1.8" />
-        <path d="M65 60 L65 95" strokeWidth="1.5" />
+        {/* Sweeping balustrade rails */}
+        <path d="M12 15 Q8 28, 5 42 Q4 55, 5 65" strokeWidth="1.8" />
+        <path d="M35 65 L35 95" strokeWidth="1.5" />
+        <path d="M88 15 Q92 28, 95 42 Q96 55, 95 65" strokeWidth="1.8" />
+        <path d="M65 65 L65 95" strokeWidth="1.5" />
 
         {/* Newel posts */}
         <circle cx="12" cy="15" r="3" strokeWidth="1.5" />
@@ -359,15 +355,15 @@ const GrandStaircaseSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <circle cx="35" cy="65" r="2.5" strokeWidth="1.3" />
         <circle cx="65" cy="65" r="2.5" strokeWidth="1.3" />
 
-        {/* Balusters suggestion */}
-        <path d="M10 20 L7 35" strokeWidth="0.7" />
-        <path d="M8 25 L6 40" strokeWidth="0.7" />
-        <path d="M90 20 L93 35" strokeWidth="0.7" />
-        <path d="M92 25 L94 40" strokeWidth="0.7" />
+        {/* Balusters */}
+        <path d="M10 22 Q7 30, 6 38" strokeWidth="0.7" />
+        <path d="M8 30 Q6 38, 5 46" strokeWidth="0.7" />
+        <path d="M90 22 Q93 30, 94 38" strokeWidth="0.7" />
+        <path d="M92 30 Q94 38, 95 46" strokeWidth="0.7" />
 
         {/* Carpet runner */}
-        <path d="M18 22 L18 35 L12 48" strokeWidth="0.6" strokeDasharray="2 2" opacity="0.4" />
-        <path d="M82 22 L82 35 L88 48" strokeWidth="0.6" strokeDasharray="2 2" opacity="0.4" />
+        <path d="M18 22 Q14 32, 12 48" strokeWidth="0.6" strokeDasharray="2 2" opacity="0.4" />
+        <path d="M82 22 Q86 32, 88 48" strokeWidth="0.6" strokeDasharray="2 2" opacity="0.4" />
       </g>
     </g>
   </svg>
@@ -454,7 +450,7 @@ const HelicalRampSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M50 45 L50 55" />
       </g>
 
-      {/* PRIMARY - Helical ramp spiraling upward */}
+      {/* PRIMARY - Helical ramp spiraling upward (Guggenheim-style plan view) */}
       <g strokeWidth="1.2">
         {/* Outer wall of spiral */}
         <circle cx="50" cy="50" r="45" strokeWidth="1.8" />
@@ -462,30 +458,29 @@ const HelicalRampSVG: React.FC<SVGProps> = ({ showHalo }) => (
         {/* Inner edge of ramp (central void) */}
         <circle cx="50" cy="50" r="15" strokeWidth="1.5" />
 
-        {/* Spiral ramp levels - showing the continuous rise */}
-        {/* Level 1 - bottom (closest, widest stroke) */}
-        <path d="M50 95 Q95 95, 95 50 Q95 20, 70 10" strokeWidth="2" />
-        <path d="M50 80 Q80 80, 80 50 Q80 30, 65 20" strokeWidth="1.2" opacity="0.7" />
+        {/* Continuous spiral ramp - outer edge ascending clockwise */}
+        {/* One continuous path spiraling from bottom entry to top */}
+        <path d="M50 95 Q95 92, 95 50 Q95 8, 50 5 Q5 8, 5 50 Q5 88, 45 90"
+              strokeWidth="2.2" />
+        {/* Continue spiral inward (second revolution, slightly tighter) */}
+        <path d="M45 90 Q82 85, 85 50 Q85 18, 50 15 Q18 18, 15 50 Q15 78, 42 80"
+              strokeWidth="1.8" />
+        {/* Third revolution approaching center */}
+        <path d="M42 80 Q68 76, 72 50 Q72 28, 50 25 Q30 28, 28 50 Q28 68, 40 70"
+              strokeWidth="1.4" opacity="0.8" />
 
-        {/* Level 2 */}
-        <path d="M70 10 Q30 5, 10 40 Q5 70, 30 85" strokeWidth="1.8" />
-        <path d="M65 20 Q35 15, 20 40 Q15 60, 35 72" strokeWidth="1.1" opacity="0.7" />
+        {/* Inner edge of ramp (parallel to outer, showing ramp width) */}
+        <path d="M50 80 Q80 78, 80 50 Q80 22, 50 20 Q20 22, 20 50 Q20 75, 42 76"
+              strokeWidth="1" opacity="0.6" />
+        <path d="M42 76 Q62 72, 65 50 Q65 32, 50 30 Q35 32, 35 50 Q35 65, 42 66"
+              strokeWidth="0.8" opacity="0.5" />
 
-        {/* Level 3 */}
-        <path d="M30 85 Q60 95, 85 70 Q95 45, 75 25" strokeWidth="1.6" />
-        <path d="M35 72 Q55 80, 72 62 Q82 45, 68 32" strokeWidth="1" opacity="0.7" />
+        {/* Entry point at ground level */}
+        <path d="M50 95 L50 80" strokeWidth="1.5" opacity="0.7" />
 
-        {/* Level 4 */}
-        <path d="M75 25 Q50 10, 25 30 Q10 50, 25 70" strokeWidth="1.4" />
-        <path d="M68 32 Q50 20, 35 35 Q22 50, 35 62" strokeWidth="0.9" opacity="0.7" />
-
-        {/* Level 5 - top (farthest, thinnest) */}
-        <path d="M25 70 Q45 85, 70 65 Q85 50, 70 35" strokeWidth="1.2" />
-        <path d="M35 62 Q48 72, 62 58 Q72 48, 62 40" strokeWidth="0.8" opacity="0.6" />
-
-        {/* Ramp edge shadow lines */}
-        <path d="M92 60 Q90 75, 75 85" strokeWidth="0.6" opacity="0.4" />
-        <path d="M15 35 Q20 20, 40 12" strokeWidth="0.6" opacity="0.4" />
+        {/* Direction of ascent arrow */}
+        <path d="M88 58 Q90 50, 88 42" strokeWidth="0.8" opacity="0.6" />
+        <path d="M86 44 L88 42 L90 44" strokeWidth="0.7" opacity="0.6" />
 
         {/* People suggestion on ramp (scale) */}
         <path d="M75 70 L75 67 L76 65 L75 67 L74 65" strokeWidth="0.5" opacity="0.3" />
@@ -966,7 +961,7 @@ const SpiralStairSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <circle cx="50" cy="50" r="47" />
       </g>
 
-      {/* PRIMARY - Spiral stair from below */}
+      {/* PRIMARY - Spiral stair plan view - consistent pie-slice wedge treads */}
       <g strokeWidth="1.2">
         {/* Central newel pole */}
         <circle cx="50" cy="50" r="5" strokeWidth="2" />
@@ -976,43 +971,34 @@ const SpiralStairSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <circle cx="50" cy="50" r="42" strokeWidth="1.8" />
         <circle cx="50" cy="50" r="40" strokeWidth="1" opacity="0.6" />
 
-        {/* Wedge treads radiating from center */}
-        {/* Tread 1 - at bottom */}
-        <path d="M50 55 L50 92 M50 55 L85 70" strokeWidth="1.5" />
-        <path d="M55 60 L80 72" strokeWidth="0.8" opacity="0.6" />
+        {/* 12 wedge treads radiating from newel to outer wall, evenly spaced at 30° */}
+        {/* Each tread is two radial lines from center to outer circle */}
+        {/* Tread edges at 0°, 30°, 60°, 90°, 120°, 150°, 180°, 210°, 240°, 270°, 300°, 330° */}
+        <path d="M55 50 L92 50" strokeWidth="1.5" />
+        <path d="M53 45 L86 29" strokeWidth="1.5" />
+        <path d="M50 45 L68 12" strokeWidth="1.5" />
+        <path d="M47 45 L50 8" strokeWidth="1.4" />
+        <path d="M45 47 L32 12" strokeWidth="1.4" />
+        <path d="M45 50 L14 29" strokeWidth="1.4" />
+        <path d="M45 52 L8 50" strokeWidth="1.3" />
+        <path d="M47 55 L14 71" strokeWidth="1.3" />
+        <path d="M50 55 L32 88" strokeWidth="1.3" />
+        <path d="M53 55 L50 92" strokeWidth="1.2" />
+        <path d="M55 53 L68 88" strokeWidth="1.2" />
+        <path d="M55 50 L86 71" strokeWidth="1.2" />
 
-        {/* Tread 2 */}
-        <path d="M55 50 L92 50 M55 50 L75 20" strokeWidth="1.5" />
-        <path d="M60 48 L78 28" strokeWidth="0.8" opacity="0.6" />
-
-        {/* Tread 3 */}
-        <path d="M50 45 L50 8 M50 45 L20 25" strokeWidth="1.4" />
-        <path d="M48 40 L25 22" strokeWidth="0.8" opacity="0.6" />
-
-        {/* Tread 4 */}
-        <path d="M45 50 L8 50 M45 50 L25 80" strokeWidth="1.4" />
-        <path d="M42 55 L22 75" strokeWidth="0.8" opacity="0.6" />
-
-        {/* Tread 5 */}
-        <path d="M50 55 L35 88 M55 55 L70 85" strokeWidth="1.3" />
-
-        {/* Additional treads visible through */}
-        <path d="M55 45 L72 15" strokeWidth="1.2" />
-        <path d="M45 45 L28 15" strokeWidth="1.2" />
-        <path d="M45 55 L15 65" strokeWidth="1.2" />
-
-        {/* Riser edges (showing vertical faces) */}
-        <path d="M50 55 L50 58 L82 73 L85 70" strokeWidth="0.8" opacity="0.5" />
-        <path d="M55 50 L58 50 L78 22 L75 20" strokeWidth="0.8" opacity="0.5" />
-        <path d="M50 45 L50 42 L22 23 L20 25" strokeWidth="0.8" opacity="0.5" />
-        <path d="M45 50 L42 50 L23 78 L25 80" strokeWidth="0.8" opacity="0.5" />
-
-        {/* Underside visible (looking up) */}
-        <path d="M55 55 Q60 60, 58 65" strokeWidth="0.6" opacity="0.4" />
-        <path d="M55 45 Q62 42, 65 48" strokeWidth="0.6" opacity="0.4" />
+        {/* Nosing arcs on select treads (curved front edge of each step) */}
+        <path d="M92 50 Q90 42, 86 29" strokeWidth="0.8" opacity="0.6" />
+        <path d="M68 12 Q58 10, 50 8" strokeWidth="0.8" opacity="0.6" />
+        <path d="M14 29 Q10 38, 8 50" strokeWidth="0.8" opacity="0.6" />
+        <path d="M32 88 Q42 92, 50 92" strokeWidth="0.8" opacity="0.6" />
 
         {/* Handrail spiral suggestion */}
-        <path d="M50 8 Q75 10, 90 35 Q95 55, 85 75 Q70 92, 50 92" strokeWidth="1" strokeDasharray="3 3" opacity="0.5" />
+        <path d="M50 8 Q78 10, 92 38 Q96 58, 86 78 Q70 94, 50 92" strokeWidth="1" strokeDasharray="3 3" opacity="0.5" />
+
+        {/* Direction of ascent arrow */}
+        <path d="M82 58 Q84 52, 84 46" strokeWidth="0.8" opacity="0.5" />
+        <path d="M82 48 L84 46 L86 48" strokeWidth="0.6" opacity="0.5" />
       </g>
     </g>
   </svg>

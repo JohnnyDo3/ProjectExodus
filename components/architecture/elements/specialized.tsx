@@ -66,22 +66,44 @@ const AmbulatorySVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="ambulatory-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#ambulatory-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Central sanctuary space */}
-      <circle cx="50" cy="50" r="10" strokeDasharray="3 2" strokeWidth="0.8" opacity="0.4" />
-      <path d="M50 25 Q72 25, 75 50 Q75 75, 50 75 Q25 75, 25 50 Q25 25, 50 25" strokeDasharray="3 2" strokeWidth="0.8" opacity="0.4" />
+      {/* CONTEXT: Central sanctuary/apse with altar */}
+      <g strokeDasharray="3 2" opacity="0.4">
+        <circle cx="50" cy="50" r="12" strokeWidth="0.8" />
+        <path d="M47 48 L53 48 L53 52 L47 52 Z" strokeWidth="0.5" />
+      </g>
 
-      {/* PRIMARY: Ambulatory corridor */}
-      <path d="M50 10 Q85 10, 90 50 Q90 90, 50 90 Q10 90, 10 50 Q10 10, 50 10" strokeWidth="1.2" />
+      {/* PRIMARY: Ambulatory - semicircular walkway around apse */}
+      {/* Outer wall of ambulatory */}
+      <path d="M50 5 Q90 5, 95 50 Q95 95, 50 95 Q5 95, 5 50 Q5 5, 50 5" strokeWidth="1.8" />
+      {/* Inner wall of ambulatory (sanctuary boundary) */}
+      <path d="M50 20 Q75 20, 78 50 Q78 80, 50 80 Q22 80, 22 50 Q22 20, 50 20" strokeWidth="1.5" />
 
-      {/* Detail: Column positions */}
-      {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => {
+      {/* Arcade columns separating ambulatory from sanctuary */}
+      {[0, 40, 80, 120, 160, 200, 240, 280, 320].map((angle, i) => {
         const rad = (angle * Math.PI) / 180
-        const x1 = 50 + 32 * Math.cos(rad)
-        const y1 = 50 + 32 * Math.sin(rad)
-        const x2 = 50 + 20 * Math.cos(rad)
-        const y2 = 50 + 20 * Math.sin(rad)
-        return <circle key={i} cx={(x1+x2)/2} cy={(y1+y2)/2} r="2" strokeWidth="1" />
+        const cx = 50 + 27 * Math.cos(rad)
+        const cy = 50 + 27 * Math.sin(rad)
+        return <circle key={i} cx={cx} cy={cy} r="2.5" strokeWidth="1.2" />
       })}
+
+      {/* Vault ribs spanning across corridor width */}
+      {[20, 60, 100, 140, 180, 220, 260, 300, 340].map((angle, i) => {
+        const rad = (angle * Math.PI) / 180
+        const x1 = 50 + 22 * Math.cos(rad)
+        const y1 = 50 + 22 * Math.sin(rad)
+        const x2 = 50 + 42 * Math.cos(rad)
+        const y2 = 50 + 42 * Math.sin(rad)
+        return <path key={i} d={`M${x1.toFixed(1)} ${y1.toFixed(1)} L${x2.toFixed(1)} ${y2.toFixed(1)}`} strokeWidth="0.7" opacity="0.5" />
+      })}
+
+      {/* Radiating chapels off the ambulatory (3 semicircular apsidioles) */}
+      <path d="M95 42 Q102 50, 95 58" strokeWidth="1" opacity="0.7" />
+      <path d="M72 92 Q78 100, 85 93" strokeWidth="1" opacity="0.7" />
+      <path d="M15 93 Q22 100, 28 92" strokeWidth="1" opacity="0.7" />
+
+      {/* Floor paving in corridor */}
+      <path d="M50 8 Q88 8, 92 50" strokeWidth="0.5" opacity="0.3" strokeDasharray="2 3" />
+      <path d="M92 50 Q92 92, 50 92" strokeWidth="0.5" opacity="0.3" strokeDasharray="2 3" />
     </g>
   </svg>
 )
@@ -364,20 +386,26 @@ const JoistSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="joist-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#joist-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Bearing walls */}
-      <path d="M5 35 L5 50 L10 50 L10 35" strokeDasharray="3 2" strokeWidth="0.8" opacity="0.4" />
-      <path d="M90 35 L90 50 L95 50 L95 35" strokeDasharray="3 2" strokeWidth="0.8" opacity="0.4" />
+      {/* CONTEXT: Bearing walls on left and right */}
+      <path d="M5 15 L5 90 L10 90 L10 15" strokeDasharray="3 2" strokeWidth="0.8" opacity="0.4" />
+      <path d="M90 15 L90 90 L95 90 L95 15" strokeDasharray="3 2" strokeWidth="0.8" opacity="0.4" />
+      {/* Subfloor/sheathing on top */}
+      <path d="M10 15 L90 15" strokeDasharray="3 2" strokeWidth="0.6" opacity="0.3" />
 
-      {/* PRIMARY: Main joists */}
-      <path d="M10 40 L90 40" strokeWidth="1.8" />
-      <path d="M10 48 L90 48" strokeWidth="1.8" />
-
-      {/* PRIMARY: Bridging/blocking */}
-      {[20, 35, 50, 65, 80].map((x, i) => (
+      {/* PRIMARY: Multiple parallel floor joists spanning between walls */}
+      {[22, 34, 46, 58, 70, 82].map((y, i) => (
         <g key={i}>
-          <path d={`M${x-3} 40 L${x-3} 90`} strokeWidth="1" />
-          <path d={`M${x+3} 40 L${x+3} 90`} strokeWidth="1" />
-          <path d={`M${x-3} 90 L${x+3} 90`} strokeWidth="0.8" />
+          <path d={`M10 ${y} L90 ${y}`} strokeWidth="1.8" />
+          <path d={`M10 ${y+4} L90 ${y+4}`} strokeWidth="1" opacity="0.6" />
+        </g>
+      ))}
+
+      {/* PRIMARY: Cross bridging between joists (X-bracing) */}
+      {[22, 34, 46, 58, 70].map((y, i) => (
+        <g key={i}>
+          <path d={`M50 ${y+4} L50 ${y+8}`} strokeWidth="0.8" opacity="0.7" />
+          <path d={`M48 ${y+4} L52 ${y+8}`} strokeWidth="0.6" opacity="0.5" />
+          <path d={`M52 ${y+4} L48 ${y+8}`} strokeWidth="0.6" opacity="0.5" />
         </g>
       ))}
     </g>
@@ -587,11 +615,13 @@ const RafterSVG: React.FC<SVGProps> = ({ showHalo }) => (
       {/* PRIMARY: Ceiling/collar ties */}
       <path d="M10 70 L90 70" strokeWidth="1.2" />
 
-      {/* PRIMARY: Intermediate rafters */}
-      {[20, 32, 44, 56, 68, 80].map((x, i) => {
-        const y = 70 - (Math.abs(50-x) / 40) * 55
-        return <path key={i} d={`M${x} ${y} L${x} 70`} strokeWidth="1.2" />
-      })}
+      {/* PRIMARY: Intermediate rafters - parallel diagonal members following roof slope */}
+      {/* Left side rafters (parallel to main left rafter M50 15 L10 70) */}
+      <path d="M42 22 L18 70" strokeWidth="1.2" />
+      <path d="M34 29 L26 70" strokeWidth="1.2" />
+      {/* Right side rafters (parallel to main right rafter M50 15 L90 70) */}
+      <path d="M58 22 L82 70" strokeWidth="1.2" />
+      <path d="M66 29 L74 70" strokeWidth="1.2" />
     </g>
   </svg>
 )
@@ -672,23 +702,40 @@ const RidgepoleSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="ridgepole-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#ridgepole-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Roof planes */}
-      <path d="M10 70 L50 30 L90 70" strokeDasharray="3 2" strokeWidth="0.8" opacity="0.4" />
-      <path d="M30 50 L50 30 L70 50" strokeDasharray="3 2" strokeWidth="0.6" opacity="0.4" />
+      {/* CONTEXT: Roof slopes meeting at ridge */}
+      <g strokeDasharray="3 2" opacity="0.4">
+        <path d="M5 75 L5 80" strokeWidth="0.6" />
+        <path d="M95 75 L95 80" strokeWidth="0.6" />
+        <path d="M0 80 L100 80" strokeWidth="0.8" />
+        {/* Left roof slope */}
+        <path d="M5 75 L30 40" strokeWidth="0.8" />
+        {/* Right roof slope */}
+        <path d="M95 75 L70 40" strokeWidth="0.8" />
+      </g>
 
-      {/* CONTEXT: Walls and bearing */}
-      <path d="M10 70 L10 75" strokeDasharray="3 2" strokeWidth="0.6" opacity="0.4" />
-      <path d="M90 70 L90 75" strokeDasharray="3 2" strokeWidth="0.6" opacity="0.4" />
-      <path d="M5 75 L95 75" strokeDasharray="3 2" strokeWidth="0.8" opacity="0.4" />
+      {/* PRIMARY: Ridgepole - horizontal beam at roof apex, shown in perspective receding */}
+      {/* Main ridgepole beam - thick horizontal member */}
+      <path d="M15 32 L85 42" strokeWidth="4" />
+      {/* Top face of beam (showing 3D depth) */}
+      <path d="M15 30 L85 40" strokeWidth="1" />
+      <path d="M15 30 L15 32" strokeWidth="1.5" />
+      {/* Wood grain along length */}
+      <path d="M20 33 L40 36" strokeWidth="0.5" opacity="0.5" />
+      <path d="M45 37 L70 40" strokeWidth="0.5" opacity="0.5" />
+      <path d="M25 35 L55 38" strokeWidth="0.4" opacity="0.4" />
 
-      {/* PRIMARY: Ridgepole beam */}
-      <path d="M50 25 L50 35" strokeWidth="2.5" />
-      <path d="M48 27 L52 27" strokeWidth="1" />
-      <path d="M48 33 L52 33" strokeWidth="1" />
+      {/* Rafters meeting the ridgepole from both sides */}
+      <path d="M20 34 L5 60" strokeWidth="1.2" opacity="0.7" />
+      <path d="M40 37 L25 63" strokeWidth="1.2" opacity="0.7" />
+      <path d="M60 39 L45 65" strokeWidth="1.2" opacity="0.7" />
+      <path d="M80 42 L65 68" strokeWidth="1.2" opacity="0.7" />
+      <path d="M20 34 L35 60" strokeWidth="1.2" opacity="0.7" />
+      <path d="M40 37 L55 63" strokeWidth="1.2" opacity="0.7" />
+      <path d="M60 39 L75 65" strokeWidth="1.2" opacity="0.7" />
+      <path d="M80 42 L95 68" strokeWidth="1.2" opacity="0.7" />
 
-      {/* PRIMARY: Support posts */}
-      <path d="M30 50 L30 75" strokeWidth="0.8" />
-      <path d="M70 50 L70 75" strokeWidth="0.8" />
+      {/* Notch/birdsmouth joint detail at one rafter */}
+      <path d="M39 36 L41 38 L39 38" strokeWidth="0.8" opacity="0.6" />
     </g>
   </svg>
 )
