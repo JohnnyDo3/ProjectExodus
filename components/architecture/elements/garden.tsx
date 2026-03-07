@@ -370,53 +370,66 @@ const GazeboSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M60 90 Q70 88, 80 90" />
       </g>
 
-      {/* PRIMARY: Victorian gazebo */}
+      {/* PRIMARY: Victorian gazebo - 3/4 view showing conical roof */}
       <g strokeWidth="0.8">
-        {/* Tiered roof - double tier */}
-        <path d="M50 8 L65 18 L72 28 L65 32 L50 35 L35 32 L28 28 L35 18 Z" strokeWidth="1.2" />
-        <path d="M50 35 L70 50 L78 58 L70 62 L50 68 L30 62 L22 58 L30 50 Z" strokeWidth="1.2" />
+        {/* Upper conical roof tier (bell-shaped curve) */}
+        <path d="M50 6 Q35 18, 28 28 Q24 33, 22 35" strokeWidth="1.3" />
+        <path d="M50 6 Q65 18, 72 28 Q76 33, 78 35" strokeWidth="1.3" />
+        {/* Eave overhang - curved bell shape */}
+        <path d="M22 35 Q30 33, 50 35 Q70 33, 78 35" strokeWidth="1.2" />
 
-        {/* Roof structural lines */}
-        <path d="M50 8 L50 68" strokeWidth="0.4" opacity="0.4" />
-        <path d="M65 18 L35 62" strokeWidth="0.4" opacity="0.3" />
-        <path d="M72 28 L28 58" strokeWidth="0.4" opacity="0.3" />
-        <path d="M70 50 L30 50" strokeWidth="0.4" opacity="0.3" />
+        {/* Lower conical roof tier (larger bell curve) */}
+        <path d="M22 35 Q18 45, 16 55 Q14 60, 14 62" strokeWidth="1.3" />
+        <path d="M78 35 Q82 45, 84 55 Q86 60, 86 62" strokeWidth="1.3" />
+        {/* Lower eave overhang */}
+        <path d="M14 62 Q30 58, 50 62 Q70 58, 86 62" strokeWidth="1.2" />
+
+        {/* Roof structural lines - radial rafters */}
+        <path d="M50 6 L50 62" strokeWidth="0.4" opacity="0.4" />
+        <path d="M50 6 L22 35" strokeWidth="0.4" opacity="0.3" />
+        <path d="M50 6 L78 35" strokeWidth="0.4" opacity="0.3" />
+        <path d="M50 35 L14 62" strokeWidth="0.4" opacity="0.3" />
+        <path d="M50 35 L86 62" strokeWidth="0.4" opacity="0.3" />
 
         {/* Decorative finial - Victorian crown */}
-        <circle cx="50" cy="8" r="3" strokeWidth="1" />
-        <path d="M50 5 L50 2" strokeWidth="1.2" />
-        <circle cx="50" cy="2" r="1.5" strokeWidth="0.8" />
-        <path d="M47 6 L53 6" strokeWidth="0.7" />
+        <circle cx="50" cy="6" r="3" strokeWidth="1" />
+        <path d="M50 3 L50 0" strokeWidth="1.2" />
+        <circle cx="50" cy="0" r="1.5" strokeWidth="0.8" />
 
-        {/* Cast iron columns with ornate capitals */}
-        <path d="M30 62 L30 90" strokeWidth="1.3" />
-        <path d="M50 68 L50 90" strokeWidth="1.3" />
-        <path d="M70 62 L70 90" strokeWidth="1.3" />
+        {/* Six visible columns (3/4 view of octagonal plan) */}
+        <path d="M22 65 L22 90" strokeWidth="1.3" />
+        <path d="M36 63 L36 90" strokeWidth="1.3" />
+        <path d="M50 62 L50 90" strokeWidth="1.3" />
+        <path d="M64 63 L64 90" strokeWidth="1.3" />
+        <path d="M78 65 L78 90" strokeWidth="1.3" />
+        <path d="M86 66 L86 90" strokeWidth="1" opacity="0.6" />
 
-        {/* Column capitals with Victorian detail */}
-        <path d="M28 62 L32 62 L32 65 L28 65 Z" strokeWidth="0.8" />
-        <path d="M48 68 L52 68 L52 71 L48 71 Z" strokeWidth="0.8" />
-        <path d="M68 62 L72 62 L72 65 L68 65 Z" strokeWidth="0.8" />
+        {/* Column capitals with Victorian bracket detail */}
+        <path d="M20 65 L24 65 L24 67 L20 67 Z" strokeWidth="0.8" />
+        <path d="M34 63 L38 63 L38 65 L34 65 Z" strokeWidth="0.8" />
+        <path d="M48 62 L52 62 L52 64 L48 64 Z" strokeWidth="0.8" />
+        <path d="M62 63 L66 63 L66 65 L62 65 Z" strokeWidth="0.8" />
+        <path d="M76 65 L80 65 L80 67 L76 67 Z" strokeWidth="0.8" />
 
         {/* Decorative ironwork railings with scrolls */}
-        <path d="M30 76 Q35 74, 40 76 Q45 74, 50 76" strokeWidth="1" />
-        <path d="M50 76 Q55 74, 60 76 Q65 74, 70 76" strokeWidth="1" />
-        <path d="M30 83 Q35 81, 40 83 Q45 81, 50 83" strokeWidth="1" />
-        <path d="M50 83 Q55 81, 60 83 Q65 81, 70 83" strokeWidth="1" />
+        <path d="M22 76 Q29 74, 36 76 Q43 74, 50 76" strokeWidth="1" />
+        <path d="M50 76 Q57 74, 64 76 Q71 74, 78 76" strokeWidth="1" />
+        <path d="M22 83 Q29 81, 36 83 Q43 81, 50 83" strokeWidth="1" />
+        <path d="M50 83 Q57 81, 64 83 Q71 81, 78 83" strokeWidth="1" />
 
         {/* Ornate balusters with filigree */}
-        <path d="M36 76 L36 83" strokeWidth="0.7" />
-        <circle cx="36" cy="79.5" r="1.5" strokeWidth="0.6" />
+        <path d="M29 76 L29 83" strokeWidth="0.7" />
+        <circle cx="29" cy="79.5" r="1.5" strokeWidth="0.6" />
         <path d="M43 76 L43 83" strokeWidth="0.7" />
         <circle cx="43" cy="79.5" r="1.5" strokeWidth="0.6" />
         <path d="M57 76 L57 83" strokeWidth="0.7" />
         <circle cx="57" cy="79.5" r="1.5" strokeWidth="0.6" />
-        <path d="M64 76 L64 83" strokeWidth="0.7" />
-        <circle cx="64" cy="79.5" r="1.5" strokeWidth="0.6" />
+        <path d="M71 76 L71 83" strokeWidth="0.7" />
+        <circle cx="71" cy="79.5" r="1.5" strokeWidth="0.6" />
 
-        {/* Floor platform - hexagonal */}
-        <path d="M24 90 L38 85 L62 85 L76 90 L78 93 L22 93 Z" strokeWidth="1.1" />
-        <path d="M30 88 L70 88" strokeWidth="0.5" opacity="0.4" />
+        {/* Floor platform - octagonal in 3/4 perspective */}
+        <path d="M16 90 L30 86 L70 86 L84 90 L88 93 L12 93 Z" strokeWidth="1.1" />
+        <path d="M22 88 L78 88" strokeWidth="0.5" opacity="0.4" />
 
         {/* Entry steps with decorative side rails */}
         <path d="M44 93 L44 98 L56 98 L56 93" strokeWidth="1.1" />
@@ -424,9 +437,9 @@ const GazeboSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M43 93 L40 98" strokeWidth="0.8" />
         <path d="M57 93 L60 98" strokeWidth="0.8" />
 
-        {/* Decorative roof brackets */}
-        <path d="M35 50 Q38 48, 35 55" strokeWidth="0.7" opacity="0.5" />
-        <path d="M65 50 Q62 48, 65 55" strokeWidth="0.7" opacity="0.5" />
+        {/* Decorative roof brackets between columns */}
+        <path d="M26 65 Q30 62, 33 65" strokeWidth="0.7" opacity="0.5" />
+        <path d="M67 65 Q70 62, 74 65" strokeWidth="0.7" opacity="0.5" />
       </g>
     </g>
   </svg>

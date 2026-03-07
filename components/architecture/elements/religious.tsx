@@ -674,13 +674,20 @@ const NaveSVG: React.FC<SVGProps> = ({ showHalo }) => (
           </g>
         ))}
 
-        {/* Arcade arches */}
+        {/* Arcade arches - spanning horizontally between nave wall and column */}
         {[25, 40, 55, 70].map((y, i) => (
           <g key={i}>
-            <path d={`M25 ${y} Q25 ${y+7.5}, 25 ${y+15}`} opacity="0.5" strokeWidth="0.7" />
-            <path d={`M75 ${y} Q75 ${y+7.5}, 75 ${y+15}`} opacity="0.5" strokeWidth="0.7" />
-            <path d={`M22 ${y+7.5} Q25 ${y+5}, 28 ${y+7.5}`} strokeWidth="0.8" />
-            <path d={`M72 ${y+7.5} Q75 ${y+5}, 78 ${y+7.5}`} strokeWidth="0.8" />
+            {/* Left arcade: arch from wall (x=20) to column (x=25), shown as pointed arch viewed from above */}
+            <path d={`M20 ${y+1} Q22 ${y-2}, 25 ${y+1}`} strokeWidth="0.9" />
+            <path d={`M20 ${y+14} Q22 ${y+11}, 25 ${y+14}`} strokeWidth="0.9" />
+            {/* Left: inner arch ring */}
+            <path d={`M20 ${y+1} L20 ${y+14}`} strokeWidth="0.6" opacity="0.5" />
+
+            {/* Right arcade: arch from column (x=75) to wall (x=80) */}
+            <path d={`M75 ${y+1} Q78 ${y-2}, 80 ${y+1}`} strokeWidth="0.9" />
+            <path d={`M75 ${y+14} Q78 ${y+11}, 80 ${y+14}`} strokeWidth="0.9" />
+            {/* Right: inner arch ring */}
+            <path d={`M80 ${y+1} L80 ${y+14}`} strokeWidth="0.6" opacity="0.5" />
           </g>
         ))}
 

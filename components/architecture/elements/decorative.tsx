@@ -907,20 +907,59 @@ const GuillocheSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M-5 90 L105 90" strokeWidth="0.3" opacity="0.3" />
       </g>
 
-      {/* PRIMARY - Guilloche interlacing pattern */}
+      {/* PRIMARY - Guilloche interlacing pattern with over-under weave */}
       <g strokeWidth="1.2">
         {/* Upper border line */}
         <path d="M0 30 L100 30" strokeWidth="1.5" />
 
-        {/* Main interlacing bands - wave 1 (over-under pattern) */}
-        <path d="M0 50 Q12 35, 25 50 Q38 65, 50 50 Q62 35, 75 50 Q88 65, 100 50" strokeWidth="2" />
+        {/* Band A - segments with breaks at crossing points (goes OVER at 0°/180°, UNDER at 90°/270°) */}
+        {/* A: start to first crossing (over) */}
+        <path d="M0 50 Q6 40, 12 42" strokeWidth="2" />
+        {/* A: gap where B crosses over... then continues */}
+        <path d="M14 44 Q18 50, 25 50" strokeWidth="2" />
+        {/* A: over B */}
+        <path d="M25 50 Q32 50, 37 43" strokeWidth="2" />
+        {/* A: gap... */}
+        <path d="M39 45 Q44 50, 50 50" strokeWidth="2" />
+        {/* A: over B */}
+        <path d="M50 50 Q56 50, 62 43" strokeWidth="2" />
+        {/* A: gap... */}
+        <path d="M64 45 Q68 50, 75 50" strokeWidth="2" />
+        {/* A: over B */}
+        <path d="M75 50 Q82 50, 87 43" strokeWidth="2" />
+        {/* A: gap to end */}
+        <path d="M89 45 Q94 50, 100 50" strokeWidth="2" />
 
-        {/* Wave 2 (opposite phase, creating circles) */}
-        <path d="M0 50 Q12 65, 25 50 Q38 35, 50 50 Q62 65, 75 50 Q88 35, 100 50" strokeWidth="2" />
+        {/* Band B - opposite phase, segments with opposite over-under */}
+        {/* B: over A at first crossing */}
+        <path d="M0 50 Q6 60, 12 58" strokeWidth="2" />
+        <path d="M12 58 Q18 50, 25 50" strokeWidth="2" />
+        {/* B: gap where A crosses over... */}
+        <path d="M25 50 Q30 44, 36 42" strokeWidth="2" />
+        <path d="M40 42 Q44 50, 50 50" strokeWidth="2" />
+        {/* B: over A */}
+        <path d="M50 50 Q56 58, 62 58" strokeWidth="2" />
+        <path d="M62 58 Q68 50, 75 50" strokeWidth="2" />
+        {/* B: gap */}
+        <path d="M75 50 Q80 44, 86 42" strokeWidth="2" />
+        <path d="M90 42 Q95 50, 100 50" strokeWidth="2" />
 
-        {/* Inner interlacing (tighter weave) */}
-        <path d="M5 50 Q15 40, 25 50 Q35 60, 45 50 Q55 40, 65 50 Q75 60, 85 50 Q95 40, 100 48" strokeWidth="1.3" />
-        <path d="M0 52 Q10 60, 20 50 Q30 40, 40 50 Q50 60, 60 50 Q70 40, 80 50 Q90 60, 100 52" strokeWidth="1.3" />
+        {/* Inner interlacing bands (tighter weave with same over-under logic) */}
+        <path d="M5 50 Q12 42, 19 46" strokeWidth="1.3" />
+        <path d="M21 48 Q25 50, 31 50" strokeWidth="1.3" />
+        <path d="M33 48 Q37 42, 44 46" strokeWidth="1.3" />
+        <path d="M46 48 Q50 50, 56 50" strokeWidth="1.3" />
+        <path d="M58 48 Q62 42, 69 46" strokeWidth="1.3" />
+        <path d="M71 48 Q75 50, 81 50" strokeWidth="1.3" />
+        <path d="M83 48 Q87 42, 94 46" strokeWidth="1.3" />
+
+        <path d="M0 52 Q7 58, 14 54" strokeWidth="1.3" />
+        <path d="M16 52 Q20 50, 25 50" strokeWidth="1.3" />
+        <path d="M29 52 Q33 58, 40 54" strokeWidth="1.3" />
+        <path d="M42 52 Q45 50, 50 50" strokeWidth="1.3" />
+        <path d="M54 52 Q58 58, 65 54" strokeWidth="1.3" />
+        <path d="M67 52 Q70 50, 75 50" strokeWidth="1.3" />
+        <path d="M79 52 Q83 58, 90 54" strokeWidth="1.3" />
 
         {/* Circular voids created by interlacing */}
         <circle cx="25" cy="50" r="8" strokeWidth="0.8" opacity="0.4" />
@@ -937,14 +976,6 @@ const GuillocheSVG: React.FC<SVGProps> = ({ showHalo }) => (
 
         <circle cx="75" cy="50" r="3" strokeWidth="0.7" />
         <path d="M72 50 L78 50 M75 47 L75 53" strokeWidth="0.5" />
-
-        {/* Over-under crossing shadows */}
-        <path d="M18 45 Q20 48, 18 50" strokeWidth="0.5" opacity="0.4" />
-        <path d="M32 55 Q30 52, 32 50" strokeWidth="0.5" opacity="0.4" />
-        <path d="M43 45 Q45 48, 43 50" strokeWidth="0.5" opacity="0.4" />
-        <path d="M57 55 Q55 52, 57 50" strokeWidth="0.5" opacity="0.4" />
-        <path d="M68 45 Q70 48, 68 50" strokeWidth="0.5" opacity="0.4" />
-        <path d="M82 55 Q80 52, 82 50" strokeWidth="0.5" opacity="0.4" />
 
         {/* Lower border line */}
         <path d="M0 70 L100 70" strokeWidth="1.5" />
@@ -987,45 +1018,48 @@ const DecorativeMuqarnasSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M70 95 L70 100" strokeWidth="0.3" />
       </g>
 
-      {/* PRIMARY - Muqarnas niche cells */}
+      {/* PRIMARY - Muqarnas concave niche cells (stalactite vaulting) */}
       <g strokeWidth="1">
-        {/* Top tier - small pointed cells */}
-        <path d="M50 25 L45 32 L50 38 L55 32 Z" strokeWidth="1.3" />
-        <path d="M38 30 L33 38 L38 45 L43 38 Z" strokeWidth="1.2" />
-        <path d="M62 30 L57 38 L62 45 L67 38 Z" strokeWidth="1.2" />
+        {/* Top tier - small pointed-arch niche cells with concave tops */}
+        <path d="M45 25 Q50 20, 55 25 L55 33 L45 33 Z" strokeWidth="1.3" />
+        <path d="M45 28 Q50 24, 55 28" strokeWidth="0.6" opacity="0.5" />
+        <path d="M33 28 Q38 23, 43 28 L43 38 L33 38 Z" strokeWidth="1.2" />
+        <path d="M33 32 Q38 28, 43 32" strokeWidth="0.5" opacity="0.5" />
+        <path d="M57 28 Q62 23, 67 28 L67 38 L57 38 Z" strokeWidth="1.2" />
+        <path d="M57 32 Q62 28, 67 32" strokeWidth="0.5" opacity="0.5" />
 
-        {/* Second tier - medium cells */}
-        <path d="M28 38 L22 48 L28 58 L34 48 Z" strokeWidth="1.3" />
-        <path d="M50 40 L42 52 L50 62 L58 52 Z" strokeWidth="1.4" />
-        <path d="M72 38 L66 48 L72 58 L78 48 Z" strokeWidth="1.3" />
+        {/* Second tier - medium concave niche cells */}
+        <path d="M22 36 Q28 28, 34 36 L34 50 L22 50 Z" strokeWidth="1.3" />
+        <path d="M22 40 Q28 34, 34 40" strokeWidth="0.6" opacity="0.5" />
+        <path d="M42 38 Q50 30, 58 38 L58 54 L42 54 Z" strokeWidth="1.4" />
+        <path d="M42 43 Q50 36, 58 43" strokeWidth="0.7" opacity="0.5" />
+        <path d="M66 36 Q72 28, 78 36 L78 50 L66 50 Z" strokeWidth="1.3" />
+        <path d="M66 40 Q72 34, 78 40" strokeWidth="0.6" opacity="0.5" />
 
-        {/* Third tier - larger cells */}
-        <path d="M18 52 L10 65 L18 78 L26 65 Z" strokeWidth="1.4" />
-        <path d="M38 55 L28 70 L38 85 L48 70 Z" strokeWidth="1.5" />
-        <path d="M62 55 L52 70 L62 85 L72 70 Z" strokeWidth="1.5" />
-        <path d="M82 52 L74 65 L82 78 L90 65 Z" strokeWidth="1.4" />
+        {/* Third tier - larger concave niche cells */}
+        <path d="M10 50 Q18 40, 26 50 L26 70 L10 70 Z" strokeWidth="1.4" />
+        <path d="M10 55 Q18 47, 26 55" strokeWidth="0.7" opacity="0.5" />
+        <path d="M28 52 Q38 42, 48 52 L48 74 L28 74 Z" strokeWidth="1.5" />
+        <path d="M28 58 Q38 48, 48 58" strokeWidth="0.7" opacity="0.5" />
+        <path d="M52 52 Q62 42, 72 52 L72 74 L52 74 Z" strokeWidth="1.5" />
+        <path d="M52 58 Q62 48, 72 58" strokeWidth="0.7" opacity="0.5" />
+        <path d="M74 50 Q82 40, 90 50 L90 70 L74 70 Z" strokeWidth="1.4" />
+        <path d="M74 55 Q82 47, 90 55" strokeWidth="0.7" opacity="0.5" />
 
-        {/* Inner cell articulation (depth shadows) */}
-        <path d="M48 30 L50 35 L52 30" strokeWidth="0.6" opacity="0.5" />
-        <path d="M45 50 L50 58 L55 50" strokeWidth="0.7" opacity="0.5" />
-        <path d="M32 65 L38 78 L44 65" strokeWidth="0.7" opacity="0.5" />
-        <path d="M56 65 L62 78 L68 65" strokeWidth="0.7" opacity="0.5" />
+        {/* Connecting horizontal shelves between tiers */}
+        <path d="M33 38 L43 38" strokeWidth="0.9" />
+        <path d="M57 38 L67 38" strokeWidth="0.9" />
+        <path d="M22 50 L34 50" strokeWidth="0.9" />
+        <path d="M42 54 L58 54" strokeWidth="0.9" />
+        <path d="M66 50 L78 50" strokeWidth="0.9" />
 
-        {/* Connecting edges between cells */}
-        <path d="M43 38 L45 32" strokeWidth="0.8" />
-        <path d="M57 38 L55 32" strokeWidth="0.8" />
-        <path d="M34 48 L42 52" strokeWidth="0.9" />
-        <path d="M66 48 L58 52" strokeWidth="0.9" />
-        <path d="M26 65 L28 70" strokeWidth="0.9" />
-        <path d="M74 65 L72 70" strokeWidth="0.9" />
+        {/* Star patterns in cell centers */}
+        <path d="M48 46 L50 44 L52 46 L50 48 Z" strokeWidth="0.5" />
+        <path d="M36 62 L38 60 L40 62 L38 64 Z" strokeWidth="0.5" />
+        <path d="M60 62 L62 60 L64 62 L62 64 Z" strokeWidth="0.5" />
 
-        {/* Star patterns in cells */}
-        <path d="M50 50 L48 52 L50 54 L52 52 Z" strokeWidth="0.5" />
-        <path d="M38 68 L36 70 L38 72 L40 70 Z" strokeWidth="0.5" />
-        <path d="M62 68 L60 70 L62 72 L64 70 Z" strokeWidth="0.5" />
-
-        {/* Base transition */}
-        <path d="M10 85 Q30 80, 50 85 Q70 80, 90 85" strokeWidth="1.2" />
+        {/* Base transition - scalloped edge where muqarnas meets wall */}
+        <path d="M10 78 Q20 74, 28 78 Q38 74, 50 78 Q62 74, 72 78 Q80 74, 90 78" strokeWidth="1.2" />
       </g>
     </g>
   </svg>
