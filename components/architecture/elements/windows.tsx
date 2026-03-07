@@ -218,27 +218,27 @@ const ClerestorySVG: React.FC<SVGProps> = ({ showHalo }) => (
       </g>
 
       {/* PRIMARY: THE CLERESTORY WINDOWS - BOLD FIELD SKETCH LINES */}
-      <g strokeWidth="0.8">
+      <g strokeWidth={S.D.strokeWidth}>
         {/* BOLD Clerestory level wall */}
-        <path d="M10 20 L10 55 L90 55 L90 20" strokeWidth="2.8" />
+        <path d="M10 20 L10 55 L90 55 L90 20" strokeWidth={S.P.strokeWidthHeavy} />
 
         {/* BOLD Row of clerestory windows - high windows flooding nave with light */}
-        <path d="M15 25 L15 50 L30 50 L30 25 Z" strokeWidth="3.2" />
-        <path d="M35 25 L35 50 L50 50 L50 25 Z" strokeWidth="3.2" />
-        <path d="M55 25 L55 50 L70 50 L70 25 Z" strokeWidth="3.2" />
-        <path d="M75 25 L75 50 L88 50 L88 25 Z" strokeWidth="3.2" />
+        <path d="M15 25 L15 50 L30 50 L30 25 Z" strokeWidth={S.P.strokeWidthHeavy} />
+        <path d="M35 25 L35 50 L50 50 L50 25 Z" strokeWidth={S.P.strokeWidthHeavy} />
+        <path d="M55 25 L55 50 L70 50 L70 25 Z" strokeWidth={S.P.strokeWidthHeavy} />
+        <path d="M75 25 L75 50 L88 50 L88 25 Z" strokeWidth={S.P.strokeWidthHeavy} />
 
         {/* Window mullions */}
-        <path d="M22.5 25 L22.5 50" strokeWidth="1.5" />
-        <path d="M42.5 25 L42.5 50" strokeWidth="1.5" />
-        <path d="M62.5 25 L62.5 50" strokeWidth="1.5" />
-        <path d="M81.5 25 L81.5 50" strokeWidth="1.5" />
+        <path d="M22.5 25 L22.5 50" strokeWidth={S.P.strokeWidth} />
+        <path d="M42.5 25 L42.5 50" strokeWidth={S.P.strokeWidth} />
+        <path d="M62.5 25 L62.5 50" strokeWidth={S.P.strokeWidth} />
+        <path d="M81.5 25 L81.5 50" strokeWidth={S.P.strokeWidth} />
 
         {/* Window sills - stone thickness */}
-        <path d="M15 50 L15 52 L30 52 L30 50" strokeWidth="2" />
-        <path d="M35 50 L35 52 L50 52 L50 50" strokeWidth="2" />
-        <path d="M55 50 L55 52 L70 52 L70 50" strokeWidth="2" />
-        <path d="M75 50 L75 52 L88 52 L88 50" strokeWidth="2" />
+        <path d="M15 50 L15 52 L30 52 L30 50" strokeWidth={S.P.strokeWidthBold} />
+        <path d="M35 50 L35 52 L50 52 L50 50" strokeWidth={S.P.strokeWidthBold} />
+        <path d="M55 50 L55 52 L70 52 L70 50" strokeWidth={S.P.strokeWidthBold} />
+        <path d="M75 50 L75 52 L88 52 L88 50" strokeWidth={S.P.strokeWidthBold} />
       </g>
     </g>
   </svg>
@@ -261,18 +261,18 @@ const DormerSVG: React.FC<SVGProps> = ({ showHalo }) => (
       </g>
 
       {/* PRIMARY: Dormer structure and window */}
-      <g strokeWidth="0.8">
+      <g strokeWidth={S.D.strokeWidth}>
         {/* Dormer walls */}
-        <path d="M30 70 L30 45 L50 30 L70 45 L70 70" strokeWidth="1" />
+        <path d="M30 70 L30 45 L50 30 L70 45 L70 70" strokeWidth={S.P.strokeWidthLight} />
         {/* Dormer roof */}
-        <path d="M28 45 L50 28 L72 45" strokeWidth="1" />
+        <path d="M28 45 L50 28 L72 45" strokeWidth={S.P.strokeWidthLight} />
         <path d="M26 47 L50 26 L74 47" />
         {/* Window in dormer */}
-        <path d="M35 48 L35 68 L65 68 L65 48 Z" strokeWidth="1.2" />
+        <path d="M35 48 L35 68 L65 68 L65 48 Z" strokeWidth={S.P.strokeWidthLight} />
         {/* Window panes */}
         <path d="M50 48 L50 68" />
         <path d="M35 58 L65 58" />
-        {/* Window details */}
+        {/* DETAIL: Window details */}
         <path d="M38 51 L38 55 L47 55 L47 51 Z" />
         <path d="M53 51 L53 55 L62 55 L62 51 Z" />
         <path d="M38 61 L38 65 L47 65 L47 61 Z" />
