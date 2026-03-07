@@ -52,8 +52,8 @@ const CasementSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <circle cx="12" cy="78" r="0.35" fill="currentColor" opacity="0.4" />
         <circle cx="20" cy="62" r="0.25" fill="currentColor" opacity="0.5" />
         {/* Glass reflection - subtle warping */}
-        <path d="M 58 25 Q 60 30, 62 35" strokeWidth="0.3" opacity="0.15" />
-        <path d="M 67 28 Q 69 35, 71 42" strokeWidth="0.3" opacity="0.15" />
+        <path d="M 58 25 Q 60 30, 62 35" strokeWidth={S.E.strokeWidth} opacity={S.E.opacity} />
+        <path d="M 67 28 Q 69 35, 71 42" strokeWidth={S.E.strokeWidth} opacity={S.E.opacity} />
       </g>
 
       {/* CONTEXT (near): Surrounding wall with lintel, sill, and reveal depth */}
@@ -869,7 +869,7 @@ const TracerySVG: React.FC<SVGProps> = ({ showHalo }) => (
       </g>
 
       {/* EFFECTS: Light streaming through tracery */}
-      <g opacity={S.E.opacity} strokeWidth={S.D.strokeWidth}>
+      <g opacity={S.E.opacity} strokeWidth={S.E.strokeWidth} strokeDasharray={S.E.dash}>
         <path d="M35 50 L25 80" />
         <path d="M50 35 L40 75" />
         <path d="M65 50 L55 80" />
@@ -877,10 +877,10 @@ const TracerySVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M25 50 L18 78" />
         <path d="M75 50 L68 78" />
         {/* Dust motes in light */}
-        <circle cx="35" cy="70" r="0.6" opacity="0.3" />
-        <circle cx="52" cy="60" r="0.5" opacity="0.25" />
-        <circle cx="45" cy="75" r="0.4" opacity="0.2" />
-        <circle cx="60" cy="68" r="0.5" opacity="0.3" />
+        <circle cx="35" cy="70" r="0.6" fill="currentColor" opacity={S.E.fillOpacityStrong} />
+        <circle cx="52" cy="60" r="0.5" fill="currentColor" opacity={S.E.fillOpacityStrong} />
+        <circle cx="45" cy="75" r="0.4" fill="currentColor" opacity={S.E.fillOpacity} />
+        <circle cx="60" cy="68" r="0.5" fill="currentColor" opacity={S.E.fillOpacityStrong} />
       </g>
 
       {/* PRIMARY: Tracery window */}
