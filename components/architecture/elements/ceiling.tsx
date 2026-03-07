@@ -952,7 +952,7 @@ export const CEILING_ELEMENTS: Record<string, React.FC<SVGProps>> = {
   'coved-ceiling': CovedCeilingSVG,
   'dropped-ceiling': DroppedCeilingSVG,
   'exposed-beams': ExposedBeamsSVG,
-  'muqarnas': MuqarnasSVG,
+  'muqarnas-ceiling': MuqarnasSVG,
   'tray-ceiling': TrayCeilingSVG,
   'reflected-ceiling-plan': ReflectedCeilingPlanSVG,
 }
