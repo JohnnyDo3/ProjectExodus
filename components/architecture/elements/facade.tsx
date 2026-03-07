@@ -159,54 +159,54 @@ const BayWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
       {/* PRIMARY: Victorian Painted Lady angled bay window with ornamental woodwork */}
       <g strokeWidth={S.P.strokeWidth}>
         {/* Bay roof — steep mini hip with fish-scale shingle texture */}
-        <path d="M25 15 L30 8 L50 3 L70 8 L75 15 Z" strokeWidth="1.2" />
+        <path d="M25 15 L30 8 L50 3 L70 8 L75 15 Z" strokeWidth={S.P.strokeWidthBold} />
         {/* Fish-scale shingle pattern on bay roof */}
-        <path d="M33 12 Q36 10, 39 12 Q42 10, 45 12 Q48 10, 51 12 Q54 10, 57 12 Q60 10, 63 12 Q66 10, 69 12" strokeWidth="0.5" opacity="0.6" />
-        <path d="M35 14 Q38 12, 41 14 Q44 12, 47 14 Q50 12, 53 14 Q56 12, 59 14 Q62 12, 65 14" strokeWidth="0.4" opacity="0.5" />
+        <path d="M33 12 Q36 10, 39 12 Q42 10, 45 12 Q48 10, 51 12 Q54 10, 57 12 Q60 10, 63 12 Q66 10, 69 12" strokeWidth={S.D.strokeWidthFine} opacity="0.6" />
+        <path d="M35 14 Q38 12, 41 14 Q44 12, 47 14 Q50 12, 53 14 Q56 12, 59 14 Q62 12, 65 14" strokeWidth={S.D.strokeWidthFine} opacity="0.5" />
         {/* Decorative ridge finial */}
-        <path d="M50 3 L50 0" strokeWidth="0.7" />
-        <path d="M49 0 L51 0 L50 -2 Z" strokeWidth="0.5" />
+        <path d="M50 3 L50 0" strokeWidth={S.P.strokeWidth} />
+        <path d="M49 0 L51 0 L50 -2 Z" strokeWidth={S.P.strokeWidthLight} />
 
         {/* Main angular projection — three-faceted */}
-        <path d="M30 15 L30 80 L40 85 L50 87 L60 85 L70 80 L70 15" strokeWidth="1.3" />
+        <path d="M30 15 L30 80 L40 85 L50 87 L60 85 L70 80 L70 15" strokeWidth={S.P.strokeWidthBold} />
 
         {/* Front central window — tall double-hung sash with arch top */}
-        <path d="M42 18 Q50 14, 58 18 L58 75 L42 75 Z" strokeWidth="1" />
+        <path d="M42 18 Q50 14, 58 18 L58 75 L42 75 Z" strokeWidth={S.P.strokeWidth} />
         {/* Sash division */}
-        <path d="M42 45 L58 45" strokeWidth="0.8" />
+        <path d="M42 45 L58 45" strokeWidth={S.P.strokeWidth} />
         {/* Vertical muntin */}
-        <path d="M50 18 L50 75" strokeWidth="0.7" />
+        <path d="M50 18 L50 75" strokeWidth={S.P.strokeWidth} />
         {/* Upper sash — 2-over-2 pattern */}
-        <path d="M42 30 L58 30" strokeWidth="0.5" />
+        <path d="M42 30 L58 30" strokeWidth={S.P.strokeWidthLight} />
 
         {/* Left angled window — matching proportions */}
-        <path d="M32 18 L32 75 L40 78 L40 18 Z" strokeWidth="1" />
-        <path d="M36 18 L36 76" strokeWidth="0.6" />
-        <path d="M32 45 L40 47" strokeWidth="0.7" />
-        <path d="M32 30 L40 31" strokeWidth="0.5" />
+        <path d="M32 18 L32 75 L40 78 L40 18 Z" strokeWidth={S.P.strokeWidth} />
+        <path d="M36 18 L36 76" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M32 45 L40 47" strokeWidth={S.P.strokeWidth} />
+        <path d="M32 30 L40 31" strokeWidth={S.P.strokeWidthLight} />
 
         {/* Right angled window */}
-        <path d="M60 18 L60 78 L68 75 L68 18 Z" strokeWidth="1" />
-        <path d="M64 18 L64 76" strokeWidth="0.6" />
-        <path d="M60 47 L68 45" strokeWidth="0.7" />
-        <path d="M60 31 L68 30" strokeWidth="0.5" />
+        <path d="M60 18 L60 78 L68 75 L68 18 Z" strokeWidth={S.P.strokeWidth} />
+        <path d="M64 18 L64 76" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M60 47 L68 45" strokeWidth={S.P.strokeWidth} />
+        <path d="M60 31 L68 30" strokeWidth={S.P.strokeWidthLight} />
 
         {/* Ornamental spandrel panels between windows and bay corners */}
-        <path d="M30 18 L32 18 L32 22 L30 22 Z" strokeWidth="0.5" opacity="0.6" />
-        <path d="M68 18 L70 18 L70 22 L68 22 Z" strokeWidth="0.5" opacity="0.6" />
+        <path d="M30 18 L32 18 L32 22 L30 22 Z" strokeWidth={S.D.strokeWidthFine} opacity="0.6" />
+        <path d="M68 18 L70 18 L70 22 L68 22 Z" strokeWidth={S.D.strokeWidthFine} opacity="0.6" />
 
         {/* Projecting sill with decorative bracket corbels */}
-        <path d="M28 80 L40 87 L50 90 L60 87 L72 80" strokeWidth="1.2" />
+        <path d="M28 80 L40 87 L50 90 L60 87 L72 80" strokeWidth={S.P.strokeWidthBold} />
         {/* Turned spindle brackets — Victorian gingerbread */}
-        <path d="M32 80 Q33 83, 35 85 Q33 87, 36 88" strokeWidth="0.7" />
-        <path d="M38 82 Q39 85, 40 87" strokeWidth="0.6" />
-        <path d="M50 82 L50 90" strokeWidth="0.6" />
-        <path d="M60 87 Q61 85, 62 82" strokeWidth="0.6" />
-        <path d="M68 80 Q67 83, 65 85 Q67 87, 64 88" strokeWidth="0.7" />
+        <path d="M32 80 Q33 83, 35 85 Q33 87, 36 88" strokeWidth={S.P.strokeWidth} />
+        <path d="M38 82 Q39 85, 40 87" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M50 82 L50 90" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M60 87 Q61 85, 62 82" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M68 80 Q67 83, 65 85 Q67 87, 64 88" strokeWidth={S.P.strokeWidth} />
 
         {/* Sunburst panel in gable peak above bay */}
-        <path d="M42 16 Q50 10, 58 16" strokeWidth="0.5" opacity="0.7" />
-        <path d="M50 11 L48 15 M50 11 L52 15 M50 11 L46 14 M50 11 L54 14" strokeWidth="0.4" opacity="0.5" />
+        <path d="M42 16 Q50 10, 58 16" strokeWidth={S.D.strokeWidthFine} opacity="0.7" />
+        <path d="M50 11 L48 15 M50 11 L52 15 M50 11 L46 14 M50 11 L54 14" strokeWidth={S.D.strokeWidthFine} opacity="0.5" />
 
         {/* Decorative turned newel post finials at bay corners */}
         <circle cx="30" cy="15" r="1.5" strokeWidth="0.6" />

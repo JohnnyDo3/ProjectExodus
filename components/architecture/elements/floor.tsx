@@ -177,11 +177,32 @@ const CantileveredStairSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="cantilever-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#cantilever-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT (near): Wall surface */}
+      {/* CONTEXT FAR: Room beyond wall and upper floor */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Upper floor level outline */}
+        <path d="M5 5 L88 5" />
+        {/* Floor level at bottom */}
+        <path d="M5 95 L88 95" />
+        {/* Room behind the wall */}
+        <path d="M96 5 L100 5 L100 95 L96 95" />
+        {/* Furniture in room beyond - table outline */}
+        <path d="M97 40 L100 40 L100 55 L97 55" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Wall thickness, floor lines, glass balustrade base */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Wall surface and thickness */}
         <path d="M90 5 L90 95" />
         <path d="M92 10 L92 90" />
         <path d="M95 5 L95 95" />
+        {/* Floor plane at bottom */}
+        <path d="M5 92 L88 92" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Upper landing/floor connection */}
+        <path d="M5 8 L88 8" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Side wall at left edge */}
+        <path d="M8 5 L8 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Window reveal in left wall */}
+        <path d="M5 30 L8 30 L8 50 L5 50" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY - Cantilevered treads floating from wall */}
@@ -380,10 +401,31 @@ const HandrailSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="handrail-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#handrail-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT (near): Wall surface */}
+      {/* CONTEXT FAR: Stairwell and adjacent landing */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Stair flight suggestion below */}
+        <path d="M5 95 L75 95" />
+        <path d="M10 92 L70 92" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Upper landing beyond */}
+        <path d="M5 5 L75 5" />
+        {/* Opposite wall far side of stairwell */}
+        <path d="M5 5 L5 95" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Wall surface, stair treads, baseboard */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Wall surface */}
         <path d="M95 5 L95 95" />
         <path d="M92 10 L92 90" />
+        {/* Wall thickness */}
+        <path d="M97 5 L97 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Stair tread edges below the rail */}
+        <path d="M10 20 L80 20" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M10 28 L80 28" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Baseboard along wall */}
+        <path d="M92 92 L92 95 L95 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Light switch plate on wall */}
+        <path d="M93 50 L95 50 L95 56 L93 56 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY - Handrail with brackets in perspective */}
@@ -928,10 +970,34 @@ const RiserSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="riser-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#riser-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT (near): Stair structure */}
+      {/* CONTEXT FAR: Rooms above and below stair */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Upper floor level */}
+        <path d="M15 5 L95 5" />
+        {/* Ceiling of lower room */}
+        <path d="M0 0 L5 0 L5 5" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Floor of lower room */}
+        <path d="M0 98 L100 98" />
+        {/* Furniture in upper room - chair outline */}
+        <path d="M80 5 L85 5 L85 15 L80 15" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Stair stringers, wall surface, handrail */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Left stringer wall */}
         <path d="M5 5 L5 95" />
+        {/* Right stringer wall */}
         <path d="M95 25 L95 95" />
+        {/* Wall thickness on left */}
+        <path d="M3 5 L3 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Handrail profile along stair */}
+        <path d="M0 15 L5 15" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M0 42 L5 42" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Baseboard at stringer base */}
+        <path d="M5 93 L95 93" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Carpet runner edge suggestion */}
+        <path d="M20 5 L20 18" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M80 25 L80 38" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY - Stair risers and treads in section */}

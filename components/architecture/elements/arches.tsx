@@ -879,12 +879,28 @@ export const KeystoneSVG = ({ showHalo = false }: SVGProps) => (
       <path d="M 0 5 L 0 98" strokeWidth="0.6" />
       <path d="M 100 5 L 100 98" strokeWidth="0.6" />
 
+      {/* Masonry coursing on pier/wall faces */}
+      <path d="M 0 30 L 8 30" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 92 30 L 100 30" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 0 45 L 8 45" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 92 45 L 100 45" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 0 60 L 8 60" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 92 60 L 100 60" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 0 75 L 8 75" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 92 75 L 100 75" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+
       {/* Ground pavement */}
       <path d="M 0 98 L 100 98" strokeWidth="0.8" />
 
       {/* Impost moldings at spring points */}
       <path d="M 4 88 L 20 88" strokeWidth="0.6" />
       <path d="M 80 88 L 96 88" strokeWidth="0.6" />
+      {/* Impost sub-molding */}
+      <path d="M 5 86 L 19 86" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 81 86 L 95 86" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+
+      {/* Ceiling / entablature above spandrel */}
+      <path d="M 0 2 L 100 2" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
     </g>
 
     {/* PRIMARY: THE KEYSTONE - central wedge-shaped stone */}

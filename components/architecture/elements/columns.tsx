@@ -664,22 +664,91 @@ export const TuscanColumnSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT (near): Roman farmhouse portico */}
+    {/* CONTEXT FAR: Rural Italian landscape beyond the farmhouse */}
+    <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth} fill="none">
+      {/* Rolling hills visible through portico */}
+      <path d="M -10 45 Q 10 38, 30 42 Q 50 36, 70 40 Q 90 34, 110 42" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      {/* Distant tree line */}
+      <path d="M 25 40 Q 28 35, 31 40" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      <path d="M 45 38 Q 47 33, 49 38" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      <path d="M 60 39 Q 63 33, 66 39" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      {/* Distant farmstead */}
+      <path d="M 72 38 L 72 34 L 82 34 L 82 38" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      <path d="M 70 34 L 77 30 L 84 34" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+    </g>
+
+    {/* CONTEXT FAR: Ground extending beyond portico */}
+    <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidthFine} fill="none">
+      <rect x="-10" y="92" width="120" height="18" fill="url(#stone-smooth)" opacity="0.08" stroke="none" />
+      <path d="M -10 99 L 110 99" opacity={S.CF.opacitySubtle} />
+      <path d="M -10 103 L 110 103" strokeDasharray="5 4" opacity={S.CF.opacitySubtle} />
+      {/* Paving joints */}
+      <path d="M 20 93 L 20 108" strokeDasharray="2 2" opacity={S.CF.opacitySubtle} />
+      <path d="M 50 93 L 50 108" strokeDasharray="2 2" opacity={S.CF.opacitySubtle} />
+      <path d="M 80 93 L 80 108" strokeDasharray="2 2" opacity={S.CF.opacitySubtle} />
+    </g>
+
+    {/* CONTEXT NEAR: Roman farmhouse portico */}
     <g opacity={S.CN.opacity} strokeDasharray={S.CN.dash} fill="none">
+      {/* Roof rafters / timber beams above (Tuscan simplicity) */}
+      <path d="M -10 -2 L 110 -2" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M -5 0 L 105 0" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       {/* Entablature (plain, no ornament - Tuscan simplicity) */}
-      <path d="M 0 4 L 100 4" strokeWidth={S.P.strokeWidthLight} />
-      <path d="M 2 8 L 98 8" strokeWidth={S.CN.strokeWidthFine} />
-      {/* Ground level */}
-      <path d="M 0 94 L 100 94" strokeWidth={S.CN.strokeWidth} />
-      <path d="M 0 97 L 100 97" strokeWidth={S.CN.strokeWidthFine} />
-      {/* Wall behind portico */}
-      <path d="M 0 8 L 0 94" strokeWidth={S.CN.strokeWidthFine} />
-      <path d="M 100 8 L 100 94" strokeWidth={S.CN.strokeWidthFine} />
+      <path d="M -10 2 L 110 2" strokeWidth={S.CN.strokeWidth} />
+      <path d="M -5 4 L 105 4" strokeWidth={S.P.strokeWidthLight} />
+      <path d="M -3 6 L 103 6" strokeWidth={S.CN.strokeWidthFine} />
+      {/* Plain frieze band */}
+      <path d="M -5 8 L 105 8" strokeWidth={S.CN.strokeWidthFine} />
+      {/* Ground level extending off-page */}
+      <path d="M -10 94 L 110 94" strokeWidth={S.CN.strokeWidth} />
+      <path d="M -10 97 L 110 97" strokeWidth={S.CN.strokeWidthFine} />
+      <path d="M -8 100 L 108 100" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      {/* Wall behind portico extending beyond frame */}
+      <path d="M -5 8 L -5 97" strokeWidth={S.CN.strokeWidthFine} />
+      <path d="M 105 8 L 105 97" strokeWidth={S.CN.strokeWidthFine} />
+      {/* Stone courses on wall */}
+      <path d="M -5 25 L 28 25" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 72 25 L 105 25" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M -5 50 L 28 50" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 72 50 L 105 50" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M -5 75 L 28 75" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 72 75 L 105 75" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       {/* Door opening in wall */}
       <path d="M 40 94 L 40 55 L 60 55 L 60 94" strokeWidth={S.CN.strokeWidthFine} />
-      {/* Adjacent column */}
-      <path d="M 4 90 Q 3 55, 6 18" strokeWidth={S.CN.strokeWidthFine} />
-      <path d="M 96 90 Q 97 55, 94 18" strokeWidth={S.CN.strokeWidthFine} />
+      {/* Door lintel */}
+      <path d="M 38 55 L 62 55" strokeWidth={S.CN.strokeWidth} opacity={S.CN.opacitySubtle} />
+      {/* Window opening to left of door */}
+      <path d="M -5 50 L -5 70 L 15 70 L 15 50 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      {/* Window opening to right of door */}
+      <path d="M 85 50 L 85 70 L 105 70 L 105 50 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+    </g>
+
+    {/* CONTEXT NEAR: Adjacent columns in portico */}
+    <g opacity={S.CN.opacitySubtle} strokeDasharray={S.CN.dash} strokeWidth={S.CN.strokeWidthFine} fill="none">
+      {/* Left adjacent column */}
+      <path d="M 0 90 Q -1 55, 2 18" />
+      <path d="M 8 90 Q 7 55, 9 18" opacity="0.6" />
+      {/* Left column plain capital */}
+      <path d="M -1 16 L 10 16" strokeWidth="0.4" opacity="0.5" />
+      <path d="M -2 12 L 11 12" strokeWidth="0.4" opacity="0.5" />
+      {/* Further left column */}
+      <path d="M -15 90 Q -16 55, -13 18" opacity="0.4" />
+      <path d="M -8 90 Q -9 55, -7 18" opacity="0.4" />
+      {/* Right adjacent column */}
+      <path d="M 92 90 Q 93 55, 91 18" opacity="0.6" />
+      <path d="M 100 90 Q 101 55, 98 18" />
+      {/* Right column plain capital */}
+      <path d="M 90 16 L 101 16" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 89 12 L 102 12" strokeWidth="0.4" opacity="0.5" />
+      {/* Further right column */}
+      <path d="M 108 90 Q 109 55, 107 18" opacity="0.4" />
+      <path d="M 115 90 Q 116 55, 113 18" opacity="0.4" />
+    </g>
+
+    {/* EFFECTS: Column shadow on ground */}
+    <g opacity={S.E.opacity} strokeWidth={S.E.strokeWidth} strokeDasharray={S.E.dash} fill="none">
+      <path d="M 72 94 Q 76 96, 80 98" />
+      <path d="M 73 96 Q 77 98, 81 100" />
     </g>
 
     {/* PRIMARY: THE TUSCAN COLUMN */}
