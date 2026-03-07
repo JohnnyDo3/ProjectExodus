@@ -596,13 +596,34 @@ const CloisterSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="cloister-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#cloister-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT (near): Monastery outer walls */}
+      {/* CONTEXT FAR: Monastery complex and landscape */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Outer monastery walls */}
+        <path d="M0 0 L0 100 L100 100 L100 0 Z" />
+        {/* Church tower beyond */}
+        <path d="M48 0 L48 -5 L52 -5 L52 0" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M48 -5 L50 -8 L52 -5" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Garden trees in garth */}
+        <path d="M40 42 Q42 38, 44 42" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M56 42 Q58 38, 60 42" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M40 58 Q42 54, 44 58" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M56 58 Q58 54, 60 58" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Monastery outer walls */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 5 L5 95 L10 95 L10 5 Z" />
         <path d="M90 5 L95 5 L95 95 L90 95" />
         <path d="M5 5 L95 5" />
         <path d="M5 90 L10 90" />
         <path d="M90 90 L95 90" />
+        {/* Chapter house doorway */}
+        <path d="M90 45 L95 45" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M90 55 L95 55" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Refectory along south */}
+        <path d="M5 92 L95 92" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Dormitory along east */}
+        <path d="M92 5 L92 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY: Cloister structure */}
@@ -1176,12 +1197,34 @@ const SteepleSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="steeple-halo" intensity={0.95} />}
     <g filter={showHalo ? "url(#steeple-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT (near): Church body */}
+      {/* CONTEXT FAR: Town silhouette */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Distant rooftops */}
+        <path d="M0 80 L3 76 L8 80 L12 74 L16 80" />
+        <path d="M84 80 L88 74 L92 80 L96 76 L100 80" />
+        <path d="M0 80 L0 95" />
+        <path d="M100 80 L100 95" />
+        {/* Ground */}
+        <path d="M0 95 L100 95" />
+        {/* Trees */}
+        <path d="M2 72 Q4 66, 6 72" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M94 70 Q96 64, 98 70" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Church body */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 75 L5 95 L40 95 L40 75" />
         <path d="M60 75 L60 95 L95 95 L95 75" />
         <path d="M5 70 L40 70" />
         <path d="M60 70 L95 70" />
+        {/* Nave roof */}
+        <path d="M5 70 Q22 60, 40 70" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M60 70 Q78 60, 95 70" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Church windows */}
+        <path d="M15 78 L15 88" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M25 78 L25 88" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M75 78 L75 88" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M85 78 L85 88" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY: Steeple structure */}

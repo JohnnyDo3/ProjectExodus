@@ -789,24 +789,102 @@ export const CaryatidSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT (near): Erechtheion Porch of the Maidens */}
+    {/* CONTEXT FAR: Acropolis setting - distant Parthenon and landscape */}
+    <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth} fill="none">
+      {/* Parthenon colonnade in distance (behind and above) */}
+      <path d="M -10 -5 L 110 -5" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      <path d="M 5 -5 L 5 -1" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      <path d="M 20 -5 L 20 -1" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      <path d="M 35 -5 L 35 -1" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      <path d="M 65 -5 L 65 -1" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      <path d="M 80 -5 L 80 -1" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      <path d="M 95 -5 L 95 -1" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      {/* Distant Athens cityscape / hills */}
+      <path d="M -10 60 Q 5 55, 15 58 Q 25 53, 35 56" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      {/* Sacred olive tree near Erechtheion */}
+      <path d="M -8 80 Q -6 70, -4 75 Q -2 68, 0 73 Q 2 66, 4 72" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      <path d="M -2 80 L -2 90" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+    </g>
+
+    {/* CONTEXT FAR: Acropolis marble pavement extending beyond */}
+    <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidthFine} fill="none">
+      <rect x="-10" y="94" width="120" height="16" fill="url(#marble-veined)" opacity="0.1" stroke="none" />
+      <path d="M -10 101 L 110 101" opacity={S.CF.opacitySubtle} />
+      <path d="M -10 105 L 110 105" strokeDasharray="5 3" opacity={S.CF.opacitySubtle} />
+      <path d="M 25 94 L 25 110" strokeDasharray="2 1.5" opacity={S.CF.opacitySubtle} />
+      <path d="M 75 94 L 75 110" strokeDasharray="2 1.5" opacity={S.CF.opacitySubtle} />
+    </g>
+
+    {/* CONTEXT FAR: Erechtheion cella wall behind porch */}
+    <g strokeDasharray={S.CF.dash} opacity={S.CF.opacitySubtle} strokeWidth={S.CF.strokeWidth} fill="none">
+      <rect x="5" y="-2" width="95" height="104" fill="url(#marble-veined)" opacity="0.06" stroke="none" />
+      <path d="M 100 -2 L 100 102" />
+      <path d="M 105 -2 L 105 102" strokeWidth={S.CF.strokeWidthFine} opacity="0.6" />
+      {/* Marble courses on wall */}
+      <path d="M 100 20 L 110 20" strokeWidth={S.CF.strokeWidthFine} />
+      <path d="M 100 45 L 110 45" strokeWidth={S.CF.strokeWidthFine} />
+      <path d="M 100 70 L 110 70" strokeWidth={S.CF.strokeWidthFine} />
+    </g>
+
+    {/* CONTEXT NEAR: Erechtheion Porch of the Maidens */}
     <g opacity={S.CN.opacity} strokeDasharray={S.CN.dash} fill="none">
+      {/* Cornice extending off-page */}
+      <path d="M -10 1 L 110 1" strokeWidth={S.CN.strokeWidth} />
       {/* Entablature above all caryatids */}
-      <path d="M 0 3 L 100 3" strokeWidth={S.P.strokeWidthLight} />
-      <path d="M 2 5 L 98 5" strokeWidth={S.CN.strokeWidth} />
-      {/* Stepped platform */}
-      <path d="M 5 96 L 95 96" strokeWidth={S.CN.strokeWidth} />
-      <path d="M 8 93 L 92 93" strokeWidth={S.CN.strokeWidthFine} />
-      <path d="M 3 99 L 97 99" strokeWidth={S.CN.strokeWidthFine} />
-      {/* Neighboring caryatid figure hints (left and right) */}
-      <path d="M 8 90 Q 6 60, 10 30" strokeWidth={S.CN.strokeWidthFine} />
-      <path d="M 16 90 Q 14 60, 16 30" strokeWidth={S.CN.strokeWidthFine} />
-      <path d="M 12 18 Q 14 12, 12 8" strokeWidth={S.CN.strokeWidthFine} />
-      <path d="M 84 90 Q 86 60, 84 30" strokeWidth={S.CN.strokeWidthFine} />
-      <path d="M 92 90 Q 94 60, 92 30" strokeWidth={S.CN.strokeWidthFine} />
-      <path d="M 88 18 Q 86 12, 88 8" strokeWidth={S.CN.strokeWidthFine} />
-      {/* Temple cella wall behind */}
-      <path d="M 100 5 L 100 96" strokeWidth={S.CN.strokeWidthFine} />
+      <path d="M -5 3 L 105 3" strokeWidth={S.P.strokeWidthLight} />
+      <path d="M -3 5 L 103 5" strokeWidth={S.CN.strokeWidth} />
+      {/* Frieze band */}
+      <path d="M -3 6.5 L 103 6.5" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      {/* Coffered ceiling beams */}
+      <path d="M 15 1 L 15 5" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 40 1 L 40 5" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 60 1 L 60 5" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 85 1 L 85 5" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      {/* Stepped platform / crepidoma extending off-page */}
+      <path d="M -10 96 L 110 96" strokeWidth={S.CN.strokeWidth} />
+      <path d="M -8 93 L 108 93" strokeWidth={S.CN.strokeWidthFine} />
+      <path d="M -10 99 L 110 99" strokeWidth={S.CN.strokeWidthFine} />
+      {/* Stone joints in platform */}
+      <path d="M 20 92 L 20 100" strokeDasharray="2 1" strokeWidth="0.4" opacity={S.CN.opacitySubtle} />
+      <path d="M 50 92 L 50 100" strokeDasharray="2 1" strokeWidth="0.4" opacity={S.CN.opacitySubtle} />
+      <path d="M 80 92 L 80 100" strokeDasharray="2 1" strokeWidth="0.4" opacity={S.CN.opacitySubtle} />
+    </g>
+
+    {/* CONTEXT NEAR: Neighboring caryatid figures */}
+    <g opacity={S.CN.opacitySubtle} strokeDasharray={S.CN.dash} strokeWidth={S.CN.strokeWidthFine} fill="none">
+      {/* Left neighbor caryatid - draped figure outline */}
+      <path d="M 8 90 Q 6 60, 10 30" />
+      <path d="M 16 90 Q 14 60, 16 30" />
+      {/* Left figure head/headdress */}
+      <path d="M 12 18 Q 14 12, 12 8" />
+      <ellipse cx="13" cy="22" rx="3" ry="4" strokeWidth="0.4" opacity="0.4" />
+      {/* Left figure waist hint */}
+      <path d="M 9 42 Q 12 40, 15 42" strokeWidth="0.4" opacity="0.4" />
+
+      {/* Far left neighbor (more distant) */}
+      <path d="M -5 90 Q -7 60, -3 30" opacity="0.4" />
+      <path d="M 2 90 Q 0 60, 2 30" opacity="0.4" />
+      <path d="M -1 18 Q 0 12, -1 8" opacity="0.3" />
+
+      {/* Right neighbor caryatid */}
+      <path d="M 84 90 Q 86 60, 84 30" />
+      <path d="M 92 90 Q 94 60, 92 30" />
+      {/* Right figure head/headdress */}
+      <path d="M 88 18 Q 86 12, 88 8" />
+      <ellipse cx="87" cy="22" rx="3" ry="4" strokeWidth="0.4" opacity="0.4" />
+      {/* Right figure waist hint */}
+      <path d="M 85 42 Q 88 40, 91 42" strokeWidth="0.4" opacity="0.4" />
+
+      {/* Far right neighbor */}
+      <path d="M 98 90 Q 100 60, 98 30" opacity="0.4" />
+      <path d="M 106 90 Q 108 60, 106 30" opacity="0.4" />
+      <path d="M 102 18 Q 100 12, 102 8" opacity="0.3" />
+    </g>
+
+    {/* EFFECTS: Soft shadow from figure on marble */}
+    <g opacity={S.E.opacity} strokeWidth={S.E.strokeWidth} strokeDasharray={S.E.dash} fill="none">
+      <path d="M 62 93 Q 66 95, 70 97" />
+      <path d="M 63 95 Q 67 97, 71 99" />
     </g>
 
     {/* PRIMARY: THE CARYATID FIGURE */}

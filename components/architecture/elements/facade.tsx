@@ -235,63 +235,63 @@ const CanopySVG: React.FC<SVGProps> = ({ showHalo }) => (
           <path key={`v${i}`} d={`M${x} 20 L${x} 90`} strokeWidth={S.CN.strokeWidthFine} />
         ))}
         {/* Flagpoles flanking entrance */}
-        <path d="M5 10 L5 90" strokeWidth="0.5" />
+        <path d="M5 10 L5 90" strokeWidth={S.CN.strokeWidthFine} />
         <path d="M3 10 L5 12 L7 10 Z" />
-        <path d="M95 10 L95 90" strokeWidth="0.5" />
+        <path d="M95 10 L95 90" strokeWidth={S.CN.strokeWidthFine} />
         <path d="M93 10 L95 12 L97 10 Z" />
         {/* Driveway approach with curb */}
         <path d="M0 92 L100 92" />
-        <path d="M25 92 Q50 96, 75 92" strokeWidth="0.4" />
+        <path d="M25 92 Q50 96, 75 92" strokeWidth={S.CN.strokeWidthFine} />
         {/* Planter box */}
         <path d="M3 82 L3 90 L9 90 L9 82 Z" />
         <path d="M4 80 Q6 76, 8 80" />
       </g>
 
       {/* PRIMARY: Mid-century modern canopy — flat concrete slab with thin-edge profile */}
-      <g strokeWidth="0.8">
+      <g strokeWidth={S.P.strokeWidth}>
         {/* Cantilevered concrete roof slab — thin edge profile, clean modernist */}
-        <path d="M10 33 L90 33 L92 36 L8 36 Z" strokeWidth="1.2" />
+        <path d="M10 33 L90 33 L92 36 L8 36 Z" strokeWidth={S.P.strokeWidthBold} />
         {/* Drip edge detail — characteristic thin shadow line */}
-        <path d="M8 36 L92 36" strokeWidth="1.5" />
+        <path d="M8 36 L92 36" strokeWidth={S.P.strokeWidthBold} />
         {/* Soffit — smooth concrete underside with recessed lighting channels */}
-        <path d="M12 36 L12 38 L88 38 L88 36" strokeWidth="0.4" opacity="0.5" />
+        <path d="M12 36 L12 38 L88 38 L88 36" strokeWidth={S.D.strokeWidthFine} opacity="0.5" />
         {/* Recessed downlights in soffit */}
-        <circle cx="30" cy="37" r="1.5" strokeWidth="0.4" opacity="0.5" />
-        <circle cx="50" cy="37" r="1.5" strokeWidth="0.4" opacity="0.5" />
-        <circle cx="70" cy="37" r="1.5" strokeWidth="0.4" opacity="0.5" />
+        <circle cx="30" cy="37" r="1.5" strokeWidth={S.D.strokeWidthFine} opacity="0.5" />
+        <circle cx="50" cy="37" r="1.5" strokeWidth={S.D.strokeWidthFine} opacity="0.5" />
+        <circle cx="70" cy="37" r="1.5" strokeWidth={S.D.strokeWidthFine} opacity="0.5" />
 
         {/* Slender steel I-beam columns — minimalist square section */}
-        <path d="M22 38 L22 88" strokeWidth="2" />
-        <path d="M78 38 L78 88" strokeWidth="2" />
+        <path d="M22 38 L22 88" strokeWidth={S.P.strokeWidthBold} />
+        <path d="M78 38 L78 88" strokeWidth={S.P.strokeWidthBold} />
         {/* Column flange detail */}
-        <path d="M20 38 L24 38" strokeWidth="0.8" />
-        <path d="M76 38 L80 38" strokeWidth="0.8" />
-        <path d="M20 88 L24 88" strokeWidth="0.8" />
-        <path d="M76 88 L80 88" strokeWidth="0.8" />
+        <path d="M20 38 L24 38" strokeWidth={S.P.strokeWidth} />
+        <path d="M76 38 L80 38" strokeWidth={S.P.strokeWidth} />
+        <path d="M20 88 L24 88" strokeWidth={S.P.strokeWidth} />
+        <path d="M76 88 L80 88" strokeWidth={S.P.strokeWidth} />
 
         {/* Tension rod cross-bracing — diagonal structural expression */}
-        <path d="M22 38 L78 58" strokeWidth="0.4" opacity="0.4" />
-        <path d="M78 38 L22 58" strokeWidth="0.4" opacity="0.4" />
+        <path d="M22 38 L78 58" strokeWidth={S.D.strokeWidthFine} opacity="0.4" />
+        <path d="M78 38 L22 58" strokeWidth={S.D.strokeWidthFine} opacity="0.4" />
 
         {/* Glass storefront wall set back from canopy edge */}
-        <path d="M30 42 L30 88 L70 88 L70 42 Z" strokeWidth="0.9" />
+        <path d="M30 42 L30 88 L70 88 L70 42 Z" strokeWidth={S.P.strokeWidth} />
         {/* Full-height glass panels with minimal aluminum frames */}
-        <path d="M38 42 L38 88" strokeWidth="0.6" />
-        <path d="M50 42 L50 88" strokeWidth="0.6" />
-        <path d="M62 42 L62 88" strokeWidth="0.6" />
+        <path d="M38 42 L38 88" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M50 42 L50 88" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M62 42 L62 88" strokeWidth={S.P.strokeWidthLight} />
         {/* Transom bar */}
-        <path d="M30 52 L70 52" strokeWidth="0.6" />
+        <path d="M30 52 L70 52" strokeWidth={S.P.strokeWidthLight} />
 
         {/* Flush entry door — frameless glass pivot */}
-        <path d="M44 52 L44 88 L56 88 L56 52 Z" strokeWidth="1" />
+        <path d="M44 52 L44 88 L56 88 L56 52 Z" strokeWidth={S.P.strokeWidth} />
         {/* Minimal pull handle — vertical bar */}
-        <path d="M53 62 L53 78" strokeWidth="1.5" />
+        <path d="M53 62 L53 78" strokeWidth={S.P.strokeWidthBold} />
 
         {/* Address numbers on fascia */}
-        <path d="M45 34 L48 34 M52 34 L55 34" strokeWidth="0.5" opacity="0.6" />
+        <path d="M45 34 L48 34 M52 34 L55 34" strokeWidth={S.D.strokeWidthFine} opacity="0.6" />
 
         {/* Terrazzo entry platform */}
-        <path d="M8 88 L92 88 L94 92 L6 92 Z" strokeWidth="0.8" />
+        <path d="M8 88 L92 88 L94 92 L6 92 Z" strokeWidth={S.P.strokeWidth} />
       </g>
     </g>
   </svg>
