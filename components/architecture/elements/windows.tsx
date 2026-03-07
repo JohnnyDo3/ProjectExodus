@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { S } from './svgStyleTokens'
 
 // Reusable HaloFilter for golden glow effect
 const HaloFilter = ({ id, intensity = 1 }: { id: string; intensity?: number }) => (
@@ -36,8 +37,8 @@ const CasementSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="casement-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#casement-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* LIGHT STREAMING THROUGH - Morning sunlight pouring into room */}
-      <g opacity="0.2" strokeWidth="0.5" strokeDasharray="1 2">
+      {/* EFFECTS: Light streaming through - Morning sunlight pouring into room */}
+      <g opacity={S.E.opacity} strokeWidth={S.E.strokeWidth} strokeDasharray={S.E.dash}>
         {/* Dramatic light beams from open left casement */}
         <path d="M 24 30 L 8 45" stroke="currentColor" />
         <path d="M 30 35 L 10 55" stroke="currentColor" />
@@ -55,8 +56,8 @@ const CasementSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M 67 28 Q 69 35, 71 42" strokeWidth="0.3" opacity="0.15" />
       </g>
 
-      {/* CONTEXT: Surrounding wall with lintel, sill, and reveal depth */}
-      <g strokeWidth="0.8" strokeDasharray="3 2" opacity="0.4">
+      {/* CONTEXT (near): Surrounding wall with lintel, sill, and reveal depth */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Wall surface flanking window */}
         <path d="M5 10 L5 90 L18 90 L18 10 Z" />
         <path d="M82 10 L82 90 L95 90 L95 10 Z" />
@@ -76,7 +77,7 @@ const CasementSVG: React.FC<SVGProps> = ({ showHalo }) => (
       </g>
 
       {/* PRIMARY: Casement window frame and sashes */}
-      <g strokeWidth="0.8">
+      <g strokeWidth={S.P.strokeWidth}>
         {/* Outer frame */}
         <path d="M22 15 L22 85 M78 15 L78 85" />
         <path d="M20 15 Q50 13, 80 15" />
@@ -84,10 +85,10 @@ const CasementSVG: React.FC<SVGProps> = ({ showHalo }) => (
         {/* Center mullion */}
         <path d="M49.5 15 L50.5 85" />
         {/* Left casement - slightly open */}
-        <path d="M24 18 L24 82 L47 80 L47 20 Z" strokeWidth="1" />
+        <path d="M24 18 L24 82 L47 80 L47 20 Z" strokeWidth={S.P.strokeWidthLight} />
         <path d="M35 48 L40 50 L35 52" />
         {/* Right casement */}
-        <path d="M53 18 L53 82 L76 82 L76 18 Z" strokeWidth="1" />
+        <path d="M53 18 L53 82 L76 82 L76 18 Z" strokeWidth={S.P.strokeWidthLight} />
         <path d="M60 48 L65 50 L60 52" />
         {/* Glass panes - left */}
         <path d="M27 22 L27 48 L44 47 L44 22 Z" />
@@ -114,8 +115,8 @@ const ClerestorySVG: React.FC<SVGProps> = ({ showHalo }) => (
 
       {/* CONTEXT: COMPLETE CHURCH NAVE - field sketch extending off-page */}
 
-      {/* CEILING VAULT: Extending upward beyond frame */}
-      <g opacity="0.18" strokeDasharray="2 3" strokeWidth="0.5">
+      {/* CONTEXT (far): CEILING VAULT - Extending upward beyond frame */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
         {/* Ribbed vaulting continuing up */}
         <path d="M -5 20 Q 25 -5, 50 -8 Q 75 -5, 105 20" fill="none" opacity="0.6" />
         {/* Vault ribs */}
@@ -125,8 +126,8 @@ const ClerestorySVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M 50 -5 Q 62 -2, 75 10" fill="none" opacity="0.7" />
       </g>
 
-      {/* TRIFORIUM ARCADE: Mid-level gallery extending horizontally */}
-      <g opacity="0.2" strokeDasharray="2 2" strokeWidth="0.6">
+      {/* CONTEXT (far): TRIFORIUM ARCADE - Mid-level gallery extending horizontally */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
         {/* Triforium arches extending off-page left */}
         <path d="M -10 58 Q -10 54, -5 52 Q 0 54, 0 58" fill="none" />
         <path d="M 0 58 Q 0 54, 5 52 Q 10 54, 10 58" fill="none" />
@@ -144,8 +145,8 @@ const ClerestorySVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M 100 58 Q 100 54, 105 52 Q 110 54, 110 58" fill="none" />
       </g>
 
-      {/* NAVE ARCADE: Lower level colonnade extending beyond */}
-      <g opacity="0.22" strokeDasharray="3 2" strokeWidth="0.7">
+      {/* CONTEXT (near): NAVE ARCADE - Lower level colonnade extending beyond */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Arcade arches extending off-page left */}
         <path d="M -15 85 Q -15 68, 0 68 Q 15 68, 15 85" fill="none" />
         <path d="M -8 85 Q -8 70, 5 70 Q 18 70, 18 85" fill="none" opacity="0.7" />
@@ -161,8 +162,8 @@ const ClerestorySVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M 82 85 Q 82 70, 95 70 Q 108 70, 108 85" fill="none" opacity="0.7" />
       </g>
 
-      {/* NAVE WALLS: Complete walls extending vertically */}
-      <g opacity="0.25" strokeDasharray="3 2.5" strokeWidth="0.8">
+      {/* CONTEXT (near): NAVE WALLS - Complete walls extending vertically */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Left nave wall extending off-page */}
         <path d="M -5 -10 L -5 110" fill="none" />
         <path d="M 0 -10 L 0 110" fill="none" opacity="0.8" />
@@ -178,8 +179,8 @@ const ClerestorySVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M 90 35 L 105 35" strokeWidth="0.4" opacity="0.5" />
       </g>
 
-      {/* NAVE FLOOR: Extending down beyond frame */}
-      <g opacity="0.2" strokeWidth="0.4">
+      {/* CONTEXT (far): NAVE FLOOR - Extending down beyond frame */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
         {/* Floor paving extending off-page */}
         <path d="M -10 95 L 110 95" strokeDasharray="5 3" />
         <path d="M -10 98 L 110 98" strokeDasharray="4 2" opacity="0.7" />
@@ -190,8 +191,8 @@ const ClerestorySVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M 80 94 L 80 110" strokeDasharray="2 1.5" opacity="0.5" />
       </g>
 
-      {/* DRAMATIC LIGHT STREAMING - High afternoon sun flooding the sanctuary */}
-      <g opacity="0.22" strokeWidth="0.6" strokeDasharray="1 3">
+      {/* EFFECTS: DRAMATIC LIGHT STREAMING - High afternoon sun flooding the sanctuary */}
+      <g opacity={S.E.opacityModerate} strokeWidth={S.E.strokeWidth} strokeDasharray={S.E.dash}>
         {/* Powerful light shafts from each window casting down */}
         <path d="M 20 32 L 15 70" stroke="currentColor" />
         <path d="M 24 30 L 20 72" stroke="currentColor" />
@@ -250,8 +251,8 @@ const DormerSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="dormer-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#dormer-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Main roof and building structure */}
-      <g strokeWidth="0.8" strokeDasharray="3 2" opacity="0.4">
+      {/* CONTEXT (near): Main roof and building structure */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Main roof slope */}
         <path d="M5 85 L50 35 L95 85 Z" />
         {/* Roof tiles indication */}
@@ -291,8 +292,8 @@ const LunetteSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="lunette-halo" intensity={0.95} />}
     <g filter={showHalo ? "url(#lunette-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Surrounding wall */}
-      <g strokeWidth="0.8" strokeDasharray="3 2" opacity="0.4">
+      {/* CONTEXT (near): Surrounding wall */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Wall below window */}
         <path d="M5 65 L5 95 L95 95 L95 65" />
         <path d="M10 70 L10 90 L35 90 L35 70 Z" />
@@ -330,8 +331,8 @@ const MullionSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="mullion-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#mullion-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Surrounding wall */}
-      <g strokeWidth="0.8" strokeDasharray="3 2" opacity="0.4">
+      {/* CONTEXT (near): Surrounding wall */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 10 L5 90 L12 90 L12 10 Z" />
         <path d="M88 10 L88 90 L95 90 L95 10 Z" />
         <path d="M5 10 L95 10" />
@@ -374,8 +375,8 @@ const OrielWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="oriel-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#oriel-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Building wall and supports */}
-      <g strokeWidth="0.8" strokeDasharray="3 2" opacity="0.4">
+      {/* CONTEXT (near): Building wall and supports */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Wall face */}
         <path d="M5 10 L5 95 L25 95 L25 10 Z" />
         <path d="M75 10 L75 95 L95 95 L95 10 Z" />
@@ -416,8 +417,8 @@ const PalladianWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="palladian-halo" intensity={1} />}
     <g filter={showHalo ? "url(#palladian-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* ELEGANT LIGHT - Villa interior bathed in balanced natural light */}
-      <g opacity="0.18" strokeWidth="0.5" strokeDasharray="1 3">
+      {/* EFFECTS: ELEGANT LIGHT - Villa interior bathed in balanced natural light */}
+      <g opacity={S.E.opacity} strokeWidth={S.E.strokeWidth} strokeDasharray={S.E.dash}>
         {/* Dramatic light from arched center section */}
         <path d="M 45 25 L 35 75" stroke="currentColor" />
         <path d="M 50 20 L 42 78" stroke="currentColor" />
@@ -440,8 +441,8 @@ const PalladianWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <ellipse cx="65" cy="85" rx="6" ry="2" fill="currentColor" opacity="0.06" stroke="none" />
       </g>
 
-      {/* CONTEXT: Surrounding wall */}
-      <g strokeWidth="0.8" strokeDasharray="3 2" opacity="0.4">
+      {/* CONTEXT (near): Surrounding wall */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Wall sections */}
         <path d="M5 10 L5 90 L10 90 L10 35" />
         <path d="M90 35 L90 90 L95 90 L95 10" />
@@ -492,8 +493,8 @@ const RoseWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
 
       {/* CONTEXT: COMPLETE GOTHIC CATHEDRAL WEST FACADE - field sketch off-page */}
 
-      {/* TWIN TOWERS: Extending upward beyond frame (Notre-Dame style) */}
-      <g opacity="0.18" strokeDasharray="2 2" strokeWidth="0.6">
+      {/* CONTEXT (far): TWIN TOWERS: Extending upward beyond frame (Notre-Dame style) */}
+      <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
         {/* Left tower rising off-page */}
         <path d="M -5 110 L -5 -10" fill="none" />
         <path d="M 8 110 L 8 -10" fill="none" opacity="0.7" />
@@ -507,8 +508,8 @@ const RoseWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M 92 -8 L 98.5 -15 L 105 -8" strokeWidth="0.5" opacity="0.6" />
       </g>
 
-      {/* GABLE: Gothic pointed arch above rose window */}
-      <g opacity="0.2" strokeDasharray="2 3" strokeWidth="0.5">
+      {/* CONTEXT (far): GABLE: Gothic pointed arch above rose window */}
+      <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
         {/* Pointed gable extending upward */}
         <path d="M 10 8 L 50 -10 L 90 8" fill="none" />
         <path d="M 12 10 L 50 -7 L 88 10" fill="none" opacity="0.7" />
@@ -516,8 +517,8 @@ const RoseWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M 40 5 Q 45 0, 50 -2 Q 55 0, 60 5" strokeWidth="0.4" opacity="0.6" />
       </g>
 
-      {/* FLYING BUTTRESSES: Extending from both sides */}
-      <g opacity="0.15" strokeDasharray="3 2" strokeWidth="0.5">
+      {/* CONTEXT (far): FLYING BUTTRESSES: Extending from both sides */}
+      <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
         {/* Left flying buttress */}
         <path d="M -10 40 Q -5 45, 5 48" fill="none" />
         <path d="M -10 60 Q -5 63, 5 65" fill="none" opacity="0.8" />
@@ -527,8 +528,8 @@ const RoseWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M 110 60 Q 105 63, 95 65" fill="none" opacity="0.8" />
       </g>
 
-      {/* PORTAL ARCHES: Grand entrance portals below extending down */}
-      <g opacity="0.18" strokeDasharray="2 2" strokeWidth="0.6">
+      {/* CONTEXT (far): PORTAL ARCHES: Grand entrance portals below extending down */}
+      <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
         {/* Left portal arch */}
         <path d="M 8 88 Q 5 92, 8 96 Q 12 102, 20 105" fill="none" />
         <path d="M 12 90 Q 10 94, 12 98" strokeWidth="0.5" opacity="0.7" />
@@ -542,8 +543,8 @@ const RoseWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M 88 90 Q 90 94, 88 98" strokeWidth="0.5" opacity="0.7" />
       </g>
 
-      {/* FACADE WALLS: Complete west facade extending beyond */}
-      <g opacity="0.25" strokeDasharray="3 2" strokeWidth="0.7">
+      {/* CONTEXT (near): FACADE WALLS: Complete west facade extending beyond */}
+      <g opacity={S.CN.opacity} strokeDasharray={S.CN.dash} strokeWidth={S.CN.strokeWidth}>
         {/* Left facade wall */}
         <path d="M -5 -10 L -5 110" fill="none" />
         <path d="M 10 -10 L 10 110" fill="none" opacity="0.8" />
@@ -559,8 +560,8 @@ const RoseWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M 90 70 L 105 70" strokeWidth="0.4" opacity="0.5" />
       </g>
 
-      {/* LANCET WINDOWS: Tall Gothic windows flanking rose */}
-      <g opacity="0.2" strokeDasharray="2 2" strokeWidth="0.6">
+      {/* CONTEXT (far): LANCET WINDOWS: Tall Gothic windows flanking rose */}
+      <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
         {/* Left lancet pair */}
         <path d="M 12 65 Q 14 75, 16 85" fill="none" />
         <path d="M 18 65 Q 20 75, 22 85" fill="none" opacity="0.7" />
@@ -570,8 +571,8 @@ const RoseWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M 82 65 Q 80 75, 78 85" fill="none" opacity="0.7" />
       </g>
 
-      {/* MAGNIFICENT COLORED LIGHT - Afternoon sun streaming through stained glass */}
-      <g opacity="0.18" strokeWidth="0.4">
+      {/* EFFECTS: MAGNIFICENT COLORED LIGHT - Afternoon sun streaming through stained glass */}
+      <g opacity={S.E.opacity} strokeWidth={S.E.strokeWidth}>
         {/* Radiating colored light beams matching the 12-petal pattern */}
         <path d="M 50 50 L 50 92" stroke="currentColor" strokeDasharray="2 3" opacity="0.5" />
         <path d="M 50 50 L 68 88" stroke="currentColor" strokeDasharray="2 3" opacity="0.45" />
@@ -589,8 +590,8 @@ const RoseWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <circle cx="52" cy="75" r="0.4" fill="currentColor" opacity="0.6" />
       </g>
 
-      {/* STONE MASONRY: Sculpted surround */}
-      <g opacity="0.28" strokeDasharray="3 2" strokeWidth="0.8">
+      {/* CONTEXT (near): STONE MASONRY: Sculpted surround */}
+      <g opacity={S.CN.opacity} strokeDasharray={S.CN.dash} strokeWidth={S.CN.strokeWidth}>
         {/* Carved stone frame around rose */}
         <circle cx="50" cy="50" r="42" strokeWidth="0.6" opacity="0.6" />
         <circle cx="50" cy="50" r="44" strokeWidth="0.5" opacity="0.4" />

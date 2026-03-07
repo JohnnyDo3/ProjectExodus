@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { S } from './svgStyleTokens'
 
 // Reusable HaloFilter for golden glow effect
 const HaloFilter = ({ id, intensity = 1 }: { id: string; intensity?: number }) => (
@@ -40,8 +41,8 @@ const ArborSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="arbor-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#arbor-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Gravel path and surrounding borders */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Gravel path and surrounding borders */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 90 L95 90 L95 95 L5 95 Z" />
         <ellipse cx="12" cy="72" rx="9" ry="6" />
         <ellipse cx="88" cy="72" rx="9" ry="6" />
@@ -114,8 +115,8 @@ const BenchSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="bench-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#bench-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Formal parterre garden setting */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Formal parterre garden setting */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 92 L95 92 L95 95 L5 95 Z" />
         <path d="M8 88 Q15 86, 22 88" />
         <path d="M78 88 Q85 86, 92 88" />
@@ -195,8 +196,8 @@ const FollySVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="folly-halo" intensity={0.95} />}
     <g filter={showHalo ? "url(#folly-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Romantic landscape with distant trees */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (far): Romantic landscape with distant trees */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
         <path d="M5 88 Q15 85, 25 88 Q35 90, 45 88" />
         <path d="M75 88 Q85 86, 95 88" />
         <ellipse cx="12" cy="75" rx="8" ry="6" />
@@ -262,8 +263,8 @@ const FountainSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="fountain-halo" intensity={0.95} />}
     <g filter={showHalo ? "url(#fountain-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Paved plaza and surrounding garden */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Paved plaza and surrounding garden */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 92 L20 92" />
         <path d="M80 92 L95 92" />
         <path d="M10 88 Q20 86, 30 88" />
@@ -359,8 +360,8 @@ const GazeboSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="gazebo-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#gazebo-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Lawn and garden paths */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Lawn and garden paths */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 95 L20 95" />
         <path d="M80 95 L95 95" />
         <ellipse cx="12" cy="85" rx="10" ry="5" />
@@ -456,8 +457,8 @@ const GrottoSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="grotto-halo" intensity={0.95} />}
     <g filter={showHalo ? "url(#grotto-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Rocky hillside and surrounding landscape */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Rocky hillside and surrounding landscape */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 85 L5 65 Q8 55, 15 48" />
         <path d="M95 85 L95 65 Q92 55, 85 48" />
         <path d="M5 85 L15 85" />
@@ -536,8 +537,8 @@ const HaHaSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="haha-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#haha-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Parkland landscape and distant view */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (far): Parkland landscape and distant view */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
         <path d="M5 45 Q15 43, 25 45 Q35 47, 45 45" />
         <ellipse cx="20" cy="38" rx="12" ry="8" />
         <ellipse cx="80" cy="25" rx="15" ry="10" />
@@ -610,8 +611,8 @@ const ObeliskSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="obelisk-halo" intensity={0.95} />}
     <g filter={showHalo ? "url(#obelisk-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Formal parterre with gravel paths */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Formal parterre with gravel paths */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M15 95 L25 95" />
         <path d="M75 95 L85 95" />
         <ellipse cx="20" cy="88" rx="10" ry="4" />
@@ -691,8 +692,8 @@ const PagodaSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="pagoda-halo" intensity={0.95} />}
     <g filter={showHalo ? "url(#pagoda-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Oriental garden with water and rocks */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Oriental garden with water and rocks */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 90 L20 90" />
         <path d="M80 90 L95 90" />
         <ellipse cx="15" cy="82" rx="10" ry="6" />
@@ -785,8 +786,8 @@ const ParterreSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="parterre-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#parterre-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Surrounding terrace and viewing paths */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Surrounding terrace and viewing paths */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 5 L5 95" />
         <path d="M95 5 L95 95" />
         <path d="M5 5 L95 5" />
@@ -867,8 +868,8 @@ const PergolaSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="pergola-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#pergola-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Garden borders and planting beds */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Garden borders and planting beds */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 90 L10 90" />
         <path d="M90 90 L95 90" />
         <ellipse cx="8" cy="72" rx="6" ry="10" />
@@ -957,8 +958,8 @@ const SundialSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="sundial-halo" intensity={0.95} />}
     <g filter={showHalo ? "url(#sundial-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Herb garden quadrants and paths */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Herb garden quadrants and paths */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M18 95 L28 95" />
         <path d="M72 95 L82 95" />
         <path d="M12 90 Q20 88, 28 90" />
@@ -1050,8 +1051,8 @@ const TopiarySVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="topiary-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#topiary-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Formal garden terrace and gravel */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Formal garden terrace and gravel */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M18 95 L26 95" />
         <path d="M74 95 L82 95" />
         <ellipse cx="15" cy="88" rx="10" ry="4" />
@@ -1137,8 +1138,8 @@ const TrellisSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="trellis-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#trellis-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Brick wall and garden border */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Brick wall and garden border */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 10 L5 90" />
         <path d="M95 10 L95 90" />
         <path d="M5 50 L10 50" />

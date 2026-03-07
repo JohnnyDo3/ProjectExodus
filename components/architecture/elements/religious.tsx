@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { S } from './svgStyleTokens'
 
 // Reusable HaloFilter for golden glow effect
 const HaloFilter = ({ id, intensity = 1 }: { id: string; intensity?: number }) => (
@@ -35,8 +36,8 @@ const ApseSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="apse-halo" intensity={1} />}
     <g filter={showHalo ? "url(#apse-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Church nave structure */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Church nave structure */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M20 95 L20 90" />
         <path d="M80 95 L80 90" />
         <path d="M15 90 L85 90" />
@@ -45,7 +46,7 @@ const ApseSVG: React.FC<SVGProps> = ({ showHalo }) => (
       </g>
 
       {/* PRIMARY: Apse structure */}
-      <g strokeWidth="1">
+      <g strokeWidth={S.P.strokeWidthLight}>
         {/* Nave walls leading to apse */}
         <path d="M20 90 L20 40" />
         <path d="M80 90 L80 40" />
@@ -83,8 +84,8 @@ const AltarSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="altar-halo" intensity={1.1} />}
     <g filter={showHalo ? "url(#altar-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Sanctuary floor outline */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Sanctuary floor outline */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 90 L95 90" />
         <path d="M5 25 L5 90" />
         <path d="M95 25 L95 90" />
@@ -92,7 +93,7 @@ const AltarSVG: React.FC<SVGProps> = ({ showHalo }) => (
       </g>
 
       {/* PRIMARY: Altar structure */}
-      <g strokeWidth="1">
+      <g strokeWidth={S.P.strokeWidthLight}>
         {/* Mensa (altar table top) */}
         <path d="M15 45 L85 45 L85 52 L15 52 Z" strokeWidth="1.2" />
         <path d="M18 48 L82 48" strokeWidth="0.5" />
@@ -137,8 +138,8 @@ const BaptisterySVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="baptistery-halo" intensity={1} />}
     <g filter={showHalo ? "url(#baptistery-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Surrounding church complex */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Surrounding church complex */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 85 L15 85 L15 95" />
         <path d="M85 85 L95 85 L95 95" />
         <path d="M50 5 Q30 0, 15 10" />
@@ -146,7 +147,7 @@ const BaptisterySVG: React.FC<SVGProps> = ({ showHalo }) => (
       </g>
 
       {/* PRIMARY: Baptistery structure */}
-      <g strokeWidth="1">
+      <g strokeWidth={S.P.strokeWidthLight}>
         {/* Octagonal plan outline */}
         <path d="M50 10 L75 20 L85 45 L75 70 L50 80 L25 70 L15 45 L25 20 Z" strokeWidth="1.2" />
 
@@ -187,15 +188,15 @@ const BellTowerSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="belltower-halo" intensity={0.95} />}
     <g filter={showHalo ? "url(#belltower-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Cathedral body */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Cathedral body */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M75 50 L95 50 L95 95 L75 95" />
         <path d="M5 70 L25 70 L25 95 L5 95" />
         <path d="M75 45 Q85 30, 95 45" />
       </g>
 
       {/* PRIMARY: Bell tower */}
-      <g strokeWidth="1">
+      <g strokeWidth={S.P.strokeWidthLight}>
         {/* Tower base */}
         <path d="M30 95 L30 70 L70 70 L70 95" />
 
@@ -242,8 +243,8 @@ const ChancelSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="chancel-halo" intensity={0.95} />}
     <g filter={showHalo ? "url(#chancel-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Nave beyond chancel arch */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Nave beyond chancel arch */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M35 90 L35 95" />
         <path d="M65 90 L65 95" />
         <path d="M25 90 L25 95" />
@@ -252,7 +253,7 @@ const ChancelSVG: React.FC<SVGProps> = ({ showHalo }) => (
       </g>
 
       {/* PRIMARY: Chancel area */}
-      <g strokeWidth="1">
+      <g strokeWidth={S.P.strokeWidthLight}>
         {/* Chancel walls */}
         <path d="M25 90 L25 40" strokeWidth="1.2" />
         <path d="M75 90 L75 40" strokeWidth="1.2" />
@@ -299,8 +300,8 @@ const ChapelSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="chapel-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#chapel-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Courtyard or church grounds */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Courtyard or church grounds */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 90 L15 90 L15 95" />
         <path d="M85 90 L95 90 L95 95" />
         <path d="M5 50 L15 50 L15 60" />
@@ -355,8 +356,8 @@ const ChoirSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="choir-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#choir-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Church interior walls */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Church interior walls */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M15 15 L15 85 L85 85 L85 15 L15 15" />
         <path d="M15 30 L85 30" />
       </g>
@@ -414,8 +415,8 @@ const CloisterSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="cloister-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#cloister-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Monastery outer walls */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Monastery outer walls */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 5 L5 95 L10 95 L10 5 Z" />
         <path d="M90 5 L95 5 L95 95 L90 95" />
         <path d="M5 5 L95 5" />
@@ -484,8 +485,8 @@ const CrossingSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="crossing-halo" intensity={0.95} />}
     <g filter={showHalo ? "url(#crossing-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Extended nave and transept */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Extended nave and transept */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M40 0 L40 5" />
         <path d="M60 0 L60 5" />
         <path d="M40 95 L40 100" />
@@ -539,8 +540,8 @@ const MinaretSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="minaret-halo" intensity={1} />}
     <g filter={showHalo ? "url(#minaret-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Mosque outline */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Mosque outline */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 70 L30 70 L30 95 L5 95" />
         <path d="M70 70 L95 70 L95 95 L70 95" />
         <path d="M5 65 Q15 55, 30 65" />
@@ -604,8 +605,8 @@ const NarthexSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="narthex-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#narthex-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Church nave beyond */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Church nave beyond */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M20 10 L20 50 L80 50 L80 10 L20 10" />
         <path d="M35 10 L35 30" />
         <path d="M65 10 L65 30" />
@@ -651,8 +652,8 @@ const NaveSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="nave-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#nave-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Aisles and outer walls */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Aisles and outer walls */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M10 10 L10 90" />
         <path d="M90 10 L90 90" />
         <path d="M5 90 L95 90" />
@@ -725,8 +726,8 @@ const SanctuarySVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="sanctuary-halo" intensity={1.1} />}
     <g filter={showHalo ? "url(#sanctuary-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Chancel arch and floor */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Chancel arch and floor */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M20 90 L80 90" />
         <path d="M15 85 Q15 80, 20 80 L80 80 Q85 80, 85 85" />
         <path d="M10 90 L10 85" />
@@ -792,8 +793,8 @@ const SpireSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="spire-halo" intensity={1} />}
     <g filter={showHalo ? "url(#spire-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Tower base */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Tower base */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M25 95 L75 95" />
         <path d="M25 85 L25 95" />
         <path d="M75 85 L75 95" />
@@ -854,8 +855,8 @@ const SteepleSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="steeple-halo" intensity={0.95} />}
     <g filter={showHalo ? "url(#steeple-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Church body */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Church body */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 75 L5 95 L40 95 L40 75" />
         <path d="M60 75 L60 95 L95 95 L95 75" />
         <path d="M5 70 L40 70" />
@@ -919,8 +920,8 @@ const TranseptSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="transept-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#transept-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Nave extension */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Nave extension */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M40 0 L40 5" />
         <path d="M60 0 L60 5" />
         <path d="M40 95 L40 100" />

@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { S } from './svgStyleTokens'
 
 // Reusable HaloFilter for golden glow effect
 const HaloFilter = ({ id, intensity = 1 }: { id: string; intensity?: number }) => (
@@ -39,8 +40,8 @@ const AcanthusSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="acanthus-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#acanthus-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Corinthian capital and column shaft */}
-      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.7">
+      {/* CONTEXT (near): Corinthian capital and column shaft */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Abacus (top slab of capital) */}
         <path d="M2 8 L98 8" strokeWidth="1" />
         <path d="M5 12 L95 12" strokeWidth="0.8" />
@@ -108,8 +109,8 @@ const ArabesqueSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="arabesque-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#arabesque-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Mosque/palace wall with tile panel surround */}
-      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
+      {/* CONTEXT (near): Mosque/palace wall with tile panel surround */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Wall surface extending off-page */}
         <path d="M-5 0 L105 0" />
         <path d="M-5 100 L105 100" />
@@ -205,8 +206,8 @@ const BossSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="boss-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#boss-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Vault ribs meeting at boss */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.8">
+      {/* CONTEXT (near): Vault ribs meeting at boss */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M0 100 Q25 60, 50 50" />
         <path d="M100 100 Q75 60, 50 50" />
         <path d="M0 0 Q25 40, 50 50" />
@@ -275,8 +276,8 @@ const CartoucheSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="cartouche-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#cartouche-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Building facade with rusticated stonework */}
-      <g strokeDasharray="3 2" opacity="0.25" strokeWidth="0.5">
+      {/* CONTEXT (near): Building facade with rusticated stonework */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Cornice line above */}
         <path d="M0 3 L100 3" strokeWidth="0.8" />
         <path d="M0 6 L100 6" strokeWidth="0.6" />
@@ -349,8 +350,8 @@ const CorniceSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="cornice-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#cornice-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Building wall with columns and roof above */}
-      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
+      {/* CONTEXT (near): Building wall with columns and roof above */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Roof/parapet above cornice - extending off-page */}
         <path d="M-10 28 L110 28" strokeWidth="0.5" />
         <path d="M-10 25 L110 25" strokeWidth="0.7" />
@@ -448,8 +449,8 @@ const DentilSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="dentil-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#dentil-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Full entablature section showing where dentils sit */}
-      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.7">
+      {/* CONTEXT (near): Full entablature section showing where dentils sit */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Cornice/corona above */}
         <path d="M0 10 L100 10" strokeWidth="1.2" />
         <path d="M0 15 L100 15" strokeWidth="0.8" />
@@ -531,8 +532,8 @@ const EggAndDartSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="eggdart-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#eggdart-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Entablature on column capital showing where egg-and-dart sits */}
-      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.7">
+      {/* CONTEXT (near): Entablature on column capital showing where egg-and-dart sits */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Corona/cornice above */}
         <path d="M0 12 L100 12" strokeWidth="1" />
         <path d="M0 16 L100 16" strokeWidth="0.8" />
@@ -612,8 +613,8 @@ const FinialSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="finial-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#finial-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Gothic pinnacle and buttress structure below */}
-      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.7">
+      {/* CONTEXT (near): Gothic pinnacle and buttress structure below */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Gable/pediment */}
         <path d="M22 95 L50 80 L78 95" strokeWidth="0.8" />
         {/* Pinnacle shaft tapering */}
@@ -688,8 +689,8 @@ const GargoyleSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="gargoyle-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#gargoyle-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Cathedral wall, parapet, and buttress */}
-      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
+      {/* CONTEXT (near): Cathedral wall, parapet, and buttress */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Cathedral wall face behind gargoyle */}
         <path d="M78 -5 L78 100" strokeWidth="0.8" />
         <path d="M85 -5 L85 100" strokeWidth="0.7" />
@@ -783,8 +784,8 @@ const GrotesqueSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="grotesque-halo" intensity={0.88} />}
     <g filter={showHalo ? "url(#grotesque-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Cathedral facade wall with string courses */}
-      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
+      {/* CONTEXT (near): Cathedral facade wall with string courses */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Wall surface extending off-page */}
         <path d="M-5 -5 L105 -5" />
         <path d="M-5 105 L105 105" />
@@ -882,8 +883,8 @@ const GuillocheSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="guilloche-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#guilloche-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Doorframe surround with adjacent molding profiles */}
-      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
+      {/* CONTEXT (near): Doorframe surround with adjacent molding profiles */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Door frame jambs on left and right */}
         <path d="M-5 0 L-5 100" strokeWidth="0.8" opacity="0.5" />
         <path d="M105 0 L105 100" strokeWidth="0.8" opacity="0.5" />
@@ -998,8 +999,8 @@ const DecorativeMuqarnasSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="muqarnas-dec-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#muqarnas-dec-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Islamic iwan (vaulted portal) with surrounding walls */}
-      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.7">
+      {/* CONTEXT (near): Islamic iwan (vaulted portal) with surrounding walls */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Outer rectangular frame (iwan facade) */}
         <path d="M3 3 L97 3 L97 97 L3 97 Z" strokeWidth="0.6" />
         {/* Inner pointed arch of iwan */}
@@ -1075,8 +1076,8 @@ const RosetteSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="rosette-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#rosette-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Coffered ceiling with beam grid and adjacent coffers */}
-      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
+      {/* CONTEXT (near): Coffered ceiling with beam grid and adjacent coffers */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Beam grid structure dividing coffers */}
         <path d="M8 8 L92 8" strokeWidth="1" opacity="0.5" />
         <path d="M8 92 L92 92" strokeWidth="1" opacity="0.5" />
@@ -1173,8 +1174,8 @@ const VoluteSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="volute-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#volute-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Ionic capital with abacus above and column shaft below */}
-      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.7">
+      {/* CONTEXT (near): Ionic capital with abacus above and column shaft below */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Abacus (flat slab atop capital) */}
         <path d="M5 5 L95 5" strokeWidth="1" />
         <path d="M8 10 L92 10" strokeWidth="0.8" />

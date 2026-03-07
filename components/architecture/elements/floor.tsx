@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { S } from './svgStyleTokens'
 
 // Reusable HaloFilter for golden glow effect
 const HaloFilter = ({ id, intensity = 1 }: { id: string; intensity?: number }) => (
@@ -39,8 +40,8 @@ const AccessibilityRampSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="ramp-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#ramp-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Building entrance and ground */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (near): Building entrance and ground */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M85 25 L95 25 L95 75 L85 75" />
         <path d="M88 30 L92 30 L92 45 L88 45" />
         <path d="M0 75 L15 75" />
@@ -111,8 +112,8 @@ const BalusterSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="baluster-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#baluster-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Adjacent balusters and rail */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (near): Adjacent balusters and rail */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M15 10 L15 15 L85 15 L85 10" />
         <path d="M15 85 L85 85" />
         <path d="M20 15 Q22 45, 20 50 Q18 55, 20 85" />
@@ -176,8 +177,8 @@ const CantileveredStairSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="cantilever-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#cantilever-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Wall surface */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (near): Wall surface */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M90 5 L90 95" />
         <path d="M92 10 L92 90" />
         <path d="M95 5 L95 95" />
@@ -215,7 +216,7 @@ const CantileveredStairSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M45 18 L45 12 L47 12" strokeWidth="1" />
 
         {/* Glass balustrade (minimal) */}
-        <path d="M20 82 L20 10" strokeWidth="0.8" strokeDasharray="4 2" opacity="0.5" />
+        <path d="M20 82 L20 10" strokeWidth={S.D.strokeWidth} strokeDasharray="4 2" opacity={S.D.opacity} />
         <path d="M20 10 L90 10" strokeWidth="1.5" />
 
         {/* Hidden steel insert suggestion in wall */}
@@ -237,8 +238,8 @@ const FlagstoneSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="flagstone-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#flagstone-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Garden border plants */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (far): Garden border plants */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
         <path d="M5 20 Q10 15, 15 20 Q20 25, 15 30" />
         <path d="M85 15 Q90 10, 95 18" />
         <path d="M3 70 Q8 65, 10 72" />
@@ -303,8 +304,8 @@ const GrandStaircaseSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="grand-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#grand-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Upper gallery and chandelier */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (near): Upper gallery and chandelier */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M20 5 L80 5 L80 15 L20 15 Z" />
         <path d="M50 5 L50 0" />
         <ellipse cx="50" cy="25" rx="8" ry="3" />
@@ -361,9 +362,9 @@ const GrandStaircaseSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M90 22 Q93 30, 94 38" strokeWidth="0.7" />
         <path d="M92 30 Q94 38, 95 46" strokeWidth="0.7" />
 
-        {/* Carpet runner */}
-        <path d="M18 22 Q14 32, 12 48" strokeWidth="0.6" strokeDasharray="2 2" opacity="0.4" />
-        <path d="M82 22 Q86 32, 88 48" strokeWidth="0.6" strokeDasharray="2 2" opacity="0.4" />
+        {/* DETAIL: Carpet runner */}
+        <path d="M18 22 Q14 32, 12 48" strokeWidth={S.D.strokeWidthFine} strokeDasharray={S.E.dash} opacity={S.D.opacitySubtle} />
+        <path d="M82 22 Q86 32, 88 48" strokeWidth={S.D.strokeWidthFine} strokeDasharray={S.E.dash} opacity={S.D.opacitySubtle} />
       </g>
     </g>
   </svg>
@@ -379,8 +380,8 @@ const HandrailSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="handrail-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#handrail-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Wall surface */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (near): Wall surface */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M95 5 L95 95" />
         <path d="M92 10 L92 90" />
       </g>
@@ -443,8 +444,8 @@ const HelicalRampSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="helical-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#helical-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Skylight at top */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (far): Skylight at top */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
         <circle cx="50" cy="50" r="8" />
         <path d="M45 50 L55 50" />
         <path d="M50 45 L50 55" />
@@ -500,8 +501,8 @@ const LandingSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="landing-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#landing-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Walls at corner */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (near): Walls at corner */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 5 L5 45" />
         <path d="M5 5 L45 5" />
         <path d="M8 10 L8 42" />
@@ -566,8 +567,8 @@ const MosaicFloorSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="mosaic-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#mosaic-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Room edges */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (near): Room edges */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 5 L95 5" />
         <path d="M5 95 L95 95" />
         <path d="M5 5 L5 95" />
@@ -638,8 +639,8 @@ const NewelPostSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="newel-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#newel-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Handrail meeting newel and floor */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (near): Handrail meeting newel and floor */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M60 25 L95 25" />
         <path d="M60 28 L95 28" />
         <path d="M5 95 L95 95" />
@@ -705,8 +706,8 @@ const OpusSectileSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="opus-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#opus-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Room border */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (near): Room border */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 5 L95 5 L95 95 L5 95 Z" />
       </g>
 
@@ -767,8 +768,8 @@ const ParquetSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="parquet-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#parquet-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Room corner */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (near): Room corner */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 5 L5 95" />
         <path d="M5 5 L95 5" />
       </g>
@@ -828,8 +829,8 @@ const PerronSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="perron-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#perron-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Building facade behind */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (near): Building facade behind */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M20 5 L80 5 L80 45 L20 45 Z" />
         <path d="M35 10 L65 10 L65 42 L35 42 Z" />
         <path d="M40 15 L60 15 L60 40 L40 40 Z" />
@@ -896,8 +897,8 @@ const RiserSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="riser-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#riser-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Stair structure */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (near): Stair structure */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 5 L5 95" />
         <path d="M95 25 L95 95" />
       </g>
@@ -956,8 +957,8 @@ const SpiralStairSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="spiral-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#spiral-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Surrounding walls */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (near): Surrounding walls */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <circle cx="50" cy="50" r="47" />
       </g>
 
@@ -993,8 +994,8 @@ const SpiralStairSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M14 29 Q10 38, 8 50" strokeWidth="0.8" opacity="0.6" />
         <path d="M32 88 Q42 92, 50 92" strokeWidth="0.8" opacity="0.6" />
 
-        {/* Handrail spiral suggestion */}
-        <path d="M50 8 Q78 10, 92 38 Q96 58, 86 78 Q70 94, 50 92" strokeWidth="1" strokeDasharray="3 3" opacity="0.5" />
+        {/* DETAIL: Handrail spiral suggestion */}
+        <path d="M50 8 Q78 10, 92 38 Q96 58, 86 78 Q70 94, 50 92" strokeWidth={S.P.strokeWidthLight} strokeDasharray={S.CN.dash} opacity={S.D.opacity} />
 
         {/* Direction of ascent arrow */}
         <path d="M82 58 Q84 52, 84 46" strokeWidth="0.8" opacity="0.5" />
@@ -1014,8 +1015,8 @@ const StringerSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="stringer-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#stringer-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Wall and floor */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (near): Wall and floor */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 5 L5 95" />
         <path d="M5 95 L95 95" />
       </g>
@@ -1075,8 +1076,8 @@ const TatamiSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="tatami-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#tatami-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Japanese room elements */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (near): Japanese room elements */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 5 L5 95" />
         <path d="M5 5 L95 5" />
         <path d="M8 10 L8 40" />
@@ -1155,8 +1156,8 @@ const TerrazzoSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="terrazzo-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#terrazzo-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Room edge */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (near): Room edge */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 5 L95 5 L95 95 L5 95 Z" />
       </g>
 
@@ -1225,8 +1226,8 @@ const TreadSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="tread-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#tread-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Stair structure */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (near): Stair structure */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 35 L5 95" />
         <path d="M95 35 L95 95" />
         <path d="M5 95 L95 95" />
@@ -1293,8 +1294,8 @@ const WaffleSlabSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="waffle-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#waffle-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Support columns */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (near): Support columns */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M10 90 L10 98" />
         <path d="M8 90 L12 90" />
         <path d="M90 90 L90 98" />

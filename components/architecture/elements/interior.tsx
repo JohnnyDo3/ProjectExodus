@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { S } from './svgStyleTokens'
 
 // Reusable HaloFilter for golden glow effect
 const HaloFilter = ({ id, intensity = 1 }: { id: string; intensity?: number }) => (
@@ -39,8 +40,8 @@ const AlcoveSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="alcove-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#alcove-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Riad courtyard walls */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.8">
+      {/* CONTEXT (near): Riad courtyard walls */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 15 L5 95 L95 95 L95 15" />
         {/* Courtyard fountain hint */}
         <circle cx="50" cy="88" r="5" />
@@ -48,7 +49,7 @@ const AlcoveSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M85 15 Q92 25, 85 35 L85 60" />
       </g>
 
-      {/* PRIMARY - Moroccan alcove with horseshoe arch */}
+      {/* PRIMARY: Moroccan alcove with horseshoe arch */}
       <g strokeWidth="1.2">
         {/* Horseshoe arch frame (wider than semicircle) */}
         <path d="M20 70 L20 30 Q20 10, 50 10 Q80 10, 80 30 L80 70" strokeWidth="1.8" />
@@ -105,8 +106,8 @@ const ClosetSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="closet-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#closet-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Adjacent bedroom */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.8">
+      {/* CONTEXT (near): Adjacent bedroom */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Door to bedroom */}
         <path d="M85 30 L85 80" />
         <path d="M88 30 L88 80" />
@@ -114,7 +115,7 @@ const ClosetSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M90 60 L98 60 L98 75 L90 75" />
       </g>
 
-      {/* PRIMARY - Georgian fitted wardrobes */}
+      {/* PRIMARY: Georgian fitted wardrobes */}
       <g strokeWidth="1">
         {/* Room corner */}
         <path d="M5 10 L5 95 L85 95" strokeWidth="1.5" />
@@ -179,8 +180,8 @@ const HallwaySVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="hallway-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#hallway-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Rooms glimpsed through doors */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.8">
+      {/* CONTEXT (far): Rooms glimpsed through doors */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
         {/* Furniture in adjacent room left */}
         <path d="M8 50 L12 50 L12 70 L8 70" />
         {/* Chandelier in distant room */}
@@ -188,7 +189,7 @@ const HallwaySVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M50 42 L50 38" />
       </g>
 
-      {/* PRIMARY - Enfilade corridor perspective */}
+      {/* PRIMARY: Enfilade corridor perspective */}
       <g strokeWidth="1.2">
         {/* Vanishing point corridor */}
         <path d="M5 10 L35 30 L35 70 L5 90" strokeWidth="1.5" />
@@ -262,8 +263,8 @@ const LobbySVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="lobby-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#lobby-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Street entrance behind viewer */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.8">
+      {/* CONTEXT (far): Street entrance behind viewer */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
         {/* Revolving door hint */}
         <circle cx="50" cy="92" r="5" />
         {/* Side windows */}
@@ -271,7 +272,7 @@ const LobbySVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M90 60 L90 85" />
       </g>
 
-      {/* PRIMARY - Art Deco hotel lobby */}
+      {/* PRIMARY: Art Deco hotel lobby */}
       <g strokeWidth="1.2">
         {/* Geometric coffered ceiling */}
         <path d="M5 10 L95 10" strokeWidth="1.8" />
@@ -346,8 +347,8 @@ const MezzanineSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="mezzanine-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#mezzanine-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Industrial loft space */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.8">
+      {/* CONTEXT (near): Industrial loft space */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Exposed brick wall texture */}
         <path d="M5 20 L8 20" />
         <path d="M5 25 L10 25" />
@@ -358,7 +359,7 @@ const MezzanineSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M75 35 L95 35" />
       </g>
 
-      {/* PRIMARY - Steel mezzanine structure */}
+      {/* PRIMARY: Steel mezzanine structure */}
       <g strokeWidth="1.2">
         {/* Mezzanine platform with steel beam edge */}
         <path d="M5 45 L70 45" strokeWidth="2.5" />
@@ -433,8 +434,8 @@ const NicheSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="niche-halo" intensity={0.95} />}
     <g filter={showHalo ? "url(#niche-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Gallery wall with adjacent niches */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.8">
+      {/* CONTEXT (near): Gallery wall with adjacent niches */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Wall extends beyond */}
         <path d="M5 10 L5 95 L95 95 L95 10" />
         {/* Adjacent niche hints */}
@@ -444,7 +445,7 @@ const NicheSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M5 80 L95 80" />
       </g>
 
-      {/* PRIMARY - Renaissance niche with statue */}
+      {/* PRIMARY: Renaissance niche with statue */}
       <g strokeWidth="1.2">
         {/* Outer molded frame */}
         <path d="M22 15 L22 78 L78 78 L78 15 Q50 5, 22 15" strokeWidth="1.8" />
@@ -510,14 +511,14 @@ const PantrySVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="pantry-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#pantry-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Door to dining room */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.8">
+      {/* CONTEXT (near): Door to dining room */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Service door (green baize door) */}
         <path d="M40 88 L40 95 L60 95 L60 88" />
         <path d="M42 90 L58 90 L58 93 L42 93" />
       </g>
 
-      {/* PRIMARY - Butler's pantry interior */}
+      {/* PRIMARY: Butler's pantry interior */}
       <g strokeWidth="1">
         {/* Room walls */}
         <path d="M10 10 L10 88 L90 88 L90 10 Z" strokeWidth="1.5" />
@@ -597,8 +598,8 @@ const VestibuleSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="vestibule-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#vestibule-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Street and courtyard */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.8">
+      {/* CONTEXT (far): Street and courtyard */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
         {/* Street pavement behind */}
         <path d="M5 92 L95 92" />
         {/* Inner courtyard glimpsed ahead */}
@@ -606,7 +607,7 @@ const VestibuleSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M50 22 L50 15" />
       </g>
 
-      {/* PRIMARY - Haussmann vestibule */}
+      {/* PRIMARY: Haussmann vestibule */}
       <g strokeWidth="1.2">
         {/* Outer door frame (from street) */}
         <path d="M20 85 L20 15 L80 15 L80 85" strokeWidth="1.8" />
@@ -688,8 +689,8 @@ const GallerySVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="gallery-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#gallery-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Adjacent galleries */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.8">
+      {/* CONTEXT (far): Adjacent galleries */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
         {/* Doorways to other galleries */}
         <path d="M8 30 L8 70" />
         <path d="M92 30 L92 70" />
@@ -698,7 +699,7 @@ const GallerySVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M96 45 L96 60" />
       </g>
 
-      {/* PRIMARY - Museum sculpture gallery */}
+      {/* PRIMARY: Museum sculpture gallery */}
       <g strokeWidth="1.2">
         {/* Coffered skylight ceiling */}
         <path d="M15 10 L85 10 L88 18 L12 18 Z" strokeWidth="1.5" />
@@ -707,10 +708,10 @@ const GallerySVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M35 12 L35 16" strokeWidth="0.6" />
         <path d="M50 12 L50 16" strokeWidth="0.6" />
         <path d="M65 12 L65 16" strokeWidth="0.6" />
-        {/* Light rays */}
-        <path d="M35 16 L35 30" strokeDasharray="2 2" opacity="0.3" strokeWidth="0.5" />
-        <path d="M50 16 L50 30" strokeDasharray="2 2" opacity="0.3" strokeWidth="0.5" />
-        <path d="M65 16 L65 30" strokeDasharray="2 2" opacity="0.3" strokeWidth="0.5" />
+        {/* EFFECTS: Light rays */}
+        <path d="M35 16 L35 30" strokeDasharray={S.E.dash} opacity={S.E.opacity} strokeWidth={S.E.strokeWidth} />
+        <path d="M50 16 L50 30" strokeDasharray={S.E.dash} opacity={S.E.opacity} strokeWidth={S.E.strokeWidth} />
+        <path d="M65 16 L65 30" strokeDasharray={S.E.dash} opacity={S.E.opacity} strokeWidth={S.E.strokeWidth} />
 
         {/* Gallery walls */}
         <path d="M10 18 L10 85 L90 85 L90 18" strokeWidth="1.5" />
@@ -774,8 +775,8 @@ const FireplaceSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="fireplace-halo" intensity={0.95} />}
     <g filter={showHalo ? "url(#fireplace-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Room interior */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.8">
+      {/* CONTEXT (near): Room interior */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Wall extends beyond */}
         <path d="M5 12 L5 95 L95 95 L95 12" />
         {/* Ceiling cornice */}
@@ -787,7 +788,7 @@ const FireplaceSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M5 92 L95 92" />
       </g>
 
-      {/* PRIMARY - Adam-style mantelpiece */}
+      {/* PRIMARY: Adam-style mantelpiece */}
       <g strokeWidth="1.2">
         {/* Mantelshelf with dentil molding - HIGHLIGHTED */}
         <g filter={showHalo ? "url(#fireplace-halo)" : undefined}>
@@ -904,8 +905,8 @@ const MantelSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="mantel-halo" intensity={1} />}
     <g filter={showHalo ? "url(#mantel-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Great hall or salon */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.8">
+      {/* CONTEXT (near): Great hall or salon */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Stone wall */}
         <path d="M5 8 L5 95 L95 95 L95 8" />
         {/* Floor stones */}
@@ -913,7 +914,7 @@ const MantelSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M20 92 L20 95 M 40 92 L 40 95 M 60 92 L 60 95 M 80 92 L 80 95" />
       </g>
 
-      {/* PRIMARY - Renaissance mantelpiece */}
+      {/* PRIMARY: Renaissance mantelpiece */}
       <g strokeWidth="1.2">
         {/* Massive mantelshelf - HIGHLIGHTED */}
         <g filter={showHalo ? "url(#mantel-halo)" : undefined}>
@@ -1039,8 +1040,8 @@ const InglenookSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="inglenook-halo" intensity={0.95} />}
     <g filter={showHalo ? "url(#inglenook-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Hall or great room */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.8">
+      {/* CONTEXT (near): Hall or great room */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Room extends beyond */}
         <path d="M5 15 L5 95 L95 95 L95 15" />
         {/* Floor planks */}
@@ -1048,7 +1049,7 @@ const InglenookSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M5 88 L95 88" />
       </g>
 
-      {/* PRIMARY - Inglenook alcove */}
+      {/* PRIMARY: Inglenook alcove */}
       <g strokeWidth="1.2">
         {/* Overhead beam defining alcove - HIGHLIGHTED */}
         <g filter={showHalo ? "url(#inglenook-halo)" : undefined}>

@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { S } from './svgStyleTokens'
 
 // Reusable HaloFilter for golden glow effect
 const HaloFilter = ({ id, intensity = 1 }: { id: string; intensity?: number }) => (
@@ -39,8 +40,8 @@ const ArchedDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="arched-halo" intensity={1} />}
     <g filter={showHalo ? "url(#arched-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Massive Romanesque church facade with twin towers hint */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+      {/* CONTEXT (near): Massive Romanesque church facade with twin towers hint */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Tower masses flanking portal */}
         <path d="M-8 -5 L-8 98 L6 98 L6 -5 Z" strokeWidth="0.8" opacity="0.5" />
         <path d="M94 -5 L94 98 L108 98 L108 -5 Z" strokeWidth="0.8" opacity="0.5" />
@@ -152,8 +153,8 @@ const BifoldDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="bifold-halo" intensity={0.75} />}
     <g filter={showHalo ? "url(#bifold-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Modern open-plan room opening to patio/garden */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+      {/* CONTEXT (near): Modern open-plan room opening to patio/garden */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Flat modern roof/soffit with clean edge */}
         <path d="M-5 6 L105 6" strokeWidth="0.8" opacity="0.5" />
         {/* Recessed ceiling with downlights */}
@@ -254,8 +255,8 @@ const DutchDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="dutch-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#dutch-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Dutch Colonial farmhouse with gambrel roof and kitchen garden */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+      {/* CONTEXT (near): Dutch Colonial farmhouse with gambrel roof and kitchen garden */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Distinctive GAMBREL ROOF — double slope on each side */}
         <path d="M-5 8 L20 -5 L50 -12 L80 -5 L105 8" strokeWidth="0.8" opacity="0.5" />
         <path d="M-5 8 L20 2 L50 -2 L80 2 L105 8" strokeWidth="0.5" opacity="0.35" />
@@ -366,8 +367,8 @@ const FrenchDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="french-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#french-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Haussmann-style Parisian interior — herringbone floor, ornate ceiling */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+      {/* CONTEXT (near): Haussmann-style Parisian interior — herringbone floor, ornate ceiling */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Ornate ceiling with cove molding and medallion */}
         <path d="M-5 2 L105 2" strokeWidth="0.7" opacity="0.5" />
         <path d="M-5 4 L105 4" strokeWidth="0.4" opacity="0.35" />
@@ -481,8 +482,8 @@ const PanelDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="panel-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#panel-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Georgian brick townhouse facade with full classical doorcase */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+      {/* CONTEXT (near): Georgian brick townhouse facade with full classical doorcase */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Brick facade — Flemish bond pattern */}
         <path d="M-5 -5 L105 -5 L105 100 L-5 100 Z" strokeWidth="0.4" opacity="0.25" />
         {/* Brick courses — alternating headers and stretchers */}
@@ -636,8 +637,8 @@ const PivotDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="pivot-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#pivot-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Minimalist modern residence — Cor-ten steel, water feature, desert landscape */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+      {/* CONTEXT (near): Minimalist modern residence — Cor-ten steel, water feature, desert landscape */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Cantilevered concrete roof slab — extends beyond walls */}
         <path d="M-10 5 L110 5" strokeWidth="1" opacity="0.5" />
         <path d="M-10 7 L110 7" strokeWidth="0.4" opacity="0.3" />
@@ -735,8 +736,8 @@ const PocketDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="pocket-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#pocket-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Victorian brownstone parlor — cutaway showing wall construction */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+      {/* CONTEXT (near): Victorian brownstone parlor — cutaway showing wall construction */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* High ceiling with deep crown molding and picture rail */}
         <path d="M-5 3 L105 3" strokeWidth="0.7" opacity="0.5" />
         <path d="M-5 5 L105 5" strokeWidth="0.5" opacity="0.4" />
@@ -870,8 +871,8 @@ const RevolvingDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="revolving-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#revolving-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Grand Art Deco hotel lobby — Chrysler Building-era opulence */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+      {/* CONTEXT (near): Grand Art Deco hotel lobby — Chrysler Building-era opulence */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Coffered ceiling with Art Deco geometric pattern */}
         <path d="M0 3 L100 3" strokeWidth="0.7" opacity="0.5" />
         <path d="M5 6 L95 6" strokeWidth="0.4" opacity="0.35" />
@@ -986,8 +987,8 @@ const SlidingDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="sliding-halo" intensity={0.75} />}
     <g filter={showHalo ? "url(#sliding-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Traditional Japanese washitsu (tatami room) — Katsura Imperial Villa */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+      {/* CONTEXT (near): Traditional Japanese washitsu (tatami room) — Katsura Imperial Villa */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Exposed timber ceiling (saobuchi-tenjo) — parallel battens */}
         <path d="M-5 2 L105 2" strokeWidth="0.6" opacity="0.45" />
         <path d="M-5 4 L105 4" strokeWidth="0.3" opacity="0.3" />
@@ -1114,8 +1115,8 @@ const StableDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="stable-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#stable-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: English equestrian stable block — brick and timber, courtyard */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+      {/* CONTEXT (near): English equestrian stable block — brick and timber, courtyard */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Slate roof with decorative ridge tiles and clock tower hint */}
         <path d="M-8 3 L50 -8 L108 3" strokeWidth="0.8" opacity="0.5" />
         <path d="M-5 3 L105 3" strokeWidth="0.5" opacity="0.4" />
@@ -1259,8 +1260,8 @@ const TrapdoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="trapdoor-halo" intensity={0.95} />}
     <g filter={showHalo ? "url(#trapdoor-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Medieval castle guardroom floor — oubliette access in stone keep */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+      {/* CONTEXT (near): Medieval castle guardroom floor — oubliette access in stone keep */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Massive stone floor — irregular flagstones with worn grooves */}
         <path d="M-5 -5 L105 -5 L105 105 L-5 105 Z" strokeWidth="0.4" opacity="0.25" />
         {/* Flagstone joints — irregular, not grid */}

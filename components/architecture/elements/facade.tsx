@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { S } from './svgStyleTokens'
 
 // Reusable HaloFilter for golden glow effect
 const HaloFilter = ({ id, intensity = 1 }: { id: string; intensity?: number }) => (
@@ -35,8 +36,8 @@ const AwningSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="awning-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#awning-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* === CONTEXT: Parisian Haussmann café building — mansard roof, wrought-iron balcony, zinc roofline === */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+      {/* CONTEXT (near): Parisian Haussmann café building — mansard roof, wrought-iron balcony, zinc roofline */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Mansard roof with zinc panels and dormer window */}
         <path d="M12 8 L15 2 L85 2 L88 8 Z" />
         <path d="M42 3 L42 7 L58 7 L58 3" />
@@ -66,7 +67,7 @@ const AwningSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M2 85 L2 92" />
       </g>
 
-      {/* === PRIMARY: Haussmann café awning — retractable striped canopy with ornate ironwork === */}
+      {/* PRIMARY: Haussmann café awning — retractable striped canopy with ornate ironwork */}
       <g strokeWidth="0.8">
         {/* Wrought-iron wall-mounted bracket bar with decorative scrollwork */}
         <path d="M15 25 L85 25" strokeWidth="1.4" />
@@ -120,8 +121,8 @@ const BayWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="bay-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#bay-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* === CONTEXT: Victorian Painted Lady row house — steep gable, fish-scale shingles, ornate bargeboard === */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+      {/* CONTEXT (near): Victorian Painted Lady row house — steep gable, fish-scale shingles, ornate bargeboard */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Steep gable roof with decorative ridge finial */}
         <path d="M5 15 L50 -2 L95 15" />
         <path d="M50 -2 L50 -6" />
@@ -155,7 +156,7 @@ const BayWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M0 94 L100 94" />
       </g>
 
-      {/* === PRIMARY: Victorian Painted Lady angled bay window with ornamental woodwork === */}
+      {/* PRIMARY: Victorian Painted Lady angled bay window with ornamental woodwork */}
       <g strokeWidth="0.8">
         {/* Bay roof — steep mini hip with fish-scale shingle texture */}
         <path d="M25 15 L30 8 L50 3 L70 8 L75 15 Z" strokeWidth="1.2" />
@@ -221,8 +222,8 @@ const CanopySVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="canopy-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#canopy-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* === CONTEXT: Mid-century modern hotel — glass curtain wall, flagpoles, terrazzo entry === */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+      {/* CONTEXT (near): Mid-century modern hotel — glass curtain wall, flagpoles, terrazzo entry */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Flat roof parapet with thin coping */}
         <path d="M10 18 L90 18 L90 20 L10 20 Z" />
         {/* Glass curtain wall grid — horizontal spandrel bands and vertical mullions */}
@@ -246,7 +247,7 @@ const CanopySVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M4 80 Q6 76, 8 80" />
       </g>
 
-      {/* === PRIMARY: Mid-century modern canopy — flat concrete slab with thin-edge profile === */}
+      {/* PRIMARY: Mid-century modern canopy — flat concrete slab with thin-edge profile */}
       <g strokeWidth="0.8">
         {/* Cantilevered concrete roof slab — thin edge profile, clean modernist */}
         <path d="M10 33 L90 33 L92 36 L8 36 Z" strokeWidth="1.2" />
@@ -302,8 +303,8 @@ const CorniceSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="cornice-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#cornice-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* === CONTEXT: Beaux-Arts apartment — mansard roof with dormers, oeil-de-boeuf, rusticated base === */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+      {/* CONTEXT (near): Beaux-Arts apartment — mansard roof with dormers, oeil-de-boeuf, rusticated base */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Mansard roof slope with slate pattern above cornice */}
         <path d="M12 30 L12 42 L88 42 L88 30 Q50 22, 12 30" />
         <path d="M20 33 L20 40" strokeWidth="0.3" />
@@ -331,7 +332,7 @@ const CorniceSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M75 88 L75 92" strokeWidth="0.4" />
       </g>
 
-      {/* === PRIMARY: Beaux-Arts cornice — heavy projecting crown with modillions, egg-and-dart, and dentils === */}
+      {/* PRIMARY: Beaux-Arts cornice — heavy projecting crown with modillions, egg-and-dart, and dentils */}
       <g strokeWidth="0.8">
         {/* Cyma recta crown molding — S-curve profile at top */}
         <path d="M8 40 Q30 36, 50 40 Q70 44, 92 40" strokeWidth="1" />
@@ -393,8 +394,8 @@ const EntablatureSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="entablature-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#entablature-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* === CONTEXT: Greek Doric temple — fluted column shafts, stepped crepidoma, landscape === */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+      {/* CONTEXT (near): Greek Doric temple — fluted column shafts, stepped crepidoma, landscape */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Full fluted column shafts descending from architrave */}
         <path d="M15 72 L15 88" strokeWidth="1.4" />
         <path d="M13 74 L13 88" strokeWidth="0.3" />
@@ -418,7 +419,7 @@ const EntablatureSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M96 96 Q98 90, 100 86 Q102 82, 98 80" strokeWidth="0.4" opacity="0.25" />
       </g>
 
-      {/* === PRIMARY: Greek Doric entablature — triglyphs, metopes with sculptural relief, mutules === */}
+      {/* PRIMARY: Greek Doric entablature — triglyphs, metopes with sculptural relief, mutules */}
       <g strokeWidth="0.8">
         {/* CORNICE — with forward projection and hawk's beak molding */}
         <path d="M3 12 Q50 8, 97 12" strokeWidth="0.9" />
@@ -500,8 +501,8 @@ const FacadeSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="facade-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#facade-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* === CONTEXT: Georgian streetscape — neighboring townhouses, iron lamp, street tree === */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+      {/* CONTEXT (far): Georgian streetscape — neighboring townhouses, iron lamp, street tree */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
         {/* Left neighboring building — slightly taller, different proportions */}
         <path d="M-5 10 L-5 92 L8 92 L8 10 Z" />
         <path d="M-3 20 L-3 35 L6 35 L6 20 Z" strokeWidth="0.3" />
@@ -526,7 +527,7 @@ const FacadeSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M90 90 L90 95" strokeWidth="0.4" />
       </g>
 
-      {/* === PRIMARY: Georgian townhouse facade — symmetrical 5-bay, sash windows, classical doorcase === */}
+      {/* PRIMARY: Georgian townhouse facade — symmetrical 5-bay, sash windows, classical doorcase */}
       <g strokeWidth="0.8">
         {/* Main building envelope */}
         <path d="M10 12 L10 90 L90 90 L90 12 Z" strokeWidth="1.3" />
@@ -630,8 +631,8 @@ const LoggiaSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="loggia-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#loggia-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* === CONTEXT: Italian Renaissance palazzo — rusticated ground, piano nobile, rooftop balustrade === */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+      {/* CONTEXT (near): Italian Renaissance palazzo — rusticated ground, piano nobile, rooftop balustrade */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Rooftop balustrade with finial urns */}
         <path d="M5 3 L95 3" />
         <path d="M5 7 L95 7" />
@@ -659,7 +660,7 @@ const LoggiaSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M60 92 L62 96 L64 92 L66 96 L68 92" strokeWidth="0.3" />
       </g>
 
-      {/* === PRIMARY: Renaissance palazzo loggia — round arches on Corinthian columns with coffered vault === */}
+      {/* PRIMARY: Renaissance palazzo loggia — round arches on Corinthian columns with coffered vault */}
       <g strokeWidth="0.8">
         {/* Heavy entablature with projecting cornice */}
         <path d="M2 22 L98 22 L98 26 L2 26 Z" strokeWidth="1.2" />
@@ -749,8 +750,8 @@ const MarqueeSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="marquee-halo" intensity={0.95} />}
     <g filter={showHalo ? "url(#marquee-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* === CONTEXT: 1920s Art Deco cinema — vertical tower, sunburst, zigzag ornament, ticket booth === */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+      {/* CONTEXT (near): 1920s Art Deco cinema — vertical tower, sunburst, zigzag ornament, ticket booth */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Tall vertical tower/pylon rising above roofline */}
         <path d="M42 -5 L42 15 L58 15 L58 -5 Z" />
         <path d="M44 -3 L44 12 L56 12 L56 -3 Z" strokeWidth="0.4" />
@@ -781,7 +782,7 @@ const MarqueeSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M5 93 L95 93" strokeWidth="0.4" />
       </g>
 
-      {/* === PRIMARY: Art Deco cinema marquee — stepped massing, chevrons, neon, blade sign === */}
+      {/* PRIMARY: Art Deco cinema marquee — stepped massing, chevrons, neon, blade sign */}
       <g strokeWidth="0.8">
         {/* Vertical blade/tower sign — dominant Art Deco element rising above roofline */}
         <path d="M43 10 L43 40 L57 40 L57 10 Z" strokeWidth="1.3" />
@@ -857,8 +858,8 @@ const PorticoSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="portico-halo" intensity={0.95} />}
     <g filter={showHalo ? "url(#portico-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* === CONTEXT: Neoclassical courthouse — central dome, symmetrical wings, grand approach === */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+      {/* CONTEXT (near): Neoclassical courthouse — central dome, symmetrical wings, grand approach */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Central dome rising behind pediment */}
         <path d="M35 5 Q50 -10, 65 5" />
         <path d="M37 5 Q50 -8, 63 5" strokeWidth="0.3" />
@@ -884,7 +885,7 @@ const PorticoSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M-5 96 L105 96" strokeWidth="0.4" />
       </g>
 
-      {/* === PRIMARY: Neoclassical hexastyle portico — 6 Ionic columns, sculpted pediment, deep porch === */}
+      {/* PRIMARY: Neoclassical hexastyle portico — 6 Ionic columns, sculpted pediment, deep porch */}
       <g strokeWidth="0.8">
         {/* Triangular pediment with raking cornice */}
         <path d="M5 25 L50 5 L95 25 Z" strokeWidth="1.5" />
@@ -966,8 +967,8 @@ const StorefrontSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="storefront-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#storefront-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* === CONTEXT: SoHo cast-iron building — ornate upper facade, fire escape, decorative brackets === */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+      {/* CONTEXT (near): SoHo cast-iron building — ornate upper facade, fire escape, decorative brackets */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Ornate pressed-metal cornice at roofline */}
         <path d="M8 5 L92 5 L94 8 L6 8 Z" />
         <path d="M6 8 L94 8 L94 10 L6 10 Z" />
@@ -999,7 +1000,7 @@ const StorefrontSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M2 72 Q-1 65, 2 60 Q5 55, 2 50" strokeWidth="0.4" opacity="0.25" />
       </g>
 
-      {/* === PRIMARY: SoHo cast-iron storefront — modular iron columns, arched transoms, wide plate glass === */}
+      {/* PRIMARY: SoHo cast-iron storefront — modular iron columns, arched transoms, wide plate glass */}
       <g strokeWidth="0.8">
         {/* Ornate cast-iron signboard cornice — pressed metal with scrolled brackets */}
         <path d="M8 28 L92 28 L92 32 L8 32 Z" strokeWidth="1.2" />
@@ -1082,8 +1083,8 @@ const VerandaSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="veranda-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#veranda-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* === CONTEXT: Southern antebellum plantation — hip roof, dormers, shutters, live oak === */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.6">
+      {/* CONTEXT (near): Southern antebellum plantation — hip roof, dormers, shutters, live oak */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Hip roof with wide overhang */}
         <path d="M20 8 L50 0 L80 8 L95 15 L5 15 Z" />
         {/* Central dormer with arched window */}
@@ -1116,7 +1117,7 @@ const VerandaSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M-10 92 L110 92" />
       </g>
 
-      {/* === PRIMARY: Southern antebellum gallery — tall classical columns, wrap-around, ceiling fans === */}
+      {/* PRIMARY: Southern antebellum gallery — tall classical columns, wrap-around, ceiling fans */}
       <g strokeWidth="0.8">
         {/* Hipped gallery roof with wide overhang */}
         <path d="M2 22 L50 12 L98 22 L98 30 L2 30 Z" strokeWidth="1.2" />

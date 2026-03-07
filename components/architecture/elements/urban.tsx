@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { S } from './svgStyleTokens'
 
 // Reusable HaloFilter for golden glow effect
 const HaloFilter = ({ id, intensity = 1 }: { id: string; intensity?: number }) => (
@@ -38,15 +39,15 @@ const ArcadeSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="arcade-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#arcade-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Surrounding streets and buildings */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Surrounding streets and buildings */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M2 10 L2 90 M98 10 L98 90" />
         <path d="M2 15 L10 20 M98 15 L90 20" />
         <path d="M2 85 L10 80 M98 85 L90 80" />
       </g>
 
       {/* PRIMARY - Arcade structure */}
-      <g strokeWidth="1">
+      <g strokeWidth={S.P.strokeWidthLight}>
         {/* Main perspective walls */}
         <path d="M5 15 L30 30 L30 70 L5 85" />
         <path d="M95 15 L70 30 L70 70 L95 85" />
@@ -54,7 +55,7 @@ const ArcadeSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M30 70 L70 70" />
 
         {/* Arched glass ceiling */}
-        <path d="M30 30 Q50 20, 70 30" strokeWidth="1.2" />
+        <path d="M30 30 Q50 20, 70 30" strokeWidth={S.P.strokeWidth} />
         <path d="M35 32 Q50 24, 65 32" strokeWidth="0.8" opacity="0.6" />
 
         {/* Shop fronts along sides */}
@@ -69,13 +70,13 @@ const ArcadeSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M35 35 L35 65 L48 65 L48 35 Z" strokeWidth="0.8" />
         <path d="M52 35 L52 65 L65 65 L65 35 Z" strokeWidth="0.8" />
 
-        {/* Glass roof ribs */}
-        <path d="M30 30 L50 25 L70 30" strokeWidth="0.6" />
-        <path d="M40 30 L50 26 L60 30" strokeWidth="0.5" opacity="0.5" />
+        {/* DETAIL: Glass roof ribs */}
+        <path d="M30 30 L50 25 L70 30" strokeWidth={S.D.strokeWidthFine} />
+        <path d="M40 30 L50 26 L60 30" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
       </g>
 
-      {/* Floor detail */}
-      <g strokeDasharray="2 2" opacity="0.3" strokeWidth="0.6">
+      {/* DETAIL: Floor paving */}
+      <g opacity={S.D.opacitySubtle} strokeWidth={S.D.strokeWidthFine}>
         <path d="M20 85 L40 70" />
         <path d="M50 85 L50 70" />
         <path d="M80 85 L60 70" />
@@ -93,8 +94,8 @@ const BoulevardSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="boulevard-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#boulevard-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Flanking buildings and cityscape */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (far): Flanking buildings and cityscape */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
         <path d="M5 50 L5 90 L15 90 L15 65" />
         <path d="M95 50 L95 90 L85 90 L85 65" />
         <path d="M10 20 L10 45 M90 20 L90 45" />
@@ -102,9 +103,9 @@ const BoulevardSVG: React.FC<SVGProps> = ({ showHalo }) => (
       </g>
 
       {/* PRIMARY - Boulevard roadway */}
-      <g strokeWidth="1">
+      <g strokeWidth={S.P.strokeWidthLight}>
         {/* Main roadway in perspective */}
-        <path d="M10 90 L40 40 L60 40 L90 90" strokeWidth="1.2" />
+        <path d="M10 90 L40 40 L60 40 L90 90" strokeWidth={S.P.strokeWidth} />
 
         {/* Center median */}
         <path d="M45 90 L48 40" strokeWidth="1" />
@@ -142,8 +143,8 @@ const BridgeSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="bridge-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#bridge-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Water and riverbanks */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (far): Water and riverbanks */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
         <path d="M5 70 L5 95 L95 95 L95 70" />
         <path d="M10 85 Q30 82, 50 85 Q70 88, 90 85" />
         <path d="M15 90 Q35 87, 55 90 Q75 93, 85 90" />
@@ -151,13 +152,13 @@ const BridgeSVG: React.FC<SVGProps> = ({ showHalo }) => (
       </g>
 
       {/* PRIMARY - Bridge structure */}
-      <g strokeWidth="1">
+      <g strokeWidth={S.P.strokeWidthLight}>
         {/* Main arch */}
-        <path d="M5 60 Q50 20, 95 60" strokeWidth="1.5" />
+        <path d="M5 60 Q50 20, 95 60" strokeWidth={S.P.strokeWidth} />
         <path d="M5 65 Q50 28, 95 65" strokeWidth="0.8" />
 
         {/* Bridge deck */}
-        <path d="M5 55 L95 55" strokeWidth="1.2" />
+        <path d="M5 55 L95 55" strokeWidth={S.P.strokeWidth} />
         <path d="M5 60 L95 60" strokeWidth="0.8" />
 
         {/* Balustrade */}
@@ -175,7 +176,7 @@ const BridgeSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M95 60 L95 90 L85 90 L85 65" strokeWidth="1" />
 
         {/* Keystone */}
-        <path d="M47 30 L50 25 L53 30 Z" strokeWidth="1.2" />
+        <path d="M47 30 L50 25 L53 30 Z" strokeWidth={S.P.strokeWidth} />
       </g>
     </g>
   </svg>
@@ -190,17 +191,17 @@ const FountainSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="fountain-halo" intensity={1} />}
     <g filter={showHalo ? "url(#fountain-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Surrounding plaza */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (far): Surrounding plaza */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
         <path d="M5 92 L95 92" />
         <path d="M10 90 L20 80 M90 90 L80 80" />
         <ellipse cx="50" cy="80" rx="42" ry="14" />
       </g>
 
       {/* PRIMARY - Fountain structure */}
-      <g strokeWidth="1">
+      <g strokeWidth={S.P.strokeWidthLight}>
         {/* Base basin */}
-        <ellipse cx="50" cy="80" rx="35" ry="12" strokeWidth="1.2" />
+        <ellipse cx="50" cy="80" rx="35" ry="12" strokeWidth={S.P.strokeWidth} />
         <ellipse cx="50" cy="80" rx="30" ry="10" strokeWidth="0.6" />
 
         {/* Middle tier */}
@@ -212,12 +213,12 @@ const FountainSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M38 35 L38 42 Q50 48, 62 42 L62 35" strokeWidth="1" />
 
         {/* Central spout */}
-        <path d="M50 35 L50 15" strokeWidth="1.2" />
+        <path d="M50 35 L50 15" strokeWidth={S.P.strokeWidth} />
         <circle cx="50" cy="15" r="1.5" />
       </g>
 
-      {/* Water effects */}
-      <g strokeDasharray="2 2" opacity="0.5" strokeWidth="0.6">
+      {/* EFFECTS: Water effects */}
+      <g strokeDasharray={S.E.dash} opacity={S.E.opacityModerate} strokeWidth={S.E.strokeWidth}>
         {/* Water jets */}
         <path d="M50 15 Q55 10, 60 20 Q62 30, 58 40" />
         <path d="M50 15 Q45 10, 40 20 Q38 30, 42 40" />
@@ -244,25 +245,25 @@ const KioskSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="kiosk-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#kiosk-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Surrounding street */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (far): Surrounding street */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
         <path d="M10 85 L90 85" />
         <path d="M5 80 L15 80 M85 80 L95 80" />
         <path d="M15 30 L15 35 M85 30 L85 35" />
       </g>
 
       {/* PRIMARY - Kiosk structure */}
-      <g strokeWidth="1">
+      <g strokeWidth={S.P.strokeWidthLight}>
         {/* Domed roof */}
-        <path d="M20 35 Q50 10, 80 35" strokeWidth="1.2" />
+        <path d="M20 35 Q50 10, 80 35" strokeWidth={S.P.strokeWidth} />
         <path d="M25 35 Q50 15, 75 35" strokeWidth="0.6" />
 
         {/* Finial */}
-        <path d="M50 10 L50 5" strokeWidth="1.2" />
+        <path d="M50 10 L50 5" strokeWidth={S.P.strokeWidth} />
         <circle cx="50" cy="4" r="2" strokeWidth="0.8" />
 
         {/* Main body - octagonal form */}
-        <path d="M25 35 L25 75 L35 80 L65 80 L75 75 L75 35" strokeWidth="1.2" />
+        <path d="M25 35 L25 75 L35 80 L65 80 L75 75 L75 35" strokeWidth={S.P.strokeWidth} />
 
         {/* Counter opening */}
         <path d="M30 45 L30 70 L70 70 L70 45" strokeWidth="1" />
@@ -276,8 +277,8 @@ const KioskSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M18 75 L82 75 L85 85 L15 85 Z" strokeWidth="1" />
       </g>
 
-      {/* Interior shelves */}
-      <g strokeWidth="0.6" opacity="0.4">
+      {/* DETAIL: Interior shelves */}
+      <g strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle}>
         <path d="M35 55 L65 55" />
         <path d="M35 62 L65 62" />
         <path d="M40 58 L45 58 L45 62 L40 62 Z" opacity="0.5" />
@@ -299,8 +300,8 @@ const PlazaSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="plaza-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#plaza-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Surrounding buildings */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Surrounding buildings */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 30 L5 75 L15 70 L15 40" />
         <path d="M95 30 L95 75 L85 70 L85 40" />
         <path d="M35 25 L35 40 L65 40 L65 25" />
@@ -308,10 +309,10 @@ const PlazaSVG: React.FC<SVGProps> = ({ showHalo }) => (
       </g>
 
       {/* PRIMARY - Plaza paving and space */}
-      <g strokeWidth="1">
+      <g strokeWidth={S.P.strokeWidthLight}>
         {/* Main plaza boundary in perspective */}
-        <path d="M10 80 L50 40 L90 80" strokeWidth="1.2" />
-        <path d="M10 80 L90 80" strokeWidth="1.2" />
+        <path d="M10 80 L50 40 L90 80" strokeWidth={S.P.strokeWidth} />
+        <path d="M10 80 L90 80" strokeWidth={S.P.strokeWidth} />
 
         {/* Paving pattern grid */}
         <path d="M25 80 L50 55 L75 80" strokeWidth="0.8" />
@@ -320,7 +321,7 @@ const PlazaSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M30 55 L70 55" strokeWidth="0.6" opacity="0.5" />
 
         {/* Central monument/statue */}
-        <path d="M45 50 L45 65 L55 65 L55 50" strokeWidth="1.2" />
+        <path d="M45 50 L45 65 L55 65 L55 50" strokeWidth={S.P.strokeWidth} />
         <path d="M47 45 Q50 40, 53 45 L53 50 L47 50 Z" strokeWidth="0.8" opacity="0.6" />
         <path d="M43 65 L43 68 L57 68 L57 65" strokeWidth="1" />
       </g>
@@ -345,8 +346,8 @@ const PromenadeSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="promenade-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#promenade-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Sea/view beyond and landscape */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (far): Sea/view beyond and landscape */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
         <path d="M30 25 Q50 20, 70 25" />
         <path d="M35 30 Q50 26, 65 30" />
         <path d="M20 35 L20 45 M80 35 L80 45" />
@@ -354,10 +355,10 @@ const PromenadeSVG: React.FC<SVGProps> = ({ showHalo }) => (
       </g>
 
       {/* PRIMARY - Promenade walkway */}
-      <g strokeWidth="1">
+      <g strokeWidth={S.P.strokeWidthLight}>
         {/* Walkway deck in perspective */}
-        <path d="M5 85 L40 45 L60 45 L95 85" strokeWidth="1.2" />
-        <path d="M5 85 L95 85" strokeWidth="1.5" />
+        <path d="M5 85 L40 45 L60 45 L95 85" strokeWidth={S.P.strokeWidth} />
+        <path d="M5 85 L95 85" strokeWidth={S.P.strokeWidth} />
 
         {/* Balustrade */}
         <path d="M5 80 L95 80" strokeWidth="1" />
@@ -377,8 +378,8 @@ const PromenadeSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M55 78 L65 78 L65 82 L55 82 Z" strokeWidth="0.8" />
       </g>
 
-      {/* Paving detail */}
-      <g strokeDasharray="3 3" opacity="0.3" strokeWidth="0.6">
+      {/* DETAIL: Paving lines */}
+      <g opacity={S.D.opacitySubtle} strokeWidth={S.D.strokeWidthFine}>
         <path d="M50 85 L50 50" />
         <path d="M25 82 L30 60 M75 82 L70 60" />
       </g>
@@ -398,18 +399,18 @@ const SquareSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="square-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#square-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Surrounding street */}
-      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.5">
+      {/* CONTEXT (far): Surrounding street */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
         <path d="M0 5 L100 5" />
         <path d="M0 95 L100 95" />
       </g>
 
       {/* PRIMARY - Formal public square with building facades */}
-      <g strokeWidth="1">
+      <g strokeWidth={S.P.strokeWidthLight}>
         {/* Building facades enclosing the square (Place des Vosges style) */}
         {/* Left facade with arcade */}
-        <path d="M5 10 L5 90" strokeWidth="1.8" />
-        <path d="M15 10 L15 90" strokeWidth="1.5" />
+        <path d="M5 10 L5 90" strokeWidth={S.P.strokeWidthBold} />
+        <path d="M15 10 L15 90" strokeWidth={S.P.strokeWidth} />
         {/* Arcade arches */}
         <path d="M5 25 Q10 20, 15 25" strokeWidth="0.8" />
         <path d="M5 40 Q10 35, 15 40" strokeWidth="0.8" />
@@ -419,8 +420,8 @@ const SquareSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M7 15 L13 15 L13 22 L7 22 Z" strokeWidth="0.5" opacity="0.5" />
 
         {/* Right facade with arcade */}
-        <path d="M85 10 L85 90" strokeWidth="1.5" />
-        <path d="M95 10 L95 90" strokeWidth="1.8" />
+        <path d="M85 10 L85 90" strokeWidth={S.P.strokeWidth} />
+        <path d="M95 10 L95 90" strokeWidth={S.P.strokeWidthBold} />
         <path d="M85 25 Q90 20, 95 25" strokeWidth="0.8" />
         <path d="M85 40 Q90 35, 95 40" strokeWidth="0.8" />
         <path d="M85 55 Q90 50, 95 55" strokeWidth="0.8" />
@@ -428,37 +429,37 @@ const SquareSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M87 15 L93 15 L93 22 L87 22 Z" strokeWidth="0.5" opacity="0.5" />
 
         {/* Top facade */}
-        <path d="M15 10 L85 10" strokeWidth="1.5" />
-        <path d="M15 18 L85 18" strokeWidth="1" />
+        <path d="M15 10 L85 10" strokeWidth={S.P.strokeWidth} />
+        <path d="M15 18 L85 18" strokeWidth={S.P.strokeWidthLight} />
         <path d="M25 10 Q30 6, 35 10" strokeWidth="0.7" />
         <path d="M45 10 Q50 6, 55 10" strokeWidth="0.7" />
         <path d="M65 10 Q70 6, 75 10" strokeWidth="0.7" />
 
         {/* Bottom facade */}
-        <path d="M15 90 L85 90" strokeWidth="1.5" />
-        <path d="M15 82 L85 82" strokeWidth="1" />
+        <path d="M15 90 L85 90" strokeWidth={S.P.strokeWidth} />
+        <path d="M15 82 L85 82" strokeWidth={S.P.strokeWidthLight} />
         <path d="M25 90 Q30 86, 35 90" strokeWidth="0.7" />
         <path d="M45 90 Q50 86, 55 90" strokeWidth="0.7" />
         <path d="M65 90 Q70 86, 75 90" strokeWidth="0.7" />
 
         {/* Central monument/equestrian statue */}
-        <path d="M45 42 L45 62 L55 62 L55 42" strokeWidth="1.2" />
+        <path d="M45 42 L45 62 L55 62 L55 42" strokeWidth={S.P.strokeWidth} />
         <path d="M42 62 L42 68 L58 68 L58 62" strokeWidth="1" />
-        <path d="M50 42 L50 32" strokeWidth="1.2" />
+        <path d="M50 42 L50 32" strokeWidth={S.P.strokeWidth} />
         <path d="M47 34 L53 34" strokeWidth="1" />
         <circle cx="50" cy="32" r="2" strokeWidth="0.8" />
       </g>
 
-      {/* Paths crossing square in cruciform */}
-      <g strokeDasharray="2 2" strokeWidth="0.8" opacity="0.5">
+      {/* DETAIL: Paths crossing square in cruciform */}
+      <g strokeWidth={S.D.strokeWidth} opacity={S.D.opacity}>
         <path d="M50 18 L50 42" />
         <path d="M50 68 L50 82" />
         <path d="M15 50 L42 50" />
         <path d="M58 50 L85 50" />
       </g>
 
-      {/* Formal garden beds in quadrants */}
-      <g strokeWidth="0.6" opacity="0.35">
+      {/* DETAIL: Formal garden beds in quadrants */}
+      <g strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle}>
         <path d="M22 26 L38 26 L38 42 L22 42 Z" />
         <path d="M62 26 L78 26 L78 42 L62 42 Z" />
         <path d="M22 58 L38 58 L38 74 L22 74 Z" />
@@ -482,18 +483,18 @@ const StreetSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="street-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#street-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Flanking buildings */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Flanking buildings */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 40 L5 90 L18 90 L18 55" />
         <path d="M95 40 L95 90 L82 90 L82 55" />
         <path d="M2 35 L8 45 M98 35 L92 45" />
       </g>
 
       {/* PRIMARY - Street roadway */}
-      <g strokeWidth="1">
+      <g strokeWidth={S.P.strokeWidthLight}>
         {/* Street edges in perspective */}
-        <path d="M20 90 L45 30" strokeWidth="1.2" />
-        <path d="M80 90 L55 30" strokeWidth="1.2" />
+        <path d="M20 90 L45 30" strokeWidth={S.P.strokeWidth} />
+        <path d="M80 90 L55 30" strokeWidth={S.P.strokeWidth} />
 
         {/* Center line */}
         <path d="M50 90 L50 30" strokeDasharray="5 5" strokeWidth="1" />
@@ -537,35 +538,35 @@ const WaterfrontSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="waterfront-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#waterfront-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Water and distant shore */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (far): Water and distant shore */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
         <path d="M5 65 Q20 62, 35 65 Q50 68, 65 65 Q80 62, 95 65" />
         <path d="M5 75 Q25 72, 45 75 Q65 78, 85 75" />
         <path d="M5 85 Q30 82, 55 85 Q80 88, 95 85" />
         <path d="M5 95 L95 95" />
       </g>
 
-      {/* CONTEXT - Buildings behind */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+      {/* CONTEXT (near): Buildings behind */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M10 25 L10 50 L30 50 L30 30" />
         <path d="M35 20 L35 50 L55 50 L55 25" />
         <path d="M60 30 L60 50 L85 50 L85 35" />
       </g>
 
       {/* PRIMARY - Quay/dock edge and promenade */}
-      <g strokeWidth="1">
+      <g strokeWidth={S.P.strokeWidthLight}>
         {/* Quay edge */}
-        <path d="M5 55 L95 55" strokeWidth="1.8" />
+        <path d="M5 55 L95 55" strokeWidth={S.P.strokeWidthBold} />
         <path d="M5 58 L95 58" strokeWidth="1" />
 
         {/* Promenade */}
-        <path d="M5 50 L95 50" strokeWidth="1.2" />
+        <path d="M5 50 L95 50" strokeWidth={S.P.strokeWidth} />
 
         {/* Bollards */}
-        <path d="M15 52 L15 55" strokeWidth="2" />
-        <path d="M35 52 L35 55" strokeWidth="2" />
-        <path d="M55 52 L55 55" strokeWidth="2" />
-        <path d="M75 52 L75 55" strokeWidth="2" />
+        <path d="M15 52 L15 55" strokeWidth={S.P.strokeWidthBold} />
+        <path d="M35 52 L35 55" strokeWidth={S.P.strokeWidthBold} />
+        <path d="M55 52 L55 55" strokeWidth={S.P.strokeWidthBold} />
+        <path d="M75 52 L75 55" strokeWidth={S.P.strokeWidthBold} />
         <circle cx="15" cy="51" r="2" strokeWidth="0.8" />
         <circle cx="35" cy="51" r="2" strokeWidth="0.8" />
         <circle cx="55" cy="51" r="2" strokeWidth="0.8" />
