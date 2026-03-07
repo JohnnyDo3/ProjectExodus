@@ -1979,88 +1979,142 @@ const LintelSVG: React.FC<SVGProps> = ({ showHalo }) => (
 // ============================================================================
 const DoorKnockerSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
-    {showHalo && <HaloFilter id="knocker-halo" intensity={1.1} />}
+    {showHalo && <HaloFilter id="knocker-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#knocker-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
 
-      {/* CONTEXT (near): Door panel surface the knocker is mounted on */}
+      {/* CONTEXT (near): Paneled door face with studs */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        {/* Door panel border — raised panel surround */}
-        <path d="M5 2 L95 2 L95 98 L5 98 Z" />
-        {/* Inner panel bevel */}
-        <path d="M10 6 L90 6 L90 94 L10 94 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
-        {/* Nail studs at corners */}
-        <circle cx="8" cy="5" r="1.5" strokeWidth={S.CN.strokeWidthFine} />
-        <circle cx="92" cy="5" r="1.5" strokeWidth={S.CN.strokeWidthFine} />
-        <circle cx="8" cy="95" r="1.5" strokeWidth={S.CN.strokeWidthFine} />
-        <circle cx="92" cy="95" r="1.5" strokeWidth={S.CN.strokeWidthFine} />
-        {/* Wood grain lines on panel */}
-        <path d="M15 10 L15 90" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
-        <path d="M85 10 L85 90" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
-        <path d="M25 12 L25 88" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
-        <path d="M75 12 L75 88" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Door edge stiles */}
+        <path d="M5 -5 L5 105" />
+        <path d="M95 -5 L95 105" />
+        {/* Top rail */}
+        <path d="M5 2 L95 2" />
+        {/* Bottom rail */}
+        <path d="M5 98 L95 98" />
+        {/* Middle rail */}
+        <path d="M5 50 L20 50 M80 50 L95 50" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+
+        {/* Upper raised panel borders */}
+        <path d="M12 8 L12 44 L42 44 L42 8 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M58 8 L58 44 L88 44 L88 8 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Lower raised panel borders */}
+        <path d="M12 56 L12 92 L42 92 L42 56 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M58 56 L58 92 L88 92 L88 56 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+
+        {/* Decorative nail studs along stiles */}
+        <circle cx="8" cy="15" r="0.8" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <circle cx="8" cy="35" r="0.8" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <circle cx="8" cy="65" r="0.8" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <circle cx="8" cy="85" r="0.8" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <circle cx="92" cy="15" r="0.8" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <circle cx="92" cy="35" r="0.8" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <circle cx="92" cy="65" r="0.8" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <circle cx="92" cy="85" r="0.8" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+
+        {/* Wood grain suggestion on panels */}
+        <path d="M20 12 L20 40" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M66 12 L66 40" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M20 60 L20 88" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M66 60 L66 88" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
-      {/* PRIMARY: Lion-head knocker with ring */}
+      {/* PRIMARY: Lion-head knocker with ring and escutcheon */}
       <g strokeWidth={S.D.strokeWidth}>
-        {/* Circular backplate / escutcheon */}
-        <circle cx="50" cy="45" r="28" strokeWidth={S.P.strokeWidthBold} />
-        <circle cx="50" cy="45" r="25" strokeWidth={S.D.strokeWidth} />
-        {/* Bead border on backplate */}
-        <circle cx="50" cy="18" r="1" strokeWidth={S.D.strokeWidthFine} />
-        <circle cx="72" cy="25" r="1" strokeWidth={S.D.strokeWidthFine} />
-        <circle cx="77" cy="42" r="1" strokeWidth={S.D.strokeWidthFine} />
-        <circle cx="72" cy="60" r="1" strokeWidth={S.D.strokeWidthFine} />
-        <circle cx="50" cy="72" r="1" strokeWidth={S.D.strokeWidthFine} />
-        <circle cx="28" cy="60" r="1" strokeWidth={S.D.strokeWidthFine} />
-        <circle cx="23" cy="42" r="1" strokeWidth={S.D.strokeWidthFine} />
-        <circle cx="28" cy="25" r="1" strokeWidth={S.D.strokeWidthFine} />
+        {/* Decorative backplate / escutcheon — round medallion */}
+        <circle cx="50" cy="46" r="26" strokeWidth={S.P.strokeWidthBold} />
+        <circle cx="50" cy="46" r="24" strokeWidth={S.P.strokeWidthLight} />
 
-        {/* Lion face — mane radiating lines */}
-        <path d="M50 22 L50 28" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M40 24 L43 30" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M60 24 L57 30" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M33 30 L38 34" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M67 30 L62 34" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M30 40 L36 40" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M70 40 L64 40" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M32 50 L37 47" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-        <path d="M68 50 L63 47" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        {/* Bead border on escutcheon */}
+        <circle cx="50" cy="20.5" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="55.5" cy="21" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="61" cy="22.5" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="65.5" cy="25" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="69.5" cy="28.5" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="72.5" cy="33" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="74" cy="38" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="75" cy="43.5" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="74.5" cy="49" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="73" cy="54" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="70.5" cy="58.5" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="67" cy="62.5" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="62" cy="65.5" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="56.5" cy="67.5" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="50" cy="68.5" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="44.5" cy="21" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="39" cy="22.5" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="34.5" cy="25" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="30.5" cy="28.5" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="27.5" cy="33" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="26" cy="38" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="25" cy="43.5" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="25.5" cy="49" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="27" cy="54" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="29.5" cy="58.5" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="33" cy="62.5" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="38" cy="65.5" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="43.5" cy="67.5" r="1" strokeWidth={S.D.strokeWidthFine} />
 
-        {/* Face outline */}
-        <path d="M38 30 Q50 26, 62 30 Q68 40, 64 50 Q58 58, 50 60 Q42 58, 36 50 Q32 40, 38 30 Z" strokeWidth={S.P.strokeWidth} />
+        {/* Lion face — simplified geometric */}
+        {/* Head outline */}
+        <circle cx="50" cy="42" r="12" strokeWidth={S.P.strokeWidth} />
 
-        {/* Eyes */}
-        <path d="M40 38 Q44 35 48 38 Q44 41 40 38 Z" strokeWidth={S.D.strokeWidth} />
-        <circle cx="44" cy="38" r="1.5" strokeWidth={S.D.strokeWidthBold} />
-        <path d="M52 38 Q56 35 60 38 Q56 41 52 38 Z" strokeWidth={S.D.strokeWidth} />
-        <circle cx="56" cy="38" r="1.5" strokeWidth={S.D.strokeWidthBold} />
+        {/* Mane — outer radiating mass */}
+        <path d="M50 26 Q56 28 60 30 Q65 28 68 32 Q70 36 68 40 Q72 43 70 48 Q72 52 68 55 Q65 58 60 57 Q56 60 50 60 Q44 60 40 57 Q35 58 32 55 Q28 52 30 48 Q28 43 32 40 Q30 36 32 32 Q35 28 40 30 Q44 28 50 26 Z" strokeWidth={S.P.strokeWidthBold} />
 
-        {/* Nose */}
-        <path d="M48 40 L47 46 Q50 48 53 46 L52 40" strokeWidth={S.D.strokeWidth} />
+        {/* Eyes — almond-shaped, fierce */}
+        <path d="M42 39 Q44 37 47 39 Q44 41 42 39 Z" strokeWidth={S.P.strokeWidthLight} />
+        <circle cx="44.5" cy="39" r="1" strokeWidth={S.D.strokeWidth} />
+        <path d="M53 39 Q56 37 58 39 Q56 41 53 39 Z" strokeWidth={S.P.strokeWidthLight} />
+        <circle cx="55.5" cy="39" r="1" strokeWidth={S.D.strokeWidth} />
 
-        {/* Mouth — open, holding ring */}
-        <path d="M42 52 Q50 56 58 52" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M45 53 Q50 58 55 53" strokeWidth={S.P.strokeWidth} />
+        {/* Brow ridges */}
+        <path d="M41 36 L47 35" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M53 35 L59 36" strokeWidth={S.P.strokeWidthLight} />
 
-        {/* THE RING — heavy cast iron/bronze */}
-        <path d="M44 56 Q44 80 50 85 Q56 80 56 56" strokeWidth={S.P.strokeWidthHeavy} />
-        <path d="M46 58 Q46 78 50 82 Q54 78 54 58" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-        {/* Ring texture grooves */}
-        <path d="M44.5 65 L46.5 65" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
-        <path d="M44 72 L46 72" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
-        <path d="M55.5 65 L53.5 65" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
-        <path d="M56 72 L54 72" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        {/* Nose — broad, triangular */}
+        <path d="M48 41 L50 44 L52 41" strokeWidth={S.P.strokeWidthLight} />
+        <circle cx="48" cy="42" r="0.8" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="52" cy="42" r="0.8" strokeWidth={S.D.strokeWidthFine} />
 
-        {/* Mounting bolts */}
-        <circle cx="35" cy="32" r="2" strokeWidth={S.D.strokeWidth} />
-        <path d="M34 31 L36 33 M34 33 L36 31" strokeWidth={S.D.strokeWidthFine} />
-        <circle cx="65" cy="32" r="2" strokeWidth={S.D.strokeWidth} />
-        <path d="M64 31 L66 33 M64 33 L66 31" strokeWidth={S.D.strokeWidthFine} />
-      </g>
+        {/* Mouth — open, gripping the ring */}
+        <path d="M44 47 Q47 49 50 50 Q53 49 56 47" strokeWidth={S.P.strokeWidth} />
+        <path d="M45 47 Q47 45 50 46 Q53 45 55 47" strokeWidth={S.D.strokeWidth} />
 
-      {/* EFFECTS: Shadow cast by ring on door surface */}
-      <g strokeDasharray={S.E.dash} opacity={S.E.opacity} strokeWidth={S.E.strokeWidth}>
-        <path d="M46 60 Q46 82 52 87 Q58 82 58 60" />
+        {/* Cheek tufts */}
+        <path d="M38 44 L40 46" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+        <path d="M62 44 L60 46" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+
+        {/* Ring hanging from lion's mouth */}
+        <path d="M47 50 Q47 52 48 53" strokeWidth={S.P.strokeWidth} />
+        <path d="M53 50 Q53 52 52 53" strokeWidth={S.P.strokeWidth} />
+        <circle cx="50" cy="68" r="15" strokeWidth={S.P.strokeWidthBold} />
+        <circle cx="50" cy="68" r="12.5" strokeWidth={S.P.strokeWidthLight} />
+
+        {/* Mounting bolts — top and bottom of escutcheon */}
+        <circle cx="50" cy="23" r="2" strokeWidth={S.P.strokeWidthLight} />
+        <circle cx="50" cy="23" r="0.8" strokeWidth={S.D.strokeWidthFine} />
+
+        {/* DETAIL: Mane detail lines radiating from face */}
+        <path d="M50 26 L50 22" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+        <path d="M56 28 L58 24" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+        <path d="M44 28 L42 24" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+        <path d="M62 30 L66 27" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+        <path d="M38 30 L34 27" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+        <path d="M68 36 L72 34" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+        <path d="M32 36 L28 34" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+        <path d="M70 44 L74 44" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+        <path d="M30 44 L26 44" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+        <path d="M68 52 L72 55" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+        <path d="M32 52 L28 55" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+
+        {/* Texture lines on ring */}
+        <path d="M35 68 L37.5 68" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+        <path d="M62.5 68 L65 68" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+        <path d="M50 83 L50 80.5" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+        <path d="M40 78 L42 76.5" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+        <path d="M60 78 L58 76.5" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+        <path d="M38 58 L40 59.5" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+        <path d="M62 58 L60 59.5" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
       </g>
     </g>
   </svg>
