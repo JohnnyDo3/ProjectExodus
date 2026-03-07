@@ -383,22 +383,89 @@ export const CorinthianColumnSVG = ({ showHalo = false }: SVGProps) => (
     <MaterialPatterns />
     <HaloFilter />
 
-    {/* CONTEXT (near): Temple colonnade with entablature and stylobate */}
+    {/* CONTEXT FAR: Distant Athenian skyline and landscape beyond temple */}
+    <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth} fill="none">
+      {/* Distant hills / horizon */}
+      <path d="M -10 8 Q 10 3, 30 6 Q 50 2, 70 5 Q 90 1, 110 7" />
+      {/* Far colonnade of adjacent temple */}
+      <path d="M -10 12 L -5 12" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      <path d="M -8 12 L -8 6" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      <path d="M -5 12 L -5 7" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      {/* Distant trees */}
+      <path d="M 95 6 Q 97 2, 99 6" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      <path d="M 103 5 Q 105 1, 107 5" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      {/* Cella wall behind colonnade */}
+      <rect x="18" y="-5" width="64" height="115" fill="url(#stone-smooth)" opacity="0.06" stroke="none" />
+      <path d="M 22 -5 L 22 110" opacity={S.CF.opacitySubtle} />
+      <path d="M 78 -5 L 78 110" opacity={S.CF.opacitySubtle} />
+      {/* Stone courses on cella wall */}
+      <path d="M 22 30 L 78 30" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      <path d="M 22 55 L 78 55" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      <path d="M 22 75 L 78 75" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+    </g>
+
+    {/* CONTEXT FAR: Marble floor extending beyond frame */}
+    <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidthFine} fill="none">
+      <rect x="-10" y="94" width="120" height="16" fill="url(#marble-veined)" opacity="0.12" stroke="none" />
+      <path d="M -10 99 L 110 99" opacity={S.CF.opacitySubtle} />
+      <path d="M -10 103 L 110 103" strokeDasharray="4 3" opacity={S.CF.opacitySubtle} />
+      <path d="M 25 95 L 25 110" strokeDasharray="2 1.5" opacity={S.CF.opacitySubtle} />
+      <path d="M 75 95 L 75 110" strokeDasharray="2 1.5" opacity={S.CF.opacitySubtle} />
+    </g>
+
+    {/* CONTEXT NEAR: Temple colonnade with entablature and stylobate */}
     <g opacity={S.CN.opacity} strokeDasharray={S.CN.dash} fill="none">
+      {/* Cornice extending off-page */}
+      <path d="M -10 1 L 110 1" strokeWidth={S.CN.strokeWidth} />
       {/* Entablature above */}
-      <path d="M 0 2 L 100 2" strokeWidth={S.P.strokeWidthLight} />
-      <path d="M 5 4 L 95 4" strokeWidth={S.CN.strokeWidth} />
-      {/* Frieze with relief hint */}
-      <path d="M 8 6 L 92 6" strokeWidth={S.CN.strokeWidthFine} />
-      {/* Stylobate / ground platform */}
-      <path d="M 0 96 L 100 96" strokeWidth={S.CN.strokeWidth} />
-      <path d="M 2 98 L 98 98" strokeWidth={S.CN.strokeWidthFine} />
-      <path d="M 4 100 L 96 100" strokeWidth={S.CN.strokeWidthFine} />
-      {/* Adjacent column shafts (colonnade receding) */}
-      <path d="M 5 92 Q 4 55, 8 20" strokeWidth={S.CN.strokeWidthFine} />
-      <path d="M 12 92 Q 11 55, 14 20" strokeWidth={S.CN.strokeWidthFine} />
-      <path d="M 88 92 Q 89 55, 86 20" strokeWidth={S.CN.strokeWidthFine} />
-      <path d="M 95 92 Q 96 55, 92 20" strokeWidth={S.CN.strokeWidthFine} />
+      <path d="M -5 2.5 L 105 2.5" strokeWidth={S.P.strokeWidthLight} />
+      <path d="M -3 4 L 103 4" strokeWidth={S.CN.strokeWidth} />
+      {/* Frieze with relief scroll hints */}
+      <path d="M -2 6 L 102 6" strokeWidth={S.CN.strokeWidthFine} />
+      <path d="M 15 5.5 Q 18 4.5, 21 5.5" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 40 5.5 Q 43 4.5, 46 5.5" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 60 5.5 Q 63 4.5, 66 5.5" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 80 5.5 Q 83 4.5, 86 5.5" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      {/* Architrave bands */}
+      <path d="M -5 7.5 L 105 7.5" strokeDasharray="4 2" opacity="0.6" strokeWidth={S.CN.strokeWidthFine} />
+      {/* Stylobate / ground platform extending off-page */}
+      <path d="M -10 96 L 110 96" strokeWidth={S.CN.strokeWidth} />
+      <path d="M -8 98 L 108 98" strokeWidth={S.CN.strokeWidthFine} />
+      <path d="M -6 100 L 106 100" strokeWidth={S.CN.strokeWidthFine} />
+      {/* Stone joints in stylobate */}
+      <path d="M 10 95 L 10 101" strokeDasharray="2 1" strokeWidth="0.4" opacity={S.CN.opacitySubtle} />
+      <path d="M 35 95 L 35 101" strokeDasharray="2 1" strokeWidth="0.4" opacity={S.CN.opacitySubtle} />
+      <path d="M 65 95 L 65 101" strokeDasharray="2 1" strokeWidth="0.4" opacity={S.CN.opacitySubtle} />
+      <path d="M 90 95 L 90 101" strokeDasharray="2 1" strokeWidth="0.4" opacity={S.CN.opacitySubtle} />
+    </g>
+
+    {/* CONTEXT NEAR: Adjacent columns in colonnade receding both directions */}
+    <g opacity={S.CN.opacitySubtle} strokeDasharray={S.CN.dash} strokeWidth={S.CN.strokeWidthFine} fill="none">
+      {/* Left columns receding */}
+      <path d="M 5 92 Q 4 55, 8 20" />
+      <path d="M 12 92 Q 11 55, 14 20" />
+      {/* Left column capital hint (acanthus) */}
+      <path d="M 6 18 Q 4 14, 6 12" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 14 18 Q 16 14, 14 12" strokeWidth="0.4" opacity="0.5" />
+      {/* Further left column */}
+      <path d="M -8 92 Q -9 55, -5 20" opacity="0.5" />
+      <path d="M -2 92 Q -3 55, 0 20" opacity="0.5" />
+
+      {/* Right columns receding */}
+      <path d="M 88 92 Q 89 55, 86 20" />
+      <path d="M 95 92 Q 96 55, 92 20" />
+      {/* Right column capital hint */}
+      <path d="M 87 18 Q 85 14, 87 12" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 93 18 Q 95 14, 93 12" strokeWidth="0.4" opacity="0.5" />
+      {/* Further right column */}
+      <path d="M 102 92 Q 103 55, 100 20" opacity="0.5" />
+      <path d="M 108 92 Q 109 55, 106 20" opacity="0.5" />
+    </g>
+
+    {/* EFFECTS: Column shadow on marble floor */}
+    <g opacity={S.E.opacity} strokeWidth={S.E.strokeWidth} strokeDasharray={S.E.dash} fill="none">
+      <path d="M 68 96 Q 72 98, 76 100" />
+      <path d="M 69 98 Q 73 100, 77 102" />
     </g>
 
     {/* PRIMARY: THE CORINTHIAN COLUMN - FINEST STONE */}

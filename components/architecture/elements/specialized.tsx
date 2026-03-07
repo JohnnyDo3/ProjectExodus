@@ -124,11 +124,49 @@ const BalconySVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="balcony-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#balcony-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT (near): Building facade */}
+      {/* CONTEXT (far): Neighboring building edges and street */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Neighboring building left */}
+        <path d="M0 12 L0 95" />
+        <path d="M0 12 L8 12" />
+        <path d="M2 30 L6 30 L6 40 L2 40" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M2 55 L6 55 L6 65 L2 65" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Neighboring building right */}
+        <path d="M100 18 L100 95" />
+        <path d="M92 18 L100 18" />
+        <path d="M94 35 L98 35 L98 45 L94 45" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M94 60 L98 60 L98 70 L94 70" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Street / ground line */}
+        <path d="M0 95 L100 95" />
+        <path d="M15 95 L15 98" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M50 95 L50 98" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M85 95 L85 98" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT (near): Building facade with windows and cornice */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Main facade walls */}
         <path d="M10 15 L10 90 L90 90 L90 15" />
+        {/* Cornice / parapet above balcony */}
+        <path d="M8 15 L92 15" />
+        <path d="M9 13 L91 13" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Floor lines */}
         <path d="M10 45 L90 45" strokeWidth={S.CN.strokeWidthFine} />
         <path d="M10 90 L90 90" strokeWidth={S.CN.strokeWidthFine} />
+        {/* Windows above balcony */}
+        <path d="M20 20 L20 32 L35 32 L35 20" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M65 20 L65 32 L80 32 L80 20" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Door/window below balcony - the opening */}
+        <path d="M38 50 L38 42 L62 42 L62 50" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Windows on lower floor */}
+        <path d="M18 72 L18 82 L32 82 L32 72" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M68 72 L68 82 L82 82 L82 72" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Railing shadow cast on wall below */}
+        <path d="M30 58 L30 64" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M40 58 L40 66" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M50 58 L50 67" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M60 58 L60 66" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M70 58 L70 64" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY: Balcony platform and railing */}
@@ -155,11 +193,45 @@ const BasementSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="basement-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#basement-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT (near): Above-ground structure */}
+      {/* CONTEXT (far): Neighboring foundations and ground layers */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Neighboring foundation left */}
+        <path d="M0 40 L0 75" />
+        <path d="M0 75 L12 75" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M0 60 L10 60" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Neighboring foundation right */}
+        <path d="M100 40 L100 70" />
+        <path d="M88 70 L100 70" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Ground/soil layers */}
+        <path d="M0 40 L100 40" />
+        <path d="M0 92 L100 92" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Gravel / fill pattern */}
+        <path d="M8 88 L12 88" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M30 90 L34 90" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M55 89 L59 89" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M75 91 L79 91" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Utility lines running underground */}
+        <path d="M0 78 L15 78 Q18 78, 18 80 L18 82 Q18 84, 20 84 L85 84 Q88 84, 88 82 L88 78 Q88 76, 90 76 L100 76" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M0 95 L100 95" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT (near): Above-ground building facade and street level */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Building walls above grade */}
         <path d="M5 40 L5 35 L95 35 L95 40" />
         <path d="M5 30 L5 10" strokeWidth={S.CN.strokeWidthFine} />
         <path d="M95 30 L95 10" strokeWidth={S.CN.strokeWidthFine} />
+        {/* Upper floor line */}
+        <path d="M5 10 L95 10" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Windows on above-ground facade */}
+        <path d="M15 15 L15 28 L30 28 L30 15" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M42 15 L42 28 L58 28 L58 15" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M70 15 L70 28 L85 28 L85 15" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Door at grade */}
+        <path d="M42 35 L42 40 L58 40 L58 35" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Street surface texture */}
+        <path d="M0 38 L5 38" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M95 38 L100 38" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY: Grade line */}
@@ -189,10 +261,43 @@ const CapitalSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="capital-halo" intensity={1} />}
     <g filter={showHalo ? "url(#capital-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT (near): Column shaft below */}
+      {/* CONTEXT (far): Adjacent columns and ceiling beams */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Adjacent column capital left */}
+        <path d="M0 22 L8 22 L8 18 L0 18" />
+        <path d="M2 28 Q5 35, 8 28" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M3 35 L3 55" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M7 35 L7 55" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Adjacent column capital right */}
+        <path d="M92 22 L100 22 L100 18 L92 18" />
+        <path d="M92 28 Q95 35, 98 28" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M93 35 L93 55" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M97 35 L97 55" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Ceiling beams */}
+        <path d="M0 8 L100 8" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M0 5 L100 5" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Wall returns behind */}
+        <path d="M0 5 L0 95" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M100 5 L100 95" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT (near): Column shaft below and entablature above */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Column shaft */}
         <path d="M35 60 L35 90" />
         <path d="M65 60 L65 90" />
+        {/* Column base */}
+        <path d="M32 90 L68 90" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M30 93 L70 93" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M28 96 L72 96" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Shaft fluting hints */}
+        <path d="M42 62 L42 88" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M50 62 L50 88" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M58 62 L58 88" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Entablature / architrave above */}
+        <path d="M15 15 L85 15" />
+        <path d="M15 12 L85 12" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M15 9 L85 9" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY: Capital abacus */}

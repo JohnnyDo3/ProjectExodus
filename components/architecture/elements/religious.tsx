@@ -36,13 +36,49 @@ const ApseSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="apse-halo" intensity={1} />}
     <g filter={showHalo ? "url(#apse-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT (near): Church nave structure */}
+      {/* CONTEXT FAR: Church exterior silhouette and surroundings */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Church roof ridge beyond */}
+        <path d="M5 45 L15 30 L50 20 L85 30 L95 45" />
+        {/* Distant buttresses */}
+        <path d="M5 45 L5 95" />
+        <path d="M95 45 L95 95" />
+        {/* Far bell tower silhouette */}
+        <path d="M2 95 L2 35 L8 35 L8 95" />
+        <path d="M2 35 L5 25 L8 35" />
+        {/* Ground line */}
+        <path d="M0 95 L100 95" />
+        {/* Distant trees */}
+        <path d="M92 55 Q95 45, 98 55" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M93 60 Q95 50, 97 60" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Church nave structure */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Nave walls extending below apse */}
         <path d="M20 95 L20 90" />
         <path d="M80 95 L80 90" />
         <path d="M15 90 L85 90" />
         <path d="M10 50 L10 90 L15 90" />
         <path d="M90 50 L90 90 L85 90" />
+        {/* Ribbed vault above */}
+        <path d="M20 12 Q50 3, 80 12" />
+        <path d="M25 15 Q50 8, 75 15" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Clerestory windows left */}
+        <path d="M12 55 L12 70" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M12 55 Q14 52, 16 55" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Clerestory windows right */}
+        <path d="M88 55 L88 70" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M84 55 Q86 52, 88 55" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Floor tile pattern */}
+        <path d="M30 90 L30 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M40 90 L40 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M50 90 L50 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M60 90 L60 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M70 90 L70 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Sanctuary steps */}
+        <path d="M22 85 L78 85" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M24 80 L76 80" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY: Apse structure */}
@@ -84,12 +120,39 @@ const AltarSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="altar-halo" intensity={1.1} />}
     <g filter={showHalo ? "url(#altar-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT (near): Sanctuary floor outline */}
+      {/* CONTEXT FAR: Church exterior beyond sanctuary */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Roof silhouette */}
+        <path d="M0 20 L5 15 L50 5 L95 15 L100 20" />
+        {/* Distant buttresses */}
+        <path d="M0 20 L0 95" />
+        <path d="M100 20 L100 95" />
+        {/* Ground line */}
+        <path d="M0 95 L100 95" />
+        {/* Far trees beside church */}
+        <path d="M96 40 Q98 30, 100 40" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Sanctuary floor and surrounding structure */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 90 L95 90" />
         <path d="M5 25 L5 90" />
         <path d="M95 25 L95 90" />
         <path d="M5 25 Q50 10, 95 25" />
+        {/* Ribbed vault above */}
+        <path d="M5 20 Q50 8, 95 20" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M15 22 Q50 12, 85 22" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Column arcades along walls */}
+        <path d="M8 35 L8 85" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M92 35 L92 85" strokeWidth={S.CN.strokeWidthFine} />
+        {/* Floor tiles */}
+        <path d="M15 90 L15 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M30 90 L30 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M50 90 L50 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M70 90 L70 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M85 90 L85 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Sanctuary steps */}
+        <path d="M10 85 L90 85" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY: Altar structure */}
@@ -138,12 +201,34 @@ const BaptisterySVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="baptistery-halo" intensity={1} />}
     <g filter={showHalo ? "url(#baptistery-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT (near): Surrounding church complex */}
+      {/* CONTEXT FAR: Piazza and surrounding buildings */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Cathedral facade in distance */}
+        <path d="M0 60 L0 95 L100 95 L100 60" />
+        <path d="M0 60 L10 50 L15 55" />
+        <path d="M100 60 L90 50 L85 55" />
+        {/* Ground plane */}
+        <path d="M0 95 L100 95" />
+        {/* Distant campanile */}
+        <path d="M92 30 L92 60 L98 60 L98 30" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M92 30 L95 22 L98 30" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Surrounding church complex */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 85 L15 85 L15 95" />
         <path d="M85 85 L95 85 L95 95" />
         <path d="M50 5 Q30 0, 15 10" />
         <path d="M50 5 Q70 0, 85 10" />
+        {/* Dome ribs connecting to outer structure */}
+        <path d="M20 15 Q50 2, 80 15" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Floor pavement radiating */}
+        <path d="M25 80 L25 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M50 80 L50 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M75 80 L75 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Adjacent chapel walls */}
+        <path d="M10 40 L10 85" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M90 40 L90 85" strokeWidth={S.CN.strokeWidthFine} />
       </g>
 
       {/* PRIMARY: Baptistery structure */}
@@ -188,11 +273,33 @@ const BellTowerSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="belltower-halo" intensity={0.95} />}
     <g filter={showHalo ? "url(#belltower-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT (near): Cathedral body */}
+      {/* CONTEXT FAR: Cityscape and distant buildings */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Distant rooftops */}
+        <path d="M0 80 L5 75 L10 80 L15 72 L20 80" />
+        <path d="M0 80 L0 95 L20 95 L20 80" />
+        {/* Ground line */}
+        <path d="M0 95 L100 95" />
+        {/* Distant trees */}
+        <path d="M2 68 Q5 60, 8 68" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M12 65 Q15 58, 18 65" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Cathedral body */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M75 50 L95 50 L95 95 L75 95" />
         <path d="M5 70 L25 70 L25 95 L5 95" />
         <path d="M75 45 Q85 30, 95 45" />
+        {/* Nave roof ridge */}
+        <path d="M75 45 L95 45" strokeWidth={S.CN.strokeWidthFine} />
+        {/* Cathedral windows */}
+        <path d="M80 55 L80 65" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M85 55 L85 65" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M90 55 L90 65" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Flying buttress suggestion */}
+        <path d="M75 60 L72 50" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Ground pavement */}
+        <path d="M25 95 L75 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY: Bell tower */}

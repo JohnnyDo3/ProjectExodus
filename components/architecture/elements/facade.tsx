@@ -75,31 +75,31 @@ const AwningSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M79 24 Q82 22, 85 24" strokeWidth={S.P.strokeWidthLight} />
 
         {/* Fabric canopy — curved projection with alternating stripe texture */}
-        <path d="M15 25 Q15 38, 12 48 Q30 58, 50 52 Q70 58, 88 48 Q85 38, 85 25" strokeWidth="1.2" />
+        <path d="M15 25 Q15 38, 12 48 Q30 58, 50 52 Q70 58, 88 48 Q85 38, 85 25" strokeWidth={S.P.strokeWidthBold} />
         {/* Stripe pattern on fabric — alternating bands */}
-        <path d="M20 27 Q20 38, 18 46" strokeWidth="0.4" opacity="0.5" />
-        <path d="M30 26 Q30 40, 25 50" strokeWidth="0.4" opacity="0.5" />
-        <path d="M40 26 Q40 42, 38 52" strokeWidth="0.4" opacity="0.5" />
-        <path d="M50 26 Q50 42, 50 52" strokeWidth="0.4" opacity="0.5" />
-        <path d="M60 26 Q60 42, 62 52" strokeWidth="0.4" opacity="0.5" />
-        <path d="M70 26 Q70 40, 75 50" strokeWidth="0.4" opacity="0.5" />
-        <path d="M80 27 Q80 38, 82 46" strokeWidth="0.4" opacity="0.5" />
+        <path d="M20 27 Q20 38, 18 46" strokeWidth={S.D.strokeWidthFine} opacity="0.5" />
+        <path d="M30 26 Q30 40, 25 50" strokeWidth={S.D.strokeWidthFine} opacity="0.5" />
+        <path d="M40 26 Q40 42, 38 52" strokeWidth={S.D.strokeWidthFine} opacity="0.5" />
+        <path d="M50 26 Q50 42, 50 52" strokeWidth={S.D.strokeWidthFine} opacity="0.5" />
+        <path d="M60 26 Q60 42, 62 52" strokeWidth={S.D.strokeWidthFine} opacity="0.5" />
+        <path d="M70 26 Q70 40, 75 50" strokeWidth={S.D.strokeWidthFine} opacity="0.5" />
+        <path d="M80 27 Q80 38, 82 46" strokeWidth={S.D.strokeWidthFine} opacity="0.5" />
 
         {/* Articulated iron support arms — curved French style */}
-        <path d="M15 25 Q10 35, 12 48" strokeWidth="1.2" />
-        <path d="M85 25 Q90 35, 88 48" strokeWidth="1.2" />
+        <path d="M15 25 Q10 35, 12 48" strokeWidth={S.P.strokeWidthBold} />
+        <path d="M85 25 Q90 35, 88 48" strokeWidth={S.P.strokeWidthBold} />
         {/* Intermediate folding arms */}
-        <path d="M30 25 L25 30 L22 44" strokeWidth="0.8" />
-        <path d="M50 25 L50 32 L50 52" strokeWidth="0.8" />
-        <path d="M70 25 L75 30 L78 44" strokeWidth="0.8" />
+        <path d="M30 25 L25 30 L22 44" strokeWidth={S.P.strokeWidth} />
+        <path d="M50 25 L50 32 L50 52" strokeWidth={S.P.strokeWidth} />
+        <path d="M70 25 L75 30 L78 44" strokeWidth={S.P.strokeWidth} />
 
         {/* Scalloped valance with pointed lambroquin trim */}
-        <path d="M12 48 Q17 54, 22 48 Q27 54, 32 48 Q37 54, 42 48 Q47 54, 50 52 Q53 54, 58 48 Q63 54, 68 48 Q73 54, 78 48 Q83 54, 88 48" strokeWidth="0.9" />
+        <path d="M12 48 Q17 54, 22 48 Q27 54, 32 48 Q37 54, 42 48 Q47 54, 50 52 Q53 54, 58 48 Q63 54, 68 48 Q73 54, 78 48 Q83 54, 88 48" strokeWidth={S.P.strokeWidth} />
         {/* Fringe detail along valance edge */}
-        <path d="M14 50 L14 53 M18 52 L18 55 M22 50 L22 53 M26 52 L26 55" strokeWidth="0.4" opacity="0.5" />
-        <path d="M34 50 L34 53 M38 52 L38 55 M42 50 L42 53 M46 52 L46 55" strokeWidth="0.4" opacity="0.5" />
-        <path d="M56 50 L56 53 M60 52 L60 55 M64 50 L64 53 M68 52 L68 55" strokeWidth="0.4" opacity="0.5" />
-        <path d="M74 50 L74 53 M78 52 L78 55 M82 50 L82 53 M86 52 L86 55" strokeWidth="0.4" opacity="0.5" />
+        <path d="M14 50 L14 53 M18 52 L18 55 M22 50 L22 53 M26 52 L26 55" strokeWidth={S.D.strokeWidthFine} opacity="0.5" />
+        <path d="M34 50 L34 53 M38 52 L38 55 M42 50 L42 53 M46 52 L46 55" strokeWidth={S.D.strokeWidthFine} opacity="0.5" />
+        <path d="M56 50 L56 53 M60 52 L60 55 M64 50 L64 53 M68 52 L68 55" strokeWidth={S.D.strokeWidthFine} opacity="0.5" />
+        <path d="M74 50 L74 53 M78 52 L78 55 M82 50 L82 53 M86 52 L86 55" strokeWidth={S.D.strokeWidthFine} opacity="0.5" />
 
         {/* Iron scroll bracket supports at wall — ornate Parisian wrought-iron */}
         <path d="M15 25 Q12 28, 10 35 Q8 30, 10 25" strokeWidth="0.7" />
