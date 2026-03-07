@@ -1248,138 +1248,205 @@ export const FinkTrussSVG: React.FC<SVGProps> = ({ showHalo }) => (
 )
 
 /**
- * BOWSTRING TRUSS - Curved top chord like an archer's bow
- * Efficient compression arch with tension tie
- * Shows: Arched top chord, straight bottom chord, web members
- * Used for: Long-span roofs, arenas, historic train sheds
+ * BOWSTRING TRUSS - CURVED top chord (arch), straight bottom chord
+ * 3/4 isometric view. The defining feature is the arched top. No other truss has this.
+ * Curved top in COMPRESSION, straight bottom in TENSION.
  */
 export const BowstringTrussSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="bowstring-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#bowstring-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
-      {/* CONTEXT (near): Support points */}
+      {/* CONTEXT (near): Ground line */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        <path d="M5 77 L95 77" />
+        <path d="M3 78 L70 78" />
+        <path d="M70 78 L97 70" />
       </g>
 
-      {/* PRIMARY - Curved top chord (the "bow") */}
-      <g strokeWidth={S.P.strokeWidthBold}>
-        <path d="M10 65 Q50 15, 90 65" />
+      {/* FAR-SIDE TRUSS (back face) */}
+      <g opacity={0.2} strokeWidth={S.P.strokeWidthLight}>
+        {/* Back curved top chord */}
+        <path d="M18 68 Q55 14, 92 68" />
+        {/* Back bottom chord */}
+        <path d="M18 68 L92 68" />
+        {/* Back verticals */}
+        <path d="M33 68 L33 44" />
+        <path d="M48 68 L48 28" />
+        <path d="M55 68 L55 22" />
+        <path d="M62 68 L62 28" />
+        <path d="M77 68 L77 44" />
       </g>
 
-      {/* Bottom chord (the "string" - in tension) */}
+      {/* Shadow fill under arch */}
+      <path d="M18 68 Q55 14, 92 68 Z" fill="currentColor" opacity={S.E.fillOpacity} />
+
+      {/* CROSS MEMBERS (depth ties) */}
+      <g strokeWidth={S.D.strokeWidth} opacity={S.D.opacity}>
+        <path d="M5 72 L18 68" />
+        <path d="M81 72 L92 68" />
+        {/* Cross ties at verticals */}
+        <path d="M21 72 L33 68" />
+        <path d="M36 72 L48 68" />
+        <path d="M43 72 L55 68" />
+        <path d="M50 72 L62 68" />
+        <path d="M65 72 L77 68" />
+        {/* Crown cross tie */}
+        <path d="M43 26 L55 22" />
+      </g>
+
+      {/* NEAR-SIDE: CURVED top chord (the "bow" - COMPRESSION, thick) */}
+      <g strokeWidth={S.P.strokeWidthHeavy}>
+        <path d="M5 72 Q43 18, 81 72" />
+      </g>
+
+      {/* Bottom chord (the "string" - TENSION, thinner) */}
       <g strokeWidth={S.P.strokeWidthBold}>
-        <path d="M10 65 L90 65" />
+        <path d="M5 72 L81 72" />
       </g>
 
       {/* Vertical web members */}
       <g strokeWidth={S.P.strokeWidth}>
-        <path d="M25 65 L25 42" />
-        <path d="M40 65 L40 28" />
-        <path d="M50 65 L50 22" />
-        <path d="M60 65 L60 28" />
-        <path d="M75 65 L75 42" />
+        <path d="M21 72 L21 48" />
+        <path d="M36 72 L36 32" />
+        <path d="M43 72 L43 26" />
+        <path d="M50 72 L50 32" />
+        <path d="M65 72 L65 48" />
       </g>
 
       {/* Diagonal web members */}
-      <g strokeWidth={S.P.strokeWidth}>
-        <path d="M10 65 L25 42" />
-        <path d="M25 42 L40 65" />
-        <path d="M40 28 L50 65" />
-        <path d="M50 22 L60 65" />
-        <path d="M60 28 L75 65" />
-        <path d="M75 42 L90 65" />
+      <g strokeWidth={S.P.strokeWidthLight}>
+        <path d="M5 72 L21 48" />
+        <path d="M21 48 L36 72" />
+        <path d="M36 32 L43 72" />
+        <path d="M43 26 L50 72" />
+        <path d="M50 32 L65 72" />
+        <path d="M65 48 L81 72" />
       </g>
 
-      {/* Joint connections */}
-      <g strokeWidth={S.D.strokeWidth} opacity={S.D.opacity}>
-        <circle cx="10" cy="65" r="2.5" />
-        <circle cx="25" cy="65" r="2" />
-        <circle cx="40" cy="65" r="2" />
-        <circle cx="50" cy="65" r="2" />
-        <circle cx="60" cy="65" r="2" />
-        <circle cx="75" cy="65" r="2" />
-        <circle cx="90" cy="65" r="2.5" />
-        <circle cx="50" cy="22" r="2" />
+      {/* Gusset plates */}
+      <g fill="currentColor" opacity={S.D.opacity} strokeWidth={S.D.strokeWidthFine}>
+        <circle cx="5" cy="72" r="2" />
+        <circle cx="81" cy="72" r="2" />
+        <circle cx="43" cy="26" r="2" />
+        <circle cx="21" cy="72" r="1.5" />
+        <circle cx="36" cy="72" r="1.5" />
+        <circle cx="50" cy="72" r="1.5" />
+        <circle cx="65" cy="72" r="1.5" />
       </g>
 
       {/* Support symbols */}
       <g strokeWidth={S.P.strokeWidth}>
-        <path d="M5 70 L15 70 L10 65 Z" />
-        <circle cx="90" cy="70" r="2" />
-        <path d="M85 72 L95 72" />
+        <path d="M0 75 L10 75 L5 72 Z" />
+        <circle cx="81" cy="75" r="2" />
+        <path d="M76 77 L86 77" />
       </g>
 
       {/* Tension indicator on bottom chord */}
-      <g strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle}>
-        <path d="M30 68 L70 68" strokeDasharray={S.CN.dash} />
+      <g strokeWidth={S.E.strokeWidth} opacity={S.E.opacityModerate}>
+        <path d="M20 75 L66 75" strokeDasharray={S.E.dash} />
       </g>
     </g>
   </svg>
 )
 
 /**
- * VIERENDEEL TRUSS (1896) - Rectangular openings, no diagonals
- * Invented by Arthur Vierendeel, Belgian engineer
- * Shows: Ladder-like structure with rigid moment connections
- * Used when diagonal-free openings needed (bridges, buildings)
+ * VIERENDEEL TRUSS (1896) - NO diagonals, only verticals creating rectangular openings
+ * 3/4 isometric view. Ladder-like with rigid moment connections (haunches at corners).
+ * Key visual: clean rectangular panels, heavy chords for moment resistance.
  */
 export const VierendeelTrussSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="vierendeel-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#vierendeel-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
-      {/* CONTEXT (near): Support points */}
+      {/* CONTEXT (near): Ground line */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        <path d="M5 72 L95 72" />
+        <path d="M3 78 L70 78" />
+        <path d="M70 78 L97 70" />
       </g>
 
-      {/* PRIMARY - Top and bottom chords (heavier for moment resistance) */}
+      {/* FAR-SIDE TRUSS (back face) */}
+      <g opacity={0.2} strokeWidth={S.P.strokeWidthLight}>
+        <path d="M18 32 L92 32" />
+        <path d="M18 68 L92 68" />
+        <path d="M18 32 L18 68" />
+        <path d="M36.5 32 L36.5 68" />
+        <path d="M55 32 L55 68" />
+        <path d="M73.5 32 L73.5 68" />
+        <path d="M92 32 L92 68" />
+      </g>
+
+      {/* Shadow fill for rectangular openings on far side */}
+      <g fill="currentColor" opacity={S.E.fillOpacity}>
+        <rect x="19" y="33" width="17" height="34" />
+        <rect x="37.5" y="33" width="17" height="34" />
+        <rect x="56" y="33" width="17" height="34" />
+        <rect x="74.5" y="33" width="17" height="34" />
+      </g>
+
+      {/* CROSS MEMBERS connecting near and far top chords */}
+      <g strokeWidth={S.D.strokeWidth} opacity={S.D.opacity}>
+        <path d="M5 36 L18 32" />
+        <path d="M24 36 L36.5 32" />
+        <path d="M43 36 L55 32" />
+        <path d="M62 36 L73.5 32" />
+        <path d="M81 36 L92 32" />
+        <path d="M5 72 L18 68" />
+        <path d="M24 72 L36.5 68" />
+        <path d="M43 72 L55 68" />
+        <path d="M62 72 L73.5 68" />
+        <path d="M81 72 L92 68" />
+      </g>
+
+      {/* NEAR-SIDE: Top and bottom chords (HEAVY for moment resistance) */}
       <g strokeWidth={S.P.strokeWidthHeavy}>
-        {/* Top chord */}
-        <path d="M10 30 L90 30" />
-        {/* Bottom chord */}
-        <path d="M10 65 L90 65" />
+        <path d="M5 36 L81 36" />
+        <path d="M5 72 L81 72" />
       </g>
 
-      {/* VERTICAL MEMBERS ONLY - Key feature: no diagonals */}
+      {/* VERTICAL MEMBERS ONLY - Key feature: NO diagonals at all */}
       <g strokeWidth={S.P.strokeWidthBold}>
-        <path d="M10 30 L10 65" />
-        <path d="M30 30 L30 65" />
-        <path d="M50 30 L50 65" />
-        <path d="M70 30 L70 65" />
-        <path d="M90 30 L90 65" />
+        <path d="M5 36 L5 72" />
+        <path d="M24 36 L24 72" />
+        <path d="M43 36 L43 72" />
+        <path d="M62 36 L62 72" />
+        <path d="M81 36 L81 72" />
       </g>
 
-      {/* RIGID CORNER CONNECTIONS - Key feature: moment resisting joints */}
-      <g strokeWidth={S.P.strokeWidth} opacity={S.D.opacityStrong}>
-        {/* Top corners - haunches */}
-        <path d="M10 30 L10 36 L16 30" />
-        <path d="M30 30 L30 36 L36 30 M30 30 L30 36 L24 30" />
-        <path d="M50 30 L50 36 L56 30 M50 30 L50 36 L44 30" />
-        <path d="M70 30 L70 36 L76 30 M70 30 L70 36 L64 30" />
-        <path d="M90 30 L90 36 L84 30" />
+      {/* RIGID CORNER HAUNCHES - moment resisting connections */}
+      <g strokeWidth={S.P.strokeWidth} fill="currentColor" opacity={S.D.opacityStrong}>
+        {/* Top haunch triangles */}
+        <path d="M5 36 L5 41 L10 36 Z" />
+        <path d="M24 36 L24 41 L29 36 Z" />
+        <path d="M24 36 L24 41 L19 36 Z" />
+        <path d="M43 36 L43 41 L48 36 Z" />
+        <path d="M43 36 L43 41 L38 36 Z" />
+        <path d="M62 36 L62 41 L67 36 Z" />
+        <path d="M62 36 L62 41 L57 36 Z" />
+        <path d="M81 36 L81 41 L76 36 Z" />
 
-        {/* Bottom corners - haunches */}
-        <path d="M10 65 L10 59 L16 65" />
-        <path d="M30 65 L30 59 L36 65 M30 65 L30 59 L24 65" />
-        <path d="M50 65 L50 59 L56 65 M50 65 L50 59 L44 65" />
-        <path d="M70 65 L70 59 L76 65 M70 65 L70 59 L64 65" />
-        <path d="M90 65 L90 59 L84 65" />
+        {/* Bottom haunch triangles */}
+        <path d="M5 72 L5 67 L10 72 Z" />
+        <path d="M24 72 L24 67 L29 72 Z" />
+        <path d="M24 72 L24 67 L19 72 Z" />
+        <path d="M43 72 L43 67 L48 72 Z" />
+        <path d="M43 72 L43 67 L38 72 Z" />
+        <path d="M62 72 L62 67 L67 72 Z" />
+        <path d="M62 72 L62 67 L57 72 Z" />
+        <path d="M81 72 L81 67 L76 72 Z" />
       </g>
 
-      {/* Rectangular openings indication */}
+      {/* Rectangular opening indicators (the empty panels) */}
       <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidthFine}>
-        <rect x="12" y="32" width="16" height="31" />
-        <rect x="32" y="32" width="16" height="31" />
-        <rect x="52" y="32" width="16" height="31" />
-        <rect x="72" y="32" width="16" height="31" />
+        <rect x="7" y="38" width="15" height="32" />
+        <rect x="26" y="38" width="15" height="32" />
+        <rect x="45" y="38" width="15" height="32" />
+        <rect x="64" y="38" width="15" height="32" />
       </g>
 
       {/* Support symbols */}
       <g strokeWidth={S.P.strokeWidth}>
-        <path d="M5 68 L15 68 L10 65 Z" />
-        <circle cx="90" cy="68" r="2" />
-        <path d="M85 70 L95 70" />
+        <path d="M0 75 L10 75 L5 72 Z" />
+        <circle cx="81" cy="75" r="2" />
+        <path d="M76 77 L86 77" />
       </g>
     </g>
   </svg>
