@@ -166,16 +166,19 @@ const BifoldDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
         {/* Floor control joints */}
         <path d="M-5 94 L20 94 M80 94 L105 94" strokeWidth="0.3" opacity="0.2" />
 
-        {/* Exterior: timber deck beyond opening */}
-        <path d="M25 93 L75 93" strokeWidth="0.4" opacity="0.35" />
-        <path d="M25 95 L75 95 M25 97 L75 97 M25 99 L75 99" strokeWidth="0.3" opacity="0.2" />
-
-        {/* Garden beyond — tree silhouette */}
-        <path d="M60 70 Q65 50 70 55 Q75 45 80 60 Q85 50 82 70" strokeWidth="0.4" opacity="0.2" />
-        <path d="M72 70 L72 85" strokeWidth="0.3" opacity="0.15" />
-
         {/* Planter box on deck */}
         <path d="M30 90 L42 90 L42 93 L30 93 Z" strokeWidth="0.3" opacity="0.25" />
+      </g>
+
+      {/* CONTEXT (far): Garden and deck beyond opening */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Timber deck beyond opening */}
+        <path d="M25 93 L75 93" />
+        <path d="M25 95 L75 95 M25 97 L75 97 M25 99 L75 99" strokeWidth={S.CF.strokeWidthFine} />
+
+        {/* Garden beyond — tree silhouette */}
+        <path d="M60 70 Q65 50 70 55 Q75 45 80 60 Q85 50 82 70" />
+        <path d="M72 70 L72 85" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
       </g>
 
       {/* PRIMARY: 5-panel bifold partly open in concertina fold */}
@@ -397,9 +400,11 @@ const FrenchDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M25 90 Q25 93 30 93 Q35 93 35 90" strokeWidth="0.3" opacity="0.25" />
         <path d="M45 90 Q45 93 50 93 Q55 93 55 90" strokeWidth="0.3" opacity="0.25" />
         <path d="M65 90 Q65 93 70 93 Q75 93 75 90" strokeWidth="0.3" opacity="0.25" />
+      </g>
 
-        {/* Paris rooftop view beyond balcony */}
-        <path d="M30 98 L35 96 L40 98 L45 95 L50 98" strokeWidth="0.3" opacity="0.15" />
+      {/* CONTEXT (far): Paris rooftop view beyond balcony */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        <path d="M30 98 L35 96 L40 98 L45 95 L50 98" />
       </g>
 
       {/* PRIMARY: French doors with arched transom and divided lites */}
@@ -650,18 +655,21 @@ const PivotDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
         {/* Smooth stucco wall on right */}
         <path d="M92 7 L105 7 L105 92 L92 92 Z" strokeWidth="0.5" opacity="0.35" />
 
-        {/* Reflecting pool / water feature in foreground */}
-        <path d="M-5 94 L105 94 L105 100 L-5 100 Z" strokeWidth="0.4" opacity="0.3" />
-        {/* Water surface ripple lines */}
-        <path d="M10 96 Q30 95 50 96 Q70 97 90 96" strokeWidth="0.3" opacity="0.2" />
-        <path d="M15 98 Q35 97 55 98 Q75 99 95 98" strokeWidth="0.25" opacity="0.15" />
-
         {/* Stepping stones across water to entry */}
         <path d="M40 92 L40 94 L48 94 L48 92 Z" strokeWidth="0.3" opacity="0.25" />
         <path d="M52 92 L52 94 L60 94 L60 92 Z" strokeWidth="0.3" opacity="0.25" />
+      </g>
+
+      {/* CONTEXT (far): Reflecting pool, water feature, and desert landscape beyond */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Reflecting pool / water feature */}
+        <path d="M-5 94 L105 94 L105 100 L-5 100 Z" />
+        {/* Water surface ripple lines */}
+        <path d="M10 96 Q30 95 50 96 Q70 97 90 96" strokeWidth={S.CF.strokeWidthFine} />
+        <path d="M15 98 Q35 97 55 98 Q75 99 95 98" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
 
         {/* Desert landscape hint — agave/yucca silhouette on right */}
-        <path d="M98 85 L96 78 M98 85 L100 76 M98 85 L95 82 M98 85 L101 80" strokeWidth="0.3" opacity="0.2" />
+        <path d="M98 85 L96 78 M98 85 L100 76 M98 85 L95 82 M98 85 L101 80" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
       </g>
 
       {/* PRIMARY: Massive pivot door — oversized, partially open */}

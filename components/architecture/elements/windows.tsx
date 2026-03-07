@@ -62,18 +62,18 @@ const CasementSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M5 10 L5 90 L18 90 L18 10 Z" />
         <path d="M82 10 L82 90 L95 90 L95 10 Z" />
         {/* Stone lintel above window */}
-        <path d="M5 10 L95 10" strokeWidth="1" />
-        <path d="M3 7 L97 7" strokeWidth="0.6" />
+        <path d="M5 10 L95 10" strokeWidth={S.CN.strokeWidth} />
+        <path d="M3 7 L97 7" strokeWidth={S.CN.strokeWidthFine} />
         {/* Stone sill below window */}
-        <path d="M5 90 L95 90" strokeWidth="1" />
-        <path d="M8 93 L92 93" strokeWidth="0.6" />
+        <path d="M5 90 L95 90" strokeWidth={S.CN.strokeWidth} />
+        <path d="M8 93 L92 93" strokeWidth={S.CN.strokeWidthFine} />
         {/* Drip edge on sill */}
-        <path d="M10 93 Q50 95, 90 93" strokeWidth="0.4" />
+        <path d="M10 93 Q50 95, 90 93" strokeWidth={S.CN.strokeWidthFine} />
         {/* Wall continues above/below (full structure) */}
-        <path d="M0 0 L100 0" strokeWidth="0.5" opacity="0.3" />
-        <path d="M0 100 L100 100" strokeWidth="0.5" opacity="0.3" />
-        <path d="M0 0 L0 100" strokeWidth="0.4" opacity="0.3" />
-        <path d="M100 0 L100 100" strokeWidth="0.4" opacity="0.3" />
+        <path d="M0 0 L100 0" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M0 100 L100 100" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M0 0 L0 100" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M100 0 L100 100" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY: Casement window frame and sashes */}
@@ -175,8 +175,8 @@ const ClerestorySVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M 105 -10 L 105 110" fill="none" />
 
         {/* Stone courses */}
-        <path d="M -5 35 L 10 35" strokeWidth="0.4" opacity="0.5" />
-        <path d="M 90 35 L 105 35" strokeWidth="0.4" opacity="0.5" />
+        <path d="M -5 35 L 10 35" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M 90 35 L 105 35" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* CONTEXT (far): NAVE FLOOR - Extending down beyond frame */}
@@ -499,7 +499,7 @@ const RoseWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M -5 110 L -5 -10" fill="none" />
         <path d="M 8 110 L 8 -10" fill="none" opacity="0.7" />
         {/* Gothic pinnacles at top */}
-        <path d="M -5 -8 L 1.5 -15 L 8 -8" strokeWidth="0.5" opacity="0.6" />
+        <path d="M -5 -8 L 1.5 -15 L 8 -8" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
 
         {/* Right tower rising off-page */}
         <path d="M 92 110 L 92 -10" fill="none" opacity="0.7" />
