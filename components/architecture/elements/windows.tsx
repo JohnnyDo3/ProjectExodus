@@ -865,8 +865,8 @@ const TracerySVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M75 95 L75 102" strokeWidth="0.3" opacity="0.3" />
       </g>
 
-      {/* CONTEXT: Light streaming through tracery */}
-      <g opacity="0.15" strokeWidth="0.6">
+      {/* EFFECTS: Light streaming through tracery */}
+      <g opacity={S.E.opacity} strokeWidth={S.D.strokeWidth}>
         <path d="M35 50 L25 80" />
         <path d="M50 35 L40 75" />
         <path d="M65 50 L55 80" />
@@ -921,8 +921,8 @@ const TransomWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="transom-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#transom-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
 
-      {/* CONTEXT: Surrounding wall */}
-      <g strokeWidth="0.8" strokeDasharray="3 2" opacity="0.4">
+      {/* CONTEXT (near): Surrounding wall */}
+      <g strokeWidth={S.CN.strokeWidth} strokeDasharray={S.CN.dash} opacity={S.CN.opacity}>
         <path d="M5 10 L5 90 L12 90 L12 10 Z" />
         <path d="M88 10 L88 90 L95 90 L95 10 Z" />
         <path d="M5 10 L95 10" />
