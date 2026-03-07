@@ -609,7 +609,7 @@ const RoseWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <circle cx="50" cy="50" r="35" strokeWidth={S.P.strokeWidthBold} />
 
         {/* BOLD Inner hub circles */}
-        <circle cx="50" cy="50" r="10" strokeWidth="2.8" />
+        <circle cx="50" cy="50" r="10" strokeWidth={S.P.strokeWidthHeavy} />
         <circle cx="50" cy="50" r="7" strokeWidth={S.P.strokeWidthBold} />
 
         {/* BOLD Radiating mullions - 12 divisions (Gothic tracery) */}
@@ -831,15 +831,15 @@ const TracerySVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="tracery-halo" intensity={1} />}
     <g filter={showHalo ? "url(#tracery-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
 
-      {/* CONTEXT: Cathedral nave wall with buttresses and light effects */}
-      <g strokeWidth="0.8" strokeDasharray="3 2" opacity="0.35">
+      {/* CONTEXT (near): Cathedral nave walls */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Thick nave walls extending off-page */}
-        <path d="M-5 -5 L-5 105" strokeWidth="0.6" />
-        <path d="M0 -5 L0 105" strokeWidth="0.7" />
+        <path d="M-5 -5 L-5 105" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M0 -5 L0 105" />
         <path d="M5 20 L5 95 L10 95 L10 35" />
         <path d="M90 35 L90 95 L95 95 L95 20" />
-        <path d="M100 -5 L100 105" strokeWidth="0.7" />
-        <path d="M105 -5 L105 105" strokeWidth="0.6" />
+        <path d="M100 -5 L100 105" />
+        <path d="M105 -5 L105 105" strokeWidth={S.CN.strokeWidthFine} />
 
         {/* Stone coursing on wall */}
         <path d="M-5 25 L5 25" strokeWidth="0.4" opacity="0.5" />
