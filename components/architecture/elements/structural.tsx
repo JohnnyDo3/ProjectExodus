@@ -1453,75 +1453,107 @@ export const VierendeelTrussSVG: React.FC<SVGProps> = ({ showHalo }) => (
 )
 
 /**
- * LATTICE TRUSS (Town 1820) - Dense diagonal mesh pattern
- * Invented by Ithiel Town, originally timber with wooden pegs
- * Shows: Multiple overlapping diagonals forming lattice
- * Historical: Many 19th century covered bridges
+ * LATTICE TRUSS (Town 1820) - Dense criss-crossing diagonals like woven fabric
+ * 3/4 isometric view. Many thin overlapping members, no verticals.
+ * Originally timber with wooden pegs. Common in covered bridges.
  */
 export const LatticeTrussSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="lattice-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#lattice-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
-      {/* CONTEXT (near): Support points */}
+      {/* CONTEXT (near): Ground line */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        <path d="M5 72 L95 72" />
+        <path d="M1 78 L68 78" />
+        <path d="M68 78 L97 70" />
       </g>
 
-      {/* PRIMARY - Top and bottom chords */}
+      {/* FAR-SIDE TRUSS (back face) */}
+      <g opacity={0.15} strokeWidth={S.P.strokeWidthLight}>
+        <path d="M16 32 L92 32" />
+        <path d="M16 68 L92 68" />
+        {/* Back lattice pattern (dense X's) */}
+        <path d="M16 68 L26 32 M22 68 L32 32 M28 68 L38 32 M34 68 L44 32 M40 68 L50 32 M46 68 L56 32 M52 68 L62 32 M58 68 L68 32 M64 68 L74 32 M70 68 L80 32 M76 68 L86 32 M82 68 L92 32" />
+        <path d="M16 32 L26 68 M22 32 L32 68 M28 32 L38 68 M34 32 L44 68 M40 32 L50 68 M46 32 L56 68 M52 32 L62 68 M58 32 L68 68 M64 32 L74 68 M70 32 L80 68 M76 32 L86 68 M82 32 L92 68" />
+      </g>
+
+      {/* Shadow fill */}
+      <rect x="16" y="32" width="76" height="36" fill="currentColor" opacity={S.E.fillOpacity} />
+
+      {/* CROSS MEMBERS (depth connectors at intervals) */}
+      <g strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle}>
+        <path d="M3 36 L16 32" />
+        <path d="M79 36 L92 32" />
+        <path d="M3 72 L16 68" />
+        <path d="M79 72 L92 68" />
+        <path d="M22 36 L34 32" />
+        <path d="M41 36 L53 32" />
+        <path d="M60 36 L72 32" />
+        <path d="M22 72 L34 68" />
+        <path d="M41 72 L53 68" />
+        <path d="M60 72 L72 68" />
+      </g>
+
+      {/* NEAR-SIDE: Top and bottom chords */}
       <g strokeWidth={S.P.strokeWidthBold}>
-        {/* Top chord */}
-        <path d="M8 30 L92 30" />
-        {/* Bottom chord */}
-        <path d="M8 65 L92 65" />
-      </g>
-
-      {/* LATTICE PATTERN - Key feature: dense overlapping diagonals */}
-      <g strokeWidth={S.P.strokeWidth}>
-        {/* Diagonals going one direction (/) */}
-        <path d="M8 65 L22 30" />
-        <path d="M18 65 L32 30" />
-        <path d="M28 65 L42 30" />
-        <path d="M38 65 L52 30" />
-        <path d="M48 65 L62 30" />
-        <path d="M58 65 L72 30" />
-        <path d="M68 65 L82 30" />
-        <path d="M78 65 L92 30" />
-
-        {/* Diagonals going other direction (\) */}
-        <path d="M8 30 L22 65" />
-        <path d="M18 30 L32 65" />
-        <path d="M28 30 L42 65" />
-        <path d="M38 30 L52 65" />
-        <path d="M48 30 L62 65" />
-        <path d="M58 30 L72 65" />
-        <path d="M68 30 L82 65" />
-        <path d="M78 30 L92 65" />
+        <path d="M3 36 L79 36" />
+        <path d="M3 72 L79 72" />
       </g>
 
       {/* End verticals */}
       <g strokeWidth={S.P.strokeWidth}>
-        <path d="M8 30 L8 65" />
-        <path d="M92 30 L92 65" />
+        <path d="M3 36 L3 72" />
+        <path d="M79 36 L79 72" />
       </g>
 
-      {/* Wooden peg connections (characteristic of Town lattice) */}
-      <g strokeWidth={S.D.strokeWidth} opacity={S.D.opacity}>
-        {/* Intersection points */}
-        <circle cx="15" cy="47.5" r="1.5" />
-        <circle cx="25" cy="47.5" r="1.5" />
-        <circle cx="35" cy="47.5" r="1.5" />
-        <circle cx="45" cy="47.5" r="1.5" />
-        <circle cx="55" cy="47.5" r="1.5" />
-        <circle cx="65" cy="47.5" r="1.5" />
-        <circle cx="75" cy="47.5" r="1.5" />
-        <circle cx="85" cy="47.5" r="1.5" />
+      {/* DENSE LATTICE PATTERN - Key feature: many thin overlapping diagonals */}
+      <g strokeWidth={S.P.strokeWidthLight}>
+        {/* Forward-leaning diagonals (/) */}
+        <path d="M3 72 L13 36" />
+        <path d="M9.5 72 L19.5 36" />
+        <path d="M16 72 L26 36" />
+        <path d="M22.5 72 L32.5 36" />
+        <path d="M29 72 L39 36" />
+        <path d="M35.5 72 L45.5 36" />
+        <path d="M42 72 L52 36" />
+        <path d="M48.5 72 L58.5 36" />
+        <path d="M55 72 L65 36" />
+        <path d="M61.5 72 L71.5 36" />
+        <path d="M68 72 L79 36" />
+
+        {/* Back-leaning diagonals (\) */}
+        <path d="M3 36 L13 72" />
+        <path d="M9.5 36 L19.5 72" />
+        <path d="M16 36 L26 72" />
+        <path d="M22.5 36 L32.5 72" />
+        <path d="M29 36 L39 72" />
+        <path d="M35.5 36 L45.5 72" />
+        <path d="M42 36 L52 72" />
+        <path d="M48.5 36 L58.5 72" />
+        <path d="M55 36 L65 72" />
+        <path d="M61.5 36 L71.5 72" />
+        <path d="M68 36 L79 72" />
+      </g>
+
+      {/* Wooden peg connection dots at intersections (Town lattice characteristic) */}
+      <g fill="currentColor" opacity={S.D.opacitySubtle}>
+        <circle cx="8" cy="54" r="1" />
+        <circle cx="14.5" cy="54" r="1" />
+        <circle cx="21" cy="54" r="1" />
+        <circle cx="27.5" cy="54" r="1" />
+        <circle cx="34" cy="54" r="1" />
+        <circle cx="40.5" cy="54" r="1" />
+        <circle cx="47" cy="54" r="1" />
+        <circle cx="53.5" cy="54" r="1" />
+        <circle cx="60" cy="54" r="1" />
+        <circle cx="66.5" cy="54" r="1" />
+        <circle cx="73" cy="54" r="1" />
       </g>
 
       {/* Support symbols */}
       <g strokeWidth={S.P.strokeWidth}>
-        <path d="M3 68 L13 68 L8 65 Z" />
-        <circle cx="92" cy="68" r="2" />
-        <path d="M87 70 L97 70" />
+        <path d="M-2 75 L8 75 L3 72 Z" />
+        <circle cx="79" cy="75" r="2" />
+        <path d="M74 77 L84 77" />
       </g>
     </g>
   </svg>
