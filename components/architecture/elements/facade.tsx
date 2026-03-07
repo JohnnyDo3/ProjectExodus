@@ -350,34 +350,34 @@ const CorniceSVG: React.FC<SVGProps> = ({ showHalo }) => (
         {/* Modillions — ornate scroll brackets supporting corona */}
         {[14, 26, 38, 50, 62, 74, 86].map((x, i) => (
           <g key={i}>
-            <path d={`M${x-3} 48 L${x-3} 52 Q${x-5} 55, ${x-3} 58 L${x+3} 58 Q${x+5} 55, ${x+3} 52 L${x+3} 48`} strokeWidth="0.8" />
+            <path d={`M${x-3} 48 L${x-3} 52 Q${x-5} 55, ${x-3} 58 L${x+3} 58 Q${x+5} 55, ${x+3} 52 L${x+3} 48`} strokeWidth={S.P.strokeWidth} />
             {/* Scroll volute on modillion face */}
-            <path d={`M${x-2} 52 Q${x} 54, ${x+2} 52`} strokeWidth="0.4" opacity="0.5" />
+            <path d={`M${x-2} 52 Q${x} 54, ${x+2} 52`} strokeWidth={S.D.strokeWidthFine} opacity="0.5" />
           </g>
         ))}
 
         {/* Dentil course — tightly spaced rectangular blocks */}
         {[10, 14, 18, 22, 26, 30, 34, 38, 42, 46, 50, 54, 58, 62, 66, 70, 74, 78, 82, 86, 90].map((x, i) => (
-          <path key={`d${i}`} d={`M${x-1} 58 L${x-1} 62 L${x+1} 62 L${x+1} 58 Z`} strokeWidth="0.5" />
+          <path key={`d${i}`} d={`M${x-1} 58 L${x-1} 62 L${x+1} 62 L${x+1} 58 Z`} strokeWidth={S.P.strokeWidthLight} />
         ))}
         {/* Dentil band backing */}
-        <path d="M8 58 L92 58" strokeWidth="0.6" />
-        <path d="M8 62 L92 62" strokeWidth="0.6" />
+        <path d="M8 58 L92 58" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M8 62 L92 62" strokeWidth={S.P.strokeWidthLight} />
 
         {/* Egg-and-dart molding beneath dentils */}
         {[15, 25, 35, 45, 55, 65, 75, 85].map((x, i) => (
           <g key={`e${i}`}>
-            <ellipse cx={x} cy={64} rx={2.5} ry={1.5} strokeWidth="0.5" />
-            <path d={`M${x+4} 63 L${x+5} 65 L${x+4} 65 Z`} strokeWidth="0.4" opacity="0.6" />
+            <ellipse cx={x} cy={64} rx={2.5} ry={1.5} strokeWidth={S.P.strokeWidthLight} />
+            <path d={`M${x+4} 63 L${x+5} 65 L${x+4} 65 Z`} strokeWidth={S.D.strokeWidthFine} opacity="0.6" />
           </g>
         ))}
 
         {/* Frieze band — smooth or with garland swag relief */}
-        <path d="M10 66 L90 66 L90 76 L10 76 Z" strokeWidth="1" />
+        <path d="M10 66 L90 66 L90 76 L10 76 Z" strokeWidth={S.P.strokeWidth} />
         {/* Carved garland swags */}
-        <path d="M15 69 Q28 74, 40 69 Q52 74, 65 69 Q78 74, 85 69" strokeWidth="0.6" opacity="0.5" />
+        <path d="M15 69 Q28 74, 40 69 Q52 74, 65 69 Q78 74, 85 69" strokeWidth={S.P.strokeWidthLight} opacity="0.5" />
         {/* Ribbon ties at swag peaks */}
-        <path d="M15 69 L15 67 M40 69 L40 67 M65 69 L65 67 M85 69 L85 67" strokeWidth="0.4" opacity="0.4" />
+        <path d="M15 69 L15 67 M40 69 L40 67 M65 69 L65 67 M85 69 L85 67" strokeWidth={S.D.strokeWidthFine} opacity="0.4" />
 
         {/* Architrave — three-fasciae classical subdivision */}
         <path d="M12 76 L88 76 L88 80 L12 80 Z" strokeWidth="0.9" />
