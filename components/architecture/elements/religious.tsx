@@ -666,7 +666,15 @@ const CrossingSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="crossing-halo" intensity={0.95} />}
     <g filter={showHalo ? "url(#crossing-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT (near): Extended nave and transept */}
+      {/* CONTEXT FAR: Church exterior outline */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Outer church walls */}
+        <path d="M35 0 L35 35 L0 35 L0 65 L35 65 L35 100 L65 100 L65 65 L100 65 L100 35 L65 35 L65 0 Z" />
+        {/* Tower above crossing */}
+        <path d="M42 42 Q50 35, 58 42" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Extended nave and transept */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M40 0 L40 5" />
         <path d="M60 0 L60 5" />
@@ -676,6 +684,16 @@ const CrossingSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M0 60 L5 60" />
         <path d="M95 40 L100 40" />
         <path d="M95 60 L100 60" />
+        {/* Aisle walls parallel to nave */}
+        <path d="M35 5 L35 35" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M65 5 L65 35" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M35 65 L35 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M65 65 L65 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Transept aisle walls */}
+        <path d="M5 35 L35 35" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M5 65 L35 65" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M65 35 L95 35" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M65 65 L95 65" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY: Crossing structure */}
@@ -1223,12 +1241,30 @@ const TranseptSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="transept-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#transept-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT (near): Nave extension */}
+      {/* CONTEXT FAR: Church exterior outline */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Church cruciform outline */}
+        <path d="M35 0 L35 30 L0 30 L0 60 L35 60 L35 100 L65 100 L65 60 L100 60 L100 30 L65 30 L65 0 Z" />
+        {/* Ground */}
+        <path d="M0 98 L100 98" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Nave extension */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M40 0 L40 5" />
         <path d="M60 0 L60 5" />
         <path d="M40 95 L40 100" />
         <path d="M60 95 L60 100" />
+        {/* Nave columns beyond transept */}
+        <path d="M42 8 L42 30" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M58 8 L58 30" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M42 60 L42 92" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M58 60 L58 92" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Vault ribs in transept arms */}
+        <path d="M5 38 Q25 33, 40 38" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M60 38 Q75 33, 95 38" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Crossing tower suggestion */}
+        <path d="M42 37 Q50 32, 58 37" strokeWidth={S.CN.strokeWidthFine} />
       </g>
 
       {/* PRIMARY: Transept arms */}

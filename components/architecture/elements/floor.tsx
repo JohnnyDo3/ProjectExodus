@@ -841,10 +841,37 @@ const ParquetSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="parquet-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#parquet-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT (near): Room corner */}
+      {/* CONTEXT FAR: Adjacent rooms beyond walls */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Room beyond top wall */}
+        <path d="M10 0 L90 0" />
+        {/* Room beyond left wall */}
+        <path d="M0 10 L0 90" />
+        {/* Hallway beyond right side */}
+        <path d="M98 20 L98 80" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Garden/exterior below */}
+        <path d="M15 100 L85 100" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Room corner walls, door, baseboard, fireplace */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Room walls */}
         <path d="M5 5 L5 95" />
         <path d="M5 5 L95 5" />
+        {/* Wall thickness */}
+        <path d="M3 3 L3 97" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M3 3 L97 3" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Right wall */}
+        <path d="M95 5 L95 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Bottom wall */}
+        <path d="M5 95 L95 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Door opening in right wall */}
+        <path d="M95 35 L97 35" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M95 55 L97 55" strokeWidth={S.CN.strokeWidthFine} />
+        {/* Door swing */}
+        <path d="M95 35 Q88 42, 95 55" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Fireplace recess in top wall */}
+        <path d="M40 5 L40 2 L60 2 L60 5" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY - Parquet de Versailles pattern */}
@@ -1138,10 +1165,31 @@ const StringerSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="stringer-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#stringer-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT (near): Wall and floor */}
+      {/* CONTEXT FAR: Adjacent rooms and ceiling */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Ceiling/upper floor */}
+        <path d="M5 2 L95 2" />
+        {/* Room to the right */}
+        <path d="M98 50 L98 95 L95 95" />
+        {/* Furniture outline in upper room */}
+        <path d="M10 2 L25 2 L25 5" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Wall, floor, parallel stringer, joist pockets */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Supporting wall */}
         <path d="M5 5 L5 95" />
+        {/* Wall thickness */}
+        <path d="M3 5 L3 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Floor level */}
         <path d="M5 95 L95 95" />
+        {/* Floor thickness */}
+        <path d="M5 97 L95 97" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Joist pockets in wall */}
+        <path d="M3 28 L5 28 L5 32 L3 32" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M3 56 L5 56 L5 60 L3 60" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Parallel stringer ghost (the other side of the stair) */}
+        <path d="M15 20 L90 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY - Stringer beam with notches */}

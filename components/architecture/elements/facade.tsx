@@ -209,8 +209,8 @@ const BayWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M50 11 L48 15 M50 11 L52 15 M50 11 L46 14 M50 11 L54 14" strokeWidth={S.D.strokeWidthFine} opacity="0.5" />
 
         {/* Decorative turned newel post finials at bay corners */}
-        <circle cx="30" cy="15" r="1.5" strokeWidth="0.6" />
-        <circle cx="70" cy="15" r="1.5" strokeWidth="0.6" />
+        <circle cx="30" cy="15" r="1.5" strokeWidth={S.P.strokeWidthLight} />
+        <circle cx="70" cy="15" r="1.5" strokeWidth={S.P.strokeWidthLight} />
       </g>
     </g>
   </svg>
@@ -229,10 +229,10 @@ const CanopySVG: React.FC<SVGProps> = ({ showHalo }) => (
         {/* Glass curtain wall grid — horizontal spandrel bands and vertical mullions */}
         <path d="M10 20 L10 90 L90 90 L90 20" />
         {[28, 36, 44, 52, 60, 68, 76, 84].map((y, i) => (
-          <path key={`h${i}`} d={`M10 ${y} L90 ${y}`} strokeWidth="0.3" />
+          <path key={`h${i}`} d={`M10 ${y} L90 ${y}`} strokeWidth={S.CN.strokeWidthFine} />
         ))}
         {[22, 34, 46, 58, 70, 82].map((x, i) => (
-          <path key={`v${i}`} d={`M${x} 20 L${x} 90`} strokeWidth="0.3" />
+          <path key={`v${i}`} d={`M${x} 20 L${x} 90`} strokeWidth={S.CN.strokeWidthFine} />
         ))}
         {/* Flagpoles flanking entrance */}
         <path d="M5 10 L5 90" strokeWidth="0.5" />
