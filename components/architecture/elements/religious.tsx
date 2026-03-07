@@ -350,13 +350,38 @@ const ChancelSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="chancel-halo" intensity={0.95} />}
     <g filter={showHalo ? "url(#chancel-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT (near): Nave beyond chancel arch */}
+      {/* CONTEXT FAR: Church exterior silhouette */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Exterior roof line */}
+        <path d="M5 35 L15 25 L50 15 L85 25 L95 35" />
+        {/* Outer walls */}
+        <path d="M5 35 L5 95" />
+        <path d="M95 35 L95 95" />
+        {/* Ground */}
+        <path d="M0 95 L100 95" />
+        {/* Distant buttress */}
+        <path d="M3 50 L8 40" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M97 50 L92 40" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Nave beyond chancel arch */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M35 90 L35 95" />
         <path d="M65 90 L65 95" />
         <path d="M25 90 L25 95" />
         <path d="M75 90 L75 95" />
         <path d="M10 92 L90 92" />
+        {/* Ribbed vault above */}
+        <path d="M25 35 Q50 22, 75 35" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M30 38 Q50 28, 70 38" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Clerestory windows */}
+        <path d="M10 45 L10 60" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M10 45 Q12 42, 14 45" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M90 45 L90 60" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M86 45 Q88 42, 90 45" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Floor tiles in nave */}
+        <path d="M45 92 L45 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M55 92 L55 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY: Chancel area */}
@@ -407,12 +432,37 @@ const ChapelSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="chapel-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#chapel-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT (near): Courtyard or church grounds */}
+      {/* CONTEXT FAR: Churchyard and distant landscape */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Ground plane */}
+        <path d="M0 95 L100 95" />
+        {/* Distant church or abbey */}
+        <path d="M0 70 L0 95" />
+        <path d="M100 70 L100 95" />
+        <path d="M0 70 L5 60 L10 70" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Churchyard trees */}
+        <path d="M2 78 Q5 70, 8 78" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M92 75 Q95 68, 98 75" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Path approaching chapel */}
+        <path d="M45 95 L40 100" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M55 95 L60 100" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Courtyard or church grounds */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 90 L15 90 L15 95" />
         <path d="M85 90 L95 90 L95 95" />
         <path d="M5 50 L15 50 L15 60" />
         <path d="M85 50 L95 50 L95 60" />
+        {/* Adjacent cloister wall */}
+        <path d="M5 50 L5 90" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M95 50 L95 90" strokeWidth={S.CN.strokeWidthFine} />
+        {/* Buttresses */}
+        <path d="M15 40 L12 35" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M85 40 L88 35" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Graveyard cross nearby */}
+        <path d="M8 75 L8 82" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M6 77 L10 77" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY: Chapel structure */}
@@ -463,10 +513,34 @@ const ChoirSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="choir-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#choir-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT (near): Church interior walls */}
+      {/* CONTEXT FAR: Church exterior around choir area */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Exterior walls */}
+        <path d="M5 10 L5 95 L95 95 L95 10" />
+        {/* Roof ridge */}
+        <path d="M5 10 L50 2 L95 10" />
+        {/* Ground */}
+        <path d="M0 95 L100 95" />
+        {/* Flying buttresses */}
+        <path d="M5 30 L10 20" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M95 30 L90 20" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Church interior walls */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M15 15 L15 85 L85 85 L85 15 L15 15" />
         <path d="M15 30 L85 30" />
+        {/* Vault ribs above */}
+        <path d="M15 18 Q50 8, 85 18" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M20 22 Q50 14, 80 22" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Column arcades along walls */}
+        <path d="M18 35 L18 85" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M82 35 L82 85" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Floor tiles */}
+        <path d="M15 50 L85 50" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M15 65 L85 65" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Altar beyond choir screen */}
+        <path d="M40 18 L60 18 L60 22 L40 22" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY: Choir stalls and area */}

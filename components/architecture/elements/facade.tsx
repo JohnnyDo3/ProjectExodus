@@ -102,14 +102,14 @@ const AwningSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M74 50 L74 53 M78 52 L78 55 M82 50 L82 53 M86 52 L86 55" strokeWidth={S.D.strokeWidthFine} opacity="0.5" />
 
         {/* Iron scroll bracket supports at wall — ornate Parisian wrought-iron */}
-        <path d="M15 25 Q12 28, 10 35 Q8 30, 10 25" strokeWidth="0.7" />
-        <path d="M85 25 Q88 28, 90 35 Q92 30, 90 25" strokeWidth="0.7" />
+        <path d="M15 25 Q12 28, 10 35 Q8 30, 10 25" strokeWidth={S.P.strokeWidth} />
+        <path d="M85 25 Q88 28, 90 35 Q92 30, 90 25" strokeWidth={S.P.strokeWidth} />
 
         {/* Cord and pulley retraction mechanism visible at wall */}
-        <path d="M17 26 L17 22" strokeWidth="0.5" opacity="0.6" />
-        <circle cx="17" cy="22" r="1" strokeWidth="0.5" opacity="0.6" />
-        <path d="M83 26 L83 22" strokeWidth="0.5" opacity="0.6" />
-        <circle cx="83" cy="22" r="1" strokeWidth="0.5" opacity="0.6" />
+        <path d="M17 26 L17 22" strokeWidth={S.P.strokeWidthLight} opacity="0.6" />
+        <circle cx="17" cy="22" r="1" strokeWidth={S.P.strokeWidthLight} opacity="0.6" />
+        <path d="M83 26 L83 22" strokeWidth={S.P.strokeWidthLight} opacity="0.6" />
+        <circle cx="83" cy="22" r="1" strokeWidth={S.P.strokeWidthLight} opacity="0.6" />
       </g>
     </g>
   </svg>
@@ -138,8 +138,8 @@ const BayWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M72 15 L72 90 L95 90 L95 15" />
         {[25, 35, 45, 55, 65, 75].map((y, i) => (
           <g key={i}>
-            <path d={`M5 ${y} L28 ${y}`} strokeWidth="0.3" />
-            <path d={`M72 ${y} L95 ${y}`} strokeWidth="0.3" />
+            <path d={`M5 ${y} L28 ${y}`} strokeWidth={S.CN.strokeWidthFine} />
+            <path d={`M72 ${y} L95 ${y}`} strokeWidth={S.CN.strokeWidthFine} />
           </g>
         ))}
         {/* Decorative window with hood mold — left */}
@@ -149,15 +149,15 @@ const BayWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M77 25 L77 40 L90 40 L90 25 Z" />
         <path d="M75 25 L92 25" />
         {/* Neighboring house silhouette hint */}
-        <path d="M-2 20 L-2 92" strokeWidth="0.4" opacity="0.2" />
-        <path d="M98 18 L98 92" strokeWidth="0.4" opacity="0.2" />
+        <path d="M-2 20 L-2 92" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M98 18 L98 92" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
         {/* Foundation and sidewalk */}
         <path d="M3 90 L97 90" />
         <path d="M0 94 L100 94" />
       </g>
 
       {/* PRIMARY: Victorian Painted Lady angled bay window with ornamental woodwork */}
-      <g strokeWidth="0.8">
+      <g strokeWidth={S.P.strokeWidth}>
         {/* Bay roof — steep mini hip with fish-scale shingle texture */}
         <path d="M25 15 L30 8 L50 3 L70 8 L75 15 Z" strokeWidth="1.2" />
         {/* Fish-scale shingle pattern on bay roof */}

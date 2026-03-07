@@ -598,45 +598,95 @@ export const TrefoilArchSVG = ({ showHalo = false }: SVGProps) => (
       <path d="M 105 -5 L 105 100" fill="none" />
       <path d="M 110 -5 L 110 100" fill="none" />
 
-      {/* Stone coursing on walls */}
+      {/* Wall mass between arches - left side masonry coursing */}
       <path d="M -10 20 L 8 20" strokeWidth="0.4" fill="none" opacity="0.5" />
-      <path d="M 92 20 L 110 20" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M -10 30 L 8 30" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+      <path d="M -10 40 L 8 40" strokeWidth="0.4" fill="none" opacity="0.5" />
       <path d="M -10 50 L 8 50" strokeWidth="0.4" fill="none" opacity="0.5" />
-      <path d="M 92 50 L 110 50" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M -10 60 L 14 60" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+      <path d="M -10 70 L 14 70" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
       <path d="M -10 75 L 8 75" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M -10 85 L 14 85" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+      {/* Right side masonry coursing */}
+      <path d="M 92 20 L 110 20" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 92 30 L 110 30" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+      <path d="M 92 40 L 110 40" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 92 50 L 110 50" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 86 60 L 110 60" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+      <path d="M 86 70 L 110 70" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
       <path d="M 92 75 L 110 75" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 86 85 L 110 85" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
 
-      {/* Ceiling/vault above */}
+      {/* Ceiling/vault above - ribbed vault ribs converging */}
       <path d="M -10 -2 L 110 -2" strokeWidth="0.6" fill="none" />
+      <path d="M -10 -5 L 110 -5" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+      {/* Vault ribs radiating from pier capitals upward */}
+      <path d="M 14 -5 Q 30 -12, 50 -15" fill="none" opacity={S.CN.opacitySubtle} />
+      <path d="M 86 -5 Q 70 -12, 50 -15" fill="none" opacity={S.CN.opacitySubtle} />
+      {/* Transverse rib across vault */}
+      <path d="M 10 -3 Q 50 -10, 90 -3" fill="none" opacity="0.5" />
 
       {/* Outer containing arch with voussoir lines */}
       <path d="M 18 58 Q 8 32, 24 14 Q 38 2, 50 2 Q 62 2, 76 14 Q 92 32, 82 58"
             strokeWidth="1" fill="none" opacity="0.8" />
       {/* Voussoir lines on outer arch */}
       <path d="M 22 42 L 28 32" strokeWidth="0.4" fill="none" opacity="0.5" />
-      <path d="M 72 32 L 78 42" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 32 26 L 38 18" strokeWidth="0.4" fill="none" opacity="0.5" />
       <path d="M 48 4 L 52 4" strokeWidth="0.5" fill="none" opacity="0.5" />
+      <path d="M 62 18 L 68 26" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 72 32 L 78 42" strokeWidth="0.4" fill="none" opacity="0.5" />
+      {/* Spandrel masonry between outer arch and wall head */}
+      <path d="M 10 10 L 20 10" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+      <path d="M 80 10 L 90 10" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+      <path d="M 5 18 L 15 18" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+      <path d="M 85 18 L 95 18" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
 
-      {/* Piers with depth */}
-      <path d="M 14 94 L 14 58" strokeWidth="1" fill="none" />
-      <path d="M 18 94 L 18 58" strokeWidth="1.2" fill="none" opacity="0.8" />
-      <path d="M 82 94 L 82 58" strokeWidth="1.2" fill="none" opacity="0.8" />
-      <path d="M 86 94 L 86 58" strokeWidth="1" fill="none" />
+      {/* Piers with depth - full height extending off-page */}
+      <path d="M 14 -5 L 14 100" strokeWidth="1" fill="none" />
+      <path d="M 18 -5 L 18 100" strokeWidth="1.2" fill="none" opacity="0.8" />
+      <path d="M 11 -5 L 11 100" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+      <path d="M 82 -5 L 82 100" strokeWidth="1.2" fill="none" opacity="0.8" />
+      <path d="M 86 -5 L 86 100" strokeWidth="1" fill="none" />
+      <path d="M 89 -5 L 89 100" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+
+      {/* Impost/capital moldings at spring line */}
+      <path d="M 10 58 L 22 58" strokeWidth="0.8" fill="none" opacity="0.6" />
+      <path d="M 78 58 L 90 58" strokeWidth="0.8" fill="none" opacity="0.6" />
+      <path d="M 11 56 L 21 56" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+      <path d="M 79 56 L 89 56" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
     </g>
 
-    {/* CONTEXT (far): Floor paving and adjacent arch hints */}
+    {/* CONTEXT (far): Distant cloister garden, adjacent arches, floor paving */}
     <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
-      {/* Floor paving */}
+      {/* Floor paving - flagstones extending far off-page */}
       <path d="M -10 94 L 110 94" strokeWidth="0.8" fill="none" />
       <path d="M -10 97 L 110 97" strokeWidth="0.5" fill="none" opacity="0.5" />
+      <path d="M -10 100 L 110 100" strokeWidth="0.4" fill="none" opacity="0.3" />
+      {/* Paving stone joints */}
+      <path d="M 0 94 L 0 100" strokeWidth="0.3" fill="none" opacity="0.4" />
       <path d="M 20 94 L 20 100" strokeWidth="0.3" fill="none" opacity="0.4" />
+      <path d="M 35 94 L 35 100" strokeWidth="0.3" fill="none" opacity="0.4" />
       <path d="M 50 94 L 50 100" strokeWidth="0.3" fill="none" opacity="0.4" />
+      <path d="M 65 94 L 65 100" strokeWidth="0.3" fill="none" opacity="0.4" />
       <path d="M 80 94 L 80 100" strokeWidth="0.3" fill="none" opacity="0.4" />
+      <path d="M 100 94 L 100 100" strokeWidth="0.3" fill="none" opacity="0.4" />
 
-      {/* Adjacent arch hint on left */}
+      {/* Adjacent arch on left - next bay in cloister arcade */}
       <path d="M -20 58 Q -28 32, -12 14 Q -2 2, 5 2" strokeWidth="0.6" fill="none" opacity="0.4" />
-      {/* Adjacent arch hint on right */}
+      {/* Trefoil lobes visible in adjacent left arch */}
+      <path d="M -18 58 Q -24 48, -16 40 Q -10 36, -6 40" strokeWidth={S.CF.strokeWidthFine} fill="none" opacity={S.CF.opacitySubtle} />
+      {/* Adjacent arch on right */}
       <path d="M 120 58 Q 128 32, 112 14 Q 102 2, 95 2" strokeWidth="0.6" fill="none" opacity="0.4" />
+      {/* Trefoil lobes visible in adjacent right arch */}
+      <path d="M 118 58 Q 124 48, 116 40 Q 110 36, 106 40" strokeWidth={S.CF.strokeWidthFine} fill="none" opacity={S.CF.opacitySubtle} />
+
+      {/* Distant cloister garden wall beyond the arcade opening */}
+      <path d="M 24 70 L 76 70" strokeWidth={S.CF.strokeWidthFine} fill="none" opacity={S.CF.opacitySubtle} />
+      <path d="M 28 74 L 72 74" strokeWidth={S.CF.strokeWidthFine} fill="none" opacity={S.CF.opacitySubtle} />
+      {/* Garden hedge/plantings beyond */}
+      <path d="M 30 68 Q 35 65, 40 68 Q 45 65, 50 68 Q 55 65, 60 68 Q 65 65, 70 68" strokeWidth={S.CF.strokeWidthFine} fill="none" opacity={S.CF.opacitySubtle} />
+      {/* Distant roofline/skyline above garden */}
+      <path d="M 26 62 L 40 62 L 42 58 L 58 58 L 60 62 L 74 62" strokeWidth={S.CF.strokeWidthFine} fill="none" opacity={S.CF.opacitySubtle} />
     </g>
 
     {/* PRIMARY: THE TREFOIL - Three lobes (left, right, crown) like a 3-leaf clover */}
@@ -777,6 +827,25 @@ export const KeystoneSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
+    {/* CONTEXT (far): Distant arcade, skyline, and floor paving beyond */}
+    <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth} fill="none">
+      {/* Adjacent arch to the left in distance */}
+      <path d="M -30 88 Q -30 52, -10 30 Q 0 18, 5 18" />
+      {/* Adjacent arch to the right in distance */}
+      <path d="M 130 88 Q 130 52, 110 30 Q 100 18, 95 18" />
+      {/* Distant nave wall / skyline above */}
+      <path d="M -10 2 L 110 2" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      <path d="M -10 -2 L 30 -2 L 32 -6 L 50 -6 L 50 -8 L 50 -6 L 68 -6 L 70 -2 L 110 -2" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      {/* Floor paving far below */}
+      <path d="M -10 98 L 110 98" strokeWidth="0.6" opacity="0.4" />
+      <path d="M -10 102 L 110 102" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      {/* Paving stone joints */}
+      <path d="M 20 98 L 20 105" strokeWidth="0.3" opacity="0.3" />
+      <path d="M 40 98 L 40 105" strokeWidth="0.3" opacity="0.3" />
+      <path d="M 60 98 L 60 105" strokeWidth="0.3" opacity="0.3" />
+      <path d="M 80 98 L 80 105" strokeWidth="0.3" opacity="0.3" />
+    </g>
+
     {/* CONTEXT (near): Complete arch structure — piers, wall, and adjacent masonry */}
     <g opacity={S.CN.opacity} strokeDasharray={S.CN.dash} strokeWidth={S.CN.strokeWidth} fill="none">
       {/* Full arch showing where keystone sits at crown */}
@@ -788,15 +857,25 @@ export const KeystoneSVG = ({ showHalo = false }: SVGProps) => (
       {/* Adjacent voussoirs flanking keystone */}
       <path d="M 30 30 L 36 36 L 40 26 L 34 22 Z" strokeWidth="0.8" />
       <path d="M 70 30 L 64 36 L 60 26 L 66 22 Z" strokeWidth="0.8" />
+      {/* Additional voussoirs further along arch ring */}
+      <path d="M 20 44 L 28 38 L 32 32 L 24 38 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 76 38 L 68 32 L 72 38 L 80 44 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
 
-      {/* Full piers/columns supporting the arch */}
-      <path d="M 8 88 L 8 98" strokeWidth="1.2" />
-      <path d="M 16 88 L 16 98" strokeWidth="0.8" />
-      <path d="M 92 88 L 92 98" strokeWidth="1.2" />
-      <path d="M 84 88 L 84 98" strokeWidth="0.8" />
+      {/* Full piers/columns supporting the arch - extending off-page */}
+      <path d="M 8 -5 L 8 105" strokeWidth="1.2" />
+      <path d="M 16 -5 L 16 105" strokeWidth="0.8" />
+      <path d="M 12 -5 L 12 105" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 92 -5 L 92 105" strokeWidth="1.2" />
+      <path d="M 84 -5 L 84 105" strokeWidth="0.8" />
+      <path d="M 88 -5 L 88 105" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
 
       {/* Wall/spandrel above arch */}
       <path d="M 0 5 L 100 5" strokeWidth="0.8" />
+      {/* Masonry coursing on spandrel walls */}
+      <path d="M 0 10 L 28 10" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 72 10 L 100 10" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 0 16 L 22 16" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 78 16 L 100 16" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       <path d="M 0 5 L 0 98" strokeWidth="0.6" />
       <path d="M 100 5 L 100 98" strokeWidth="0.6" />
 

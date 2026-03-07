@@ -706,9 +706,40 @@ const OpusSectileSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="opus-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#opus-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT (near): Room border */}
+      {/* CONTEXT FAR: Adjacent rooms and garden court */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Adjacent room to the left */}
+        <path d="M0 10 L0 90" />
+        {/* Furniture outline in adjacent room - bench */}
+        <path d="M0 40 L3 40 L3 60 L0 60" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Adjacent room to the right */}
+        <path d="M100 10 L100 90" />
+        {/* Courtyard/garden beyond top wall */}
+        <path d="M20 0 L80 0" />
+        <path d="M35 0 L35 3" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M65 0 L65 3" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Room walls with thickness, columns, door openings */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Room walls - outer */}
         <path d="M5 5 L95 5 L95 95 L5 95 Z" />
+        {/* Wall thickness - inner */}
+        <path d="M3 3 L97 3 L97 97 L3 97 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Door opening in bottom wall */}
+        <path d="M40 95 L40 97" />
+        <path d="M60 95 L60 97" />
+        {/* Door swing */}
+        <path d="M40 97 Q50 88, 60 97" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Column bases at corners */}
+        <circle cx="8" cy="8" r="2" strokeWidth={S.CN.strokeWidthFine} />
+        <circle cx="92" cy="8" r="2" strokeWidth={S.CN.strokeWidthFine} />
+        <circle cx="8" cy="92" r="2" strokeWidth={S.CN.strokeWidthFine} />
+        <circle cx="92" cy="92" r="2" strokeWidth={S.CN.strokeWidthFine} />
+        {/* Window reveal in left wall */}
+        <path d="M5 30 L3 30 L3 45 L5 45" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Window reveal in right wall */}
+        <path d="M95 55 L97 55 L97 70 L95 70" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY - Opus sectile marble inlay */}
@@ -957,9 +988,35 @@ const SpiralStairSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="spiral-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#spiral-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT (near): Surrounding walls */}
+      {/* CONTEXT FAR: Adjacent rooms and corridor beyond */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Hallway corridor to the right */}
+        <path d="M98 30 L98 70" />
+        <path d="M100 30 L100 70" />
+        {/* Room outline upper-right */}
+        <path d="M98 5 L98 28 L100 28 L100 5 Z" />
+        {/* Room outline lower-right */}
+        <path d="M98 72 L98 98 L100 98 L100 72 Z" />
+        {/* Garden/exterior area to the left */}
+        <path d="M0 20 Q2 15, 0 10" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M0 80 Q2 75, 0 70" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Surrounding walls, door opening, threshold */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <circle cx="50" cy="50" r="47" />
+        {/* Wall thickness shown as double line */}
+        <circle cx="50" cy="50" r="49" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Door opening in surrounding wall - entry to stair */}
+        <path d="M50 97 L50 100" />
+        <path d="M42 97 L42 100" />
+        {/* Door swing arc */}
+        <path d="M42 97 Q46 93, 50 97" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Threshold at door */}
+        <path d="M42 97 L50 97" strokeWidth={S.CN.strokeWidthFine} />
+        {/* Adjacent wall segments meeting the circular stair enclosure */}
+        <path d="M3 50 L0 50" />
+        <path d="M3 48 L0 48" />
       </g>
 
       {/* PRIMARY - Spiral stair plan view - consistent pie-slice wedge treads */}
@@ -1156,9 +1213,38 @@ const TerrazzoSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="terrazzo-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#terrazzo-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT (near): Room edge */}
+      {/* CONTEXT FAR: Hallway and adjacent spaces */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Corridor beyond top wall */}
+        <path d="M10 0 L90 0" />
+        <path d="M10 2 L90 2" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Adjacent room lower-left */}
+        <path d="M0 60 L0 100 L4 100" />
+        {/* Adjacent room lower-right */}
+        <path d="M100 60 L100 100 L96 100" />
+        {/* Furniture in corridor - bench outline */}
+        <path d="M40 0 L60 0 L60 2 L40 2" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Room walls, door, threshold, column */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Room walls */}
         <path d="M5 5 L95 5 L95 95 L5 95 Z" />
+        {/* Wall thickness */}
+        <path d="M3 3 L97 3 L97 97 L3 97 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Door opening in top wall */}
+        <path d="M35 5 L35 3" />
+        <path d="M50 5 L50 3" />
+        {/* Door swing arc */}
+        <path d="M35 5 Q42 12, 50 5" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Threshold strip */}
+        <path d="M35 5 L50 5" strokeWidth={S.CN.strokeWidthFine} />
+        {/* Column base near entrance */}
+        <circle cx="50" cy="8" r="2" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Baseboard along left wall */}
+        <path d="M5 10 L7 10 L7 90 L5 90" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Baseboard along right wall */}
+        <path d="M95 10 L93 10 L93 90 L95 90" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY - Terrazzo floor with brass dividers */}

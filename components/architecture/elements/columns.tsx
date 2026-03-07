@@ -535,20 +535,82 @@ export const CompositeColumnSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT (near): Roman triumphal arch arcade */}
+    {/* CONTEXT FAR: Roman Forum cityscape beyond the arch */}
+    <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth} fill="none">
+      {/* Distant temple pediment through archway */}
+      <path d="M 30 35 L 50 25 L 70 35" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      <path d="M 32 35 L 68 35" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      {/* Distant columns through archway */}
+      <path d="M 38 35 L 38 50" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      <path d="M 50 35 L 50 50" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      <path d="M 62 35 L 62 50" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      {/* Distant horizon line */}
+      <path d="M 20 55 L 80 55" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      {/* Cypress trees in distance */}
+      <path d="M 75 40 Q 76 30, 77 40" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      <path d="M 25 42 Q 26 32, 27 42" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+    </g>
+
+    {/* CONTEXT FAR: Roman paving extending beyond frame */}
+    <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidthFine} fill="none">
+      <rect x="-10" y="94" width="120" height="16" fill="url(#stone-smooth)" opacity="0.08" stroke="none" />
+      <path d="M -10 101 L 110 101" opacity={S.CF.opacitySubtle} />
+      <path d="M -10 104 L 110 104" strokeDasharray="5 3" opacity={S.CF.opacitySubtle} />
+      {/* Paving stone joints */}
+      <path d="M 20 95 L 20 110" strokeDasharray="2 2" opacity={S.CF.opacitySubtle} />
+      <path d="M 50 95 L 50 110" strokeDasharray="2 2" opacity={S.CF.opacitySubtle} />
+      <path d="M 80 95 L 80 110" strokeDasharray="2 2" opacity={S.CF.opacitySubtle} />
+    </g>
+
+    {/* CONTEXT NEAR: Roman triumphal arch arcade */}
     <g opacity={S.CN.opacity} strokeDasharray={S.CN.dash} fill="none">
-      {/* Arch springing from capital */}
-      <path d="M 0 4 L 100 4" strokeWidth={S.CN.strokeWidth} />
-      <path d="M 5 8 Q 50 -5, 95 8" strokeWidth={S.CN.strokeWidthFine} />
+      {/* Attic storey / inscription panel above arch */}
+      <path d="M -5 -3 L 105 -3" strokeWidth={S.CN.strokeWidth} />
+      <path d="M -3 -1 L 103 -1" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      {/* Cornice with modillions */}
+      <path d="M -5 1 L 105 1" strokeWidth={S.CN.strokeWidth} />
+      {/* Entablature */}
+      <path d="M -5 4 L 105 4" strokeWidth={S.CN.strokeWidth} />
+      <path d="M -3 6 L 103 6" strokeWidth={S.CN.strokeWidthFine} />
+      {/* Arch springing from capital - semicircular archivolt */}
+      <path d="M 5 8 Q 50 -8, 95 8" strokeWidth={S.CN.strokeWidth} />
+      <path d="M 8 10 Q 50 -5, 92 10" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      {/* Keystone at arch crown */}
+      <path d="M 47 -4 L 47 -1" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 53 -4 L 53 -1" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       {/* Pier/wall behind column */}
       <path d="M 10 96 L 10 8" strokeWidth={S.CN.strokeWidthFine} />
       <path d="M 90 96 L 90 8" strokeWidth={S.CN.strokeWidthFine} />
-      {/* Pavement */}
-      <path d="M 0 96 L 100 96" strokeWidth={S.CN.strokeWidth} />
-      <path d="M 0 99 L 100 99" strokeWidth={S.CN.strokeWidthFine} />
-      {/* Adjacent column hint */}
-      <path d="M 2 92 Q 2 55, 5 20" strokeWidth={S.CN.strokeWidthFine} />
-      <path d="M 98 92 Q 98 55, 95 20" strokeWidth={S.CN.strokeWidthFine} />
+      {/* Pier returns (depth) */}
+      <path d="M 10 8 L 14 6" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 90 8 L 86 6" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      {/* Pavement extending off-page */}
+      <path d="M -10 96 L 110 96" strokeWidth={S.CN.strokeWidth} />
+      <path d="M -10 99 L 110 99" strokeWidth={S.CN.strokeWidthFine} />
+      {/* Stone joints in pavement */}
+      <path d="M 15 95 L 15 100" strokeDasharray="2 1" strokeWidth="0.4" opacity={S.CN.opacitySubtle} />
+      <path d="M 50 95 L 50 100" strokeDasharray="2 1" strokeWidth="0.4" opacity={S.CN.opacitySubtle} />
+      <path d="M 85 95 L 85 100" strokeDasharray="2 1" strokeWidth="0.4" opacity={S.CN.opacitySubtle} />
+    </g>
+
+    {/* CONTEXT NEAR: Adjacent columns flanking the arch */}
+    <g opacity={S.CN.opacitySubtle} strokeDasharray={S.CN.dash} strokeWidth={S.CN.strokeWidthFine} fill="none">
+      {/* Left column */}
+      <path d="M 2 92 Q 2 55, 5 20" />
+      <path d="M 8 92 Q 8 55, 6 20" opacity="0.6" />
+      {/* Left column capital hint */}
+      <path d="M 1 18 Q 3 14, 7 18" strokeWidth="0.4" opacity="0.5" />
+      {/* Right column */}
+      <path d="M 92 92 Q 92 55, 89 20" opacity="0.6" />
+      <path d="M 98 92 Q 98 55, 95 20" />
+      {/* Right column capital hint */}
+      <path d="M 93 18 Q 95 14, 99 18" strokeWidth="0.4" opacity="0.5" />
+    </g>
+
+    {/* EFFECTS: Column shadow on Roman pavement */}
+    <g opacity={S.E.opacity} strokeWidth={S.E.strokeWidth} strokeDasharray={S.E.dash} fill="none">
+      <path d="M 70 96 Q 74 98, 78 100" />
+      <path d="M 71 98 Q 75 100, 79 102" />
     </g>
 
     {/* PRIMARY: THE COMPOSITE COLUMN */}
