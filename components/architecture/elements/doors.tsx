@@ -261,39 +261,39 @@ const DutchDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
       {/* CONTEXT (near): Dutch Colonial farmhouse with gambrel roof and kitchen garden */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Distinctive GAMBREL ROOF — double slope on each side */}
-        <path d="M-5 8 L20 -5 L50 -12 L80 -5 L105 8" strokeWidth="0.8" opacity="0.5" />
-        <path d="M-5 8 L20 2 L50 -2 L80 2 L105 8" strokeWidth="0.5" opacity="0.35" />
+        <path d="M-5 8 L20 -5 L50 -12 L80 -5 L105 8" />
+        <path d="M-5 8 L20 2 L50 -2 L80 2 L105 8" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
         {/* Eave overhang with exposed rafter tails */}
-        <path d="M-8 10 L108 10" strokeWidth="0.6" opacity="0.4" />
-        <path d="M5 8 L5 10 M20 6 L20 10 M80 6 L80 10 M95 8 L95 10" strokeWidth="0.3" opacity="0.3" />
+        <path d="M-8 10 L108 10" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M5 8 L5 10 M20 6 L20 10 M80 6 L80 10 M95 8 L95 10" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
 
         {/* Clapboard siding — weathered horizontal boards */}
-        <path d="M-5 18 L12 18 M88 18 L105 18" strokeWidth="0.3" opacity="0.35" />
-        <path d="M-5 26 L12 26 M88 26 L105 26" strokeWidth="0.3" opacity="0.35" />
-        <path d="M-5 34 L12 34 M88 34 L105 34" strokeWidth="0.3" opacity="0.35" />
-        <path d="M-5 55 L12 55 M88 55 L105 55" strokeWidth="0.3" opacity="0.35" />
-        <path d="M-5 70 L12 70 M88 70 L105 70" strokeWidth="0.3" opacity="0.35" />
+        <path d="M-5 18 L12 18 M88 18 L105 18" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M-5 26 L12 26 M88 26 L105 26" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M-5 34 L12 34 M88 34 L105 34" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M-5 55 L12 55 M88 55 L105 55" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M-5 70 L12 70 M88 70 L105 70" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
 
         {/* Small 6-over-6 sash window on left */}
-        <path d="M-3 30 L7 30 L7 50 L-3 50 Z" strokeWidth="0.4" opacity="0.35" />
-        <path d="M2 30 L2 50 M-3 40 L7 40" strokeWidth="0.25" opacity="0.25" />
+        <path d="M-3 30 L7 30 L7 50 L-3 50 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M2 30 L2 50 M-3 40 L7 40" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
 
         {/* Brick chimney on right */}
-        <path d="M96 -8 L96 5 L102 5 L102 -8 Z" strokeWidth="0.5" opacity="0.3" />
+        <path d="M96 -8 L96 5 L102 5 L102 -8 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
 
         {/* Brick foundation visible at base */}
-        <path d="M-5 85 L12 85 M88 85 L105 85" strokeWidth="0.5" opacity="0.4" />
-        <path d="M-3 85 L-3 98 M1 85 L1 98 M5 85 L5 98 M9 85 L9 98" strokeWidth="0.25" opacity="0.2" />
-        <path d="M91 85 L91 98 M95 85 L95 98 M99 85 L99 98 M103 85 L103 98" strokeWidth="0.25" opacity="0.2" />
+        <path d="M-5 85 L12 85 M88 85 L105 85" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M-3 85 L-3 98 M1 85 L1 98 M5 85 L5 98 M9 85 L9 98" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M91 85 L91 98 M95 85 L95 98 M99 85 L99 98 M103 85 L103 98" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
 
         {/* Flagstone path to door */}
-        <path d="M35 95 Q40 93 45 95 Q50 97 55 95 Q60 93 65 95" strokeWidth="0.4" opacity="0.3" />
+        <path d="M35 95 Q40 93 45 95 Q50 97 55 95 Q60 93 65 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
         {/* Picket fence hint on right */}
-        <path d="M92 80 L92 90 M95 80 L95 90 M98 80 L98 90" strokeWidth="0.3" opacity="0.25" />
-        <path d="M90 83 L100 83" strokeWidth="0.3" opacity="0.2" />
+        <path d="M92 80 L92 90 M95 80 L95 90 M98 80 L98 90" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M90 83 L100 83" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
 
         {/* Cat sitting on step */}
-        <path d="M78 88 Q80 84 82 86 Q84 82 83 88" strokeWidth="0.3" opacity="0.2" />
+        <path d="M78 88 Q80 84 82 86 Q84 82 83 88" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY: Dutch door with top half swung open */}
@@ -373,33 +373,33 @@ const FrenchDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
       {/* CONTEXT (near): Haussmann-style Parisian interior — herringbone floor, ornate ceiling */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Ornate ceiling with cove molding and medallion */}
-        <path d="M-5 2 L105 2" strokeWidth="0.7" opacity="0.5" />
-        <path d="M-5 4 L105 4" strokeWidth="0.4" opacity="0.35" />
-        <path d="M-3 2 Q0 5 3 2" strokeWidth="0.3" opacity="0.3" />
-        <path d="M97 2 Q100 5 103 2" strokeWidth="0.3" opacity="0.3" />
+        <path d="M-5 2 L105 2" />
+        <path d="M-5 4 L105 4" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M-3 2 Q0 5 3 2" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M97 2 Q100 5 103 2" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
         {/* Ceiling rose hint above */}
-        <circle cx="50" cy="-5" r="6" strokeWidth="0.4" opacity="0.25" />
+        <circle cx="50" cy="-5" r="6" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
 
         {/* Tall flanking walls with chair rail and picture frame */}
-        <path d="M-5 2 L-5 98" strokeWidth="0.5" opacity="0.4" />
-        <path d="M105 2 L105 98" strokeWidth="0.5" opacity="0.4" />
+        <path d="M-5 2 L-5 98" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M105 2 L105 98" strokeWidth={S.CN.strokeWidthFine} />
         {/* Chair rail */}
-        <path d="M-5 55 L10 55" strokeWidth="0.4" opacity="0.3" />
-        <path d="M90 55 L105 55" strokeWidth="0.4" opacity="0.3" />
+        <path d="M-5 55 L10 55" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M90 55 L105 55" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
         {/* Picture frame on left wall */}
-        <path d="M-3 20 L7 20 L7 45 L-3 45 Z" strokeWidth="0.3" opacity="0.25" />
+        <path d="M-3 20 L7 20 L7 45 L-3 45 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
 
         {/* Herringbone parquet floor */}
-        <path d="M-5 92 L105 92" strokeWidth="0.5" opacity="0.4" />
-        <path d="M10 92 L14 95 L10 98 M18 92 L22 95 L18 98 M26 92 L30 95 L26 98" strokeWidth="0.25" opacity="0.2" />
-        <path d="M70 92 L74 95 L70 98 M78 92 L82 95 L78 98 M86 92 L90 95 L86 98" strokeWidth="0.25" opacity="0.2" />
+        <path d="M-5 92 L105 92" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M10 92 L14 95 L10 98 M18 92 L22 95 L18 98 M26 92 L30 95 L26 98" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M70 92 L74 95 L70 98 M78 92 L82 95 L78 98 M86 92 L90 95 L86 98" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
 
         {/* Iron Juliet balcony railing beyond doors */}
-        <path d="M15 90 L85 90 L85 95 L15 95" strokeWidth="0.4" opacity="0.35" />
+        <path d="M15 90 L85 90 L85 95 L15 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
         {/* Ornamental ironwork scrolls */}
-        <path d="M25 90 Q25 93 30 93 Q35 93 35 90" strokeWidth="0.3" opacity="0.25" />
-        <path d="M45 90 Q45 93 50 93 Q55 93 55 90" strokeWidth="0.3" opacity="0.25" />
-        <path d="M65 90 Q65 93 70 93 Q75 93 75 90" strokeWidth="0.3" opacity="0.25" />
+        <path d="M25 90 Q25 93 30 93 Q35 93 35 90" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M45 90 Q45 93 50 93 Q55 93 55 90" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M65 90 Q65 93 70 93 Q75 93 75 90" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* CONTEXT (far): Paris rooftop view beyond balcony */}

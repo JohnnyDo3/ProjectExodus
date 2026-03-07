@@ -35,7 +35,7 @@ interface SVGProps {
 const CasementSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="casement-halo" intensity={0.9} />}
-    <g filter={showHalo ? "url(#casement-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+    <g filter={showHalo ? "url(#casement-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
 
       {/* EFFECTS: Light streaming through - Morning sunlight pouring into room */}
       <g opacity={S.E.opacity} strokeWidth={S.E.strokeWidth} strokeDasharray={S.E.dash}>
