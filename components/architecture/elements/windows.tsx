@@ -304,10 +304,10 @@ const LunetteSVG: React.FC<SVGProps> = ({ showHalo }) => (
       </g>
 
       {/* PRIMARY: Lunette window */}
-      <g strokeWidth="0.8">
+      <g strokeWidth={S.D.strokeWidth}>
         {/* Semicircular frame */}
-        <path d="M15 65 Q15 25, 50 20 Q85 25, 85 65" strokeWidth="1.2" />
-        <path d="M15 65 L85 65" strokeWidth="1.2" />
+        <path d="M15 65 Q15 25, 50 20 Q85 25, 85 65" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M15 65 L85 65" strokeWidth={S.P.strokeWidthLight} />
         {/* Inner frame */}
         <path d="M20 63 Q20 32, 50 27 Q80 32, 80 63" />
         {/* Radiating mullions (fan pattern) */}
@@ -316,8 +316,8 @@ const LunetteSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M50 65 L72 35" />
         <path d="M50 65 L20 50" />
         <path d="M50 65 L80 50" />
-        {/* Decorative keystone */}
-        <path d="M45 25 L50 18 L55 25" strokeWidth="1" />
+        {/* DETAIL: Decorative keystone */}
+        <path d="M45 25 L50 18 L55 25" strokeWidth={S.P.strokeWidthLight} />
         <path d="M47 22 L50 19 L53 22" />
       </g>
     </g>
@@ -347,22 +347,22 @@ const MullionSVG: React.FC<SVGProps> = ({ showHalo }) => (
       </g>
 
       {/* PRIMARY: Mullions and window frame */}
-      <g strokeWidth="0.8">
+      <g strokeWidth={S.D.strokeWidth}>
         {/* Large window frame */}
-        <path d="M15 15 L15 85 L85 85 L85 15 Z" strokeWidth="1" />
+        <path d="M15 15 L15 85 L85 85 L85 15 Z" strokeWidth={S.P.strokeWidthLight} />
         {/* Vertical mullions (emphasized) */}
-        <path d="M38 15 L38 85" strokeWidth="2" />
-        <path d="M61 15 L61 85" strokeWidth="2" />
-        {/* Mullion detail - profile view */}
-        <path d="M36 15 L36 85" strokeWidth="0.6" />
-        <path d="M40 15 L40 85" strokeWidth="0.6" />
-        <path d="M59 15 L59 85" strokeWidth="0.6" />
-        <path d="M63 15 L63 85" strokeWidth="0.6" />
+        <path d="M38 15 L38 85" strokeWidth={S.P.strokeWidthBold} />
+        <path d="M61 15 L61 85" strokeWidth={S.P.strokeWidthBold} />
+        {/* DETAIL: Mullion detail - profile view */}
+        <path d="M36 15 L36 85" strokeWidth={S.D.strokeWidthFine} />
+        <path d="M40 15 L40 85" strokeWidth={S.D.strokeWidthFine} />
+        <path d="M59 15 L59 85" strokeWidth={S.D.strokeWidthFine} />
+        <path d="M63 15 L63 85" strokeWidth={S.D.strokeWidthFine} />
         {/* Horizontal transom */}
-        <path d="M15 50 L85 50" strokeWidth="1" />
+        <path d="M15 50 L85 50" strokeWidth={S.P.strokeWidthLight} />
         {/* Cross-section detail */}
-        <path d="M92 40 L92 60" strokeWidth="2.5" />
-        <path d="M90 42 L94 42 L94 58 L90 58 Z" strokeWidth="1" />
+        <path d="M92 40 L92 60" strokeWidth={S.P.strokeWidthBold} />
+        <path d="M90 42 L94 42 L94 58 L90 58 Z" strokeWidth={S.P.strokeWidthLight} />
       </g>
     </g>
   </svg>
@@ -390,14 +390,14 @@ const OrielWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
       </g>
 
       {/* PRIMARY: Oriel window structure */}
-      <g strokeWidth="0.8">
+      <g strokeWidth={S.D.strokeWidth}>
         {/* Oriel projection - 3D effect */}
-        <path d="M25 25 L25 75 L35 80 L50 82 L65 80 L75 75 L75 25 L65 20 L50 18 L35 20 Z" strokeWidth="1" />
+        <path d="M25 25 L25 75 L35 80 L50 82 L65 80 L75 75 L75 25 L65 20 L50 18 L35 20 Z" strokeWidth={S.P.strokeWidthLight} />
         {/* Front face of oriel */}
-        <path d="M40 22 L40 78 L60 78 L60 22 Z" strokeWidth="1.2" />
+        <path d="M40 22 L40 78 L60 78 L60 22 Z" strokeWidth={S.P.strokeWidthLight} />
         {/* Side panels */}
-        <path d="M25 25 L35 20 L35 80 L25 75 Z" strokeWidth="1" />
-        <path d="M75 25 L65 20 L65 80 L75 75 Z" strokeWidth="1" />
+        <path d="M25 25 L35 20 L35 80 L25 75 Z" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M75 25 L65 20 L65 80 L75 75 Z" strokeWidth={S.P.strokeWidthLight} />
         {/* Window panes - front */}
         <path d="M43 25 L43 50 L57 50 L57 25 Z" />
         <path d="M43 53 L43 75 L57 75 L57 53 Z" />
