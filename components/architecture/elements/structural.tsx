@@ -1689,64 +1689,86 @@ export const BaltimoreTrussSVG: React.FC<SVGProps> = ({ showHalo }) => (
 )
 
 /**
- * SCISSORS TRUSS - Two crossing diagonal members
- * Creates vaulted/cathedral ceiling appearance from below
- * Shows: Triangular profile with crossing bottom chords
- * Used for: Churches, great halls, open-ceiling residential
+ * SCISSORS TRUSS - Crossing bottom chords form an X (scissors shape)
+ * 3/4 isometric view. Used in cathedral ceilings. The crossing members are key.
+ * Very distinctive shape - like an open pair of scissors under a roof.
  */
 export const ScissorsTrussSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="scissors-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#scissors-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
-      {/* CONTEXT (near): Support points */}
+      {/* CONTEXT (near): Ground / wall line */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        <path d="M5 88 L95 88" />
+        <path d="M3 90 L72 90" />
+        <path d="M72 90 L97 82" />
       </g>
 
-      {/* PRIMARY - Roof rafters (top chords) */}
+      {/* FAR-SIDE TRUSS (back face) */}
+      <g opacity={0.2} strokeWidth={S.P.strokeWidthLight}>
+        {/* Back rafters */}
+        <path d="M22 80 L55 24" />
+        <path d="M90 80 L55 24" />
+        {/* Back scissors crossing */}
+        <path d="M22 80 L74 38" />
+        <path d="M90 80 L38 38" />
+      </g>
+
+      {/* Shadow fill */}
+      <path d="M22 80 L55 24 L90 80 Z" fill="currentColor" opacity={S.E.fillOpacity} />
+
+      {/* CROSS MEMBERS (depth connectors) */}
+      <g strokeWidth={S.D.strokeWidth} opacity={S.D.opacity}>
+        <path d="M8 84 L22 80" />
+        <path d="M78 84 L90 80" />
+        <path d="M44 28 L55 24" />
+        {/* Cross tie at scissors crossing */}
+        <path d="M44 58 L56 55" />
+      </g>
+
+      {/* NEAR-SIDE: Roof rafters (top chords) */}
       <g strokeWidth={S.P.strokeWidthBold}>
-        {/* Left rafter */}
-        <path d="M10 75 L50 20" />
-        {/* Right rafter */}
-        <path d="M90 75 L50 20" />
+        <path d="M8 84 L44 28" />
+        <path d="M78 84 L44 28" />
       </g>
 
-      {/* SCISSORS MEMBERS - Key feature: crossing diagonal chords */}
-      <g strokeWidth={S.P.strokeWidthBold}>
-        {/* Left scissors member (from left support to right rafter) */}
-        <path d="M10 75 L70 35" />
-        {/* Right scissors member (from right support to left rafter) */}
-        <path d="M90 75 L30 35" />
+      {/* THE SCISSORS MEMBERS - Key feature: crossing diagonals */}
+      <g strokeWidth={S.P.strokeWidthHeavy}>
+        {/* Left scissors: from left support up to right rafter */}
+        <path d="M8 84 L62 40" />
+        {/* Right scissors: from right support up to left rafter */}
+        <path d="M78 84 L28 40" />
       </g>
 
-      {/* Intersection point emphasis */}
-      <circle cx="50" cy="55" r="3" strokeWidth={S.P.strokeWidth} fill="currentColor" opacity={S.E.opacityModerate} />
+      {/* Intersection point (the scissors pivot) - emphasized */}
+      <circle cx="44" cy="58" r="4" strokeWidth={S.P.strokeWidth} fill="currentColor" opacity={S.E.fillOpacityStrong} />
 
-      {/* King post from apex (optional in some scissors trusses) */}
+      {/* Short king post from ridge to scissors crossing */}
       <g strokeWidth={S.P.strokeWidth} opacity={S.D.opacityStrong}>
-        <path d="M50 20 L50 55" />
+        <path d="M44 28 L44 58" />
       </g>
 
-      {/* Collar tie hint (horizontal member) */}
-      <g strokeWidth={S.P.strokeWidth} opacity={S.D.opacity}>
-        <path d="M30 35 L70 35" />
+      {/* Vaulted ceiling line (visible from below) */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        <path d="M13 80 L44 56 L73 80" />
       </g>
 
-      {/* Vaulted ceiling indicator (the visible effect from below) */}
-      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CN.strokeWidth}>
-        <path d="M15 72 L50 50 L85 72" />
-        <text x="50" y="65" fontSize="4" textAnchor="middle" fill="currentColor">VAULT</text>
+      {/* Gusset plates */}
+      <g fill="currentColor" opacity={S.D.opacity} strokeWidth={S.D.strokeWidthFine}>
+        {/* Ridge */}
+        <path d="M41 28 L47 28 L44 24 Z" />
+        {/* Left support */}
+        <path d="M5 84 L11 84 L8 81 Z" />
+        {/* Right support */}
+        <path d="M75 84 L81 84 L78 81 Z" />
+        {/* Scissors endpoints on rafters */}
+        <circle cx="62" cy="40" r="2" />
+        <circle cx="28" cy="40" r="2" />
       </g>
 
       {/* Support symbols */}
       <g strokeWidth={S.P.strokeWidth}>
-        <path d="M5 78 L15 78 L10 75 Z" />
-        <path d="M85 78 L95 78 L90 75 Z" />
-      </g>
-
-      {/* Ridge connection */}
-      <g strokeWidth={S.D.strokeWidth}>
-        <circle cx="50" cy="20" r="2" fill="currentColor" opacity={S.D.opacity} />
+        <path d="M3 88 L13 88 L8 84 Z" />
+        <path d="M73 88 L83 88 L78 84 Z" />
       </g>
     </g>
   </svg>
