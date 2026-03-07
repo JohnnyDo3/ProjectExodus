@@ -307,10 +307,10 @@ const CorniceSVG: React.FC<SVGProps> = ({ showHalo }) => (
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Mansard roof slope with slate pattern above cornice */}
         <path d="M12 30 L12 42 L88 42 L88 30 Q50 22, 12 30" />
-        <path d="M20 33 L20 40" strokeWidth="0.3" />
-        <path d="M35 31 L35 40" strokeWidth="0.3" />
-        <path d="M65 31 L65 40" strokeWidth="0.3" />
-        <path d="M80 33 L80 40" strokeWidth="0.3" />
+        <path d="M20 33 L20 40" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M35 31 L35 40" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M65 31 L65 40" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M80 33 L80 40" strokeWidth={S.CN.strokeWidthFine} />
         {/* Dormer windows in mansard */}
         <path d="M28 32 L28 40 L38 40 L38 32 Q33 28, 28 32" />
         <path d="M62 32 L62 40 L72 40 L72 32 Q67 28, 62 32" />
@@ -326,26 +326,26 @@ const CorniceSVG: React.FC<SVGProps> = ({ showHalo }) => (
         {/* Rusticated stone base course */}
         <path d="M15 88 L85 88" />
         <path d="M15 92 L85 92" />
-        <path d="M25 88 L25 92" strokeWidth="0.4" />
-        <path d="M40 88 L40 92" strokeWidth="0.4" />
-        <path d="M60 88 L60 92" strokeWidth="0.4" />
-        <path d="M75 88 L75 92" strokeWidth="0.4" />
+        <path d="M25 88 L25 92" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M40 88 L40 92" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M60 88 L60 92" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M75 88 L75 92" strokeWidth={S.CN.strokeWidthFine} />
       </g>
 
       {/* PRIMARY: Beaux-Arts cornice — heavy projecting crown with modillions, egg-and-dart, and dentils */}
-      <g strokeWidth="0.8">
+      <g strokeWidth={S.P.strokeWidth}>
         {/* Cyma recta crown molding — S-curve profile at top */}
-        <path d="M8 40 Q30 36, 50 40 Q70 44, 92 40" strokeWidth="1" />
-        <path d="M8 42 L92 42" strokeWidth="0.7" />
+        <path d="M8 40 Q30 36, 50 40 Q70 44, 92 40" strokeWidth={S.P.strokeWidth} />
+        <path d="M8 42 L92 42" strokeWidth={S.P.strokeWidth} />
 
         {/* Corona — main projecting slab with deep shadow */}
-        <path d="M6 42 L94 42 L96 48 L4 48 Z" strokeWidth="1.3" />
+        <path d="M6 42 L94 42 L96 48 L4 48 Z" strokeWidth={S.P.strokeWidthBold} />
         {/* Drip edge (larmier) — water-shedding profile */}
-        <path d="M4 48 L96 48" strokeWidth="1.5" />
+        <path d="M4 48 L96 48" strokeWidth={S.P.strokeWidthBold} />
 
         {/* Soffit with coffered panels */}
-        <path d="M8 48 L8 50 L92 50 L92 48" strokeWidth="0.5" opacity="0.5" />
-        <path d="M20 48 L20 50 M40 48 L40 50 M60 48 L60 50 M80 48 L80 50" strokeWidth="0.3" opacity="0.4" />
+        <path d="M8 48 L8 50 L92 50 L92 48" strokeWidth={S.D.strokeWidthFine} opacity="0.5" />
+        <path d="M20 48 L20 50 M40 48 L40 50 M60 48 L60 50 M80 48 L80 50" strokeWidth={S.D.strokeWidthFine} opacity="0.4" />
 
         {/* Modillions — ornate scroll brackets supporting corona */}
         {[14, 26, 38, 50, 62, 74, 86].map((x, i) => (
