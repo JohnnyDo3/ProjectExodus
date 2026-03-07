@@ -842,27 +842,30 @@ const TracerySVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M105 -5 L105 105" strokeWidth={S.CN.strokeWidthFine} />
 
         {/* Stone coursing on wall */}
-        <path d="M-5 25 L5 25" strokeWidth="0.4" opacity="0.5" />
-        <path d="M95 25 L105 25" strokeWidth="0.4" opacity="0.5" />
-        <path d="M-5 55 L5 55" strokeWidth="0.4" opacity="0.5" />
-        <path d="M95 55 L105 55" strokeWidth="0.4" opacity="0.5" />
-        <path d="M-5 80 L5 80" strokeWidth="0.4" opacity="0.5" />
-        <path d="M95 80 L105 80" strokeWidth="0.4" opacity="0.5" />
-
-        {/* Buttress hints on exterior */}
-        <path d="M-8 -5 L-8 105" strokeWidth="0.5" opacity="0.4" />
-        <path d="M108 -5 L108 105" strokeWidth="0.5" opacity="0.4" />
+        <path d="M-5 25 L5 25" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M95 25 L105 25" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M-5 55 L5 55" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M95 55 L105 55" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M-5 80 L5 80" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M95 80 L105 80" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
 
         {/* Wall above arch / vault spring */}
-        <path d="M5 5 Q50 -5, 95 5" strokeWidth="0.6" />
-        <path d="M0 2 Q50 -8, 100 2" strokeWidth="0.5" opacity="0.5" />
+        <path d="M5 5 Q50 -5, 95 5" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M0 2 Q50 -8, 100 2" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT (far): Buttresses and floor paving */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Buttress hints on exterior */}
+        <path d="M-8 -5 L-8 105" />
+        <path d="M108 -5 L108 105" />
 
         {/* Floor paving */}
         <path d="M-5 95 L105 95" />
-        <path d="M-5 98 L105 98" strokeWidth="0.5" opacity="0.5" />
-        <path d="M25 95 L25 102" strokeWidth="0.3" opacity="0.3" />
-        <path d="M50 95 L50 102" strokeWidth="0.3" opacity="0.3" />
-        <path d="M75 95 L75 102" strokeWidth="0.3" opacity="0.3" />
+        <path d="M-5 98 L105 98" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M25 95 L25 102" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M50 95 L50 102" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M75 95 L75 102" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
       </g>
 
       {/* EFFECTS: Light streaming through tracery */}
