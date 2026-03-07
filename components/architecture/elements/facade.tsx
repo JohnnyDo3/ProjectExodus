@@ -50,8 +50,8 @@ const AwningSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M22 10 L22 22 L36 22 L36 10" />
         <path d="M64 10 L64 22 L78 22 L78 10" />
         {/* Wrought-iron continuous balcony railing with scroll brackets */}
-        <path d="M15 25 L85 25" strokeWidth="0.8" />
-        <path d="M15 23 L85 23" strokeWidth="0.5" />
+        <path d="M15 25 L85 25" />
+        <path d="M15 23 L85 23" strokeWidth={S.CN.strokeWidthFine} />
         <path d="M20 23 Q18 21, 20 19" />
         <path d="M40 23 Q38 21, 40 19" />
         <path d="M60 23 Q58 21, 60 19" />
@@ -68,11 +68,11 @@ const AwningSVG: React.FC<SVGProps> = ({ showHalo }) => (
       </g>
 
       {/* PRIMARY: Haussmann café awning — retractable striped canopy with ornate ironwork */}
-      <g strokeWidth="0.8">
+      <g strokeWidth={S.P.strokeWidth}>
         {/* Wrought-iron wall-mounted bracket bar with decorative scrollwork */}
-        <path d="M15 25 L85 25" strokeWidth="1.4" />
-        <path d="M15 24 Q18 22, 21 24" strokeWidth="0.6" />
-        <path d="M79 24 Q82 22, 85 24" strokeWidth="0.6" />
+        <path d="M15 25 L85 25" strokeWidth={S.P.strokeWidthBold} />
+        <path d="M15 24 Q18 22, 21 24" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M79 24 Q82 22, 85 24" strokeWidth={S.P.strokeWidthLight} />
 
         {/* Fabric canopy — curved projection with alternating stripe texture */}
         <path d="M15 25 Q15 38, 12 48 Q30 58, 50 52 Q70 58, 88 48 Q85 38, 85 25" strokeWidth="1.2" />

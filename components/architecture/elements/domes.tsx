@@ -103,6 +103,21 @@ export const OculusSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
+    {/* CONTEXT (far): Distant roof ridgelines and neighboring structures beyond dome exterior */}
+    <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+      {/* Distant roofline visible beyond the dome drum */}
+      <path d="M 2 90 L 12 84 L 22 90" fill="none" />
+      <path d="M 78 90 L 88 83 L 98 90" fill="none" />
+      {/* Far building silhouettes in corners */}
+      <path d="M 1 96 L 1 88 L 6 88 L 6 92 L 10 92 L 10 96" fill="none" />
+      <path d="M 90 96 L 90 86 L 95 86 L 95 90 L 99 90 L 99 96" fill="none" />
+      {/* Exterior dome profile seen from distance */}
+      <path d="M 6 82 Q 6 60, 50 50 Q 94 60, 94 82" fill="none" />
+      {/* Distant tower/campanile */}
+      <path d="M 3 82 L 3 68 L 7 68 L 7 82" fill="none" opacity={S.CF.opacitySubtle} />
+      <path d="M 2 68 L 5 62 L 8 68" fill="none" opacity={S.CF.opacitySubtle} />
+    </g>
+
     {/* CONTEXT (near): Surrounding dome surface (view from below) */}
     <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
       <ellipse cx="50" cy="58" rx="44" ry="26" strokeWidth="1.2" fill="none" />
@@ -115,9 +130,49 @@ export const OculusSVG = ({ showHalo = false }: SVGProps) => (
       <path d="M 50 32 L 32 72" fill="none" />
       <path d="M 50 32 L 68 72" fill="none" />
       <path d="M 50 32 L 82 70" fill="none" />
+      {/* Additional radial coffer ribs for density */}
+      <path d="M 50 32 L 10 62" fill="none" />
+      <path d="M 50 32 L 25 74" fill="none" />
+      <path d="M 50 32 L 75 74" fill="none" />
+      <path d="M 50 32 L 90 62" fill="none" />
       {/* Concentric coffer rings */}
       <ellipse cx="50" cy="52" rx="32" ry="18" fill="none" />
       <ellipse cx="50" cy="46" rx="22" ry="12" fill="none" />
+      {/* Additional coffer ring for finer coffering */}
+      <ellipse cx="50" cy="55" rx="38" ry="21" fill="none" />
+    </g>
+
+    {/* CONTEXT (near): Thick drum walls and cornice moldings below dome */}
+    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+      {/* Drum wall top cornice - thick molding band */}
+      <ellipse cx="50" cy="62" rx="46" ry="28" strokeWidth="1.0" fill="none" />
+      {/* Cornice molding detail */}
+      <ellipse cx="50" cy="63" rx="47" ry="29" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+      {/* Drum wall vertical articulation - pilasters around the drum */}
+      <path d="M 8 72 L 6 92" fill="none" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 20 68 L 16 92" fill="none" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 80 68 L 84 92" fill="none" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 92 72 L 94 92" fill="none" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+    </g>
+
+    {/* CONTEXT (near): Pendentive arches and interior wall articulation below drum */}
+    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacitySubtle} strokeWidth={S.CN.strokeWidth}>
+      {/* Pendentive arches - four arches supporting the dome */}
+      <path d="M 2 82 Q 25 68, 50 82" fill="none" />
+      <path d="M 50 82 Q 75 68, 98 82" fill="none" />
+      {/* Secondary transverse arches */}
+      <path d="M 14 88 Q 50 74, 86 88" fill="none" strokeWidth={S.CN.strokeWidthFine} />
+      {/* Pendentive triangular surfaces in corners */}
+      <path d="M 2 82 Q 4 76, 8 72" fill="none" strokeWidth={S.CN.strokeWidthFine} />
+      <path d="M 98 82 Q 96 76, 92 72" fill="none" strokeWidth={S.CN.strokeWidthFine} />
+      {/* Interior wall windows (drum windows seen from below) */}
+      <path d="M 30 66 L 30 72" fill="none" strokeWidth={S.CN.strokeWidthFine} />
+      <path d="M 36 64 L 36 70" fill="none" strokeWidth={S.CN.strokeWidthFine} />
+      <path d="M 64 64 L 64 70" fill="none" strokeWidth={S.CN.strokeWidthFine} />
+      <path d="M 70 66 L 70 72" fill="none" strokeWidth={S.CN.strokeWidthFine} />
+      {/* Lower wall entablature line */}
+      <path d="M 2 92 L 98 92" fill="none" />
+      <path d="M 2 96 L 98 96" fill="none" strokeWidth={S.CN.strokeWidthFine} />
     </g>
 
     {/* PRIMARY: THE OCULUS - circular opening */}

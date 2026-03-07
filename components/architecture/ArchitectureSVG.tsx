@@ -9,6 +9,7 @@ interface ArchitectureSVGProps {
   className?: string
   size?: number
   showHalo?: boolean
+  isolated?: boolean
 }
 
 // Halo glow filter definition - reusable across all SVGs
@@ -1472,8 +1473,8 @@ const DefaultSVG = ({ showHalo = false }: { showHalo?: boolean }) => (
 )
 
 // Main component
-export function ArchitectureSVG({ category, elementId, className = '', size, showHalo = false }: ArchitectureSVGProps) {
-  const svgClass = `text-[var(--foreground)] ${className}`
+export function ArchitectureSVG({ category, elementId, className = '', size, showHalo = false, isolated = false }: ArchitectureSVGProps) {
+  const svgClass = `text-[var(--foreground)] ${isolated ? 'arch-isolated' : ''} ${className}`
 
   const getSVGComponent = () => {
     // First, check for element-specific SVG

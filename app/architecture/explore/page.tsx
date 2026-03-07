@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/Button'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Search, Filter, X, ChevronRight, ArrowLeft, Grid, List,
-  Clock, Globe, Layers, GraduationCap, Volume2, BookOpen
+  Clock, Globe, Layers, GraduationCap, Volume2, BookOpen, Eye, EyeOff
 } from 'lucide-react'
 import Link from 'next/link'
 import { ALL_ELEMENTS, searchElements, getElementsByCategory, getElementsByPeriod, getElementsByRegion } from '@/data/architecture/elements'
@@ -33,7 +33,13 @@ export default function ExplorePage() {
   const [selectedLevel, setSelectedLevel] = useState<LearningLevel>('MIDDLE_SCHOOL')
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [showFilters, setShowFilters] = useState(false)
-  const [selectedElement, setSelectedElement] = useState<ArchitecturalElement | null>(null)
+  const [selectedElement, setSelectedElementRaw] = useState<ArchitecturalElement | null>(null)
+  const [isolatedView, setIsolatedView] = useState(true)
+
+  const setSelectedElement = (el: ArchitecturalElement | null) => {
+    setSelectedElementRaw(el)
+    if (el) setIsolatedView(true)
+  }
 
   // Filter elements
   const filteredElements = useMemo(() => {
@@ -329,8 +335,17 @@ export default function ExplorePage() {
                     elementId={selectedElement.id}
                     size={120}
                     className="opacity-90"
+                    isolated={isolatedView}
                   />
                 </div>
+                {/* Context toggle */}
+                <button
+                  onClick={() => setIsolatedView(v => !v)}
+                  className="absolute top-3 left-3 sm:top-4 sm:left-4 p-2 rounded-full bg-black/20 hover:bg-black/40 text-white transition-colors z-10"
+                  title={isolatedView ? 'Show surroundings' : 'Isolate element'}
+                >
+                  {isolatedView ? <Eye className="w-4 h-4 sm:w-5 sm:h-5" /> : <EyeOff className="w-4 h-4 sm:w-5 sm:h-5" />}
+                </button>
                 <button
                   onClick={() => setSelectedElement(null)}
                   className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 rounded-full bg-black/20 hover:bg-black/40 text-white transition-colors"

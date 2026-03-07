@@ -5,6 +5,19 @@
 }
 
 /*
+  Architecture SVG isolation mode
+  Hides context (dashed) layers, showing only the primary element.
+  Triggered by .arch-isolated wrapper class on ArchitectureSVG.
+*/
+.arch-isolated svg [stroke-dasharray] {
+  opacity: 0 !important;
+  transition: opacity 0.4s ease;
+}
+.arch-isolated svg :not([stroke-dasharray]) {
+  transition: opacity 0.4s ease;
+}
+
+/*
   Project Exodus Design System
   By Sage - Earthy, Organic, Alive
   🌱 Let's grow something beautiful
