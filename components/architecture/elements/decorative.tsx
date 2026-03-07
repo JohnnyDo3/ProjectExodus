@@ -31,69 +31,70 @@ interface SVGProps {
 }
 
 /**
- * ACANTHUS - Mediterranean leaf motif (Corinthian capital detail)
- * 3D PERSPECTIVE: Three-quarter view of deeply carved leaf
- * Shows: Deeply lobed, curling acanthus leaves with veins and shadows
- * Distinct: Organic flowing curves, naturalistic foliage
+ * ACANTHUS - Deeply-lobed botanical leaf motif (Corinthian capital detail)
+ * 3D PERSPECTIVE: Three-quarter view of deeply carved leaf curling forward
+ * Shows: Multiple deeply-lobed leaves with veins, curling tips, strong shadow carving
+ * Distinct: Organic flowing curves, naturalistic foliage with deep relief
  */
 const AcanthusSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="acanthus-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#acanthus-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT (near): Corinthian capital and column shaft */}
+      {/* CONTEXT (near): Corinthian capital bell */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        {/* Abacus (top slab of capital) */}
         <path d="M2 8 L98 8" strokeWidth="1" />
         <path d="M5 12 L95 12" strokeWidth="0.8" />
-        {/* Column shaft below */}
         <path d="M30 92 L30 100" />
         <path d="M70 92 L70 100" />
-        <path d="M32 92 L32 100" opacity="0.2" />
-        <path d="M68 92 L68 100" opacity="0.2" />
-        {/* Capital bell (kalathos) outline */}
         <path d="M28 92 Q28 80, 35 72 Q42 65, 50 60" strokeWidth="0.5" />
         <path d="M72 92 Q72 80, 65 72 Q58 65, 50 60" strokeWidth="0.5" />
-        {/* Neighboring leaf hint (left) */}
-        <path d="M8 92 Q5 75, 12 65" strokeWidth="0.5" />
-        {/* Neighboring leaf hint (right) */}
-        <path d="M92 92 Q95 75, 88 65" strokeWidth="0.5" />
       </g>
 
-      {/* PRIMARY - Acanthus leaf in 3D relief */}
+      {/* PRIMARY - Acanthus leaf in deep 3D relief */}
       <g strokeWidth={S.P.strokeWidthLight}>
-        {/* Central spine of leaf curving forward */}
+        {/* Central spine curving forward with thickness */}
         <path d="M50 92 Q48 70, 50 50 Q55 30, 50 15" strokeWidth={S.P.strokeWidthBold} />
+        <path d="M52 90 Q50 68, 52 48 Q56 28, 52 16" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
 
-        {/* Left side lobes (closer, larger) */}
-        <path d="M50 85 Q30 82, 20 75 Q15 70, 18 65 Q25 68, 35 72 Q42 75, 48 78" strokeWidth={S.P.strokeWidth} />
-        <path d="M48 70 Q28 65, 18 55 Q12 48, 16 42 Q24 48, 35 55 Q42 60, 48 65" strokeWidth={S.P.strokeWidth} />
-        <path d="M50 55 Q32 50, 22 40 Q15 32, 20 26 Q30 35, 42 45 Q48 50, 50 52" strokeWidth={S.P.strokeWidth} />
+        {/* LEFT SIDE LOBES - deeply lobed with serrated edges */}
+        {/* Bottom lobe - largest, curling forward */}
+        <path d="M50 85 Q30 80, 18 72 Q12 66, 15 60 Q18 64, 28 68 Q38 72, 48 78" strokeWidth={S.P.strokeWidth} />
+        {/* Lobe serrations */}
+        <path d="M22 74 L19 71 L23 69" strokeWidth={S.D.strokeWidth} />
+        <path d="M16 66 L13 63 L17 62" strokeWidth={S.D.strokeWidth} />
+        {/* Deep carved shadow between lobes */}
+        <rect x="36" y="74" width="8" height="6" rx="2" fill="currentColor" opacity="0.06" stroke="none" />
 
-        {/* Right side lobes (perspective receding) */}
-        <path d="M52 85 Q68 80, 75 72 Q80 66, 77 62 Q72 66, 62 70 Q55 74, 52 78" strokeWidth={S.P.strokeWidth} />
-        <path d="M52 68 Q68 62, 78 52 Q84 44, 80 38 Q72 45, 62 52 Q55 58, 52 62" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M52 52 Q65 46, 72 38 Q78 30, 74 25 Q66 32, 58 42 Q52 48, 52 50" strokeWidth={S.P.strokeWidthLight} />
+        {/* Middle lobe */}
+        <path d="M48 68 Q26 62, 14 50 Q8 42, 12 36 Q20 42, 32 50 Q42 58, 48 62" strokeWidth={S.P.strokeWidth} />
+        <path d="M18 54 L15 51 L19 49" strokeWidth={S.D.strokeWidth} />
+        <path d="M12 42 L10 39 L14 38" strokeWidth={S.D.strokeWidth} />
+        <rect x="36" y="58" width="8" height="5" rx="2" fill="currentColor" opacity="0.06" stroke="none" />
 
-        {/* Tip curling forward dramatically */}
-        <path d="M50 15 Q45 10, 48 5 Q55 8, 52 15" strokeWidth={S.P.strokeWidth} />
-        <path d="M48 12 Q50 8, 52 12" strokeWidth={S.D.strokeWidth} />
+        {/* Top lobe */}
+        <path d="M50 52 Q30 46, 18 35 Q12 28, 16 22 Q26 30, 38 40 Q46 46, 50 50" strokeWidth={S.P.strokeWidth} />
+        <path d="M22 38 L19 35 L23 33" strokeWidth={S.D.strokeWidth} />
 
-        {/* Secondary veins on lobes */}
-        <path d="M25 70 L32 74" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-        <path d="M22 52 L30 58" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-        <path d="M24 38 L35 46" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-        <path d="M72 68 L65 72" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
-        <path d="M76 50 L68 56" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        {/* RIGHT SIDE LOBES - perspective receding, thinner strokes */}
+        <path d="M52 84 Q68 78, 78 68 Q84 62, 80 56 Q74 62, 64 66 Q56 72, 52 76" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M52 66 Q70 58, 82 46 Q88 38, 84 32 Q76 40, 64 50 Q56 56, 52 60" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M52 50 Q66 44, 76 34 Q82 26, 78 20 Q70 28, 60 38 Q54 44, 52 48" strokeWidth={S.P.strokeWidthLight} />
 
-        {/* Deep shadow carving lines */}
-        <path d="M38 78 Q35 75, 38 72" strokeWidth={S.D.strokeWidth} opacity={S.D.opacityStrong} />
-        <path d="M40 62 Q36 58, 40 54" strokeWidth={S.D.strokeWidth} opacity={S.D.opacityStrong} />
-        <path d="M42 48 Q38 44, 42 40" strokeWidth={S.D.strokeWidth} opacity={S.D.opacityStrong} />
+        {/* Tip curling dramatically forward */}
+        <path d="M50 15 Q44 8, 47 3 Q54 6, 52 14" strokeWidth={S.P.strokeWidth} />
+        <path d="M48 10 Q50 6, 52 10" strokeWidth={S.D.strokeWidth} />
 
-        {/* Leaf edge serrations */}
-        <path d="M18 65 L20 62 L22 65" strokeWidth={S.D.strokeWidthFine} />
-        <path d="M16 45 L18 42 L20 45" strokeWidth={S.D.strokeWidthFine} />
-        <path d="M20 28 L22 25 L24 28" strokeWidth={S.D.strokeWidthFine} />
+        {/* Secondary veins radiating from spine */}
+        <path d="M48 80 L28 72" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        <path d="M48 64 L22 52" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        <path d="M50 48 L26 34" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        <path d="M52 78 L72 66" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        <path d="M52 62 L76 46" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+
+        {/* Depth shadow fills between lobes */}
+        <path d="M38 76 Q35 73, 38 70" strokeWidth={S.D.strokeWidth} opacity={S.D.opacityStrong} />
+        <path d="M40 60 Q36 56, 40 52" strokeWidth={S.D.strokeWidth} opacity={S.D.opacityStrong} />
+        <path d="M42 44 Q38 40, 42 36" strokeWidth={S.D.strokeWidth} opacity={S.D.opacityStrong} />
       </g>
     </g>
   </svg>
@@ -101,96 +102,72 @@ const AcanthusSVG: React.FC<SVGProps> = ({ showHalo }) => (
 
 /**
  * ARABESQUE - Islamic geometric/floral interlacing pattern
- * 3D PERSPECTIVE: Looking at tilted decorative panel
  * Shows: Infinite interlacing vegetal scrolls with geometric precision
- * Distinct: No figural imagery, mathematical beauty, endless repetition
+ * Distinct: Mathematical beauty, star-and-polygon geometry, endless repetition
  */
 const ArabesqueSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="arabesque-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#arabesque-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
-      {/* CONTEXT (near): Mosque/palace wall with tile panel surround */}
+      {/* CONTEXT (near): Tile panel surround */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        {/* Wall surface extending off-page */}
-        <path d="M-5 0 L105 0" />
-        <path d="M-5 100 L105 100" />
-        <path d="M-5 0 L-5 100" />
-        <path d="M105 0 L105 100" />
-
-        {/* Masonry mortar lines on wall */}
-        <path d="M-5 15 L6 15" opacity="0.5" />
-        <path d="M94 15 L105 15" opacity="0.5" />
-        <path d="M-5 50 L6 50" opacity="0.5" />
-        <path d="M94 50 L105 50" opacity="0.5" />
-        <path d="M-5 85 L6 85" opacity="0.5" />
-        <path d="M94 85 L105 85" opacity="0.5" />
-
-        {/* Beveled frame with depth around the panel */}
         <path d="M6 6 L94 6 L94 94 L6 94 Z" strokeWidth="0.8" />
         <path d="M8 8 L92 8 L92 92 L8 92 Z" />
-
-        {/* Adjacent panel hint on left */}
-        <path d="M-12 8 L4 8 L4 92 L-12 92 Z" opacity="0.4" />
-        {/* Adjacent panel hint on right */}
-        <path d="M96 8 L112 8 L112 92 L96 92 Z" opacity="0.4" />
-
-        {/* Calligraphic band above panels */}
-        <path d="M-5 3 L105 3" strokeWidth="0.5" />
-        <path d="M-5 6 L105 6" strokeWidth="0.5" />
-
-        {/* Floor tiles below */}
-        <path d="M-5 97 L105 97" strokeWidth="0.5" />
-        <path d="M20 97 L20 105" strokeWidth="0.3" opacity="0.4" />
-        <path d="M50 97 L50 105" strokeWidth="0.3" opacity="0.4" />
-        <path d="M80 97 L80 105" strokeWidth="0.3" opacity="0.4" />
       </g>
 
-      {/* PRIMARY - Arabesque interlacing in perspective */}
+      {/* PRIMARY - 8-pointed star arabesque with interlacing */}
       <g strokeWidth={S.P.strokeWidthLight}>
-        {/* Central 8-pointed star (rotated square + square) */}
-        <path d="M50 20 L65 35 L80 20" strokeWidth={S.P.strokeWidth} />
-        <path d="M80 20 L65 35 L80 50" strokeWidth={S.P.strokeWidth} />
-        <path d="M80 50 L65 35 L80 80" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M50 80 L35 65 L20 80" strokeWidth={S.P.strokeWidth} />
-        <path d="M20 80 L35 65 L20 50" strokeWidth={S.P.strokeWidth} />
-        <path d="M20 50 L35 65 L20 20" strokeWidth={S.P.strokeWidthLight} />
+        {/* Central 8-pointed star formed by two rotated squares */}
+        <path d="M50 15 L72 28 L85 50 L72 72 L50 85 L28 72 L15 50 L28 28 Z" strokeWidth={S.P.strokeWidthBold} />
+        <path d="M50 22 L67 33 L78 50 L67 67 L50 78 L33 67 L22 50 L33 33 Z" strokeWidth={S.P.strokeWidth} />
 
-        {/* Interlacing bands crossing over and under */}
-        <path d="M20 20 Q35 35, 50 20 Q65 35, 80 20" strokeWidth={S.P.strokeWidth} />
-        <path d="M20 80 Q35 65, 50 80 Q65 65, 80 80" strokeWidth={S.P.strokeWidth} />
-        <path d="M20 20 Q35 35, 20 50 Q35 65, 20 80" strokeWidth={S.P.strokeWidth} />
-        <path d="M80 20 Q65 35, 80 50 Q65 65, 80 80" strokeWidth={S.P.strokeWidth} />
+        {/* Inner star detail */}
+        <path d="M50 28 L61 37 L72 50 L61 63 L50 72 L39 63 L28 50 L39 37 Z" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
 
         {/* Central medallion */}
-        <circle cx="50" cy="50" r="12" strokeWidth={S.P.strokeWidth} />
-        <circle cx="50" cy="50" r="8" strokeWidth={S.P.strokeWidthLight} />
-        <circle cx="50" cy="50" r="4" strokeWidth={S.D.strokeWidth} />
+        <circle cx="50" cy="50" r="10" strokeWidth={S.P.strokeWidth} />
+        <circle cx="50" cy="50" r="6" strokeWidth={S.D.strokeWidth} />
+        {/* 8-fold rosette inside */}
+        <path d="M50 44 L53 47 L50 50 L47 47 Z" strokeWidth={S.D.strokeWidthFine} />
+        <path d="M56 50 L53 53 L50 50 L53 47 Z" strokeWidth={S.D.strokeWidthFine} />
+        <path d="M50 56 L47 53 L50 50 L53 53 Z" strokeWidth={S.D.strokeWidthFine} />
+        <path d="M44 50 L47 47 L50 50 L47 53 Z" strokeWidth={S.D.strokeWidthFine} />
 
-        {/* Connecting scrollwork from center */}
-        <path d="M50 38 Q45 30, 50 20" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M50 38 Q55 30, 50 20" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M50 62 Q45 70, 50 80" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M50 62 Q55 70, 50 80" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M38 50 Q30 45, 20 50" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M62 50 Q70 45, 80 50" strokeWidth={S.P.strokeWidthLight} />
+        {/* Interlacing bands weaving over/under at star points */}
+        {/* Top */}
+        <path d="M50 15 Q42 20, 38 15 Q42 10, 50 8" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M50 15 Q58 20, 62 15 Q58 10, 50 8" strokeWidth={S.P.strokeWidthLight} />
+        {/* Bottom */}
+        <path d="M50 85 Q42 80, 38 85 Q42 90, 50 92" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M50 85 Q58 80, 62 85 Q58 90, 50 92" strokeWidth={S.P.strokeWidthLight} />
+        {/* Left */}
+        <path d="M15 50 Q20 42, 15 38 Q10 42, 8 50" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M15 50 Q20 58, 15 62 Q10 58, 8 50" strokeWidth={S.P.strokeWidthLight} />
+        {/* Right */}
+        <path d="M85 50 Q80 42, 85 38 Q90 42, 92 50" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M85 50 Q80 58, 85 62 Q90 58, 92 50" strokeWidth={S.P.strokeWidthLight} />
 
-        {/* Vegetal scrolls in corners */}
-        <path d="M15 15 Q25 20, 20 30 Q15 25, 15 15" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M85 15 Q75 20, 80 30 Q85 25, 85 15" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M15 85 Q25 80, 20 70 Q15 75, 15 85" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M85 85 Q75 80, 80 70 Q85 75, 85 85" strokeWidth={S.P.strokeWidthLight} />
+        {/* Corner vegetal scrollwork */}
+        <path d="M12 12 Q22 18, 18 28 Q14 22, 12 12" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M88 12 Q78 18, 82 28 Q86 22, 88 12" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M12 88 Q22 82, 18 72 Q14 78, 12 88" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M88 88 Q78 82, 82 72 Q86 78, 88 88" strokeWidth={S.P.strokeWidthLight} />
 
         {/* Leaf forms branching from scrolls */}
-        <path d="M25 25 Q30 22, 32 27 Q28 30, 25 25" strokeWidth={S.D.strokeWidth} />
-        <path d="M75 25 Q70 22, 68 27 Q72 30, 75 25" strokeWidth={S.D.strokeWidth} />
-        <path d="M25 75 Q30 78, 32 73 Q28 70, 25 75" strokeWidth={S.D.strokeWidth} />
-        <path d="M75 75 Q70 78, 68 73 Q72 70, 75 75" strokeWidth={S.D.strokeWidth} />
+        <path d="M20 20 Q24 17, 26 22 Q22 25, 20 20" strokeWidth={S.D.strokeWidth} />
+        <path d="M80 20 Q76 17, 74 22 Q78 25, 80 20" strokeWidth={S.D.strokeWidth} />
+        <path d="M20 80 Q24 83, 26 78 Q22 75, 20 80" strokeWidth={S.D.strokeWidth} />
+        <path d="M80 80 Q76 83, 74 78 Q78 75, 80 80" strokeWidth={S.D.strokeWidth} />
 
-        {/* Small geometric fills */}
-        <path d="M35 35 L40 30 L45 35 L40 40 Z" strokeWidth={S.D.strokeWidth} />
-        <path d="M55 35 L60 30 L65 35 L60 40 Z" strokeWidth={S.D.strokeWidth} />
-        <path d="M35 65 L40 60 L45 65 L40 70 Z" strokeWidth={S.D.strokeWidth} />
-        <path d="M55 65 L60 60 L65 65 L60 70 Z" strokeWidth={S.D.strokeWidth} />
+        {/* Small geometric fills between star and frame */}
+        <path d="M30 18 L35 14 L40 18 L35 22 Z" strokeWidth={S.D.strokeWidth} />
+        <path d="M60 18 L65 14 L70 18 L65 22 Z" strokeWidth={S.D.strokeWidth} />
+        <path d="M30 82 L35 78 L40 82 L35 86 Z" strokeWidth={S.D.strokeWidth} />
+        <path d="M60 82 L65 78 L70 82 L65 86 Z" strokeWidth={S.D.strokeWidth} />
+
+        {/* Depth shadow on interlacing */}
+        <rect x="46" y="14" width="8" height="3" rx="1" fill="currentColor" opacity="0.05" stroke="none" />
+        <rect x="14" y="46" width="3" height="8" rx="1" fill="currentColor" opacity="0.05" stroke="none" />
       </g>
     </g>
   </svg>
@@ -198,9 +175,9 @@ const ArabesqueSVG: React.FC<SVGProps> = ({ showHalo }) => (
 
 /**
  * BOSS - Projecting carved ornament at rib vault intersection
- * 3D PERSPECTIVE: Looking up at projecting carved boss
- * Shows: Circular carved projection with foliage/face, deep shadow
- * Distinct: Strongly projecting, often figural, marks rib junctions
+ * 3D PERSPECTIVE: Looking up at projecting boss with deep shadow
+ * Shows: Circular carved projection with Green Man face, deep relief
+ * Distinct: Strongly projecting from vault, marks rib junctions
  */
 const BossSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
@@ -216,125 +193,112 @@ const BossSVG: React.FC<SVGProps> = ({ showHalo }) => (
 
       {/* PRIMARY - Boss projecting toward viewer */}
       <g strokeWidth={S.P.strokeWidthLight}>
-        {/* Outer ring - shadow edge of projection */}
-        <circle cx="50" cy="50" r="32" strokeWidth={S.P.strokeWidthBold} />
-        <circle cx="50" cy="50" r="28" strokeWidth={S.P.strokeWidth} />
+        {/* Shadow ring around projection */}
+        <circle cx="50" cy="50" r="34" strokeWidth={S.P.strokeWidthBold} />
+        <circle cx="50" cy="50" r="30" fill="currentColor" opacity="0.04" stroke="currentColor" strokeWidth={S.D.strokeWidthFine} />
 
-        {/* Inner carved area - raised central medallion */}
-        <circle cx="50" cy="50" r="22" strokeWidth={S.P.strokeWidthBold} />
-        <circle cx="50" cy="50" r="18" strokeWidth={S.P.strokeWidth} />
+        {/* Carved ring with leaf relief */}
+        <circle cx="50" cy="50" r="26" strokeWidth={S.P.strokeWidth} />
+        <circle cx="50" cy="50" r="22" strokeWidth={S.P.strokeWidthLight} />
 
-        {/* Central figural carving - Green Man face */}
-        {/* Eyes */}
-        <ellipse cx="42" cy="44" rx="4" ry="3" strokeWidth={S.P.strokeWidthLight} />
-        <ellipse cx="58" cy="44" rx="4" ry="3" strokeWidth={S.P.strokeWidthLight} />
-        <circle cx="42" cy="44" r="1.5" strokeWidth={S.D.strokeWidth} />
-        <circle cx="58" cy="44" r="1.5" strokeWidth={S.D.strokeWidth} />
+        {/* Green Man face - eyes */}
+        <ellipse cx="42" cy="44" rx="4.5" ry="3.5" strokeWidth={S.P.strokeWidthLight} />
+        <ellipse cx="58" cy="44" rx="4.5" ry="3.5" strokeWidth={S.P.strokeWidthLight} />
+        <circle cx="42" cy="44" r="1.8" strokeWidth={S.D.strokeWidth} />
+        <circle cx="58" cy="44" r="1.8" strokeWidth={S.D.strokeWidth} />
 
-        {/* Nose bridge */}
-        <path d="M50 42 L50 52" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M48 52 Q50 55, 52 52" strokeWidth={S.P.strokeWidthLight} />
+        {/* Brow ridge */}
+        <path d="M36 40 Q42 36, 48 40" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M52 40 Q58 36, 64 40" strokeWidth={S.P.strokeWidthLight} />
+
+        {/* Nose */}
+        <path d="M50 42 L48 52 Q50 54, 52 52 L50 42" strokeWidth={S.P.strokeWidthLight} />
 
         {/* Mouth with foliage emerging */}
         <path d="M44 58 Q50 62, 56 58" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M46 60 Q50 64, 54 60" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
 
-        {/* Foliage sprouting from mouth and around face */}
-        <path d="M50 60 Q45 68, 35 72" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M50 60 Q55 68, 65 72" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M50 60 L50 70" strokeWidth={S.D.strokeWidth} />
+        {/* Foliage sprouting from mouth */}
+        <path d="M50 62 Q44 70, 34 74" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M50 62 Q56 70, 66 74" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M50 62 L50 72" strokeWidth={S.D.strokeWidth} />
+        <path d="M40 70 Q38 67, 42 66" strokeWidth={S.D.strokeWidth} />
+        <path d="M60 70 Q62 67, 58 66" strokeWidth={S.D.strokeWidth} />
 
-        {/* Leaf details on emerging foliage */}
-        <path d="M40 68 Q38 65, 42 64" strokeWidth={S.D.strokeWidth} />
-        <path d="M60 68 Q62 65, 58 64" strokeWidth={S.D.strokeWidth} />
+        {/* Crown foliage */}
+        <path d="M35 42 Q30 34, 36 28 Q44 26, 50 30" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M65 42 Q70 34, 64 28 Q56 26, 50 30" strokeWidth={S.P.strokeWidthLight} />
 
-        {/* Foliage forming hair/crown */}
-        <path d="M35 42 Q32 35, 38 30 Q45 28, 50 32" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M65 42 Q68 35, 62 30 Q55 28, 50 32" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M42 35 Q45 30, 50 32 Q55 30, 58 35" strokeWidth={S.D.strokeWidth} />
-
-        {/* Surrounding decorative ring with leaf motifs */}
+        {/* Leaf motifs on surrounding ring */}
         <path d="M22 50 Q25 45, 28 50 Q25 55, 22 50" strokeWidth={S.D.strokeWidth} />
         <path d="M78 50 Q75 45, 72 50 Q75 55, 78 50" strokeWidth={S.D.strokeWidth} />
         <path d="M50 22 Q45 25, 50 28 Q55 25, 50 22" strokeWidth={S.D.strokeWidth} />
         <path d="M50 78 Q45 75, 50 72 Q55 75, 50 78" strokeWidth={S.D.strokeWidth} />
 
-        {/* Depth shadow on projection */}
-        <path d="M82 50 Q78 65, 68 75" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
-        <path d="M50 82 Q65 78, 75 68" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        {/* 3D projection shadow */}
+        <path d="M78 58 Q74 68, 66 76" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        <path d="M58 78 Q68 74, 76 66" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
       </g>
     </g>
   </svg>
 )
 
 /**
- * CARTOUCHE - Decorative frame/tablet for inscriptions
- * 3D PERSPECTIVE: Ornate scrolled frame viewed at angle
- * Shows: Rolled scrollwork frame with central tablet area
- * Distinct: Baroque curves, often with heraldry or text
+ * CARTOUCHE - Scrolled decorative frame/shield for inscriptions
+ * 3D PERSPECTIVE: Baroque scrollwork frame with deep relief
+ * Shows: Rolled scrollwork frame with curling volutes, central tablet
+ * Distinct: Baroque curves, heraldic quality, dramatic scrollwork
  */
 const CartoucheSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="cartouche-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#cartouche-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
-      {/* CONTEXT (near): Building facade with rusticated stonework */}
+      {/* CONTEXT (near): Building facade */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        {/* Cornice line above */}
         <path d="M0 3 L100 3" strokeWidth="0.8" />
         <path d="M0 6 L100 6" strokeWidth="0.6" />
-        {/* Rusticated stone courses (wall surface) */}
-        <path d="M0 0 L100 0" />
-        <path d="M0 100 L100 100" />
-        <path d="M0 8 L8 8 M15 8 L30 8 M38 8 L55 8 M62 8 L78 8 M85 8 L100 8" strokeWidth="0.3" />
-        <path d="M0 95 L12 95 M20 95 L40 95 M48 95 L68 95 M76 95 L100 95" strokeWidth="0.3" />
-        {/* Window opening below */}
-        <path d="M35 92 L35 100 M65 92 L65 100" strokeWidth="0.4" />
-        <path d="M35 92 L65 92" strokeWidth="0.4" />
-        {/* Pilaster hints on sides */}
         <path d="M5 0 L5 100" strokeWidth="0.4" />
         <path d="M95 0 L95 100" strokeWidth="0.4" />
       </g>
 
       {/* PRIMARY - Ornate cartouche frame in 3D */}
       <g strokeWidth={S.P.strokeWidthLight}>
-        {/* Central tablet/shield shape */}
-        <path d="M25 25 Q25 15, 50 15 Q75 15, 75 25 L75 65 Q75 80, 50 85 Q25 80, 25 65 Z" strokeWidth={S.P.strokeWidthBold} />
-        <path d="M28 28 Q28 20, 50 20 Q72 20, 72 28 L72 62 Q72 75, 50 80 Q28 75, 28 62 Z" strokeWidth={S.P.strokeWidthLight} opacity={S.D.opacityStrong} />
+        {/* Central shield/tablet shape */}
+        <path d="M25 25 Q25 14, 50 12 Q75 14, 75 25 L75 65 Q75 80, 50 85 Q25 80, 25 65 Z" strokeWidth={S.P.strokeWidthBold} />
+        {/* Inner relief line */}
+        <path d="M28 28 Q28 20, 50 18 Q72 20, 72 28 L72 62 Q72 75, 50 80 Q28 75, 28 62 Z" strokeWidth={S.P.strokeWidthLight} opacity={S.D.opacityStrong} />
+        {/* Shadow fill for depth */}
+        <path d="M30 30 Q30 22, 50 20 Q70 22, 70 30 L70 60 Q70 72, 50 77 Q30 72, 30 60 Z" fill="currentColor" opacity="0.04" stroke="none" />
 
-        {/* Top scroll ornament */}
-        <path d="M50 15 Q40 8, 30 12 Q22 18, 25 25" strokeWidth={S.P.strokeWidth} />
-        <path d="M50 15 Q60 8, 70 12 Q78 18, 75 25" strokeWidth={S.P.strokeWidth} />
-        <path d="M30 12 Q28 8, 35 5 Q42 3, 50 8" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M70 12 Q72 8, 65 5 Q58 3, 50 8" strokeWidth={S.P.strokeWidthLight} />
+        {/* Top scrollwork - curling volutes */}
+        <path d="M50 12 Q38 5, 28 10 Q20 16, 25 25" strokeWidth={S.P.strokeWidth} />
+        <path d="M50 12 Q62 5, 72 10 Q80 16, 75 25" strokeWidth={S.P.strokeWidth} />
+        {/* Volute spirals */}
+        <path d="M28 14 Q22 10, 18 16 Q16 24, 20 22 Q24 20, 26 18" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M72 14 Q78 10, 82 16 Q84 24, 80 22 Q76 20, 74 18" strokeWidth={S.P.strokeWidthLight} />
 
-        {/* Curling volutes at top */}
-        <path d="M28 18 Q22 15, 20 20 Q18 28, 22 25" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M72 18 Q78 15, 80 20 Q82 28, 78 25" strokeWidth={S.P.strokeWidthLight} />
+        {/* Side scroll ornaments with curl */}
+        <path d="M25 40 Q14 42, 10 50 Q8 60, 16 56 Q22 52, 25 55" strokeWidth={S.P.strokeWidth} />
+        <path d="M75 40 Q86 42, 90 50 Q92 60, 84 56 Q78 52, 75 55" strokeWidth={S.P.strokeWidth} />
+        {/* Side volute spirals */}
+        <path d="M12 54 Q8 52, 10 48 Q14 46, 16 50" strokeWidth={S.D.strokeWidth} />
+        <path d="M88 54 Q92 52, 90 48 Q86 46, 84 50" strokeWidth={S.D.strokeWidth} />
 
-        {/* Side scroll ornaments */}
-        <path d="M25 40 Q15 42, 12 50 Q10 58, 18 55 Q22 52, 25 55" strokeWidth={S.P.strokeWidth} />
-        <path d="M75 40 Q85 42, 88 50 Q90 58, 82 55 Q78 52, 75 55" strokeWidth={S.P.strokeWidth} />
-
-        {/* Bottom scroll ornament */}
-        <path d="M50 85 Q35 88, 30 82 Q28 75, 32 78" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M50 85 Q65 88, 70 82 Q72 75, 68 78" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M50 85 L50 92" strokeWidth={S.P.strokeWidth} />
-        <path d="M45 92 Q50 98, 55 92" strokeWidth={S.P.strokeWidthLight} />
+        {/* Bottom scroll and pendant */}
+        <path d="M50 85 Q34 88, 28 80 Q26 74, 30 76" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M50 85 Q66 88, 72 80 Q74 74, 70 76" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M50 85 L50 94" strokeWidth={S.P.strokeWidth} />
+        <path d="M45 94 Q50 100, 55 94" strokeWidth={S.P.strokeWidthLight} />
 
         {/* Leaf accents on scrollwork */}
-        <path d="M18 48 Q14 45, 16 42 Q20 44, 18 48" strokeWidth={S.D.strokeWidth} />
-        <path d="M82 48 Q86 45, 84 42 Q80 44, 82 48" strokeWidth={S.D.strokeWidth} />
+        <path d="M16 46 Q12 43, 14 40 Q18 42, 16 46" strokeWidth={S.D.strokeWidth} />
+        <path d="M84 46 Q88 43, 86 40 Q82 42, 84 46" strokeWidth={S.D.strokeWidth} />
 
-        {/* Central inscription area (blank tablet) */}
+        {/* Central inscription area */}
         <path d="M35 35 L65 35 L65 60 L35 60 Z" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
-
-        {/* Decorative lines suggesting text */}
         <path d="M40 42 L60 42" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
         <path d="M38 48 L62 48" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
         <path d="M40 54 L60 54" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
-
-        {/* Shadow depth on scroll edges */}
-        <path d="M22 22 Q20 25, 22 28" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-        <path d="M15 52 Q12 55, 15 58" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
       </g>
     </g>
   </svg>
@@ -342,98 +306,60 @@ const CartoucheSVG: React.FC<SVGProps> = ({ showHalo }) => (
 
 /**
  * CORNICE - Projecting horizontal molding at wall/ceiling junction
- * 3D PERSPECTIVE: Looking up at projecting cornice profile
- * Shows: Multiple molding profiles stacked, deep shadows
- * Distinct: Classical proportions, crown molding, entablature top
+ * 3D PERSPECTIVE: 3/4 view looking up at projecting cornice profile
+ * Shows: Multiple stacked molding profiles, deep shadows beneath corona
+ * Distinct: Classical proportions, strong horizontal projection
  */
 const CorniceSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="cornice-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#cornice-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
-      {/* CONTEXT (near): Building wall with columns and roof above */}
+      {/* CONTEXT (near): Wall below and roof above */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        {/* Roof/parapet above cornice - extending off-page */}
-        <path d="M-10 28 L110 28" strokeWidth="0.5" />
         <path d="M-10 25 L110 25" strokeWidth="0.7" />
-
-        {/* Wall surface below - extending off-page */}
-        <path d="M-10 100 L-10 72" strokeWidth="0.6" />
-        <path d="M110 100 L110 72" strokeWidth="0.6" />
-        <path d="M-10 100 L110 100" strokeWidth="0.6" />
-
-        {/* Masonry coursing on wall */}
         <path d="M-10 80 L110 80" strokeWidth="0.4" opacity="0.5" />
         <path d="M-10 88 L110 88" strokeWidth="0.4" opacity="0.5" />
-        <path d="M-10 96 L110 96" strokeWidth="0.4" opacity="0.5" />
-
-        {/* Column capital tops below architrave */}
-        <path d="M5 72 L5 85" strokeWidth="0.7" opacity="0.6" />
-        <path d="M12 72 L12 85" strokeWidth="0.7" opacity="0.6" />
-        <path d="M5 75 L12 75" strokeWidth="0.4" opacity="0.4" />
-
-        <path d="M45 72 L45 85" strokeWidth="0.7" opacity="0.6" />
-        <path d="M55 72 L55 85" strokeWidth="0.7" opacity="0.6" />
-        <path d="M45 75 L55 75" strokeWidth="0.4" opacity="0.4" />
-
-        <path d="M88 72 L88 85" strokeWidth="0.7" opacity="0.6" />
-        <path d="M95 72 L95 85" strokeWidth="0.7" opacity="0.6" />
-        <path d="M88 75 L95 75" strokeWidth="0.4" opacity="0.4" />
-
-        {/* Window hint between columns */}
-        <path d="M20 78 L20 95 L38 95 L38 78 Z" strokeWidth="0.4" opacity="0.4" />
-        <path d="M62 78 L62 95 L80 95 L80 78 Z" strokeWidth="0.4" opacity="0.4" />
+        <path d="M5 72 L12 72 L12 85" strokeWidth="0.5" opacity="0.6" />
+        <path d="M88 72 L95 72 L95 85" strokeWidth="0.5" opacity="0.6" />
       </g>
 
-      {/* PRIMARY - Cornice profile in perspective */}
+      {/* PRIMARY - Cornice profile showing 3D projection */}
       <g strokeWidth={S.P.strokeWidthLight}>
-        {/* Main corona (projecting cap) */}
+        {/* Corona / drip edge - the big projecting cap */}
+        <path d="M0 32 L100 32" strokeWidth={S.P.strokeWidthBold} />
         <path d="M0 35 L100 35" strokeWidth={S.P.strokeWidthBold} />
-        <path d="M0 38 L100 38" strokeWidth={S.P.strokeWidthBold} />
+        {/* Soffit (underside) showing depth */}
+        <path d="M5 35 L5 40 L95 40 L95 35" strokeWidth={S.P.strokeWidth} />
+        {/* Deep shadow under corona */}
+        <rect x="5" y="36" width="90" height="4" fill="currentColor" opacity="0.08" stroke="none" />
 
-        {/* Drip edge (soffit with shadow) */}
-        <path d="M5 38 L5 42 L95 42 L95 38" strokeWidth={S.P.strokeWidth} />
-        <path d="M8 40 L92 40" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-
-        {/* Cyma recta (S-curve) molding */}
-        <path d="M0 42 Q15 48, 0 55" strokeWidth={S.P.strokeWidth} />
-        <path d="M100 42 Q85 48, 100 55" strokeWidth={S.P.strokeWidth} />
-        <path d="M0 55 L100 55" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M10 42 Q25 48, 10 55" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-        <path d="M30 42 Q45 48, 30 55" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-        <path d="M50 42 Q65 48, 50 55" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-        <path d="M70 42 Q85 48, 70 55" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        {/* Cyma recta S-curve molding */}
+        <path d="M0 40 L100 40" strokeWidth={S.P.strokeWidthLight} />
+        {/* S-curve profile repeated */}
+        <path d="M0 40 Q8 46, 0 52" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        <path d="M20 40 Q28 46, 20 52" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        <path d="M40 40 Q48 46, 40 52" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        <path d="M60 40 Q68 46, 60 52" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        <path d="M80 40 Q88 46, 80 52" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        <path d="M0 52 L100 52" strokeWidth={S.P.strokeWidthLight} />
 
         {/* Dentil band */}
         <path d="M0 55 L100 55" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M0 62 L100 62" strokeWidth={S.P.strokeWidthLight} />
-        {/* Individual dentils */}
-        <path d="M8 55 L8 62" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M18 55 L18 62" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M28 55 L28 62" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M38 55 L38 62" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M48 55 L48 62" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M58 55 L58 62" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M68 55 L68 62" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M78 55 L78 62" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M88 55 L88 62" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M98 55 L98 62" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M0 64 L100 64" strokeWidth={S.P.strokeWidthLight} />
+        {/* Individual dentil blocks with shadow */}
+        {[6, 16, 26, 36, 46, 56, 66, 76, 86, 96].map((x, i) => (
+          <g key={i}>
+            <path d={`M${x} 55 L${x} 64 L${x + 6} 64 L${x + 6} 55 Z`} strokeWidth={S.P.strokeWidthLight} />
+            <rect x={x + 1} y={56} width={4} height={7} fill="currentColor" opacity="0.04" stroke="none" />
+          </g>
+        ))}
 
-        {/* Bed molding below dentils */}
-        <path d="M0 65 L100 65" strokeWidth={S.P.strokeWidth} />
-        <path d="M0 62 Q5 63.5, 0 65" strokeWidth={S.D.strokeWidth} />
-
-        {/* Frieze band */}
-        <path d="M0 68 L100 68" strokeWidth={S.D.strokeWidth} />
+        {/* Bed molding */}
+        <path d="M0 67 L100 67" strokeWidth={S.P.strokeWidth} />
 
         {/* Architrave (bottom) */}
-        <path d="M0 68 L0 72 L100 72 L100 68" strokeWidth={S.P.strokeWidth} />
+        <path d="M0 67 L0 72 L100 72 L100 67" strokeWidth={S.P.strokeWidth} />
         <path d="M0 72 L100 72" strokeWidth={S.P.strokeWidthBold} />
-
-        {/* Shadow under projection */}
-        <path d="M10 40 L90 40" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
-
-        {/* Ceiling plane above */}
-        <path d="M0 30 L100 30" strokeWidth={S.D.strokeWidth} strokeDasharray="4 3" opacity={S.D.opacitySubtle} />
       </g>
     </g>
   </svg>
@@ -441,163 +367,115 @@ const CorniceSVG: React.FC<SVGProps> = ({ showHalo }) => (
 
 /**
  * DENTIL - Row of small rectangular blocks like teeth
- * 3D PERSPECTIVE: Close-up of dentil course with shadows
- * Shows: Evenly spaced rectangular blocks in rhythmic row
- * Distinct: Classical Roman detail, repetitive geometric
+ * Shows: Evenly spaced rectangular tooth-like blocks in rhythmic row
+ * Distinct: Classical Roman detail, repetitive geometric, strong rhythm
  */
 const DentilSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="dentil-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#dentil-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
-      {/* CONTEXT (near): Full entablature section showing where dentils sit */}
+      {/* CONTEXT (near): Entablature */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        {/* Cornice/corona above */}
         <path d="M0 10 L100 10" strokeWidth="1.2" />
         <path d="M0 15 L100 15" strokeWidth="0.8" />
-        {/* Cyma molding above dentils */}
-        <path d="M0 22 Q10 18, 20 22 Q30 18, 40 22 Q50 18, 60 22 Q70 18, 80 22 Q90 18, 100 22" strokeWidth="0.5" />
-        {/* Architrave/wall below */}
         <path d="M0 78 L100 78" strokeWidth="0.8" />
         <path d="M0 82 L100 82" strokeWidth="1" />
-        {/* Column capitals below */}
-        <path d="M10 82 L10 100" strokeWidth="0.5" />
-        <path d="M25 82 L25 100" strokeWidth="0.5" />
-        <path d="M50 82 L50 100" strokeWidth="0.5" />
-        <path d="M75 82 L75 100" strokeWidth="0.5" />
-        <path d="M90 82 L90 100" strokeWidth="0.5" />
       </g>
 
-      {/* PRIMARY - Dentil blocks in 3D perspective */}
+      {/* PRIMARY - 3/4 perspective dentil row with visible top and front faces */}
       <g strokeWidth={S.P.strokeWidthLight}>
         {/* Upper bed molding */}
-        <path d="M0 30 L100 30" strokeWidth={S.P.strokeWidthBold} />
-        <path d="M0 33 L100 33" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M0 25 L100 25" strokeWidth={S.P.strokeWidthBold} />
+        <path d="M0 28 L100 28" strokeWidth={S.P.strokeWidthLight} />
 
-        {/* Dentil blocks - perspective making closer ones larger */}
-        {/* Block 1 (leftmost) */}
-        <path d="M5 36 L5 58 L12 58 L12 36 Z" strokeWidth={S.P.strokeWidth} />
-        <path d="M6 38 L6 56 L11 56 L11 38 Z" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
+        {/* Dentil blocks - showing front face and top face in 3/4 */}
+        {[4, 16, 28, 40, 52, 64, 76, 88].map((x, i) => (
+          <g key={i}>
+            {/* Front face */}
+            <path d={`M${x} 32 L${x} 60 L${x + 10} 60 L${x + 10} 32 Z`} strokeWidth={S.P.strokeWidth} />
+            {/* Top face (3D) */}
+            <path d={`M${x} 32 L${x + 2} 28 L${x + 12} 28 L${x + 10} 32`} strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+            {/* Right side face (3D) */}
+            <path d={`M${x + 10} 32 L${x + 12} 28 L${x + 12} 56 L${x + 10} 60`} strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+            {/* Shadow fill on front face */}
+            <rect x={x + 1} y={34} width={8} height={24} fill="currentColor" opacity="0.04" stroke="none" />
+          </g>
+        ))}
 
-        {/* Block 2 */}
-        <path d="M18 36 L18 60 L27 60 L27 36 Z" strokeWidth={S.P.strokeWidthBold} />
-        <path d="M19 38 L19 58 L26 58 L26 38 Z" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
-
-        {/* Block 3 (center, closest - largest) */}
-        <path d="M33 35 L33 62 L45 62 L45 35 Z" strokeWidth={S.P.strokeWidthBold} />
-        <path d="M35 37 L35 60 L43 60 L43 37 Z" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-        {/* Front face detail */}
-        <path d="M36 40 L42 40" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
-        <path d="M36 50 L42 50" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
-
-        {/* Block 4 (center) */}
-        <path d="M51 35 L51 62 L63 62 L63 35 Z" strokeWidth={S.P.strokeWidthBold} />
-        <path d="M53 37 L53 60 L61 60 L61 37 Z" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-
-        {/* Block 5 */}
-        <path d="M69 36 L69 60 L78 60 L78 36 Z" strokeWidth={S.P.strokeWidthBold} />
-        <path d="M70 38 L70 58 L77 58 L77 38 Z" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
-
-        {/* Block 6 (rightmost) */}
-        <path d="M84 36 L84 58 L91 58 L91 36 Z" strokeWidth={S.P.strokeWidth} />
-        <path d="M85 38 L85 56 L90 56 L90 38 Z" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
+        {/* Deep shadows between dentils */}
+        {[14, 26, 38, 50, 62, 74, 86].map((x, i) => (
+          <rect key={i} x={x} y={32} width={2} height={28} fill="currentColor" opacity="0.1" stroke="none" />
+        ))}
 
         {/* Lower bed molding */}
         <path d="M0 65 L100 65" strokeWidth={S.P.strokeWidthLight} />
         <path d="M0 68 L100 68" strokeWidth={S.P.strokeWidthBold} />
-
-        {/* Deep shadows between dentils */}
-        <path d="M13 40 L17 40" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-        <path d="M13 50 L17 50" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-        <path d="M28 40 L32 40" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-        <path d="M46 40 L50 40" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-        <path d="M64 40 L68 40" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-        <path d="M79 40 L83 40" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-
-        {/* Shadow under blocks */}
-        <path d="M5 60 L12 60" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
-        <path d="M33 64 L45 64" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
-        <path d="M51 64 L63 64" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
       </g>
     </g>
   </svg>
 )
 
 /**
- * EGG AND DART - Alternating ovolo and arrowhead motifs
- * 3D PERSPECTIVE: Close-up showing egg shapes and dart points
- * Shows: Oval "eggs" alternating with pointed "darts"
- * Distinct: Classical Roman, often on ovolo moldings
+ * EGG AND DART - Alternating oval eggs and pointed dart/arrow shapes
+ * Shows: Ovolo molding with alternating egg (oval) and dart (arrow) motifs
+ * Distinct: Classical Roman, rhythmic alternation of rounded and pointed forms
  */
 const EggAndDartSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="eggdart-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#eggdart-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
-      {/* CONTEXT (near): Entablature on column capital showing where egg-and-dart sits */}
+      {/* CONTEXT (near): Entablature */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        {/* Corona/cornice above */}
         <path d="M0 12 L100 12" strokeWidth="1" />
         <path d="M0 16 L100 16" strokeWidth="0.8" />
-        {/* Frieze band below the egg-and-dart */}
         <path d="M0 82 L100 82" strokeWidth="0.8" />
         <path d="M0 88 L100 88" strokeWidth="0.6" />
-        {/* Column capital tops below entablature */}
-        <path d="M8 88 Q8 94, 15 96 L15 100" strokeWidth="0.5" />
-        <path d="M35 88 L35 100" strokeWidth="0.5" />
-        <path d="M65 88 L65 100" strokeWidth="0.5" />
-        <path d="M92 88 Q92 94, 85 96 L85 100" strokeWidth="0.5" />
-        {/* Echinus curve hint (where egg-and-dart pattern would sit on column) */}
-        <path d="M15 96 Q25 92, 35 96" strokeWidth="0.4" />
-        <path d="M65 96 Q75 92, 85 96" strokeWidth="0.4" />
       </g>
 
-      {/* PRIMARY - Egg and dart pattern in 3D */}
+      {/* PRIMARY - Egg and dart with 3D relief */}
       <g strokeWidth={S.P.strokeWidthLight}>
-        {/* Upper curved ovolo molding surface */}
-        <path d="M0 25 Q50 18, 100 25" strokeWidth={S.P.strokeWidth} />
-        <path d="M0 28 L100 28" strokeWidth={S.P.strokeWidthLight} />
+        {/* Curved ovolo molding surface */}
+        <path d="M0 24 Q50 18, 100 24" strokeWidth={S.P.strokeWidth} />
+        <path d="M0 27 L100 27" strokeWidth={S.P.strokeWidthLight} />
 
-        {/* EGG 1 (left, smaller due to perspective) */}
-        <ellipse cx="12" cy="48" rx="7" ry="12" strokeWidth={S.P.strokeWidth} />
-        <path d="M12 36 L12 32" strokeWidth={S.D.strokeWidth} />
-        <ellipse cx="12" cy="48" rx="4" ry="8" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
+        {/* EGG 1 */}
+        <ellipse cx="14" cy="48" rx="8" ry="14" strokeWidth={S.P.strokeWidth} />
+        <ellipse cx="14" cy="48" rx="4.5" ry="9" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
+        <path d="M14 34 L14 30" strokeWidth={S.D.strokeWidth} />
+        {/* Shell highlight */}
+        <path d="M10 40 Q14 37, 18 40" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        {/* Egg shadow */}
+        <ellipse cx="15" cy="50" rx="5" ry="10" fill="currentColor" opacity="0.04" stroke="none" />
 
         {/* DART 1 */}
-        <path d="M24 35 L27 50 L24 65 L21 50 Z" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M24 40 L24 60" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        <path d="M28 32 L31 50 L28 68 L25 50 Z" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M28 38 L28 62" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
 
         {/* EGG 2 (center-left, larger) */}
-        <ellipse cx="38" cy="48" rx="9" ry="15" strokeWidth={S.P.strokeWidthBold} />
-        <path d="M38 33 L38 28" strokeWidth={S.D.strokeWidth} />
-        <ellipse cx="38" cy="48" rx="5" ry="10" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
-        {/* Egg shell highlight */}
-        <path d="M35 40 Q38 38, 41 40" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        <ellipse cx="42" cy="48" rx="9" ry="16" strokeWidth={S.P.strokeWidthBold} />
+        <ellipse cx="42" cy="48" rx="5" ry="10" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
+        <path d="M42 32 L42 27" strokeWidth={S.D.strokeWidth} />
+        <path d="M38 40 Q42 37, 46 40" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        <ellipse cx="43" cy="50" rx="6" ry="11" fill="currentColor" opacity="0.04" stroke="none" />
 
         {/* DART 2 */}
-        <path d="M52 33 L56 50 L52 67 L48 50 Z" strokeWidth={S.P.strokeWidth} />
-        <path d="M52 38 L52 62" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
+        <path d="M56 32 L60 50 L56 68 L52 50 Z" strokeWidth={S.P.strokeWidth} />
+        <path d="M56 36 L56 64" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
 
-        {/* EGG 3 (center, closest - largest) */}
-        <ellipse cx="68" cy="48" rx="10" ry="16" strokeWidth={S.P.strokeWidthBold} />
-        <path d="M68 32 L68 26" strokeWidth={S.P.strokeWidthLight} />
-        <ellipse cx="68" cy="48" rx="6" ry="11" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-        {/* Shell curve detail */}
-        <path d="M64 38 Q68 35, 72 38" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
+        {/* EGG 3 (center-right, largest) */}
+        <ellipse cx="72" cy="48" rx="10" ry="17" strokeWidth={S.P.strokeWidthBold} />
+        <ellipse cx="72" cy="48" rx="6" ry="11" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        <path d="M72 31 L72 25" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M68 38 Q72 34, 76 38" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
+        <ellipse cx="73" cy="50" rx="7" ry="12" fill="currentColor" opacity="0.04" stroke="none" />
 
         {/* DART 3 */}
-        <path d="M83 33 L87 50 L83 67 L79 50 Z" strokeWidth={S.P.strokeWidth} />
-        <path d="M83 38 L83 62" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
-
-        {/* EGG 4 (right edge, smaller) */}
-        <ellipse cx="96" cy="48" rx="6" ry="11" strokeWidth={S.P.strokeWidth} />
+        <path d="M87 32 L91 50 L87 68 L83 50 Z" strokeWidth={S.P.strokeWidth} />
+        <path d="M87 36 L87 64" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
 
         {/* Lower molding edge */}
         <path d="M0 72 L100 72" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M0 75 Q50 82, 100 75" strokeWidth={S.P.strokeWidth} />
-
-        {/* Shadow under eggs */}
-        <path d="M5 62 Q12 65, 19 62" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
-        <path d="M29 64 Q38 68, 47 64" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
-        <path d="M58 65 Q68 70, 78 65" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
+        <path d="M0 76 Q50 82, 100 76" strokeWidth={S.P.strokeWidth} />
       </g>
     </g>
   </svg>
@@ -605,269 +483,208 @@ const EggAndDartSVG: React.FC<SVGProps> = ({ showHalo }) => (
 
 /**
  * FINIAL - Ornament at apex of gable, spire, or post
- * 3D PERSPECTIVE: Looking up at finial on pinnacle
- * Shows: Decorative terminating element, often floral or geometric
- * Distinct: Crowning element, vertical emphasis
+ * 3D PERSPECTIVE: Looking up at finial crowning element
+ * Shows: Fleur-de-lis or bulb form with ball at apex, decorative rings
+ * Distinct: Crowning vertical element, upward emphasis
  */
 const FinialSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="finial-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#finial-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
-      {/* CONTEXT (near): Gothic pinnacle and buttress structure below */}
+      {/* CONTEXT (near): Gothic pinnacle below */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        {/* Gable/pediment */}
         <path d="M22 95 L50 80 L78 95" strokeWidth="0.8" />
-        {/* Pinnacle shaft tapering */}
         <path d="M40 82 L40 100" strokeWidth="0.6" />
         <path d="M60 82 L60 100" strokeWidth="0.6" />
-        {/* Crocket ornaments on gable edges */}
         <path d="M30 90 Q28 88, 30 86" strokeWidth="0.4" />
-        <path d="M36 87 Q34 85, 36 83" strokeWidth="0.4" />
         <path d="M70 90 Q72 88, 70 86" strokeWidth="0.4" />
-        <path d="M64 87 Q66 85, 64 83" strokeWidth="0.4" />
-        {/* Buttress wall beneath */}
-        <path d="M35 100 L35 95 L65 95 L65 100" strokeWidth="0.5" />
-        {/* Adjacent pinnacle hint */}
-        <path d="M5 70 L5 100" strokeWidth="0.4" />
-        <path d="M95 70 L95 100" strokeWidth="0.4" />
-        <path d="M2 70 L8 70" strokeWidth="0.4" />
-        <path d="M92 70 L98 70" strokeWidth="0.4" />
       </g>
 
-      {/* PRIMARY - Finial ornament in 3D */}
+      {/* PRIMARY - Finial in 3D with shadow */}
       <g strokeWidth={S.P.strokeWidthLight}>
-        {/* Base mounting plate */}
-        <ellipse cx="50" cy="78" rx="12" ry="4" strokeWidth={S.P.strokeWidth} />
-        <path d="M38 78 L38 82 L62 82 L62 78" strokeWidth={S.P.strokeWidthLight} />
+        {/* Base mounting plate - elliptical for 3/4 */}
+        <ellipse cx="50" cy="78" rx="14" ry="5" strokeWidth={S.P.strokeWidth} />
+        <path d="M36 78 L36 82 L64 82 L64 78" strokeWidth={S.P.strokeWidthLight} />
 
-        {/* Lower bulb/vase form */}
-        <path d="M42 78 Q42 72, 45 68 Q50 64, 55 68 Q58 72, 58 78" strokeWidth={S.P.strokeWidth} />
-        <path d="M44 74 Q50 70, 56 74" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        {/* Lower vase form */}
+        <path d="M42 78 Q40 72, 44 66 Q50 62, 56 66 Q60 72, 58 78" strokeWidth={S.P.strokeWidth} />
+        {/* Shadow on vase */}
+        <path d="M54 74 Q58 70, 56 66" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
 
-        {/* Neck transition */}
-        <path d="M45 68 L45 62 Q50 60, 55 62 L55 68" strokeWidth={S.P.strokeWidth} />
+        {/* Neck with decorative rings */}
+        <path d="M44 66 L44 60 Q50 58, 56 60 L56 66" strokeWidth={S.P.strokeWidth} />
+        <path d="M45 64 L55 64" strokeWidth={S.D.strokeWidth} />
+        <path d="M46 62 L54 62" strokeWidth={S.D.strokeWidth} />
 
-        {/* Central body - ball/onion shape */}
-        <path d="M40 58 Q40 48, 50 42 Q60 48, 60 58" strokeWidth={S.P.strokeWidthBold} />
-        <path d="M45 62 Q42 60, 40 58" strokeWidth={S.P.strokeWidth} />
-        <path d="M55 62 Q58 60, 60 58" strokeWidth={S.P.strokeWidth} />
-        {/* Body highlight */}
-        <path d="M45 52 Q50 48, 55 52" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
+        {/* Central body - onion/ball shape */}
+        <path d="M38 56 Q38 44, 50 38 Q62 44, 62 56" strokeWidth={S.P.strokeWidthBold} />
+        <path d="M44 60 Q40 58, 38 56" strokeWidth={S.P.strokeWidth} />
+        <path d="M56 60 Q60 58, 62 56" strokeWidth={S.P.strokeWidth} />
+        {/* Highlight curve */}
+        <path d="M44 48 Q50 44, 56 48" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
+        {/* Shadow fill */}
+        <ellipse cx="52" cy="50" rx="8" ry="10" fill="currentColor" opacity="0.04" stroke="none" />
 
-        {/* Upper fleur-de-lis or leaf crown */}
-        <path d="M50 42 L50 25" strokeWidth={S.P.strokeWidthBold} />
+        {/* Fleur-de-lis crown */}
+        <path d="M50 38 L50 22" strokeWidth={S.P.strokeWidthBold} />
         {/* Central petal */}
-        <path d="M48 28 Q50 18, 52 28" strokeWidth={S.P.strokeWidth} />
-        <path d="M48 22 L50 12 L52 22" strokeWidth={S.P.strokeWidth} />
+        <path d="M47 24 Q50 14, 53 24" strokeWidth={S.P.strokeWidth} />
+        {/* Side petals */}
+        <path d="M50 32 Q40 26, 36 32 Q33 40, 38 38" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M50 32 Q60 26, 64 32 Q67 40, 62 38" strokeWidth={S.P.strokeWidthLight} />
 
-        {/* Side petals curving out */}
-        <path d="M50 35 Q42 30, 38 35 Q35 42, 40 40" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M50 35 Q58 30, 62 35 Q65 42, 60 40" strokeWidth={S.P.strokeWidthLight} />
-
-        {/* Small ball at apex */}
-        <circle cx="50" cy="10" r="4" strokeWidth={S.P.strokeWidth} />
-        <circle cx="50" cy="10" r="2" strokeWidth={S.D.strokeWidth} />
-
-        {/* Decorative rings on neck */}
-        <path d="M46 65 L54 65" strokeWidth={S.D.strokeWidth} />
-        <path d="M47 63 L53 63" strokeWidth={S.D.strokeWidth} />
-
-        {/* Shadow on body */}
-        <path d="M55 55 Q58 52, 58 48" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        {/* Apex ball */}
+        <circle cx="50" cy="10" r="5" strokeWidth={S.P.strokeWidth} />
+        <circle cx="50" cy="10" r="2.5" strokeWidth={S.D.strokeWidth} />
+        {/* Ball highlight */}
+        <path d="M47 8 Q50 6, 53 8" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
       </g>
     </g>
   </svg>
 )
 
 /**
- * GARGOYLE - Carved spout projecting from roof gutter
- * 3D PERSPECTIVE: Looking up at projecting grotesque figure
- * Shows: Fantastic creature with open mouth for water drainage
- * Distinct: Functional (drainage) yet decorative, medieval
+ * GARGOYLE - Grotesque water spout projecting from wall
+ * 3D PERSPECTIVE: Looking up at projecting dragon/demon figure
+ * Shows: Fantastic creature with open mouth for drainage, strong 3D projection
+ * Distinct: Functional drainage + decorative, projects dramatically from wall
  */
 const GargoyleSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="gargoyle-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#gargoyle-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
-      {/* CONTEXT (near): Cathedral wall, parapet, and buttress */}
+      {/* CONTEXT (near): Cathedral wall and parapet */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        {/* Cathedral wall face behind gargoyle */}
         <path d="M78 -5 L78 100" strokeWidth="0.8" />
         <path d="M85 -5 L85 100" strokeWidth="0.7" />
-        <path d="M92 -5 L92 100" strokeWidth="0.6" />
-
-        {/* Stone coursing on wall */}
         <path d="M78 10 L100 10" strokeWidth="0.4" opacity="0.6" />
-        <path d="M78 25 L100 25" strokeWidth="0.4" opacity="0.6" />
-        <path d="M78 40 L100 40" strokeWidth="0.4" opacity="0.6" />
-        <path d="M78 60 L100 60" strokeWidth="0.4" opacity="0.6" />
-        <path d="M78 75 L100 75" strokeWidth="0.4" opacity="0.6" />
-        <path d="M78 90 L100 90" strokeWidth="0.4" opacity="0.6" />
-
-        {/* Parapet/cornice from which gargoyle projects */}
-        <path d="M75 35 L100 35" strokeWidth="0.9" opacity="0.7" />
+        <path d="M78 35 L100 35" strokeWidth="0.9" opacity="0.7" />
         <path d="M73 38 L100 38" strokeWidth="0.7" opacity="0.5" />
-
-        {/* Gutter channel leading to gargoyle mounting point */}
-        <path d="M100 36 L82 36 L82 42" strokeWidth="0.5" opacity="0.5" />
-
-        {/* Buttress outline on right side */}
-        <path d="M92 -5 L92 100" strokeWidth="0.9" opacity="0.5" />
-        <path d="M100 -5 L100 100" strokeWidth="0.9" opacity="0.5" />
-        <path d="M92 0 Q96 15, 100 30" strokeWidth="0.5" opacity="0.4" />
-
-        {/* Roof slope above parapet */}
-        <path d="M75 35 L65 20 L55 10" strokeWidth="0.5" opacity="0.4" />
+        <path d="M78 60 L100 60" strokeWidth="0.4" opacity="0.6" />
+        <path d="M78 90 L100 90" strokeWidth="0.4" opacity="0.6" />
       </g>
 
-      {/* PRIMARY - Gargoyle projecting into space */}
+      {/* PRIMARY - Gargoyle projecting outward in 3D */}
       <g strokeWidth={S.P.strokeWidthLight}>
-        {/* Body emerging from wall */}
-        <path d="M82 40 Q70 38, 55 45 Q40 52, 30 48" strokeWidth={S.P.strokeWidthBold} />
-        <path d="M82 55 Q70 58, 55 55 Q42 52, 35 58" strokeWidth={S.P.strokeWidthBold} />
+        {/* Mounting block where body meets wall */}
+        <path d="M78 35 L78 58 L72 58 L72 38" strokeWidth={S.P.strokeWidth} />
+        <rect x="72" y="38" width="6" height="20" fill="currentColor" opacity="0.06" stroke="none" />
+
+        {/* Body emerging from wall - muscular and textured */}
+        <path d="M72 40 Q60 36, 45 42 Q32 48, 25 45" strokeWidth={S.P.strokeWidthBold} />
+        <path d="M72 55 Q62 58, 48 54 Q36 50, 28 56" strokeWidth={S.P.strokeWidthBold} />
+        {/* Body underside shadow */}
+        <path d="M70 52 Q58 56, 45 52 Q34 48, 30 54" fill="currentColor" opacity="0.06" stroke="none" />
 
         {/* Head - fierce dragon/demon face */}
-        <path d="M30 48 Q22 42, 15 45 Q8 50, 12 58 Q18 65, 30 60" strokeWidth={S.P.strokeWidthBold} />
+        <path d="M25 45 Q18 38, 12 42 Q5 48, 10 56 Q16 62, 28 56" strokeWidth={S.P.strokeWidthBold} />
 
-        {/* Open mouth (water spout) */}
-        <path d="M12 52 L5 52 L5 56 L12 56" strokeWidth={S.P.strokeWidth} />
-        <path d="M8 52 L8 56" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        {/* Open mouth (water spout) - deep recess */}
+        <path d="M10 48 L3 48 L3 54 L10 54" strokeWidth={S.P.strokeWidth} />
+        <rect x="3" y="48" width="7" height="6" fill="currentColor" opacity="0.1" stroke="none" />
         {/* Tongue */}
-        <path d="M10 54 Q6 55, 3 54" strokeWidth={S.D.strokeWidth} />
+        <path d="M8 51 Q4 52, 1 51" strokeWidth={S.D.strokeWidth} />
 
-        {/* Eyes - bulging and menacing */}
-        <circle cx="20" cy="48" r="4" strokeWidth={S.P.strokeWidth} />
-        <circle cx="20" cy="48" r="2" strokeWidth={S.D.strokeWidth} />
-        <circle cx="28" cy="45" r="3" strokeWidth={S.P.strokeWidthLight} />
-        <circle cx="28" cy="45" r="1.5" strokeWidth={S.D.strokeWidth} />
+        {/* Eyes - bulging */}
+        <circle cx="18" cy="44" r="4" strokeWidth={S.P.strokeWidth} />
+        <circle cx="18" cy="44" r="2" fill="currentColor" opacity="0.08" stroke="currentColor" strokeWidth={S.D.strokeWidth} />
+        <circle cx="26" cy="42" r="3" strokeWidth={S.P.strokeWidthLight} />
+        <circle cx="26" cy="42" r="1.5" strokeWidth={S.D.strokeWidth} />
 
-        {/* Horns/ears */}
-        <path d="M22 42 Q18 35, 22 30 Q26 34, 24 40" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M32 40 Q35 32, 40 30 Q38 36, 34 42" strokeWidth={S.P.strokeWidthLight} />
+        {/* Horns */}
+        <path d="M20 38 Q16 30, 20 24 Q24 30, 22 36" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M30 38 Q34 28, 38 24 Q36 32, 32 38" strokeWidth={S.P.strokeWidthLight} />
 
-        {/* Fangs/teeth */}
-        <path d="M14 50 L16 48" strokeWidth={S.D.strokeWidth} />
-        <path d="M14 58 L16 60" strokeWidth={S.D.strokeWidth} />
+        {/* Fangs */}
+        <path d="M12 46 L14 44" strokeWidth={S.D.strokeWidth} />
+        <path d="M12 56 L14 58" strokeWidth={S.D.strokeWidth} />
 
-        {/* Wing or fin on back */}
-        <path d="M45 42 Q50 35, 60 38 Q55 42, 50 45" strokeWidth={S.P.strokeWidth} />
-        <path d="M48 38 L52 40" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        {/* Wing/fin on back */}
+        <path d="M42 38 Q48 30, 58 34 Q52 38, 46 42" strokeWidth={S.P.strokeWidth} />
+        <path d="M46 34 L50 36" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
 
-        {/* Clawed feet gripping edge */}
-        <path d="M35 58 Q30 65, 25 70 Q28 68, 32 65" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M25 70 L22 75" strokeWidth={S.D.strokeWidth} />
-        <path d="M28 68 L26 73" strokeWidth={S.D.strokeWidth} />
-        <path d="M31 66 L30 71" strokeWidth={S.D.strokeWidth} />
+        {/* Clawed feet gripping ledge */}
+        <path d="M32 56 Q28 64, 22 68" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M22 68 L19 72" strokeWidth={S.D.strokeWidth} />
+        <path d="M24 66 L22 70" strokeWidth={S.D.strokeWidth} />
+        <path d="M27 64 L26 68" strokeWidth={S.D.strokeWidth} />
 
-        {/* Tail curling */}
-        <path d="M75 50 Q80 45, 82 50 Q84 55, 80 58" strokeWidth={S.P.strokeWidthLight} />
+        {/* Scale texture */}
+        <path d="M50 46 Q53 48, 50 50" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        <path d="M58 44 Q61 46, 58 48" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        <path d="M65 45 Q68 47, 65 49" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
 
-        {/* Scale/texture on body */}
-        <path d="M55 48 Q58 50, 55 52" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-        <path d="M62 47 Q65 50, 62 53" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-        <path d="M70 48 Q73 50, 70 52" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-
-        {/* Water stream suggestion */}
-        <path d="M3 54 Q0 60, 5 70 Q10 80, 8 95" strokeWidth={S.D.strokeWidthFine} strokeDasharray="2 2" opacity={S.D.opacitySubtle} />
+        {/* Water stream effect */}
+        <path d="M1 52 Q-2 60, 2 72 Q6 84, 4 96" strokeWidth={S.E.strokeWidth} strokeDasharray={S.E.dash} opacity={S.E.opacityModerate} />
       </g>
     </g>
   </svg>
 )
 
 /**
- * GROTESQUE - Decorative carved figure (non-functional)
- * 3D PERSPECTIVE: Looking at wall-mounted fanciful creature
- * Shows: Hybrid creature or fantastical being, purely decorative
- * Distinct: Unlike gargoyle, no drainage function
+ * GROTESQUE - Decorative carved hybrid figure (non-functional, no drainage)
+ * Shows: Hybrid creature or fantastical face in circular medallion
+ * Distinct: Wall-mounted, purely decorative (unlike gargoyle), often in medallion
  */
 const GrotesqueSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="grotesque-halo" intensity={0.88} />}
     <g filter={showHalo ? "url(#grotesque-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
-      {/* CONTEXT (near): Cathedral facade wall with string courses */}
+      {/* CONTEXT (near): Cathedral facade wall */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        {/* Wall surface extending off-page */}
-        <path d="M-5 -5 L105 -5" />
-        <path d="M-5 105 L105 105" />
-        <path d="M-5 -5 L-5 105" />
-        <path d="M105 -5 L105 105" />
-
-        {/* Stone coursing on wall */}
+        <path d="M-5 5 L105 5" strokeWidth="0.8" opacity="0.6" />
+        <path d="M-5 95 L105 95" strokeWidth="0.8" opacity="0.6" />
         <path d="M-5 8 L8 8" opacity="0.5" />
         <path d="M92 8 L105 8" opacity="0.5" />
-        <path d="M-5 25 L8 25" opacity="0.5" />
-        <path d="M92 25 L105 25" opacity="0.5" />
-        <path d="M-5 50 L8 50" opacity="0.5" />
-        <path d="M92 50 L105 50" opacity="0.5" />
-        <path d="M-5 75 L8 75" opacity="0.5" />
-        <path d="M92 75 L105 75" opacity="0.5" />
-        <path d="M-5 92 L8 92" opacity="0.5" />
-        <path d="M92 92 L105 92" opacity="0.5" />
-
-        {/* String course / corbel table above medallion */}
-        <path d="M-5 5 L105 5" strokeWidth="0.8" opacity="0.6" />
-        {/* String course below medallion */}
-        <path d="M-5 95 L105 95" strokeWidth="0.8" opacity="0.6" />
-
-        {/* Adjacent medallion hint on left */}
         <circle cx="-15" cy="50" r="18" opacity="0.3" />
-        {/* Adjacent medallion hint on right */}
         <circle cx="115" cy="50" r="18" opacity="0.3" />
-
-        {/* Molded frame around medallion (beveled) */}
-        <path d="M8 8 L92 8 L92 92 L8 92 Z" strokeWidth="0.7" />
       </g>
 
-      {/* PRIMARY - Grotesque hybrid figure */}
+      {/* PRIMARY - Grotesque in circular medallion */}
       <g strokeWidth={S.P.strokeWidthLight}>
-        {/* Circular medallion frame */}
-        <circle cx="50" cy="50" r="38" strokeWidth={S.P.strokeWidthBold} />
-        <circle cx="50" cy="50" r="35" strokeWidth={S.P.strokeWidthLight} />
+        {/* Circular medallion frame with depth */}
+        <circle cx="50" cy="50" r="40" strokeWidth={S.P.strokeWidthBold} />
+        <circle cx="50" cy="50" r="37" strokeWidth={S.P.strokeWidthLight} />
+        {/* Inner shadow ring */}
+        <circle cx="50" cy="50" r="35" fill="currentColor" opacity="0.04" stroke="none" />
 
         {/* Face - human-animal hybrid */}
-        <ellipse cx="50" cy="45" rx="18" ry="22" strokeWidth={S.P.strokeWidth} />
+        <ellipse cx="50" cy="45" rx="20" ry="24" strokeWidth={S.P.strokeWidth} />
 
-        {/* Wild hair/mane */}
-        <path d="M32 35 Q28 25, 35 20 Q42 18, 50 22" strokeWidth={S.P.strokeWidth} />
-        <path d="M68 35 Q72 25, 65 20 Q58 18, 50 22" strokeWidth={S.P.strokeWidth} />
-        <path d="M35 25 Q40 20, 45 22" strokeWidth={S.D.strokeWidth} />
-        <path d="M55 22 Q60 20, 65 25" strokeWidth={S.D.strokeWidth} />
-        <path d="M50 22 Q50 15, 55 18" strokeWidth={S.D.strokeWidth} />
-        <path d="M50 22 Q50 15, 45 18" strokeWidth={S.D.strokeWidth} />
+        {/* Wild mane/hair */}
+        <path d="M30 35 Q26 22, 34 16 Q42 14, 50 18" strokeWidth={S.P.strokeWidth} />
+        <path d="M70 35 Q74 22, 66 16 Q58 14, 50 18" strokeWidth={S.P.strokeWidth} />
+        <path d="M36 22 Q40 17, 45 20" strokeWidth={S.D.strokeWidth} />
+        <path d="M55 20 Q60 17, 64 22" strokeWidth={S.D.strokeWidth} />
+        <path d="M50 18 Q48 12, 52 14" strokeWidth={S.D.strokeWidth} />
 
         {/* Large expressive eyes */}
-        <ellipse cx="42" cy="40" rx="6" ry="5" strokeWidth={S.P.strokeWidthLight} />
-        <ellipse cx="58" cy="40" rx="6" ry="5" strokeWidth={S.P.strokeWidthLight} />
-        <circle cx="42" cy="40" r="2.5" strokeWidth={S.D.strokeWidth} />
-        <circle cx="58" cy="40" r="2.5" strokeWidth={S.D.strokeWidth} />
+        <ellipse cx="41" cy="38" rx="6.5" ry="5.5" strokeWidth={S.P.strokeWidthLight} />
+        <ellipse cx="59" cy="38" rx="6.5" ry="5.5" strokeWidth={S.P.strokeWidthLight} />
+        <circle cx="41" cy="38" r="3" fill="currentColor" opacity="0.06" stroke="currentColor" strokeWidth={S.D.strokeWidth} />
+        <circle cx="59" cy="38" r="3" fill="currentColor" opacity="0.06" stroke="currentColor" strokeWidth={S.D.strokeWidth} />
 
-        {/* Pronounced eyebrows */}
-        <path d="M35 34 Q42 30, 48 34" strokeWidth={S.P.strokeWidth} />
-        <path d="M52 34 Q58 30, 65 34" strokeWidth={S.P.strokeWidth} />
+        {/* Heavy brows */}
+        <path d="M34 32 Q41 28, 48 32" strokeWidth={S.P.strokeWidth} />
+        <path d="M52 32 Q59 28, 66 32" strokeWidth={S.P.strokeWidth} />
 
         {/* Wide nose */}
-        <path d="M50 42 L50 52" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M46 52 Q50 55, 54 52" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M50 40 L48 50 Q50 53, 52 50 L50 40" strokeWidth={S.P.strokeWidthLight} />
 
-        {/* Grimacing mouth with tongue */}
-        <path d="M40 60 Q50 68, 60 60" strokeWidth={S.P.strokeWidth} />
-        <path d="M43 62 Q50 66, 57 62" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-        <path d="M50 64 Q50 70, 50 72" strokeWidth={S.D.strokeWidth} />
+        {/* Grimacing mouth with tongue sticking out */}
+        <path d="M38 58 Q50 66, 62 58" strokeWidth={S.P.strokeWidth} />
+        <path d="M42 60 Q50 64, 58 60" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        <path d="M50 62 Q50 68, 50 72" strokeWidth={S.D.strokeWidth} />
 
         {/* Pointed ears */}
-        <path d="M30 42 Q22 38, 25 28 Q28 32, 32 38" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M70 42 Q78 38, 75 28 Q72 32, 68 38" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M28 40 Q20 34, 23 24 Q26 30, 30 36" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M72 40 Q80 34, 77 24 Q74 30, 70 36" strokeWidth={S.P.strokeWidthLight} />
 
-        {/* Foliage emerging from mouth/beard */}
-        <path d="M42 68 Q35 75, 30 72 Q32 78, 38 76" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M58 68 Q65 75, 70 72 Q68 78, 62 76" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M50 72 Q50 80, 45 85" strokeWidth={S.D.strokeWidth} />
-        <path d="M50 72 Q50 80, 55 85" strokeWidth={S.D.strokeWidth} />
-
-        {/* Decorative swirls around */}
-        <path d="M18 50 Q15 45, 18 40" strokeWidth={S.D.strokeWidth} />
-        <path d="M82 50 Q85 45, 82 40" strokeWidth={S.D.strokeWidth} />
-        <path d="M50 88 Q55 85, 60 88" strokeWidth={S.D.strokeWidth} />
+        {/* Foliage from mouth/beard */}
+        <path d="M42 66 Q34 74, 28 70 Q30 76, 36 74" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M58 66 Q66 74, 72 70 Q70 76, 64 74" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M50 70 Q48 78, 44 84" strokeWidth={S.D.strokeWidth} />
+        <path d="M50 70 Q52 78, 56 84" strokeWidth={S.D.strokeWidth} />
       </g>
     </g>
   </svg>
@@ -875,115 +692,61 @@ const GrotesqueSVG: React.FC<SVGProps> = ({ showHalo }) => (
 
 /**
  * GUILLOCHE - Interlacing curved bands forming circular voids
- * 3D PERSPECTIVE: Braided/interlocking pattern with depth
- * Shows: Continuous interlocking curved bands, rope-like
- * Distinct: Celtic/Classical, infinite weaving pattern
+ * Shows: Continuous interlocking braided pattern with over-under weave
+ * Distinct: Celtic/Classical, rope-like infinite weaving, circular voids
  */
 const GuillocheSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="guilloche-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#guilloche-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
-      {/* CONTEXT (near): Doorframe surround with adjacent molding profiles */}
+      {/* CONTEXT (near): Doorframe surround */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        {/* Door frame jambs on left and right */}
-        <path d="M-5 0 L-5 100" strokeWidth="0.8" opacity="0.5" />
-        <path d="M105 0 L105 100" strokeWidth="0.8" opacity="0.5" />
-
-        {/* Upper fillet molding */}
         <path d="M-5 22 L105 22" strokeWidth="0.5" opacity="0.5" />
         <path d="M-5 25 L105 25" strokeWidth="0.6" />
-
-        {/* Astragal / bead-and-reel molding above guilloche */}
-        <path d="M0 27 Q5 26, 10 27 Q15 28, 20 27 Q25 26, 30 27 Q35 28, 40 27 Q45 26, 50 27 Q55 28, 60 27 Q65 26, 70 27 Q75 28, 80 27 Q85 26, 90 27 Q95 28, 100 27" strokeWidth="0.5" opacity="0.5" />
-
-        {/* Lower fillet and ovolo molding below guilloche */}
         <path d="M-5 75 L105 75" strokeWidth="0.6" />
         <path d="M-5 78 L105 78" strokeWidth="0.5" opacity="0.5" />
-        <path d="M0 76 Q3 75, 6 76 Q9 77, 12 76 Q15 75, 18 76 Q21 77, 24 76 Q27 75, 30 76 Q33 77, 36 76 Q39 75, 42 76 Q45 77, 48 76 Q51 75, 54 76 Q57 77, 60 76 Q63 75, 66 76 Q69 77, 72 76 Q75 75, 78 76 Q81 77, 84 76 Q87 75, 90 76 Q93 77, 96 76 Q99 75, 100 76" strokeWidth="0.4" opacity="0.4" />
-
-        {/* Wall surface / column drum behind */}
-        <path d="M-5 0 L105 0" strokeWidth="0.5" opacity="0.4" />
-        <path d="M-5 100 L105 100" strokeWidth="0.5" opacity="0.4" />
-        <path d="M-5 10 L105 10" strokeWidth="0.3" opacity="0.3" />
-        <path d="M-5 90 L105 90" strokeWidth="0.3" opacity="0.3" />
       </g>
 
-      {/* PRIMARY - Guilloche interlacing pattern with over-under weave */}
+      {/* PRIMARY - Guilloche interlacing with depth */}
       <g strokeWidth={S.P.strokeWidthLight}>
-        {/* Upper border line */}
+        {/* Upper border */}
         <path d="M0 30 L100 30" strokeWidth={S.P.strokeWidth} />
+        <path d="M0 35 L100 35" strokeWidth={S.D.strokeWidth} />
 
-        {/* Band A - segments with breaks at crossing points (goes OVER at 0°/180°, UNDER at 90°/270°) */}
-        {/* A: start to first crossing (over) */}
-        <path d="M0 50 Q6 40, 12 42" strokeWidth={S.P.strokeWidthBold} />
-        {/* A: gap where B crosses over... then continues */}
-        <path d="M14 44 Q18 50, 25 50" strokeWidth={S.P.strokeWidthBold} />
-        {/* A: over B */}
-        <path d="M25 50 Q32 50, 37 43" strokeWidth={S.P.strokeWidthBold} />
-        {/* A: gap... */}
-        <path d="M39 45 Q44 50, 50 50" strokeWidth={S.P.strokeWidthBold} />
-        {/* A: over B */}
-        <path d="M50 50 Q56 50, 62 43" strokeWidth={S.P.strokeWidthBold} />
-        {/* A: gap... */}
-        <path d="M64 45 Q68 50, 75 50" strokeWidth={S.P.strokeWidthBold} />
-        {/* A: over B */}
-        <path d="M75 50 Q82 50, 87 43" strokeWidth={S.P.strokeWidthBold} />
-        {/* A: gap to end */}
-        <path d="M89 45 Q94 50, 100 50" strokeWidth={S.P.strokeWidthBold} />
+        {/* Band A - sinusoidal wave going OVER at peaks */}
+        <path d="M0 50 Q12.5 30, 25 50 Q37.5 70, 50 50 Q62.5 30, 75 50 Q87.5 70, 100 50" strokeWidth={S.P.strokeWidthBold} />
 
-        {/* Band B - opposite phase, segments with opposite over-under */}
-        {/* B: over A at first crossing */}
-        <path d="M0 50 Q6 60, 12 58" strokeWidth={S.P.strokeWidthBold} />
-        <path d="M12 58 Q18 50, 25 50" strokeWidth={S.P.strokeWidthBold} />
-        {/* B: gap where A crosses over... */}
-        <path d="M25 50 Q30 44, 36 42" strokeWidth={S.P.strokeWidthBold} />
-        <path d="M40 42 Q44 50, 50 50" strokeWidth={S.P.strokeWidthBold} />
-        {/* B: over A */}
-        <path d="M50 50 Q56 58, 62 58" strokeWidth={S.P.strokeWidthBold} />
-        <path d="M62 58 Q68 50, 75 50" strokeWidth={S.P.strokeWidthBold} />
-        {/* B: gap */}
-        <path d="M75 50 Q80 44, 86 42" strokeWidth={S.P.strokeWidthBold} />
-        <path d="M90 42 Q95 50, 100 50" strokeWidth={S.P.strokeWidthBold} />
+        {/* Band B - opposite phase, going OVER at its peaks */}
+        <path d="M0 50 Q12.5 70, 25 50 Q37.5 30, 50 50 Q62.5 70, 75 50 Q87.5 30, 100 50" strokeWidth={S.P.strokeWidthBold} />
 
-        {/* Inner interlacing bands (tighter weave with same over-under logic) */}
-        <path d="M5 50 Q12 42, 19 46" strokeWidth={S.P.strokeWidth} />
-        <path d="M21 48 Q25 50, 31 50" strokeWidth={S.P.strokeWidth} />
-        <path d="M33 48 Q37 42, 44 46" strokeWidth={S.P.strokeWidth} />
-        <path d="M46 48 Q50 50, 56 50" strokeWidth={S.P.strokeWidth} />
-        <path d="M58 48 Q62 42, 69 46" strokeWidth={S.P.strokeWidth} />
-        <path d="M71 48 Q75 50, 81 50" strokeWidth={S.P.strokeWidth} />
-        <path d="M83 48 Q87 42, 94 46" strokeWidth={S.P.strokeWidth} />
+        {/* Inner bands for double-strand effect */}
+        <path d="M2 50 Q14 34, 25 50 Q36 66, 50 50 Q64 34, 75 50 Q86 66, 98 50" strokeWidth={S.P.strokeWidth} />
+        <path d="M2 50 Q14 66, 25 50 Q36 34, 50 50 Q64 66, 75 50 Q86 34, 98 50" strokeWidth={S.P.strokeWidth} />
 
-        <path d="M0 52 Q7 58, 14 54" strokeWidth={S.P.strokeWidth} />
-        <path d="M16 52 Q20 50, 25 50" strokeWidth={S.P.strokeWidth} />
-        <path d="M29 52 Q33 58, 40 54" strokeWidth={S.P.strokeWidth} />
-        <path d="M42 52 Q45 50, 50 50" strokeWidth={S.P.strokeWidth} />
-        <path d="M54 52 Q58 58, 65 54" strokeWidth={S.P.strokeWidth} />
-        <path d="M67 52 Q70 50, 75 50" strokeWidth={S.P.strokeWidth} />
-        <path d="M79 52 Q83 58, 90 54" strokeWidth={S.P.strokeWidth} />
+        {/* Over-under crossing shadows (where bands overlap) */}
+        {[12, 37, 62, 87].map((x, i) => (
+          <rect key={i} x={x - 2} y={46} width={4} height={8} rx="1" fill="currentColor" opacity="0.07" stroke="none" />
+        ))}
 
         {/* Circular voids created by interlacing */}
-        <circle cx="25" cy="50" r="8" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
-        <circle cx="50" cy="50" r="10" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-        <circle cx="75" cy="50" r="8" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
+        <circle cx="25" cy="50" r="9" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
+        <circle cx="50" cy="50" r="11" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        <circle cx="75" cy="50" r="9" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
 
         {/* Central rosettes in voids */}
-        <circle cx="25" cy="50" r="3" strokeWidth={S.D.strokeWidth} />
+        <circle cx="25" cy="50" r="3.5" strokeWidth={S.D.strokeWidth} />
         <path d="M22 50 L28 50 M25 47 L25 53" strokeWidth={S.D.strokeWidthFine} />
 
-        <circle cx="50" cy="50" r="4" strokeWidth={S.D.strokeWidth} />
+        <circle cx="50" cy="50" r="4.5" strokeWidth={S.D.strokeWidth} />
         <path d="M46 50 L54 50 M50 46 L50 54" strokeWidth={S.D.strokeWidth} />
         <path d="M47 47 L53 53 M53 47 L47 53" strokeWidth={S.E.strokeWidth} />
 
-        <circle cx="75" cy="50" r="3" strokeWidth={S.D.strokeWidth} />
+        <circle cx="75" cy="50" r="3.5" strokeWidth={S.D.strokeWidth} />
         <path d="M72 50 L78 50 M75 47 L75 53" strokeWidth={S.D.strokeWidthFine} />
 
-        {/* Lower border line */}
-        <path d="M0 70 L100 70" strokeWidth={S.P.strokeWidth} />
-
-        {/* Edge bands */}
-        <path d="M0 35 L100 35" strokeWidth={S.D.strokeWidth} />
+        {/* Lower border */}
         <path d="M0 65 L100 65" strokeWidth={S.D.strokeWidth} />
+        <path d="M0 70 L100 70" strokeWidth={S.P.strokeWidth} />
       </g>
     </g>
   </svg>
@@ -991,76 +754,71 @@ const GuillocheSVG: React.FC<SVGProps> = ({ showHalo }) => (
 
 /**
  * MUQARNAS - Islamic honeycomb/stalactite decorative vaulting
- * 3D PERSPECTIVE: Looking into cascading geometric cells
- * Shows: Tiered geometric niches creating 3D honeycomb
- * Distinct: Complex Islamic geometry, mathematical precision
+ * 3D PERSPECTIVE: Looking up into cascading geometric cells
+ * Shows: Tiered geometric niches creating 3D honeycomb vault
+ * Distinct: Complex Islamic geometry, stalactite-like projecting cells
  */
 const DecorativeMuqarnasSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
-    {showHalo && <HaloFilter id="muqarnas-dec-halo" intensity={0.9} />}
-    <g filter={showHalo ? "url(#muqarnas-dec-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
-      {/* CONTEXT (near): Islamic iwan (vaulted portal) with surrounding walls */}
+    {showHalo && <HaloFilter id="muqarnas-halo" intensity={0.9} />}
+    <g filter={showHalo ? "url(#muqarnas-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
+      {/* CONTEXT (near): Arch/niche surround */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        {/* Outer rectangular frame (iwan facade) */}
-        <path d="M3 3 L97 3 L97 97 L3 97 Z" strokeWidth="0.6" />
-        {/* Inner pointed arch of iwan */}
-        <path d="M10 95 L10 50 Q50 15, 90 50 L90 95" strokeWidth="0.8" />
-        {/* Spandrel decoration hints (geometric tiles) */}
-        <path d="M6 20 L10 20" strokeWidth="0.3" />
-        <path d="M6 35 L10 35" strokeWidth="0.3" />
-        <path d="M90 20 L94 20" strokeWidth="0.3" />
-        <path d="M90 35 L94 35" strokeWidth="0.3" />
-        {/* Calligraphic band around arch */}
-        <path d="M12 48 Q50 18, 88 48" strokeWidth="0.4" />
-        {/* Floor tiles below */}
-        <path d="M10 95 L90 95" strokeWidth="0.5" />
-        <path d="M30 95 L30 100" strokeWidth="0.3" />
-        <path d="M50 95 L50 100" strokeWidth="0.3" />
-        <path d="M70 95 L70 100" strokeWidth="0.3" />
+        <path d="M5 95 L5 10 Q50 -5, 95 10 L95 95" />
+        <path d="M0 95 L100 95" />
       </g>
 
-      {/* PRIMARY - Muqarnas concave niche cells (stalactite vaulting) */}
+      {/* PRIMARY - Muqarnas stalactite vaulting from below at angle */}
       <g strokeWidth={S.P.strokeWidthLight}>
-        {/* Top tier - small pointed-arch niche cells with concave tops */}
-        <path d="M45 25 Q50 20, 55 25 L55 33 L45 33 Z" strokeWidth={S.P.strokeWidth} />
-        <path d="M45 28 Q50 24, 55 28" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-        <path d="M33 28 Q38 23, 43 28 L43 38 L33 38 Z" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M33 32 Q38 28, 43 32" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
-        <path d="M57 28 Q62 23, 67 28 L67 38 L57 38 Z" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M57 32 Q62 28, 67 32" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+        {/* Top tier - smallest cells (apex) */}
+        <path d="M40 10 L50 8 L60 10 L55 18 L45 18 Z" strokeWidth={S.P.strokeWidth} />
+        <rect x="44" y="10" width="12" height="7" fill="currentColor" opacity="0.08" stroke="none" />
 
-        {/* Second tier - medium concave niche cells */}
-        <path d="M22 36 Q28 28, 34 36 L34 50 L22 50 Z" strokeWidth={S.P.strokeWidth} />
-        <path d="M22 40 Q28 34, 34 40" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-        <path d="M42 38 Q50 30, 58 38 L58 54 L42 54 Z" strokeWidth={S.P.strokeWidth} />
-        <path d="M42 43 Q50 36, 58 43" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-        <path d="M66 36 Q72 28, 78 36 L78 50 L66 50 Z" strokeWidth={S.P.strokeWidth} />
-        <path d="M66 40 Q72 34, 78 40" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        {/* Second tier - medium cells */}
+        <path d="M30 18 L40 15 L45 18 L42 28 L33 28 Z" strokeWidth={S.P.strokeWidth} />
+        <path d="M55 18 L60 15 L70 18 L67 28 L58 28 Z" strokeWidth={S.P.strokeWidth} />
+        <path d="M45 18 L55 18 L52 28 L48 28 Z" strokeWidth={S.P.strokeWidthLight} />
+        <rect x="32" y="20" width="10" height="6" fill="currentColor" opacity="0.07" stroke="none" />
+        <rect x="57" y="20" width="10" height="6" fill="currentColor" opacity="0.07" stroke="none" />
 
-        {/* Third tier - larger concave niche cells */}
-        <path d="M10 50 Q18 40, 26 50 L26 70 L10 70 Z" strokeWidth={S.P.strokeWidth} />
-        <path d="M10 55 Q18 47, 26 55" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-        <path d="M28 52 Q38 42, 48 52 L48 74 L28 74 Z" strokeWidth={S.P.strokeWidth} />
-        <path d="M28 58 Q38 48, 48 58" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-        <path d="M52 52 Q62 42, 72 52 L72 74 L52 74 Z" strokeWidth={S.P.strokeWidth} />
-        <path d="M52 58 Q62 48, 72 58" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-        <path d="M74 50 Q82 40, 90 50 L90 70 L74 70 Z" strokeWidth={S.P.strokeWidth} />
-        <path d="M74 55 Q82 47, 90 55" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        {/* Third tier - larger cells */}
+        <path d="M18 28 L30 25 L33 28 L30 40 L22 40 Z" strokeWidth={S.P.strokeWidth} />
+        <path d="M33 28 L42 28 L40 40 L34 40 Z" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M42 28 L48 28 L47 40 L43 40 Z" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M52 28 L58 28 L57 40 L53 40 Z" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M58 28 L67 28 L66 40 L60 40 Z" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M67 28 L70 25 L82 28 L78 40 L70 40 Z" strokeWidth={S.P.strokeWidth} />
+        {/* Shadow fills */}
+        <rect x="20" y="30" width="10" height="8" fill="currentColor" opacity="0.06" stroke="none" />
+        <rect x="70" y="30" width="8" height="8" fill="currentColor" opacity="0.06" stroke="none" />
 
-        {/* Connecting horizontal shelves between tiers */}
-        <path d="M33 38 L43 38" strokeWidth={S.D.strokeWidth} />
-        <path d="M57 38 L67 38" strokeWidth={S.D.strokeWidth} />
-        <path d="M22 50 L34 50" strokeWidth={S.D.strokeWidth} />
-        <path d="M42 54 L58 54" strokeWidth={S.D.strokeWidth} />
-        <path d="M66 50 L78 50" strokeWidth={S.D.strokeWidth} />
+        {/* Fourth tier - large cells */}
+        <path d="M10 40 L18 36 L22 40 L20 55 L14 55 Z" strokeWidth={S.P.strokeWidth} />
+        <path d="M22 40 L34 40 L32 55 L24 55 Z" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M40 40 L53 40 L51 55 L42 55 Z" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M57 40 L66 40 L64 55 L58 55 Z" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M70 40 L78 40 L76 55 L72 55 Z" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M78 40 L82 36 L90 40 L86 55 L80 55 Z" strokeWidth={S.P.strokeWidth} />
+        <rect x="12" y="42" width="8" height="10" fill="currentColor" opacity="0.06" stroke="none" />
+        <rect x="80" y="42" width="6" height="10" fill="currentColor" opacity="0.06" stroke="none" />
 
-        {/* Star patterns in cell centers */}
-        <path d="M48 46 L50 44 L52 46 L50 48 Z" strokeWidth={S.D.strokeWidthFine} />
-        <path d="M36 62 L38 60 L40 62 L38 64 Z" strokeWidth={S.D.strokeWidthFine} />
-        <path d="M60 62 L62 60 L64 62 L62 64 Z" strokeWidth={S.D.strokeWidthFine} />
+        {/* Fifth tier - largest cells at bottom */}
+        <path d="M5 55 L10 50 L14 55 L12 72 L8 72 Z" strokeWidth={S.P.strokeWidth} />
+        <path d="M14 55 L24 55 L22 72 L16 72 Z" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M32 55 L42 55 L40 72 L34 72 Z" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M51 55 L58 55 L56 72 L52 72 Z" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M64 55 L72 55 L70 72 L66 72 Z" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M80 55 L86 55 L84 72 L82 72 Z" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M86 55 L90 50 L95 55 L92 72 L88 72 Z" strokeWidth={S.P.strokeWidth} />
 
-        {/* Base transition - scalloped edge where muqarnas meets wall */}
-        <path d="M10 78 Q20 74, 28 78 Q38 74, 50 78 Q62 74, 72 78 Q80 74, 90 78" strokeWidth={S.P.strokeWidthLight} />
+        {/* Bottom edge transition */}
+        <path d="M5 72 L95 72" strokeWidth={S.P.strokeWidth} />
+        <path d="M8 72 L8 80 L16 80 L16 72" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        <path d="M22 72 L22 80 L34 80 L34 72" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        <path d="M40 72 L40 80 L52 80 L52 72" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        <path d="M56 72 L56 80 L66 80 L66 72" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        <path d="M70 72 L70 80 L82 80 L82 72" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        <path d="M88 72 L88 80 L92 80 L92 72" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
       </g>
     </g>
   </svg>
@@ -1068,168 +826,120 @@ const DecorativeMuqarnasSVG: React.FC<SVGProps> = ({ showHalo }) => (
 
 /**
  * ROSETTE - Circular flower-like ornament
- * 3D PERSPECTIVE: Looking at carved rosette with petal depth
- * Shows: Radiating petals from center, like stylized rose
- * Distinct: Symmetrical, often in coffers or as ceiling detail
+ * Shows: Radiating petals from center, circular symmetry
+ * Distinct: Flower form, strong radial symmetry, decorative boss
  */
 const RosetteSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="rosette-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#rosette-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
-      {/* CONTEXT (near): Coffered ceiling with beam grid and adjacent coffers */}
+      {/* CONTEXT (near): Coffered panel surround */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        {/* Beam grid structure dividing coffers */}
-        <path d="M8 8 L92 8" strokeWidth="1" opacity="0.5" />
-        <path d="M8 92 L92 92" strokeWidth="1" opacity="0.5" />
-        <path d="M8 8 L8 92" strokeWidth="1" opacity="0.5" />
-        <path d="M92 8 L92 92" strokeWidth="1" opacity="0.5" />
-
-        {/* Recession/depth lines showing coffer is recessed */}
-        <path d="M8 8 L15 15" strokeWidth="0.5" opacity="0.4" />
-        <path d="M92 8 L85 15" strokeWidth="0.5" opacity="0.4" />
-        <path d="M8 92 L15 85" strokeWidth="0.5" opacity="0.4" />
-        <path d="M92 92 L85 85" strokeWidth="0.5" opacity="0.4" />
-
-        {/* Inner coffer frame */}
-        <path d="M15 15 L85 15 L85 85 L15 85 Z" />
-
-        {/* Adjacent coffer hints extending beyond frame */}
-        {/* Top neighbor */}
-        <path d="M8 -5 L92 -5" strokeWidth="0.8" opacity="0.3" />
-        <path d="M15 -5 L15 8" strokeWidth="0.4" opacity="0.3" />
-        <path d="M50 -5 L50 8" strokeWidth="0.4" opacity="0.3" />
-        <path d="M85 -5 L85 8" strokeWidth="0.4" opacity="0.3" />
-        {/* Bottom neighbor */}
-        <path d="M8 105 L92 105" strokeWidth="0.8" opacity="0.3" />
-        <path d="M15 92 L15 105" strokeWidth="0.4" opacity="0.3" />
-        <path d="M85 92 L85 105" strokeWidth="0.4" opacity="0.3" />
-        {/* Left neighbor */}
-        <path d="M-5 8 L8 8" strokeWidth="0.8" opacity="0.3" />
-        <path d="M-5 50 L8 50" strokeWidth="0.4" opacity="0.3" />
-        <path d="M-5 92 L8 92" strokeWidth="0.8" opacity="0.3" />
-        {/* Right neighbor */}
-        <path d="M92 8 L105 8" strokeWidth="0.8" opacity="0.3" />
-        <path d="M92 50 L105 50" strokeWidth="0.4" opacity="0.3" />
-        <path d="M92 92 L105 92" strokeWidth="0.8" opacity="0.3" />
-
-        {/* Neighboring rosette hints */}
-        <circle cx="-10" cy="50" r="6" opacity="0.2" />
-        <circle cx="110" cy="50" r="6" opacity="0.2" />
-        <circle cx="50" cy="-10" r="6" opacity="0.2" />
+        <path d="M5 5 L95 5 L95 95 L5 95 Z" strokeWidth="0.8" />
+        <path d="M8 8 L92 8 L92 92 L8 92 Z" strokeWidth="0.5" />
       </g>
 
-      {/* PRIMARY - Rosette in 3D relief */}
+      {/* PRIMARY - Rosette with 3D petal relief */}
       <g strokeWidth={S.P.strokeWidthLight}>
-        {/* Outer petal ring (8 petals) */}
-        <path d="M50 15 Q45 25, 50 32 Q55 25, 50 15" strokeWidth={S.P.strokeWidth} />
-        <path d="M50 85 Q45 75, 50 68 Q55 75, 50 85" strokeWidth={S.P.strokeWidth} />
-        <path d="M15 50 Q25 45, 32 50 Q25 55, 15 50" strokeWidth={S.P.strokeWidth} />
-        <path d="M85 50 Q75 45, 68 50 Q75 55, 85 50" strokeWidth={S.P.strokeWidth} />
+        {/* Outer ring */}
+        <circle cx="50" cy="50" r="38" strokeWidth={S.P.strokeWidthBold} />
+        <circle cx="50" cy="50" r="35" strokeWidth={S.P.strokeWidthLight} />
 
-        {/* Diagonal petals */}
-        <path d="M25 25 Q32 32, 38 38 Q32 38, 25 25" strokeWidth={S.P.strokeWidth} />
-        <path d="M75 25 Q68 32, 62 38 Q68 38, 75 25" strokeWidth={S.P.strokeWidth} />
-        <path d="M25 75 Q32 68, 38 62 Q32 62, 25 75" strokeWidth={S.P.strokeWidth} />
-        <path d="M75 75 Q68 68, 62 62 Q68 62, 75 75" strokeWidth={S.P.strokeWidth} />
+        {/* 8 radiating petals with depth */}
+        {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => {
+          const rad = (angle * Math.PI) / 180
+          const rad2 = ((angle + 22) * Math.PI) / 180
+          const rad3 = ((angle - 22) * Math.PI) / 180
+          const x1 = 50 + 14 * Math.cos(rad)
+          const y1 = 50 + 14 * Math.sin(rad)
+          const x2 = 50 + 32 * Math.cos(rad)
+          const y2 = 50 + 32 * Math.sin(rad)
+          const cx1 = 50 + 24 * Math.cos(rad2)
+          const cy1 = 50 + 24 * Math.sin(rad2)
+          const cx2 = 50 + 24 * Math.cos(rad3)
+          const cy2 = 50 + 24 * Math.sin(rad3)
+          return (
+            <g key={i}>
+              {/* Petal outline */}
+              <path d={`M${x1.toFixed(1)} ${y1.toFixed(1)} Q${cx1.toFixed(1)} ${cy1.toFixed(1)}, ${x2.toFixed(1)} ${y2.toFixed(1)} Q${cx2.toFixed(1)} ${cy2.toFixed(1)}, ${x1.toFixed(1)} ${y1.toFixed(1)}`} strokeWidth={S.P.strokeWidth} />
+              {/* Center vein */}
+              <path d={`M${x1.toFixed(1)} ${y1.toFixed(1)} L${x2.toFixed(1)} ${y2.toFixed(1)}`} strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+            </g>
+          )
+        })}
 
-        {/* Middle petal ring (offset) */}
-        <path d="M50 28 Q42 38, 50 42 Q58 38, 50 28" strokeWidth={S.P.strokeWidth} />
-        <path d="M50 72 Q42 62, 50 58 Q58 62, 50 72" strokeWidth={S.P.strokeWidth} />
-        <path d="M28 50 Q38 42, 42 50 Q38 58, 28 50" strokeWidth={S.P.strokeWidth} />
-        <path d="M72 50 Q62 42, 58 50 Q62 58, 72 50" strokeWidth={S.P.strokeWidth} />
+        {/* Central boss - raised center */}
+        <circle cx="50" cy="50" r="12" strokeWidth={S.P.strokeWidthBold} />
+        <circle cx="50" cy="50" r="8" strokeWidth={S.P.strokeWidth} />
+        <circle cx="50" cy="50" r="4" strokeWidth={S.D.strokeWidth} />
+        {/* Boss shadow for projection */}
+        <circle cx="52" cy="52" r="10" fill="currentColor" opacity="0.05" stroke="none" />
 
-        {/* Inner petals */}
-        <path d="M38 38 Q45 42, 50 50 Q42 45, 38 38" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M62 38 Q55 42, 50 50 Q58 45, 62 38" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M38 62 Q45 58, 50 50 Q42 55, 38 62" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M62 62 Q55 58, 50 50 Q58 55, 62 62" strokeWidth={S.P.strokeWidthLight} />
-
-        {/* Central boss */}
-        <circle cx="50" cy="50" r="10" strokeWidth={S.P.strokeWidthBold} />
-        <circle cx="50" cy="50" r="6" strokeWidth={S.P.strokeWidthLight} />
-        <circle cx="50" cy="50" r="3" strokeWidth={S.D.strokeWidth} />
-
-        {/* Petal veins/ridges */}
-        <path d="M50 20 L50 30" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
-        <path d="M50 70 L50 80" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
-        <path d="M20 50 L30 50" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
-        <path d="M70 50 L80 50" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
-
-        {/* Shadow depth on petals */}
-        <path d="M45 22 Q48 28, 48 32" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
-        <path d="M22 45 Q28 48, 32 48" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
-        <path d="M30 30 Q35 35, 36 40" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        {/* Small petals between main petals */}
+        {[22, 67, 112, 157, 202, 247, 292, 337].map((angle, i) => {
+          const rad = (angle * Math.PI) / 180
+          const x = 50 + 28 * Math.cos(rad)
+          const y = 50 + 28 * Math.sin(rad)
+          return <circle key={i} cx={x.toFixed(1)} cy={y.toFixed(1)} r="3" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        })}
       </g>
     </g>
   </svg>
 )
 
 /**
- * VOLUTE - Spiral scroll (Ionic capital detail)
- * 3D PERSPECTIVE: Three-quarter view of coiling spiral
- * Shows: Tightly wound spiral scroll with depth
- * Distinct: Classical Greek/Roman, logarithmic spiral
+ * VOLUTE - Spiral scroll ornament (Ionic capital)
+ * Shows: Tight mathematical spiral with eye at center
+ * Distinct: Ionic order signature, logarithmic spiral, eye at center
  */
 const VoluteSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
-    {showHalo && <HaloFilter id="volute-halo" intensity={0.9} />}
+    {showHalo && <HaloFilter id="volute-halo" intensity={0.88} />}
     <g filter={showHalo ? "url(#volute-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
-      {/* CONTEXT (near): Ionic capital with abacus above and column shaft below */}
+      {/* CONTEXT (near): Ionic capital and column shaft */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        {/* Abacus (flat slab atop capital) */}
-        <path d="M5 5 L95 5" strokeWidth="1" />
-        <path d="M8 10 L92 10" strokeWidth="0.8" />
-        {/* Entablature hint above */}
-        <path d="M0 2 L100 2" strokeWidth="0.6" />
-        {/* Echinus (egg-and-dart molding under abacus) */}
-        <path d="M15 14 Q20 12, 25 14 Q30 12, 35 14 Q40 12, 45 14" strokeWidth="0.4" />
-        <path d="M55 14 Q60 12, 65 14 Q70 12, 75 14 Q80 12, 85 14" strokeWidth="0.4" />
-        {/* Column shaft below */}
-        <path d="M30 88 L30 100" strokeWidth="0.8" />
-        <path d="M70 88 L70 100" strokeWidth="0.8" />
-        {/* Fluting on shaft */}
-        <path d="M35 92 L35 100" strokeWidth="0.3" />
-        <path d="M40 94 L40 100" strokeWidth="0.3" />
-        <path d="M60 94 L60 100" strokeWidth="0.3" />
-        <path d="M65 92 L65 100" strokeWidth="0.3" />
-        {/* Opposite volute hint */}
-        <path d="M90 50 Q92 35, 88 25" strokeWidth="0.4" />
+        <path d="M30 80 L30 100" />
+        <path d="M70 80 L70 100" />
+        <path d="M25 78 L75 78" strokeWidth="0.5" />
+        <path d="M0 10 L100 10" strokeWidth="0.7" />
+        <path d="M0 14 L100 14" strokeWidth="0.5" />
       </g>
 
-      {/* PRIMARY - Volute spiral in 3D */}
+      {/* PRIMARY - Volute spiral in 3D relief */}
       <g strokeWidth={S.P.strokeWidthLight}>
-        {/* Main spiral - outer to inner */}
-        <path d="M85 50 Q85 20, 50 15 Q15 20, 15 50 Q15 75, 40 78 Q60 80, 65 60 Q70 45, 55 38 Q42 32, 38 45 Q35 55, 45 58 Q52 60, 55 52 Q57 46, 50 44 Q45 43, 44 48" strokeWidth={S.P.strokeWidthBold} />
+        {/* Abacus block (top of capital) */}
+        <path d="M10 15 L90 15 L90 22 L10 22 Z" strokeWidth={S.P.strokeWidth} />
 
-        {/* Inner eye of volute */}
-        <circle cx="48" cy="48" r="5" strokeWidth={S.P.strokeWidthBold} />
-        <circle cx="48" cy="48" r="2.5" strokeWidth={S.P.strokeWidthLight} />
+        {/* Echinus (egg-and-dart) between volutes */}
+        <path d="M35 22 L65 22 L65 30 L35 30 Z" strokeWidth={S.P.strokeWidthLight} />
+        <ellipse cx="42" cy="26" rx="3" ry="4" strokeWidth={S.D.strokeWidth} />
+        <ellipse cx="50" cy="26" rx="3" ry="4" strokeWidth={S.D.strokeWidth} />
+        <ellipse cx="58" cy="26" rx="3" ry="4" strokeWidth={S.D.strokeWidth} />
 
-        {/* Secondary spiral (inner edge showing thickness) */}
-        <path d="M80 50 Q80 25, 50 20 Q22 24, 20 50 Q20 70, 38 74 Q55 76, 60 58 Q64 45, 52 40 Q44 36, 42 46" strokeWidth={S.P.strokeWidthLight} opacity={S.D.opacityStrong} />
+        {/* LEFT VOLUTE - tight spiral */}
+        {/* Outermost spiral */}
+        <path d="M35 22 Q10 22, 10 45 Q10 68, 35 68 Q55 68, 55 50 Q55 35, 40 35 Q28 35, 28 45 Q28 55, 38 55 Q46 55, 46 48 Q46 42, 40 42 Q35 42, 35 46 Q35 50, 38 50" strokeWidth={S.P.strokeWidthBold} />
+        {/* Eye of the spiral */}
+        <circle cx="38" cy="47" r="4" strokeWidth={S.P.strokeWidth} />
+        <circle cx="38" cy="47" r="2" fill="currentColor" opacity="0.08" stroke="currentColor" strokeWidth={S.D.strokeWidth} />
+        {/* Shadow on spiral for depth */}
+        <path d="M12 50 Q12 65, 35 66" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
 
-        {/* Band thickness on outer curve */}
-        <path d="M82 52 Q82 22, 50 18" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
-        <path d="M18 50 Q18 72, 38 76" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
+        {/* RIGHT VOLUTE - mirror */}
+        <path d="M65 22 Q90 22, 90 45 Q90 68, 65 68 Q45 68, 45 50 Q45 35, 60 35 Q72 35, 72 45 Q72 55, 62 55 Q54 55, 54 48 Q54 42, 60 42 Q65 42, 65 46 Q65 50, 62 50" strokeWidth={S.P.strokeWidthBold} />
+        <circle cx="62" cy="47" r="4" strokeWidth={S.P.strokeWidth} />
+        <circle cx="62" cy="47" r="2" fill="currentColor" opacity="0.08" stroke="currentColor" strokeWidth={S.D.strokeWidth} />
+        <path d="M88 50 Q88 65, 65 66" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
 
-        {/* Spiral ridge highlights */}
-        <path d="M75 35 Q60 28, 45 30" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
-        <path d="M30 65 Q45 70, 55 62" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
+        {/* Connecting band between volutes */}
+        <path d="M35 68 Q50 75, 65 68" strokeWidth={S.P.strokeWidth} />
+        <path d="M35 72 Q50 78, 65 72" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
 
-        {/* Connection to echinus (cushion) below */}
-        <path d="M15 75 Q15 82, 25 85" strokeWidth={S.P.strokeWidth} />
-        <path d="M85 75 Q85 82, 75 85" strokeWidth={S.P.strokeWidth} />
-
-        {/* Channel/canalis of volute */}
-        <path d="M40 78 L40 85" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M60 78 L60 85" strokeWidth={S.P.strokeWidthLight} />
-
-        {/* Bolster connecting volutes (partial view) */}
-        <path d="M25 80 Q50 75, 75 80" strokeWidth={S.P.strokeWidth} />
-
-        {/* Shadow in spiral depths */}
-        <path d="M55 42 Q58 48, 54 52" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
-        <path d="M35 55 Q32 50, 38 45" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        {/* Column neck fluting hint */}
+        <path d="M35 72 L35 78" strokeWidth={S.D.strokeWidth} />
+        <path d="M45 74 L45 78" strokeWidth={S.D.strokeWidth} />
+        <path d="M55 74 L55 78" strokeWidth={S.D.strokeWidth} />
+        <path d="M65 72 L65 78" strokeWidth={S.D.strokeWidth} />
       </g>
     </g>
   </svg>
