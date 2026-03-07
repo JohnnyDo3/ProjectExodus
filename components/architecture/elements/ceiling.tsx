@@ -919,27 +919,27 @@ const ReflectedCeilingPlanSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <line x1="50" y1="25" x2="50" y2="10" />
       </g>
 
-      {/* SWITCH SYMBOL */}
+      {/* DETAIL: SWITCH SYMBOL */}
       <g>
-        <circle cx="50" cy="10" r="1.3" fill="currentColor" opacity="0.6" />
-        <text x="50" y="7" fontSize="3" textAnchor="middle" fill="currentColor" opacity="0.7" fontWeight="bold">S</text>
+        <circle cx="50" cy="10" r="1.3" fill="currentColor" opacity={S.D.opacityStrong} />
+        <text x="50" y="7" fontSize="3" textAnchor="middle" fill="currentColor" opacity={S.D.opacityStrong} fontWeight="bold">S</text>
       </g>
 
-      {/* EXIT SIGN */}
-      <g opacity="0.6">
-        <rect x="44" y="87.5" width="12" height="3" strokeWidth="0.8" rx="0.5" />
+      {/* DETAIL: EXIT SIGN */}
+      <g opacity={S.D.opacity}>
+        <rect x="44" y="87.5" width="12" height="3" strokeWidth={S.D.strokeWidth} rx="0.5" />
         <text x="50" y="90" fontSize="2" textAnchor="middle" fill="currentColor" fontWeight="bold">EXIT</text>
       </g>
 
-      {/* SPEAKER (PA system) */}
-      <g strokeWidth="1" opacity="0.6">
+      {/* DETAIL: SPEAKER (PA system) */}
+      <g strokeWidth={S.P.strokeWidthLight} opacity={S.D.opacity}>
         <circle cx="15" cy="15" r="1.8" />
         <circle cx="15" cy="15" r="1" />
         <circle cx="15" cy="15" r="0.4" fill="currentColor" />
       </g>
 
       {/* TITLE ANNOTATION */}
-      <g opacity="0.5">
+      <g opacity={S.D.opacity}>
         <text x="11" y="96" fontSize="2.5" fill="currentColor">RCP</text>
       </g>
     </g>

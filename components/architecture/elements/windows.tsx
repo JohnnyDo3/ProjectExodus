@@ -649,8 +649,8 @@ const SashWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="sash-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#sash-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Surrounding wall */}
-      <g strokeWidth="0.8" strokeDasharray="3 2" opacity="0.4">
+      {/* CONTEXT (near): Surrounding wall */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 8 L5 92 L17 92 L17 8 Z" />
         <path d="M83 8 L83 92 L95 92 L95 8 Z" />
         <path d="M5 8 L95 8" />
@@ -696,8 +696,8 @@ const ShutterSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="shutter-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#shutter-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Building wall and window opening */}
-      <g strokeWidth="0.8" strokeDasharray="3 2" opacity="0.4">
+      {/* CONTEXT (near): Building wall and window opening */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Wall */}
         <path d="M5 10 L5 90 L28 90 L28 10 Z" />
         <path d="M72 10 L72 90 L95 90 L95 10 Z" />
@@ -745,50 +745,53 @@ const StainedGlassSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="stained-halo" intensity={1.1} />}
     <g filter={showHalo ? "url(#stained-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* BREATHTAKING COLORED LIGHT - Morning sun transformed by stained glass */}
-      <g opacity="0.2" strokeWidth="0.5">
+      {/* EFFECTS: Colored light - Morning sun transformed by stained glass */}
+      <g opacity={S.E.opacity} strokeWidth={S.E.strokeWidth} strokeDasharray={S.E.dash}>
         {/* Upper section light beams (blues from upper panels) */}
-        <path d="M 25 30 L 8 65" stroke="currentColor" strokeDasharray="2 4" opacity="0.6" />
-        <path d="M 35 25 L 15 70" stroke="currentColor" strokeDasharray="2 4" opacity="0.55" />
-        <path d="M 45 20 L 22 75" stroke="currentColor" strokeDasharray="2 4" opacity="0.5" />
-        <path d="M 55 20 L 30 80" stroke="currentColor" strokeDasharray="2 4" opacity="0.5" />
-        <path d="M 65 25 L 38 82" stroke="currentColor" strokeDasharray="2 4" opacity="0.55" />
-        <path d="M 75 30 L 48 85" stroke="currentColor" strokeDasharray="2 4" opacity="0.6" />
+        <path d="M 25 30 L 8 65" stroke="currentColor" opacity={S.E.opacityModerate} />
+        <path d="M 35 25 L 15 70" stroke="currentColor" opacity={S.E.opacityModerate} />
+        <path d="M 45 20 L 22 75" stroke="currentColor" opacity={S.E.opacityModerate} />
+        <path d="M 55 20 L 30 80" stroke="currentColor" opacity={S.E.opacityModerate} />
+        <path d="M 65 25 L 38 82" stroke="currentColor" opacity={S.E.opacityModerate} />
+        <path d="M 75 30 L 48 85" stroke="currentColor" opacity={S.E.opacityModerate} />
         {/* Middle section light beams (reds/golds from central motif) */}
-        <path d="M 35 50 L 10 88" stroke="currentColor" strokeDasharray="2 3" opacity="0.65" />
-        <path d="M 50 48 L 25 92" stroke="currentColor" strokeDasharray="2 3" opacity="0.7" />
-        <path d="M 65 50 L 40 94" stroke="currentColor" strokeDasharray="2 3" opacity="0.65" />
+        <path d="M 35 50 L 10 88" stroke="currentColor" opacity={S.E.opacityModerate} />
+        <path d="M 50 48 L 25 92" stroke="currentColor" opacity={S.E.opacityModerate} />
+        <path d="M 65 50 L 40 94" stroke="currentColor" opacity={S.E.opacityModerate} />
         {/* Lower section light beams (greens from lower panels) */}
-        <path d="M 30 75 L 15 95" stroke="currentColor" strokeDasharray="2 4" opacity="0.5" />
-        <path d="M 50 75 L 32 96" stroke="currentColor" strokeDasharray="2 4" opacity="0.55" />
-        <path d="M 70 75 L 48 95" stroke="currentColor" strokeDasharray="2 4" opacity="0.5" />
+        <path d="M 30 75 L 15 95" stroke="currentColor" opacity={S.E.opacityModerate} />
+        <path d="M 50 75 L 32 96" stroke="currentColor" opacity={S.E.opacityModerate} />
+        <path d="M 70 75 L 48 95" stroke="currentColor" opacity={S.E.opacityModerate} />
         {/* Colored light pools on chapel floor - layered colors */}
-        <ellipse cx="25" cy="85" rx="15" ry="5" fill="currentColor" opacity="0.08" stroke="none" />
-        <ellipse cx="35" cy="88" rx="12" ry="4" fill="currentColor" opacity="0.1" stroke="none" />
-        <ellipse cx="28" cy="90" rx="18" ry="6" fill="currentColor" opacity="0.06" stroke="none" />
+        <ellipse cx="25" cy="85" rx="15" ry="5" fill="currentColor" opacity={S.E.fillOpacity} stroke="none" />
+        <ellipse cx="35" cy="88" rx="12" ry="4" fill="currentColor" opacity={S.E.fillOpacity} stroke="none" />
+        <ellipse cx="28" cy="90" rx="18" ry="6" fill="currentColor" opacity={S.E.fillOpacity} stroke="none" />
         {/* Sacred dust motes in colored beams */}
-        <circle cx="30" cy="55" r="0.4" fill="currentColor" opacity="0.65" />
-        <circle cx="45" cy="62" r="0.35" fill="currentColor" opacity="0.6" />
-        <circle cx="55" cy="58" r="0.4" fill="currentColor" opacity="0.65" />
-        <circle cx="38" cy="70" r="0.35" fill="currentColor" opacity="0.6" />
-        <circle cx="50" cy="68" r="0.4" fill="currentColor" opacity="0.7" />
-        <circle cx="25" cy="80" r="0.35" fill="currentColor" opacity="0.6" />
-        <circle cx="42" cy="78" r="0.4" fill="currentColor" opacity="0.65" />
+        <circle cx="30" cy="55" r="0.4" fill="currentColor" opacity={S.E.fillOpacityStrong} />
+        <circle cx="45" cy="62" r="0.35" fill="currentColor" opacity={S.E.fillOpacityStrong} />
+        <circle cx="55" cy="58" r="0.4" fill="currentColor" opacity={S.E.fillOpacityStrong} />
+        <circle cx="38" cy="70" r="0.35" fill="currentColor" opacity={S.E.fillOpacityStrong} />
+        <circle cx="50" cy="68" r="0.4" fill="currentColor" opacity={S.E.fillOpacityStrong} />
+        <circle cx="25" cy="80" r="0.35" fill="currentColor" opacity={S.E.fillOpacityStrong} />
+        <circle cx="42" cy="78" r="0.4" fill="currentColor" opacity={S.E.fillOpacityStrong} />
         {/* Lead came shadows cast on floor */}
-        <path d="M 20 86 L 22 92" strokeWidth="0.3" opacity="0.2" />
-        <path d="M 28 84 L 31 94" strokeWidth="0.3" opacity="0.2" />
-        <path d="M 35 85 L 38 95" strokeWidth="0.3" opacity="0.2" />
+        <path d="M 20 86 L 22 92" strokeWidth={S.E.strokeWidth} opacity={S.E.opacity} />
+        <path d="M 28 84 L 31 94" strokeWidth={S.E.strokeWidth} opacity={S.E.opacity} />
+        <path d="M 35 85 L 38 95" strokeWidth={S.E.strokeWidth} opacity={S.E.opacity} />
       </g>
 
-      {/* CONTEXT: Chapel or church wall */}
-      <g strokeWidth="0.8" strokeDasharray="3 2" opacity="0.4">
+      {/* CONTEXT (near): Chapel wall sections */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Wall sections */}
         <path d="M5 30 L5 95 L12 95 L12 40" />
         <path d="M88 40 L88 95 L95 95 L95 30" />
-        {/* Floor */}
-        <path d="M5 95 L95 95" />
         {/* Wall above arch */}
         <path d="M12 5 Q50 0, 88 5" />
+      </g>
+
+      {/* CONTEXT (far): Chapel floor */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        <path d="M5 95 L95 95" />
       </g>
 
       {/* PRIMARY: Stained glass window */}

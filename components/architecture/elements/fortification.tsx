@@ -317,8 +317,8 @@ const TowerSVG: React.FC<SVGProps> = ({ showHalo }) => (
 
         {/* Machicolations - projecting corbelled gallery with floor openings */}
         <path d="M20 42 L80 42" strokeWidth={S.P.strokeWidthLight} />
-        <path d="M20 42 L20 46 L25 46" strokeWidth="1.3" />
-        <path d="M80 42 L80 46 L75 46" strokeWidth="1.3" />
+        <path d="M20 42 L20 46 L25 46" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M80 42 L80 46 L75 46" strokeWidth={S.P.strokeWidthLight} />
         {/* DETAIL: Corbel brackets supporting the gallery */}
         <path d="M28 42 Q26 44, 25 46" strokeWidth={S.D.strokeWidth} />
         <path d="M38 42 Q36 44, 35 46" strokeWidth={S.D.strokeWidth} />
@@ -326,10 +326,10 @@ const TowerSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M62 42 Q60 44, 59 46" strokeWidth={S.D.strokeWidth} />
         <path d="M72 42 Q70 44, 69 46" strokeWidth={S.D.strokeWidth} />
         {/* DETAIL: Murder holes (floor openings between corbels) */}
-        <path d="M30 44 L30 46" strokeWidth={S.D.strokeWidthFine} opacity="0.6" />
-        <path d="M43 44 L43 46" strokeWidth={S.D.strokeWidthFine} opacity="0.6" />
-        <path d="M55 44 L55 46" strokeWidth={S.D.strokeWidthFine} opacity="0.6" />
-        <path d="M66 44 L66 46" strokeWidth={S.D.strokeWidthFine} opacity="0.6" />
+        <path d="M30 44 L30 46" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+        <path d="M43 44 L43 46" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+        <path d="M55 44 L55 46" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+        <path d="M66 44 L66 46" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
 
         {/* Arrow slits - narrow cross-shaped */}
         <path d="M36 55 L36 65" strokeWidth={S.P.strokeWidthBold} />
@@ -345,10 +345,10 @@ const TowerSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M40 80 L40 95 L60 95 L60 80 Q50 74, 40 80" strokeWidth={S.P.strokeWidth} />
 
         {/* DETAIL: Stone coursing curves showing cylindrical form */}
-        <path d="M25 55 Q50 58, 75 55" strokeWidth={S.D.strokeWidth} opacity="0.6" />
-        <path d="M25 70 Q50 73, 75 70" strokeWidth={S.D.strokeWidth} opacity="0.6" />
-        <path d="M25 85 L40 85" strokeWidth={S.D.strokeWidth} opacity="0.6" />
-        <path d="M60 85 L75 85" strokeWidth={S.D.strokeWidth} opacity="0.6" />
+        <path d="M25 55 Q50 58, 75 55" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        <path d="M25 70 Q50 73, 75 70" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        <path d="M25 85 L40 85" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        <path d="M60 85 L75 85" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
       </g>
     </g>
   </svg>
