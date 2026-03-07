@@ -1393,8 +1393,770 @@ const TrapdoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
   </svg>
 )
 
+// ============================================================================
+// 12. TYMPANUM
+// Carved semicircular tympanum above a Romanesque/Gothic portal
+// Reference: Moissac Abbey Last Judgment, Vézelay tympanum, Autun Cathedral
+// ============================================================================
+const TympanumSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="tympanum-halo" intensity={1} />}
+    <g filter={showHalo ? "url(#tympanum-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
+
+      {/* CONTEXT (near): Arch frame (archivolts), door opening below, trumeau */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Outermost archivolt — heavy semicircular frame */}
+        <path d="M5 58 L5 30 Q50 -10 95 30 L95 58" />
+        {/* 2nd archivolt order */}
+        <path d="M10 58 L10 32 Q50 -4 90 32 L90 58" strokeWidth={S.CN.strokeWidthFine} />
+        {/* 3rd archivolt order */}
+        <path d="M15 58 L15 34 Q50 2 85 34 L85 58" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+
+        {/* Door opening below tympanum */}
+        <path d="M22 65 L22 98 L78 98 L78 65" />
+        {/* Door leaves */}
+        <path d="M22 65 L22 98 L49 98 L49 65 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M51 65 L51 98 L78 98 L78 65 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+
+        {/* Trumeau — central pillar below tympanum */}
+        <path d="M47 62 L47 98 L53 98 L53 62" />
+        {/* Trumeau carved figure (stylised prophet) */}
+        <path d="M50 68 L50 92" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <circle cx="50" cy="66" r="2" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+
+        {/* Jamb columns (colonettes in splayed reveals) */}
+        <path d="M15 58 L15 98" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M85 58 L85 98" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Jamb capitals */}
+        <path d="M13 56 L17 56 L17 58 L13 58" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M83 56 L87 56 L87 58 L83 58" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+
+        {/* Ground / threshold stone */}
+        <path d="M5 98 L95 98" />
+        <path d="M5 100 L95 100" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      </g>
+
+      {/* PRIMARY: Tympanum — semicircular carved relief field */}
+      <g strokeWidth={S.D.strokeWidth}>
+        {/* Tympanum semicircular boundary */}
+        <path d="M20 60 L20 36 Q50 6 80 36 L80 60 Z" strokeWidth={S.P.strokeWidthBold} />
+
+        {/* Lintel — horizontal stone beam separating tympanum from doors */}
+        <path d="M20 60 L80 60" strokeWidth={S.P.strokeWidthBold} />
+        <path d="M20 62 L80 62" strokeWidth={S.P.strokeWidthLight} />
+
+        {/* Mandorla — almond-shaped glory frame around Christ */}
+        <ellipse cx="50" cy="38" rx="12" ry="16" strokeWidth={S.P.strokeWidth} />
+
+        {/* Christ in Majesty — simplified seated figure */}
+        {/* Head with cruciform halo */}
+        <circle cx="50" cy="28" r="3.5" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M50 24 L50 26 M47 28 L53 28" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacityStrong} />
+        {/* Body — seated torso */}
+        <path d="M50 31 L50 46" strokeWidth={S.P.strokeWidthLight} />
+        {/* Arms outstretched (blessing gesture) */}
+        <path d="M42 35 L50 33 L58 35" strokeWidth={S.P.strokeWidthLight} />
+        {/* Hands */}
+        <path d="M42 35 L41 33" strokeWidth={S.D.strokeWidthFine} />
+        <path d="M58 35 L59 33" strokeWidth={S.D.strokeWidthFine} />
+        {/* Knees/lap — seated on throne */}
+        <path d="M44 46 L50 44 L56 46" strokeWidth={S.D.strokeWidthFine} />
+        {/* Feet */}
+        <path d="M46 50 L54 50" strokeWidth={S.D.strokeWidthFine} />
+        {/* Throne sides */}
+        <path d="M43 30 L41 50" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacityStrong} />
+        <path d="M57 30 L59 50" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacityStrong} />
+
+        {/* Flanking apostle figures — left group (3 seated forms) */}
+        {/* Apostle 1 — far left */}
+        <path d="M26 48 L26 58" strokeWidth={S.P.strokeWidthLight} />
+        <circle cx="26" cy="46" r="2" strokeWidth={S.D.strokeWidth} />
+        <path d="M24 50 L28 50" strokeWidth={S.D.strokeWidthFine} />
+        {/* Apostle 2 — left-center */}
+        <path d="M32 44 L32 58" strokeWidth={S.P.strokeWidthLight} />
+        <circle cx="32" cy="42" r="2" strokeWidth={S.D.strokeWidth} />
+        <path d="M30 46 L34 46" strokeWidth={S.D.strokeWidthFine} />
+        {/* Apostle 3 — left of mandorla */}
+        <path d="M37 40 L37 56" strokeWidth={S.P.strokeWidthLight} />
+        <circle cx="37" cy="38" r="2" strokeWidth={S.D.strokeWidth} />
+        <path d="M35 42 L39 42" strokeWidth={S.D.strokeWidthFine} />
+
+        {/* Flanking apostle figures — right group (3 seated forms) */}
+        {/* Apostle 4 — right of mandorla */}
+        <path d="M63 40 L63 56" strokeWidth={S.P.strokeWidthLight} />
+        <circle cx="63" cy="38" r="2" strokeWidth={S.D.strokeWidth} />
+        <path d="M61 42 L65 42" strokeWidth={S.D.strokeWidthFine} />
+        {/* Apostle 5 — right-center */}
+        <path d="M68 44 L68 58" strokeWidth={S.P.strokeWidthLight} />
+        <circle cx="68" cy="42" r="2" strokeWidth={S.D.strokeWidth} />
+        <path d="M66 46 L70 46" strokeWidth={S.D.strokeWidthFine} />
+        {/* Apostle 6 — far right */}
+        <path d="M74 48 L74 58" strokeWidth={S.P.strokeWidthLight} />
+        <circle cx="74" cy="46" r="2" strokeWidth={S.D.strokeWidth} />
+        <path d="M72 50 L76 50" strokeWidth={S.D.strokeWidthFine} />
+
+        {/* Decorative border — bead motif along inner edge of tympanum */}
+        <path d="M22 56 L24 54 L26 56 L28 54 L30 56 L32 54 L34 56 L36 54 L38 56 L40 54 L42 56" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacityStrong} />
+        <path d="M58 56 L60 54 L62 56 L64 54 L66 56 L68 54 L70 56 L72 54 L74 56 L76 54 L78 56" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacityStrong} />
+      </g>
+
+      {/* DETAIL: Carved figure outlines, drapery folds, mandorla detail, lintel register */}
+      <g strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity}>
+        {/* Drapery fold lines on Christ figure */}
+        <path d="M48 34 L47 44 M52 34 L53 44" />
+        <path d="M46 40 L48 42 M54 40 L52 42" />
+        {/* Book held on lap */}
+        <path d="M47 42 L53 42 L53 46 L47 46 Z" strokeWidth={S.D.strokeWidthFine} />
+
+        {/* Mandorla inner border — double line */}
+        <ellipse cx="50" cy="38" rx="10" ry="14" opacity={S.D.opacitySubtle} />
+
+        {/* Lintel — register divider with carved rosettes */}
+        <circle cx="30" cy="61" r="1" opacity={S.D.opacitySubtle} />
+        <circle cx="40" cy="61" r="1" opacity={S.D.opacitySubtle} />
+        <circle cx="50" cy="61" r="1" opacity={S.D.opacitySubtle} />
+        <circle cx="60" cy="61" r="1" opacity={S.D.opacitySubtle} />
+        <circle cx="70" cy="61" r="1" opacity={S.D.opacitySubtle} />
+
+        {/* Apostle drapery folds — simple verticals */}
+        <path d="M25 49 L25 57 M27 49 L27 57" opacity={S.D.opacitySubtle} />
+        <path d="M31 45 L31 57 M33 45 L33 57" opacity={S.D.opacitySubtle} />
+        <path d="M36 41 L36 55 M38 41 L38 55" opacity={S.D.opacitySubtle} />
+        <path d="M62 41 L62 55 M64 41 L64 55" opacity={S.D.opacitySubtle} />
+        <path d="M67 45 L67 57 M69 45 L69 57" opacity={S.D.opacitySubtle} />
+        <path d="M73 49 L73 57 M75 49 L75 57" opacity={S.D.opacitySubtle} />
+
+        {/* Archivolt voussoir divisions */}
+        <path d="M50 8 L50 14" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        <path d="M40 12 L41 18" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        <path d="M60 12 L59 18" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        <path d="M30 20 L32 26" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        <path d="M70 20 L68 26" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      </g>
+    </g>
+  </svg>
+)
+
+// ============================================================================
+// 13. PEDIMENT DOOR
+// Classical door with triangular pediment — Georgian townhouse / Palladian entry
+// Reference: Georgian townhouse doors, Palladian entries, Greek temple doorways
+// ============================================================================
+const PedimentDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="pediment-halo" intensity={0.85} />}
+    <g filter={showHalo ? "url(#pediment-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
+
+      {/* CONTEXT (far): Upper story windows above */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Upper story window — left */}
+        <path d="M20 -8 L20 2 L35 2 L35 -8 Z" />
+        <path d="M27 -8 L27 2" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Upper story window — right */}
+        <path d="M65 -8 L65 2 L80 2 L80 -8 Z" />
+        <path d="M72 -8 L72 2" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Stone sill course */}
+        <path d="M5 3 L95 3" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT (near): Brick/stone wall flanking, street pavement, steps */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Brick wall surface — coursing lines */}
+        <path d="M5 5 L95 5" />
+        <path d="M5 5 L5 88" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M95 5 L95 88" strokeWidth={S.CN.strokeWidthFine} />
+        {/* Brick course lines */}
+        <path d="M5 12 L20 12 M80 12 L95 12" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M5 19 L18 19 M82 19 L95 19" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M5 40 L20 40 M80 40 L95 40" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M5 55 L18 55 M82 55 L95 55" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M5 70 L20 70 M80 70 L95 70" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Vertical brick joints (staggered) */}
+        <path d="M10 12 L10 19 M15 5 L15 12 M85 12 L85 19 M90 5 L90 12" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+
+        {/* Steps up to door — 3 stone steps */}
+        <path d="M18 88 L82 88" />
+        <path d="M15 91 L85 91" />
+        <path d="M12 94 L88 94" />
+        {/* Step risers */}
+        <path d="M18 88 L18 91 M82 88 L82 91" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M15 91 L15 94 M85 91 L85 94" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+
+        {/* Street-level pavement */}
+        <path d="M0 97 L100 97" />
+        <path d="M0 100 L100 100" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Paving joints */}
+        <path d="M20 97 L20 100 M40 97 L40 100 M60 97 L60 100 M80 97 L80 100" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      </g>
+
+      {/* PRIMARY: Classical pediment door — Georgian six-panel door */}
+      <g strokeWidth={S.D.strokeWidth}>
+        {/* Triangular pediment — two raking cornices meeting at apex */}
+        <path d="M20 20 L50 8 L80 20" strokeWidth={S.P.strokeWidthBold} />
+        {/* Pediment bottom cornice (horizontal) */}
+        <path d="M18 20 L82 20" strokeWidth={S.P.strokeWidthBold} />
+        {/* Pediment raking cornice — return mouldings */}
+        <path d="M20 22 L50 10 L80 22" strokeWidth={S.D.strokeWidth} />
+
+        {/* Entablature / frieze band below pediment */}
+        <path d="M20 22 L80 22" strokeWidth={S.P.strokeWidth} />
+        <path d="M20 26 L80 26" strokeWidth={S.P.strokeWidth} />
+        {/* Frieze surface */}
+        <path d="M20 24 L80 24" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacityStrong} />
+
+        {/* Pilasters — fluted classical columns flanking door */}
+        {/* Left pilaster */}
+        <path d="M22 26 L22 86 L28 86 L28 26 Z" strokeWidth={S.P.strokeWidth} />
+        {/* Right pilaster */}
+        <path d="M72 26 L72 86 L78 86 L78 26 Z" strokeWidth={S.P.strokeWidth} />
+        {/* Pilaster capitals — simplified Ionic volutes */}
+        <path d="M21 24 L29 24 L29 26 L21 26" strokeWidth={S.D.strokeWidth} />
+        <path d="M71 24 L79 24 L79 26 L71 26" strokeWidth={S.D.strokeWidth} />
+        {/* Pilaster bases */}
+        <path d="M21 86 L29 86 L29 88 L21 88" strokeWidth={S.D.strokeWidth} />
+        <path d="M71 86 L79 86 L79 88 L71 88" strokeWidth={S.D.strokeWidth} />
+
+        {/* Classical door frame */}
+        <path d="M30 28 L30 86 L70 86 L70 28 Z" strokeWidth={S.P.strokeWidthBold} />
+
+        {/* Six-panel door — 3 rows of 2 panels */}
+        {/* Door stiles and rails */}
+        <path d="M32 30 L32 84 L68 84 L68 30 Z" strokeWidth={S.P.strokeWidthLight} />
+        {/* Center stile */}
+        <path d="M50 30 L50 84" strokeWidth={S.P.strokeWidthLight} />
+        {/* Top rail */}
+        <path d="M32 42 L68 42" strokeWidth={S.P.strokeWidthLight} />
+        {/* Lock rail */}
+        <path d="M32 56 L68 56" strokeWidth={S.P.strokeWidthLight} />
+
+        {/* Top panels (short) */}
+        <path d="M34 32 L34 40 L48 40 L48 32 Z" strokeWidth={S.D.strokeWidth} />
+        <path d="M52 32 L52 40 L66 40 L66 32 Z" strokeWidth={S.D.strokeWidth} />
+        {/* Middle panels (medium) */}
+        <path d="M34 44 L34 54 L48 54 L48 44 Z" strokeWidth={S.D.strokeWidth} />
+        <path d="M52 44 L52 54 L66 54 L66 44 Z" strokeWidth={S.D.strokeWidth} />
+        {/* Bottom panels (tall) */}
+        <path d="M34 58 L34 82 L48 82 L48 58 Z" strokeWidth={S.D.strokeWidth} />
+        <path d="M52 58 L52 82 L66 82 L66 58 Z" strokeWidth={S.D.strokeWidth} />
+
+        {/* Door handle / knob */}
+        <circle cx="52" cy="57" r="1.5" strokeWidth={S.P.strokeWidthLight} />
+        {/* Keyhole escutcheon */}
+        <path d="M51 60 L53 60 L53 63 L51 63 Z" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="52" cy="61" r="0.5" strokeWidth={S.D.strokeWidthFine} />
+
+        {/* Letter slot */}
+        <path d="M45 72 L55 72" strokeWidth={S.P.strokeWidthLight} />
+      </g>
+
+      {/* DETAIL: Panel moldings, pediment tympanum, acroterion, pilaster fluting, fanlight */}
+      <g strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity}>
+        {/* Panel molding profiles — inner raised panel lines */}
+        <path d="M36 34 L36 38 L46 38 L46 34 Z" opacity={S.D.opacitySubtle} />
+        <path d="M54 34 L54 38 L64 38 L64 34 Z" opacity={S.D.opacitySubtle} />
+        <path d="M36 46 L36 52 L46 52 L46 46 Z" opacity={S.D.opacitySubtle} />
+        <path d="M54 46 L54 52 L64 52 L64 46 Z" opacity={S.D.opacitySubtle} />
+        <path d="M36 60 L36 80 L46 80 L46 60 Z" opacity={S.D.opacitySubtle} />
+        <path d="M54 60 L54 80 L64 80 L64 60 Z" opacity={S.D.opacitySubtle} />
+
+        {/* Pediment tympanum — decorative field inside triangle */}
+        {/* Oval patera / rosette at center */}
+        <ellipse cx="50" cy="16" rx="4" ry="3" opacity={S.D.opacityStrong} />
+        <circle cx="50" cy="16" r="1.5" opacity={S.D.opacitySubtle} />
+        {/* Swag decoration flanking */}
+        <path d="M34 18 Q38 16 42 18" opacity={S.D.opacitySubtle} />
+        <path d="M58 18 Q62 16 66 18" opacity={S.D.opacitySubtle} />
+
+        {/* Acroterion at apex */}
+        <path d="M48 8 L50 4 L52 8" opacity={S.D.opacityStrong} />
+        <path d="M49 5 L50 3 L51 5" opacity={S.D.opacitySubtle} />
+
+        {/* Pilaster fluting — vertical grooves */}
+        {/* Left pilaster flutes */}
+        <path d="M24 28 L24 84" opacity={S.D.opacitySubtle} />
+        <path d="M25 28 L25 84" opacity={S.D.opacitySubtle} />
+        <path d="M26 28 L26 84" opacity={S.D.opacitySubtle} />
+        {/* Right pilaster flutes */}
+        <path d="M74 28 L74 84" opacity={S.D.opacitySubtle} />
+        <path d="M75 28 L75 84" opacity={S.D.opacitySubtle} />
+        <path d="M76 28 L76 84" opacity={S.D.opacitySubtle} />
+
+        {/* Fanlight / transom below entablature */}
+        <path d="M30 28 L70 28" strokeWidth={S.D.strokeWidth} opacity={S.D.opacityStrong} />
+        <path d="M32 28 L50 30 L68 28" opacity={S.D.opacitySubtle} />
+        {/* Fanlight glazing bars — radiating spokes */}
+        <path d="M50 28 L50 30" opacity={S.D.opacitySubtle} />
+        <path d="M40 28 L44 30" opacity={S.D.opacitySubtle} />
+        <path d="M60 28 L56 30" opacity={S.D.opacitySubtle} />
+        <path d="M35 28 L40 30" opacity={S.D.opacitySubtle} />
+        <path d="M65 28 L60 30" opacity={S.D.opacitySubtle} />
+
+        {/* Ionic volute scrolls on capitals */}
+        <path d="M21 25 Q22 23 24 25" opacity={S.D.opacitySubtle} />
+        <path d="M26 25 Q28 23 29 25" opacity={S.D.opacitySubtle} />
+        <path d="M71 25 Q72 23 74 25" opacity={S.D.opacitySubtle} />
+        <path d="M76 25 Q78 23 79 25" opacity={S.D.opacitySubtle} />
+
+        {/* Door knocker — lion's head ring */}
+        <circle cx="48" cy="50" r="2" opacity={S.D.opacityStrong} />
+        <circle cx="48" cy="52" r="1" opacity={S.D.opacitySubtle} />
+      </g>
+    </g>
+  </svg>
+)
+
+// ============================================================================
+// 14. ARCHITRAVE
+// Classical door architrave — full door frame surround with layered molding profiles
+// Reference: Greek/Roman/Renaissance door surrounds, Palladian interiors
+// ============================================================================
+const ArchitraveSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="architrave-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#architrave-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
+
+      {/* CONTEXT (near): Stone wall on either side, floor paving, ceiling cornice */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Plastered wall surface left */}
+        <path d="M-5 5 L-5 95 L18 95 L18 5 Z" />
+        {/* Plastered wall surface right */}
+        <path d="M82 5 L82 95 L105 95 L105 5 Z" />
+        {/* Wall texture — faint ashlar joints */}
+        <path d="M-3 25 L16 25" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M-3 45 L16 45" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M84 25 L103 25" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M84 45 L103 45" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Floor paving — stone flags */}
+        <path d="M-5 95 L105 95" />
+        <path d="M-5 98 L105 98" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M20 95 L20 100" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M50 95 L50 100" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M80 95 L80 100" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Ceiling/cornice line above */}
+        <path d="M-5 5 L105 5" />
+        <path d="M-5 3 L105 3" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      </g>
+
+      {/* PRIMARY: The architrave frame — vertical jambs and horizontal lintel with molding profiles */}
+      <g strokeWidth={S.D.strokeWidth}>
+        {/* Outer architrave profile — left jamb */}
+        <path d="M18 10 L18 92" strokeWidth={S.P.strokeWidthBold} />
+        {/* Second fascia band — left jamb */}
+        <path d="M21 12 L21 92" strokeWidth={S.P.strokeWidth} />
+        {/* Third fascia (innermost) — left jamb */}
+        <path d="M24 14 L24 92" strokeWidth={S.P.strokeWidthLight} />
+        {/* Inner edge of left jamb reveal */}
+        <path d="M27 16 L27 92" strokeWidth={S.P.strokeWidthLight} />
+
+        {/* Outer architrave profile — right jamb */}
+        <path d="M82 10 L82 92" strokeWidth={S.P.strokeWidthBold} />
+        {/* Second fascia band — right jamb */}
+        <path d="M79 12 L79 92" strokeWidth={S.P.strokeWidth} />
+        {/* Third fascia (innermost) — right jamb */}
+        <path d="M76 14 L76 92" strokeWidth={S.P.strokeWidthLight} />
+        {/* Inner edge of right jamb reveal */}
+        <path d="M73 16 L73 92" strokeWidth={S.P.strokeWidthLight} />
+
+        {/* Horizontal lintel architrave — outer band */}
+        <path d="M18 10 L82 10" strokeWidth={S.P.strokeWidthBold} />
+        {/* Second fascia band — horizontal */}
+        <path d="M21 12 L79 12" strokeWidth={S.P.strokeWidth} />
+        {/* Third fascia — horizontal */}
+        <path d="M24 14 L76 14" strokeWidth={S.P.strokeWidthLight} />
+        {/* Inner soffit line */}
+        <path d="M27 16 L73 16" strokeWidth={S.P.strokeWidthLight} />
+
+        {/* Corner blocks (paterae) — top left */}
+        <path d="M15 7 L28 7 L28 19 L15 19 Z" strokeWidth={S.P.strokeWidth} />
+        {/* Rosette in top-left corner block */}
+        <circle cx="21.5" cy="13" r="4" strokeWidth={S.D.strokeWidth} />
+        <circle cx="21.5" cy="13" r="1.5" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacityStrong} />
+        {/* Rosette petals */}
+        <path d="M21.5 9 L21.5 10.5 M21.5 15.5 L21.5 17 M17.5 13 L19 13 M24 13 L25.5 13" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+        <path d="M18.7 10.2 L19.8 11.3 M23.2 14.7 L24.3 15.8 M18.7 15.8 L19.8 14.7 M23.2 11.3 L24.3 10.2" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+
+        {/* Corner block (patera) — top right */}
+        <path d="M72 7 L85 7 L85 19 L72 19 Z" strokeWidth={S.P.strokeWidth} />
+        {/* Rosette in top-right corner block */}
+        <circle cx="78.5" cy="13" r="4" strokeWidth={S.D.strokeWidth} />
+        <circle cx="78.5" cy="13" r="1.5" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacityStrong} />
+        {/* Rosette petals */}
+        <path d="M78.5 9 L78.5 10.5 M78.5 15.5 L78.5 17 M74.5 13 L76 13 M81 13 L82.5 13" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+        <path d="M75.7 10.2 L76.8 11.3 M80.2 14.7 L81.3 15.8 M75.7 15.8 L76.8 14.7 M80.2 11.3 L81.3 10.2" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+
+        {/* Threshold / sill at base */}
+        <path d="M18 92 L82 92" strokeWidth={S.P.strokeWidthBold} />
+        <path d="M18 94 L82 94" strokeWidth={S.D.strokeWidth} />
+      </g>
+
+      {/* DETAIL: Molding profiles, bead-and-reel, astragal, stone joints */}
+      <g strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity}>
+        {/* Cyma recta profile curve — left jamb (between 1st and 2nd fascia) */}
+        <path d="M19 20 Q19.5 21 20 20 Q19.5 19 19 20" />
+        <path d="M19 35 Q19.5 36 20 35 Q19.5 34 19 35" />
+        <path d="M19 50 Q19.5 51 20 50 Q19.5 49 19 50" />
+        <path d="M19 65 Q19.5 66 20 65 Q19.5 64 19 65" />
+        <path d="M19 80 Q19.5 81 20 80 Q19.5 79 19 80" />
+
+        {/* Cyma recta profile curve — right jamb */}
+        <path d="M81 20 Q80.5 21 80 20 Q80.5 19 81 20" />
+        <path d="M81 35 Q80.5 36 80 35 Q80.5 34 81 35" />
+        <path d="M81 50 Q80.5 51 80 50 Q80.5 49 81 50" />
+        <path d="M81 65 Q80.5 66 80 65 Q80.5 64 81 65" />
+        <path d="M81 80 Q80.5 81 80 80 Q80.5 79 81 80" />
+
+        {/* Bead-and-reel ornament — horizontal lintel (between 2nd and 3rd fascia) */}
+        <path d="M30 13 L31 13 M33 13 L34 13 M36 13 L37 13 M39 13 L40 13 M42 13 L43 13 M45 13 L46 13 M48 13 L49 13 M51 13 L52 13 M54 13 L55 13 M57 13 L58 13 M60 13 L61 13 M63 13 L64 13 M66 13 L67 13 M69 13 L70 13" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacityStrong} />
+        <circle cx="32" cy="13" r="0.5" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacityStrong} />
+        <circle cx="38" cy="13" r="0.5" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacityStrong} />
+        <circle cx="44" cy="13" r="0.5" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacityStrong} />
+        <circle cx="50" cy="13" r="0.5" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacityStrong} />
+        <circle cx="56" cy="13" r="0.5" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacityStrong} />
+        <circle cx="62" cy="13" r="0.5" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacityStrong} />
+        <circle cx="68" cy="13" r="0.5" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacityStrong} />
+
+        {/* Astragal bead — left jamb (between 2nd and 3rd fascia) */}
+        <circle cx="22.5" cy="25" r="0.5" />
+        <circle cx="22.5" cy="30" r="0.5" />
+        <circle cx="22.5" cy="40" r="0.5" />
+        <circle cx="22.5" cy="55" r="0.5" />
+        <circle cx="22.5" cy="70" r="0.5" />
+        <circle cx="22.5" cy="85" r="0.5" />
+
+        {/* Astragal bead — right jamb */}
+        <circle cx="77.5" cy="25" r="0.5" />
+        <circle cx="77.5" cy="30" r="0.5" />
+        <circle cx="77.5" cy="40" r="0.5" />
+        <circle cx="77.5" cy="55" r="0.5" />
+        <circle cx="77.5" cy="70" r="0.5" />
+        <circle cx="77.5" cy="85" r="0.5" />
+
+        {/* Stone joint lines on architrave blocks */}
+        <path d="M35 10 L35 16" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        <path d="M50 10 L50 16" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        <path d="M65 10 L65 16" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      </g>
+
+      {/* EFFECTS: Light shadow in the door opening */}
+      <g strokeDasharray={S.E.dash} opacity={S.E.opacity} strokeWidth={S.E.strokeWidth}>
+        <path d="M30 20 L30 90" />
+        <path d="M70 20 L70 90" />
+        <path d="M40 18 L40 90" />
+        <path d="M60 18 L60 90" />
+      </g>
+    </g>
+  </svg>
+)
+
+// ============================================================================
+// 13. LINTEL
+// Structural lintel — massive horizontal stone/timber beam spanning a doorway
+// Reference: Mycenaean Lion Gate, Egyptian temple lintels, megalithic construction
+// ============================================================================
+const LintelSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="lintel-halo" intensity={0.9} />}
+    <g filter={showHalo ? "url(#lintel-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
+
+      {/* CONTEXT (far): Additional wall continuing above */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Upper masonry courses continuing above the wall */}
+        <path d="M-5 -5 L105 -5" />
+        <path d="M-5 0 L105 0" />
+        <path d="M-5 5 L105 5" />
+        {/* Vertical joints in upper wall */}
+        <path d="M20 -5 L20 5" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M50 -5 L50 5" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M80 -5 L80 5" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT (near): Massive masonry walls on both sides, ground/threshold */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Left wall — coursed stone blocks */}
+        <path d="M-5 8 L25 8 L25 95 L-5 95 Z" />
+        {/* Left wall horizontal courses */}
+        <path d="M-5 18 L25 18" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M-5 28 L25 28" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M-5 40 L25 40" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M-5 52 L25 52" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M-5 64 L25 64" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M-5 76 L25 76" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M-5 88 L25 88" strokeWidth={S.CN.strokeWidthFine} />
+        {/* Left wall vertical joints (staggered) */}
+        <path d="M5 8 L5 18 M15 18 L15 28 M8 28 L8 40 M18 40 L18 52 M5 52 L5 64 M15 64 L15 76 M8 76 L8 88" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+
+        {/* Right wall — coursed stone blocks */}
+        <path d="M75 8 L105 8 L105 95 L75 95 Z" />
+        {/* Right wall horizontal courses */}
+        <path d="M75 18 L105 18" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M75 28 L105 28" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M75 40 L105 40" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M75 52 L105 52" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M75 64 L105 64" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M75 76 L105 76" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M75 88 L105 88" strokeWidth={S.CN.strokeWidthFine} />
+        {/* Right wall vertical joints (staggered) */}
+        <path d="M85 8 L85 18 M95 18 L95 28 M88 28 L88 40 M82 40 L82 52 M95 52 L95 64 M85 64 L85 76 M92 76 L92 88" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+
+        {/* Ground / threshold below */}
+        <path d="M-5 95 L105 95" />
+        <path d="M-5 98 L105 98" strokeWidth={S.CN.strokeWidthFine} />
+        {/* Worn stone threshold in opening */}
+        <path d="M25 95 L75 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      </g>
+
+      {/* PRIMARY: The lintel — massive horizontal stone beam spanning the opening */}
+      <g strokeWidth={S.D.strokeWidth}>
+        {/* Lintel top edge */}
+        <path d="M20 18 L80 18" strokeWidth={S.P.strokeWidthBold} />
+        {/* Lintel bottom edge — slight camber (upward bow) in center for structural expression */}
+        <path d="M20 32 Q50 30 80 32" strokeWidth={S.P.strokeWidthBold} />
+        {/* Lintel left end */}
+        <path d="M20 18 L20 32" strokeWidth={S.P.strokeWidthBold} />
+        {/* Lintel right end */}
+        <path d="M80 18 L80 32" strokeWidth={S.P.strokeWidthBold} />
+
+        {/* Bearing areas — where lintel sits on jamb walls */}
+        {/* Left bearing (lintel extends into left wall) */}
+        <path d="M20 18 L25 18 L25 32 L20 32" strokeWidth={S.P.strokeWidth} />
+        {/* Right bearing (lintel extends into right wall) */}
+        <path d="M75 18 L80 18 L80 32 L75 32" strokeWidth={S.P.strokeWidth} />
+        {/* Bearing seat lines — where stone meets stone */}
+        <path d="M25 18 L25 32" strokeWidth={S.P.strokeWidth} />
+        <path d="M75 18 L75 32" strokeWidth={S.P.strokeWidth} />
+
+        {/* Wall jamb edges defining the opening */}
+        <path d="M25 32 L25 95" strokeWidth={S.P.strokeWidthBold} />
+        <path d="M75 32 L75 95" strokeWidth={S.P.strokeWidthBold} />
+
+        {/* Inner face of opening — reveals the void */}
+        <path d="M25 32 L75 32" strokeWidth={S.P.strokeWidthLight} />
+
+        {/* Slight deflection crack suggestion in center (structural honesty) */}
+        <path d="M49 30 L50 32 L51 30" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+      </g>
+
+      {/* DETAIL: Stone jointing in lintel, grain/texture, bearing details */}
+      <g strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity}>
+        {/* Lintel stone joints — massive block divisions */}
+        <path d="M38 18 L38 32" strokeWidth={S.D.strokeWidth} />
+        <path d="M55 18 L55 32" strokeWidth={S.D.strokeWidth} />
+        <path d="M68 18 L68 32" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        <path d="M32 18 L32 32" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+
+        {/* Stone grain / weathering lines running through lintel */}
+        <path d="M22 22 L35 23 L48 22 L60 23 L78 22" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        <path d="M22 27 L40 28 L55 27 L70 28 L78 27" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+
+        {/* Bearing stress marks — fine cracks at bearing points */}
+        <path d="M24 32 L26 34" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        <path d="M76 32 L74 34" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+
+        {/* Tooling marks on lintel face */}
+        <path d="M30 20 L31 20 M34 25 L35 25 M42 21 L43 21 M46 26 L47 26 M58 20 L59 20 M62 25 L63 25 M70 21 L71 21 M74 26 L75 26" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+
+        {/* Course line at wall top where lintel rests */}
+        <path d="M-5 8 L20 8" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        <path d="M80 8 L105 8" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      </g>
+
+      {/* EFFECTS: Shadow within the opening void */}
+      <g strokeDasharray={S.E.dash} opacity={S.E.opacity} strokeWidth={S.E.strokeWidth}>
+        <path d="M28 35 L28 92" />
+        <path d="M35 33 L35 92" />
+        <path d="M50 32 L50 92" />
+        <path d="M65 33 L65 92" />
+        <path d="M72 35 L72 92" />
+      </g>
+    </g>
+  </svg>
+)
+
+// ============================================================================
+// 16. DOOR KNOCKER
+// Close-up of a decorative lion-head door knocker on a paneled door face
+// Reference: Medieval sanctuary knockers, Georgian lion head knockers, Durham Cathedral
+// ============================================================================
+const DoorKnockerSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="knocker-halo" intensity={1.1} />}
+    <g filter={showHalo ? "url(#knocker-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
+
+      {/* CONTEXT (near): Door panel surface the knocker is mounted on */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Door panel border — raised panel surround */}
+        <path d="M5 2 L95 2 L95 98 L5 98 Z" />
+        {/* Inner panel bevel */}
+        <path d="M10 6 L90 6 L90 94 L10 94 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Nail studs at corners */}
+        <circle cx="8" cy="5" r="1.5" strokeWidth={S.CN.strokeWidthFine} />
+        <circle cx="92" cy="5" r="1.5" strokeWidth={S.CN.strokeWidthFine} />
+        <circle cx="8" cy="95" r="1.5" strokeWidth={S.CN.strokeWidthFine} />
+        <circle cx="92" cy="95" r="1.5" strokeWidth={S.CN.strokeWidthFine} />
+        {/* Wood grain lines on panel */}
+        <path d="M15 10 L15 90" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M85 10 L85 90" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M25 12 L25 88" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M75 12 L75 88" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* PRIMARY: Lion-head knocker with ring */}
+      <g strokeWidth={S.D.strokeWidth}>
+        {/* Circular backplate / escutcheon */}
+        <circle cx="50" cy="45" r="28" strokeWidth={S.P.strokeWidthBold} />
+        <circle cx="50" cy="45" r="25" strokeWidth={S.D.strokeWidth} />
+        {/* Bead border on backplate */}
+        <circle cx="50" cy="18" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="72" cy="25" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="77" cy="42" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="72" cy="60" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="50" cy="72" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="28" cy="60" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="23" cy="42" r="1" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="28" cy="25" r="1" strokeWidth={S.D.strokeWidthFine} />
+
+        {/* Lion face — mane radiating lines */}
+        <path d="M50 22 L50 28" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M40 24 L43 30" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M60 24 L57 30" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M33 30 L38 34" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M67 30 L62 34" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M30 40 L36 40" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M70 40 L64 40" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M32 50 L37 47" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        <path d="M68 50 L63 47" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+
+        {/* Face outline */}
+        <path d="M38 30 Q50 26, 62 30 Q68 40, 64 50 Q58 58, 50 60 Q42 58, 36 50 Q32 40, 38 30 Z" strokeWidth={S.P.strokeWidth} />
+
+        {/* Eyes */}
+        <path d="M40 38 Q44 35 48 38 Q44 41 40 38 Z" strokeWidth={S.D.strokeWidth} />
+        <circle cx="44" cy="38" r="1.5" strokeWidth={S.D.strokeWidthBold} />
+        <path d="M52 38 Q56 35 60 38 Q56 41 52 38 Z" strokeWidth={S.D.strokeWidth} />
+        <circle cx="56" cy="38" r="1.5" strokeWidth={S.D.strokeWidthBold} />
+
+        {/* Nose */}
+        <path d="M48 40 L47 46 Q50 48 53 46 L52 40" strokeWidth={S.D.strokeWidth} />
+
+        {/* Mouth — open, holding ring */}
+        <path d="M42 52 Q50 56 58 52" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M45 53 Q50 58 55 53" strokeWidth={S.P.strokeWidth} />
+
+        {/* THE RING — heavy cast iron/bronze */}
+        <path d="M44 56 Q44 80 50 85 Q56 80 56 56" strokeWidth={S.P.strokeWidthHeavy} />
+        <path d="M46 58 Q46 78 50 82 Q54 78 54 58" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        {/* Ring texture grooves */}
+        <path d="M44.5 65 L46.5 65" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        <path d="M44 72 L46 72" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        <path d="M55.5 65 L53.5 65" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        <path d="M56 72 L54 72" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+
+        {/* Mounting bolts */}
+        <circle cx="35" cy="32" r="2" strokeWidth={S.D.strokeWidth} />
+        <path d="M34 31 L36 33 M34 33 L36 31" strokeWidth={S.D.strokeWidthFine} />
+        <circle cx="65" cy="32" r="2" strokeWidth={S.D.strokeWidth} />
+        <path d="M64 31 L66 33 M64 33 L66 31" strokeWidth={S.D.strokeWidthFine} />
+      </g>
+
+      {/* EFFECTS: Shadow cast by ring on door surface */}
+      <g strokeDasharray={S.E.dash} opacity={S.E.opacity} strokeWidth={S.E.strokeWidth}>
+        <path d="M46 60 Q46 82 52 87 Q58 82 58 60" />
+      </g>
+    </g>
+  </svg>
+)
+
+// ============================================================================
+// 17. TRANSOM
+// Federal-style semicircular fanlight transom window above a doorway
+// Reference: Federal-style fanlights, Georgian semicircular transoms, Adam style
+// ============================================================================
+const TransomSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="transom-halo" intensity={0.85} />}
+    <g filter={showHalo ? "url(#transom-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
+
+      {/* CONTEXT (far): Brick wall coursing above */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        <path d="M-5 8 L105 8" />
+        <path d="M-5 12 L105 12" strokeWidth={S.CF.strokeWidthFine} />
+        <path d="M-5 16 L105 16" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Brick vertical joints */}
+        <path d="M15 8 L15 12 M35 8 L35 12 M55 8 L55 12 M75 8 L75 12" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M25 12 L25 16 M45 12 L45 16 M65 12 L65 16 M85 12 L85 16" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT (near): Door frame below, wall on either side */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Wall on left and right */}
+        <path d="M-5 8 L8 8 L8 98 L-5 98 Z" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M92 8 L105 8 L105 98 L92 98 Z" strokeWidth={S.CN.strokeWidthFine} />
+        {/* Door top rail below transom */}
+        <path d="M12 68 L88 68" />
+        {/* Upper door panels hint */}
+        <path d="M16 72 L42 72 L42 95 L16 95 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M58 72 L84 72 L84 95 L58 95 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Door center stile */}
+        <path d="M49 68 L49 98" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M51 68 L51 98" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      </g>
+
+      {/* PRIMARY: Semicircular fanlight transom */}
+      <g strokeWidth={S.D.strokeWidth}>
+        {/* Outer frame — semicircular arch */}
+        <path d="M10 65 L10 35 Q50 -5 90 35 L90 65 Z" strokeWidth={S.P.strokeWidthBold} />
+        {/* Inner frame edge */}
+        <path d="M14 63 L14 37 Q50 0 86 37 L86 63 Z" strokeWidth={S.D.strokeWidth} />
+
+        {/* Horizontal transom bar */}
+        <path d="M10 63 L90 63" strokeWidth={S.P.strokeWidth} />
+        <path d="M10 65 L90 65" strokeWidth={S.P.strokeWidth} />
+
+        {/* Radiating glazing bars — fan pattern from center bottom */}
+        <path d="M50 63 L50 5" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M50 63 L30 12" strokeWidth={S.D.strokeWidth} />
+        <path d="M50 63 L70 12" strokeWidth={S.D.strokeWidth} />
+        <path d="M50 63 L18 28" strokeWidth={S.D.strokeWidth} />
+        <path d="M50 63 L82 28" strokeWidth={S.D.strokeWidth} />
+        <path d="M50 63 L12 48" strokeWidth={S.D.strokeWidth} />
+        <path d="M50 63 L88 48" strokeWidth={S.D.strokeWidth} />
+
+        {/* Curved horizontal bars — concentric arcs */}
+        <path d="M20 50 Q50 30 80 50" strokeWidth={S.D.strokeWidthFine} />
+        <path d="M14 55 Q50 38 86 55" strokeWidth={S.D.strokeWidthFine} />
+
+        {/* Keystone at apex */}
+        <path d="M46 5 L46 14 L54 14 L54 5" strokeWidth={S.P.strokeWidthLight} />
+        <path d="M48 8 L52 8" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+
+        {/* Sill profile — drip molding */}
+        <path d="M8 65 L92 65" strokeWidth={S.D.strokeWidthFine} />
+        <path d="M8 67 L92 67" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+
+        {/* Side pilaster capitals */}
+        <path d="M10 32 L14 32 L14 36 L10 36 Z" strokeWidth={S.D.strokeWidth} />
+        <path d="M86 32 L90 32 L90 36 L86 36 Z" strokeWidth={S.D.strokeWidth} />
+      </g>
+    </g>
+  </svg>
+)
+
 // Export mapping for all door elements
+// Keys match data element IDs from data/architecture/elements/doors/
 export const DOOR_ELEMENTS: Record<string, React.FC<SVGProps>> = {
+  // Data element ID mappings (match id: field in data files)
+  'architrave': ArchitraveSVG,
+  'door-knocker': DoorKnockerSVG,
+  'dutch-door': DutchDoorSVG,
+  'lintel': LintelSVG,
+  'paneled-door': PanelDoorSVG,
+  'pediment-door': PedimentDoorSVG,
+  'pocket-door': PocketDoorSVG,
+  'portal': ArchedDoorSVG,
+  'revolving-door': RevolvingDoorSVG,
+  'transom': TransomSVG,
+  'tympanum': TympanumSVG,
+  // Additional SVGs (not in data but available for direct use)
   'arched': ArchedDoorSVG,
   'bifold': BifoldDoorSVG,
   'dutch': DutchDoorSVG,
@@ -1410,14 +2172,20 @@ export const DOOR_ELEMENTS: Record<string, React.FC<SVGProps>> = {
 
 export {
   ArchedDoorSVG,
+  ArchitraveSVG,
   BifoldDoorSVG,
+  DoorKnockerSVG,
   DutchDoorSVG,
   FrenchDoorSVG,
+  LintelSVG,
   PanelDoorSVG,
+  PedimentDoorSVG,
   PivotDoorSVG,
   PocketDoorSVG,
   RevolvingDoorSVG,
   SlidingDoorSVG,
   StableDoorSVG,
   TrapdoorSVG,
+  TransomSVG,
+  TympanumSVG,
 }
