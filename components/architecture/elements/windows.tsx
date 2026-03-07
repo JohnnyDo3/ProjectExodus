@@ -505,7 +505,7 @@ const RoseWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M 92 110 L 92 -10" fill="none" opacity="0.7" />
         <path d="M 105 110 L 105 -10" fill="none" />
         {/* Gothic pinnacles */}
-        <path d="M 92 -8 L 98.5 -15 L 105 -8" strokeWidth="0.5" opacity="0.6" />
+        <path d="M 92 -8 L 98.5 -15 L 105 -8" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
       </g>
 
       {/* CONTEXT (far): GABLE: Gothic pointed arch above rose window */}
@@ -514,7 +514,7 @@ const RoseWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M 10 8 L 50 -10 L 90 8" fill="none" />
         <path d="M 12 10 L 50 -7 L 88 10" fill="none" opacity="0.7" />
         {/* Gothic tracery in gable */}
-        <path d="M 40 5 Q 45 0, 50 -2 Q 55 0, 60 5" strokeWidth="0.4" opacity="0.6" />
+        <path d="M 40 5 Q 45 0, 50 -2 Q 55 0, 60 5" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
       </g>
 
       {/* CONTEXT (far): FLYING BUTTRESSES: Extending from both sides */}
@@ -532,7 +532,7 @@ const RoseWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
       <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
         {/* Left portal arch */}
         <path d="M 8 88 Q 5 92, 8 96 Q 12 102, 20 105" fill="none" />
-        <path d="M 12 90 Q 10 94, 12 98" strokeWidth="0.5" opacity="0.7" />
+        <path d="M 12 90 Q 10 94, 12 98" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
 
         {/* Center portal (grand) */}
         <path d="M 30 88 Q 25 95, 30 100 Q 40 108, 50 110" fill="none" />
@@ -540,7 +540,7 @@ const RoseWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
 
         {/* Right portal */}
         <path d="M 92 88 Q 95 92, 92 96 Q 88 102, 80 105" fill="none" />
-        <path d="M 88 90 Q 90 94, 88 98" strokeWidth="0.5" opacity="0.7" />
+        <path d="M 88 90 Q 90 94, 88 98" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
       </g>
 
       {/* CONTEXT (near): FACADE WALLS: Complete west facade extending beyond */}
@@ -549,15 +549,15 @@ const RoseWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M -5 -10 L -5 110" fill="none" />
         <path d="M 10 -10 L 10 110" fill="none" opacity="0.8" />
         {/* Stone courses */}
-        <path d="M -5 20 L 10 20" strokeWidth="0.4" opacity="0.5" />
-        <path d="M -5 70 L 10 70" strokeWidth="0.4" opacity="0.5" />
+        <path d="M -5 20 L 10 20" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M -5 70 L 10 70" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
 
         {/* Right facade wall */}
         <path d="M 90 -10 L 90 110" fill="none" opacity="0.8" />
         <path d="M 105 -10 L 105 110" fill="none" />
         {/* Stone courses */}
-        <path d="M 90 20 L 105 20" strokeWidth="0.4" opacity="0.5" />
-        <path d="M 90 70 L 105 70" strokeWidth="0.4" opacity="0.5" />
+        <path d="M 90 20 L 105 20" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M 90 70 L 105 70" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* CONTEXT (far): LANCET WINDOWS: Tall Gothic windows flanking rose */}
@@ -572,34 +572,34 @@ const RoseWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
       </g>
 
       {/* EFFECTS: MAGNIFICENT COLORED LIGHT - Afternoon sun streaming through stained glass */}
-      <g opacity={S.E.opacity} strokeWidth={S.E.strokeWidth}>
+      <g opacity={S.E.opacity} strokeWidth={S.E.strokeWidth} strokeDasharray={S.E.dash}>
         {/* Radiating colored light beams matching the 12-petal pattern */}
-        <path d="M 50 50 L 50 92" stroke="currentColor" strokeDasharray="2 3" opacity="0.5" />
-        <path d="M 50 50 L 68 88" stroke="currentColor" strokeDasharray="2 3" opacity="0.45" />
-        <path d="M 50 50 L 82 82" stroke="currentColor" strokeDasharray="2 3" opacity="0.4" />
-        <path d="M 50 50 L 88 68" stroke="currentColor" strokeDasharray="2 3" opacity="0.45" />
-        <path d="M 50 50 L 92 50" stroke="currentColor" strokeDasharray="2 3" opacity="0.5" />
-        <path d="M 50 50 L 88 32" stroke="currentColor" strokeDasharray="2 3" opacity="0.45" />
-        <path d="M 50 50 L 82 18" stroke="currentColor" strokeDasharray="2 3" opacity="0.4" />
-        <path d="M 50 50 L 68 12" stroke="currentColor" strokeDasharray="2 3" opacity="0.45" />
+        <path d="M 50 50 L 50 92" stroke="currentColor" opacity={S.E.opacityModerate} />
+        <path d="M 50 50 L 68 88" stroke="currentColor" opacity={S.E.opacityModerate} />
+        <path d="M 50 50 L 82 82" stroke="currentColor" opacity={S.E.opacityModerate} />
+        <path d="M 50 50 L 88 68" stroke="currentColor" opacity={S.E.opacityModerate} />
+        <path d="M 50 50 L 92 50" stroke="currentColor" opacity={S.E.opacityModerate} />
+        <path d="M 50 50 L 88 32" stroke="currentColor" opacity={S.E.opacityModerate} />
+        <path d="M 50 50 L 82 18" stroke="currentColor" opacity={S.E.opacityModerate} />
+        <path d="M 50 50 L 68 12" stroke="currentColor" opacity={S.E.opacityModerate} />
         {/* Dust motes swirling in the colorful light */}
-        <circle cx="55" cy="65" r="0.4" fill="currentColor" opacity="0.6" />
-        <circle cx="45" cy="68" r="0.35" fill="currentColor" opacity="0.5" />
-        <circle cx="60" cy="72" r="0.3" fill="currentColor" opacity="0.55" />
-        <circle cx="40" cy="70" r="0.35" fill="currentColor" opacity="0.5" />
-        <circle cx="52" cy="75" r="0.4" fill="currentColor" opacity="0.6" />
+        <circle cx="55" cy="65" r="0.4" fill="currentColor" opacity={S.E.fillOpacityStrong} />
+        <circle cx="45" cy="68" r="0.35" fill="currentColor" opacity={S.E.fillOpacityStrong} />
+        <circle cx="60" cy="72" r="0.3" fill="currentColor" opacity={S.E.fillOpacityStrong} />
+        <circle cx="40" cy="70" r="0.35" fill="currentColor" opacity={S.E.fillOpacityStrong} />
+        <circle cx="52" cy="75" r="0.4" fill="currentColor" opacity={S.E.fillOpacityStrong} />
       </g>
 
       {/* CONTEXT (near): STONE MASONRY: Sculpted surround */}
       <g opacity={S.CN.opacity} strokeDasharray={S.CN.dash} strokeWidth={S.CN.strokeWidth}>
         {/* Carved stone frame around rose */}
-        <circle cx="50" cy="50" r="42" strokeWidth="0.6" opacity="0.6" />
-        <circle cx="50" cy="50" r="44" strokeWidth="0.5" opacity="0.4" />
+        <circle cx="50" cy="50" r="42" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <circle cx="50" cy="50" r="44" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
         {/* Gothic quatrefoil decorations around frame */}
-        <circle cx="50" cy="6" r="2" strokeWidth="0.4" opacity="0.5" />
-        <circle cx="94" cy="50" r="2" strokeWidth="0.4" opacity="0.5" />
-        <circle cx="50" cy="94" r="2" strokeWidth="0.4" opacity="0.5" />
-        <circle cx="6" cy="50" r="2" strokeWidth="0.4" opacity="0.5" />
+        <circle cx="50" cy="6" r="2" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <circle cx="94" cy="50" r="2" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <circle cx="50" cy="94" r="2" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <circle cx="6" cy="50" r="2" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY: THE ROSE WINDOW - BOLD FIELD SKETCH LINES */}

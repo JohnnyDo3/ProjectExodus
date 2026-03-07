@@ -38,33 +38,33 @@ interface SVGProps {
 const ArchedDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="arched-halo" intensity={1} />}
-    <g filter={showHalo ? "url(#arched-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+    <g filter={showHalo ? "url(#arched-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
 
       {/* CONTEXT (near): Massive Romanesque church facade with twin towers hint */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Tower masses flanking portal */}
-        <path d="M-8 -5 L-8 98 L6 98 L6 -5 Z" strokeWidth="0.8" opacity="0.5" />
-        <path d="M94 -5 L94 98 L108 98 L108 -5 Z" strokeWidth="0.8" opacity="0.5" />
+        <path d="M-8 -5 L-8 98 L6 98 L6 -5 Z" />
+        <path d="M94 -5 L94 98 L108 98 L108 -5 Z" />
         {/* Tower window slits */}
-        <path d="M-2 15 L-2 25" strokeWidth="0.4" opacity="0.3" />
-        <path d="M100 15 L100 25" strokeWidth="0.4" opacity="0.3" />
-        <path d="M-2 40 L-2 50" strokeWidth="0.4" opacity="0.3" />
-        <path d="M100 40 L100 50" strokeWidth="0.4" opacity="0.3" />
+        <path d="M-2 15 L-2 25" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M100 15 L100 25" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M-2 40 L-2 50" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M100 40 L100 50" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
 
         {/* Rose window above portal — radiating spokes */}
-        <circle cx="50" cy="-3" r="14" strokeWidth="0.7" opacity="0.45" />
-        <circle cx="50" cy="-3" r="10" strokeWidth="0.4" opacity="0.3" />
-        <path d="M50 -17 L50 11 M36 -3 L64 -3" strokeWidth="0.3" opacity="0.25" />
-        <path d="M40 -13 L60 7 M60 -13 L40 7" strokeWidth="0.3" opacity="0.25" />
+        <circle cx="50" cy="-3" r="14" />
+        <circle cx="50" cy="-3" r="10" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M50 -17 L50 11 M36 -3 L64 -3" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M40 -13 L60 7 M60 -13 L40 7" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
 
         {/* Blind arcade above portal (Romanesque wall decoration) */}
-        <path d="M10 -5 Q20 -10 30 -5" strokeWidth="0.4" opacity="0.3" />
-        <path d="M70 -5 Q80 -10 90 -5" strokeWidth="0.4" opacity="0.3" />
+        <path d="M10 -5 Q20 -10 30 -5" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M70 -5 Q80 -10 90 -5" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
 
         {/* Ascending stone steps — wide ceremonial */}
-        <path d="M0 95 L100 95" strokeWidth="0.8" opacity="0.5" />
-        <path d="M3 92 L97 92" strokeWidth="0.6" opacity="0.4" />
-        <path d="M6 89 L94 89" strokeWidth="0.5" opacity="0.35" />
+        <path d="M0 95 L100 95" />
+        <path d="M3 92 L97 92" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M6 89 L94 89" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY: Deep Romanesque portal with 4 receding archivolt orders */}
@@ -125,13 +125,13 @@ const ArchedDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M53 48 L53 83 L67 83 L67 48 Z" strokeWidth={S.D.strokeWidth} />
 
         {/* Iron strap hinges — decorative Romanesque with fleur-de-lis ends */}
-        <path d="M27 56 L44 56" strokeWidth="1.6" />
+        <path d="M27 56 L44 56" strokeWidth={S.P.strokeWidthBold} />
         <path d="M28 56 L35 53 M28 56 L35 59" strokeWidth={S.D.strokeWidth} />
-        <path d="M27 70 L44 70" strokeWidth="1.6" />
+        <path d="M27 70 L44 70" strokeWidth={S.P.strokeWidthBold} />
         <path d="M28 70 L35 67 M28 70 L35 73" strokeWidth={S.D.strokeWidth} />
-        <path d="M73 56 L56 56" strokeWidth="1.6" />
+        <path d="M73 56 L56 56" strokeWidth={S.P.strokeWidthBold} />
         <path d="M72 56 L65 53 M72 56 L65 59" strokeWidth={S.D.strokeWidth} />
-        <path d="M73 70 L56 70" strokeWidth="1.6" />
+        <path d="M73 70 L56 70" strokeWidth={S.P.strokeWidthBold} />
 
         {/* Iron ring pull handles */}
         <circle cx="44" cy="63" r="3.5" strokeWidth={S.P.strokeWidth} />
@@ -156,18 +156,18 @@ const BifoldDoorSVG: React.FC<SVGProps> = ({ showHalo }) => (
       {/* CONTEXT (near): Modern open-plan room opening to patio/garden */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         {/* Flat modern roof/soffit with clean edge */}
-        <path d="M-5 6 L105 6" strokeWidth="0.8" opacity="0.5" />
+        <path d="M-5 6 L105 6" />
         {/* Recessed ceiling with downlights */}
-        <circle cx="15" cy="3" r="1" strokeWidth="0.3" opacity="0.3" />
-        <circle cx="85" cy="3" r="1" strokeWidth="0.3" opacity="0.3" />
+        <circle cx="15" cy="3" r="1" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <circle cx="85" cy="3" r="1" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
 
         {/* Interior: polished concrete floor */}
-        <path d="M-5 92 L105 92" strokeWidth="0.5" opacity="0.4" />
+        <path d="M-5 92 L105 92" strokeWidth={S.CN.strokeWidthFine} />
         {/* Floor control joints */}
-        <path d="M-5 94 L20 94 M80 94 L105 94" strokeWidth="0.3" opacity="0.2" />
+        <path d="M-5 94 L20 94 M80 94 L105 94" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
 
         {/* Planter box on deck */}
-        <path d="M30 90 L42 90 L42 93 L30 93 Z" strokeWidth="0.3" opacity="0.25" />
+        <path d="M30 90 L42 90 L42 93 L30 93 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* CONTEXT (far): Garden and deck beyond opening */}

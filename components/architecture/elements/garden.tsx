@@ -894,8 +894,8 @@ const PergolaSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M83 28 L87 28 L87 30 L83 30 Z" strokeWidth={S.D.strokeWidth} />
 
         {/* Main longitudinal beams */}
-        <path d="M10 28 L90 28" strokeWidth="1.6" />
-        <path d="M10 33 L90 33" strokeWidth="1.6" />
+        <path d="M10 28 L90 28" strokeWidth={S.P.strokeWidthBold} />
+        <path d="M10 33 L90 33" strokeWidth={S.P.strokeWidthBold} />
 
         {/* Cross rafters creating overhead grid */}
         {[16, 23, 30, 37, 44, 51, 58, 65, 72, 79, 86].map((x, i) => (

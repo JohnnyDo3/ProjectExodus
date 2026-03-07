@@ -479,7 +479,7 @@ const DentilSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M6 38 L6 56 L11 56 L11 38 Z" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
 
         {/* Block 2 */}
-        <path d="M18 36 L18 60 L27 60 L27 36 Z" strokeWidth="1.6" />
+        <path d="M18 36 L18 60 L27 60 L27 36 Z" strokeWidth={S.P.strokeWidthBold} />
         <path d="M19 38 L19 58 L26 58 L26 38 Z" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
 
         {/* Block 3 (center, closest - largest) */}
@@ -494,7 +494,7 @@ const DentilSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M53 37 L53 60 L61 60 L61 37 Z" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
 
         {/* Block 5 */}
-        <path d="M69 36 L69 60 L78 60 L78 36 Z" strokeWidth="1.6" />
+        <path d="M69 36 L69 60 L78 60 L78 36 Z" strokeWidth={S.P.strokeWidthBold} />
         <path d="M70 38 L70 58 L77 58 L77 38 Z" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
 
         {/* Block 6 (rightmost) */}
@@ -566,7 +566,7 @@ const EggAndDartSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M24 40 L24 60" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
 
         {/* EGG 2 (center-left, larger) */}
-        <ellipse cx="38" cy="48" rx="9" ry="15" strokeWidth="1.6" />
+        <ellipse cx="38" cy="48" rx="9" ry="15" strokeWidth={S.P.strokeWidthBold} />
         <path d="M38 33 L38 28" strokeWidth={S.D.strokeWidth} />
         <ellipse cx="38" cy="48" rx="5" ry="10" strokeWidth={S.D.strokeWidth} opacity={S.D.opacitySubtle} />
         {/* Egg shell highlight */}
