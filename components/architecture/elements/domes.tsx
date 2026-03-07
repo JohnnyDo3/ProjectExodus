@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react'
-import { MaterialPatterns } from './materialPatterns'
 import { S } from './svgStyleTokens'
 
 const HaloFilter = () => (
@@ -20,320 +19,404 @@ const HaloFilter = () => (
 interface SVGProps { showHalo?: boolean }
 
 // ============================================================================
-// DOME - Hemispherical roof structure
-// Reference: Pantheon, St. Peter's Basilica - the quintessential dome form
+// DOME - 3/4 exterior view of a hemispherical dome on a cylindrical drum.
+// Meridian (longitude) and parallel (latitude) lines create the 3D grid.
+// Reference: St. Peter's Basilica, Florence Cathedral
 // ============================================================================
 export const DomeSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
-    <MaterialPatterns />
     <HaloFilter />
 
-    {/* CONTEXT (near): Drum/base with stone/concrete construction */}
-    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-      {/* Base walls with stone texture */}
-      <rect x="8" y="78" width="4" height="14" fill="url(#stone-smooth)" opacity="0.2" stroke="none" />
-      <rect x="88" y="78" width="4" height="14" fill="url(#stone-smooth)" opacity="0.2" stroke="none" />
-      <path d="M 8 78 L 8 92" strokeWidth="1.2" fill="none" />
-      <path d="M 92 78 L 92 92" strokeWidth="1.2" fill="none" />
-      <rect x="5" y="92" width="90" height="8" fill="url(#stone-smooth)" opacity="0.15" stroke="none" />
-      <path d="M 5 92 L 95 92" strokeWidth="1" fill="none" />
+    {/* CONTEXT (far): Distant rooflines */}
+    <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth} fill="none">
+      <path d="M 2 92 L 14 86 L 26 92" />
+      <path d="M 74 92 L 86 85 L 98 92" />
     </g>
 
-    {/* CONTEXT (near): Drum with windows - solid with openings */}
-    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacitySubtle} strokeWidth={S.CN.strokeWidth}>
-      {/* Drum cylinder with stone/concrete texture */}
-      <rect x="10" y="78" width="80" height="8" fill="url(#concrete-smooth)" opacity="0.2" stroke="none" />
-      <path d="M 10 78 L 90 78" strokeWidth="1.3" fill="none" />
-      <path d="M 12 85 L 88 85" strokeWidth="1" fill="none" />
-      {/* Drum window openings (dark recesses) */}
-      <path d="M 25 85 L 25 78" strokeWidth="1.2" fill="none" opacity="0.7" />
-      <path d="M 40 85 L 40 78" strokeWidth="1.2" fill="none" opacity="0.7" />
-      <path d="M 60 85 L 60 78" strokeWidth="1.2" fill="none" opacity="0.7" />
-      <path d="M 75 85 L 75 78" strokeWidth="1.2" fill="none" opacity="0.7" />
+    {/* CONTEXT (near): Drum — cylindrical base supporting the dome */}
+    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth} fill="none">
+      {/* Drum walls */}
+      <path d="M 14 60 L 14 82" strokeWidth="1.2" />
+      <path d="M 86 60 L 86 82" strokeWidth="1.2" />
+      {/* Drum base ellipse */}
+      <ellipse cx="50" cy="82" rx="36" ry="8" strokeWidth="1" />
+      {/* Drum top ellipse (springing line) */}
+      <ellipse cx="50" cy="60" rx="36" ry="7" strokeWidth="1" />
+      {/* Drum windows */}
+      <path d="M 28 66 Q 28 62, 32 62 Q 36 62, 36 66" strokeWidth="0.6" opacity="0.5" />
+      <path d="M 42 65 Q 42 61, 46 61 Q 50 61, 50 65" strokeWidth="0.6" opacity="0.5" />
+      <path d="M 56 65 Q 56 61, 60 61 Q 64 61, 64 65" strokeWidth="0.6" opacity="0.5" />
+      <path d="M 70 66 Q 70 62, 74 62 Q 78 62, 78 66" strokeWidth="0.6" opacity="0.5" />
+      {/* Base structure */}
+      <path d="M 5 92 L 95 92" strokeWidth="0.8" />
     </g>
 
-    {/* PRIMARY: THE DOME - MASONRY/CONCRETE hemispherical shell */}
+    {/* 3D shading — far side of dome darker */}
+    <path d="M 50 16 Q 72 22, 82 38 Q 88 48, 86 60 L 66 60 Q 72 48, 72 36 Q 68 24, 50 18 Z"
+          fill="currentColor" opacity="0.1" stroke="none" />
+    {/* Near side lighter shadow */}
+    <path d="M 50 16 Q 28 22, 18 38 Q 14 48, 14 60 L 34 60 Q 28 48, 28 36 Q 32 24, 50 18 Z"
+          fill="currentColor" opacity="0.06" stroke="none" />
+
+    {/* PRIMARY: THE DOME — hemispherical shell */}
     <g filter={showHalo ? "url(#dome-halo)" : undefined}>
-      {/* Dome shell material (concrete with subtle texture) */}
-      <path d="M 14 76 Q 14 30, 50 18 Q 86 30, 86 76" fill="url(#concrete-smooth)" opacity="0.22" stroke="none" />
+      {/* Main dome profile — outer contour */}
+      <path d="M 14 60 Q 14 24, 50 14 Q 86 24, 86 60"
+            strokeWidth={S.P.strokeWidthHeavy} fill="none" strokeLinecap={S.P.strokeLinecap} />
 
-      {/* Extrados (outer surface) - BOLD */}
-      <path d="M 10 78 Q 10 28, 50 15 Q 90 28, 90 78" strokeWidth={S.P.strokeWidthHeavy} fill="none" strokeLinecap={S.P.strokeLinecap} />
+      {/* DETAIL: Meridian lines (longitude — from apex to base) */}
+      {/* Center meridian */}
+      <path d="M 50 14 L 50 60" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacity} />
+      {/* Left meridians */}
+      <path d="M 50 14 Q 36 20, 24 38 Q 18 48, 16 60"
+            strokeWidth={S.D.strokeWidth} fill="none" opacity={S.D.opacity} />
+      <path d="M 50 14 Q 42 18, 34 30 Q 28 42, 26 60"
+            strokeWidth={S.D.strokeWidth} fill="none" opacity={S.D.opacitySubtle} />
+      {/* Right meridians */}
+      <path d="M 50 14 Q 64 20, 76 38 Q 82 48, 84 60"
+            strokeWidth={S.D.strokeWidth} fill="none" opacity={S.D.opacity} />
+      <path d="M 50 14 Q 58 18, 66 30 Q 72 42, 74 60"
+            strokeWidth={S.D.strokeWidth} fill="none" opacity={S.D.opacitySubtle} />
+      {/* Far-side meridians (visible curving around) */}
+      <path d="M 50 14 Q 44 16, 40 22 Q 36 30, 38 60"
+            strokeWidth={S.D.strokeWidthFine} fill="none" opacity="0.2" />
+      <path d="M 50 14 Q 56 16, 60 22 Q 64 30, 62 60"
+            strokeWidth={S.D.strokeWidthFine} fill="none" opacity="0.2" />
 
-      {/* Intrados (inner surface) - showing thickness */}
-      <path d="M 18 75 Q 18 34, 50 22 Q 82 34, 82 75" strokeWidth={S.P.strokeWidthBold} fill="none" opacity="0.7" />
-
-      {/* Shell thickness shadow */}
-      <path d="M 19 75 Q 19 35, 50 23 Q 81 35, 81 75" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
-
-      {/* DETAIL: Meridian ribs radiating from apex */}
-      <path d="M 50 15 L 50 75" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacity} />
-      <path d="M 50 16 L 50 75" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
-      <path d="M 50 18 Q 28 28, 15 65" strokeWidth={S.D.strokeWidth} fill="none" opacity={S.D.opacity} />
-      <path d="M 50 19 Q 28.5 29, 15.5 65" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
-      <path d="M 50 18 Q 72 28, 85 65" strokeWidth={S.D.strokeWidth} fill="none" opacity={S.D.opacity} />
-      <path d="M 50 19 Q 72.5 29, 85.5 65" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
-      <path d="M 50 18 Q 35 30, 22 68" strokeWidth={S.D.strokeWidth} fill="none" opacity={S.D.opacitySubtle} />
-      <path d="M 50 18 Q 65 30, 78 68" strokeWidth={S.D.strokeWidth} fill="none" opacity={S.D.opacitySubtle} />
-
-      {/* DETAIL: Parallel rings/courses */}
-      <path d="M 20 58 Q 50 52, 80 58" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacity} />
-      <path d="M 28 42 Q 50 36, 72 42" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacity} />
-      <path d="M 38 28 Q 50 24, 62 28" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
-
-      {/* Oculus ring at apex (optional) */}
-      <circle cx="50" cy="16" r="4" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacity} />
+      {/* DETAIL: Parallel lines (latitude — horizontal rings) */}
+      <path d="M 20 52 Q 50 46, 80 52"
+            strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacity} />
+      <path d="M 24 44 Q 50 38, 76 44"
+            strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacity} />
+      <path d="M 30 34 Q 50 29, 70 34"
+            strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 38 26 Q 50 22, 62 26"
+            strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
     </g>
 
     {/* Lantern at top */}
     <g opacity={S.D.opacityStrong}>
-      <path d="M 46 16 L 46 8" strokeWidth={S.D.strokeWidthBold} fill="none" />
-      <path d="M 54 16 L 54 8" strokeWidth={S.D.strokeWidthBold} fill="none" />
+      <path d="M 46 14 L 46 8" strokeWidth={S.D.strokeWidthBold} fill="none" />
+      <path d="M 54 14 L 54 8" strokeWidth={S.D.strokeWidthBold} fill="none" />
       <path d="M 44 8 L 56 8" strokeWidth={S.D.strokeWidthBold} fill="none" />
-      <path d="M 50 8 L 50 4" strokeWidth={S.D.strokeWidthBold} fill="none" />
+      <path d="M 50 8 L 50 3" strokeWidth={S.D.strokeWidthBold} fill="none" />
+      {/* Lantern ball */}
+      <circle cx="50" cy="3" r="1.5" strokeWidth={S.D.strokeWidth} fill="none" />
     </g>
   </svg>
 )
 
 // ============================================================================
-// OCULUS - Circular opening at dome apex for light
-// Reference: Pantheon oculus - 27 foot diameter open eye to the sky
+// OCULUS - Interior view looking straight up into a coffered dome with
+// a circular opening (oculus) at the apex. Light streams through.
+// Reference: Pantheon, Rome — the 27-foot open eye to the sky
 // ============================================================================
 export const OculusSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT (far): Distant roof ridgelines and neighboring structures beyond dome exterior */}
-    <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
-      {/* Distant roofline visible beyond the dome drum */}
-      <path d="M 2 90 L 12 84 L 22 90" fill="none" />
-      <path d="M 78 90 L 88 83 L 98 90" fill="none" />
-      {/* Far building silhouettes in corners */}
-      <path d="M 1 96 L 1 88 L 6 88 L 6 92 L 10 92 L 10 96" fill="none" />
-      <path d="M 90 96 L 90 86 L 95 86 L 95 90 L 99 90 L 99 96" fill="none" />
-      {/* Exterior dome profile seen from distance */}
-      <path d="M 6 82 Q 6 60, 50 50 Q 94 60, 94 82" fill="none" />
-      {/* Distant tower/campanile */}
-      <path d="M 3 82 L 3 68 L 7 68 L 7 82" fill="none" opacity={S.CF.opacitySubtle} />
-      <path d="M 2 68 L 5 62 L 8 68" fill="none" opacity={S.CF.opacitySubtle} />
+    {/* CONTEXT (near): Drum walls and cornice below the dome (seen from below) */}
+    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth} fill="none">
+      {/* Outer drum ring */}
+      <ellipse cx="50" cy="54" rx="46" ry="40" strokeWidth="1.2" />
+      {/* Inner cornice ring */}
+      <ellipse cx="50" cy="54" rx="43" ry="37" strokeWidth="0.8" opacity={S.CN.opacitySubtle} />
+      {/* Pilaster hints around drum */}
+      <path d="M 6 60 L 4 88" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 18 40 L 10 20" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 82 40 L 90 20" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 94 60 L 96 88" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
     </g>
 
-    {/* CONTEXT (near): Surrounding dome surface (view from below) */}
-    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-      <ellipse cx="50" cy="58" rx="44" ry="26" strokeWidth="1.2" fill="none" />
-      <ellipse cx="50" cy="58" rx="40" ry="23" strokeWidth="0.9" fill="none" />
+    {/* Dome interior surface fill — concave from below */}
+    <ellipse cx="50" cy="54" rx="42" ry="36"
+             fill="currentColor" opacity="0.06" stroke="none" />
+
+    {/* CONTEXT (near): Coffering pattern — concentric rings of recessed panels */}
+    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacitySubtle} strokeWidth={S.CN.strokeWidthFine} fill="none">
+      {/* Radial coffer ribs (meridians from oculus outward) */}
+      <path d="M 50 22 L 12 56" />
+      <path d="M 50 22 L 22 26" />
+      <path d="M 50 22 L 26 70" />
+      <path d="M 50 22 L 38 84" />
+      <path d="M 50 22 L 62 84" />
+      <path d="M 50 22 L 74 70" />
+      <path d="M 50 22 L 78 26" />
+      <path d="M 50 22 L 88 56" />
+      {/* Additional radials for density */}
+      <path d="M 50 22 L 16 38" />
+      <path d="M 50 22 L 18 72" />
+      <path d="M 50 22 L 50 90" />
+      <path d="M 50 22 L 82 72" />
+      <path d="M 50 22 L 84 38" />
+
+      {/* Concentric coffer rings (parallels) */}
+      <ellipse cx="50" cy="46" rx="24" ry="20" />
+      <ellipse cx="50" cy="50" rx="32" ry="27" />
+      <ellipse cx="50" cy="52" rx="38" ry="32" />
     </g>
 
-    {/* CONTEXT (near): Coffering pattern radiating to oculus */}
-    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacitySubtle} strokeWidth={S.CN.strokeWidthFine}>
-      <path d="M 50 32 L 18 70" fill="none" />
-      <path d="M 50 32 L 32 72" fill="none" />
-      <path d="M 50 32 L 68 72" fill="none" />
-      <path d="M 50 32 L 82 70" fill="none" />
-      {/* Additional radial coffer ribs for density */}
-      <path d="M 50 32 L 10 62" fill="none" />
-      <path d="M 50 32 L 25 74" fill="none" />
-      <path d="M 50 32 L 75 74" fill="none" />
-      <path d="M 50 32 L 90 62" fill="none" />
-      {/* Concentric coffer rings */}
-      <ellipse cx="50" cy="52" rx="32" ry="18" fill="none" />
-      <ellipse cx="50" cy="46" rx="22" ry="12" fill="none" />
-      {/* Additional coffer ring for finer coffering */}
-      <ellipse cx="50" cy="55" rx="38" ry="21" fill="none" />
-    </g>
+    {/* Light cone from oculus — subtle fill */}
+    <ellipse cx="50" cy="40" rx="12" ry="10"
+             fill="currentColor" opacity="0.04" stroke="none" />
 
-    {/* CONTEXT (near): Thick drum walls and cornice moldings below dome */}
-    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-      {/* Drum wall top cornice - thick molding band */}
-      <ellipse cx="50" cy="62" rx="46" ry="28" strokeWidth="1.0" fill="none" />
-      {/* Cornice molding detail */}
-      <ellipse cx="50" cy="63" rx="47" ry="29" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
-      {/* Drum wall vertical articulation - pilasters around the drum */}
-      <path d="M 8 72 L 6 92" fill="none" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
-      <path d="M 20 68 L 16 92" fill="none" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
-      <path d="M 80 68 L 84 92" fill="none" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
-      <path d="M 92 72 L 94 92" fill="none" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
-    </g>
-
-    {/* CONTEXT (near): Pendentive arches and interior wall articulation below drum */}
-    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacitySubtle} strokeWidth={S.CN.strokeWidth}>
-      {/* Pendentive arches - four arches supporting the dome */}
-      <path d="M 2 82 Q 25 68, 50 82" fill="none" />
-      <path d="M 50 82 Q 75 68, 98 82" fill="none" />
-      {/* Secondary transverse arches */}
-      <path d="M 14 88 Q 50 74, 86 88" fill="none" strokeWidth={S.CN.strokeWidthFine} />
-      {/* Pendentive triangular surfaces in corners */}
-      <path d="M 2 82 Q 4 76, 8 72" fill="none" strokeWidth={S.CN.strokeWidthFine} />
-      <path d="M 98 82 Q 96 76, 92 72" fill="none" strokeWidth={S.CN.strokeWidthFine} />
-      {/* Interior wall windows (drum windows seen from below) */}
-      <path d="M 30 66 L 30 72" fill="none" strokeWidth={S.CN.strokeWidthFine} />
-      <path d="M 36 64 L 36 70" fill="none" strokeWidth={S.CN.strokeWidthFine} />
-      <path d="M 64 64 L 64 70" fill="none" strokeWidth={S.CN.strokeWidthFine} />
-      <path d="M 70 66 L 70 72" fill="none" strokeWidth={S.CN.strokeWidthFine} />
-      {/* Lower wall entablature line */}
-      <path d="M 2 92 L 98 92" fill="none" />
-      <path d="M 2 96 L 98 96" fill="none" strokeWidth={S.CN.strokeWidthFine} />
-    </g>
-
-    {/* PRIMARY: THE OCULUS - circular opening */}
+    {/* PRIMARY: THE OCULUS — the circular opening at the apex */}
     <g filter={showHalo ? "url(#dome-halo)" : undefined}>
-      {/* Main oculus ring - thick bronze-like frame */}
-      <circle cx="50" cy="35" r="18" strokeWidth={S.P.strokeWidthHeavy} fill="none" />
-
+      {/* Outer ring — thick bronze-like frame */}
+      <ellipse cx="50" cy="28" rx="16" ry="12" strokeWidth={S.P.strokeWidthHeavy} fill="none" />
       {/* Inner rim step */}
-      <circle cx="50" cy="35" r="15" strokeWidth={S.P.strokeWidthBold} fill="none" opacity="0.7" />
-
-      {/* Innermost edge - the actual opening */}
-      <circle cx="50" cy="35" r="12" strokeWidth={S.P.strokeWidthLight} fill="none" opacity="0.6" />
-
-      {/* DETAIL: Decorative ring molding */}
-      <circle cx="50" cy="35" r="16.5" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacity} />
+      <ellipse cx="50" cy="28" rx="13" ry="10" strokeWidth={S.P.strokeWidthBold} fill="none" opacity="0.7" />
+      {/* Innermost edge — the actual opening to sky */}
+      <ellipse cx="50" cy="28" rx="10" ry="8" strokeWidth={S.P.strokeWidthLight} fill="none" opacity="0.6" />
+      {/* Decorative ring molding */}
+      <ellipse cx="50" cy="28" rx="14.5" ry="11" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacity} />
     </g>
 
-    {/* EFFECTS: Light rays from oculus */}
-    <g opacity={S.E.opacity} strokeDasharray={S.E.dash} strokeWidth={S.E.strokeWidth}>
-      <path d="M 50 53 L 50 78" fill="none" />
-      <path d="M 36 50 L 20 75" fill="none" />
-      <path d="M 64 50 L 80 75" fill="none" />
+    {/* EFFECTS: Light rays streaming from oculus */}
+    <g opacity={S.E.opacity} strokeDasharray={S.E.dash} strokeWidth={S.E.strokeWidth} fill="none">
+      <path d="M 42 38 L 30 72" />
+      <path d="M 50 40 L 50 82" />
+      <path d="M 58 38 L 70 72" />
+      <path d="M 46 39 L 38 68" />
+      <path d="M 54 39 L 62 68" />
     </g>
   </svg>
 )
 
 // ============================================================================
-// ONION DOME - Bulbous dome, characteristic of Russian/Eastern Orthodox
-// Reference: St. Basil's Cathedral - colorful bulbous domes with points
+// ONION DOME - 3/4 exterior view. Bulges outward beyond drum diameter,
+// then tapers dramatically to a point. Much taller than a regular dome.
+// Reference: St. Basil's Cathedral, Russian/Eastern Orthodox churches
 // ============================================================================
 export const OnionDomeSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT (near): Drum base and supporting structure */}
-    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-      <path d="M 28 92 L 72 92" fill="none" />
-      <path d="M 30 85 L 70 85" fill="none" />
-      <path d="M 32 78 L 68 78" fill="none" />
-      {/* Drum walls */}
-      <path d="M 32 92 L 32 78" fill="none" />
-      <path d="M 68 92 L 68 78" fill="none" />
+    {/* CONTEXT (near): Drum base */}
+    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth} fill="none">
+      {/* Drum cylinder */}
+      <path d="M 34 82 L 34 92" strokeWidth="1.2" />
+      <path d="M 66 82 L 66 92" strokeWidth="1.2" />
+      <ellipse cx="50" cy="92" rx="16" ry="4" strokeWidth="0.8" />
+      <ellipse cx="50" cy="82" rx="16" ry="3.5" strokeWidth="0.8" />
+      {/* Drum arcade/windows */}
+      <path d="M 38 84 Q 38 80, 42 80 Q 46 80, 46 84" strokeWidth="0.5" opacity="0.5" />
+      <path d="M 54 84 Q 54 80, 58 80 Q 62 80, 62 84" strokeWidth="0.5" opacity="0.5" />
     </g>
 
-    {/* PRIMARY: THE ONION DOME - distinctive bulbous shape */}
+    {/* 3D shading — far side of onion dome */}
+    <path d="M 50 8 Q 58 20, 70 28 Q 84 38, 82 54 Q 80 66, 66 78 L 58 78 Q 72 66, 74 54 Q 76 40, 64 30 Q 54 22, 50 12 Z"
+          fill="currentColor" opacity="0.1" stroke="none" />
+    {/* Near side lighter */}
+    <path d="M 50 8 Q 42 20, 30 28 Q 16 38, 18 54 Q 20 66, 34 78 L 42 78 Q 28 66, 26 54 Q 24 40, 36 30 Q 46 22, 50 12 Z"
+          fill="currentColor" opacity="0.06" stroke="none" />
+
+    {/* PRIMARY: THE ONION DOME — distinctive bulbous shape */}
     <g filter={showHalo ? "url(#dome-halo)" : undefined}>
-      {/* The characteristic bulge - wider than base, then dramatically narrowing */}
-      <path d="M 32 78 Q 16 68, 15 52 Q 14 38, 34 26 Q 44 20, 50 10 Q 56 20, 66 26 Q 86 38, 85 52 Q 84 68, 68 78"
-            strokeWidth={S.P.strokeWidthBold} fill="none" strokeLinecap={S.P.strokeLinecap} />
+      {/* Main onion profile — bulges BEYOND drum width, then tapers to point */}
+      <path d="M 34 82 Q 14 70, 16 52 Q 18 36, 36 26 Q 44 20, 50 8 Q 56 20, 64 26 Q 82 36, 84 52 Q 86 70, 66 82"
+            strokeWidth={S.P.strokeWidthHeavy} fill="none" strokeLinecap={S.P.strokeLinecap} />
 
-      {/* Inner contour */}
-      <path d="M 36 75 Q 22 66, 21 52 Q 20 40, 38 30 Q 46 24, 50 16 Q 54 24, 62 30 Q 80 40, 79 52 Q 78 66, 64 75"
-            strokeWidth={S.P.strokeWidth} fill="none" opacity="0.6" />
+      {/* Inner contour showing shell thickness */}
+      <path d="M 36 80 Q 20 68, 22 52 Q 24 38, 40 30 Q 46 24, 50 14 Q 54 24, 60 30 Q 76 38, 78 52 Q 80 68, 64 80"
+            strokeWidth={S.P.strokeWidthLight} fill="none" opacity="0.5" />
 
-      {/* DETAIL: Vertical ribs typical of onion domes */}
-      <path d="M 50 10 L 50 75" strokeWidth={S.D.strokeWidth} fill="none" opacity={S.D.opacity} />
-      <path d="M 30 32 Q 34 52, 40 74" strokeWidth={S.D.strokeWidth} fill="none" opacity={S.D.opacity} />
-      <path d="M 70 32 Q 66 52, 60 74" strokeWidth={S.D.strokeWidth} fill="none" opacity={S.D.opacity} />
-      <path d="M 24 45 Q 30 58, 36 74" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
-      <path d="M 76 45 Q 70 58, 64 74" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      {/* DETAIL: Vertical ribs (meridians) typical of onion domes */}
+      {/* Center rib */}
+      <path d="M 50 8 L 50 82" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacity} />
+      {/* Left ribs */}
+      <path d="M 50 8 Q 40 22, 30 34 Q 20 46, 22 58 Q 24 68, 36 80"
+            strokeWidth={S.D.strokeWidth} fill="none" opacity={S.D.opacity} />
+      <path d="M 50 8 Q 44 20, 38 28 Q 28 40, 28 54 Q 28 66, 38 80"
+            strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      {/* Right ribs */}
+      <path d="M 50 8 Q 60 22, 70 34 Q 80 46, 78 58 Q 76 68, 64 80"
+            strokeWidth={S.D.strokeWidth} fill="none" opacity={S.D.opacity} />
+      <path d="M 50 8 Q 56 20, 62 28 Q 72 40, 72 54 Q 72 66, 62 80"
+            strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+
+      {/* DETAIL: Horizontal parallel rings */}
+      <path d="M 20 52 Q 50 44, 80 52" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 26 40 Q 50 32, 74 40" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 22 64 Q 50 56, 78 64" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
     </g>
 
     {/* Orthodox cross finial at apex */}
     <g opacity="0.8">
-      <path d="M 50 10 L 50 2" strokeWidth={S.P.strokeWidthBold} fill="none" />
-      <path d="M 46 5 L 54 5" strokeWidth={S.P.strokeWidth} fill="none" />
-      <path d="M 47 3 L 53 3" strokeWidth={S.P.strokeWidthLight} fill="none" />
+      <path d="M 50 8 L 50 1" strokeWidth={S.P.strokeWidthBold} fill="none" />
+      <path d="M 46 4 L 54 4" strokeWidth={S.P.strokeWidth} fill="none" />
+      <path d="M 47 2 L 53 2" strokeWidth={S.P.strokeWidthLight} fill="none" />
     </g>
   </svg>
 )
 
 // ============================================================================
-// PENDENTIVE - Spherical triangle transitioning square plan to circular dome
-// Reference: Hagia Sophia - masterful use of pendentives for dome support
+// PENDENTIVE - Interior 3/4 view. Spherical triangles in the corners that
+// transition from a square base to a circular dome ring above.
+// Reference: Hagia Sophia — masterful pendentive construction
 // ============================================================================
 export const PendentiveSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT (near): Square base structure below */}
-    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-      <path d="M 8 88 L 50 88" strokeWidth="1.2" fill="none" />
-      <path d="M 50 88 L 92 88" strokeWidth="1.2" fill="none" />
-      <path d="M 8 88 L 8 58" strokeWidth="1.2" fill="none" />
-      <path d="M 92 88 L 92 58" strokeWidth="1.2" fill="none" />
+    {/* CONTEXT (near): Square base structure — the four walls/arches below */}
+    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth} fill="none">
+      {/* Two visible walls of the square bay (3/4 view) */}
+      {/* Left wall */}
+      <path d="M 4 86 L 4 42" strokeWidth="1.2" />
+      {/* Right wall receding */}
+      <path d="M 96 86 L 96 50" strokeWidth="1.2" />
+      {/* Floor */}
+      <path d="M 4 86 L 96 86" strokeWidth="1" />
+      {/* Back wall receding */}
+      <path d="M 4 42 L 50 38" strokeWidth="0.8" opacity="0.3" />
+      <path d="M 96 50 L 50 38" strokeWidth="0.8" opacity="0.3" />
+
+      {/* Front arch (left to right, nearest to viewer) */}
+      <path d="M 4 52 Q 50 28, 96 52" strokeWidth="1.2" />
+      {/* Left side arch (receding into depth) */}
+      <path d="M 4 52 Q 28 34, 50 38" strokeWidth="0.8" opacity="0.4" />
+      {/* Right side arch (receding into depth) */}
+      <path d="M 96 52 Q 72 34, 50 38" strokeWidth="0.8" opacity="0.4" />
     </g>
 
-    {/* CONTEXT (near): Supporting arches on sides */}
-    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacitySubtle} strokeWidth={S.CN.strokeWidth}>
-      <path d="M 8 58 Q 29 42, 50 58" strokeWidth="1" fill="none" />
-      <path d="M 50 58 Q 71 42, 92 58" strokeWidth="1" fill="none" />
+    {/* CONTEXT (near): Dome ring above pendentives */}
+    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacitySubtle} strokeWidth={S.CN.strokeWidth} fill="none">
+      {/* Circular dome base ring */}
+      <ellipse cx="50" cy="28" rx="36" ry="10" strokeWidth="0.9" />
+      {/* Dome hint above */}
+      <path d="M 18 24 Q 18 10, 50 6 Q 82 10, 82 24" strokeWidth="0.7" opacity="0.25" />
     </g>
 
-    {/* CONTEXT (near): Dome above */}
-    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacitySubtle} strokeWidth={S.CN.strokeWidth}>
-      <path d="M 15 25 Q 15 8, 50 5 Q 85 8, 85 25" strokeWidth="1" fill="none" />
-      <ellipse cx="50" cy="25" rx="35" ry="8" strokeWidth="0.8" fill="none" />
-    </g>
+    {/* Pendentive surface fills — curved spherical triangles */}
+    {/* Left pendentive */}
+    <path d="M 4 52 Q 14 44, 24 36 Q 30 30, 20 24 L 14 28 Z"
+          fill="currentColor" opacity="0.09" stroke="none" />
+    {/* Right pendentive */}
+    <path d="M 96 52 Q 86 44, 76 36 Q 70 30, 80 24 L 86 28 Z"
+          fill="currentColor" opacity="0.11" stroke="none" />
+    {/* Back-left pendentive (partially visible) */}
+    <path d="M 4 52 Q 16 40, 28 34 Q 34 30, 28 24 L 18 26 Z"
+          fill="currentColor" opacity="0.07" stroke="none" />
+    {/* Back-right pendentive (partially visible) */}
+    <path d="M 96 52 Q 84 40, 72 34 Q 66 30, 72 24 L 82 26 Z"
+          fill="currentColor" opacity="0.08" stroke="none" />
 
-    {/* PRIMARY: THE PENDENTIVE - curved spherical triangle */}
+    {/* PRIMARY: THE PENDENTIVES — curved spherical triangles */}
     <g filter={showHalo ? "url(#dome-halo)" : undefined}>
-      {/* Left pendentive - spherical triangle from corner to dome ring */}
-      <path d="M 8 58 Q 14 48, 24 40 Q 36 32, 50 26"
-            strokeWidth={S.P.strokeWidthBold} fill="none" strokeLinecap={S.P.strokeLinecap} />
+      {/* LEFT PENDENTIVE — the prominent spherical triangle */}
+      {/* Outer edge curving from arch apex down to pier */}
+      <path d="M 4 52 Q 10 44, 16 36 Q 18 30, 16 24"
+            strokeWidth={S.P.strokeWidthHeavy} fill="none" strokeLinecap={S.P.strokeLinecap} />
+      {/* Surface curvature lines */}
+      <path d="M 6 48 Q 12 42, 18 34 Q 20 28, 18 24"
+            strokeWidth={S.P.strokeWidthLight} fill="none" opacity="0.5" />
+      <path d="M 8 44 Q 14 38, 20 32 Q 20 28, 20 26"
+            strokeWidth={S.D.strokeWidth} fill="none" opacity="0.4" />
 
-      {/* Right pendentive */}
-      <path d="M 92 58 Q 86 48, 76 40 Q 64 32, 50 26"
-            strokeWidth={S.P.strokeWidthBold} fill="none" strokeLinecap={S.P.strokeLinecap} />
+      {/* RIGHT PENDENTIVE */}
+      <path d="M 96 52 Q 90 44, 84 36 Q 82 30, 84 24"
+            strokeWidth={S.P.strokeWidthHeavy} fill="none" strokeLinecap={S.P.strokeLinecap} />
+      <path d="M 94 48 Q 88 42, 82 34 Q 80 28, 82 24"
+            strokeWidth={S.P.strokeWidthLight} fill="none" opacity="0.5" />
+      <path d="M 92 44 Q 86 38, 80 32 Q 80 28, 80 26"
+            strokeWidth={S.D.strokeWidth} fill="none" opacity="0.4" />
 
-      {/* Curved surface lines showing spherical form */}
-      <path d="M 12 54 Q 22 46, 36 38 Q 44 34, 50 30" strokeWidth={S.P.strokeWidthLight} fill="none" opacity={S.D.opacity} />
-      <path d="M 88 54 Q 78 46, 64 38 Q 56 34, 50 30" strokeWidth={S.P.strokeWidthLight} fill="none" opacity={S.D.opacity} />
+      {/* BACK-LEFT PENDENTIVE (partially visible, curving away) */}
+      <path d="M 4 52 Q 16 38, 28 32 Q 30 28, 26 24"
+            strokeWidth={S.P.strokeWidthBold} fill="none" strokeLinecap={S.P.strokeLinecap} opacity="0.6" />
 
-      {/* Interior curves defining the transition */}
-      <path d="M 16 50 Q 28 42, 44 34" strokeWidth={S.D.strokeWidth} fill="none" opacity="0.45" />
-      <path d="M 84 50 Q 72 42, 56 34" strokeWidth={S.D.strokeWidth} fill="none" opacity="0.45" />
+      {/* BACK-RIGHT PENDENTIVE (partially visible) */}
+      <path d="M 96 52 Q 84 38, 72 32 Q 70 28, 74 24"
+            strokeWidth={S.P.strokeWidthBold} fill="none" strokeLinecap={S.P.strokeLinecap} opacity="0.6" />
 
-      {/* Circular drum base where pendentives meet */}
-      <ellipse cx="50" cy="26" rx="36" ry="9" strokeWidth={S.P.strokeWidth} fill="none" />
+      {/* Circular ring where pendentives meet dome base */}
+      <ellipse cx="50" cy="26" rx="35" ry="9" strokeWidth={S.P.strokeWidthBold} fill="none" />
+    </g>
+
+    {/* DETAIL: Mosaic/decoration hints on pendentive surfaces */}
+    <g opacity={S.D.opacitySubtle} strokeWidth={S.D.strokeWidthFine} fill="none">
+      <path d="M 8 46 Q 12 40, 16 34" />
+      <path d="M 92 46 Q 88 40, 84 34" />
     </g>
   </svg>
 )
 
 // ============================================================================
-// SQUINCH - Arch/corbeling across corner, alternative to pendentive
-// Reference: Islamic architecture - transitioning square to octagonal/circular
+// SQUINCH - Interior 3/4 view of a corner. A small arch or corbelled
+// structure bridging the corner of a square room to support an octagonal
+// or circular dome above. Angular/arched, NOT smoothly curved like a pendentive.
+// Reference: Islamic architecture, Romanesque churches
 // ============================================================================
 export const SquinchSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
     {/* CONTEXT (near): Corner walls meeting at 90 degrees */}
-    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-      <path d="M 12 92 L 12 38" strokeWidth="1.5" fill="none" />
-      <path d="M 12 92 L 88 92" strokeWidth="1" fill="none" />
-      <path d="M 88 92 L 88 62" strokeWidth="1.2" fill="none" />
+    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth} fill="none">
+      {/* Left wall (facing viewer) */}
+      <path d="M 8 92 L 8 32" strokeWidth="1.5" />
+      {/* Right wall (receding at angle) */}
+      <path d="M 8 92 L 92 92" strokeWidth="1" />
+      <path d="M 92 92 L 92 44" strokeWidth="1.2" />
+      {/* Wall corner junction at top */}
+      <path d="M 8 32 L 8 32" strokeWidth="1.5" />
+      {/* Wall thickness on left */}
+      <path d="M 14 88 L 14 36" strokeWidth="0.6" opacity="0.5" />
+      {/* Wall thickness on right */}
+      <path d="M 88 88 L 88 48" strokeWidth="0.6" opacity="0.5" />
     </g>
 
-    {/* CONTEXT (near): Octagonal drum above */}
-    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacitySubtle} strokeWidth={S.CN.strokeWidthFine}>
-      <path d="M 12 38 L 28 32" fill="none" />
-      <path d="M 88 38 L 72 32" fill="none" />
-      <path d="M 28 32 L 50 26 L 72 32" fill="none" />
+    {/* CONTEXT (near): Octagonal drum transition above squinch */}
+    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacitySubtle} strokeWidth={S.CN.strokeWidthFine} fill="none">
+      {/* Octagonal drum wall above */}
+      <path d="M 8 32 L 30 24 L 70 24 L 92 32" />
+      {/* Dome hint above */}
+      <path d="M 30 24 Q 50 14, 70 24" strokeWidth="0.5" opacity="0.2" />
     </g>
 
-    {/* PRIMARY: THE SQUINCH - arch spanning the corner */}
+    {/* Squinch surface fill — the concave niche */}
+    <path d="M 8 44 Q 50 22, 92 44 L 88 48 Q 50 28, 14 48 Z"
+          fill="currentColor" opacity="0.08" stroke="none" />
+    {/* Shadow below squinch */}
+    <path d="M 14 48 Q 50 30, 88 48 L 88 56 Q 50 40, 14 56 Z"
+          fill="currentColor" opacity="0.06" stroke="none" />
+
+    {/* PRIMARY: THE SQUINCH — arch spanning the corner */}
     <g filter={showHalo ? "url(#dome-halo)" : undefined}>
-      {/* Main squinch arch - THE key structural element */}
-      <path d="M 12 38 Q 50 20, 88 38" strokeWidth={S.P.strokeWidthHeavy} fill="none" strokeLinecap={S.P.strokeLinecap} />
+      {/* Main squinch arch — THE key structural element bridging the corner */}
+      <path d="M 8 44 Q 50 18, 92 44"
+            strokeWidth={S.P.strokeWidthHeavy} fill="none" strokeLinecap={S.P.strokeLinecap} />
 
-      {/* Inner arch */}
-      <path d="M 18 42 Q 50 26, 82 42" strokeWidth={S.P.strokeWidth} fill="none" opacity={S.D.opacityStrong} />
+      {/* Inner arch ring (showing arch depth/thickness) */}
+      <path d="M 14 48 Q 50 26, 88 48"
+            strokeWidth={S.P.strokeWidthBold} fill="none" opacity={S.D.opacityStrong} />
 
-      {/* Corbeled layers showing stepped construction */}
-      <path d="M 15 48 Q 50 34, 85 48" strokeWidth="1.4" fill="none" opacity="0.6" />
-      <path d="M 14 54 Q 50 42, 86 54" strokeWidth="1.1" fill="none" opacity="0.5" />
-      <path d="M 13 60 Q 50 50, 87 60" strokeWidth="0.9" fill="none" opacity="0.4" />
+      {/* Corbeled/stepped layers below — showing the stepped construction */}
+      <path d="M 16 54 Q 50 34, 86 54"
+            strokeWidth="1.4" fill="none" opacity="0.6" />
+      <path d="M 18 60 Q 50 42, 84 60"
+            strokeWidth="1.1" fill="none" opacity="0.5" />
+      <path d="M 20 66 Q 50 50, 82 66"
+            strokeWidth="0.9" fill="none" opacity="0.4" />
+      <path d="M 22 72 Q 50 58, 80 72"
+            strokeWidth="0.7" fill="none" opacity="0.3" />
 
-      {/* DETAIL: Niche/shell form in squinch (common decoration) */}
-      <path d="M 35 40 Q 50 32, 65 40" strokeWidth={S.D.strokeWidth} fill="none" opacity={S.D.opacity} />
-      <path d="M 40 44 L 50 36 L 60 44" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      {/* Niche/shell decoration inside the squinch */}
+      <path d="M 30 48 Q 50 32, 70 48"
+            strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacity} />
+      <path d="M 38 50 L 50 38 L 62 50"
+            strokeWidth={S.D.strokeWidth} fill="none" opacity={S.D.opacitySubtle} />
+      {/* Radiating lines inside niche (muqarnas-like) */}
+      <path d="M 50 32 L 42 50" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 50 32 L 50 52" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 50 32 L 58 50" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+    </g>
+
+    {/* Springing points where squinch meets walls */}
+    <g opacity="0.6">
+      <circle cx="8" cy="44" r="2" strokeWidth={S.D.strokeWidthBold} fill="none" />
+      <circle cx="92" cy="44" r="2" strokeWidth={S.D.strokeWidthBold} fill="none" />
     </g>
   </svg>
 )

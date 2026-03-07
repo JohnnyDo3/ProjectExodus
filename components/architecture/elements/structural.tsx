@@ -651,395 +651,597 @@ export const BRACING_ELEMENTS: Record<string, React.FC<SVGProps>> = {
 // =============================================================================
 
 /**
- * KING POST TRUSS - Simplest truss with single central post
- * Medieval origin, still used in residential construction
- * Shows: Triangle with single vertical post from apex to tie beam
- * The central post is in TENSION (pulling up on the tie beam)
+ * KING POST TRUSS - Simplest truss with ONE central vertical post
+ * 3/4 isometric view showing depth. Triangle profile with single king post.
+ * The central post is in TENSION (pulling up on the tie beam).
  */
 export const KingPostTrussSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="king-post-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#king-post-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
-      {/* CONTEXT (near): Support points */}
+      {/* CONTEXT (near): Ground / support line */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        <path d="M10 75 L10 85" />
-        <path d="M90 75 L90 85" />
-        <path d="M5 85 L95 85" />
+        <path d="M3 82 L75 82" />
+        <path d="M75 82 L97 74" />
       </g>
 
-      {/* PRIMARY - Truss outline */}
+      {/* FAR-SIDE TRUSS (back face, faded for depth) */}
+      <g opacity={0.25} strokeWidth={S.P.strokeWidthLight}>
+        {/* Back bottom chord */}
+        <path d="M22 68 L92 68" />
+        {/* Back left rafter */}
+        <path d="M22 68 L57 28" />
+        {/* Back right rafter */}
+        <path d="M92 68 L57 28" />
+        {/* Back king post */}
+        <path d="M57 28 L57 68" />
+        {/* Back struts */}
+        <path d="M57 45 L39 56" />
+        <path d="M57 45 L75 56" />
+      </g>
+
+      {/* FAR-SIDE shadow fill for depth */}
+      <path d="M22 68 L57 28 L92 68 Z" fill="currentColor" opacity={S.E.fillOpacity} />
+
+      {/* CROSS MEMBERS connecting near and far faces */}
+      <g strokeWidth={S.D.strokeWidth} opacity={S.D.opacity}>
+        {/* Bottom chord cross ties */}
+        <path d="M8 72 L22 68" />
+        <path d="M80 72 L92 68" />
+        {/* Ridge cross tie */}
+        <path d="M45 32 L57 28" />
+        {/* Mid-post cross tie */}
+        <path d="M45 49 L57 45" />
+      </g>
+
+      {/* NEAR-SIDE TRUSS (front face, full opacity) */}
+      {/* Bottom chord (tie beam) - compression, thicker */}
       <g strokeWidth={S.P.strokeWidthBold}>
-        {/* Bottom chord (tie beam) */}
-        <path d="M10 70 L90 70" />
-        {/* Left rafter */}
-        <path d="M10 70 L50 25" />
-        {/* Right rafter */}
-        <path d="M90 70 L50 25" />
+        <path d="M8 72 L80 72" />
+      </g>
+      {/* Left rafter */}
+      <g strokeWidth={S.P.strokeWidthBold}>
+        <path d="M8 72 L45 32" />
+      </g>
+      {/* Right rafter */}
+      <g strokeWidth={S.P.strokeWidthBold}>
+        <path d="M80 72 L45 32" />
       </g>
 
-      {/* THE KING POST - Key feature: single central vertical */}
+      {/* THE KING POST - single central vertical (TENSION - thinner) */}
       <g strokeWidth={S.P.strokeWidthHeavy}>
-        <path d="M50 25 L50 70" />
+        <path d="M45 32 L45 72" />
       </g>
 
-      {/* Struts (compression members from post to rafters) */}
-      <g strokeWidth={S.P.strokeWidth}>
-        <path d="M50 45 L30 57" />
-        <path d="M50 45 L70 57" />
+      {/* Struts from king post to rafters (COMPRESSION - thicker) */}
+      <g strokeWidth={S.P.strokeWidthBold}>
+        <path d="M45 49 L27 60" />
+        <path d="M45 49 L63 60" />
       </g>
 
-      {/* Joint connections */}
-      <g strokeWidth={S.D.strokeWidth} opacity={S.D.opacityStrong}>
-        <circle cx="50" cy="25" r="3" />
-        <circle cx="50" cy="70" r="3" />
-        <circle cx="50" cy="45" r="2" />
-        <circle cx="10" cy="70" r="3" />
-        <circle cx="90" cy="70" r="3" />
+      {/* Gusset plates at joints (small filled triangles) */}
+      <g fill="currentColor" opacity={S.D.opacityStrong} strokeWidth={S.D.strokeWidthFine}>
+        {/* Ridge gusset */}
+        <path d="M42 32 L48 32 L45 28 Z" />
+        {/* Bottom-left gusset */}
+        <path d="M5 72 L11 72 L8 69 Z" />
+        {/* Bottom-right gusset */}
+        <path d="M77 72 L83 72 L80 69 Z" />
+        {/* King post base gusset */}
+        <path d="M42 72 L48 72 L45 69 Z" />
+        {/* Mid-post gusset */}
+        <circle cx="45" cy="49" r="2" />
       </g>
 
       {/* Support triangles */}
       <g strokeWidth={S.P.strokeWidth}>
-        <path d="M5 75 L15 75 L10 70 Z" />
-        <path d="M85 75 L95 75 L90 70 Z" />
+        <path d="M3 76 L13 76 L8 72 Z" />
+        <path d="M75 76 L85 76 L80 72 Z" />
       </g>
 
-      {/* Tension indicator on king post */}
+      {/* Tension indicators on king post */}
       <g strokeWidth={S.E.strokeWidth} opacity={S.E.opacityModerate}>
-        <path d="M47 35 L47 60" strokeDasharray={S.E.dash} />
-        <path d="M53 35 L53 60" strokeDasharray={S.E.dash} />
+        <path d="M42 40 L42 62" strokeDasharray={S.E.dash} />
+        <path d="M48 40 L48 62" strokeDasharray={S.E.dash} />
       </g>
     </g>
   </svg>
 )
 
 /**
- * QUEEN POST TRUSS - Two vertical posts for wider spans
- * Medieval origin, allows for wider openings than King Post
- * Shows: Two vertical posts with horizontal straining beam between
- * Posts are in TENSION, straining beam in COMPRESSION
+ * QUEEN POST TRUSS - TWO vertical posts creating a flat top section
+ * 3/4 isometric view. Wider span than King Post with straining beam.
+ * Posts in TENSION, straining beam in COMPRESSION.
  */
 export const QueenPostTrussSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="queen-post-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#queen-post-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
-      {/* CONTEXT (near): Support points */}
+      {/* CONTEXT (near): Ground line */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        <path d="M10 75 L10 85" />
-        <path d="M90 75 L90 85" />
-        <path d="M5 85 L95 85" />
+        <path d="M3 82 L75 82" />
+        <path d="M75 82 L97 74" />
       </g>
 
-      {/* PRIMARY - Truss outline */}
+      {/* FAR-SIDE TRUSS (back face) */}
+      <g opacity={0.25} strokeWidth={S.P.strokeWidthLight}>
+        <path d="M22 68 L92 68" />
+        <path d="M22 68 L57 28" />
+        <path d="M92 68 L57 28" />
+        {/* Back queen posts */}
+        <path d="M40 68 L40 42" />
+        <path d="M74 68 L74 42" />
+        {/* Back straining beam */}
+        <path d="M40 42 L74 42" />
+        <path d="M40 42 L57 28" />
+        <path d="M74 42 L57 28" />
+      </g>
+
+      {/* Shadow fill */}
+      <path d="M22 68 L57 28 L92 68 Z" fill="currentColor" opacity={S.E.fillOpacity} />
+
+      {/* CROSS MEMBERS (depth connectors) */}
+      <g strokeWidth={S.D.strokeWidth} opacity={S.D.opacity}>
+        <path d="M8 72 L22 68" />
+        <path d="M80 72 L92 68" />
+        <path d="M45 32 L57 28" />
+        {/* Queen post cross ties */}
+        <path d="M28 72 L40 68" />
+        <path d="M28 46 L40 42" />
+        <path d="M62 72 L74 68" />
+        <path d="M62 46 L74 42" />
+      </g>
+
+      {/* NEAR-SIDE TRUSS (front face) */}
       <g strokeWidth={S.P.strokeWidthBold}>
-        {/* Bottom chord (tie beam) */}
-        <path d="M10 70 L90 70" />
+        {/* Bottom chord */}
+        <path d="M8 72 L80 72" />
         {/* Left rafter */}
-        <path d="M10 70 L50 25" />
+        <path d="M8 72 L45 32" />
         {/* Right rafter */}
-        <path d="M90 70 L50 25" />
+        <path d="M80 72 L45 32" />
       </g>
 
-      {/* THE QUEEN POSTS - Key feature: two vertical posts */}
+      {/* THE TWO QUEEN POSTS - prominent vertical members (TENSION) */}
+      <g strokeWidth={S.P.strokeWidthHeavy}>
+        <path d="M28 72 L28 46" />
+        <path d="M62 72 L62 46" />
+      </g>
+
+      {/* Straining beam between queen posts (COMPRESSION - thick) */}
       <g strokeWidth={S.P.strokeWidthBold}>
-        <path d="M32 70 L32 42" />
-        <path d="M68 70 L68 42" />
-      </g>
-
-      {/* Straining beam between queen posts */}
-      <g strokeWidth={S.P.strokeWidth}>
-        <path d="M32 42 L68 42" />
+        <path d="M28 46 L62 46" />
       </g>
 
       {/* Struts from straining beam to apex */}
       <g strokeWidth={S.P.strokeWidth}>
-        <path d="M32 42 L50 25" />
-        <path d="M68 42 L50 25" />
+        <path d="M28 46 L45 32" />
+        <path d="M62 46 L45 32" />
       </g>
 
-      {/* Joint connections */}
-      <g strokeWidth={S.D.strokeWidth} opacity={S.D.opacityStrong}>
-        <circle cx="50" cy="25" r="3" />
-        <circle cx="32" cy="70" r="2.5" />
-        <circle cx="68" cy="70" r="2.5" />
-        <circle cx="32" cy="42" r="2.5" />
-        <circle cx="68" cy="42" r="2.5" />
-        <circle cx="10" cy="70" r="3" />
-        <circle cx="90" cy="70" r="3" />
+      {/* Gusset plates */}
+      <g fill="currentColor" opacity={S.D.opacityStrong} strokeWidth={S.D.strokeWidthFine}>
+        <path d="M42 32 L48 32 L45 28 Z" />
+        <circle cx="28" cy="46" r="2" />
+        <circle cx="62" cy="46" r="2" />
+        <circle cx="28" cy="72" r="2" />
+        <circle cx="62" cy="72" r="2" />
+        <path d="M5 72 L11 72 L8 69 Z" />
+        <path d="M77 72 L83 72 L80 69 Z" />
       </g>
 
       {/* Support triangles */}
       <g strokeWidth={S.P.strokeWidth}>
-        <path d="M5 75 L15 75 L10 70 Z" />
-        <path d="M85 75 L95 75 L90 70 Z" />
+        <path d="M3 76 L13 76 L8 72 Z" />
+        <path d="M75 76 L85 76 L80 72 Z" />
+      </g>
+
+      {/* Tension indicators on queen posts */}
+      <g strokeWidth={S.E.strokeWidth} opacity={S.E.opacityModerate}>
+        <path d="M25 52 L25 66" strokeDasharray={S.E.dash} />
+        <path d="M31 52 L31 66" strokeDasharray={S.E.dash} />
+        <path d="M59 52 L59 66" strokeDasharray={S.E.dash} />
+        <path d="M65 52 L65 66" strokeDasharray={S.E.dash} />
       </g>
     </g>
   </svg>
 )
 
 /**
- * PRATT TRUSS (1844) - Diagonals slope toward center
- * Designed by Thomas and Caleb Pratt
- * Shows: Verticals + diagonals pointing inward (V pattern each panel)
- * Diagonals in TENSION (efficient for steel), verticals in COMPRESSION
+ * PRATT TRUSS (1844) - Diagonals slope TOWARD center (V-shapes pointing down)
+ * 3/4 isometric view. N-patterns with diagonals in TENSION, verticals in COMPRESSION.
+ * The diagonal direction is key: they point inward/downward.
  */
 export const PrattTrussSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="pratt-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#pratt-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
-      {/* CONTEXT (near): Support points */}
+      {/* CONTEXT (near): Ground line */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        <path d="M5 72 L95 72" />
+        <path d="M3 78 L70 78" />
+        <path d="M70 78 L97 70" />
       </g>
 
-      {/* PRIMARY - Top and bottom chords */}
-      <g strokeWidth={S.P.strokeWidthBold}>
-        {/* Top chord */}
-        <path d="M10 30 L90 30" />
-        {/* Bottom chord */}
-        <path d="M10 65 L90 65" />
+      {/* FAR-SIDE TRUSS (back face) */}
+      <g opacity={0.2} strokeWidth={S.P.strokeWidthLight}>
+        {/* Back top chord */}
+        <path d="M18 32 L92 32" />
+        {/* Back bottom chord */}
+        <path d="M18 68 L92 68" />
+        {/* Back verticals */}
+        <path d="M18 32 L18 68" />
+        <path d="M36.5 32 L36.5 68" />
+        <path d="M55 32 L55 68" />
+        <path d="M73.5 32 L73.5 68" />
+        <path d="M92 32 L92 68" />
+        {/* Back Pratt diagonals (toward center) */}
+        <path d="M18 32 L36.5 68" />
+        <path d="M36.5 32 L55 68" />
+        <path d="M92 32 L73.5 68" />
+        <path d="M73.5 32 L55 68" />
       </g>
 
-      {/* Vertical members (compression) */}
-      <g strokeWidth={S.P.strokeWidth}>
-        <path d="M10 30 L10 65" />
-        <path d="M30 30 L30 65" />
-        <path d="M50 30 L50 65" />
-        <path d="M70 30 L70 65" />
-        <path d="M90 30 L90 65" />
-      </g>
+      {/* Shadow fill on far side */}
+      <rect x="18" y="32" width="74" height="36" fill="currentColor" opacity={S.E.fillOpacity} />
 
-      {/* PRATT DIAGONALS - Key feature: slope toward center (tension) */}
-      <g strokeWidth={S.P.strokeWidth}>
-        {/* Left side - diagonals point right/down toward center */}
-        <path d="M10 30 L30 65" />
-        <path d="M30 30 L50 65" />
-        {/* Right side - diagonals point left/down toward center */}
-        <path d="M90 30 L70 65" />
-        <path d="M70 30 L50 65" />
-      </g>
-
-      {/* Joint plates */}
+      {/* CROSS MEMBERS connecting near and far faces */}
       <g strokeWidth={S.D.strokeWidth} opacity={S.D.opacity}>
-        <circle cx="10" cy="30" r="2.5" />
-        <circle cx="30" cy="30" r="2.5" />
-        <circle cx="50" cy="30" r="2.5" />
-        <circle cx="70" cy="30" r="2.5" />
-        <circle cx="90" cy="30" r="2.5" />
-        <circle cx="10" cy="65" r="2.5" />
-        <circle cx="30" cy="65" r="2.5" />
-        <circle cx="50" cy="65" r="2.5" />
-        <circle cx="70" cy="65" r="2.5" />
-        <circle cx="90" cy="65" r="2.5" />
+        {/* Top chord cross ties */}
+        <path d="M5 36 L18 32" />
+        <path d="M24 36 L36.5 32" />
+        <path d="M43 36 L55 32" />
+        <path d="M62 36 L73.5 32" />
+        <path d="M81 36 L92 32" />
+        {/* Bottom chord cross ties */}
+        <path d="M5 72 L18 68" />
+        <path d="M24 72 L36.5 68" />
+        <path d="M43 72 L55 68" />
+        <path d="M62 72 L73.5 68" />
+        <path d="M81 72 L92 68" />
+      </g>
+
+      {/* NEAR-SIDE: Top and bottom chords */}
+      <g strokeWidth={S.P.strokeWidthBold}>
+        <path d="M5 36 L81 36" />
+        <path d="M5 72 L81 72" />
+      </g>
+
+      {/* Vertical members (COMPRESSION - thicker) */}
+      <g strokeWidth={S.P.strokeWidthBold}>
+        <path d="M5 36 L5 72" />
+        <path d="M24 36 L24 72" />
+        <path d="M43 36 L43 72" />
+        <path d="M62 36 L62 72" />
+        <path d="M81 36 L81 72" />
+      </g>
+
+      {/* PRATT DIAGONALS - slope TOWARD center (TENSION - thinner) */}
+      <g strokeWidth={S.P.strokeWidth}>
+        {/* Left half: diagonals go from top-left to bottom-right */}
+        <path d="M5 36 L24 72" />
+        <path d="M24 36 L43 72" />
+        {/* Right half: diagonals go from top-right to bottom-left */}
+        <path d="M81 36 L62 72" />
+        <path d="M62 36 L43 72" />
+      </g>
+
+      {/* Gusset plates at joints */}
+      <g fill="currentColor" opacity={S.D.opacity} strokeWidth={S.D.strokeWidthFine}>
+        <circle cx="5" cy="36" r="2" />
+        <circle cx="24" cy="36" r="2" />
+        <circle cx="43" cy="36" r="2" />
+        <circle cx="62" cy="36" r="2" />
+        <circle cx="81" cy="36" r="2" />
+        <circle cx="5" cy="72" r="2" />
+        <circle cx="24" cy="72" r="2" />
+        <circle cx="43" cy="72" r="2" />
+        <circle cx="62" cy="72" r="2" />
+        <circle cx="81" cy="72" r="2" />
       </g>
 
       {/* Support symbols */}
       <g strokeWidth={S.P.strokeWidth}>
-        {/* Pin support left */}
-        <path d="M5 68 L15 68 L10 65 Z" />
-        {/* Roller support right */}
-        <circle cx="90" cy="68" r="2" />
-        <path d="M85 70 L95 70" />
+        <path d="M0 75 L10 75 L5 72 Z" />
+        <circle cx="81" cy="75" r="2" />
+        <path d="M76 77 L86 77" />
       </g>
 
-      {/* Tension arrows on diagonals */}
+      {/* Tension arrow indicators on diagonals */}
       <g strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle}>
-        <path d="M18 42 L22 52" />
-        <path d="M22 52 L20 49 M22 52 L25 50" />
+        {/* Arrow on left diagonal showing tension direction */}
+        <path d="M13 50 L17 58" />
+        <path d="M17 58 L15 55 M17 58 L19.5 56" />
+        {/* Arrow on right diagonal */}
+        <path d="M73 50 L69 58" />
+        <path d="M69 58 L71 55 M69 58 L66.5 56" />
       </g>
     </g>
   </svg>
 )
 
 /**
- * HOWE TRUSS (1840) - Diagonals slope away from center
- * Designed by William Howe, originally for timber
- * Shows: Verticals + diagonals pointing outward (A pattern each panel)
- * Diagonals in COMPRESSION, verticals in TENSION (good for wood)
+ * HOWE TRUSS (1840) - Diagonals slope AWAY from center (opposite of Pratt)
+ * 3/4 isometric view. N-patterns mirrored: diagonals in COMPRESSION, verticals in TENSION.
+ * Key distinction from Pratt: V-shapes point UP, diagonals go outward.
  */
 export const HoweTrussSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="howe-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#howe-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
-      {/* CONTEXT (near): Support points */}
+      {/* CONTEXT (near): Ground line */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        <path d="M5 72 L95 72" />
+        <path d="M3 78 L70 78" />
+        <path d="M70 78 L97 70" />
       </g>
 
-      {/* PRIMARY - Top and bottom chords */}
-      <g strokeWidth={S.P.strokeWidthBold}>
-        {/* Top chord */}
-        <path d="M10 30 L90 30" />
-        {/* Bottom chord */}
-        <path d="M10 65 L90 65" />
+      {/* FAR-SIDE TRUSS (back face) */}
+      <g opacity={0.2} strokeWidth={S.P.strokeWidthLight}>
+        <path d="M18 32 L92 32" />
+        <path d="M18 68 L92 68" />
+        <path d="M18 32 L18 68" />
+        <path d="M36.5 32 L36.5 68" />
+        <path d="M55 32 L55 68" />
+        <path d="M73.5 32 L73.5 68" />
+        <path d="M92 32 L92 68" />
+        {/* Back Howe diagonals (AWAY from center - opposite of Pratt) */}
+        <path d="M36.5 32 L18 68" />
+        <path d="M55 32 L36.5 68" />
+        <path d="M55 32 L73.5 68" />
+        <path d="M73.5 32 L92 68" />
       </g>
 
-      {/* Vertical members (tension in Howe) */}
-      <g strokeWidth={S.P.strokeWidth}>
-        <path d="M10 30 L10 65" />
-        <path d="M30 30 L30 65" />
-        <path d="M50 30 L50 65" />
-        <path d="M70 30 L70 65" />
-        <path d="M90 30 L90 65" />
-      </g>
+      {/* Shadow fill */}
+      <rect x="18" y="32" width="74" height="36" fill="currentColor" opacity={S.E.fillOpacity} />
 
-      {/* HOWE DIAGONALS - Key feature: slope away from center (compression) */}
-      <g strokeWidth={S.P.strokeWidth}>
-        {/* Left side - diagonals point left/down away from center */}
-        <path d="M30 30 L10 65" />
-        <path d="M50 30 L30 65" />
-        {/* Right side - diagonals point right/down away from center */}
-        <path d="M70 30 L90 65" />
-        <path d="M50 30 L70 65" />
-      </g>
-
-      {/* Joint plates */}
+      {/* CROSS MEMBERS connecting near and far faces */}
       <g strokeWidth={S.D.strokeWidth} opacity={S.D.opacity}>
-        <circle cx="10" cy="30" r="2.5" />
-        <circle cx="30" cy="30" r="2.5" />
-        <circle cx="50" cy="30" r="2.5" />
-        <circle cx="70" cy="30" r="2.5" />
-        <circle cx="90" cy="30" r="2.5" />
-        <circle cx="10" cy="65" r="2.5" />
-        <circle cx="30" cy="65" r="2.5" />
-        <circle cx="50" cy="65" r="2.5" />
-        <circle cx="70" cy="65" r="2.5" />
-        <circle cx="90" cy="65" r="2.5" />
+        <path d="M5 36 L18 32" />
+        <path d="M24 36 L36.5 32" />
+        <path d="M43 36 L55 32" />
+        <path d="M62 36 L73.5 32" />
+        <path d="M81 36 L92 32" />
+        <path d="M5 72 L18 68" />
+        <path d="M24 72 L36.5 68" />
+        <path d="M43 72 L55 68" />
+        <path d="M62 72 L73.5 68" />
+        <path d="M81 72 L92 68" />
+      </g>
+
+      {/* NEAR-SIDE: Top and bottom chords */}
+      <g strokeWidth={S.P.strokeWidthBold}>
+        <path d="M5 36 L81 36" />
+        <path d="M5 72 L81 72" />
+      </g>
+
+      {/* Vertical members (TENSION in Howe - thinner) */}
+      <g strokeWidth={S.P.strokeWidth}>
+        <path d="M5 36 L5 72" />
+        <path d="M24 36 L24 72" />
+        <path d="M43 36 L43 72" />
+        <path d="M62 36 L62 72" />
+        <path d="M81 36 L81 72" />
+      </g>
+
+      {/* HOWE DIAGONALS - slope AWAY from center (COMPRESSION - thicker) */}
+      <g strokeWidth={S.P.strokeWidthBold}>
+        {/* Left half: diagonals go from top-right to bottom-left (outward) */}
+        <path d="M24 36 L5 72" />
+        <path d="M43 36 L24 72" />
+        {/* Right half: diagonals go from top-left to bottom-right (outward) */}
+        <path d="M43 36 L62 72" />
+        <path d="M62 36 L81 72" />
+      </g>
+
+      {/* Gusset plates at joints */}
+      <g fill="currentColor" opacity={S.D.opacity} strokeWidth={S.D.strokeWidthFine}>
+        <circle cx="5" cy="36" r="2" />
+        <circle cx="24" cy="36" r="2" />
+        <circle cx="43" cy="36" r="2" />
+        <circle cx="62" cy="36" r="2" />
+        <circle cx="81" cy="36" r="2" />
+        <circle cx="5" cy="72" r="2" />
+        <circle cx="24" cy="72" r="2" />
+        <circle cx="43" cy="72" r="2" />
+        <circle cx="62" cy="72" r="2" />
+        <circle cx="81" cy="72" r="2" />
       </g>
 
       {/* Support symbols */}
       <g strokeWidth={S.P.strokeWidth}>
-        <path d="M5 68 L15 68 L10 65 Z" />
-        <circle cx="90" cy="68" r="2" />
-        <path d="M85 70 L95 70" />
+        <path d="M0 75 L10 75 L5 72 Z" />
+        <circle cx="81" cy="75" r="2" />
+        <path d="M76 77 L86 77" />
       </g>
 
-      {/* Compression arrows on diagonals */}
+      {/* Compression arrow indicators on diagonals (inward arrows) */}
       <g strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle}>
-        <path d="M22 42 L18 52" />
-        <path d="M18 52 L20 49 M18 52 L15 50" />
+        {/* Arrow showing compression direction on left diagonal */}
+        <path d="M17 49 L12 58" />
+        <path d="M17 49 L14.5 51 M17 49 L17 52.5" />
+        {/* Arrow on right diagonal */}
+        <path d="M69 49 L74 58" />
+        <path d="M69 49 L71.5 51 M69 49 L69 52.5" />
+      </g>
+
+      {/* Tension indicators on verticals */}
+      <g strokeWidth={S.E.strokeWidth} opacity={S.E.opacityModerate}>
+        <path d="M22 44 L22 64" strokeDasharray={S.E.dash} />
+        <path d="M26 44 L26 64" strokeDasharray={S.E.dash} />
+        <path d="M60 44 L60 64" strokeDasharray={S.E.dash} />
+        <path d="M64 44 L64 64" strokeDasharray={S.E.dash} />
       </g>
     </g>
   </svg>
 )
 
 /**
- * WARREN TRUSS (1848) - Equilateral triangles, no verticals
- * Designed by James Warren and Willoughby Monzani
- * Shows: Zigzag pattern of diagonals only, no vertical members
- * Alternating tension and compression in diagonals
+ * WARREN TRUSS (1848) - NO verticals, only zigzag W-pattern diagonals
+ * 3/4 isometric view. Equilateral triangles only. Distinctly different from Pratt/Howe.
+ * Alternating tension and compression in diagonals.
  */
 export const WarrenTrussSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="warren-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#warren-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
-      {/* CONTEXT (near): Support points */}
+      {/* CONTEXT (near): Ground line */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        <path d="M5 72 L95 72" />
+        <path d="M3 78 L70 78" />
+        <path d="M70 78 L97 70" />
       </g>
 
-      {/* PRIMARY - Top and bottom chords */}
-      <g strokeWidth={S.P.strokeWidthBold}>
-        {/* Top chord */}
-        <path d="M10 30 L90 30" />
-        {/* Bottom chord */}
-        <path d="M10 65 L90 65" />
+      {/* FAR-SIDE TRUSS (back face) */}
+      <g opacity={0.2} strokeWidth={S.P.strokeWidthLight}>
+        <path d="M18 32 L92 32" />
+        <path d="M18 68 L92 68" />
+        {/* Back zigzag - NO verticals */}
+        <path d="M18 68 L33 32 L48 68 L63 32 L78 68 L92 32" />
+        {/* End verticals only */}
+        <path d="M18 32 L18 68" />
+        <path d="M92 32 L92 68" />
       </g>
 
-      {/* WARREN DIAGONALS - Key feature: NO VERTICALS, just zigzag */}
-      <g strokeWidth={S.P.strokeWidthBold}>
-        {/* Zigzag pattern creating equilateral triangles */}
-        <path d="M10 65 L25 30" />
-        <path d="M25 30 L40 65" />
-        <path d="M40 65 L55 30" />
-        <path d="M55 30 L70 65" />
-        <path d="M70 65 L85 30" />
-        <path d="M85 30 L90 47" />
-        <path d="M10 47 L10 65" />
-      </g>
+      {/* Shadow fill */}
+      <rect x="18" y="32" width="74" height="36" fill="currentColor" opacity={S.E.fillOpacity} />
 
-      {/* End verticals only */}
-      <g strokeWidth={S.P.strokeWidth}>
-        <path d="M10 30 L10 65" />
-        <path d="M90 30 L90 65" />
-      </g>
-
-      {/* Joint connections */}
+      {/* CROSS MEMBERS connecting near and far faces */}
       <g strokeWidth={S.D.strokeWidth} opacity={S.D.opacity}>
-        <circle cx="10" cy="30" r="2.5" />
-        <circle cx="25" cy="30" r="2.5" />
-        <circle cx="55" cy="30" r="2.5" />
-        <circle cx="85" cy="30" r="2.5" />
-        <circle cx="90" cy="30" r="2.5" />
-        <circle cx="10" cy="65" r="2.5" />
-        <circle cx="40" cy="65" r="2.5" />
-        <circle cx="70" cy="65" r="2.5" />
-        <circle cx="90" cy="65" r="2.5" />
+        {/* Top chord cross ties (at zigzag peaks) */}
+        <path d="M5 36 L18 32" />
+        <path d="M81 36 L92 32" />
+        <path d="M21 36 L33 32" />
+        <path d="M51 36 L63 32" />
+        {/* Bottom chord cross ties (at zigzag valleys) */}
+        <path d="M5 72 L18 68" />
+        <path d="M81 72 L92 68" />
+        <path d="M36 72 L48 68" />
+        <path d="M66 72 L78 68" />
+      </g>
+
+      {/* NEAR-SIDE: Top and bottom chords */}
+      <g strokeWidth={S.P.strokeWidthBold}>
+        <path d="M5 36 L81 36" />
+        <path d="M5 72 L81 72" />
+      </g>
+
+      {/* WARREN ZIGZAG - Key feature: NO VERTICALS, only diagonals */}
+      <g strokeWidth={S.P.strokeWidthBold}>
+        <path d="M5 72 L21 36" />
+        <path d="M21 36 L36 72" />
+        <path d="M36 72 L51 36" />
+        <path d="M51 36 L66 72" />
+        <path d="M66 72 L81 36" />
+      </g>
+
+      {/* End verticals only (structural necessity, not pattern) */}
+      <g strokeWidth={S.P.strokeWidth}>
+        <path d="M5 36 L5 72" />
+        <path d="M81 36 L81 72" />
+      </g>
+
+      {/* Gusset plates at zigzag joints */}
+      <g fill="currentColor" opacity={S.D.opacity} strokeWidth={S.D.strokeWidthFine}>
+        {/* Top chord joints */}
+        <path d="M18 36 L24 36 L21 33 Z" />
+        <path d="M48 36 L54 36 L51 33 Z" />
+        <path d="M78 36 L84 36 L81 33 Z" />
+        {/* Bottom chord joints */}
+        <path d="M2 72 L8 72 L5 69 Z" />
+        <path d="M33 72 L39 72 L36 69 Z" />
+        <path d="M63 72 L69 72 L66 69 Z" />
       </g>
 
       {/* Support symbols */}
       <g strokeWidth={S.P.strokeWidth}>
-        <path d="M5 68 L15 68 L10 65 Z" />
-        <circle cx="90" cy="68" r="2" />
-        <path d="M85 70 L95 70" />
+        <path d="M0 75 L10 75 L5 72 Z" />
+        <circle cx="81" cy="75" r="2" />
+        <path d="M76 77 L86 77" />
       </g>
     </g>
   </svg>
 )
 
 /**
- * FINK TRUSS (1854) - W-pattern web members
- * Designed by Albert Fink for railway bridges
- * Shows: W or M pattern of diagonals, efficient for long spans
- * Common in residential roof trusses today
+ * FINK TRUSS (1854) - W-shaped web pattern with subdivided panels
+ * 3/4 isometric view. Pitched roof with double-V diagonals meeting at bottom chord.
+ * More complex web than Warren - diagonals create W/M shapes.
  */
 export const FinkTrussSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="fink-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#fink-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap={S.P.strokeLinecap}>
-      {/* CONTEXT (near): Support points */}
+      {/* CONTEXT (near): Ground line */}
       <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
-        <path d="M5 80 L95 80" />
+        <path d="M3 84 L72 84" />
+        <path d="M72 84 L97 76" />
       </g>
 
-      {/* PRIMARY - Pitched roof shape */}
+      {/* FAR-SIDE TRUSS (back face) */}
+      <g opacity={0.2} strokeWidth={S.P.strokeWidthLight}>
+        <path d="M22 74 L90 74" />
+        <path d="M22 74 L56 28" />
+        <path d="M90 74 L56 28" />
+        {/* Back W-pattern */}
+        <path d="M56 28 L36 74" />
+        <path d="M36 74 L46 50" />
+        <path d="M46 50 L28 74" />
+        <path d="M56 28 L76 74" />
+        <path d="M76 74 L66 50" />
+        <path d="M66 50 L84 74" />
+      </g>
+
+      {/* Shadow fill */}
+      <path d="M22 74 L56 28 L90 74 Z" fill="currentColor" opacity={S.E.fillOpacity} />
+
+      {/* CROSS MEMBERS (depth ties) */}
+      <g strokeWidth={S.D.strokeWidth} opacity={S.D.opacity}>
+        <path d="M8 78 L22 74" />
+        <path d="M78 78 L90 74" />
+        <path d="M44 32 L56 28" />
+        <path d="M35 51 L46 50" />
+        <path d="M55 51 L66 50" />
+      </g>
+
+      {/* NEAR-SIDE: Pitched roof outline */}
       <g strokeWidth={S.P.strokeWidthBold}>
         {/* Bottom chord */}
-        <path d="M10 70 L90 70" />
+        <path d="M8 78 L78 78" />
         {/* Left rafter */}
-        <path d="M10 70 L50 25" />
+        <path d="M8 78 L44 32" />
         {/* Right rafter */}
-        <path d="M90 70 L50 25" />
+        <path d="M78 78 L44 32" />
       </g>
 
-      {/* FINK WEB PATTERN - Key feature: W-shaped subdivisions */}
+      {/* FINK W-PATTERN - Key feature: double-V subdivisions */}
       <g strokeWidth={S.P.strokeWidth}>
-        {/* Left side W pattern */}
-        <path d="M50 25 L25 70" />
-        <path d="M25 70 L37.5 47" />
-        <path d="M37.5 47 L17.5 70" />
+        {/* Left side W: apex->mid-bottom, mid-bottom->rafter, rafter->far-bottom */}
+        <path d="M44 32 L22 78" />
+        <path d="M22 78 L35 51" />
+        <path d="M35 51 L15 78" />
 
-        {/* Right side W pattern (mirrored) */}
-        <path d="M50 25 L75 70" />
-        <path d="M75 70 L62.5 47" />
-        <path d="M62.5 47 L82.5 70" />
+        {/* Right side W (mirrored) */}
+        <path d="M44 32 L66 78" />
+        <path d="M66 78 L55 51" />
+        <path d="M55 51 L72 78" />
       </g>
 
-      {/* Joint connections */}
-      <g strokeWidth={S.D.strokeWidth} opacity={S.D.opacity}>
-        <circle cx="50" cy="25" r="3" />
-        <circle cx="10" cy="70" r="2.5" />
-        <circle cx="25" cy="70" r="2" />
-        <circle cx="37.5" cy="47" r="2" />
-        <circle cx="62.5" cy="47" r="2" />
-        <circle cx="75" cy="70" r="2" />
-        <circle cx="90" cy="70" r="2.5" />
+      {/* Gusset plates */}
+      <g fill="currentColor" opacity={S.D.opacity} strokeWidth={S.D.strokeWidthFine}>
+        <path d="M41 32 L47 32 L44 28 Z" />
+        <circle cx="8" cy="78" r="2" />
+        <circle cx="78" cy="78" r="2" />
+        <circle cx="22" cy="78" r="1.5" />
+        <circle cx="35" cy="51" r="1.5" />
+        <circle cx="55" cy="51" r="1.5" />
+        <circle cx="66" cy="78" r="1.5" />
+        <circle cx="15" cy="78" r="1.5" />
+        <circle cx="72" cy="78" r="1.5" />
       </g>
 
       {/* Support symbols */}
       <g strokeWidth={S.P.strokeWidth}>
-        <path d="M5 73 L15 73 L10 70 Z" />
-        <circle cx="90" cy="73" r="2" />
-        <path d="M85 75 L95 75" />
+        <path d="M3 81 L13 81 L8 78 Z" />
+        <circle cx="78" cy="81" r="2" />
+        <path d="M73 83 L83 83" />
       </g>
     </g>
   </svg>
