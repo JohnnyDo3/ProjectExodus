@@ -479,19 +479,19 @@ export default function ProjectsPage() {
 
   const rows: ProjectRow[] = [
     {
-      title: 'Growing Now',
+      title: 'Active Projects',
       subtitle: 'Active initiatives shaping the path forward',
       projects: activeWithoutFeatured,
       ghostCount: ghostsFor(activeWithoutFeatured),
     },
     {
-      title: 'Seeds in the Ground',
+      title: 'In Planning',
       subtitle: 'Ideas taking root \u2014 join early and help them grow',
       projects: planning,
       ghostCount: ghostsFor(planning),
     },
     {
-      title: 'The Harvest',
+      title: 'Completed',
       subtitle: 'Completed journeys and the impact they left behind',
       projects: completed,
       ghostCount: ghostsFor(completed),
