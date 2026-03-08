@@ -1,19 +1,15 @@
 'use client'
 
-import { Button } from '@/components/ui/Button'
-import { BackButton } from '@/components/navigation/BackButton'
 import {
-  Plus,
   ChevronLeft,
   ChevronRight,
   Users,
   User,
   Target,
-  Sparkles,
-  Rocket,
-  ArrowRight,
+  Play,
 } from 'lucide-react'
 import Link from 'next/link'
+import { Button } from '@/components/ui/Button'
 import { JoinProjectButton } from '@/components/projects/JoinProjectButton'
 import { useState, useEffect, useRef, useCallback } from 'react'
 
@@ -22,7 +18,6 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 interface ProjectRow {
   title: string
   projects: any[]
-  ghostCount: number
 }
 
 // ─── Status config ───────────────────────────────────────────────────────────
@@ -39,31 +34,6 @@ const STATUS_LABEL: Record<string, string> = {
   PLANNING: 'Planning',
 }
 
-// ─── Ghost Card ──────────────────────────────────────────────────────────────
-
-function GhostCard() {
-  return (
-    <Link href="/community/projects/new" className="block flex-shrink-0 group">
-      <div className="w-[260px] sm:w-[300px] aspect-[16/10] rounded-lg border-2 border-dashed border-[var(--muted-foreground)]/30 bg-[var(--muted)]/40 flex flex-col items-center justify-center gap-3 transition-all duration-300 group-hover:border-[var(--primary)] group-hover:bg-[var(--primary)]/5 group-hover:scale-[1.03] cursor-pointer relative overflow-hidden">
-        {/* Shimmer effect */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[var(--foreground)]/[0.03] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-
-        <div className="w-12 h-12 rounded-full border-2 border-dashed border-[var(--muted-foreground)]/40 flex items-center justify-center group-hover:border-[var(--primary)] transition-colors">
-          <Plus className="w-6 h-6 text-[var(--muted-foreground)]/60 group-hover:text-[var(--primary)] transition-colors" />
-        </div>
-        <div className="text-center px-4">
-          <p className="text-sm font-bold text-[var(--muted-foreground)]/70 group-hover:text-[var(--primary)] transition-colors">
-            Start Your Own
-          </p>
-          <p className="text-[11px] text-[var(--muted-foreground)]/50 mt-1">
-            Launch a community project
-          </p>
-        </div>
-      </div>
-    </Link>
-  )
-}
-
 // ─── Project Card ────────────────────────────────────────────────────────────
 
 function ProjectCard({ project }: { project: any }) {
@@ -72,7 +42,7 @@ function ProjectCard({ project }: { project: any }) {
 
   return (
     <div className="flex-shrink-0 w-[260px] sm:w-[300px] group relative">
-      <div className="aspect-[16/10] rounded-lg overflow-hidden bg-[var(--muted)] relative cursor-pointer">
+      <div className="aspect-[16/10] rounded-md overflow-hidden bg-[var(--muted)] relative cursor-pointer">
         {/* Background - cover image or gradient */}
         {project.coverImage ? (
           <img
@@ -87,7 +57,6 @@ function ProjectCard({ project }: { project: any }) {
               background: `linear-gradient(135deg, color-mix(in srgb, ${accent} 30%, var(--background)) 0%, color-mix(in srgb, ${accent} 10%, var(--muted)) 100%)`,
             }}
           >
-            {/* Decorative pattern for no-image cards */}
             <div className="absolute inset-0 opacity-10">
               <div className="absolute top-4 right-4 w-20 h-20 rounded-full border border-[var(--foreground)]" />
               <div className="absolute bottom-6 left-6 w-12 h-12 rounded-full border border-[var(--foreground)]" />
@@ -96,7 +65,10 @@ function ProjectCard({ project }: { project: any }) {
           </div>
         )}
 
-        {/* Status pill - always visible */}
+        {/* Always-visible bottom gradient overlay with title */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+        {/* Status pill */}
         <div className="absolute top-3 left-3 z-10">
           <span
             className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-sm"
@@ -109,25 +81,41 @@ function ProjectCard({ project }: { project: any }) {
           </span>
         </div>
 
-        {/* Member count - always visible */}
+        {/* Member count */}
         <div className="absolute top-3 right-3 z-10 flex items-center gap-1 bg-black/50 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded-sm">
           <Users className="w-3 h-3" />
           {project._count.members}
         </div>
 
-        {/* Hover overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-4">
-          <h3 className="text-white font-bold text-base leading-tight mb-1 line-clamp-2">
+        {/* Overlay info - always visible at bottom */}
+        <div className="absolute bottom-0 left-0 right-0 p-3 z-10">
+          <h3 className="text-white font-bold text-sm leading-tight truncate">
             {project.name}
           </h3>
-          <p className="text-white/70 text-xs line-clamp-2 mb-3 leading-relaxed">
-            {project.description}
-          </p>
+          <div className="flex items-center gap-2 mt-1 text-[11px] text-white/60">
+            <span className="flex items-center gap-1">
+              <User className="w-3 h-3" />
+              {project.creator?.name || 'Anonymous'}
+            </span>
+            {project.goal && (
+              <>
+                <span>·</span>
+                <span className="flex items-center gap-1 truncate">
+                  <Target className="w-3 h-3 flex-shrink-0" />
+                  <span className="truncate">{project.goal}</span>
+                </span>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Hover overlay with actions */}
+        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center z-20">
           <div className="flex items-center gap-2">
             <Link href={`/community/projects/${project.slug}`}>
               <Button
                 size="sm"
-                className="h-7 text-[11px] font-bold uppercase tracking-wider rounded-md"
+                className="h-8 text-[11px] font-bold uppercase tracking-wider rounded-md"
               >
                 View Project
               </Button>
@@ -136,37 +124,13 @@ function ProjectCard({ project }: { project: any }) {
           </div>
         </div>
       </div>
-
-      {/* Title below card - visible when NOT hovered */}
-      <div className="mt-2 group-hover:opacity-0 transition-opacity duration-300">
-        <Link href={`/community/projects/${project.slug}`}>
-          <h3 className="text-sm font-bold text-[var(--foreground)] truncate hover:underline underline-offset-2">
-            {project.name}
-          </h3>
-        </Link>
-        <div className="flex items-center gap-2 mt-0.5 text-[11px] text-[var(--muted-foreground)]">
-          <span className="flex items-center gap-1">
-            <User className="w-3 h-3" />
-            {project.creator?.name || 'Anonymous'}
-          </span>
-          {project.goal && (
-            <>
-              <span>·</span>
-              <span className="flex items-center gap-1 truncate">
-                <Target className="w-3 h-3 flex-shrink-0" />
-                <span className="truncate">{project.goal}</span>
-              </span>
-            </>
-          )}
-        </div>
-      </div>
     </div>
   )
 }
 
 // ─── Scrollable Row ──────────────────────────────────────────────────────────
 
-function ScrollRow({ title, projects, ghostCount }: ProjectRow) {
+function ScrollRow({ title, projects }: ProjectRow) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(false)
@@ -197,8 +161,7 @@ function ScrollRow({ title, projects, ghostCount }: ProjectRow) {
     el.scrollBy({ left: direction === 'left' ? -amount : amount, behavior: 'smooth' })
   }
 
-  const totalCards = projects.length + ghostCount
-  if (totalCards === 0) return null
+  if (projects.length === 0) return null
 
   return (
     <section className="relative group/row">
@@ -207,11 +170,9 @@ function ScrollRow({ title, projects, ghostCount }: ProjectRow) {
         <h2 className="text-lg sm:text-xl font-bold text-[var(--foreground)] tracking-tight">
           {title}
         </h2>
-        {projects.length > 0 && (
-          <span className="text-xs text-[var(--muted-foreground)] font-medium">
-            {projects.length} {projects.length === 1 ? 'project' : 'projects'}
-          </span>
-        )}
+        <span className="text-xs text-[var(--muted-foreground)] font-medium">
+          {projects.length} {projects.length === 1 ? 'project' : 'projects'}
+        </span>
       </div>
 
       {/* Scroll container */}
@@ -220,7 +181,7 @@ function ScrollRow({ title, projects, ghostCount }: ProjectRow) {
         {canScrollLeft && (
           <button
             onClick={() => scroll('left')}
-            className="absolute left-0 top-0 bottom-8 w-12 z-20 bg-gradient-to-r from-[var(--background)] to-transparent flex items-center justify-start pl-1 opacity-0 group-hover/row:opacity-100 transition-opacity"
+            className="absolute left-0 top-0 bottom-0 w-12 z-20 bg-gradient-to-r from-[var(--background)] to-transparent flex items-center justify-start pl-1 opacity-0 group-hover/row:opacity-100 transition-opacity"
             aria-label="Scroll left"
           >
             <div className="w-9 h-9 rounded-full bg-[var(--foreground)]/80 flex items-center justify-center backdrop-blur-sm">
@@ -233,7 +194,7 @@ function ScrollRow({ title, projects, ghostCount }: ProjectRow) {
         {canScrollRight && (
           <button
             onClick={() => scroll('right')}
-            className="absolute right-0 top-0 bottom-8 w-12 z-20 bg-gradient-to-l from-[var(--background)] to-transparent flex items-center justify-end pr-1 opacity-0 group-hover/row:opacity-100 transition-opacity"
+            className="absolute right-0 top-0 bottom-0 w-12 z-20 bg-gradient-to-l from-[var(--background)] to-transparent flex items-center justify-end pr-1 opacity-0 group-hover/row:opacity-100 transition-opacity"
             aria-label="Scroll right"
           >
             <div className="w-9 h-9 rounded-full bg-[var(--foreground)]/80 flex items-center justify-center backdrop-blur-sm">
@@ -244,18 +205,107 @@ function ScrollRow({ title, projects, ghostCount }: ProjectRow) {
 
         <div
           ref={scrollRef}
-          className="flex gap-4 overflow-x-auto scrollbar-hide px-4 sm:px-6 lg:px-8 pb-2"
+          className="flex gap-3 overflow-x-auto scrollbar-hide px-4 sm:px-6 lg:px-8 pb-2"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {projects.map((project: any) => (
             <ProjectCard key={project.id} project={project} />
           ))}
-          {Array.from({ length: ghostCount }).map((_, i) => (
-            <GhostCard key={`ghost-${i}`} />
-          ))}
         </div>
       </div>
     </section>
+  )
+}
+
+// ─── Billboard / Featured Project ────────────────────────────────────────────
+
+function Billboard({ project }: { project: any }) {
+  const accent = STATUS_ACCENT[project.status] || 'var(--primary)'
+
+  return (
+    <div className="relative w-full aspect-[21/9] sm:aspect-[3/1] lg:aspect-[3.5/1] overflow-hidden">
+      {/* Background */}
+      {project.coverImage ? (
+        <img
+          src={project.coverImage}
+          alt={project.name}
+          className="w-full h-full object-cover"
+        />
+      ) : (
+        <div
+          className="w-full h-full"
+          style={{
+            background: `linear-gradient(135deg, color-mix(in srgb, ${accent} 40%, #000) 0%, color-mix(in srgb, ${accent} 15%, #111) 50%, #0a0a0a 100%)`,
+          }}
+        >
+          <div className="absolute inset-0 opacity-[0.06]">
+            <div className="absolute top-[15%] right-[10%] w-40 h-40 rounded-full border border-white" />
+            <div className="absolute bottom-[20%] left-[5%] w-24 h-24 rounded-full border border-white" />
+            <div className="absolute top-[40%] left-[30%] w-16 h-16 rounded-full border border-white" />
+          </div>
+        </div>
+      )}
+
+      {/* Gradient overlays */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/40 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[var(--background)]/90 via-[var(--background)]/40 to-transparent" />
+
+      {/* Content */}
+      <div className="absolute inset-0 flex items-end">
+        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pb-8 sm:pb-12">
+          <div className="max-w-xl">
+            <div className="flex items-center gap-2 mb-3">
+              <span
+                className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest rounded-sm"
+                style={{
+                  background: accent,
+                  color: 'var(--background)',
+                }}
+              >
+                Featured
+              </span>
+              <span className="text-xs font-medium text-white/60 uppercase tracking-wider">
+                {project.status === 'ACTIVE' ? 'Active Now' : project.status === 'PLANNING' ? 'Coming Soon' : 'Completed'}
+              </span>
+            </div>
+
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-[1.05] tracking-tight">
+              {project.name}
+            </h1>
+
+            {project.description && (
+              <p className="text-sm sm:text-base text-white/70 mt-3 leading-relaxed line-clamp-2 max-w-lg">
+                {project.description}
+              </p>
+            )}
+
+            <div className="flex items-center gap-3 mt-5">
+              <Link href={`/community/projects/${project.slug}`}>
+                <Button
+                  size="lg"
+                  className="h-10 text-sm font-bold uppercase tracking-wider rounded-md gap-2"
+                >
+                  <Play className="w-4 h-4 fill-current" />
+                  View Project
+                </Button>
+              </Link>
+              <JoinProjectButton projectId={project.id} projectName={project.name} />
+            </div>
+
+            <div className="flex items-center gap-4 mt-4 text-xs text-white/50">
+              <span className="flex items-center gap-1.5">
+                <Users className="w-3.5 h-3.5" />
+                {project._count.members} contributors
+              </span>
+              <span className="flex items-center gap-1.5">
+                <User className="w-3.5 h-3.5" />
+                {project.creator?.name || 'Anonymous'}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -300,111 +350,59 @@ export default function ProjectsPage() {
   const planning = projects.filter((p) => p.status === 'PLANNING')
   const completed = projects.filter((p) => p.status === 'COMPLETED')
 
-  // Ghost slots fill each row to ~7 cards minimum
-  const CARDS_PER_ROW = 7
-  const ghostsFor = (arr: any[]) => Math.max(CARDS_PER_ROW - arr.length, 2)
+  // Pick featured project: most members among active, fallback to first project
+  const featured = [...active].sort((a, b) => (b._count?.members || 0) - (a._count?.members || 0))[0]
+    || projects[0]
+
+  // Remaining projects for rows (exclude featured)
+  const activeWithoutFeatured = featured ? active.filter((p) => p.id !== featured.id) : active
 
   const rows: ProjectRow[] = [
-    { title: 'Active Projects', projects: active, ghostCount: ghostsFor(active) },
-    { title: 'In Planning', projects: planning, ghostCount: ghostsFor(planning) },
-    { title: 'Completed', projects: completed, ghostCount: ghostsFor(completed) },
+    { title: 'Active Projects', projects: activeWithoutFeatured },
+    { title: 'In Planning', projects: planning },
+    { title: 'Completed', projects: completed },
   ]
 
-  const totalMembers = projects.reduce((sum, p) => sum + (p._count?.members || 0), 0)
+  // ─── Empty state ───────────────────────────────────────────────────────
+
+  if (projects.length === 0) {
+    return (
+      <div className="min-h-screen bg-[var(--background)] flex items-center justify-center">
+        <div className="text-center space-y-4 px-4">
+          <div className="w-16 h-16 rounded-full bg-[var(--muted)] flex items-center justify-center mx-auto">
+            <Users className="w-8 h-8 text-[var(--muted-foreground)]" />
+          </div>
+          <h2 className="text-2xl font-black text-[var(--foreground)]">No Projects Yet</h2>
+          <p className="text-sm text-[var(--muted-foreground)] max-w-sm">
+            Head over to the community page to start a new project.
+          </p>
+          <Link href="/community">
+            <Button className="font-bold text-sm uppercase tracking-wider rounded-md mt-2">
+              Go to Community
+            </Button>
+          </Link>
+        </div>
+      </div>
+    )
+  }
 
   // ─── Render ────────────────────────────────────────────────────────────
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
-
-      {/* ═══ HERO ═══ */}
-      <header className="relative overflow-hidden">
-        {/* Gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[var(--primary)]/15 via-[var(--background)] to-[var(--background)]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[var(--primary)]/5 via-transparent to-[var(--accent)]/5" />
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-10">
-          <div className="mb-6">
-            <BackButton label="Community" fallbackUrl="/community" />
-          </div>
-
-          <div className="max-w-3xl">
-            <div className="flex items-center gap-2 mb-3">
-              <Sparkles className="w-4 h-4 text-[var(--primary)]" />
-              <span className="text-xs font-bold uppercase tracking-widest text-[var(--primary)]">
-                Community Projects
-              </span>
-            </div>
-
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[var(--foreground)] leading-[1.05] tracking-tight">
-              Shape the Future,{' '}
-              <span className="text-[var(--primary)]">Together</span>
-            </h1>
-
-            <p className="text-base sm:text-lg text-[var(--muted-foreground)] mt-4 leading-relaxed max-w-xl">
-              Collaborative sustainability initiatives driven by our community. Join existing projects or start something new.
-            </p>
-
-            {/* Stats bar */}
-            <div className="flex items-center gap-5 mt-6 text-sm">
-              <div className="flex items-center gap-1.5 text-[var(--foreground)]">
-                <Rocket className="w-4 h-4 text-[var(--primary)]" />
-                <span className="font-bold">{projects.length}</span>
-                <span className="text-[var(--muted-foreground)]">projects</span>
-              </div>
-              <div className="flex items-center gap-1.5 text-[var(--foreground)]">
-                <Users className="w-4 h-4 text-[var(--primary)]" />
-                <span className="font-bold">{totalMembers}</span>
-                <span className="text-[var(--muted-foreground)]">contributors</span>
-              </div>
-            </div>
-
-            {/* CTA */}
-            <div className="mt-6">
-              <Link href="/community/projects/new">
-                <Button size="lg" className="font-bold text-sm uppercase tracking-wider rounded-lg">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Start a Project
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+      {/* ═══ NETFLIX BILLBOARD ═══ */}
+      {featured && <Billboard project={featured} />}
 
       {/* ═══ ROWS ═══ */}
-      <main className="max-w-7xl mx-auto space-y-10 pb-16">
+      <main className="space-y-8 py-8">
         {rows.map((row) => (
           <ScrollRow
             key={row.title}
             title={row.title}
             projects={row.projects}
-            ghostCount={row.ghostCount}
           />
         ))}
       </main>
-
-      {/* ═══ BOTTOM CTA ═══ */}
-      <footer className="border-t border-[var(--border)] bg-gradient-to-b from-[var(--muted)]/50 to-[var(--background)]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div>
-              <h2 className="text-2xl font-black text-[var(--foreground)]">
-                Got an idea?
-              </h2>
-              <p className="text-sm text-[var(--muted-foreground)] mt-1">
-                Every project starts with a single step. Launch yours today.
-              </p>
-            </div>
-            <Link href="/community/projects/new">
-              <Button className="font-bold text-sm uppercase tracking-wider rounded-lg group">
-                Launch a Project
-                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </footer>
     </div>
   )
 }
