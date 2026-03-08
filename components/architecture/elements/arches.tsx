@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { MaterialPatterns } from './materialPatterns'
 import { S } from './svgStyleTokens'
 
 // Shared Halo Filter
@@ -31,865 +32,1005 @@ interface SVGProps {
 }
 
 // ============================================================================
-// ROUND ARCH - Perfect semicircular Roman arch, 3/4 perspective showing barrel depth
+// ROUND ARCH - Classic semicircular Roman/Romanesque arch
+// Reference: Roman aqueducts, Colosseum - perfect semicircle, radiating voussoirs
 // ============================================================================
 export const RoundArchSVG = ({ showHalo = false }: SVGProps) => (
-  <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" className="w-full h-full">
+  <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
+    <MaterialPatterns />
     <HaloFilter />
 
-    {/* CONTEXT (far): Adjacent arcade receding in perspective */}
-    <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
-      <path d="M -15 62 Q -15 38, 5 38 Q 15 38, 15 62" />
-      <path d="M 95 62 Q 100 40, 110 40" />
-    </g>
+    {/* CONTEXT (near): COMPLETE ROMAN AQUEDUCT/BASILICA - field sketch off-page */}
 
-    {/* CONTEXT (far): Floor paving */}
-    <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
-      <path d="M -10 94 L 110 94" />
-      <path d="M -10 98 L 110 98" opacity="0.5" />
-    </g>
-
-    {/* CONTEXT (near): Wall mass behind arch */}
+    {/* CONTEXT (near): CEILING/SKY: Roman coffered ceiling or open sky */}
     <g opacity={S.CN.opacity} strokeDasharray={S.CN.dash} strokeWidth={S.CN.strokeWidth}>
-      {/* Wall above arch */}
-      <path d="M -5 -5 L -5 110" />
-      <path d="M 95 -5 L 95 110" />
-      <path d="M -5 15 L 95 15" opacity="0.5" />
-      {/* Masonry courses */}
-      <path d="M -5 25 L 12 25" strokeWidth="0.4" opacity="0.5" />
-      <path d="M 78 25 L 95 25" strokeWidth="0.4" opacity="0.5" />
+      {/* Coffers or sky indication extending beyond */}
+      <path d="M -10 0 L 110 0" fill="none" opacity="0.6" />
+      <path d="M -10 10 L 110 10" fill="none" />
     </g>
 
-    {/* CONTEXT (near): Piers extending off-page */}
+    {/* CONTEXT (near): MASSIVE ROMAN WALLS: Extending up and down beyond frame */}
     <g opacity={S.CN.opacity} strokeDasharray={S.CN.dash} strokeWidth={S.CN.strokeWidth}>
-      <path d="M 12 -5 L 12 110" strokeWidth="1.2" />
-      <path d="M 18 -5 L 18 110" opacity="0.7" />
-      <path d="M 78 -5 L 78 110" strokeWidth="1.2" />
-      <path d="M 72 -5 L 72 110" opacity="0.7" />
+      {/* Left Roman wall - massive masonry */}
+      <path d="M -5 -10 L -5 110" fill="none" />
+      <path d="M 0 -10 L 0 110" fill="none" opacity="0.7" />
+      <path d="M 5 -10 L 5 110" fill="none" opacity="0.5" />
+      {/* Right Roman wall */}
+      <path d="M 95 -10 L 95 110" fill="none" />
+      <path d="M 100 -10 L 100 110" fill="none" opacity="0.7" />
+      <path d="M 105 -10 L 105 110" fill="none" opacity="0.5" />
+      {/* Roman stone courses */}
+      <path d="M -5 30 L 10 30" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 90 30 L 105 30" strokeWidth="0.4" opacity="0.5" />
+      <path d="M -5 70 L 10 70" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 90 70 L 105 70" strokeWidth="0.4" opacity="0.5" />
     </g>
 
-    {/* Wall mass fill behind arch */}
-    <path d="M 12 15 L 78 15 L 78 62 L 12 62 Z" fill="currentColor" opacity="0.04" stroke="none" />
+    {/* CONTEXT (far): ADJACENT ARCADE: Roman arches continuing into distance */}
+    <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
+      {/* Next arch to left (perspective) */}
+      <path d="M -20 60 Q -20 32, 0 32 Q 20 32, 20 60" fill="none" />
+      <path d="M -10 60 Q -10 35, 5 35 Q 20 35, 20 60" fill="none" opacity="0.7" />
+      {/* Next arch to right */}
+      <path d="M 80 60 Q 80 35, 95 35 Q 110 35, 110 60" fill="none" opacity="0.7" />
+      <path d="M 80 60 Q 80 32, 100 32 Q 120 32, 120 60" fill="none" />
+    </g>
 
-    {/* PRIMARY: THE ROUND ARCH - 3/4 perspective with barrel depth */}
+    {/* CONTEXT (far): ROMAN FLOOR: Paved stone extending far beyond */}
+    <g opacity={S.CF.opacity}>
+      <rect x="-10" y="90" width="120" height="20" fill="url(#stone-smooth)" opacity="0.15" stroke="none" />
+      {/* Floor extending off-page */}
+      <path d="M -10 94 L 110 94" strokeWidth="0.8" fill="none" opacity="0.5" strokeDasharray="5 3" />
+      <path d="M -10 100 L 110 100" strokeWidth="0.6" fill="none" opacity="0.4" strokeDasharray="4 2" />
+      {/* Roman paving stones */}
+      <path d="M 0 92 L 0 105" strokeWidth="0.3" opacity="0.3" />
+      <path d="M 25 92 L 25 105" strokeWidth="0.3" opacity="0.3" />
+      <path d="M 50 92 L 50 105" strokeWidth="0.3" opacity="0.3" />
+      <path d="M 75 92 L 75 105" strokeWidth="0.3" opacity="0.3" />
+      <path d="M 100 92 L 100 105" strokeWidth="0.3" opacity="0.3" />
+    </g>
+
+    {/* CONTEXT (near): MASSIVE PIERS: Roman piers extending up off-page */}
+    <g opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+      {/* Left pier - continues up beyond frame */}
+      <rect x="15" y="-10" width="5" height="120" fill="url(#stone-smooth)" opacity="0.2" stroke="none" />
+      <path d="M 15 -10 L 15 110" strokeWidth="1.8" fill="none" strokeDasharray="5 2" />
+      <path d="M 18 -10 L 18 110" strokeWidth="1.2" fill="none" strokeDasharray="5 2" opacity="0.7" />
+      <path d="M 20 -10 L 20 110" strokeWidth="1" fill="none" strokeDasharray="5 2" opacity="0.6" />
+      {/* Right pier - continues up beyond frame */}
+      <rect x="80" y="-10" width="5" height="120" fill="url(#stone-smooth)" opacity="0.2" stroke="none" />
+      <path d="M 85 -10 L 85 110" strokeWidth="1.8" fill="none" strokeDasharray="5 2" />
+      <path d="M 82 -10 L 82 110" strokeWidth="1.2" fill="none" strokeDasharray="5 2" opacity="0.7" />
+      <path d="M 80 -10 L 80 110" strokeWidth="1" fill="none" strokeDasharray="5 2" opacity="0.6" />
+    </g>
+
+    {/* PRIMARY: THE ROUND ARCH - BOLD ROMAN ENGINEERING */}
     <g filter={showHalo ? "url(#arch-halo)" : undefined}>
+      {/* Stone material texture on arch */}
+      <path d="M 17 48 Q 17 12, 50 12 Q 83 12, 83 48" fill="url(#stone-smooth)" opacity="0.25" stroke="none" />
 
-      {/* DEPTH: Soffit (underside) of arch visible in 3/4 - the barrel receding */}
-      <path d="M 18 62 Q 18 30, 45 22 Q 72 30, 72 62
-               L 78 58 Q 78 26, 48 18 Q 18 26, 18 58 Z"
-            fill="currentColor" opacity="0.1" stroke="none" />
+      {/* BOLD Extrados - perfect Roman semicircle (field sketch confidence) */}
+      <path d="M 15 48 Q 15 8, 50 8 Q 85 8, 85 48"
+            strokeWidth={S.P.strokeWidthHeavy} fill="none" strokeLinecap={S.P.strokeLinecap} />
 
-      {/* DEPTH: Far side of arch (back edge visible in 3/4) */}
-      <path d="M 18 58 Q 18 26, 48 18 Q 78 26, 78 58"
-            strokeWidth={S.P.strokeWidthLight} opacity="0.4" strokeDasharray="2 2" />
+      {/* BOLD Intrados - inner curve */}
+      <path d="M 20 48 Q 20 16, 50 16 Q 80 16, 80 48"
+            strokeWidth={S.P.strokeWidthBold} fill="none" strokeLinecap={S.P.strokeLinecap} />
 
-      {/* Front face extrados - perfect SEMICIRCLE */}
-      <path d="M 12 62 Q 12 20, 45 12 Q 78 20, 78 62"
-            strokeWidth={S.P.strokeWidthHeavy} strokeLinecap={S.P.strokeLinecap} />
+      {/* Depth shadow on inner arch */}
+      <path d="M 21 48 Q 21 17, 50 17 Q 79 17, 79 48"
+            strokeWidth="0.6" fill="none" opacity="0.2" />
 
-      {/* Front face intrados */}
-      <path d="M 18 62 Q 18 28, 45 20 Q 72 28, 72 62"
-            strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
+      {/* DETAIL: Voussoir lines radiating from center - ENHANCED with depth */}
+      <path d="M 22 42 L 26 34" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacity} />
+      <path d="M 22.5 42 L 26.5 34" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 28 32 L 34 24" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacity} />
+      <path d="M 28.5 32 L 34.5 24" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 38 22 L 44 14" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacity} />
+      <path d="M 38.5 22 L 44.5 14" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 56 14 L 62 22" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacity} />
+      <path d="M 56.5 14 L 62.5 22" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 66 24 L 72 32" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacity} />
+      <path d="M 66.5 24 L 72.5 32" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 74 34 L 78 42" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacity} />
+      <path d="M 74.5 34 L 78.5 42" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
 
-      {/* DEPTH: Voussoir side faces visible in 3/4 (near side shows thickness) */}
-      {/* Left springer voussoir depth */}
-      <path d="M 14 56 L 20 52" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <polygon points="14,56 12,62 18,62 20,56" fill="currentColor" opacity="0.06" stroke="none" />
-      {/* Second voussoir */}
-      <path d="M 16 46 L 22 42" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <polygon points="16,46 14,52 20,48 22,42" fill="currentColor" opacity="0.06" stroke="none" />
-      {/* Third voussoir */}
-      <path d="M 22 36 L 28 32" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <polygon points="22,36 18,42 24,38 28,32" fill="currentColor" opacity="0.06" stroke="none" />
-      {/* Fourth voussoir */}
-      <path d="M 32 26 L 38 22" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      {/* Right side voussoirs */}
-      <path d="M 58 22 L 64 26" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 64 32 L 70 36" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 70 42 L 74 46" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 72 52 L 76 56" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
+      {/* BOLD KEYSTONE at crown - central wedge stone */}
+      <path d="M 44 10 L 46 8 L 54 8 L 56 10" strokeWidth={S.P.strokeWidthHeavy} fill="none" strokeLinejoin="round" />
+      <path d="M 46 14 L 46 9" strokeWidth={S.P.strokeWidth} fill="none" opacity={S.D.opacityStrong} />
+      <path d="M 54 14 L 54 9" strokeWidth={S.P.strokeWidth} fill="none" opacity={S.D.opacityStrong} />
+      <path d="M 48 9 L 52 9" strokeWidth={S.D.strokeWidth} fill="none" opacity={S.D.opacity} />
 
-      {/* Voussoir depth lines on soffit (receding perspective) */}
-      <path d="M 14 56 L 20 52" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
-      <path d="M 22 42 L 28 38" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
-      <path d="M 34 28 L 40 24" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
-      <path d="M 56 24 L 62 28" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
-      <path d="M 68 38 L 74 42" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
-
-      {/* KEYSTONE at crown - projecting forward, 3D wedge */}
-      {/* Front trapezoidal face */}
-      <path d="M 40 14 L 43 12 L 47 12 L 50 14 L 48 20 L 42 20 Z"
-            strokeWidth={S.P.strokeWidthHeavy} strokeLinejoin="round" />
-      {/* Keystone top depth face (3/4 view) */}
-      <polygon points="43,12 47,12 53,8 49,8" fill="currentColor" opacity="0.1" stroke="none" />
-      <path d="M 43 12 L 49 8 M 47 12 L 53 8 M 49 8 L 53 8"
-            strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacityStrong} />
-      {/* Keystone side depth */}
-      <polygon points="47,12 50,14 56,10 53,8" fill="currentColor" opacity="0.06" stroke="none" />
-      <path d="M 47 12 L 53 8 M 50 14 L 56 10"
-            strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-
-      {/* Impost blocks where arch springs from piers */}
-      <path d="M 8 62 L 22 62" strokeWidth={S.P.strokeWidthHeavy} strokeLinecap={S.P.strokeLinecap} />
-      <path d="M 68 62 L 82 62" strokeWidth={S.P.strokeWidthHeavy} strokeLinecap={S.P.strokeLinecap} />
-      {/* Impost depth (3/4) */}
-      <path d="M 22 62 L 28 58" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 8 62 L 14 58" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <polygon points="8,62 22,62 28,58 14,58" fill="currentColor" opacity="0.06" stroke="none" />
-      <path d="M 68 62 L 74 58" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 82 62 L 88 58" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <polygon points="68,62 82,62 88,58 74,58" fill="currentColor" opacity="0.06" stroke="none" />
-      {/* Impost molding line */}
-      <path d="M 10 60 L 20 60" strokeWidth="1" opacity="0.5" />
-      <path d="M 70 60 L 80 60" strokeWidth="1" opacity="0.5" />
-    </g>
-
-    {/* EFFECTS: Light through the opening */}
-    <g opacity={S.E.opacity} strokeDasharray={S.E.dash} strokeWidth={S.E.strokeWidth}>
-      <path d="M 30 70 L 35 62" />
-      <path d="M 55 70 L 60 62" />
+      {/* BOLD Impost blocks where arch springs from piers */}
+      <path d="M 12 48 L 23 48" strokeWidth={S.P.strokeWidthHeavy} fill="none" strokeLinecap={S.P.strokeLinecap} />
+      <path d="M 77 48 L 88 48" strokeWidth={S.P.strokeWidthHeavy} fill="none" strokeLinecap={S.P.strokeLinecap} />
+      <path d="M 14 46 L 21 46" strokeWidth="1.4" fill="none" opacity="0.6" />
+      <path d="M 79 46 L 86 46" strokeWidth="1.4" fill="none" opacity="0.6" />
     </g>
   </svg>
 )
 
 // ============================================================================
-// POINTED ARCH - Gothic arch, two curves meeting at a sharp POINT at the top
+// POINTED ARCH - Gothic arch with two curves meeting at a point (lancet form)
+// Reference: Notre-Dame, Chartres - vertical emphasis, dramatic height
 // ============================================================================
 export const PointedArchSVG = ({ showHalo = false }: SVGProps) => (
-  <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" className="w-full h-full">
+  <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
+    <MaterialPatterns />
     <HaloFilter />
 
-    {/* CONTEXT (far): Adjacent pointed arches in nave arcade */}
-    <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
-      <path d="M -15 62 Q -10 40, 0 30 Q 10 40, 5 62" />
-      <path d="M 95 62 Q 100 42, 105 35" />
-    </g>
+    {/* CONTEXT (near): COMPLETE GOTHIC CATHEDRAL NAVE - field sketch extending off-page */}
 
-    {/* CONTEXT (far): Floor */}
-    <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
-      <path d="M -10 94 L 110 94" />
-      <path d="M -10 98 L 110 98" opacity="0.5" />
-    </g>
-
-    {/* CONTEXT (near): Cathedral walls */}
+    {/* CONTEXT (near): CEILING: Gothic ribbed vaulting extending beyond frame */}
     <g opacity={S.CN.opacity} strokeDasharray={S.CN.dash} strokeWidth={S.CN.strokeWidth}>
-      <path d="M -5 -5 L -5 110" />
-      <path d="M 95 -5 L 95 110" />
-      <path d="M -5 10 L 95 10" opacity="0.5" />
-      <path d="M -5 25 L 12 25" strokeWidth="0.4" opacity="0.5" />
-      <path d="M 78 25 L 95 25" strokeWidth="0.4" opacity="0.5" />
+      {/* Vault ribs continuing upward off-page */}
+      <path d="M -5 50 Q 20 -10, 50 -15" fill="none" />
+      <path d="M 105 50 Q 80 -10, 50 -15" fill="none" />
+      {/* Transverse arch ribs */}
+      <path d="M 15 10 Q 50 -5, 85 10" fill="none" />
+      <path d="M 10 5 Q 50 -8, 90 5" fill="none" />
     </g>
 
-    {/* CONTEXT (near): Piers */}
+    {/* CONTEXT (near): NAVE WALLS: Complete cathedral walls extending beyond frame */}
     <g opacity={S.CN.opacity} strokeDasharray={S.CN.dash} strokeWidth={S.CN.strokeWidth}>
-      <path d="M 14 -5 L 14 110" strokeWidth="1.2" />
-      <path d="M 20 -5 L 20 110" opacity="0.7" />
-      <path d="M 76 -5 L 76 110" strokeWidth="1.2" />
-      <path d="M 70 -5 L 70 110" opacity="0.7" />
+      {/* Left nave wall off-page top and bottom */}
+      <path d="M -5 -10 L -5 110" fill="none" />
+      <path d="M 0 -10 L 0 110" fill="none" opacity="0.7" />
+      {/* Right nave wall off-page */}
+      <path d="M 100 -10 L 100 110" fill="none" />
+      <path d="M 105 -10 L 105 110" fill="none" opacity="0.7" />
+      {/* Stone courses */}
+      <path d="M -5 25 L 5 25" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 95 25 L 105 25" strokeWidth="0.4" opacity="0.5" />
+      <path d="M -5 65 L 5 65" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 95 65 L 105 65" strokeWidth="0.4" opacity="0.5" />
     </g>
 
-    {/* Wall mass fill */}
-    <path d="M 14 10 L 76 10 L 76 62 L 14 62 Z" fill="currentColor" opacity="0.04" stroke="none" />
-
-    {/* PRIMARY: THE POINTED ARCH - two arcs meeting at a sharp point */}
-    <g filter={showHalo ? "url(#arch-halo)" : undefined}>
-
-      {/* DEPTH: Soffit (underside) receding in 3/4 */}
-      <path d="M 20 62 Q 24 36, 45 12 L 50 8
-               L 55 12 Q 66 36, 70 62
-               L 76 58 Q 72 32, 52 8
-               L 48 4 L 44 8 Q 24 32, 20 58 Z"
-            fill="currentColor" opacity="0.1" stroke="none" />
-
-      {/* Far edge of arch (back, visible in 3/4) */}
-      <path d="M 20 58 Q 24 32, 48 8" strokeWidth={S.P.strokeWidthLight} opacity="0.35" strokeDasharray="2 2" />
-      <path d="M 76 58 Q 72 32, 52 8" strokeWidth={S.P.strokeWidthLight} opacity="0.35" strokeDasharray="2 2" />
-
-      {/* Front extrados - LEFT arc rising to POINT */}
-      <path d="M 14 62 Q 18 30, 45 8 L 50 4"
-            strokeWidth={S.P.strokeWidthHeavy} strokeLinecap={S.P.strokeLinecap} />
-      {/* Front extrados - RIGHT arc rising to POINT */}
-      <path d="M 76 62 Q 72 30, 55 8 L 50 4"
-            strokeWidth={S.P.strokeWidthHeavy} strokeLinecap={S.P.strokeLinecap} />
-
-      {/* Front intrados */}
-      <path d="M 20 62 Q 24 36, 45 12 L 50 8"
-            strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
-      <path d="M 70 62 Q 66 36, 55 12 L 50 8"
-            strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
-
-      {/* Voussoir joints with depth faces visible */}
-      {/* Left side voussoirs */}
-      <path d="M 16 54 L 22 50" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <polygon points="16,54 14,60 20,56 22,50" fill="currentColor" opacity="0.06" stroke="none" />
-      <path d="M 20 42 L 26 38" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <polygon points="20,42 18,48 24,44 26,38" fill="currentColor" opacity="0.06" stroke="none" />
-      <path d="M 28 30 L 34 26" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 38 20 L 44 16" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      {/* Right side voussoirs */}
-      <path d="M 56 16 L 62 20" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 62 26 L 68 30" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 68 38 L 74 42" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <polygon points="68,38 66,44 72,48 74,42" fill="currentColor" opacity="0.06" stroke="none" />
-      <path d="M 72 50 L 76 54" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-
-      {/* Pointed KEYSTONE at apex - the defining sharp point */}
-      <path d="M 44 10 L 50 2 L 56 10"
-            strokeWidth={S.P.strokeWidthHeavy} strokeLinejoin="round" strokeLinecap={S.P.strokeLinecap} />
-      {/* Keystone depth face (3/4 view) */}
-      <polygon points="50,2 56,10 62,6 56,-2" fill="currentColor" opacity="0.1" stroke="none" />
-      <path d="M 50 2 L 56 -2 M 56 10 L 62 6" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-      {/* Keystone side edges */}
-      <path d="M 46 12 L 50 4 L 54 12" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacitySubtle} />
-
-      {/* Impost blocks */}
-      <path d="M 10 62 L 24 62" strokeWidth={S.P.strokeWidthHeavy} strokeLinecap={S.P.strokeLinecap} />
-      <path d="M 66 62 L 80 62" strokeWidth={S.P.strokeWidthHeavy} strokeLinecap={S.P.strokeLinecap} />
-      {/* Impost depth */}
-      <polygon points="10,62 24,62 30,58 16,58" fill="currentColor" opacity="0.06" stroke="none" />
-      <path d="M 24 62 L 30 58" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 10 62 L 16 58" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <polygon points="66,62 80,62 86,58 72,58" fill="currentColor" opacity="0.06" stroke="none" />
-      <path d="M 80 62 L 86 58" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      {/* Impost molding */}
-      <path d="M 12 60 L 22 60" strokeWidth="1" opacity="0.5" />
-      <path d="M 68 60 L 78 60" strokeWidth="1" opacity="0.5" />
+    {/* CONTEXT (far): ADJACENT BAY ARCHES: Cathedral colonnade continuing into distance */}
+    <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
+      {/* Next bay to left (perspective) */}
+      <path d="M -15 60 Q -10 42, 0 28 Q 10 42, 5 60" fill="none" />
+      {/* Next bay to right */}
+      <path d="M 95 60 Q 90 42, 100 28 Q 110 42, 115 60" fill="none" />
     </g>
 
-    {/* EFFECTS: Light rays */}
+    {/* EFFECTS: Sacred light from clerestory windows high above */}
     <g opacity={S.E.opacity} strokeDasharray={S.E.dash} strokeWidth={S.E.strokeWidth}>
-      <path d="M 35 70 L 40 55" />
-      <path d="M 60 70 L 55 55" />
+      {/* Light rays streaming from off-page windows */}
+      <path d="M -10 5 L 25 45" stroke="currentColor" />
+      <path d="M 5 0 L 32 45" stroke="currentColor" />
+      <path d="M 20 -5 L 40 45" stroke="currentColor" />
+      <path d="M 80 -5 L 60 45" stroke="currentColor" />
+      <path d="M 95 0 L 68 45" stroke="currentColor" />
+      <path d="M 110 5 L 75 45" stroke="currentColor" />
+      {/* Dust motes floating in sacred light */}
+      <circle cx="22" cy="35" r="0.3" fill="currentColor" opacity="0.5" />
+      <circle cx="38" cy="40" r="0.25" fill="currentColor" opacity="0.4" />
+      <circle cx="62" cy="40" r="0.25" fill="currentColor" opacity="0.4" />
+      <circle cx="78" cy="35" r="0.3" fill="currentColor" opacity="0.5" />
+    </g>
+
+    {/* CONTEXT (far): Cathedral pavement extending far beyond */}
+    <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
+      <rect x="-10" y="90" width="120" height="20" fill="url(#stone-smooth)" opacity="0.15" stroke="none" />
+      {/* Floor extending off-page left/right */}
+      <path d="M -10 94 L 110 94" strokeWidth="0.8" fill="none" opacity="0.5" strokeDasharray="5 3" />
+      <path d="M -10 100 L 110 100" strokeWidth="0.6" fill="none" opacity="0.4" strokeDasharray="4 2" />
+      {/* Worn pilgrimage path - centuries of footsteps */}
+      <path d="M 30 92 Q 50 93, 70 92" strokeWidth="0.3" opacity="0.3" fill="none" />
+      <path d="M 32 95 Q 50 96, 68 95" strokeWidth="0.3" opacity="0.3" fill="none" />
+      <path d="M 35 98 Q 50 99, 65 98" strokeWidth="0.3" opacity="0.3" fill="none" />
+    </g>
+
+    {/* CONTEXT (near): COMPOUND PIERS: Clustered columns extending off-page */}
+    <g opacity={S.CN.opacity} strokeDasharray={S.CN.dash} strokeWidth={S.CN.strokeWidth}>
+      {/* Left pier - continues up beyond frame */}
+      <rect x="16" y="-10" width="10" height="120" fill="url(#stone-smooth)" opacity="0.2" stroke="none" />
+      <path d="M 18 -10 L 18 110" strokeWidth="1.5" fill="none" strokeDasharray="5 2" />
+      <path d="M 21 -10 L 21 110" strokeWidth="1" fill="none" strokeDasharray="5 2" opacity="0.7" />
+      <path d="M 24 -10 L 24 110" strokeWidth="1" fill="none" strokeDasharray="5 2" opacity="0.7" />
+      {/* Right pier - continues up beyond frame */}
+      <rect x="74" y="-10" width="10" height="120" fill="url(#stone-smooth)" opacity="0.2" stroke="none" />
+      <path d="M 82 -10 L 82 110" strokeWidth="1.5" fill="none" strokeDasharray="5 2" />
+      <path d="M 79 -10 L 79 110" strokeWidth="1" fill="none" strokeDasharray="5 2" opacity="0.7" />
+      <path d="M 76 -10 L 76 110" strokeWidth="1" fill="none" strokeDasharray="5 2" opacity="0.7" />
+    </g>
+
+    {/* PRIMARY: THE POINTED ARCH - BOLD FIELD SKETCH LINES */}
+    <g filter={showHalo ? "url(#arch-halo)" : undefined}>
+      {/* Limestone material fill for arch mass */}
+      <path d="M 18 52 Q 22 28, 50 6 Q 78 28, 82 52" fill="url(#stone-smooth)" opacity="0.25" stroke="none" />
+
+      {/* BOLD LEFT CURVE rising to point - extrados (field sketch confidence) */}
+      <path d="M 18 52 Q 22 28, 50 6" strokeWidth={S.P.strokeWidthHeavy} fill="none" strokeLinecap={S.P.strokeLinecap} />
+      {/* BOLD RIGHT CURVE rising to point - extrados */}
+      <path d="M 82 52 Q 78 28, 50 6" strokeWidth={S.P.strokeWidthHeavy} fill="none" strokeLinecap={S.P.strokeLinecap} />
+
+      {/* BOLD Intrados curves */}
+      <path d="M 24 52 Q 28 30, 50 12" strokeWidth={S.P.strokeWidthBold} fill="none" strokeLinecap={S.P.strokeLinecap} />
+      <path d="M 76 52 Q 72 30, 50 12" strokeWidth={S.P.strokeWidthBold} fill="none" strokeLinecap={S.P.strokeLinecap} />
+
+      {/* Depth shadow in arch */}
+      <path d="M 25 52 Q 29 31, 50 13" strokeWidth="0.6" fill="none" opacity="0.2" />
+      <path d="M 75 52 Q 71 31, 50 13" strokeWidth="0.6" fill="none" opacity="0.2" />
+
+      {/* DETAIL: Voussoirs following pointed curve - ENHANCED with depth */}
+      <path d="M 26 46 L 30 38" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacity} />
+      <path d="M 26.5 46 L 30.5 38" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 34 34 L 40 26" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacity} />
+      <path d="M 34.5 34 L 40.5 26" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 44 20 L 49 10" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacity} />
+      <path d="M 44.5 20 L 49.5 10" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 51 10 L 56 20" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacity} />
+      <path d="M 51.5 10 L 56.5 20" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 60 26 L 66 34" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacity} />
+      <path d="M 60.5 26 L 66.5 34" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 70 38 L 74 46" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacity} />
+      <path d="M 70.5 38 L 74.5 46" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+
+      {/* DETAIL: Medieval chisel marks on limestone */}
+      <path d="M 28 42 L 30 43" strokeWidth="0.25" fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 38 30 L 40 31" strokeWidth="0.25" fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 60 31 L 62 30" strokeWidth="0.25" fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 70 43 L 72 42" strokeWidth="0.25" fill="none" opacity={S.D.opacitySubtle} />
+
+      {/* BOLD Pointed keystone at apex */}
+      <path d="M 44 14 L 50 5 L 56 14" strokeWidth={S.P.strokeWidthHeavy} fill="none" strokeLinecap={S.P.strokeLinecap} strokeLinejoin="round" />
+      <path d="M 46 10 L 50 6 L 54 10" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacity} />
+      {/* Keystone edges */}
+      <path d="M 46 12 L 50 7 L 54 12" strokeWidth="0.6" fill="none" opacity={S.D.opacitySubtle} />
+
+      {/* BOLD Impost moldings with Gothic detail */}
+      <path d="M 14 52 L 27 52" strokeWidth={S.P.strokeWidthHeavy} fill="none" strokeLinecap={S.P.strokeLinecap} />
+      <path d="M 15 50 L 26 50" strokeWidth="1.4" fill="none" opacity="0.6" />
+      <path d="M 73 52 L 86 52" strokeWidth={S.P.strokeWidthHeavy} fill="none" strokeLinecap={S.P.strokeLinecap} />
+      <path d="M 74 50 L 85 50" strokeWidth="1.4" fill="none" opacity="0.6" />
+
+      {/* Soot darkening from centuries of candles (weathering) */}
+      <path d="M 25 48 Q 30 35, 45 18" strokeWidth="0.4" fill="none" opacity="0.15" />
+      <path d="M 75 48 Q 70 35, 55 18" strokeWidth="0.4" fill="none" opacity="0.15" />
     </g>
   </svg>
 )
 
 // ============================================================================
-// HORSESHOE ARCH - Extends PAST semicircle, narrowing below widest point (Moorish)
+// HORSESHOE ARCH - Extends past semicircle before springing (Moorish/Islamic)
+// Reference: Great Mosque of Córdoba - distinctive inward curve at base
 // ============================================================================
 export const HorseshoeArchSVG = ({ showHalo = false }: SVGProps) => (
-  <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" className="w-full h-full">
+  <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
+    <MaterialPatterns />
     <HaloFilter />
 
-    {/* CONTEXT (far): Cordoba colonnade receding */}
-    <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
-      <path d="M -10 65 Q -14 60, -12 50 Q -8 40, 0 40 Q 5 40, 8 50 Q 10 60, 6 65" />
-      <path d="M 94 65 Q 98 58, 100 50" />
-    </g>
+    {/* CONTEXT: COMPLETE CÓRDOBA MOSQUE PRAYER HALL - field sketch off-page */}
 
-    {/* CONTEXT (far): Floor */}
-    <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
-      <path d="M -10 94 L 110 94" />
-      <path d="M -10 98 L 110 98" opacity="0.5" />
-    </g>
-
-    {/* CONTEXT (near): Mosque walls */}
+    {/* CONTEXT (near): CEILING: Wooden coffered ceiling extending beyond */}
     <g opacity={S.CN.opacity} strokeDasharray={S.CN.dash} strokeWidth={S.CN.strokeWidth}>
-      <path d="M -5 -5 L -5 110" />
-      <path d="M 95 -5 L 95 110" />
-      <path d="M -5 12 L 95 12" opacity="0.5" />
+      {/* Ceiling beams continuing off-page */}
+      <path d="M -10 0 L 110 0" fill="none" opacity="0.6" />
+      <path d="M -10 8 L 110 8" fill="none" />
+      <path d="M -10 16 L 110 16" fill="none" opacity="0.6" />
     </g>
 
-    {/* CONTEXT (near): Columns */}
+    {/* CONTEXT (near): MOSQUE WALLS: Complete hypostyle hall walls */}
     <g opacity={S.CN.opacity} strokeDasharray={S.CN.dash} strokeWidth={S.CN.strokeWidth}>
-      <path d="M 20 -5 L 20 110" strokeWidth="1.2" />
-      <path d="M 26 -5 L 26 110" opacity="0.7" />
-      <path d="M 70 -5 L 70 110" strokeWidth="1.2" />
-      <path d="M 64 -5 L 64 110" opacity="0.7" />
+      {/* Left wall extending off-page */}
+      <path d="M -5 -10 L -5 110" fill="none" />
+      <path d="M 0 -10 L 0 110" fill="none" opacity="0.7" />
+      {/* Right wall off-page */}
+      <path d="M 100 -10 L 100 110" fill="none" />
+      <path d="M 105 -10 L 105 110" fill="none" opacity="0.7" />
     </g>
 
-    {/* Wall mass */}
-    <path d="M 20 12 L 70 12 L 70 65 L 20 65 Z" fill="currentColor" opacity="0.04" stroke="none" />
+    {/* CONTEXT (far): FAMOUS CÓRDOBA COLONNADE: Rows of striped arches extending beyond */}
+    <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
+      {/* Arcade continues left - multiple bays visible */}
+      <path d="M -20 58 Q -25 52, -22 45 Q -18 38, -12 45 Q -10 52, -15 58" fill="none" />
+      <path d="M -5 58 Q -10 52, -8 45 Q -4 38, 2 45 Q 4 52, 0 58" fill="none" />
+      {/* Stripes on left arches */}
+      <rect x="-18" y="45" width="4" height="3" opacity="0.4" fill="currentColor" stroke="none" />
+      <rect x="-3" y="45" width="4" height="3" opacity="0.4" fill="currentColor" stroke="none" />
+      {/* Arcade continues right */}
+      <path d="M 100 58 Q 95 52, 98 45 Q 102 38, 108 45 Q 110 52, 105 58" fill="none" />
+      <path d="M 115 58 Q 110 52, 113 45 Q 117 38, 123 45 Q 125 52, 120 58" fill="none" />
+      {/* Stripes on right arches */}
+      <rect x="100" y="45" width="4" height="3" opacity="0.4" fill="currentColor" stroke="none" />
+      <rect x="115" y="45" width="4" height="3" opacity="0.4" fill="currentColor" stroke="none" />
+    </g>
 
-    {/* PRIMARY: THE HORSESHOE ARCH - curves past springing, narrowing below widest point */}
+    {/* CONTEXT (far): FLOOR: Marble & tile pavement extending far beyond */}
+    <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
+      <rect x="-10" y="90" width="120" height="20" fill="url(#stone-smooth)" opacity="0.15" stroke="none" />
+      {/* Floor extending off-page */}
+      <path d="M -10 94 L 110 94" strokeWidth="0.8" fill="none" opacity="0.5" strokeDasharray="5 3" />
+      <path d="M -10 100 L 110 100" strokeWidth="0.6" fill="none" opacity="0.4" strokeDasharray="4 2" />
+      {/* Islamic geometric tile pattern across floor */}
+      <path d="M 0 92 L 5 92 L 5 96 L 0 96 Z" strokeWidth="0.2" opacity="0.3" fill="none" />
+      <path d="M 20 92 L 25 92 L 25 96 L 20 96 Z" strokeWidth="0.2" opacity="0.3" fill="none" />
+      <path d="M 40 92 L 45 92 L 45 96 L 40 96 Z" strokeWidth="0.2" opacity="0.3" fill="none" />
+      <path d="M 60 92 L 65 92 L 65 96 L 60 96 Z" strokeWidth="0.2" opacity="0.3" fill="none" />
+      <path d="M 80 92 L 85 92 L 85 96 L 80 96 Z" strokeWidth="0.2" opacity="0.3" fill="none" />
+      <path d="M 100 92 L 105 92 L 105 96 L 100 96 Z" strokeWidth="0.2" opacity="0.3" fill="none" />
+    </g>
+
+    {/* CONTEXT (near): BRICK COLUMNS: Supporting colonnade extending up off-page */}
+    <g opacity={S.CN.opacity} strokeDasharray={S.CN.dash} strokeWidth={S.CN.strokeWidth}>
+      {/* Left column - continues up beyond frame */}
+      <rect x="23" y="-10" width="9" height="120" fill="url(#brick-rough)" opacity="0.2" stroke="none" />
+      <path d="M 25 -10 L 25 110" strokeWidth="1.5" fill="none" strokeDasharray="5 2" />
+      <path d="M 28 -10 L 28 110" strokeWidth="1" fill="none" strokeDasharray="5 2" opacity="0.7" />
+      <path d="M 30 -10 L 30 110" strokeWidth="1" fill="none" strokeDasharray="5 2" opacity="0.7" />
+      {/* Right column - continues up beyond frame */}
+      <rect x="68" y="-10" width="9" height="120" fill="url(#brick-rough)" opacity="0.2" stroke="none" />
+      <path d="M 75 -10 L 75 110" strokeWidth="1.5" fill="none" strokeDasharray="5 2" />
+      <path d="M 72 -10 L 72 110" strokeWidth="1" fill="none" strokeDasharray="5 2" opacity="0.7" />
+      <path d="M 70 -10 L 70 110" strokeWidth="1" fill="none" strokeDasharray="5 2" opacity="0.7" />
+    </g>
+
+    {/* PRIMARY: THE HORSESHOE ARCH - BOLD FIELD SKETCH */}
     <g filter={showHalo ? "url(#arch-halo)" : undefined}>
+      {/* Brick material fill for arch mass */}
+      <path d="M 25 58 Q 16 58, 14 48 Q 10 32, 20 18 Q 32 6, 50 6 Q 68 6, 80 18 Q 90 32, 86 48 Q 84 58, 75 58"
+            fill="url(#brick-rough)" opacity="0.22" stroke="none" />
 
-      {/* DEPTH: Soffit showing horseshoe depth receding in 3/4 */}
-      {/* The horseshoe shape: arch is WIDER than the piers, then curves INWARD below */}
-      <path d="M 24 65 Q 14 62, 12 50 Q 10 34, 22 20 Q 34 10, 45 10
-               Q 56 10, 68 20 Q 80 34, 78 50 Q 76 62, 66 65
-               L 72 61 Q 82 58, 84 46 Q 86 30, 74 16
-               Q 62 6, 51 6 Q 40 6, 28 16 Q 16 30, 18 46 Q 20 58, 30 61 Z"
-            fill="currentColor" opacity="0.1" stroke="none" />
+      {/* BOLD horseshoe curve - arch extends INWARD past piers (field sketch confidence) */}
+      {/* Extrados */}
+      <path d="M 25 58 Q 16 58, 14 48 Q 10 32, 20 18 Q 32 6, 50 6 Q 68 6, 80 18 Q 90 32, 86 48 Q 84 58, 75 58"
+            strokeWidth={S.P.strokeWidthHeavy} fill="none" strokeLinecap={S.P.strokeLinecap} />
 
-      {/* Far edge (back of arch visible in 3/4) */}
-      <path d="M 30 61 Q 22 58, 18 46 Q 16 30, 28 16 Q 40 6, 51 6 Q 62 6, 74 16 Q 86 30, 84 46 Q 82 58, 72 61"
-            strokeWidth={S.P.strokeWidthLight} opacity="0.35" strokeDasharray="2 2" />
+      {/* BOLD Intrados */}
+      <path d="M 30 55 Q 22 55, 20 46 Q 16 34, 26 22 Q 36 12, 50 12 Q 64 12, 74 22 Q 84 34, 80 46 Q 78 55, 70 55"
+            strokeWidth={S.P.strokeWidthBold} fill="none" strokeLinecap={S.P.strokeLinecap} />
 
-      {/* Front extrados - HORSESHOE: note how it curves INWARD past springing at y=55 */}
-      <path d="M 24 65 Q 14 62, 12 50 Q 10 34, 22 20 Q 34 10, 45 10 Q 56 10, 68 20 Q 80 34, 78 50 Q 76 62, 66 65"
-            strokeWidth={S.P.strokeWidthHeavy} strokeLinecap={S.P.strokeLinecap} />
+      {/* Depth shadow */}
+      <path d="M 31 55 Q 23 55, 21 46 Q 17 35, 27 23 Q 37 13, 50 13 Q 63 13, 73 23 Q 83 35, 79 46 Q 77 55, 69 55"
+            strokeWidth="0.6" fill="none" opacity="0.2" />
 
-      {/* Front intrados - also horseshoe shaped */}
-      <path d="M 28 63 Q 20 60, 18 50 Q 16 36, 26 24 Q 36 14, 45 14 Q 54 14, 64 24 Q 74 36, 72 50 Q 70 60, 62 63"
-            strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
+      {/* DETAIL: FAMOUS CÓRDOBA STRIPED VOUSSOIRS - alternating red/white brick pattern */}
+      {/* Enhanced with depth */}
+      <path d="M 21 52 L 24 44" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacity} />
+      <path d="M 21.5 52 L 24.5 44" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      {/* Red brick voussoir (darker) */}
+      <path d="M 25 40 L 30 32" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacityStrong} />
+      <path d="M 25.5 40 L 30.5 32" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      {/* White stone voussoir (lighter) */}
+      <path d="M 34 26 L 42 18" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacity} />
+      <path d="M 34.5 26 L 42.5 18" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      {/* Red brick (center) */}
+      <path d="M 46 14 L 50 8" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacityStrong} />
+      <path d="M 46.5 14 L 50.5 8" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      {/* White stone */}
+      <path d="M 54 8 L 58 14" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacity} />
+      <path d="M 54.5 8 L 58.5 14" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      {/* Red brick */}
+      <path d="M 58 18 L 66 26" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacityStrong} />
+      <path d="M 58.5 18 L 66.5 26" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      {/* White stone */}
+      <path d="M 70 32 L 75 40" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacity} />
+      <path d="M 70.5 32 L 75.5 40" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      {/* Red brick */}
+      <path d="M 76 44 L 79 52" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacityStrong} />
+      <path d="M 76.5 44 L 79.5 52" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
 
-      {/* VISUAL KEY: Dashed lines showing the pier edges (x=24,66) to make horseshoe narrowing obvious */}
-      <path d="M 24 65 L 24 55" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} strokeDasharray="1 2" />
-      <path d="M 66 65 L 66 55" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} strokeDasharray="1 2" />
+      {/* BOLD Keystone with Islamic geometric detail */}
+      <path d="M 45 8 L 50 5 L 55 8" strokeWidth={S.P.strokeWidthBold} fill="none" strokeLinejoin="round" />
+      <path d="M 46 10 L 54 10" strokeWidth={S.P.strokeWidthHeavy} fill="none" strokeLinecap={S.P.strokeLinecap} />
+      {/* DETAIL: Geometric star pattern on keystone */}
+      <path d="M 48 7 L 50 5.5 L 52 7" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
 
-      {/* Voussoir joints with 3D depth faces */}
-      <path d="M 16 56 L 22 52" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <polygon points="16,56 15,62 21,58 22,52" fill="currentColor" opacity="0.06" stroke="none" />
-      <path d="M 14 44 L 20 40" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <polygon points="14,44 14,50 20,46 20,40" fill="currentColor" opacity="0.06" stroke="none" />
-      <path d="M 18 32 L 24 28" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 28 22 L 34 18" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 40 14 L 46 10" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      {/* Right voussoirs */}
-      <path d="M 54 10 L 60 14" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 62 18 L 68 22" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 72 28 L 76 32" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 76 40 L 80 44" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 74 52 L 78 56" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-
-      {/* Alternating voussoir color bands (Cordoba striped pattern) */}
-      <polygon points="14,44 18,32 24,28 20,40" fill="currentColor" opacity="0.06" stroke="none" />
-      <polygon points="28,22 40,14 46,10 34,18" fill="currentColor" opacity="0.06" stroke="none" />
-      <polygon points="60,14 68,22 72,28 54,10" fill="currentColor" opacity="0.06" stroke="none" />
-      <polygon points="76,40 80,44 78,56 72,48" fill="currentColor" opacity="0.06" stroke="none" />
-
-      {/* Keystone */}
-      <path d="M 42 12 L 45 8 L 55 8 L 48 12"
-            strokeWidth={S.P.strokeWidthBold} strokeLinejoin="round" />
-      {/* Keystone depth */}
-      <polygon points="45,8 55,8 61,4 51,4" fill="currentColor" opacity="0.1" stroke="none" />
-      <path d="M 45 8 L 51 4 M 55 8 L 61 4" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-
-      {/* Impost blocks */}
-      <path d="M 18 65 L 32 65" strokeWidth={S.P.strokeWidthHeavy} strokeLinecap={S.P.strokeLinecap} />
-      <path d="M 58 65 L 72 65" strokeWidth={S.P.strokeWidthHeavy} strokeLinecap={S.P.strokeLinecap} />
-      {/* Impost depth */}
-      <polygon points="18,65 32,65 38,61 24,61" fill="currentColor" opacity="0.06" stroke="none" />
-      <path d="M 32 65 L 38 61" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 18 65 L 24 61" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <polygon points="58,65 72,65 78,61 64,61" fill="currentColor" opacity="0.06" stroke="none" />
-      <path d="M 72 65 L 78 61" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      {/* Impost molding */}
-      <path d="M 20 63 L 30 63" strokeWidth="1" opacity="0.5" />
-      <path d="M 60 63 L 70 63" strokeWidth="1" opacity="0.5" />
+      {/* BOLD Impost/capital with Moorish calligraphic decoration */}
+      <path d="M 20 58 L 33 58" strokeWidth={S.P.strokeWidthHeavy} fill="none" strokeLinecap={S.P.strokeLinecap} />
+      <path d="M 21 56 L 32 56" strokeWidth="1.4" fill="none" opacity="0.6" />
+      {/* DETAIL: Stylized calligraphic curves */}
+      <path d="M 23 57 Q 25 56.5, 27 57" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 67 58 L 80 58" strokeWidth={S.P.strokeWidthHeavy} fill="none" strokeLinecap={S.P.strokeLinecap} />
+      <path d="M 68 56 L 79 56" strokeWidth="1.4" fill="none" opacity="0.6" />
+      <path d="M 73 57 Q 75 56.5, 77 57" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
     </g>
   </svg>
 )
 
 // ============================================================================
-// OGEE ARCH - S-CURVE: concave at bottom, convex at top, meeting at a point
+// OGEE ARCH - S-curves (concave then convex) meeting at a point (Late Gothic)
+// Reference: English Decorated Gothic, Indian Islamic - flowing S-curves with finial
 // ============================================================================
 export const OgeeArchSVG = ({ showHalo = false }: SVGProps) => (
-  <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" className="w-full h-full">
+  <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
+    <MaterialPatterns />
     <HaloFilter />
 
-    {/* CONTEXT (far): Adjacent ogee arches */}
-    <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
-      <path d="M -10 62 Q -16 52, -12 42 Q -6 30, 5 22" />
-      <path d="M 95 22 Q 106 30, 112 42" />
-    </g>
+    {/* CONTEXT: COMPLETE MUGHAL PALACE IWAN - field sketch off-page */}
 
-    {/* CONTEXT (far): Floor */}
-    <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
-      <path d="M -10 94 L 110 94" />
-      <path d="M -10 98 L 110 98" opacity="0.5" />
-    </g>
-
-    {/* CONTEXT (near): Palace walls */}
+    {/* CONTEXT (near): CEILING: Persian muqarnas vaulting extending beyond */}
     <g opacity={S.CN.opacity} strokeDasharray={S.CN.dash} strokeWidth={S.CN.strokeWidth}>
-      <path d="M -5 -5 L -5 110" />
-      <path d="M 95 -5 L 95 110" />
-      <path d="M -5 10 L 95 10" opacity="0.5" />
+      {/* Honeycomb muqarnas extending off-page */}
+      <path d="M -10 0 L 110 0" fill="none" opacity="0.6" />
+      <path d="M 0 8 Q 25 5, 50 8 Q 75 5, 100 8" fill="none" />
+      <path d="M 10 15 Q 35 12, 50 15 Q 65 12, 90 15" fill="none" opacity="0.7" />
     </g>
 
-    {/* CONTEXT (near): Piers */}
+    {/* CONTEXT (near): PALACE WALLS: Complete iwan walls with tile work */}
     <g opacity={S.CN.opacity} strokeDasharray={S.CN.dash} strokeWidth={S.CN.strokeWidth}>
-      <path d="M 14 -5 L 14 110" strokeWidth="1.2" />
-      <path d="M 20 -5 L 20 110" opacity="0.7" />
-      <path d="M 76 -5 L 76 110" strokeWidth="1.2" />
-      <path d="M 70 -5 L 70 110" opacity="0.7" />
+      {/* Left wall extending off-page */}
+      <path d="M -5 -10 L -5 110" fill="none" />
+      <path d="M 0 -10 L 0 110" fill="none" opacity="0.7" />
+      {/* Right wall off-page */}
+      <path d="M 100 -10 L 100 110" fill="none" />
+      <path d="M 105 -10 L 105 110" fill="none" opacity="0.7" />
+      {/* Tile work bands */}
+      <path d="M -5 35 L 5 35" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 95 35 L 105 35" strokeWidth="0.4" opacity="0.5" />
     </g>
 
-    {/* Wall mass */}
-    <path d="M 14 10 L 76 10 L 76 62 L 14 62 Z" fill="currentColor" opacity="0.04" stroke="none" />
+    {/* CONTEXT (far): JALI SCREENS: Geometric perforated screens extending across */}
+    <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
+      {/* Left jali screen patterns */}
+      <circle cx="-5" cy="25" r="3" fill="none" />
+      <circle cx="5" cy="15" r="3" fill="none" />
+      <circle cx="15" cy="25" r="3" fill="none" />
+      {/* Star connections */}
+      <path d="M -5 25 L 5 15" />
+      <path d="M 5 15 L 15 25" />
+      {/* Right jali screens */}
+      <circle cx="85" cy="25" r="3" fill="none" />
+      <circle cx="95" cy="15" r="3" fill="none" />
+      <circle cx="105" cy="25" r="3" fill="none" />
+      <path d="M 85 25 L 95 15" />
+      <path d="M 95 15 L 105 25" />
+    </g>
 
-    {/* PRIMARY: THE OGEE ARCH - S-curve (concave then convex) meeting at point */}
+    {/* CONTEXT (far): ADJACENT OGEE ARCHES: Palace arcade continuing */}
+    <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
+      {/* Next arch to left (perspective) */}
+      <path d="M -15 65 Q -22 55, -18 45 Q -12 32, 5 18" fill="none" />
+      {/* Next arch to right */}
+      <path d="M 115 65 Q 122 55, 118 45 Q 112 32, 95 18" fill="none" />
+    </g>
+
+    {/* CONTEXT (far): FLOOR: Marble & tile pavement with Persian carpet */}
+    <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
+      <rect x="-10" y="90" width="120" height="20" fill="url(#stone-smooth)" opacity="0.15" stroke="none" />
+      {/* Floor extending off-page */}
+      <path d="M -10 94 L 110 94" strokeWidth="0.8" fill="none" opacity="0.5" strokeDasharray="5 3" />
+      <path d="M -10 100 L 110 100" strokeWidth="0.6" fill="none" opacity="0.4" strokeDasharray="4 2" />
+      {/* Persian carpet border patterns */}
+      <path d="M 0 92 L 5 94 L 0 96" strokeWidth="0.2" opacity="0.3" fill="none" />
+      <path d="M 25 92 L 30 94 L 25 96" strokeWidth="0.2" opacity="0.3" fill="none" />
+      <path d="M 50 92 L 55 94 L 50 96" strokeWidth="0.2" opacity="0.3" fill="none" />
+      <path d="M 75 92 L 80 94 L 75 96" strokeWidth="0.2" opacity="0.3" fill="none" />
+      <path d="M 100 92 L 95 94 L 100 96" strokeWidth="0.2" opacity="0.3" fill="none" />
+    </g>
+
+    {/* CONTEXT (near): CARVED PIERS: Sandstone piers extending up off-page */}
+    <g opacity={S.CN.opacity} strokeDasharray={S.CN.dash} strokeWidth={S.CN.strokeWidth}>
+      {/* Left pier - continues up beyond frame */}
+      <rect x="16" y="-10" width="8" height="120" fill="url(#stone-smooth)" opacity="0.2" stroke="none" />
+      <path d="M 18 -10 L 18 110" strokeWidth="1.5" fill="none" strokeDasharray="5 2" />
+      <path d="M 22 -10 L 22 110" strokeWidth="1" fill="none" strokeDasharray="5 2" opacity="0.7" />
+      {/* Right pier - continues up beyond frame */}
+      <rect x="76" y="-10" width="8" height="120" fill="url(#stone-smooth)" opacity="0.2" stroke="none" />
+      <path d="M 82 -10 L 82 110" strokeWidth="1.5" fill="none" strokeDasharray="5 2" />
+      <path d="M 78 -10 L 78 110" strokeWidth="1" fill="none" strokeDasharray="5 2" opacity="0.7" />
+    </g>
+
+    {/* PRIMARY: THE OGEE ARCH - BOLD MUGHAL ELEGANCE */}
     <g filter={showHalo ? "url(#arch-halo)" : undefined}>
+      {/* Sandstone material fill for arch mass */}
+      <path d="M 18 58 Q 10 48, 16 38 Q 24 26, 50 6 Q 76 26, 84 38 Q 90 48, 82 58"
+            fill="url(#stone-smooth)" opacity="0.25" stroke="none" />
 
-      {/* DEPTH: Soffit showing ogee depth in 3/4 */}
-      <path d="M 20 62 Q 12 52, 18 40 Q 28 26, 45 10
-               L 55 10 Q 62 26, 72 40 Q 78 52, 70 62
-               L 76 58 Q 84 48, 78 36 Q 68 22, 51 6
-               L 49 6 Q 22 22, 16 36 Q 10 48, 20 58 Z"
-            fill="currentColor" opacity="0.1" stroke="none" />
+      {/* BOLD Left ogee: flowing S-curve (field sketch confidence) */}
+      <path d="M 18 58 Q 10 48, 16 38 Q 24 26, 50 6"
+            strokeWidth={S.P.strokeWidthHeavy} fill="none" strokeLinecap={S.P.strokeLinecap} />
+      {/* BOLD Right ogee: mirror S-curve */}
+      <path d="M 82 58 Q 90 48, 84 38 Q 76 26, 50 6"
+            strokeWidth={S.P.strokeWidthHeavy} fill="none" strokeLinecap={S.P.strokeLinecap} />
 
-      {/* Far edge of arch (back in 3/4 view) */}
-      <path d="M 20 58 Q 12 48, 18 36 Q 28 22, 49 6"
-            strokeWidth={S.P.strokeWidthLight} opacity="0.35" strokeDasharray="2 2" />
-      <path d="M 76 58 Q 84 48, 78 36 Q 68 22, 51 6"
-            strokeWidth={S.P.strokeWidthLight} opacity="0.35" strokeDasharray="2 2" />
+      {/* BOLD Inner ogee curves */}
+      <path d="M 24 58 Q 17 50, 22 40 Q 30 28, 50 12"
+            strokeWidth={S.P.strokeWidthBold} fill="none" strokeLinecap={S.P.strokeLinecap} />
+      <path d="M 76 58 Q 83 50, 78 40 Q 70 28, 50 12"
+            strokeWidth={S.P.strokeWidthBold} fill="none" strokeLinecap={S.P.strokeLinecap} />
 
-      {/* Front extrados - LEFT S-CURVE: concave out at bottom, convex in at top */}
-      <path d="M 14 62 Q 6 50, 12 38 Q 22 24, 45 8 L 50 4"
-            strokeWidth={S.P.strokeWidthHeavy} strokeLinecap={S.P.strokeLinecap} />
-      {/* Front extrados - RIGHT S-CURVE mirror */}
-      <path d="M 76 62 Q 84 50, 78 38 Q 68 24, 55 8 L 50 4"
-            strokeWidth={S.P.strokeWidthHeavy} strokeLinecap={S.P.strokeLinecap} />
+      {/* Depth shadow */}
+      <path d="M 25 58 Q 18 50, 23 40 Q 31 29, 50 13"
+            strokeWidth="0.6" fill="none" opacity="0.2" />
+      <path d="M 75 58 Q 82 50, 77 40 Q 69 29, 50 13"
+            strokeWidth="0.6" fill="none" opacity="0.2" />
 
-      {/* Front intrados - inner S-curves */}
-      <path d="M 20 62 Q 14 52, 18 42 Q 26 28, 45 14 L 50 10"
-            strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
-      <path d="M 70 62 Q 76 52, 72 42 Q 64 28, 55 14 L 50 10"
-            strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
+      {/* DETAIL: PERSIAN/MUGHAL CARVED FLORAL PATTERNS on arch surface */}
+      {/* Flowing arabesques and lotus motifs */}
+      <path d="M 20 52 Q 22 50, 24 52" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 28 44 Q 30 42, 32 44" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 38 34 Q 40 32, 42 34" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      {/* Lotus petal detail */}
+      <path d="M 45 22 Q 47 20, 49 22" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 51 22 Q 53 20, 55 22" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      {/* Right side arabesques */}
+      <path d="M 58 34 Q 60 32, 62 34" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 68 44 Q 70 42, 72 44" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 76 52 Q 78 50, 80 52" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
 
-      {/* Voussoir joints following the S-curve, with depth */}
-      <path d="M 10 52 L 16 48" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <polygon points="10,52 8,58 14,54 16,48" fill="currentColor" opacity="0.06" stroke="none" />
-      <path d="M 14 42 L 20 38" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <polygon points="14,42 12,48 18,44 20,38" fill="currentColor" opacity="0.06" stroke="none" />
-      <path d="M 22 32 L 28 28" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 34 22 L 40 18" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      {/* Right side */}
-      <path d="M 56 18 L 62 22" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 68 28 L 72 32" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 74 38 L 80 42" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <polygon points="74,38 72,44 78,48 80,42" fill="currentColor" opacity="0.06" stroke="none" />
-      <path d="M 78 48 L 82 52" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
+      {/* BOLD Finial at apex with Islamic geometric detail */}
+      <path d="M 50 6 L 50 2" strokeWidth={S.P.strokeWidthBold} fill="none" strokeLinecap={S.P.strokeLinecap} />
+      <circle cx="50" cy="2" r="2" strokeWidth={S.P.strokeWidthBold} fill="none" />
+      {/* DETAIL: Star finial ornament */}
+      <path d="M 48 2 L 50 0.5 L 52 2" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacity} />
+      <path d="M 48 2 L 50 3.5 L 52 2" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacity} />
 
-      {/* Finial at apex */}
-      <path d="M 50 4 L 50 -1" strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
-      <circle cx="50" cy="-2" r="2" strokeWidth={S.P.strokeWidth} />
+      {/* DETAIL: Crockets along curve - enhanced as carved lotus buds */}
+      <circle cx="18" cy="44" r="2" strokeWidth={S.D.strokeWidth} fill="none" opacity={S.D.opacity} />
+      <path d="M 17 44 L 19 44" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <circle cx="30" cy="28" r="2" strokeWidth={S.D.strokeWidth} fill="none" opacity={S.D.opacity} />
+      <path d="M 29 28 L 31 28" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <circle cx="70" cy="28" r="2" strokeWidth={S.D.strokeWidth} fill="none" opacity={S.D.opacity} />
+      <path d="M 69 28 L 71 28" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <circle cx="82" cy="44" r="2" strokeWidth={S.D.strokeWidth} fill="none" opacity={S.D.opacity} />
+      <path d="M 81 44 L 83 44" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
 
-      {/* Keystone at point */}
-      <path d="M 44 10 L 50 2 L 56 10"
-            strokeWidth={S.P.strokeWidthHeavy} strokeLinejoin="round" />
-      {/* Keystone depth */}
-      <polygon points="50,2 56,10 62,6 56,-2" fill="currentColor" opacity="0.1" stroke="none" />
-      <path d="M 56 10 L 62 6" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-
-      {/* Crockets along the S-curve (carved lotus buds) */}
-      <circle cx="10" cy="44" r="1.5" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-      <circle cx="26" cy="26" r="1.5" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-      <circle cx="64" cy="26" r="1.5" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-      <circle cx="80" cy="44" r="1.5" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-
-      {/* Impost blocks */}
-      <path d="M 10 62 L 24 62" strokeWidth={S.P.strokeWidthHeavy} strokeLinecap={S.P.strokeLinecap} />
-      <path d="M 66 62 L 80 62" strokeWidth={S.P.strokeWidthHeavy} strokeLinecap={S.P.strokeLinecap} />
-      <polygon points="10,62 24,62 30,58 16,58" fill="currentColor" opacity="0.06" stroke="none" />
-      <path d="M 24 62 L 30 58" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 10 62 L 16 58" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <polygon points="66,62 80,62 86,58 72,58" fill="currentColor" opacity="0.06" stroke="none" />
-      <path d="M 80 62 L 86 58" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 12 60 L 22 60" strokeWidth="1" opacity="0.5" />
-      <path d="M 68 60 L 78 60" strokeWidth="1" opacity="0.5" />
+      {/* BOLD Imposts with inlaid geometric patterns */}
+      <path d="M 14 58 L 27 58" strokeWidth={S.P.strokeWidthHeavy} fill="none" strokeLinecap={S.P.strokeLinecap} />
+      <path d="M 15 56 L 26 56" strokeWidth="1.4" fill="none" opacity="0.6" />
+      {/* DETAIL: Geometric inlay pattern */}
+      <path d="M 17 57 L 19 57 L 19 59 L 17 59 Z" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 21 57 L 23 57 L 23 59 L 21 59 Z" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 73 58 L 86 58" strokeWidth={S.P.strokeWidthHeavy} fill="none" strokeLinecap={S.P.strokeLinecap} />
+      <path d="M 74 56 L 85 56" strokeWidth="1.4" fill="none" opacity="0.6" />
+      <path d="M 77 57 L 79 57 L 79 59 L 77 59 Z" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
+      <path d="M 81 57 L 83 57 L 83 59 L 81 59 Z" strokeWidth={S.D.strokeWidthFine} fill="none" opacity={S.D.opacitySubtle} />
     </g>
   </svg>
 )
 
 // ============================================================================
-// TREFOIL ARCH - THREE-LOBED clover shape with cusps between lobes
+// TREFOIL ARCH - Three overlapping arcs/lobes (Gothic decorative)
+// Reference: Gothic tracery windows, cathedral portals - three-leaf clover shape
 // ============================================================================
 export const TrefoilArchSVG = ({ showHalo = false }: SVGProps) => (
-  <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" className="w-full h-full">
+  <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT (far): Adjacent trefoil arches in cloister */}
-    <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
-      <path d="M -15 62 Q -20 48, -10 38 Q 0 32, 5 38" />
-      <path d="M 95 38 Q 100 32, 110 38 Q 120 48, 115 62" />
-      {/* Floor */}
-      <path d="M -10 94 L 110 94" />
-      <path d="M -10 98 L 110 98" opacity="0.5" />
-      {/* Garden beyond */}
-      <path d="M 30 72 Q 40 68, 50 72 Q 60 68, 70 72" opacity={S.CF.opacitySubtle} />
-    </g>
-
-    {/* CONTEXT (near): Cloister walls and piers */}
+    {/* CONTEXT (near): Gothic cloister arcade - walls, ceiling, piers */}
     <g opacity={S.CN.opacity} strokeDasharray={S.CN.dash} strokeWidth={S.CN.strokeWidth}>
-      <path d="M -5 -5 L -5 110" />
-      <path d="M 95 -5 L 95 110" />
-      <path d="M -5 8 L 95 8" opacity="0.5" />
-      {/* Containing pointed arch above trefoil */}
-      <path d="M 14 62 Q 8 36, 24 18 Q 38 6, 50 6 Q 62 6, 76 18 Q 92 36, 86 62"
-            strokeWidth="0.8" opacity="0.6" />
-      {/* Piers */}
-      <path d="M 14 -5 L 14 110" strokeWidth="1.2" />
-      <path d="M 20 -5 L 20 110" opacity="0.7" />
-      <path d="M 80 -5 L 80 110" strokeWidth="1.2" />
-      <path d="M 74 -5 L 74 110" opacity="0.7" />
-      {/* Wall coursing */}
-      <path d="M -5 25 L 10 25" strokeWidth="0.4" opacity="0.5" />
-      <path d="M 85 25 L 95 25" strokeWidth="0.4" opacity="0.5" />
+      {/* Cloister walls extending off-page */}
+      <path d="M -10 -5 L -10 100" fill="none" />
+      <path d="M -5 -5 L -5 100" fill="none" />
+      <path d="M 105 -5 L 105 100" fill="none" />
+      <path d="M 110 -5 L 110 100" fill="none" />
+
+      {/* Wall mass between arches - left side masonry coursing */}
+      <path d="M -10 20 L 8 20" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M -10 30 L 8 30" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+      <path d="M -10 40 L 8 40" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M -10 50 L 8 50" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M -10 60 L 14 60" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+      <path d="M -10 70 L 14 70" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+      <path d="M -10 75 L 8 75" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M -10 85 L 14 85" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+      {/* Right side masonry coursing */}
+      <path d="M 92 20 L 110 20" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 92 30 L 110 30" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+      <path d="M 92 40 L 110 40" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 92 50 L 110 50" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 86 60 L 110 60" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+      <path d="M 86 70 L 110 70" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+      <path d="M 92 75 L 110 75" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 86 85 L 110 85" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+
+      {/* Ceiling/vault above - ribbed vault ribs converging */}
+      <path d="M -10 -2 L 110 -2" strokeWidth="0.6" fill="none" />
+      <path d="M -10 -5 L 110 -5" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+      {/* Vault ribs radiating from pier capitals upward */}
+      <path d="M 14 -5 Q 30 -12, 50 -15" fill="none" opacity={S.CN.opacitySubtle} />
+      <path d="M 86 -5 Q 70 -12, 50 -15" fill="none" opacity={S.CN.opacitySubtle} />
+      {/* Transverse rib across vault */}
+      <path d="M 10 -3 Q 50 -10, 90 -3" fill="none" opacity="0.5" />
+
+      {/* Outer containing arch with voussoir lines */}
+      <path d="M 18 58 Q 8 32, 24 14 Q 38 2, 50 2 Q 62 2, 76 14 Q 92 32, 82 58"
+            strokeWidth="1" fill="none" opacity="0.8" />
+      {/* Voussoir lines on outer arch */}
+      <path d="M 22 42 L 28 32" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 32 26 L 38 18" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 48 4 L 52 4" strokeWidth="0.5" fill="none" opacity="0.5" />
+      <path d="M 62 18 L 68 26" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 72 32 L 78 42" strokeWidth="0.4" fill="none" opacity="0.5" />
+      {/* Spandrel masonry between outer arch and wall head */}
+      <path d="M 10 10 L 20 10" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+      <path d="M 80 10 L 90 10" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+      <path d="M 5 18 L 15 18" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+      <path d="M 85 18 L 95 18" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+
+      {/* Piers with depth - full height extending off-page */}
+      <path d="M 14 -5 L 14 100" strokeWidth="1" fill="none" />
+      <path d="M 18 -5 L 18 100" strokeWidth="1.2" fill="none" opacity="0.8" />
+      <path d="M 11 -5 L 11 100" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+      <path d="M 82 -5 L 82 100" strokeWidth="1.2" fill="none" opacity="0.8" />
+      <path d="M 86 -5 L 86 100" strokeWidth="1" fill="none" />
+      <path d="M 89 -5 L 89 100" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+
+      {/* Impost/capital moldings at spring line */}
+      <path d="M 10 58 L 22 58" strokeWidth="0.8" fill="none" opacity="0.6" />
+      <path d="M 78 58 L 90 58" strokeWidth="0.8" fill="none" opacity="0.6" />
+      <path d="M 11 56 L 21 56" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
+      <path d="M 79 56 L 89 56" strokeWidth={S.CN.strokeWidthFine} fill="none" opacity={S.CN.opacitySubtle} />
     </g>
 
-    {/* Wall mass */}
-    <path d="M 14 8 L 80 8 L 80 62 L 14 62 Z" fill="currentColor" opacity="0.04" stroke="none" />
+    {/* CONTEXT (far): Distant cloister garden, adjacent arches, floor paving */}
+    <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
+      {/* Floor paving - flagstones extending far off-page */}
+      <path d="M -10 94 L 110 94" strokeWidth="0.8" fill="none" />
+      <path d="M -10 97 L 110 97" strokeWidth="0.5" fill="none" opacity="0.5" />
+      <path d="M -10 100 L 110 100" strokeWidth="0.4" fill="none" opacity="0.3" />
+      {/* Paving stone joints */}
+      <path d="M 0 94 L 0 100" strokeWidth="0.3" fill="none" opacity="0.4" />
+      <path d="M 20 94 L 20 100" strokeWidth="0.3" fill="none" opacity="0.4" />
+      <path d="M 35 94 L 35 100" strokeWidth="0.3" fill="none" opacity="0.4" />
+      <path d="M 50 94 L 50 100" strokeWidth="0.3" fill="none" opacity="0.4" />
+      <path d="M 65 94 L 65 100" strokeWidth="0.3" fill="none" opacity="0.4" />
+      <path d="M 80 94 L 80 100" strokeWidth="0.3" fill="none" opacity="0.4" />
+      <path d="M 100 94 L 100 100" strokeWidth="0.3" fill="none" opacity="0.4" />
 
-    {/* PRIMARY: THE TREFOIL - Three lobes (left, crown, right) with cusps */}
+      {/* Adjacent arch on left - next bay in cloister arcade */}
+      <path d="M -20 58 Q -28 32, -12 14 Q -2 2, 5 2" strokeWidth="0.6" fill="none" opacity="0.4" />
+      {/* Trefoil lobes visible in adjacent left arch */}
+      <path d="M -18 58 Q -24 48, -16 40 Q -10 36, -6 40" strokeWidth={S.CF.strokeWidthFine} fill="none" opacity={S.CF.opacitySubtle} />
+      {/* Adjacent arch on right */}
+      <path d="M 120 58 Q 128 32, 112 14 Q 102 2, 95 2" strokeWidth="0.6" fill="none" opacity="0.4" />
+      {/* Trefoil lobes visible in adjacent right arch */}
+      <path d="M 118 58 Q 124 48, 116 40 Q 110 36, 106 40" strokeWidth={S.CF.strokeWidthFine} fill="none" opacity={S.CF.opacitySubtle} />
+
+      {/* Distant cloister garden wall beyond the arcade opening */}
+      <path d="M 24 70 L 76 70" strokeWidth={S.CF.strokeWidthFine} fill="none" opacity={S.CF.opacitySubtle} />
+      <path d="M 28 74 L 72 74" strokeWidth={S.CF.strokeWidthFine} fill="none" opacity={S.CF.opacitySubtle} />
+      {/* Garden hedge/plantings beyond */}
+      <path d="M 30 68 Q 35 65, 40 68 Q 45 65, 50 68 Q 55 65, 60 68 Q 65 65, 70 68" strokeWidth={S.CF.strokeWidthFine} fill="none" opacity={S.CF.opacitySubtle} />
+      {/* Distant roofline/skyline above garden */}
+      <path d="M 26 62 L 40 62 L 42 58 L 58 58 L 60 62 L 74 62" strokeWidth={S.CF.strokeWidthFine} fill="none" opacity={S.CF.opacitySubtle} />
+    </g>
+
+    {/* PRIMARY: THE TREFOIL - Three lobes (left, right, crown) like a 3-leaf clover */}
     <g filter={showHalo ? "url(#arch-halo)" : undefined}>
+      {/* Left lobe - bulges outward to the left from the pier */}
+      <path d="M 18 58 Q 8 48, 12 36 Q 16 24, 30 24 Q 40 24, 42 34"
+            strokeWidth={S.P.strokeWidthBold} fill="none" strokeLinecap={S.P.strokeLinecap} />
 
-      {/* DEPTH: Soffit of trefoil receding in 3/4 */}
-      {/* Left lobe soffit */}
-      <path d="M 20 62 Q 10 52, 14 40 Q 18 30, 30 28 Q 38 28, 40 36
-               L 46 32 Q 44 24, 34 22 Q 20 24, 16 36 Q 12 48, 26 58 Z"
-            fill="currentColor" opacity="0.08" stroke="none" />
-      {/* Crown lobe soffit */}
-      <path d="M 40 36 Q 40 20, 50 14 Q 60 20, 60 36
-               L 66 32 Q 66 16, 56 10 Q 46 10, 46 16 Q 44 22, 46 32 Z"
-            fill="currentColor" opacity="0.08" stroke="none" />
-      {/* Right lobe soffit */}
-      <path d="M 60 36 Q 62 28, 70 28 Q 82 30, 86 40 Q 90 52, 80 62
-               L 74 58 Q 82 50, 80 40 Q 78 32, 66 30 Q 58 30, 56 36 Z"
-            fill="currentColor" opacity="0.08" stroke="none" />
+      {/* Right lobe - bulges outward to the right from the pier */}
+      <path d="M 82 58 Q 92 48, 88 36 Q 84 24, 70 24 Q 60 24, 58 34"
+            strokeWidth={S.P.strokeWidthBold} fill="none" strokeLinecap={S.P.strokeLinecap} />
 
-      {/* Far edge of lobes (back in 3/4) */}
-      <path d="M 26 58 Q 16 48, 20 36 Q 24 26, 34 24 Q 42 24, 46 32"
-            strokeWidth={S.P.strokeWidthLight} opacity="0.3" strokeDasharray="2 2" />
-      <path d="M 46 32 Q 46 18, 54 12 Q 62 18, 66 32"
-            strokeWidth={S.P.strokeWidthLight} opacity="0.3" strokeDasharray="2 2" />
-      <path d="M 66 32 Q 68 24, 76 24 Q 86 26, 86 40 Q 86 50, 74 58"
-            strokeWidth={S.P.strokeWidthLight} opacity="0.3" strokeDasharray="2 2" />
+      {/* Crown lobe - arches upward between left and right lobes */}
+      <path d="M 42 34 Q 42 16, 50 10 Q 58 16, 58 34"
+            strokeWidth={S.P.strokeWidthBold} fill="none" strokeLinecap={S.P.strokeLinecap} />
 
-      {/* LEFT LOBE - front face */}
-      <path d="M 14 62 Q 4 50, 8 38 Q 12 26, 26 24 Q 36 24, 40 34"
-            strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
-      {/* Left lobe intrados */}
-      <path d="M 20 60 Q 12 50, 15 40 Q 18 30, 30 28 Q 38 28, 40 36"
-            strokeWidth={S.D.strokeWidthBold} opacity="0.6" />
-
-      {/* CROWN LOBE - front face */}
-      <path d="M 40 34 Q 40 16, 50 10 Q 60 16, 60 34"
-            strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
-      {/* Crown lobe intrados */}
-      <path d="M 40 36 Q 40 20, 50 14 Q 60 20, 60 36"
-            strokeWidth={S.D.strokeWidthBold} opacity="0.6" />
-
-      {/* RIGHT LOBE - front face */}
-      <path d="M 60 34 Q 64 24, 74 24 Q 88 26, 92 38 Q 96 50, 86 62"
-            strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
-      {/* Right lobe intrados */}
-      <path d="M 60 36 Q 62 28, 70 28 Q 82 30, 85 40 Q 88 50, 80 60"
-            strokeWidth={S.D.strokeWidthBold} opacity="0.6" />
-
-      {/* CUSPS - pointed transitions between lobes (key trefoil feature) */}
+      {/* DETAIL: Cusps where the three lobes meet - pointed projections */}
       {/* Left cusp (between left lobe and crown lobe) */}
-      <path d="M 38 38 L 40 30 L 42 38"
-            strokeWidth={S.P.strokeWidthBold} strokeLinejoin="round" />
-      {/* Cusp depth face */}
-      <polygon points="40,30 42,38 48,34 46,26" fill="currentColor" opacity="0.08" stroke="none" />
-      <path d="M 40 30 L 46 26" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-
+      <path d="M 40 36 L 42 30 L 44 36" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacityStrong} />
       {/* Right cusp (between crown lobe and right lobe) */}
-      <path d="M 58 38 L 60 30 L 62 38"
-            strokeWidth={S.P.strokeWidthBold} strokeLinejoin="round" />
-      {/* Cusp depth face */}
-      <polygon points="60,30 62,38 68,34 66,26" fill="currentColor" opacity="0.08" stroke="none" />
-      <path d="M 60 30 L 66 26" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+      <path d="M 56 36 L 58 30 L 60 36" strokeWidth={S.D.strokeWidthBold} fill="none" opacity={S.D.opacityStrong} />
+
+      {/* Inner trefoil outline for depth/thickness */}
+      <path d="M 22 56 Q 14 48, 17 38 Q 20 28, 32 28 Q 40 28, 42 36"
+            strokeWidth={S.D.strokeWidthBold} fill="none" opacity="0.6" />
+      <path d="M 78 56 Q 86 48, 83 38 Q 80 28, 68 28 Q 60 28, 58 36"
+            strokeWidth={S.D.strokeWidthBold} fill="none" opacity="0.6" />
+      <path d="M 42 36 Q 42 20, 50 14 Q 58 20, 58 36"
+            strokeWidth={S.D.strokeWidthBold} fill="none" opacity="0.6" />
 
       {/* Finial at top */}
-      <path d="M 50 10 L 50 4" strokeWidth={S.P.strokeWidth} strokeLinecap={S.P.strokeLinecap} />
-      <path d="M 47 4 L 50 0 L 53 4" strokeWidth={S.D.strokeWidthBold} strokeLinejoin="round" />
-
-      {/* Impost blocks */}
-      <path d="M 10 62 L 24 62" strokeWidth={S.P.strokeWidthHeavy} strokeLinecap={S.P.strokeLinecap} />
-      <path d="M 76 62 L 90 62" strokeWidth={S.P.strokeWidthHeavy} strokeLinecap={S.P.strokeLinecap} />
-      <polygon points="10,62 24,62 30,58 16,58" fill="currentColor" opacity="0.06" stroke="none" />
-      <path d="M 24 62 L 30 58" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 10 62 L 16 58" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <polygon points="76,62 90,62 96,58 82,58" fill="currentColor" opacity="0.06" stroke="none" />
-      <path d="M 90 62 L 96 58" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 12 60 L 22 60" strokeWidth="1" opacity="0.5" />
-      <path d="M 78 60 L 88 60" strokeWidth="1" opacity="0.5" />
+      <path d="M 50 10 L 50 4" strokeWidth={S.P.strokeWidth} fill="none" strokeLinecap={S.P.strokeLinecap} />
+      <path d="M 47 4 L 50 0 L 53 4" strokeWidth={S.D.strokeWidthBold} fill="none" strokeLinejoin="round" />
     </g>
   </svg>
 )
 
 // ============================================================================
-// TUDOR ARCH - Very FLAT/DEPRESSED pointed arch, wide and low (4-center)
+// TUDOR ARCH - Flattened pointed arch with 4 centers (English late Gothic)
+// Reference: Hampton Court Palace - wide, shallow point, very English
 // ============================================================================
 export const TudorArchSVG = ({ showHalo = false }: SVGProps) => (
-  <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" className="w-full h-full">
+  <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT (far): Adjacent Tudor arches */}
+    {/* CONTEXT (near): Hampton Court arcade wall with hood mold */}
+    <g opacity={S.CN.opacity} strokeDasharray={S.CN.dash} strokeWidth={S.CN.strokeWidth}>
+      {/* Walls extending off-page */}
+      <path d="M -10 -5 L -10 100" fill="none" />
+      <path d="M 0 -5 L 0 100" fill="none" />
+      <path d="M 100 -5 L 100 100" fill="none" />
+      <path d="M 110 -5 L 110 100" fill="none" />
+
+      {/* Wall face / spandrel rectangle enclosing the arch */}
+      <path d="M -10 20 L 110 20" fill="none" opacity="0.6" />
+      <path d="M -10 94 L 110 94" strokeWidth="0.8" fill="none" />
+
+      {/* Stone coursing on wall face */}
+      <path d="M -10 25 L 5 25" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 95 25 L 110 25" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M -10 35 L 5 35" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 95 35 L 110 35" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M -10 60 L 5 60" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 95 60 L 110 60" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M -10 80 L 5 80" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 95 80 L 110 80" strokeWidth="0.4" fill="none" opacity="0.5" />
+
+      {/* Hood mold / drip molding above the arch */}
+      <path d="M 6 46 Q 20 38, 36 36 Q 44 28, 50 26 Q 56 28, 64 36 Q 80 38, 94 46"
+            fill="none" opacity="0.6" />
+
+      {/* Piers extending full height with depth */}
+      <path d="M 7 -5 L 7 94" strokeWidth="1.2" fill="none" />
+      <path d="M 10 -5 L 10 94" strokeWidth="1.5" fill="none" opacity="0.8" />
+      <path d="M 16 -5 L 16 94" strokeWidth="1" fill="none" />
+      <path d="M 84 -5 L 84 94" strokeWidth="1" fill="none" />
+      <path d="M 90 -5 L 90 94" strokeWidth="1.5" fill="none" opacity="0.8" />
+      <path d="M 93 -5 L 93 94" strokeWidth="1.2" fill="none" />
+
+      {/* Spandrel Tudor rose motifs with petal detail */}
+      <circle cx="24" cy="32" r="5" strokeWidth="0.6" fill="none" opacity="0.7" />
+      <path d="M 24 28 L 24 27 M 20 32 L 19 32 M 28 32 L 29 32 M 24 36 L 24 37" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <circle cx="76" cy="32" r="5" strokeWidth="0.6" fill="none" opacity="0.7" />
+      <path d="M 76 28 L 76 27 M 72 32 L 71 32 M 80 32 L 81 32 M 76 36 L 76 37" strokeWidth="0.4" fill="none" opacity="0.5" />
+    </g>
+
+    {/* CONTEXT (far): Floor paving and adjacent Tudor arch hints */}
     <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
-      <path d="M -20 52 Q -10 48, 0 46 Q 5 42, 8 40" />
-      <path d="M 92 40 Q 95 42, 100 46 Q 110 48, 120 52" />
-      {/* Floor */}
-      <path d="M -10 94 L 110 94" />
-      <path d="M -10 98 L 110 98" opacity="0.5" />
+      {/* Floor paving */}
+      <path d="M -10 97 L 110 97" strokeWidth="0.5" fill="none" opacity="0.5" />
+      <path d="M 25 94 L 25 100" strokeWidth="0.3" fill="none" opacity="0.4" />
+      <path d="M 50 94 L 50 100" strokeWidth="0.3" fill="none" opacity="0.4" />
+      <path d="M 75 94 L 75 100" strokeWidth="0.3" fill="none" opacity="0.4" />
+
+      {/* Adjacent Tudor arch hints */}
+      <path d="M -30 48 Q -20 44, -14 40 Q -6 32, 0 30" strokeWidth="0.5" fill="none" opacity="0.4" />
+      <path d="M 100 30 Q 106 32, 114 40 Q 120 44, 130 48" strokeWidth="0.5" fill="none" opacity="0.4" />
     </g>
 
-    {/* CONTEXT (near): Hampton Court wall and spandrel */}
-    <g opacity={S.CN.opacity} strokeDasharray={S.CN.dash} strokeWidth={S.CN.strokeWidth}>
-      <path d="M -5 -5 L -5 110" />
-      <path d="M 95 -5 L 95 110" />
-      <path d="M -5 20 L 95 20" opacity="0.6" />
-      {/* Hood mold above arch */}
-      <path d="M 4 50 Q 20 42, 38 40 Q 44 34, 50 32 Q 56 34, 62 40 Q 80 42, 96 50"
-            opacity="0.5" />
-      {/* Stone coursing */}
-      <path d="M -5 30 L 6 30" strokeWidth="0.4" opacity="0.5" />
-      <path d="M 88 30 L 95 30" strokeWidth="0.4" opacity="0.5" />
-      {/* Tudor rose spandrel ornament */}
-      <circle cx="22" cy="34" r="4" strokeWidth="0.5" opacity="0.6" />
-      <circle cx="78" cy="34" r="4" strokeWidth="0.5" opacity="0.6" />
-    </g>
-
-    {/* CONTEXT (near): Piers */}
-    <g opacity={S.CN.opacity} strokeDasharray={S.CN.dash} strokeWidth={S.CN.strokeWidth}>
-      <path d="M 6 -5 L 6 110" strokeWidth="1.2" />
-      <path d="M 12 -5 L 12 110" opacity="0.7" />
-      <path d="M 88 -5 L 88 110" strokeWidth="1.2" />
-      <path d="M 82 -5 L 82 110" opacity="0.7" />
-    </g>
-
-    {/* Wall mass */}
-    <path d="M 6 20 L 88 20 L 88 52 L 6 52 Z" fill="currentColor" opacity="0.04" stroke="none" />
-
-    {/* PRIMARY: THE TUDOR ARCH - FLAT, wide, barely pointed */}
+    {/* PRIMARY: THE TUDOR ARCH - wide, 4-centered flattened pointed arch */}
     <g filter={showHalo ? "url(#arch-halo)" : undefined}>
+      {/* Lower curves (large radius, nearly horizontal) - extrados */}
+      <path d="M 10 48 Q 20 44, 36 40" strokeWidth={S.P.strokeWidthBold} fill="none" strokeLinecap={S.P.strokeLinecap} />
+      <path d="M 90 48 Q 80 44, 64 40" strokeWidth={S.P.strokeWidthBold} fill="none" strokeLinecap={S.P.strokeLinecap} />
 
-      {/* DEPTH: Soffit showing the wide, flat arch receding in 3/4 */}
-      <path d="M 12 52 Q 22 48, 38 44 Q 44 38, 50 36
-               Q 56 38, 62 44 Q 78 48, 82 52
-               L 88 48 Q 78 44, 64 40 Q 58 34, 52 32
-               Q 46 34, 40 40 Q 22 44, 18 48 Z"
-            fill="currentColor" opacity="0.1" stroke="none" />
+      {/* Upper curves (small radius, meeting at shallow point) - extrados */}
+      <path d="M 36 40 Q 44 32, 50 30" strokeWidth={S.P.strokeWidthBold} fill="none" strokeLinecap={S.P.strokeLinecap} />
+      <path d="M 64 40 Q 56 32, 50 30" strokeWidth={S.P.strokeWidthBold} fill="none" strokeLinecap={S.P.strokeLinecap} />
 
-      {/* Far edge (back) */}
-      <path d="M 18 48 Q 28 44, 42 40 Q 48 34, 52 32"
-            strokeWidth={S.P.strokeWidthLight} opacity="0.35" strokeDasharray="2 2" />
-      <path d="M 88 48 Q 78 44, 64 40 Q 58 34, 52 32"
-            strokeWidth={S.P.strokeWidthLight} opacity="0.35" strokeDasharray="2 2" />
+      {/* Intrados */}
+      <path d="M 16 48 Q 24 45, 38 42" strokeWidth={S.P.strokeWidth} fill="none" />
+      <path d="M 84 48 Q 76 45, 62 42" strokeWidth={S.P.strokeWidth} fill="none" />
+      <path d="M 38 42 Q 45 36, 50 34" strokeWidth={S.P.strokeWidth} fill="none" />
+      <path d="M 62 42 Q 55 36, 50 34" strokeWidth={S.P.strokeWidth} fill="none" />
 
-      {/* Front extrados - FLAT lower curves (large radius, nearly horizontal) */}
-      <path d="M 6 52 Q 18 48, 36 44"
-            strokeWidth={S.P.strokeWidthHeavy} strokeLinecap={S.P.strokeLinecap} />
-      <path d="M 88 52 Q 76 48, 64 44"
-            strokeWidth={S.P.strokeWidthHeavy} strokeLinecap={S.P.strokeLinecap} />
-      {/* Upper curves (small radius) meeting at very shallow point */}
-      <path d="M 36 44 Q 44 36, 50 34"
-            strokeWidth={S.P.strokeWidthHeavy} strokeLinecap={S.P.strokeLinecap} />
-      <path d="M 64 44 Q 56 36, 50 34"
-            strokeWidth={S.P.strokeWidthHeavy} strokeLinecap={S.P.strokeLinecap} />
+      {/* DETAIL: Voussoirs */}
+      <path d="M 20 47 L 24 42" strokeWidth={S.D.strokeWidth} fill="none" opacity={S.D.opacity} />
+      <path d="M 40 41 L 44 36" strokeWidth={S.D.strokeWidth} fill="none" opacity={S.D.opacity} />
+      <path d="M 56 36 L 60 41" strokeWidth={S.D.strokeWidth} fill="none" opacity={S.D.opacity} />
+      <path d="M 76 42 L 80 47" strokeWidth={S.D.strokeWidth} fill="none" opacity={S.D.opacity} />
 
-      {/* Front intrados */}
-      <path d="M 12 52 Q 22 49, 38 46"
-            strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
-      <path d="M 82 52 Q 72 49, 62 46"
-            strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
-      <path d="M 38 46 Q 44 40, 50 38"
-            strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
-      <path d="M 62 46 Q 56 40, 50 38"
-            strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
+      {/* Shallow pointed keystone */}
+      <path d="M 46 32 L 50 28 L 54 32" strokeWidth={S.P.strokeWidth} fill="none" strokeLinejoin="round" />
+      <path d="M 47 34 L 53 34" strokeWidth={S.P.strokeWidthLight} fill="none" opacity={S.D.opacity} />
 
-      {/* Voussoir joints with depth */}
-      <path d="M 16 51 L 22 47" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <polygon points="16,51 10,52 16,48 22,47" fill="currentColor" opacity="0.06" stroke="none" />
-      <path d="M 28 49 L 34 45" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 40 44 L 46 40" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      {/* Right */}
-      <path d="M 54 40 L 60 44" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 66 45 L 72 49" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 76 47 L 82 51" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <polygon points="76,47 82,48 84,52 78,51" fill="currentColor" opacity="0.06" stroke="none" />
-
-      {/* Shallow pointed keystone - barely a point, very flat */}
-      <path d="M 46 38 L 50 32 L 54 38"
-            strokeWidth={S.P.strokeWidthHeavy} strokeLinejoin="round" />
-      {/* Keystone depth */}
-      <polygon points="50,32 54,38 60,34 56,28" fill="currentColor" opacity="0.1" stroke="none" />
-      <path d="M 50 32 L 56 28 M 54 38 L 60 34" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-
-      {/* Impost blocks */}
-      <path d="M 2 52 L 16 52" strokeWidth={S.P.strokeWidthHeavy} strokeLinecap={S.P.strokeLinecap} />
-      <path d="M 78 52 L 92 52" strokeWidth={S.P.strokeWidthHeavy} strokeLinecap={S.P.strokeLinecap} />
-      <polygon points="2,52 16,52 22,48 8,48" fill="currentColor" opacity="0.06" stroke="none" />
-      <path d="M 16 52 L 22 48" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 2 52 L 8 48" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <polygon points="78,52 92,52 98,48 84,48" fill="currentColor" opacity="0.06" stroke="none" />
-      <path d="M 92 52 L 98 48" strokeWidth={S.D.strokeWidthBold} opacity={S.D.opacity} />
-      <path d="M 4 50 L 14 50" strokeWidth="1" opacity="0.5" />
-      <path d="M 80 50 L 90 50" strokeWidth="1" opacity="0.5" />
+      {/* Imposts with Tudor molding */}
+      <path d="M 6 48 L 19 48" strokeWidth={S.P.strokeWidthBold} fill="none" strokeLinecap={S.P.strokeLinecap} />
+      <path d="M 81 48 L 94 48" strokeWidth={S.P.strokeWidthBold} fill="none" strokeLinecap={S.P.strokeLinecap} />
     </g>
   </svg>
 )
 
 // ============================================================================
-// KEYSTONE - The central 3D wedge stone at arch crown, shown in context
+// KEYSTONE - Central wedge-shaped stone at arch apex locking voussoirs together
+// Reference: Any proper arch - the critical stone that transfers load to sides
 // ============================================================================
 export const KeystoneSVG = ({ showHalo = false }: SVGProps) => (
-  <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" className="w-full h-full">
+  <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT (far): Distant arcade and floor */}
-    <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
-      <path d="M -20 88 Q -20 55, 0 35" />
-      <path d="M 120 88 Q 120 55, 100 35" />
-      <path d="M -10 98 L 110 98" />
+    {/* CONTEXT (far): Distant arcade, skyline, and floor paving beyond */}
+    <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth} fill="none">
+      {/* Adjacent arch to the left in distance */}
+      <path d="M -30 88 Q -30 52, -10 30 Q 0 18, 5 18" />
+      {/* Adjacent arch to the right in distance */}
+      <path d="M 130 88 Q 130 52, 110 30 Q 100 18, 95 18" />
+      {/* Distant nave wall / skyline above */}
+      <path d="M -10 2 L 110 2" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      <path d="M -10 -2 L 30 -2 L 32 -6 L 50 -6 L 50 -8 L 50 -6 L 68 -6 L 70 -2 L 110 -2" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      {/* Floor paving far below */}
+      <path d="M -10 98 L 110 98" strokeWidth="0.6" opacity="0.4" />
+      <path d="M -10 102 L 110 102" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      {/* Paving stone joints */}
+      <path d="M 20 98 L 20 105" strokeWidth="0.3" opacity="0.3" />
+      <path d="M 40 98 L 40 105" strokeWidth="0.3" opacity="0.3" />
+      <path d="M 60 98 L 60 105" strokeWidth="0.3" opacity="0.3" />
+      <path d="M 80 98 L 80 105" strokeWidth="0.3" opacity="0.3" />
     </g>
 
-    {/* CONTEXT (near): Full arch structure surrounding keystone */}
-    <g opacity={S.CN.opacity} strokeDasharray={S.CN.dash} strokeWidth={S.CN.strokeWidth}>
-      {/* Arch curves */}
-      <path d="M 8 88 Q 8 48, 35 28" strokeWidth="1" />
-      <path d="M 16 88 Q 16 52, 40 34" strokeWidth="0.8" />
-      <path d="M 92 88 Q 92 48, 65 28" strokeWidth="1" />
-      <path d="M 84 88 Q 84 52, 60 34" strokeWidth="0.8" />
-      {/* Piers */}
-      <path d="M 8 -5 L 8 105" strokeWidth="1" />
-      <path d="M 16 -5 L 16 105" strokeWidth="0.7" />
-      <path d="M 92 -5 L 92 105" strokeWidth="1" />
-      <path d="M 84 -5 L 84 105" strokeWidth="0.7" />
-      {/* Wall above */}
-      <path d="M 0 5 L 100 5" strokeWidth="0.7" />
-      <path d="M 0 5 L 0 98" strokeWidth="0.5" />
-      <path d="M 100 5 L 100 98" strokeWidth="0.5" />
-      {/* Adjacent voussoirs as context */}
-      <path d="M 28 38 L 34 30 L 42 28 L 38 36 Z" strokeWidth="0.7" />
-      <path d="M 62 28 L 66 30 L 72 38 L 62 36 Z" strokeWidth="0.7" />
-      {/* Further voussoirs */}
-      <path d="M 18 52 L 26 42 L 32 40 L 26 50 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
-      <path d="M 68 40 L 74 42 L 82 52 L 74 50 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
-      {/* Impost */}
+    {/* CONTEXT (near): Complete arch structure — piers, wall, and adjacent masonry */}
+    <g opacity={S.CN.opacity} strokeDasharray={S.CN.dash} strokeWidth={S.CN.strokeWidth} fill="none">
+      {/* Full arch showing where keystone sits at crown */}
+      <path d="M 8 88 Q 8 52, 30 30" strokeWidth="1.2" />
+      <path d="M 16 88 Q 16 56, 36 36" strokeWidth="1" />
+      <path d="M 92 88 Q 92 52, 70 30" strokeWidth="1.2" />
+      <path d="M 84 88 Q 84 56, 64 36" strokeWidth="1" />
+
+      {/* Adjacent voussoirs flanking keystone */}
+      <path d="M 30 30 L 36 36 L 40 26 L 34 22 Z" strokeWidth="0.8" />
+      <path d="M 70 30 L 64 36 L 60 26 L 66 22 Z" strokeWidth="0.8" />
+      {/* Additional voussoirs further along arch ring */}
+      <path d="M 20 44 L 28 38 L 32 32 L 24 38 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 76 38 L 68 32 L 72 38 L 80 44 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+
+      {/* Full piers/columns supporting the arch - extending off-page */}
+      <path d="M 8 -5 L 8 105" strokeWidth="1.2" />
+      <path d="M 16 -5 L 16 105" strokeWidth="0.8" />
+      <path d="M 12 -5 L 12 105" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 92 -5 L 92 105" strokeWidth="1.2" />
+      <path d="M 84 -5 L 84 105" strokeWidth="0.8" />
+      <path d="M 88 -5 L 88 105" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+
+      {/* Wall/spandrel above arch */}
+      <path d="M 0 5 L 100 5" strokeWidth="0.8" />
+      {/* Masonry coursing on spandrel walls */}
+      <path d="M 0 10 L 28 10" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 72 10 L 100 10" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 0 16 L 22 16" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 78 16 L 100 16" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 0 5 L 0 98" strokeWidth="0.6" />
+      <path d="M 100 5 L 100 98" strokeWidth="0.6" />
+
+      {/* Masonry coursing on pier/wall faces */}
+      <path d="M 0 30 L 8 30" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 92 30 L 100 30" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 0 45 L 8 45" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 92 45 L 100 45" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 0 60 L 8 60" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 92 60 L 100 60" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 0 75 L 8 75" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 92 75 L 100 75" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+
+      {/* Ground pavement */}
+      <path d="M 0 98 L 100 98" strokeWidth="0.8" />
+
+      {/* Impost moldings at spring points */}
       <path d="M 4 88 L 20 88" strokeWidth="0.6" />
       <path d="M 80 88 L 96 88" strokeWidth="0.6" />
+      {/* Impost sub-molding */}
+      <path d="M 5 86 L 19 86" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      <path d="M 81 86 L 95 86" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+
+      {/* Ceiling / entablature above spandrel */}
+      <path d="M 0 2 L 100 2" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
     </g>
 
-    {/* PRIMARY: THE KEYSTONE - 3D wedge shown from 3/4 perspective */}
+    {/* PRIMARY: THE KEYSTONE - central wedge-shaped stone */}
     <g filter={showHalo ? "url(#arch-halo)" : undefined}>
+      {/* Keystone shape - wider at top (extrados), narrower at bottom (intrados) */}
+      <path d="M 40 26 L 44 10 L 56 10 L 60 26 L 54 38 L 46 38 Z"
+            strokeWidth={S.P.strokeWidthBold} fill="none" strokeLinejoin="round" />
 
-      {/* FRONT FACE: trapezoidal — wider at extrados (top), narrower at intrados (bottom) */}
-      <path d="M 38 26 L 42 10 L 58 10 L 62 26 L 56 38 L 44 38 Z"
-            strokeWidth={S.P.strokeWidthBold} strokeLinejoin="round" />
+      {/* DETAIL: Decorative carving on keystone face (common embellishment) */}
+      <path d="M 48 14 L 50 11 L 52 14" strokeWidth={S.D.strokeWidthBold} fill="none" strokeLinejoin="round" />
+      <path d="M 46 21 L 50 17 L 54 21" strokeWidth={S.D.strokeWidth} fill="none" opacity={S.D.opacityStrong} />
+      <path d="M 47 28 L 50 25 L 53 28" strokeWidth={S.D.strokeWidth} fill="none" opacity={S.D.opacity} />
 
-      {/* TOP DEPTH FACE (extrados face receding in 3/4 perspective) */}
-      <polygon points="42,10 58,10 66,6 50,6" fill="currentColor" opacity="0.1" stroke="none" />
-      <path d="M 42 10 L 50 6" strokeWidth={S.P.strokeWidthBold} strokeLinejoin="round" />
-      <path d="M 58 10 L 66 6" strokeWidth={S.P.strokeWidthBold} strokeLinejoin="round" />
-      <path d="M 50 6 L 66 6" strokeWidth={S.P.strokeWidthBold} strokeLinejoin="round" />
-
-      {/* RIGHT SIDE DEPTH FACE (visible side of the wedge in 3/4) */}
-      <polygon points="58,10 62,26 56,38 70,34 70,22 66,6" fill="currentColor" opacity="0.06" stroke="none" />
-      <path d="M 58 10 L 66 6" strokeWidth={S.P.strokeWidth} />
-      <path d="M 62 26 L 70 22" strokeWidth={S.P.strokeWidth} />
-      <path d="M 56 38 L 64 34" strokeWidth={S.P.strokeWidth} />
-      <path d="M 66 6 L 70 22 L 64 34" strokeWidth={S.P.strokeWidth} />
-
-      {/* DETAIL: Decorative carving on front face */}
-      <path d="M 48 14 L 50 11 L 52 14" strokeWidth={S.D.strokeWidthBold} strokeLinejoin="round" />
-      <path d="M 46 21 L 50 17 L 54 21" strokeWidth={S.D.strokeWidth} opacity={S.D.opacityStrong} />
-      <path d="M 47 28 L 50 25 L 53 28" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-
-      {/* DETAIL: Mortar joint lines on front face */}
-      <path d="M 38 26 L 44 38" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-      <path d="M 62 26 L 56 38" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
-
-      {/* Shadow under projecting keystone */}
-      <path d="M 44 38 L 56 38" strokeWidth="1.5" opacity="0.12" />
+      {/* DETAIL: Joint lines showing wedge action */}
+      <path d="M 40 26 L 46 38" strokeWidth={S.P.strokeWidthLight} fill="none" opacity={S.D.opacity} />
+      <path d="M 60 26 L 54 38" strokeWidth={S.P.strokeWidthLight} fill="none" opacity={S.D.opacity} />
     </g>
 
-    {/* EFFECTS: Force arrows showing compression */}
+    {/* EFFECTS: Force arrows showing compression into keystone - illustrative dashed */}
     <g opacity={S.E.opacityModerate} strokeDasharray={S.E.dash} strokeWidth={S.E.strokeWidth}>
-      <path d="M 26 48 L 42 34" strokeWidth="0.8" />
-      <path d="M 42 34 L 40 37" strokeWidth="0.6" />
-      <path d="M 42 34 L 44 37" strokeWidth="0.6" />
-      <path d="M 74 48 L 58 34" strokeWidth="0.8" />
-      <path d="M 58 34 L 56 37" strokeWidth="0.6" />
-      <path d="M 58 34 L 60 37" strokeWidth="0.6" />
+      <path d="M 28 46 L 44 34" strokeWidth="0.8" fill="none" />
+      <path d="M 44 34 L 42 36" strokeWidth="0.6" fill="none" />
+      <path d="M 44 34 L 46 37" strokeWidth="0.6" fill="none" />
+
+      <path d="M 72 46 L 56 34" strokeWidth="0.8" fill="none" />
+      <path d="M 56 34 L 54 37" strokeWidth="0.6" fill="none" />
+      <path d="M 56 34 L 58 36" strokeWidth="0.6" fill="none" />
     </g>
   </svg>
 )
 
 // ============================================================================
-// VOUSSOIR - A single 3D wedge-shaped stone from the arch ring, in context
+// VOUSSOIR - Wedge-shaped stones/bricks forming an arch ring
+// Reference: Any masonry arch - the individual wedge-shaped units
 // ============================================================================
 export const VoussoirSVG = ({ showHalo = false }: SVGProps) => (
-  <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" className="w-full h-full">
+  <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT (far): Floor and adjacent arch hints */}
-    <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
-      <path d="M -10 92 L 110 92" />
-      <path d="M -10 96 L 110 96" opacity="0.5" />
-      <path d="M -25 80 Q -15 45, 5 30" />
-      <path d="M 95 30 Q 115 45, 125 80" />
-    </g>
-
-    {/* CONTEXT (near): Arch structure and neighbors */}
+    {/* CONTEXT (near): Wall, piers, and spandrel structure */}
     <g opacity={S.CN.opacity} strokeDasharray={S.CN.dash} strokeWidth={S.CN.strokeWidth}>
-      {/* Full arch showing the ring of voussoirs */}
-      <path d="M 8 80 Q 8 48, 30 28 Q 42 18, 50 16 Q 58 18, 70 28 Q 92 48, 92 80" strokeWidth="1" />
-      <path d="M 16 80 Q 16 52, 36 34 Q 44 26, 50 24 Q 56 26, 64 34 Q 84 52, 84 80" strokeWidth="0.8" />
-      {/* Piers */}
-      <path d="M 8 -5 L 8 100" strokeWidth="1" />
-      <path d="M 16 -5 L 16 100" strokeWidth="0.7" />
-      <path d="M 92 -5 L 92 100" strokeWidth="1" />
-      <path d="M 84 -5 L 84 100" strokeWidth="0.7" />
-      {/* Wall */}
-      <path d="M -5 5 L 105 5" strokeWidth="0.6" />
-      {/* Impost */}
-      <path d="M 4 80 L 20 80" strokeWidth="0.6" />
-      <path d="M 80 80 L 96 80" strokeWidth="0.6" />
-      {/* Ghost voussoir joints around the whole arch */}
-      <path d="M 12 72 L 20 62" strokeWidth="0.5" opacity="0.4" />
-      <path d="M 20 58 L 30 48" strokeWidth="0.5" opacity="0.4" />
-      <path d="M 32 42 L 42 34" strokeWidth="0.5" opacity="0.4" />
-      <path d="M 46 26 L 54 26" strokeWidth="0.5" opacity="0.4" />
-      <path d="M 58 34 L 68 42" strokeWidth="0.5" opacity="0.4" />
-      <path d="M 70 48 L 80 58" strokeWidth="0.5" opacity="0.4" />
-      <path d="M 80 62 L 88 72" strokeWidth="0.5" opacity="0.4" />
+      {/* Wall face / spandrel rectangle above and around the arch */}
+      <path d="M -10 5 L 110 5" fill="none" />
+      <path d="M -10 5 L -10 100" fill="none" />
+      <path d="M 110 5 L 110 100" fill="none" />
+
+      {/* Stone coursing on wall/spandrel */}
+      <path d="M -10 15 L 30 15" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 70 15 L 110 15" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M -10 25 L 20 25" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 80 25 L 110 25" strokeWidth="0.4" fill="none" opacity="0.5" />
+
+      {/* Full-height piers with depth */}
+      <path d="M 6 -5 L 6 100" strokeWidth="1" fill="none" />
+      <path d="M 10 -5 L 10 100" strokeWidth="1.4" fill="none" opacity="0.7" />
+      <path d="M 15 -5 L 15 100" strokeWidth="0.8" fill="none" />
+      <path d="M 85 -5 L 85 100" strokeWidth="0.8" fill="none" />
+      <path d="M 90 -5 L 90 100" strokeWidth="1.4" fill="none" opacity="0.7" />
+      <path d="M 94 -5 L 94 100" strokeWidth="1" fill="none" />
+
+      {/* Impost moldings at spring line */}
+      <path d="M 4 78 L 18 78" strokeWidth="0.8" fill="none" opacity="0.6" />
+      <path d="M 82 78 L 96 78" strokeWidth="0.8" fill="none" opacity="0.6" />
+      <path d="M 5 80 L 17 80" strokeWidth="0.5" fill="none" opacity="0.4" />
+      <path d="M 83 80 L 95 80" strokeWidth="0.5" fill="none" opacity="0.4" />
+
+      {/* Centering/formwork line (construction context) */}
+      <path d="M 10 78 Q 50 20, 90 78" strokeWidth="0.4" fill="none" opacity="0.3" strokeDasharray="1 3" />
     </g>
 
-    {/* PRIMARY: THE HIGHLIGHTED VOUSSOIR — a single wedge stone shown 3D from 3/4 */}
+    {/* CONTEXT (far): Floor paving and adjacent arch hints */}
+    <g opacity={S.CF.opacity} strokeDasharray={S.CF.dash} strokeWidth={S.CF.strokeWidth}>
+      {/* Floor paving */}
+      <path d="M -10 92 L 110 92" strokeWidth="0.8" fill="none" />
+      <path d="M -10 95 L 110 95" strokeWidth="0.5" fill="none" opacity="0.5" />
+      <path d="M -10 98 L 110 98" strokeWidth="0.4" fill="none" opacity="0.3" />
+      <path d="M 30 92 L 30 100" strokeWidth="0.3" fill="none" opacity="0.4" />
+      <path d="M 50 92 L 50 100" strokeWidth="0.3" fill="none" opacity="0.4" />
+      <path d="M 70 92 L 70 100" strokeWidth="0.3" fill="none" opacity="0.4" />
+
+      {/* Adjacent arch hint on left */}
+      <path d="M -30 78 Q -20 40, 0 28" strokeWidth="0.5" fill="none" opacity="0.4" />
+      {/* Adjacent arch hint on right */}
+      <path d="M 100 28 Q 120 40, 130 78" strokeWidth="0.5" fill="none" opacity="0.4" />
+    </g>
+
+    {/* PRIMARY: Multiple VOUSSOIRS forming arch - each wedge is solid */}
     <g filter={showHalo ? "url(#arch-halo)" : undefined}>
+      {/* Left springer voussoir (first stone off pier) */}
+      <path d="M 10 78 L 14 64 L 24 60 L 26 72 Z"
+            strokeWidth={S.P.strokeWidthBold} fill="none" strokeLinejoin="round" />
 
-      {/* The voussoir we are highlighting: one on the left side of the arch */}
-      {/* FRONT FACE: trapezoidal — wider at extrados, narrower at intrados */}
-      <path d="M 20 58 L 12 72 L 20 68 L 30 48 Z"
-            strokeWidth={S.P.strokeWidthBold} strokeLinejoin="round" />
+      {/* Second voussoir */}
+      <path d="M 14 64 L 22 52 L 32 50 L 28 62 Z"
+            strokeWidth={S.P.strokeWidth} fill="none" strokeLinejoin="round" />
 
-      {/* EXTRADOS FACE (outer curve face, receding in 3/4 depth) */}
-      <polygon points="20,58 30,48 38,44 28,54" fill="currentColor" opacity="0.06" stroke="none" />
-      <path d="M 20 58 L 28 54" strokeWidth={S.P.strokeWidth} />
-      <path d="M 30 48 L 38 44" strokeWidth={S.P.strokeWidth} />
-      <path d="M 28 54 L 38 44" strokeWidth={S.P.strokeWidth} />
+      {/* Third voussoir */}
+      <path d="M 22 52 L 32 42 L 42 42 L 36 52 Z"
+            strokeWidth={S.P.strokeWidth} fill="none" strokeLinejoin="round" />
 
-      {/* INTRADOS FACE (inner curve face, receding in 3/4 depth) */}
-      <polygon points="12,72 20,68 28,64 20,68" fill="currentColor" opacity="0.08" stroke="none" />
-      <path d="M 12 72 L 20 68" strokeWidth={S.P.strokeWidth} />
-      <path d="M 20 68 L 28 64" strokeWidth={S.P.strokeWidth} />
+      {/* Fourth voussoir (approaching keystone) */}
+      <path d="M 32 42 L 42 34 L 48 36 L 42 44 Z"
+            strokeWidth={S.P.strokeWidth} fill="none" strokeLinejoin="round" />
 
-      {/* SIDE DEPTH FACE (the visible thickness of the wedge in 3/4) */}
-      <polygon points="30,48 20,68 28,64 38,44" fill="currentColor" opacity="0.1" stroke="none" />
-      <path d="M 30 48 L 38 44" strokeWidth={S.P.strokeWidth} />
-      <path d="M 20 68 L 28 64" strokeWidth={S.P.strokeWidth} />
-      <path d="M 38 44 L 28 64" strokeWidth={S.P.strokeWidth} />
+      {/* KEYSTONE at center - emphasized */}
+      <path d="M 42 34 L 47 28 L 53 28 L 58 34 L 52 38 L 48 38 Z"
+            strokeWidth={S.P.strokeWidthBold} fill="none" strokeLinejoin="round" />
 
-      {/* DETAIL: Surface tooling marks on front face */}
-      <path d="M 22 60 L 24 56" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
-      <path d="M 18 66 L 20 62" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
-      <path d="M 26 52 L 28 50" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      {/* Mirror voussoirs on right side */}
+      <path d="M 52 36 L 58 34 L 68 42 L 58 44 Z"
+            strokeWidth={S.P.strokeWidth} fill="none" strokeLinejoin="round" />
 
-      {/* NEIGHBORING VOUSSOIRS to show context (semi-bold) */}
-      {/* Upper neighbor */}
-      <path d="M 30 48 L 32 42 L 42 34 L 38 40 Z"
-            strokeWidth={S.P.strokeWidth} opacity="0.7" strokeLinejoin="round" />
-      {/* Upper neighbor depth face */}
-      <polygon points="30,48 38,44 46,40 38,40 42,34 50,30" fill="currentColor" opacity="0.04" stroke="none" />
-      <path d="M 42 34 L 50 30" strokeWidth={S.D.strokeWidth} opacity="0.4" />
-      <path d="M 38 40 L 46 36" strokeWidth={S.D.strokeWidth} opacity="0.4" />
+      <path d="M 64 42 L 68 42 L 78 52 L 68 52 Z"
+            strokeWidth={S.P.strokeWidth} fill="none" strokeLinejoin="round" />
 
-      {/* Lower neighbor */}
-      <path d="M 12 72 L 8 80 L 16 78 L 20 68 Z"
-            strokeWidth={S.P.strokeWidth} opacity="0.7" strokeLinejoin="round" />
-      {/* Lower neighbor depth */}
-      <polygon points="12,72 20,68 28,64 20,68" fill="currentColor" opacity="0.04" stroke="none" />
-      <path d="M 16 78 L 24 74" strokeWidth={S.D.strokeWidth} opacity="0.4" />
+      <path d="M 72 62 L 78 52 L 86 64 L 78 64 Z"
+            strokeWidth={S.P.strokeWidth} fill="none" strokeLinejoin="round" />
+
+      <path d="M 74 72 L 76 60 L 86 64 L 90 78 Z"
+            strokeWidth={S.P.strokeWidthBold} fill="none" strokeLinejoin="round" />
     </g>
 
-    {/* DETAIL: Joint mortar lines between voussoirs */}
+    {/* DETAIL: Joint lines within voussoirs - subtle detail */}
     <g opacity={S.D.opacitySubtle}>
-      <path d="M 30 48 L 20 68" strokeWidth={S.D.strokeWidthFine} />
-      <path d="M 12 72 L 20 68" strokeWidth={S.D.strokeWidthFine} />
+      <path d="M 14 64 L 26 72" strokeWidth={S.D.strokeWidthFine} fill="none" />
+      <path d="M 22 52 L 28 62" strokeWidth={S.D.strokeWidthFine} fill="none" />
+      <path d="M 32 42 L 36 52" strokeWidth={S.D.strokeWidthFine} fill="none" />
+      <path d="M 68 42 L 64 52" strokeWidth={S.D.strokeWidthFine} fill="none" />
+      <path d="M 78 52 L 72 62" strokeWidth={S.D.strokeWidthFine} fill="none" />
+      <path d="M 86 64 L 74 72" strokeWidth={S.D.strokeWidthFine} fill="none" />
     </g>
   </svg>
 )
