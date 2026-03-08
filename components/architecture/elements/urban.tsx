@@ -853,15 +853,3 @@ export const URBAN_ELEMENTS: Record<string, React.FC<SVGProps>> = {
   'waterfront': WaterfrontSVG,
 }
 
-export {
-  ArcadeSVG,
-  BoulevardSVG,
-  BridgeSVG,
-  FountainSVG,
-  KioskSVG,
-  PlazaSVG,
-  PromenadeSVG,
-  SquareSVG,
-  StreetSVG,
-  WaterfrontSVG,
-}

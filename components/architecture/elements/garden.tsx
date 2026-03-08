@@ -1052,19 +1052,3 @@ export const GARDEN_ELEMENTS: Record<string, React.FC<SVGProps>> = {
   'trellis': TrellisSVG,
 }
 
-export {
-  ArborSVG,
-  BenchSVG,
-  FollySVG,
-  FountainSVG,
-  GazeboSVG,
-  GrottoSVG,
-  HaHaSVG,
-  ObeliskSVG,
-  PagodaSVG,
-  ParterreSVG,
-  PergolaSVG,
-  SundialSVG,
-  TopiarySVG,
-  TrellisSVG,
-}
