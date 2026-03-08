@@ -7,6 +7,7 @@ import {
   User,
   Target,
   Play,
+  Plus,
 } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
@@ -18,27 +19,39 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 interface ProjectRow {
   title: string
   projects: any[]
+  ghostCount: number
 }
 
 // ─── Status config ───────────────────────────────────────────────────────────
+// Fixed high-contrast colors that work across ALL theme phases (day, night,
+// dawn, dusk, sunset, etc.) — no reliance on CSS variables that shift.
 
-const STATUS_ACCENT: Record<string, string> = {
-  ACTIVE: 'var(--primary)',
-  COMPLETED: 'var(--accent)',
-  PLANNING: 'var(--secondary)',
+const STATUS_CONFIG: Record<string, { bg: string; text: string; label: string }> = {
+  ACTIVE: { bg: '#059669', text: '#ffffff', label: 'Active' },
+  COMPLETED: { bg: '#2563eb', text: '#ffffff', label: 'Completed' },
+  PLANNING: { bg: '#d97706', text: '#ffffff', label: 'Planning' },
 }
 
-const STATUS_LABEL: Record<string, string> = {
-  ACTIVE: 'Active',
-  COMPLETED: 'Completed',
-  PLANNING: 'Planning',
+// ─── Ghost Card ──────────────────────────────────────────────────────────────
+
+function GhostCard() {
+  return (
+    <div className="flex-shrink-0 w-[260px] sm:w-[300px]">
+      <div className="aspect-[16/10] rounded-md overflow-hidden bg-[var(--muted)]/60 relative animate-pulse">
+        {/* Faint shimmer lines to suggest content */}
+        <div className="absolute inset-0 flex flex-col justify-end p-3 gap-2">
+          <div className="h-3 w-3/4 rounded bg-[var(--muted-foreground)]/10" />
+          <div className="h-2 w-1/2 rounded bg-[var(--muted-foreground)]/8" />
+        </div>
+      </div>
+    </div>
+  )
 }
 
 // ─── Project Card ────────────────────────────────────────────────────────────
 
 function ProjectCard({ project }: { project: any }) {
-  const accent = STATUS_ACCENT[project.status] || 'var(--primary)'
-  const statusLabel = STATUS_LABEL[project.status] || project.status
+  const status = STATUS_CONFIG[project.status] || STATUS_CONFIG.ACTIVE
 
   return (
     <div className="flex-shrink-0 w-[260px] sm:w-[300px] group relative">
@@ -54,10 +67,11 @@ function ProjectCard({ project }: { project: any }) {
           <div
             className="w-full h-full transition-transform duration-500 group-hover:scale-110"
             style={{
-              background: `linear-gradient(135deg, color-mix(in srgb, ${accent} 30%, var(--background)) 0%, color-mix(in srgb, ${accent} 10%, var(--muted)) 100%)`,
+              background: `linear-gradient(135deg, var(--muted) 0%, var(--card) 50%, var(--muted) 100%)`,
             }}
           >
-            <div className="absolute inset-0 opacity-10">
+            {/* Decorative circles */}
+            <div className="absolute inset-0 opacity-[0.08]">
               <div className="absolute top-4 right-4 w-20 h-20 rounded-full border border-[var(--foreground)]" />
               <div className="absolute bottom-6 left-6 w-12 h-12 rounded-full border border-[var(--foreground)]" />
               <div className="absolute top-1/2 left-1/3 w-8 h-8 rounded-full border border-[var(--foreground)]" />
@@ -65,34 +79,31 @@ function ProjectCard({ project }: { project: any }) {
           </div>
         )}
 
-        {/* Always-visible bottom gradient overlay with title */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+        {/* Always-visible bottom gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[var(--card)]/95 via-[var(--card)]/30 to-transparent" />
 
-        {/* Status pill */}
+        {/* Status pill — fixed contrast colors */}
         <div className="absolute top-3 left-3 z-10">
           <span
             className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-sm"
-            style={{
-              background: accent,
-              color: 'var(--background)',
-            }}
+            style={{ background: status.bg, color: status.text }}
           >
-            {statusLabel}
+            {status.label}
           </span>
         </div>
 
         {/* Member count */}
-        <div className="absolute top-3 right-3 z-10 flex items-center gap-1 bg-black/50 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded-sm">
+        <div className="absolute top-3 right-3 z-10 flex items-center gap-1 bg-[var(--card)]/70 backdrop-blur-sm text-[var(--card-foreground)] text-[10px] font-bold px-2 py-0.5 rounded-sm">
           <Users className="w-3 h-3" />
           {project._count.members}
         </div>
 
         {/* Overlay info - always visible at bottom */}
         <div className="absolute bottom-0 left-0 right-0 p-3 z-10">
-          <h3 className="text-white font-bold text-sm leading-tight truncate">
+          <h3 className="text-[var(--card-foreground)] font-bold text-sm leading-tight truncate">
             {project.name}
           </h3>
-          <div className="flex items-center gap-2 mt-1 text-[11px] text-white/60">
+          <div className="flex items-center gap-2 mt-1 text-[11px] text-[var(--muted-foreground)]">
             <span className="flex items-center gap-1">
               <User className="w-3 h-3" />
               {project.creator?.name || 'Anonymous'}
@@ -110,7 +121,7 @@ function ProjectCard({ project }: { project: any }) {
         </div>
 
         {/* Hover overlay with actions */}
-        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center z-20">
+        <div className="absolute inset-0 bg-[var(--card)]/60 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center z-20">
           <div className="flex items-center gap-2">
             <Link href={`/community/projects/${project.slug}`}>
               <Button
@@ -130,7 +141,7 @@ function ProjectCard({ project }: { project: any }) {
 
 // ─── Scrollable Row ──────────────────────────────────────────────────────────
 
-function ScrollRow({ title, projects }: ProjectRow) {
+function ScrollRow({ title, projects, ghostCount }: ProjectRow) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(false)
@@ -161,7 +172,8 @@ function ScrollRow({ title, projects }: ProjectRow) {
     el.scrollBy({ left: direction === 'left' ? -amount : amount, behavior: 'smooth' })
   }
 
-  if (projects.length === 0) return null
+  const totalCards = projects.length + ghostCount
+  if (totalCards === 0) return null
 
   return (
     <section className="relative group/row">
@@ -170,9 +182,11 @@ function ScrollRow({ title, projects }: ProjectRow) {
         <h2 className="text-lg sm:text-xl font-bold text-[var(--foreground)] tracking-tight">
           {title}
         </h2>
-        <span className="text-xs text-[var(--muted-foreground)] font-medium">
-          {projects.length} {projects.length === 1 ? 'project' : 'projects'}
-        </span>
+        {projects.length > 0 && (
+          <span className="text-xs text-[var(--muted-foreground)] font-medium">
+            {projects.length} {projects.length === 1 ? 'project' : 'projects'}
+          </span>
+        )}
       </div>
 
       {/* Scroll container */}
@@ -211,6 +225,9 @@ function ScrollRow({ title, projects }: ProjectRow) {
           {projects.map((project: any) => (
             <ProjectCard key={project.id} project={project} />
           ))}
+          {Array.from({ length: ghostCount }).map((_, i) => (
+            <GhostCard key={`ghost-${i}`} />
+          ))}
         </div>
       </div>
     </section>
@@ -220,7 +237,7 @@ function ScrollRow({ title, projects }: ProjectRow) {
 // ─── Billboard / Featured Project ────────────────────────────────────────────
 
 function Billboard({ project }: { project: any }) {
-  const accent = STATUS_ACCENT[project.status] || 'var(--primary)'
+  const status = STATUS_CONFIG[project.status] || STATUS_CONFIG.ACTIVE
 
   return (
     <div className="relative w-full aspect-[21/9] sm:aspect-[3/1] lg:aspect-[3.5/1] overflow-hidden">
@@ -235,18 +252,19 @@ function Billboard({ project }: { project: any }) {
         <div
           className="w-full h-full"
           style={{
-            background: `linear-gradient(135deg, color-mix(in srgb, ${accent} 40%, #000) 0%, color-mix(in srgb, ${accent} 15%, #111) 50%, #0a0a0a 100%)`,
+            background: `linear-gradient(135deg, var(--muted) 0%, var(--card) 40%, var(--background) 100%)`,
           }}
         >
+          {/* Decorative circles */}
           <div className="absolute inset-0 opacity-[0.06]">
-            <div className="absolute top-[15%] right-[10%] w-40 h-40 rounded-full border border-white" />
-            <div className="absolute bottom-[20%] left-[5%] w-24 h-24 rounded-full border border-white" />
-            <div className="absolute top-[40%] left-[30%] w-16 h-16 rounded-full border border-white" />
+            <div className="absolute top-[15%] right-[10%] w-40 h-40 rounded-full border border-[var(--foreground)]" />
+            <div className="absolute bottom-[20%] left-[5%] w-24 h-24 rounded-full border border-[var(--foreground)]" />
+            <div className="absolute top-[40%] left-[30%] w-16 h-16 rounded-full border border-[var(--foreground)]" />
           </div>
         </div>
       )}
 
-      {/* Gradient overlays */}
+      {/* Gradient overlays — theme-aware */}
       <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/40 to-transparent" />
       <div className="absolute inset-0 bg-gradient-to-r from-[var(--background)]/90 via-[var(--background)]/40 to-transparent" />
 
@@ -254,27 +272,25 @@ function Billboard({ project }: { project: any }) {
       <div className="absolute inset-0 flex items-end">
         <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pb-8 sm:pb-12">
           <div className="max-w-xl">
+            {/* Labels — fixed contrast */}
             <div className="flex items-center gap-2 mb-3">
               <span
                 className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest rounded-sm"
-                style={{
-                  background: accent,
-                  color: 'var(--background)',
-                }}
+                style={{ background: status.bg, color: status.text }}
               >
                 Featured
               </span>
-              <span className="text-xs font-medium text-white/60 uppercase tracking-wider">
+              <span className="text-xs font-medium text-[var(--muted-foreground)] uppercase tracking-wider">
                 {project.status === 'ACTIVE' ? 'Active Now' : project.status === 'PLANNING' ? 'Coming Soon' : 'Completed'}
               </span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-[1.05] tracking-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[var(--foreground)] leading-[1.05] tracking-tight">
               {project.name}
             </h1>
 
             {project.description && (
-              <p className="text-sm sm:text-base text-white/70 mt-3 leading-relaxed line-clamp-2 max-w-lg">
+              <p className="text-sm sm:text-base text-[var(--muted-foreground)] mt-3 leading-relaxed line-clamp-2 max-w-lg">
                 {project.description}
               </p>
             )}
@@ -292,7 +308,7 @@ function Billboard({ project }: { project: any }) {
               <JoinProjectButton projectId={project.id} projectName={project.name} />
             </div>
 
-            <div className="flex items-center gap-4 mt-4 text-xs text-white/50">
+            <div className="flex items-center gap-4 mt-4 text-xs text-[var(--muted-foreground)]">
               <span className="flex items-center gap-1.5">
                 <Users className="w-3.5 h-3.5" />
                 {project._count.members} contributors
@@ -357,10 +373,14 @@ export default function ProjectsPage() {
   // Remaining projects for rows (exclude featured)
   const activeWithoutFeatured = featured ? active.filter((p) => p.id !== featured.id) : active
 
+  // Ghost slots fill each row to ~7 cards minimum
+  const CARDS_PER_ROW = 7
+  const ghostsFor = (arr: any[]) => Math.max(CARDS_PER_ROW - arr.length, 2)
+
   const rows: ProjectRow[] = [
-    { title: 'Active Projects', projects: activeWithoutFeatured },
-    { title: 'In Planning', projects: planning },
-    { title: 'Completed', projects: completed },
+    { title: 'Active Projects', projects: activeWithoutFeatured, ghostCount: ghostsFor(activeWithoutFeatured) },
+    { title: 'In Planning', projects: planning, ghostCount: ghostsFor(planning) },
+    { title: 'Completed', projects: completed, ghostCount: ghostsFor(completed) },
   ]
 
   // ─── Empty state ───────────────────────────────────────────────────────
@@ -400,6 +420,7 @@ export default function ProjectsPage() {
             key={row.title}
             title={row.title}
             projects={row.projects}
+            ghostCount={row.ghostCount}
           />
         ))}
       </main>
