@@ -33,9 +33,9 @@ interface ProjectRow {
 //   COMPLETED → harvested / fulfilled (steady blue)
 
 const STATUS_CONFIG: Record<string, { bg: string; text: string; label: string; glow: string }> = {
-  ACTIVE:    { bg: '#059669', text: '#ffffff', label: 'Growing',   glow: 'rgba(5,150,105,0.25)' },
-  COMPLETED: { bg: '#3b82f6', text: '#ffffff', label: 'Harvested', glow: 'rgba(59,130,246,0.25)' },
-  PLANNING:  { bg: '#d97706', text: '#ffffff', label: 'Seeding',   glow: 'rgba(217,119,6,0.25)' },
+  ACTIVE:    { bg: '#059669', text: '#ffffff', label: 'Active',    glow: 'rgba(5,150,105,0.25)' },
+  COMPLETED: { bg: '#3b82f6', text: '#ffffff', label: 'Completed', glow: 'rgba(59,130,246,0.25)' },
+  PLANNING:  { bg: '#d97706', text: '#ffffff', label: 'Planning',  glow: 'rgba(217,119,6,0.25)' },
 }
 
 // ─── SVG: Topographic lines (generative feel for no-image cards) ─────────
@@ -193,7 +193,7 @@ function ProjectCard({ project, index }: { project: any; index: number }) {
                 size="sm"
                 className="h-8 text-[11px] font-bold uppercase tracking-wider rounded-full px-4"
               >
-                Explore
+                View Project
               </Button>
             </Link>
             <JoinProjectButton projectId={project.id} projectName={project.name} />
@@ -375,7 +375,7 @@ function Billboard({ project, totalProjects, totalContributors }: {
                   {status.label}
                 </span>
                 <span className="text-[10px] font-medium text-[var(--muted-foreground)] uppercase tracking-widest">
-                  Featured Initiative
+                  Featured
                 </span>
               </div>
             </div>
@@ -408,17 +408,17 @@ function Billboard({ project, totalProjects, totalContributors }: {
             <div className="flex items-center gap-6 mt-5 text-xs text-[var(--muted-foreground)]">
               <span className="flex items-center gap-1.5">
                 <Users className="w-3.5 h-3.5 text-[var(--primary)]" />
-                <strong className="text-[var(--foreground)]">{project._count.members}</strong> on this path
+                <strong className="text-[var(--foreground)]">{project._count.members}</strong> contributors
               </span>
               <span className="text-[var(--border)]">|</span>
               <span className="flex items-center gap-1.5">
                 <Leaf className="w-3.5 h-3.5 text-[var(--primary)]" />
-                <strong className="text-[var(--foreground)]">{totalProjects}</strong> initiatives
+                <strong className="text-[var(--foreground)]">{totalProjects}</strong> projects
               </span>
               <span className="text-[var(--border)]">|</span>
               <span className="flex items-center gap-1.5">
                 <TreePine className="w-3.5 h-3.5 text-[var(--primary)]" />
-                <strong className="text-[var(--foreground)]">{totalContributors}</strong> travelers
+                <strong className="text-[var(--foreground)]">{totalContributors}</strong> members
               </span>
             </div>
           </div>
@@ -457,7 +457,7 @@ export default function ProjectsPage() {
       <div className="min-h-screen bg-[var(--background)] flex items-center justify-center">
         <div className="text-center space-y-4">
           <Sprout className="w-8 h-8 text-[var(--primary)] mx-auto animate-pulse" />
-          <p className="text-xs text-[var(--muted-foreground)] tracking-widest uppercase">Gathering the seeds...</p>
+          <p className="text-xs text-[var(--muted-foreground)] tracking-widest uppercase">Loading projects...</p>
         </div>
       </div>
     )
@@ -510,9 +510,9 @@ export default function ProjectsPage() {
             <Sprout className="w-9 h-9 text-[var(--primary)]" />
           </div>
           <div>
-            <h2 className="text-2xl font-black text-[var(--foreground)]">The Land is Quiet</h2>
+            <h2 className="text-2xl font-black text-[var(--foreground)]">No Projects Yet</h2>
             <p className="text-sm text-[var(--muted-foreground)] mt-2 leading-relaxed">
-              No projects have been planted yet. Head to the community to sow the first seed.
+              Head over to the community page to start a new project.
             </p>
           </div>
           <Link href="/community">
