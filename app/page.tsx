@@ -88,58 +88,50 @@ export default function Home() {
       <FlyingBirds />
 
       {/* Hero Section - BOLD & EXPERIMENTAL */}
-      <section className="relative min-h-[60vh] h-[85vh] md:h-[85vh] flex items-start justify-center overflow-hidden pt-5">
-        {/* Daytime: Sun Ray Gradient Background - Subtle with slight prominence */}
-        <div className="absolute inset-0 z-0 day-only" style={{
+      <section className="relative min-h-[60vh] h-[85vh] md:h-[85vh] flex items-center justify-center overflow-hidden">
+        {/* Ambient gradient background - always visible */}
+        <div className="absolute inset-0 z-0" style={{
           background: `
             radial-gradient(ellipse 150% 120% at 50% -30%,
-              rgba(255, 245, 150, 0.4) 0%,
-              rgba(255, 235, 120, 0.35) 15%,
-              rgba(135, 206, 250, 0.28) 40%,
-              rgba(135, 206, 250, 0.4) 70%,
-              rgba(176, 224, 230, 0.28) 85%,
-              rgba(255, 255, 255, 0.15) 100%
+              color-mix(in srgb, var(--primary) 25%, transparent) 0%,
+              color-mix(in srgb, var(--accent) 20%, transparent) 40%,
+              color-mix(in srgb, var(--secondary) 15%, transparent) 70%,
+              transparent 100%
             ),
-            linear-gradient(180deg,
-              rgba(255, 252, 240, 0.5) 0%,
-              rgba(135, 206, 250, 0.45) 50%,
-              rgba(100, 149, 237, 0.35) 100%
+            radial-gradient(ellipse 80% 60% at 80% 80%,
+              color-mix(in srgb, var(--accent) 15%, transparent) 0%,
+              transparent 60%
+            ),
+            radial-gradient(ellipse 80% 60% at 20% 70%,
+              color-mix(in srgb, var(--primary) 12%, transparent) 0%,
+              transparent 60%
             )
           `
         }}>
-          {/* Prominent sun rays - 3x wider */}
+          {/* Soft light rays */}
           <div className="absolute inset-0" style={{
             background: `
               repeating-conic-gradient(
                 from 0deg at 50% -60%,
                 transparent 0deg,
-                rgba(255, 255, 255, 0.15) 3deg,
-                rgba(255, 250, 200, 0.12) 4.5deg,
+                color-mix(in srgb, var(--primary-foreground) 8%, transparent) 3deg,
+                color-mix(in srgb, var(--primary) 6%, transparent) 4.5deg,
                 transparent 6deg,
                 transparent 24deg
               )
             `,
-            opacity: 0.75,
+            opacity: 0.5,
             mixBlendMode: 'soft-light'
-          }} />
-
-          {/* Wispy clouds */}
-          <div className="absolute inset-0" style={{
-            background: `
-              radial-gradient(ellipse 60% 30% at 20% 40%, rgba(255, 255, 255, 0.4) 0%, rgba(255, 250, 240, 0.15) 30%, transparent 60%),
-              radial-gradient(ellipse 50% 25% at 80% 30%, rgba(255, 255, 255, 0.35) 0%, rgba(255, 248, 230, 0.12) 30%, transparent 60%),
-              radial-gradient(ellipse 70% 35% at 60% 70%, rgba(255, 255, 255, 0.28) 0%, rgba(255, 245, 220, 0.09) 30%, transparent 60%)
-            `
           }} />
         </div>
 
-        {/* Subtle Background Blobs - Static (no animation for performance) */}
-        <div className="absolute inset-0 z-0 opacity-20">
-          <div className="absolute top-10 left-10 w-96 h-96 bg-[var(--primary)] rounded-full blur-3xl opacity-30"
+        {/* Background Blobs - Static (no animation for performance) */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute top-10 left-10 w-96 h-96 bg-[var(--primary)] rounded-full blur-3xl opacity-15"
                style={{ transform: 'translateZ(0) scale(1.2)' }} />
-          <div className="absolute bottom-20 right-20 w-[500px] h-[500px] bg-[var(--accent)] rounded-full blur-3xl opacity-30"
+          <div className="absolute bottom-20 right-20 w-[500px] h-[500px] bg-[var(--accent)] rounded-full blur-3xl opacity-15"
                style={{ transform: 'translateZ(0) scale(1.3)' }} />
-          <div className="absolute top-1/2 left-1/3 w-80 h-80 bg-[var(--secondary)] rounded-full blur-3xl opacity-20"
+          <div className="absolute top-1/2 left-1/3 w-80 h-80 bg-[var(--secondary)] rounded-full blur-3xl opacity-10"
                style={{ transform: 'translateZ(0)' }} />
         </div>
 
