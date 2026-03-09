@@ -7,19 +7,13 @@ import {
   User,
   Target,
   Compass,
-  Leaf,
   Plus,
 } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { JoinProjectButton } from '@/components/projects/JoinProjectButton'
 import React, { useState, useEffect, useRef, useCallback } from 'react'
-import dynamic from 'next/dynamic'
 
-const BirdFlightCanvas = dynamic(
-  () => import('@/components/community/BirdFlightCanvas').then((m) => m.BirdFlightCanvas),
-  { ssr: false }
-)
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -509,6 +503,31 @@ function TopographicTexture() {
       <circle cx="300" cy="600" r="100" fill="none" stroke="var(--foreground)" strokeOpacity="0.012" strokeWidth="0.5" />
       <circle cx="300" cy="600" r="150" fill="none" stroke="var(--foreground)" strokeOpacity="0.008" strokeWidth="0.5" />
     </svg>
+  )
+}
+
+// ─── Heat Wave Effect ────────────────────────────────────────────────────────
+// Subtle shimmering frequency lines that float across the initiatives section.
+function HeatWaveEffect() {
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1200 800" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((i) => (
+          <path
+            key={i}
+            d={`M0,${40 + i * 65} Q100,${30 + i * 65} 250,${45 + i * 65} Q400,${28 + i * 65} 550,${48 + i * 65} Q700,${32 + i * 65} 850,${44 + i * 65} Q1000,${30 + i * 65} 1200,${42 + i * 65}`}
+            fill="none"
+            stroke="var(--foreground)"
+            strokeOpacity={0.015 + (i % 4) * 0.004}
+            strokeWidth={0.3 + (i % 3) * 0.15}
+            style={{
+              animation: `heat-wave ${7 + i * 0.9}s ease-in-out infinite`,
+              animationDelay: `${i * 0.6}s`,
+            }}
+          />
+        ))}
+      </svg>
+    </div>
   )
 }
 
@@ -1011,39 +1030,12 @@ function ScrollRow({ title, subtitle, projects, ghostCount }: ProjectRow) {
 // Instead of spotlighting a single project, this hero section markets the
 // Projects page itself — a collective think tank for sustainable ventures.
 
-function ProjectsPhilosophy({ totalProjects, totalContributors }: {
-  totalProjects: number
-  totalContributors: number
-}) {
-  const heroRef = useRef<HTMLDivElement>(null)
-  const [scrollFade, setScrollFade] = useState(1)
-
-  useEffect(() => {
-    function onScroll() {
-      if (!heroRef.current) return
-      const rect = heroRef.current.getBoundingClientRect()
-      const h = heroRef.current.offsetHeight
-      // Fade out as hero scrolls away — fully gone by 60% scrolled
-      const visible = Math.max(0, Math.min(1, (rect.bottom) / (h * 0.6)))
-      setScrollFade(visible)
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
+function ProjectsPhilosophy() {
   return (
-    <div ref={heroRef} className="relative w-full overflow-hidden"
+    <div className="relative w-full overflow-hidden"
       style={{ minHeight: 'clamp(560px, 85vh, 920px)' }}
     >
-      {/* ═══ BIRD FLIGHT CANVAS ═══ */}
-      <div
-        className="absolute inset-0 transition-none"
-        style={{ opacity: scrollFade, willChange: 'opacity' }}
-      >
-        <BirdFlightCanvas />
-      </div>
-
-      {/* Background layer — aerial sky */}
+      {/* Background layer */}
       <div className="absolute inset-0" style={{
           background: `
             radial-gradient(ellipse 80% 60% at 20% 80%, var(--primary)/0.12 0%, transparent 70%),
@@ -1051,57 +1043,23 @@ function ProjectsPhilosophy({ totalProjects, totalContributors }: {
             linear-gradient(175deg, var(--background) 0%, var(--muted) 40%, var(--card) 70%, var(--background) 100%)
           `
         }}>
+          {/* Heat wave frequency lines across the hero */}
           <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1200 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-
-            {/* Sun / celestial body */}
-            <circle cx="900" cy="120" r="45" fill="var(--primary)" fillOpacity="0.06" />
-            <circle cx="900" cy="120" r="60" fill="none" stroke="var(--primary)" strokeOpacity="0.04" strokeWidth="0.8" />
-            <circle cx="900" cy="120" r="80" fill="none" stroke="var(--primary)" strokeOpacity="0.02" strokeWidth="0.5" />
-            {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((angle) => {
-              const rad = (angle * Math.PI) / 180
-              return <line key={angle} x1={900 + Math.cos(rad) * 50} y1={120 - Math.sin(rad) * 50} x2={900 + Math.cos(rad) * 75} y2={120 - Math.sin(rad) * 75} stroke="var(--primary)" strokeOpacity="0.03" strokeWidth="0.5" />
-            })}
-
-            {/* Distant birds in formation — fellow travelers */}
-            <g opacity="0.06">
-              <path d="M300,150 l-4,4 l4,-1.5 l4,1.5 l-4,-4" stroke="var(--foreground)" strokeWidth="0.8" fill="none" />
-              <path d="M320,143 l-3.5,3.5 l3.5,-1.2 l3.5,1.2 l-3.5,-3.5" stroke="var(--foreground)" strokeWidth="0.7" fill="none" />
-              <path d="M312,155 l-3,3 l3,-1 l3,1 l-3,-3" stroke="var(--foreground)" strokeWidth="0.6" fill="none" />
-            </g>
-
-            {/* Second flock — further away */}
-            <g opacity="0.04">
-              <path d="M700,90 l-3,3 l3,-1 l3,1 l-3,-3" stroke="var(--foreground)" strokeWidth="0.6" fill="none" />
-              <path d="M715,85 l-2.5,2.5 l2.5,-0.8 l2.5,0.8 l-2.5,-2.5" stroke="var(--foreground)" strokeWidth="0.5" fill="none" />
-              <path d="M708,95 l-2,2 l2,-0.7 l2,0.7 l-2,-2" stroke="var(--foreground)" strokeWidth="0.4" fill="none" />
-              <path d="M725,88 l-2,2 l2,-0.7 l2,0.7 l-2,-2" stroke="var(--foreground)" strokeWidth="0.4" fill="none" />
-            </g>
-
-            {/* High-altitude wind currents */}
-            <path d="M0,180 Q200,170 400,185 Q600,175 800,190 Q1000,178 1200,186" fill="none" stroke="var(--foreground)" strokeOpacity="0.02" strokeWidth="0.6" />
-            <path d="M0,220 Q300,210 500,225 Q700,215 900,228 Q1100,218 1200,224" fill="none" stroke="var(--foreground)" strokeOpacity="0.015" strokeWidth="0.5" />
-            <path d="M0,260 Q250,252 500,262 Q750,254 1000,265 Q1150,258 1200,262" fill="none" stroke="var(--foreground)" strokeOpacity="0.012" strokeWidth="0.4" />
-
-            {/* Constellation */}
-            <g opacity="0.04">
-              <circle cx="200" cy="60" r="1" fill="var(--foreground)" />
-              <circle cx="220" cy="50" r="0.8" fill="var(--foreground)" />
-              <circle cx="240" cy="65" r="1.2" fill="var(--foreground)" />
-              <line x1="200" y1="60" x2="220" y2="50" stroke="var(--foreground)" strokeWidth="0.2" />
-              <line x1="220" y1="50" x2="240" y2="65" stroke="var(--foreground)" strokeWidth="0.2" />
-            </g>
-
-            {/* Scattered stars / light motes */}
-            <circle cx="100" cy="40" r="0.8" fill="var(--foreground)" fillOpacity="0.03" />
-            <circle cx="450" cy="55" r="0.6" fill="var(--foreground)" fillOpacity="0.025" />
-            <circle cx="550" cy="30" r="0.9" fill="var(--foreground)" fillOpacity="0.03" />
-            <circle cx="1050" cy="70" r="0.7" fill="var(--foreground)" fillOpacity="0.025" />
-            <circle cx="150" cy="100" r="0.5" fill="var(--foreground)" fillOpacity="0.02" />
-            <circle cx="800" cy="45" r="0.8" fill="var(--foreground)" fillOpacity="0.025" />
+            {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+              <path
+                key={i}
+                d={`M0,${80 + i * 40} Q150,${72 + i * 40} 300,${82 + i * 40} Q450,${68 + i * 40} 600,${85 + i * 40} Q750,${74 + i * 40} 900,${80 + i * 40} Q1050,${70 + i * 40} 1200,${83 + i * 40}`}
+                fill="none"
+                stroke="var(--foreground)"
+                strokeOpacity={0.02 + (i % 3) * 0.005}
+                strokeWidth={0.4 + (i % 2) * 0.2}
+                style={{
+                  animation: `heat-wave ${6 + i * 1.2}s ease-in-out infinite`,
+                  animationDelay: `${i * 0.8}s`,
+                }}
+              />
+            ))}
           </svg>
-
-          <DriftingClouds />
-          <ShootingStar />
         </div>
 
       {/* Gradient veils — blend canvas into page */}
@@ -1140,41 +1098,6 @@ function ProjectsPhilosophy({ totalProjects, totalContributors }: {
               Join an initiative that speaks to you, or launch one of your own. The path forward is walked together.
             </p>
 
-            {/* Action row */}
-            <div className="flex items-center justify-center gap-3 mt-5">
-              <Link href="/community/projects/new">
-                <Button
-                  size="lg"
-                  className="h-10 text-sm font-bold uppercase tracking-wider rounded-full gap-2 px-6"
-                >
-                  <Plus className="w-4 h-4" />
-                  Start an Initiative
-                </Button>
-              </Link>
-              <a href="#initiatives">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="h-10 text-sm font-bold uppercase tracking-wider rounded-full gap-2 px-6 border-[var(--primary)]/50 hover:bg-[var(--primary)]/20"
-                >
-                  <Target className="w-4 h-4" />
-                  Browse Projects
-                </Button>
-              </a>
-            </div>
-
-            {/* Community stats */}
-            <div className="flex items-center justify-center gap-6 mt-4 text-xs text-[var(--foreground)]/70 font-medium">
-              <span className="flex items-center gap-1.5">
-                <Users className="w-3.5 h-3.5 text-[var(--primary)]" />
-                <strong className="text-[var(--foreground)] font-bold">{totalContributors}</strong> members collaborating
-              </span>
-              <span className="text-[var(--foreground)]/30">|</span>
-              <span className="flex items-center gap-1.5">
-                <Leaf className="w-3.5 h-3.5 text-[var(--primary)]" />
-                <strong className="text-[var(--foreground)] font-bold">{totalProjects}</strong> initiatives launched
-              </span>
-            </div>
 
           </div>
         </div>
@@ -1250,7 +1173,6 @@ export default function ProjectsPage() {
     },
   ]
 
-  const totalContributors = projects.reduce((sum, p) => sum + (p._count?.members || 0), 0)
 
   // ─── Empty state ───────────────────────────────────────────────────────
 
@@ -1287,43 +1209,14 @@ export default function ProjectsPage() {
 
   return (
     <div className="min-h-screen bg-[var(--background)] relative">
-      {/* Keyframes for animations */}
+      {/* Keyframes for heat-wave animation */}
       <style>{`
-        @keyframes gentle-sway {
-          0% { transform: rotate(-3deg) translateY(0); }
-          100% { transform: rotate(3deg) translateY(-2px); }
-        }
-        @keyframes firefly-float {
-          0% { transform: translate(0, 0); }
-          25% { transform: translate(12px, -18px); }
-          50% { transform: translate(-8px, -30px); }
-          75% { transform: translate(15px, -12px); }
-          100% { transform: translate(-5px, 6px); }
-        }
-        @keyframes firefly-glow {
-          0%, 100% { opacity: 0; }
-          15% { opacity: 0.6; }
-          30% { opacity: 0.2; }
-          50% { opacity: 0.8; }
-          70% { opacity: 0.3; }
-          85% { opacity: 0.7; }
-        }
-        @keyframes cloud-drift-1 {
-          0% { transform: translateX(-200px); }
-          100% { transform: translateX(calc(100vw + 200px)); }
-        }
-        @keyframes cloud-drift-2 {
-          0% { transform: translateX(-150px); }
-          100% { transform: translateX(calc(100vw + 150px)); }
-        }
-        @keyframes cloud-drift-3 {
-          0% { transform: translateX(-180px); }
-          100% { transform: translateX(calc(100vw + 180px)); }
-        }
-        @keyframes shooting-star {
-          0%, 90%, 100% { opacity: 0; transform: translate(0, 0) rotate(-25deg); }
-          92% { opacity: 0.3; }
-          95% { opacity: 0; transform: translate(200px, 80px) rotate(-25deg); }
+        @keyframes heat-wave {
+          0% { transform: translateY(0) scaleY(1); opacity: 0.04; }
+          25% { transform: translateY(-2px) scaleY(1.01); opacity: 0.06; }
+          50% { transform: translateY(1px) scaleY(0.99); opacity: 0.03; }
+          75% { transform: translateY(-1px) scaleY(1.005); opacity: 0.055; }
+          100% { transform: translateY(0) scaleY(1); opacity: 0.04; }
         }
       `}</style>
 
@@ -1331,47 +1224,12 @@ export default function ProjectsPage() {
       <TopographicTexture />
 
       {/* ═══ THE HORIZON ═══ */}
-      <ProjectsPhilosophy
-        totalProjects={projects.length}
-        totalContributors={totalContributors}
-      />
-
-      {/* ═══ COMPASS TRANSITION ═══ */}
-      <DecorativeCompassRose />
+      <ProjectsPhilosophy />
 
       {/* ═══ THE JOURNEY ═══ */}
       <main id="initiatives" className="relative py-10">
-        {/* Animated fireflies scattered across the section */}
-        <Fireflies />
-
-        {/* Vertical waypoint trail down the center */}
-        <WaypointTrail />
-
-        {/* Floating margin illustrations — positioned absolutely for decoration */}
-        <div className="hidden lg:block absolute top-16 right-6 xl:right-12">
-          <MarginButterfly />
-        </div>
-        <div className="hidden lg:block absolute top-[20%] left-4 xl:left-10">
-          <MarginFern />
-        </div>
-        <div className="hidden lg:block absolute top-[35%] left-4 xl:left-10">
-          <MarginMushrooms />
-        </div>
-        <div className="hidden lg:block absolute top-[48%] right-6 xl:right-12">
-          <MarginSnail />
-        </div>
-        <div className="hidden lg:block absolute top-[65%] right-8 xl:right-14">
-          <MarginFlowers />
-        </div>
-        <div className="hidden lg:block absolute top-[78%] left-6 xl:left-12">
-          <MarginAcorn />
-        </div>
-        <div className="hidden lg:block absolute bottom-32 left-6 xl:left-12">
-          <MarginButterfly className="opacity-[0.08] -scale-x-100" />
-        </div>
-        <div className="hidden lg:block absolute bottom-16 right-6 xl:right-10">
-          <MarginFern className="opacity-[0.08] -scale-x-100" />
-        </div>
+        {/* Heat wave / frequency lines — subtle atmospheric shimmer */}
+        <HeatWaveEffect />
 
         {/* Rows with vine dividers between them */}
         <div className="space-y-2">
@@ -1389,8 +1247,6 @@ export default function ProjectsPage() {
         </div>
       </main>
 
-      {/* ═══ CLOSING LANDSCAPE ═══ */}
-      <FooterLandscape />
     </div>
   )
 }
