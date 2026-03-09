@@ -1049,7 +1049,7 @@ function Billboard({ project, totalProjects, totalContributors }: {
 
   return (
     <div className="relative w-full overflow-hidden"
-      style={{ minHeight: 'clamp(280px, 45vh, 520px)' }}
+      style={{ minHeight: 'clamp(400px, 60vh, 700px)' }}
     >
       {/* Background layer */}
       {project.coverImage ? (
@@ -1218,16 +1218,16 @@ function Billboard({ project, totalProjects, totalContributors }: {
       )}
 
       {/* Gradient veils */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/30 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[var(--background)]/80 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/70 to-[var(--background)]/30" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[var(--background)]/90 via-[var(--background)]/40 to-transparent" />
 
       {/* Content */}
       <div className="absolute inset-0 flex items-end">
-        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pb-10 sm:pb-14">
+        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pb-14 sm:pb-20">
           <div className="max-w-2xl">
             {/* Exodus compass mark */}
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-8 rounded-full border border-[var(--primary)]/30 flex items-center justify-center bg-[var(--primary)]/10">
+              <div className="w-8 h-8 rounded-full border border-[var(--primary)]/50 flex items-center justify-center bg-[var(--primary)]/20">
                 <Compass className="w-4 h-4 text-[var(--primary)]" />
               </div>
               <div className="flex items-center gap-2">
@@ -1237,18 +1237,18 @@ function Billboard({ project, totalProjects, totalContributors }: {
                 >
                   {status.label}
                 </span>
-                <span className="text-[10px] font-medium text-[var(--muted-foreground)] uppercase tracking-widest">
+                <span className="text-[10px] font-bold text-[var(--foreground)]/70 uppercase tracking-widest">
                   Featured
                 </span>
               </div>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[var(--foreground)] leading-[1.05] tracking-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[var(--foreground)] leading-[1.05] tracking-tight drop-shadow-md">
               {project.name}
             </h1>
 
             {project.description && (
-              <p className="text-sm sm:text-base text-[var(--muted-foreground)] mt-3 leading-relaxed line-clamp-2 max-w-lg">
+              <p className="text-sm sm:text-base text-[var(--foreground)]/80 mt-3 leading-relaxed line-clamp-2 max-w-lg font-medium">
                 {project.description}
               </p>
             )}
@@ -1268,7 +1268,7 @@ function Billboard({ project, totalProjects, totalContributors }: {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="h-10 text-sm font-bold uppercase tracking-wider rounded-full gap-2 px-6 border-[var(--primary)]/30 hover:bg-[var(--primary)]/10"
+                  className="h-10 text-sm font-bold uppercase tracking-wider rounded-full gap-2 px-6 border-[var(--primary)]/50 hover:bg-[var(--primary)]/20"
                 >
                   <Plus className="w-4 h-4" />
                   Create
@@ -1278,20 +1278,20 @@ function Billboard({ project, totalProjects, totalContributors }: {
             </div>
 
             {/* Journey stats */}
-            <div className="flex items-center gap-6 mt-5 text-xs text-[var(--muted-foreground)]">
+            <div className="flex items-center gap-6 mt-5 text-xs text-[var(--foreground)]/70 font-medium">
               <span className="flex items-center gap-1.5">
                 <Users className="w-3.5 h-3.5 text-[var(--primary)]" />
-                <strong className="text-[var(--foreground)]">{project._count.members}</strong> contributors
+                <strong className="text-[var(--foreground)] font-bold">{project._count.members}</strong> contributors
               </span>
-              <span className="text-[var(--border)]">|</span>
+              <span className="text-[var(--foreground)]/30">|</span>
               <span className="flex items-center gap-1.5">
                 <Leaf className="w-3.5 h-3.5 text-[var(--primary)]" />
-                <strong className="text-[var(--foreground)]">{totalProjects}</strong> initiatives
+                <strong className="text-[var(--foreground)] font-bold">{totalProjects}</strong> initiatives
               </span>
-              <span className="text-[var(--border)]">|</span>
+              <span className="text-[var(--foreground)]/30">|</span>
               <span className="flex items-center gap-1.5">
                 <TreePine className="w-3.5 h-3.5 text-[var(--primary)]" />
-                <strong className="text-[var(--foreground)]">{totalContributors}</strong> members
+                <strong className="text-[var(--foreground)] font-bold">{totalContributors}</strong> members
               </span>
             </div>
           </div>
