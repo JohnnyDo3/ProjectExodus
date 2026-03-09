@@ -135,10 +135,38 @@ export default function Home() {
                style={{ transform: 'translateZ(0)' }} />
         </div>
 
-        {/* Main Hero Content - pointer-events-none allows constellation hover through text */}
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-4 pointer-events-none">
+        {/* Decorative geometric elements */}
+        <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden">
+          {/* Top-left corner accent */}
+          <div className="absolute top-24 left-8 md:left-16 w-24 h-24 md:w-32 md:h-32 border-l-4 border-t-4 border-[var(--primary)] opacity-20 rounded-tl-3xl" />
+          {/* Top-right corner accent */}
+          <div className="absolute top-24 right-8 md:right-16 w-24 h-24 md:w-32 md:h-32 border-r-4 border-t-4 border-[var(--accent)] opacity-20 rounded-tr-3xl" />
+          {/* Floating ring - left */}
+          <div className="hidden md:block absolute top-1/3 left-12 w-20 h-20 rounded-full border-2 border-[var(--primary)] opacity-15" />
+          <div className="hidden md:block absolute top-1/3 left-14 w-16 h-16 rounded-full border-2 border-[var(--accent)] opacity-10 mt-2" />
+          {/* Floating ring - right */}
+          <div className="hidden md:block absolute top-[40%] right-16 w-24 h-24 rounded-full border-2 border-[var(--secondary)] opacity-15" />
+          {/* Dotted line accents */}
+          <div className="hidden lg:block absolute top-32 left-1/4 w-32 border-t-2 border-dotted border-[var(--primary)] opacity-15" />
+          <div className="hidden lg:block absolute top-36 right-1/4 w-24 border-t-2 border-dotted border-[var(--accent)] opacity-15" />
+          {/* Small diamond shapes */}
+          <div className="hidden md:block absolute bottom-[35%] left-[10%] w-4 h-4 bg-[var(--primary)] opacity-20 rotate-45" />
+          <div className="hidden md:block absolute bottom-[40%] right-[12%] w-3 h-3 bg-[var(--accent)] opacity-20 rotate-45" />
+          <div className="hidden md:block absolute top-[30%] right-[25%] w-2.5 h-2.5 bg-[var(--secondary)] opacity-15 rotate-45" />
+        </div>
+
+        {/* Main Hero Content */}
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-28 pointer-events-none">
           <div className="max-w-6xl mx-auto">
-            {/* Massive Hero Title - Ultra Bold - Fits Above Fold */}
+            {/* Small label badge above title */}
+            <div className="flex justify-center mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border-2 border-[var(--primary)] bg-[color-mix(in_srgb,var(--primary)_10%,var(--background))] opacity-80">
+                <Sprout className="w-4 h-4 text-[var(--primary)]" />
+                <span className="text-xs font-bold tracking-widest uppercase text-[var(--primary)]">Sustainability Hub</span>
+              </div>
+            </div>
+
+            {/* Hero Title - pushed down */}
             <h1 className="text-center mb-4 md:mb-6" style={{
               fontSize: 'clamp(1.75rem, 6vw, 5rem)',
               fontWeight: 900,
@@ -160,8 +188,15 @@ export default function Home() {
               </div>
             </h1>
 
-            {/* Subtitle - Large & Bold */}
-            <p className="text-center max-w-4xl mx-auto mb-6 md:mb-8 text-[var(--foreground)]" style={{
+            {/* Decorative divider under title */}
+            <div className="flex items-center justify-center gap-3 mb-6 md:mb-8">
+              <div className="w-12 md:w-20 h-0.5 bg-gradient-to-r from-transparent to-[var(--primary)]" />
+              <Leaf className="w-5 h-5 text-[var(--primary)] opacity-60" />
+              <div className="w-12 md:w-20 h-0.5 bg-gradient-to-l from-transparent to-[var(--accent)]" />
+            </div>
+
+            {/* Subtitle */}
+            <p className="text-center max-w-4xl mx-auto mb-8 md:mb-10 text-[var(--foreground)]" style={{
               fontSize: 'clamp(0.9rem, 2vw, 1.5rem)',
               fontWeight: 600,
               lineHeight: 1.3
@@ -183,6 +218,22 @@ export default function Home() {
                 fontWeight: 800
               }}>Energy</span>
             </p>
+
+            {/* Three icon pills row */}
+            <div className="flex flex-wrap justify-center gap-3 md:gap-5">
+              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border-2 border-[var(--primary)] bg-[color-mix(in_srgb,var(--primary)_8%,var(--background))] shadow-sm">
+                <Leaf className="w-5 h-5 text-[var(--primary)]" />
+                <span className="text-sm font-bold text-[var(--primary)]">Food Systems</span>
+              </div>
+              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border-2 border-[var(--accent)] bg-[color-mix(in_srgb,var(--accent)_8%,var(--background))] shadow-sm">
+                <Droplet className="w-5 h-5 text-[var(--accent)]" />
+                <span className="text-sm font-bold text-[var(--accent)]">Water Access</span>
+              </div>
+              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border-2 border-[var(--secondary)] bg-[color-mix(in_srgb,var(--secondary)_8%,var(--background))] shadow-sm">
+                <Zap className="w-5 h-5 text-[var(--secondary)]" />
+                <span className="text-sm font-bold text-[var(--secondary)]">Renewable Energy</span>
+              </div>
+            </div>
           </div>
         </div>
 
