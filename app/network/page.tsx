@@ -1,10 +1,10 @@
 'use client'
 
 // ============================================
-// THE CONSTELLATION
-// "We are not separate stars scattered in void.
-//  We are a constellation — each light connected
-//  by invisible threads of shared purpose."
+// THE FISHBOWL
+// "We are all fish in the same bowl —
+//  swimming together, shimmering together,
+//  connected by the water we share."
 // ============================================
 
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
@@ -12,10 +12,11 @@ import { useSession } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
 import { Button } from '@/components/ui/Button'
-import { ConstellationCard, ConstellationCardSkeleton, type ConstellationCardUser } from '@/components/network/ConstellationCard'
-import { useTimeTheme } from '@/components/providers/TimeThemeProvider'
+import { Fishbowl } from '@/components/fishbowl/Fishbowl'
+import { FishSVG, getTierFromScore, getTierName } from '@/components/fishbowl/FishSpecies'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
+import '@/components/fishbowl/fishbowl.css'
 import {
   Users,
   Search,
@@ -26,7 +27,6 @@ import {
   ChevronRight,
   ChevronLeft,
   Filter,
-  Orbit,
   X,
   MapPin,
   Briefcase,
@@ -37,20 +37,24 @@ import {
   Clock,
   Check,
   Loader2,
-  Network,
+  Fish,
   BookOpen,
+  MessageCircle,
+  Info,
+  Eye,
+  EyeOff,
 } from 'lucide-react'
 
 // ============================================
 // TYPES
 // ============================================
 
-type PrimaryView = 'network' | 'directory'
+type PrimaryView = 'fishbowl' | 'directory'
 type NetworkTab = 'all' | 'following' | 'followers' | 'mutual' | 'suggestions' | 'pending'
 
 interface PendingRequest {
   id: string
-  requester: ConstellationCardUser
+  requester: NetworkCardUser
   message: string | null
   createdAt: string
 }
@@ -63,160 +67,380 @@ interface NetworkStats {
   pending: number
 }
 
-// ============================================
-// AMBIENT ORB CONFIG
-// ============================================
-
-interface OrbConfig {
-  size: number
-  x: number
-  y: number
-  duration: number
-  delay: number
-  dx: number
-  dy: number
+interface FishbowlUser {
+  id: string
+  name: string | null
+  stockScore: number
+  image: string | null
 }
 
-const ORB_CONFIGS: OrbConfig[] = [
-  { size: 300, x: 10, y: 15, duration: 25, delay: 0, dx: 40, dy: -30 },
-  { size: 200, x: 70, y: 60, duration: 30, delay: 3, dx: -30, dy: 25 },
-  { size: 250, x: 85, y: 20, duration: 28, delay: 5, dx: -20, dy: 40 },
-  { size: 180, x: 30, y: 75, duration: 22, delay: 8, dx: 35, dy: -20 },
-  { size: 350, x: 50, y: 40, duration: 35, delay: 2, dx: -25, dy: -35 },
-  { size: 150, x: 15, y: 50, duration: 20, delay: 10, dx: 25, dy: 30 },
-  { size: 220, x: 60, y: 85, duration: 26, delay: 6, dx: -35, dy: -25 },
-  { size: 280, x: 40, y: 10, duration: 32, delay: 4, dx: 30, dy: 35 },
-]
-
-// ============================================
-// AMBIENT ORBS COMPONENT
-// ============================================
-
-function AmbientOrbs() {
-  const { phase, twilightProgress } = useTimeTheme()
-
-  const orbColors = useMemo(() => {
-    const isNight = twilightProgress > 0.65
-    const isTwilight = twilightProgress > 0.3 && twilightProgress <= 0.65
-
-    if (isNight) {
-      return {
-        primary: 'rgba(110, 181, 255, 0.06)',
-        secondary: 'rgba(212, 160, 255, 0.05)',
-        tertiary: 'rgba(127, 219, 202, 0.04)',
-      }
-    }
-    if (isTwilight) {
-      return {
-        primary: 'rgba(232, 160, 93, 0.08)',
-        secondary: 'rgba(194, 79, 49, 0.06)',
-        tertiary: 'rgba(155, 111, 143, 0.05)',
-      }
-    }
-    // Day
-    return {
-      primary: 'rgba(54, 118, 61, 0.05)',
-      secondary: 'rgba(66, 147, 147, 0.04)',
-      tertiary: 'rgba(212, 102, 67, 0.03)',
-    }
-  }, [twilightProgress])
-
-  const colorPalette = [
-    orbColors.primary, orbColors.secondary, orbColors.tertiary,
-    orbColors.primary, orbColors.secondary, orbColors.tertiary,
-    orbColors.primary, orbColors.secondary,
-  ]
-
-  return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
-      {ORB_CONFIGS.map((orb, i) => (
-        <motion.div
-          key={i}
-          className="absolute rounded-full"
-          style={{
-            width: orb.size,
-            height: orb.size,
-            left: `${orb.x}%`,
-            top: `${orb.y}%`,
-            background: `radial-gradient(circle, ${colorPalette[i]}, transparent 70%)`,
-            filter: 'blur(40px)',
-          }}
-          animate={{
-            x: [0, orb.dx, -orb.dx * 0.5, 0],
-            y: [0, orb.dy, -orb.dy * 0.7, 0],
-          }}
-          transition={{
-            duration: orb.duration,
-            repeat: Infinity,
-            ease: 'easeInOut',
-            delay: orb.delay,
-          }}
-        />
-      ))}
-    </div>
-  )
+export interface NetworkCardUser {
+  id: string
+  name: string | null
+  email: string
+  image: string | null
+  headline: string | null
+  bio: string | null
+  location: string | null
+  company?: string | null
+  jobTitle?: string | null
+  interests?: string[]
+  expertise?: string[]
+  guardianArchetype: string | null
+  declaration?: string | null
+  _count?: {
+    followers: number
+    following?: number
+    projectMemberships?: number
+    articles?: number
+    createdProjects?: number
+  }
+  matchScore?: number
+  matchReasons?: string[]
+  isFollowing?: boolean
+  connectionStatus?: string
 }
 
 // ============================================
-// VIEW TOGGLE PILL
+// AQUATIC USER CARD
 // ============================================
 
-function ViewToggle({
-  active,
-  onChange,
+function AquaticUserCard({
+  user,
+  isFollowing = false,
+  isFollowingMe = false,
+  isLoadingFollow = false,
+  onFollow,
+  onMessage,
+  isLoggedIn = false,
+  index = 0,
 }: {
-  active: PrimaryView
-  onChange: (view: PrimaryView) => void
+  user: NetworkCardUser
+  isFollowing?: boolean
+  isFollowingMe?: boolean
+  isLoadingFollow?: boolean
+  onFollow?: (userId: string) => void
+  onMessage?: (userId: string) => void
+  isLoggedIn?: boolean
+  index?: number
 }) {
-  const { twilightProgress } = useTimeTheme()
-  const isNight = twilightProgress > 0.65
+  const stockScore = useMemo(() => {
+    if (!user._count) return 0
+    return (
+      ((user._count.createdProjects || 0) * 10) +
+      ((user._count.articles || 0) * 5) +
+      ((user._count.followers || 0) * 1) +
+      ((user._count.projectMemberships || 0) * 2)
+    )
+  }, [user._count])
+
+  const tier = getTierFromScore(stockScore)
+  const tierName = getTierName(tier)
+
+  const relationshipBadge = useMemo(() => {
+    if (isFollowing && isFollowingMe) {
+      return { label: 'MUTUAL', bg: 'bg-gradient-to-r from-teal-500 to-cyan-400' }
+    }
+    if (isFollowing) {
+      return { label: 'FOLLOWING', bg: 'bg-gradient-to-r from-cyan-500 to-blue-500' }
+    }
+    if (isFollowingMe) {
+      return { label: 'FOLLOWS YOU', bg: 'bg-gradient-to-r from-purple-500 to-violet-500' }
+    }
+    return null
+  }, [isFollowing, isFollowingMe])
+
+  const tags = user.interests?.length ? user.interests : user.expertise || []
 
   return (
-    <div
-      className="relative inline-flex rounded-full p-1 transition-colors duration-500"
-      style={{
-        background: isNight
-          ? 'rgba(255,255,255,0.06)'
-          : 'color-mix(in srgb, var(--muted) 80%, var(--background))',
+    <motion.div
+      layout
+      layoutId={`aquatic-${user.id}`}
+      initial={{ opacity: 0, y: 30, scale: 0.92 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.88, y: -10 }}
+      transition={{
+        layout: { type: 'spring', stiffness: 150, damping: 25, mass: 1 },
+        opacity: { duration: 0.4, ease: 'easeOut' },
+        scale: { duration: 0.4, ease: 'easeOut' },
+        y: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
+        delay: Math.min(index * 0.06, 0.6),
       }}
+      whileHover={{ y: -6, transition: { duration: 0.3, ease: 'easeOut' } }}
+      className="group relative"
     >
-      <motion.div
-        className="absolute top-1 bottom-1 rounded-full"
+      {/* Glow layer */}
+      <div
+        className="absolute -inset-[1px] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         style={{
-          background: 'var(--primary)',
-        }}
-        layout
-        layoutId="view-toggle-pill"
-        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-        animate={{
-          left: active === 'network' ? '4px' : '50%',
-          right: active === 'directory' ? '4px' : '50%',
+          background: 'radial-gradient(ellipse at 50% 0%, rgba(34,211,238,0.25), transparent 70%)',
+          filter: 'blur(16px)',
         }}
       />
-      <button
-        onClick={() => onChange('network')}
-        className={`relative z-10 flex items-center gap-2 px-5 py-2 rounded-full text-sm font-bold transition-colors duration-300 ${
-          active === 'network' ? 'text-[var(--primary-foreground)]' : 'text-[var(--muted-foreground)]'
-        }`}
+
+      {/* Card */}
+      <div
+        className="relative rounded-2xl overflow-hidden border border-cyan-800/30 transition-all duration-500"
+        style={{
+          background: 'rgba(10, 22, 40, 0.75)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+        }}
       >
-        <Orbit className="w-4 h-4" />
-        My Network
-      </button>
-      <button
-        onClick={() => onChange('directory')}
-        className={`relative z-10 flex items-center gap-2 px-5 py-2 rounded-full text-sm font-bold transition-colors duration-300 ${
-          active === 'directory' ? 'text-[var(--primary-foreground)]' : 'text-[var(--muted-foreground)]'
-        }`}
-      >
-        <Globe className="w-4 h-4" />
-        Directory
-      </button>
-    </div>
+        {/* Tier gradient accent bar */}
+        <div className="h-1 relative overflow-hidden"
+          style={{
+            background: `linear-gradient(to right, ${
+              tier >= 4 ? '#8b5cf6, #3b82f6' :
+              tier >= 2 ? '#f59e0b, #10b981' :
+              '#06b6d4, #0ea5e9'
+            })`,
+          }}
+        />
+
+        <div className="p-4 sm:p-5 relative">
+          {/* Top row: Fish + Avatar + Info */}
+          <div className="flex items-start gap-3 sm:gap-4 mb-3">
+            {/* Avatar with fish badge */}
+            <Link href={`/profile/${user.id}`} className="flex-shrink-0">
+              <motion.div
+                whileHover={{ scale: 1.08 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+                className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl p-[2px]"
+                style={{
+                  background: `linear-gradient(135deg, ${
+                    tier >= 4 ? '#8b5cf6, #3b82f6' :
+                    tier >= 2 ? '#f59e0b, #10b981' :
+                    '#06b6d4, #0ea5e9'
+                  })`,
+                  boxShadow: `0 0 16px rgba(34,211,238,0.3)`,
+                }}
+              >
+                {user.image ? (
+                  <img
+                    src={user.image}
+                    alt={user.name || 'User'}
+                    className="w-full h-full rounded-[10px] object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full rounded-[10px] bg-[#0A1628] flex items-center justify-center">
+                    <span className="text-xl font-black text-cyan-400">
+                      {(user.name?.[0] || user.email[0]).toUpperCase()}
+                    </span>
+                  </div>
+                )}
+                {/* Fish species badge */}
+                <div className="absolute -bottom-1 -right-1 w-6 h-6 flex items-center justify-center">
+                  <FishSVG tier={tier} size={22} />
+                </div>
+              </motion.div>
+            </Link>
+
+            {/* Info */}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0">
+                  <Link href={`/profile/${user.id}`}>
+                    <h3 className="text-sm sm:text-base font-black text-cyan-100 truncate hover:text-cyan-300 transition-colors">
+                      {user.name || 'Anonymous'}
+                    </h3>
+                  </Link>
+                  {user.headline && (
+                    <p className="text-[11px] sm:text-xs text-cyan-400/70 truncate mt-0.5">
+                      {user.headline}
+                    </p>
+                  )}
+                  {(user.jobTitle || user.company) && (
+                    <p className="text-[10px] sm:text-[11px] text-cyan-500/60 truncate mt-0.5 flex items-center gap-1">
+                      <Briefcase className="w-3 h-3 flex-shrink-0" />
+                      {user.jobTitle}{user.jobTitle && user.company ? ' at ' : ''}{user.company}
+                    </p>
+                  )}
+                </div>
+                {relationshipBadge && (
+                  <span className={`flex-shrink-0 px-2 py-0.5 ${relationshipBadge.bg} text-white text-[9px] font-black rounded-full shadow-sm`}>
+                    {relationshipBadge.label}
+                  </span>
+                )}
+              </div>
+              {user.location && (
+                <div className="flex items-center gap-1 mt-1 text-[10px] sm:text-[11px] text-cyan-500/60">
+                  <MapPin className="w-3 h-3 flex-shrink-0" />
+                  <span className="truncate">{user.location}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Bio */}
+          {user.bio && (
+            <p className="text-[11px] sm:text-xs text-cyan-300/60 line-clamp-2 mb-3 leading-relaxed">
+              {user.bio}
+            </p>
+          )}
+
+          {/* Tags */}
+          {tags.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mb-3">
+              {tags.slice(0, 4).map((tag) => (
+                <span
+                  key={tag}
+                  className="px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-cyan-900/40 text-cyan-300 border border-cyan-800/30"
+                >
+                  {tag}
+                </span>
+              ))}
+              {tags.length > 4 && (
+                <span className="px-2 py-0.5 rounded-full bg-cyan-900/20 text-cyan-500/70 text-[9px] sm:text-[10px] font-bold">
+                  +{tags.length - 4}
+                </span>
+              )}
+            </div>
+          )}
+
+          {/* Match score (for suggestions) */}
+          {user.matchScore !== undefined && user.matchScore > 0 && (
+            <div className="flex items-center gap-2 mb-3 px-2.5 py-1.5 rounded-lg bg-cyan-900/30 border border-cyan-800/30">
+              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+              <span className="text-[10px] font-bold text-cyan-300">
+                {Math.round(user.matchScore)}% match
+              </span>
+              {user.matchReasons && user.matchReasons.length > 0 && (
+                <span className="text-[9px] text-cyan-500/70 truncate">
+                  {user.matchReasons[0]}
+                </span>
+              )}
+            </div>
+          )}
+
+          {/* Stats row */}
+          <div className="grid grid-cols-3 gap-1 p-2.5 rounded-xl mb-3 bg-cyan-900/20 border border-cyan-800/20">
+            <div className="text-center">
+              <p className="text-base sm:text-lg font-black text-cyan-300">
+                {user._count?.followers ?? 0}
+              </p>
+              <p className="text-[8px] sm:text-[9px] font-bold text-cyan-600 uppercase tracking-wider">
+                Followers
+              </p>
+            </div>
+            <div className="text-center">
+              <p className="text-base sm:text-lg font-black text-teal-300">
+                {user._count?.projectMemberships ?? 0}
+              </p>
+              <p className="text-[8px] sm:text-[9px] font-bold text-cyan-600 uppercase tracking-wider">
+                Projects
+              </p>
+            </div>
+            <div className="text-center">
+              <p className="text-base sm:text-lg font-black text-blue-300">
+                {stockScore}
+              </p>
+              <p className="text-[8px] sm:text-[9px] font-bold text-cyan-600 uppercase tracking-wider">
+                Stock
+              </p>
+            </div>
+          </div>
+
+          {/* Fish tier badge */}
+          <div className="flex items-center gap-2 p-2 rounded-lg bg-cyan-900/25 border-l-3 border-cyan-500/50 mb-3"
+            style={{ borderLeft: '3px solid rgba(34,211,238,0.4)' }}
+          >
+            <FishSVG tier={tier} size={18} />
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-[11px] font-black text-cyan-300">
+                {tierName.toUpperCase()}
+              </span>
+              <span className="text-[9px] text-cyan-500/70">
+                Tier {tier + 1}
+              </span>
+            </div>
+          </div>
+
+          {/* Action buttons */}
+          <div className="flex gap-2">
+            {onFollow && (
+              <button
+                onClick={() => onFollow(user.id)}
+                disabled={isLoadingFollow || !isLoggedIn}
+                className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-bold transition-all duration-300 ${
+                  isFollowing
+                    ? 'bg-cyan-900/30 text-cyan-300 border border-cyan-700/40 hover:border-cyan-600/60'
+                    : 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white hover:from-cyan-500 hover:to-blue-500 shadow-lg shadow-cyan-900/30'
+                } disabled:opacity-50`}
+              >
+                {isLoadingFollow ? (
+                  <Loader2 className="w-3 h-3 animate-spin" />
+                ) : isFollowing ? (
+                  <>
+                    <UserCheck className="w-3 h-3" />
+                    Following
+                  </>
+                ) : (
+                  <>
+                    <UserPlus className="w-3 h-3" />
+                    Follow
+                  </>
+                )}
+              </button>
+            )}
+            {onMessage && (
+              <button
+                disabled={!isLoggedIn}
+                onClick={() => onMessage(user.id)}
+                className="px-3 py-2 rounded-xl bg-cyan-900/30 text-cyan-300 border border-cyan-700/40 hover:border-cyan-600/60 transition-all duration-300 disabled:opacity-50"
+                title="Send Message"
+              >
+                <MessageCircle className="w-3 h-3" />
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    </motion.div>
   )
 }
 
 // ============================================
-// NETWORK SUB-TAB BAR
+// SKELETON CARD
+// ============================================
+
+function AquaticCardSkeleton({ index = 0 }: { index?: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: index * 0.05 }}
+      className="relative rounded-2xl overflow-hidden border border-cyan-800/20"
+      style={{ background: 'rgba(10, 22, 40, 0.75)' }}
+    >
+      <div className="h-1 bg-cyan-900/40 animate-pulse" />
+      <div className="p-4 sm:p-5 space-y-3">
+        <div className="flex items-start gap-3">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-cyan-900/40 animate-pulse" />
+          <div className="flex-1 space-y-2">
+            <div className="h-4 bg-cyan-900/40 rounded-lg animate-pulse w-2/3" />
+            <div className="h-3 bg-cyan-900/30 rounded-lg animate-pulse w-1/2" />
+            <div className="h-3 bg-cyan-900/20 rounded-lg animate-pulse w-1/3" />
+          </div>
+        </div>
+        <div className="flex gap-1.5">
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className="h-5 w-16 bg-cyan-900/30 rounded-full animate-pulse" />
+          ))}
+        </div>
+        <div className="grid grid-cols-3 gap-1 p-2.5 rounded-xl bg-cyan-900/20 animate-pulse h-14" />
+        <div className="h-10 bg-cyan-900/20 rounded-lg animate-pulse" />
+        <div className="flex gap-2">
+          <div className="flex-1 h-9 bg-cyan-900/30 rounded-xl animate-pulse" />
+          <div className="w-10 h-9 bg-cyan-900/30 rounded-xl animate-pulse" />
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
+// ============================================
+// NETWORK TAB BAR
 // ============================================
 
 function NetworkTabBar({
@@ -245,8 +469,8 @@ function NetworkTabBar({
           onClick={() => onChange(tab.id)}
           className={`relative flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all duration-300 ${
             active === tab.id
-              ? 'text-[var(--primary)] bg-[color-mix(in_srgb,var(--primary)_12%,var(--background))]'
-              : 'text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--muted)]'
+              ? 'text-cyan-300 bg-cyan-900/40 border border-cyan-700/40'
+              : 'text-cyan-500/70 hover:text-cyan-300 hover:bg-cyan-900/20'
           }`}
         >
           {tab.icon}
@@ -255,19 +479,12 @@ function NetworkTabBar({
             <span
               className={`px-1.5 py-0.5 rounded-full text-[9px] font-black ${
                 active === tab.id
-                  ? 'bg-[var(--primary)] text-[var(--primary-foreground)]'
-                  : 'bg-[var(--muted)] text-[var(--muted-foreground)]'
+                  ? 'bg-cyan-500 text-[#0A1628]'
+                  : 'bg-cyan-900/40 text-cyan-500'
               }`}
             >
               {tab.count}
             </span>
-          )}
-          {active === tab.id && (
-            <motion.div
-              layoutId="network-tab-indicator"
-              className="absolute bottom-0 left-2 right-2 h-[2px] bg-[var(--primary)] rounded-full"
-              transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-            />
           )}
         </button>
       ))}
@@ -276,25 +493,65 @@ function NetworkTabBar({
 }
 
 // ============================================
-// STAT CARD (for hero section)
+// VIEW TOGGLE
 // ============================================
 
-function StatOrb({
+function ViewToggle({
+  active,
+  onChange,
+}: {
+  active: PrimaryView
+  onChange: (view: PrimaryView) => void
+}) {
+  return (
+    <div className="relative inline-flex rounded-full p-1 bg-cyan-900/40 border border-cyan-800/30">
+      <motion.div
+        className="absolute top-1 bottom-1 rounded-full bg-gradient-to-r from-cyan-600 to-blue-600"
+        layout
+        layoutId="fishbowl-view-pill"
+        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+        animate={{
+          left: active === 'fishbowl' ? '4px' : '50%',
+          right: active === 'directory' ? '4px' : '50%',
+        }}
+      />
+      <button
+        onClick={() => onChange('fishbowl')}
+        className={`relative z-10 flex items-center gap-2 px-5 py-2 rounded-full text-sm font-bold transition-colors duration-300 ${
+          active === 'fishbowl' ? 'text-white' : 'text-cyan-500/70'
+        }`}
+      >
+        <Fish className="w-4 h-4" />
+        My Network
+      </button>
+      <button
+        onClick={() => onChange('directory')}
+        className={`relative z-10 flex items-center gap-2 px-5 py-2 rounded-full text-sm font-bold transition-colors duration-300 ${
+          active === 'directory' ? 'text-white' : 'text-cyan-500/70'
+        }`}
+      >
+        <Globe className="w-4 h-4" />
+        Directory
+      </button>
+    </div>
+  )
+}
+
+// ============================================
+// STAT BUBBLE
+// ============================================
+
+function StatBubble({
   label,
   value,
   icon,
-  color,
   delay,
 }: {
   label: string
   value: number
   icon: React.ReactNode
-  color: string
   delay: number
 }) {
-  const { twilightProgress } = useTimeTheme()
-  const isNight = twilightProgress > 0.65
-
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8, y: 20 }}
@@ -305,25 +562,14 @@ function StatOrb({
       <div
         className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         style={{
-          background: `radial-gradient(circle, ${color}22, transparent)`,
+          background: 'radial-gradient(circle, rgba(34,211,238,0.15), transparent)',
           filter: 'blur(12px)',
         }}
       />
-      <div
-        className="relative flex flex-col items-center gap-1 px-5 py-3 rounded-2xl border transition-all duration-300"
-        style={{
-          background: isNight ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.5)',
-          backdropFilter: 'blur(12px)',
-          borderColor: `${color}22`,
-        }}
-      >
-        <div style={{ color }} className="mb-0.5">
-          {icon}
-        </div>
-        <span className="text-2xl sm:text-3xl font-black text-[var(--foreground)]">{value}</span>
-        <span className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase tracking-wider">
-          {label}
-        </span>
+      <div className="relative flex flex-col items-center gap-1 px-5 py-3 rounded-2xl border border-cyan-800/30 bg-cyan-900/20 backdrop-blur-sm transition-all duration-300 hover:bg-cyan-900/30 hover:border-cyan-700/40">
+        <div className="text-cyan-400 mb-0.5">{icon}</div>
+        <span className="text-2xl sm:text-3xl font-black text-cyan-100">{value}</span>
+        <span className="text-[10px] font-bold text-cyan-500 uppercase tracking-wider">{label}</span>
       </div>
     </motion.div>
   )
@@ -346,9 +592,6 @@ function PendingRequestCard({
   isProcessing: boolean
   index: number
 }) {
-  const { twilightProgress } = useTimeTheme()
-  const isNight = twilightProgress > 0.65
-
   return (
     <motion.div
       layout
@@ -356,20 +599,20 @@ function PendingRequestCard({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.9 }}
       transition={{ delay: index * 0.06 }}
-      className="relative rounded-2xl overflow-hidden border border-[var(--border)] p-4 sm:p-5"
+      className="relative rounded-2xl overflow-hidden border border-cyan-800/30 p-4 sm:p-5"
       style={{
-        background: isNight ? 'rgba(10,10,24,0.75)' : 'var(--card)',
+        background: 'rgba(10, 22, 40, 0.75)',
         backdropFilter: 'blur(16px)',
       }}
     >
       <div className="flex items-start gap-3">
         <Link href={`/profile/${request.requester.id}`} className="flex-shrink-0">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] p-[2px]">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-600 to-blue-600 p-[2px]">
             {request.requester.image ? (
               <img src={request.requester.image} alt={request.requester.name || ''} className="w-full h-full rounded-[10px] object-cover" />
             ) : (
-              <div className="w-full h-full rounded-[10px] bg-[var(--card)] flex items-center justify-center">
-                <span className="text-lg font-black text-[var(--primary)]">
+              <div className="w-full h-full rounded-[10px] bg-[#0A1628] flex items-center justify-center">
+                <span className="text-lg font-black text-cyan-400">
                   {(request.requester.name?.[0] || '?').toUpperCase()}
                 </span>
               </div>
@@ -378,41 +621,69 @@ function PendingRequestCard({
         </Link>
         <div className="flex-1 min-w-0">
           <Link href={`/profile/${request.requester.id}`}>
-            <h4 className="text-sm font-black text-[var(--foreground)] truncate hover:text-[var(--primary)] transition-colors">
+            <h4 className="text-sm font-black text-cyan-100 truncate hover:text-cyan-300 transition-colors">
               {request.requester.name || 'Anonymous'}
             </h4>
           </Link>
           {request.requester.headline && (
-            <p className="text-[11px] text-[var(--muted-foreground)] truncate">{request.requester.headline}</p>
+            <p className="text-[11px] text-cyan-500/70 truncate">{request.requester.headline}</p>
           )}
           {request.message && (
-            <p className="text-xs text-[var(--muted-foreground)] mt-2 italic line-clamp-2">
+            <p className="text-xs text-cyan-400/60 mt-2 italic line-clamp-2">
               &ldquo;{request.message}&rdquo;
             </p>
           )}
           <div className="flex gap-2 mt-3">
-            <Button
-              size="sm"
+            <button
               onClick={() => onAccept(request.id)}
               disabled={isProcessing}
-              className="text-xs font-bold h-7 px-3"
+              className="flex items-center gap-1 text-xs font-bold h-7 px-3 rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 text-white hover:from-cyan-500 hover:to-blue-500 transition-all disabled:opacity-50"
             >
-              <Check className="w-3 h-3 mr-1" />
+              <Check className="w-3 h-3" />
               Accept
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
+            </button>
+            <button
               onClick={() => onReject(request.id)}
               disabled={isProcessing}
-              className="text-xs font-bold h-7 px-3"
+              className="flex items-center gap-1 text-xs font-bold h-7 px-3 rounded-lg bg-cyan-900/30 text-cyan-300 border border-cyan-700/40 hover:border-cyan-600/60 transition-all disabled:opacity-50"
             >
-              <X className="w-3 h-3 mr-1" />
+              <X className="w-3 h-3" />
               Decline
-            </Button>
+            </button>
           </div>
         </div>
       </div>
+    </motion.div>
+  )
+}
+
+// ============================================
+// EMPTY STATE
+// ============================================
+
+function EmptyState({
+  icon,
+  title,
+  message,
+  action,
+}: {
+  icon: React.ReactNode
+  title: string
+  message: string
+  action?: React.ReactNode
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="flex flex-col items-center justify-center py-20 text-center"
+    >
+      <div className="w-20 h-20 rounded-2xl flex items-center justify-center mb-4 text-cyan-500/50 bg-cyan-900/20 border border-cyan-800/20">
+        {icon}
+      </div>
+      <h3 className="text-lg font-black text-cyan-100 mb-1">{title}</h3>
+      <p className="text-sm text-cyan-500/70 font-medium max-w-sm">{message}</p>
+      {action}
     </motion.div>
   )
 }
@@ -425,24 +696,28 @@ export default function NetworkPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { phase, twilightProgress, isDay } = useTimeTheme()
 
   // Primary view
-  const initialView = (searchParams.get('view') as PrimaryView) || 'network'
+  const initialView = (searchParams.get('view') as PrimaryView) || 'fishbowl'
   const [primaryView, setPrimaryView] = useState<PrimaryView>(initialView)
   const [networkTab, setNetworkTab] = useState<NetworkTab>('all')
 
-  // Data states
-  const [allUsers, setAllUsers] = useState<ConstellationCardUser[]>([])
-  const [followingUsers, setFollowingUsers] = useState<ConstellationCardUser[]>([])
-  const [followerUsers, setFollowerUsers] = useState<ConstellationCardUser[]>([])
-  const [suggestions, setSuggestions] = useState<ConstellationCardUser[]>([])
+  // Fishbowl data
+  const [fishbowlUsers, setFishbowlUsers] = useState<FishbowlUser[]>([])
+  const [showFishbowl, setShowFishbowl] = useState(true)
+  const [showInfo, setShowInfo] = useState(false)
+
+  // Network data states
+  const [allUsers, setAllUsers] = useState<NetworkCardUser[]>([])
+  const [followingUsers, setFollowingUsers] = useState<NetworkCardUser[]>([])
+  const [followerUsers, setFollowerUsers] = useState<NetworkCardUser[]>([])
+  const [suggestions, setSuggestions] = useState<NetworkCardUser[]>([])
   const [pendingRequests, setPendingRequests] = useState<PendingRequest[]>([])
   const [followingIds, setFollowingIds] = useState<Set<string>>(new Set())
   const [followerIds, setFollowerIds] = useState<Set<string>>(new Set())
 
   // Directory states
-  const [directoryUsers, setDirectoryUsers] = useState<ConstellationCardUser[]>([])
+  const [directoryUsers, setDirectoryUsers] = useState<NetworkCardUser[]>([])
   const [directoryTotal, setDirectoryTotal] = useState(0)
   const [directoryPage, setDirectoryPage] = useState(1)
   const [directoryTotalPages, setDirectoryTotalPages] = useState(1)
@@ -463,8 +738,6 @@ export default function NetworkPage() {
 
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
-  const isNight = twilightProgress > 0.65
-
   // Stats
   const stats: NetworkStats = useMemo(() => ({
     following: followingUsers.length,
@@ -474,9 +747,29 @@ export default function NetworkPage() {
     pending: pendingRequests.length,
   }), [followingUsers, followerUsers, followerIds, suggestions, pendingRequests])
 
+  // Current user fish info
+  const currentFishUser = useMemo(() => {
+    return fishbowlUsers.find(u => u.id === session?.user?.id)
+  }, [fishbowlUsers, session?.user?.id])
+
+  const currentTier = currentFishUser ? getTierFromScore(currentFishUser.stockScore) : 0
+  const currentTierName = currentFishUser ? getTierName(currentTier) : 'Guppy'
+
   // ============================================
   // DATA FETCHING
   // ============================================
+
+  const fetchFishbowlData = useCallback(async () => {
+    try {
+      const res = await fetch('/api/fishbowl')
+      const data = await res.json()
+      if (data.success) {
+        setFishbowlUsers(data.data)
+      }
+    } catch (error) {
+      console.error('Error fetching fishbowl data:', error)
+    }
+  }, [])
 
   const fetchNetworkData = useCallback(async () => {
     if (!session?.user?.id) return
@@ -500,13 +793,13 @@ export default function NetworkPage() {
       if (followingData.success) {
         const users = followingData.data || followingData.following || []
         setFollowingUsers(users)
-        setFollowingIds(new Set(users.map((u: ConstellationCardUser) => u.id)))
+        setFollowingIds(new Set(users.map((u: NetworkCardUser) => u.id)))
       }
 
       if (followersData.success) {
         const users = followersData.data || followersData.followers || []
         setFollowerUsers(users)
-        setFollowerIds(new Set(users.map((u: ConstellationCardUser) => u.id)))
+        setFollowerIds(new Set(users.map((u: NetworkCardUser) => u.id)))
       }
 
       if (suggestionsData.success) {
@@ -526,8 +819,8 @@ export default function NetworkPage() {
       }
 
       // Combine all unique users for the "all" tab
-      const allMap = new Map<string, ConstellationCardUser>()
-      const addUsers = (users: ConstellationCardUser[]) => {
+      const allMap = new Map<string, NetworkCardUser>()
+      const addUsers = (users: NetworkCardUser[]) => {
         users.forEach(u => {
           if (!allMap.has(u.id) && u.id !== session.user?.id) {
             allMap.set(u.id, u)
@@ -595,8 +888,9 @@ export default function NetworkPage() {
   useEffect(() => {
     if (session?.user?.id) {
       fetchNetworkData()
+      fetchFishbowlData()
     }
-  }, [session?.user?.id, fetchNetworkData])
+  }, [session?.user?.id, fetchNetworkData, fetchFishbowlData])
 
   useEffect(() => {
     if (primaryView === 'directory') {
@@ -643,7 +937,6 @@ export default function NetworkPage() {
           toast.success('Unfollowed')
         } else {
           newIds.add(userId)
-          // Find the user in allUsers or suggestions and add to following
           const user = allUsers.find(u => u.id === userId) || suggestions.find(u => u.id === userId) || directoryUsers.find(u => u.id === userId)
           if (user) {
             setFollowingUsers(prev => [...prev, user])
@@ -741,8 +1034,8 @@ export default function NetworkPage() {
   // FILTERED + SORTED USERS (Network View)
   // ============================================
 
-  const getNetworkUsers = useCallback((): ConstellationCardUser[] => {
-    let users: ConstellationCardUser[] = []
+  const getNetworkUsers = useCallback((): NetworkCardUser[] => {
+    let users: NetworkCardUser[] = []
 
     switch (networkTab) {
       case 'following':
@@ -799,23 +1092,14 @@ export default function NetworkPage() {
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen flex items-center justify-center relative">
-        <AmbientOrbs />
+      <div className="h-full flex items-center justify-center bg-[#0A1628]">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="text-center space-y-4 relative z-10"
+          className="text-center space-y-4"
         >
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-            className="w-16 h-16 mx-auto"
-          >
-            <Orbit className="w-16 h-16 text-[var(--primary)]" />
-          </motion.div>
-          <p className="text-lg font-bold text-[var(--muted-foreground)]">
-            Mapping the constellation...
-          </p>
+          <div className="w-16 h-16 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto" />
+          <p className="text-lg font-bold text-cyan-400">Filling the fishbowl...</p>
         </motion.div>
       </div>
     )
@@ -823,27 +1107,26 @@ export default function NetworkPage() {
 
   if (!session) {
     return (
-      <div className="min-h-screen flex items-center justify-center relative">
-        <AmbientOrbs />
+      <div className="h-full flex items-center justify-center bg-[#0A1628]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center space-y-6 max-w-md px-6 relative z-10"
+          className="text-center space-y-6 max-w-md px-6"
         >
-          <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center">
-            <Network className="w-10 h-10 text-white" />
+          <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+            <Fish className="w-10 h-10 text-white" />
           </div>
-          <h2 className="text-3xl font-black text-[var(--foreground)]">
-            Join the Constellation
+          <h2 className="text-3xl font-black text-cyan-100">
+            Join the Fishbowl
           </h2>
-          <p className="text-[var(--muted-foreground)] font-medium">
-            Sign in to discover your network of sustainability champions
+          <p className="text-cyan-400/80 font-medium">
+            Sign in to swim with your community
           </p>
           <Link href="/auth/signin">
-            <Button className="font-bold text-base px-8 py-3">
+            <button className="font-bold text-base px-8 py-3 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white hover:from-cyan-500 hover:to-blue-500 transition-all">
               Sign In
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
+              <ArrowRight className="w-4 h-4 ml-2 inline" />
+            </button>
           </Link>
         </motion.div>
       </div>
@@ -855,93 +1138,164 @@ export default function NetworkPage() {
   // ============================================
 
   return (
-    <div className="min-h-screen relative">
-      <AmbientOrbs />
-
-      <div className="relative z-10">
-        {/* ============================================ */}
-        {/* HERO SECTION */}
-        {/* ============================================ */}
-        <section className="pt-12 pb-8 sm:pt-16 sm:pb-10">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-6xl mx-auto">
-              {/* Title */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-center mb-8"
-              >
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[var(--foreground)] mb-3">
-                  <span className="inline-block">
-                    THE{' '}
-                    <span
-                      className="bg-clip-text text-transparent bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)]"
-                    >
-                      CONSTELLATION
-                    </span>
-                  </span>
-                </h1>
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                  className="text-sm sm:text-base text-[var(--muted-foreground)] font-medium max-w-xl mx-auto"
-                >
-                  Every connection is a star in your sky. Watch your constellation grow.
-                </motion.p>
-              </motion.div>
-
+    <div className="h-full flex flex-col overflow-hidden bg-[#0A1628]">
+      {/* ============================================ */}
+      {/* FISHBOWL HEADER */}
+      {/* ============================================ */}
+      <div className="flex-shrink-0 bg-gradient-to-r from-[#0D2137]/95 via-[#123855]/95 to-[#0D2137]/95 backdrop-blur-sm border-b-2 border-cyan-800/50">
+        <div className="container mx-auto px-4 sm:px-6 py-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-cyan-900/50 flex items-center justify-center border border-cyan-700/50">
+                <Fish className="w-5 h-5 text-cyan-400" />
+              </div>
+              <div>
+                <h1 className="text-xl font-black text-cyan-100">THE FISHBOWL</h1>
+                <p className="text-xs font-medium text-cyan-500/80">
+                  Community aquarium · Every member is a fish
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 sm:gap-3">
+              {/* Your fish info */}
+              {currentFishUser && (
+                <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-cyan-900/30 border border-cyan-800/40">
+                  <FishSVG tier={currentTier} size={24} />
+                  <div>
+                    <p className="text-[10px] text-cyan-500 font-medium">YOUR FISH</p>
+                    <p className="text-xs font-bold text-cyan-200">{currentTierName} · {currentFishUser.stockScore} STOCK</p>
+                  </div>
+                </div>
+              )}
               {/* Stats */}
-              <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-8">
-                <StatOrb
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-cyan-900/30 border border-cyan-800/40">
+                <Users className="w-4 h-4 text-cyan-500" />
+                <span className="text-xs font-bold text-cyan-300">{fishbowlUsers.length}</span>
+              </div>
+              {/* Toggle fishbowl visibility */}
+              <button
+                onClick={() => setShowFishbowl(!showFishbowl)}
+                className="p-2 rounded-lg bg-cyan-900/30 border border-cyan-800/40 hover:border-cyan-600/60 transition-colors"
+                title={showFishbowl ? 'Hide aquarium' : 'Show aquarium'}
+              >
+                {showFishbowl ? (
+                  <EyeOff className="w-4 h-4 text-cyan-500" />
+                ) : (
+                  <Eye className="w-4 h-4 text-cyan-500" />
+                )}
+              </button>
+              {/* Info toggle */}
+              <button
+                onClick={() => setShowInfo(!showInfo)}
+                className="p-2 rounded-lg bg-cyan-900/30 border border-cyan-800/40 hover:border-cyan-600/60 transition-colors"
+              >
+                <Info className="w-4 h-4 text-cyan-500" />
+              </button>
+            </div>
+          </div>
+
+          {/* Info panel */}
+          {showInfo && (
+            <div className="mt-3 p-3 rounded-xl bg-[#0A1628]/80 border border-cyan-800/30 animate-in slide-in-from-top duration-200">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
+                {([0, 1, 2, 3, 4, 5] as const).map(tier => (
+                  <div key={tier} className="flex items-center gap-2 p-2 rounded-lg bg-cyan-900/20">
+                    <FishSVG tier={tier} size={20} />
+                    <div>
+                      <p className="text-[9px] text-cyan-500 font-medium">{getTierName(tier)}</p>
+                      <p className="text-[9px] text-cyan-600">
+                        {tier === 0 && '0-9'}
+                        {tier === 1 && '10-24'}
+                        {tier === 2 && '25-49'}
+                        {tier === 3 && '50-99'}
+                        {tier === 4 && '100-199'}
+                        {tier === 5 && '200+'}
+                        {' STOCK'}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-2 text-[10px] text-cyan-600 text-center">
+                Hover over a fish to see who it is. Click to view profile, message, or connect.
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ============================================ */}
+      {/* FISHBOWL AQUARIUM */}
+      {/* ============================================ */}
+      <AnimatePresence>
+        {showFishbowl && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 280, opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.4, ease: 'easeInOut' }}
+            className="flex-shrink-0 px-3 sm:px-4 pt-3 overflow-hidden"
+          >
+            <div className="w-full h-full rounded-2xl border-2 border-cyan-800/40 shadow-lg shadow-cyan-900/20 overflow-hidden">
+              <Fishbowl users={fishbowlUsers} />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ============================================ */}
+      {/* NETWORK CONTENT (scrollable) */}
+      {/* ============================================ */}
+      <div className="flex-1 overflow-y-auto min-h-0">
+        {/* Stats + View Toggle */}
+        <section className="pt-6 pb-4">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="max-w-6xl mx-auto">
+              {/* Stats */}
+              <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-6">
+                <StatBubble
                   label="Following"
                   value={stats.following}
                   icon={<UserCheck className="w-5 h-5" />}
-                  color="var(--primary)"
                   delay={0.1}
                 />
-                <StatOrb
+                <StatBubble
                   label="Followers"
                   value={stats.followers}
                   icon={<Heart className="w-5 h-5" />}
-                  color="var(--secondary)"
                   delay={0.2}
                 />
-                <StatOrb
+                <StatBubble
                   label="Mutual"
                   value={stats.mutual}
                   icon={<Activity className="w-5 h-5" />}
-                  color="var(--accent)"
                   delay={0.3}
                 />
                 {stats.pending > 0 && (
-                  <StatOrb
+                  <StatBubble
                     label="Pending"
                     value={stats.pending}
                     icon={<Clock className="w-5 h-5" />}
-                    color="#f59e0b"
                     delay={0.4}
                   />
                 )}
               </div>
 
               {/* View Toggle */}
-              <div className="flex justify-center mb-6">
+              <div className="flex justify-center mb-4">
                 <ViewToggle active={primaryView} onChange={handleViewChange} />
               </div>
             </div>
           </div>
         </section>
 
-        {/* ============================================ */}
-        {/* CONTROLS BAR */}
-        {/* ============================================ */}
-        <section className="pb-6">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Controls Bar */}
+        <section className="pb-4">
+          <div className="container mx-auto px-4 sm:px-6">
             <div className="max-w-6xl mx-auto space-y-4">
               {/* Network sub-tabs */}
               <AnimatePresence mode="wait">
-                {primaryView === 'network' && (
+                {primaryView === 'fishbowl' && (
                   <motion.div
                     key="network-tabs"
                     initial={{ opacity: 0, y: -10 }}
@@ -959,24 +1313,18 @@ export default function NetworkPage() {
               {/* Search bar */}
               <div className="flex gap-2 sm:gap-3">
                 <div className="flex-1 relative">
-                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[var(--muted-foreground)]" />
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-cyan-500/50" />
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder={primaryView === 'network' ? 'Search your network...' : 'Search all members...'}
-                    className="w-full pl-11 pr-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300"
-                    style={{
-                      background: isNight ? 'rgba(255,255,255,0.06)' : 'var(--card)',
-                      border: `1px solid var(--border)`,
-                      color: 'var(--foreground)',
-                      backdropFilter: 'blur(12px)',
-                    }}
+                    placeholder={primaryView === 'fishbowl' ? 'Search your network...' : 'Search all members...'}
+                    className="w-full pl-11 pr-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 bg-cyan-900/20 border border-cyan-800/30 text-cyan-100 placeholder:text-cyan-600/50 focus:outline-none focus:border-cyan-600/60 backdrop-blur-sm"
                   />
                   {searchQuery && (
                     <button
                       onClick={() => setSearchQuery('')}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--muted-foreground)] hover:text-[var(--foreground)]"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-cyan-500/50 hover:text-cyan-300"
                     >
                       <X className="w-4 h-4" />
                     </button>
@@ -984,27 +1332,25 @@ export default function NetworkPage() {
                 </div>
 
                 {primaryView === 'directory' && (
-                  <Button
-                    variant="outline"
-                    size="sm"
+                  <button
                     onClick={() => setShowFilters(!showFilters)}
-                    className="font-bold text-xs"
+                    className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-cyan-900/20 border border-cyan-800/30 text-cyan-300 hover:border-cyan-600/60 transition-all"
                   >
-                    <Filter className="w-3.5 h-3.5 mr-1.5" />
+                    <Filter className="w-3.5 h-3.5" />
                     Filters
                     {hasActiveFilters && (
-                      <span className="ml-1 px-1.5 py-0.5 bg-[var(--primary)] text-[var(--primary-foreground)] rounded-full text-[9px] font-black">
+                      <span className="ml-1 px-1.5 py-0.5 bg-cyan-500 text-[#0A1628] rounded-full text-[9px] font-black">
                         {[locationFilter, ...skillsFilter, ...interestsFilter].filter(Boolean).length}
                       </span>
                     )}
-                  </Button>
+                  </button>
                 )}
 
-                {primaryView === 'network' && (
+                {primaryView === 'fishbowl' && (
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-                    className="px-3 py-2 rounded-xl text-xs font-bold border border-[var(--border)] bg-[var(--card)] text-[var(--foreground)]"
+                    className="px-3 py-2 rounded-xl text-xs font-bold border border-cyan-800/30 bg-cyan-900/20 text-cyan-300"
                   >
                     <option value="newest">Newest</option>
                     <option value="popular">Most Popular</option>
@@ -1023,16 +1369,10 @@ export default function NetworkPage() {
                     transition={{ duration: 0.3, ease: 'easeInOut' }}
                     className="overflow-hidden"
                   >
-                    <div
-                      className="grid sm:grid-cols-3 gap-4 p-4 rounded-xl border border-[var(--border)]"
-                      style={{
-                        background: isNight ? 'rgba(255,255,255,0.04)' : 'var(--card)',
-                        backdropFilter: 'blur(12px)',
-                      }}
-                    >
+                    <div className="grid sm:grid-cols-3 gap-4 p-4 rounded-xl border border-cyan-800/30 bg-cyan-900/20 backdrop-blur-sm">
                       {/* Location */}
                       <div>
-                        <label className="flex items-center gap-1 text-xs font-bold text-[var(--foreground)] mb-2">
+                        <label className="flex items-center gap-1 text-xs font-bold text-cyan-300 mb-2">
                           <MapPin className="w-3 h-3" />
                           LOCATION
                         </label>
@@ -1041,19 +1381,19 @@ export default function NetworkPage() {
                           value={locationFilter}
                           onChange={(e) => { setLocationFilter(e.target.value); setDirectoryPage(1) }}
                           placeholder="e.g., San Francisco"
-                          className="w-full px-3 py-2 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] focus:outline-none focus:border-[var(--primary)] transition-colors text-sm"
+                          className="w-full px-3 py-2 rounded-lg bg-[#0A1628] border border-cyan-800/30 text-cyan-100 placeholder:text-cyan-700 focus:outline-none focus:border-cyan-600/60 transition-colors text-sm"
                         />
                       </div>
 
                       {/* Skills */}
                       <div>
-                        <label className="flex items-center gap-1 text-xs font-bold text-[var(--foreground)] mb-2">
+                        <label className="flex items-center gap-1 text-xs font-bold text-cyan-300 mb-2">
                           <Briefcase className="w-3 h-3" />
                           SKILLS
                         </label>
                         <div className="flex flex-wrap gap-1 mb-2">
                           {skillsFilter.map((skill) => (
-                            <span key={skill} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] text-[10px] font-bold">
+                            <span key={skill} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-cyan-600 text-white text-[10px] font-bold">
                               {skill}
                               <button onClick={() => { setSkillsFilter(s => s.filter(x => x !== skill)); setDirectoryPage(1) }}>
                                 <X className="w-2.5 h-2.5" />
@@ -1068,21 +1408,21 @@ export default function NetworkPage() {
                             onChange={(e) => setNewSkill(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && addSkillFilter()}
                             placeholder="Add skill"
-                            className="flex-1 px-3 py-1.5 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] focus:outline-none focus:border-[var(--primary)] text-xs"
+                            className="flex-1 px-3 py-1.5 rounded-lg bg-[#0A1628] border border-cyan-800/30 text-cyan-100 placeholder:text-cyan-700 focus:outline-none focus:border-cyan-600/60 text-xs"
                           />
-                          <Button onClick={addSkillFilter} size="sm" className="text-xs h-7 px-2">+</Button>
+                          <button onClick={addSkillFilter} className="text-xs h-7 px-2 rounded-lg bg-cyan-800/40 text-cyan-300 hover:bg-cyan-700/40 font-bold">+</button>
                         </div>
                       </div>
 
                       {/* Interests */}
                       <div>
-                        <label className="flex items-center gap-1 text-xs font-bold text-[var(--foreground)] mb-2">
+                        <label className="flex items-center gap-1 text-xs font-bold text-cyan-300 mb-2">
                           <Sparkles className="w-3 h-3" />
                           INTERESTS
                         </label>
                         <div className="flex flex-wrap gap-1 mb-2">
                           {interestsFilter.map((interest) => (
-                            <span key={interest} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-[var(--primary)] text-[var(--primary)] text-[10px] font-bold">
+                            <span key={interest} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-cyan-500 text-cyan-300 text-[10px] font-bold">
                               {interest}
                               <button onClick={() => { setInterestsFilter(i => i.filter(x => x !== interest)); setDirectoryPage(1) }}>
                                 <X className="w-2.5 h-2.5" />
@@ -1097,9 +1437,9 @@ export default function NetworkPage() {
                             onChange={(e) => setNewInterest(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && addInterestFilter()}
                             placeholder="Add interest"
-                            className="flex-1 px-3 py-1.5 rounded-lg bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] focus:outline-none focus:border-[var(--primary)] text-xs"
+                            className="flex-1 px-3 py-1.5 rounded-lg bg-[#0A1628] border border-cyan-800/30 text-cyan-100 placeholder:text-cyan-700 focus:outline-none focus:border-cyan-600/60 text-xs"
                           />
-                          <Button onClick={addInterestFilter} size="sm" className="text-xs h-7 px-2">+</Button>
+                          <button onClick={addInterestFilter} className="text-xs h-7 px-2 rounded-lg bg-cyan-800/40 text-cyan-300 hover:bg-cyan-700/40 font-bold">+</button>
                         </div>
                       </div>
                     </div>
@@ -1108,7 +1448,7 @@ export default function NetworkPage() {
                       <div className="flex justify-end mt-2">
                         <button
                           onClick={clearAllFilters}
-                          className="text-xs font-bold text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
+                          className="text-xs font-bold text-cyan-500/70 hover:text-cyan-300 transition-colors"
                         >
                           Clear all filters
                         </button>
@@ -1121,17 +1461,15 @@ export default function NetworkPage() {
           </div>
         </section>
 
-        {/* ============================================ */}
-        {/* CONTENT */}
-        {/* ============================================ */}
+        {/* Content */}
         <section className="pb-16">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="container mx-auto px-4 sm:px-6">
             <div className="max-w-6xl mx-auto">
               <AnimatePresence mode="wait">
                 {/* ============================================ */}
                 {/* NETWORK VIEW */}
                 {/* ============================================ */}
-                {primaryView === 'network' && (
+                {primaryView === 'fishbowl' && (
                   <motion.div
                     key="network-view"
                     initial={{ opacity: 0, x: -20 }}
@@ -1170,7 +1508,7 @@ export default function NetworkPage() {
                     ) : isLoading ? (
                       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {[...Array(6)].map((_, i) => (
-                          <ConstellationCardSkeleton key={i} index={i} />
+                          <AquaticCardSkeleton key={i} index={i} />
                         ))}
                       </div>
                     ) : networkUsers.length === 0 ? (
@@ -1178,11 +1516,11 @@ export default function NetworkPage() {
                         icon={
                           networkTab === 'suggestions'
                             ? <Compass className="w-12 h-12" />
-                            : <Users className="w-12 h-12" />
+                            : <Fish className="w-12 h-12" />
                         }
                         title={
                           searchQuery
-                            ? 'No matches found'
+                            ? 'No fish found'
                             : networkTab === 'following'
                               ? 'Not following anyone yet'
                               : networkTab === 'followers'
@@ -1191,7 +1529,7 @@ export default function NetworkPage() {
                                   ? 'No mutual connections'
                                   : networkTab === 'suggestions'
                                     ? 'No suggestions right now'
-                                    : 'Your network is empty'
+                                    : 'Your fishbowl is empty'
                         }
                         message={
                           searchQuery
@@ -1200,13 +1538,13 @@ export default function NetworkPage() {
                         }
                         action={
                           !searchQuery && (
-                            <Button
+                            <button
                               onClick={() => handleViewChange('directory')}
-                              className="font-bold mt-2"
+                              className="font-bold mt-3 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white text-sm hover:from-cyan-500 hover:to-blue-500 transition-all flex items-center gap-2"
                             >
-                              <Globe className="w-4 h-4 mr-2" />
+                              <Globe className="w-4 h-4" />
                               Browse Directory
-                            </Button>
+                            </button>
                           )
                         }
                       />
@@ -1215,7 +1553,7 @@ export default function NetworkPage() {
                         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                           <AnimatePresence mode="popLayout">
                             {networkUsers.map((user, i) => (
-                              <ConstellationCard
+                              <AquaticUserCard
                                 key={user.id}
                                 user={user}
                                 isFollowing={followingIds.has(user.id)}
@@ -1247,7 +1585,7 @@ export default function NetworkPage() {
                   >
                     {/* Results count */}
                     <div className="mb-4 flex items-center justify-between">
-                      <p className="text-xs font-bold text-[var(--muted-foreground)]">
+                      <p className="text-xs font-bold text-cyan-500/70">
                         {directoryTotal} member{directoryTotal !== 1 ? 's' : ''}
                         {hasActiveFilters && ' matching filters'}
                       </p>
@@ -1256,19 +1594,22 @@ export default function NetworkPage() {
                     {isDirectoryLoading ? (
                       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {[...Array(9)].map((_, i) => (
-                          <ConstellationCardSkeleton key={i} index={i} />
+                          <AquaticCardSkeleton key={i} index={i} />
                         ))}
                       </div>
                     ) : directoryUsers.length === 0 ? (
                       <EmptyState
-                        icon={<Users className="w-12 h-12" />}
-                        title={hasActiveFilters ? 'No matches found' : 'No members yet'}
-                        message={hasActiveFilters ? 'Try adjusting your filters' : 'Be the first to join!'}
+                        icon={<Fish className="w-12 h-12" />}
+                        title={hasActiveFilters ? 'No fish found' : 'No members yet'}
+                        message={hasActiveFilters ? 'Try adjusting your filters' : 'Be the first to join the fishbowl!'}
                         action={
                           hasActiveFilters && (
-                            <Button onClick={clearAllFilters} variant="outline" className="font-bold mt-2">
+                            <button
+                              onClick={clearAllFilters}
+                              className="font-bold mt-3 px-4 py-2 rounded-xl bg-cyan-900/30 text-cyan-300 border border-cyan-700/40 text-sm hover:border-cyan-600/60 transition-all"
+                            >
                               Clear Filters
-                            </Button>
+                            </button>
                           )
                         }
                       />
@@ -1278,7 +1619,7 @@ export default function NetworkPage() {
                           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             <AnimatePresence mode="popLayout">
                               {directoryUsers.map((user, i) => (
-                                <ConstellationCard
+                                <AquaticUserCard
                                   key={user.id}
                                   user={user}
                                   isFollowing={followingIds.has(user.id)}
@@ -1301,21 +1642,19 @@ export default function NetworkPage() {
                             animate={{ opacity: 1, y: 0 }}
                             className="flex items-center justify-center gap-2 mt-10"
                           >
-                            <Button
-                              variant="outline"
-                              size="sm"
+                            <button
                               onClick={() => setDirectoryPage(p => Math.max(1, p - 1))}
                               disabled={directoryPage === 1}
-                              className="font-bold text-xs"
+                              className="flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-bold bg-cyan-900/20 border border-cyan-800/30 text-cyan-300 hover:border-cyan-600/60 transition-all disabled:opacity-40"
                             >
-                              <ChevronLeft className="w-3.5 h-3.5 mr-1" />
+                              <ChevronLeft className="w-3.5 h-3.5" />
                               Prev
-                            </Button>
+                            </button>
 
                             <div className="flex gap-1">
                               {generatePageNumbers(directoryPage, directoryTotalPages).map((page, i) => (
                                 page === '...' ? (
-                                  <span key={`dots-${i}`} className="px-2 py-1 text-xs text-[var(--muted-foreground)]">
+                                  <span key={`dots-${i}`} className="px-2 py-1 text-xs text-cyan-600">
                                     ...
                                   </span>
                                 ) : (
@@ -1324,8 +1663,8 @@ export default function NetworkPage() {
                                     onClick={() => setDirectoryPage(page as number)}
                                     className={`w-8 h-8 rounded-lg text-xs font-bold transition-all duration-300 ${
                                       directoryPage === page
-                                        ? 'bg-[var(--primary)] text-[var(--primary-foreground)] shadow-lg'
-                                        : 'text-[var(--muted-foreground)] hover:bg-[var(--muted)]'
+                                        ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg shadow-cyan-900/30'
+                                        : 'text-cyan-500/70 hover:bg-cyan-900/30'
                                     }`}
                                   >
                                     {page}
@@ -1334,16 +1673,14 @@ export default function NetworkPage() {
                               ))}
                             </div>
 
-                            <Button
-                              variant="outline"
-                              size="sm"
+                            <button
                               onClick={() => setDirectoryPage(p => Math.min(directoryTotalPages, p + 1))}
                               disabled={directoryPage === directoryTotalPages}
-                              className="font-bold text-xs"
+                              className="flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-bold bg-cyan-900/20 border border-cyan-800/30 text-cyan-300 hover:border-cyan-600/60 transition-all disabled:opacity-40"
                             >
                               Next
-                              <ChevronRight className="w-3.5 h-3.5 ml-1" />
-                            </Button>
+                              <ChevronRight className="w-3.5 h-3.5" />
+                            </button>
                           </motion.div>
                         )}
                       </>
@@ -1356,45 +1693,6 @@ export default function NetworkPage() {
         </section>
       </div>
     </div>
-  )
-}
-
-// ============================================
-// EMPTY STATE
-// ============================================
-
-function EmptyState({
-  icon,
-  title,
-  message,
-  action,
-}: {
-  icon: React.ReactNode
-  title: string
-  message: string
-  action?: React.ReactNode
-}) {
-  const { twilightProgress } = useTimeTheme()
-  const isNight = twilightProgress > 0.65
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col items-center justify-center py-20 text-center"
-    >
-      <div
-        className="w-20 h-20 rounded-2xl flex items-center justify-center mb-4 text-[var(--muted-foreground)]"
-        style={{
-          background: isNight ? 'rgba(255,255,255,0.04)' : 'var(--muted)',
-        }}
-      >
-        {icon}
-      </div>
-      <h3 className="text-lg font-black text-[var(--foreground)] mb-1">{title}</h3>
-      <p className="text-sm text-[var(--muted-foreground)] font-medium max-w-sm">{message}</p>
-      {action}
-    </motion.div>
   )
 }
 
