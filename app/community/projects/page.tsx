@@ -1152,7 +1152,7 @@ function ProjectsPhilosophy({ totalProjects, totalContributors }: {
       <div className="absolute inset-0 bg-gradient-to-r from-[var(--background)]/90 via-[var(--background)]/40 to-transparent" />
 
       {/* Content — Our Philosophy */}
-      <div className="absolute inset-0 flex items-center justify-center pt-16">
+      <div className="absolute inset-0 flex items-center justify-center pt-24 sm:pt-28">
         <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto text-center">
             {/* Compass mark */}
