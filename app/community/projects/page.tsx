@@ -1065,7 +1065,7 @@ function ScrollRow({ title, subtitle, projects, ghostCount }: ProjectRow) {
 function ProjectsPhilosophy() {
   return (
     <div className="relative w-full overflow-hidden"
-      style={{ minHeight: '100vh' }}
+      style={{ height: '100vh', maxHeight: '100dvh' }}
     >
       {/* Background layer */}
       <div className="absolute inset-0" style={{
@@ -1134,7 +1134,7 @@ function ProjectsPhilosophy() {
       <div className="absolute inset-0 bg-gradient-to-r from-[var(--background)]/80 via-[var(--background)]/30 to-transparent" />
 
       {/* Content — Our Philosophy */}
-      <div className="absolute inset-0 flex items-center justify-center pt-16 sm:pt-20">
+      <div className="absolute inset-0 flex items-center justify-center">
         <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
 
           <div className="max-w-2xl mx-auto text-center">
