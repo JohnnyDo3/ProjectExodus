@@ -14,6 +14,12 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { JoinProjectButton } from '@/components/projects/JoinProjectButton'
 import React, { useState, useEffect, useRef, useCallback } from 'react'
+import dynamic from 'next/dynamic'
+
+const BirdFlightCanvas = dynamic(
+  () => import('@/components/community/BirdFlightCanvas').then((m) => m.BirdFlightCanvas),
+  { ssr: false }
+)
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -1042,10 +1048,34 @@ function ProjectsPhilosophy({ totalProjects, totalContributors }: {
   totalProjects: number
   totalContributors: number
 }) {
+  const heroRef = useRef<HTMLDivElement>(null)
+  const [scrollFade, setScrollFade] = useState(1)
+
+  useEffect(() => {
+    function onScroll() {
+      if (!heroRef.current) return
+      const rect = heroRef.current.getBoundingClientRect()
+      const h = heroRef.current.offsetHeight
+      // Fade out as hero scrolls away — fully gone by 60% scrolled
+      const visible = Math.max(0, Math.min(1, (rect.bottom) / (h * 0.6)))
+      setScrollFade(visible)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   return (
-    <div className="relative w-full overflow-hidden"
+    <div ref={heroRef} className="relative w-full overflow-hidden"
       style={{ minHeight: 'clamp(560px, 85vh, 920px)' }}
     >
+      {/* ═══ BIRD FLIGHT CANVAS ═══ */}
+      <div
+        className="absolute inset-0 transition-none"
+        style={{ opacity: scrollFade, willChange: 'opacity' }}
+      >
+        <BirdFlightCanvas />
+      </div>
+
       {/* Background layer — abstract landscape */}
       <div className="absolute inset-0" style={{
           background: `
@@ -1147,9 +1177,9 @@ function ProjectsPhilosophy({ totalProjects, totalContributors }: {
           <ShootingStar />
         </div>
 
-      {/* Gradient veils */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/70 to-[var(--background)]/30" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[var(--background)]/90 via-[var(--background)]/40 to-transparent" />
+      {/* Gradient veils — blend canvas into page */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/60 to-[var(--background)]/15" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[var(--background)]/80 via-[var(--background)]/30 to-transparent" />
 
       {/* Content — Our Philosophy */}
       <div className="absolute inset-0 flex items-center justify-center pt-24 sm:pt-28">
