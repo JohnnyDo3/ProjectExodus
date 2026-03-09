@@ -10,6 +10,7 @@ import {
   Compass,
   Leaf,
   TreePine,
+  Plus,
 } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
@@ -195,15 +196,15 @@ function LoadingSeed() {
 
 function GhostCard({ index = 0 }: { index?: number }) {
   return (
-    <div className="flex-shrink-0 w-[260px] sm:w-[300px]">
-      <div className="aspect-[16/10] rounded-lg overflow-hidden relative border border-dashed border-[var(--border)]"
+    <Link href="/community/projects/new" className="flex-shrink-0 w-[260px] sm:w-[300px] group/ghost">
+      <div className="aspect-[16/10] rounded-lg overflow-hidden relative border border-dashed border-[var(--border)] transition-colors duration-300 group-hover/ghost:border-[var(--primary)]/40"
         style={{ background: 'linear-gradient(160deg, var(--muted) 0%, var(--background) 100%)' }}
       >
         {/* Background landscape */}
         <CardLandscape seed={index * 17 + 3} />
 
         {/* Seed scene */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-1">
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 transition-opacity duration-300 group-hover/ghost:opacity-0">
           <div
             style={{ animation: `gentle-sway ${3 + index * 0.4}s ease-in-out infinite alternate` }}
           >
@@ -213,8 +214,18 @@ function GhostCard({ index = 0 }: { index?: number }) {
             Awaiting
           </span>
         </div>
+
+        {/* Create overlay on hover */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 opacity-0 group-hover/ghost:opacity-100 transition-all duration-300 bg-[var(--card)]/60 backdrop-blur-[2px]">
+          <div className="w-10 h-10 rounded-full border-2 border-dashed border-[var(--primary)]/50 flex items-center justify-center bg-[var(--primary)]/10 transition-transform duration-300 group-hover/ghost:scale-110">
+            <Plus className="w-5 h-5 text-[var(--primary)]" />
+          </div>
+          <span className="text-xs font-bold text-[var(--primary)] uppercase tracking-widest">
+            Plant a Seed
+          </span>
+        </div>
       </div>
-    </div>
+    </Link>
   )
 }
 
@@ -599,6 +610,16 @@ function Billboard({ project, totalProjects, totalContributors }: {
                   Explore
                 </Button>
               </Link>
+              <Link href="/community/projects/new">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="h-10 text-sm font-bold uppercase tracking-wider rounded-full gap-2 px-6 border-[var(--primary)]/30 hover:bg-[var(--primary)]/10"
+                >
+                  <Plus className="w-4 h-4" />
+                  Create
+                </Button>
+              </Link>
               <JoinProjectButton projectId={project.id} projectName={project.name} />
             </div>
 
@@ -710,14 +731,22 @@ export default function ProjectsPage() {
           <div>
             <h2 className="text-2xl font-black text-[var(--foreground)]">No Projects Yet</h2>
             <p className="text-sm text-[var(--muted-foreground)] mt-2 leading-relaxed">
-              Head over to the community page to start a new project.
+              The land is open. Be the first to plant a seed and start building.
             </p>
           </div>
-          <Link href="/community">
-            <Button className="font-bold text-sm uppercase tracking-wider rounded-full px-6 mt-1">
-              Go to Community
-            </Button>
-          </Link>
+          <div className="flex items-center gap-3 mt-1">
+            <Link href="/community/projects/new">
+              <Button className="font-bold text-sm uppercase tracking-wider rounded-full px-6 gap-2">
+                <Plus className="w-4 h-4" />
+                Create Project
+              </Button>
+            </Link>
+            <Link href="/community">
+              <Button variant="outline" className="font-bold text-sm uppercase tracking-wider rounded-full px-6">
+                Go to Community
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
     )
