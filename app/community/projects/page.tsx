@@ -507,8 +507,48 @@ function TopographicTexture() {
   )
 }
 
+// ─── Fractal Wave Path Generator ────────────────────────────────────────────
+// Generates an SVG path with self-similar detail at multiple frequency octaves.
+// Each octave doubles in frequency and halves in amplitude — like a fractal
+// coastline, the wave has structure at every zoom level.
+function fractalWavePath(
+  y: number,           // base Y position
+  width: number,       // SVG viewBox width
+  octaves: number,     // number of frequency layers (3-6)
+  seed: number,        // unique seed for phase offsets
+  baseAmplitude: number, // amplitude of the lowest frequency
+  baseFrequency: number, // cycles across the width for the lowest octave
+): string {
+  const steps = 120  // path resolution
+  const points: string[] = []
+
+  for (let s = 0; s <= steps; s++) {
+    const x = (s / steps) * width
+    const t = s / steps  // normalized 0-1
+
+    let yOffset = 0
+    let amp = baseAmplitude
+    let freq = baseFrequency
+    // Lacunarity ~golden ratio prevents harmonic alignment
+    const lacunarity = 1.618
+    const persistence = 0.52
+
+    for (let oct = 0; oct < octaves; oct++) {
+      // Each octave uses a different phase offset derived from seed
+      const phase = seed * (oct + 1) * 2.347 + oct * 17.31
+      yOffset += amp * Math.sin(t * Math.PI * 2 * freq + phase)
+      amp *= persistence
+      freq *= lacunarity
+    }
+
+    points.push(`${x.toFixed(1)},${(y + yOffset).toFixed(1)}`)
+  }
+
+  return `M${points[0]} ` + points.slice(1).map(p => `L${p}`).join(' ')
+}
+
 // ─── Heat Wave Effect ────────────────────────────────────────────────────────
-// Subtle shimmering frequency lines that float across the initiatives section.
+// Fractal frequency lines with self-similar detail at multiple scales.
 function HeatWaveEffect() {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -543,18 +583,47 @@ function HeatWaveEffect() {
             />
           )
         })}
-        {/* Animated heat wave shimmer lines */}
+        {/* Fractal heat wave shimmer lines — multiple frequency octaves per wave */}
         {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((i) => (
           <path
             key={`wave-${i}`}
-            d={`M0,${40 + i * 65} Q100,${30 + i * 65} 250,${45 + i * 65} Q400,${28 + i * 65} 550,${48 + i * 65} Q700,${32 + i * 65} 850,${44 + i * 65} Q1000,${30 + i * 65} 1200,${42 + i * 65}`}
+            d={fractalWavePath(
+              40 + i * 65,      // base Y
+              1200,             // width
+              4 + (i % 3),      // 4-6 octaves — more octaves = finer detail
+              i * 7.13,         // unique seed per wave
+              12 + (i % 4) * 3, // base amplitude varies per wave
+              2 + (i % 3) * 0.5 // base frequency varies per wave
+            )}
             fill="none"
             stroke="var(--foreground)"
             strokeOpacity={0.04 + (i % 4) * 0.012}
             strokeWidth={0.5 + (i % 3) * 0.2}
             style={{
-              animation: `heat-wave ${7 + i * 0.9}s ease-in-out infinite`,
+              animation: `fractal-wave-${i % 4} ${7 + i * 0.9}s ease-in-out infinite`,
               animationDelay: `${i * 0.6}s`,
+            }}
+          />
+        ))}
+        {/* Secondary micro-detail waves — higher frequency, lower opacity */}
+        {[0, 1, 2, 3, 4, 5].map((i) => (
+          <path
+            key={`micro-${i}`}
+            d={fractalWavePath(
+              80 + i * 120,     // interspersed between main waves
+              1200,
+              6,                // max octaves for finest detail
+              i * 13.7 + 100,   // different seed family
+              6,                // smaller base amplitude
+              5 + i * 0.7       // higher base frequency
+            )}
+            fill="none"
+            stroke="var(--foreground)"
+            strokeOpacity={0.02 + (i % 3) * 0.008}
+            strokeWidth={0.3}
+            style={{
+              animation: `fractal-wave-${(i + 2) % 4} ${9 + i * 1.3}s ease-in-out infinite`,
+              animationDelay: `${i * 1.1}s`,
             }}
           />
         ))}
@@ -1108,17 +1177,24 @@ function ProjectsPhilosophy() {
                 />
               )
             })}
-            {/* Heat wave frequency lines — animated shimmer */}
+            {/* Fractal frequency lines — self-similar wave detail */}
             {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
               <path
                 key={`wave-${i}`}
-                d={`M0,${80 + i * 40} Q150,${72 + i * 40} 300,${82 + i * 40} Q450,${68 + i * 40} 600,${85 + i * 40} Q750,${74 + i * 40} 900,${80 + i * 40} Q1050,${70 + i * 40} 1200,${83 + i * 40}`}
+                d={fractalWavePath(
+                  80 + i * 40,       // base Y
+                  1200,              // width
+                  4 + (i % 3),       // 4-6 fractal octaves
+                  i * 5.29 + 50,     // unique seed
+                  8 + (i % 3) * 2,   // base amplitude
+                  3 + (i % 4) * 0.4  // base frequency
+                )}
                 fill="none"
                 stroke="var(--foreground)"
                 strokeOpacity={0.06 + (i % 3) * 0.015}
                 strokeWidth={0.6 + (i % 2) * 0.3}
                 style={{
-                  animation: `heat-wave ${6 + i * 1.2}s ease-in-out infinite`,
+                  animation: `fractal-wave-${i % 4} ${6 + i * 1.2}s ease-in-out infinite`,
                   animationDelay: `${i * 0.8}s`,
                 }}
               />
@@ -1276,17 +1352,62 @@ export default function ProjectsPage() {
 
   return (
     <div className="min-h-screen bg-[var(--background)] relative">
-      {/* Keyframes for heat-wave animation */}
+      {/* Fractal wave keyframes — 4 variants with different self-similar motion patterns.
+          Each variant layers primary motion with secondary micro-oscillations at different
+          phases, creating complex interference when combined with varied animation durations. */}
       <style>{`
-        @keyframes heat-wave {
-          0% { transform: translate(0, 0) scaleY(1) scaleX(1); stroke-opacity: 0.07; }
-          15% { transform: translate(8px, -6px) scaleY(1.04) scaleX(1.01); stroke-opacity: 0.12; }
-          30% { transform: translate(-5px, 4px) scaleY(0.96) scaleX(0.99); stroke-opacity: 0.05; }
-          45% { transform: translate(12px, -3px) scaleY(1.03) scaleX(1.02); stroke-opacity: 0.11; }
-          60% { transform: translate(-8px, 5px) scaleY(0.97) scaleX(0.98); stroke-opacity: 0.04; }
-          75% { transform: translate(6px, -7px) scaleY(1.05) scaleX(1.01); stroke-opacity: 0.13; }
-          90% { transform: translate(-3px, 2px) scaleY(0.98) scaleX(1.0); stroke-opacity: 0.08; }
+        @keyframes fractal-wave-0 {
+          0%   { transform: translate(0, 0) scaleY(1) scaleX(1); stroke-opacity: 0.07; }
+          8%   { transform: translate(3px, -2px) scaleY(1.02) scaleX(1.005); stroke-opacity: 0.09; }
+          18%  { transform: translate(9px, -6px) scaleY(1.05) scaleX(1.012); stroke-opacity: 0.13; }
+          25%  { transform: translate(6px, -3px) scaleY(1.01) scaleX(1.008); stroke-opacity: 0.10; }
+          35%  { transform: translate(-4px, 5px) scaleY(0.96) scaleX(0.992); stroke-opacity: 0.05; }
+          42%  { transform: translate(-1px, 2px) scaleY(0.99) scaleX(0.998); stroke-opacity: 0.08; }
+          52%  { transform: translate(11px, -4px) scaleY(1.04) scaleX(1.015); stroke-opacity: 0.12; }
+          60%  { transform: translate(7px, -1px) scaleY(1.02) scaleX(1.006); stroke-opacity: 0.09; }
+          70%  { transform: translate(-7px, 6px) scaleY(0.95) scaleX(0.985); stroke-opacity: 0.04; }
+          80%  { transform: translate(-2px, 3px) scaleY(0.98) scaleX(0.996); stroke-opacity: 0.07; }
+          90%  { transform: translate(5px, -5px) scaleY(1.03) scaleX(1.01); stroke-opacity: 0.11; }
           100% { transform: translate(0, 0) scaleY(1) scaleX(1); stroke-opacity: 0.07; }
+        }
+        @keyframes fractal-wave-1 {
+          0%   { transform: translate(0, 0) scaleY(1) scaleX(1); stroke-opacity: 0.06; }
+          12%  { transform: translate(-6px, 3px) scaleY(0.97) scaleX(0.99); stroke-opacity: 0.04; }
+          20%  { transform: translate(-2px, 1px) scaleY(0.99) scaleX(0.997); stroke-opacity: 0.07; }
+          30%  { transform: translate(10px, -7px) scaleY(1.06) scaleX(1.014); stroke-opacity: 0.14; }
+          38%  { transform: translate(5px, -3px) scaleY(1.02) scaleX(1.005); stroke-opacity: 0.10; }
+          48%  { transform: translate(-8px, 4px) scaleY(0.95) scaleX(0.988); stroke-opacity: 0.03; }
+          55%  { transform: translate(-3px, 1px) scaleY(0.98) scaleX(0.995); stroke-opacity: 0.06; }
+          65%  { transform: translate(7px, -5px) scaleY(1.04) scaleX(1.01); stroke-opacity: 0.12; }
+          75%  { transform: translate(2px, -1px) scaleY(1.01) scaleX(1.003); stroke-opacity: 0.08; }
+          85%  { transform: translate(-5px, 5px) scaleY(0.96) scaleX(0.99); stroke-opacity: 0.05; }
+          100% { transform: translate(0, 0) scaleY(1) scaleX(1); stroke-opacity: 0.06; }
+        }
+        @keyframes fractal-wave-2 {
+          0%   { transform: translate(0, 0) scaleY(1) scaleX(1); stroke-opacity: 0.08; }
+          10%  { transform: translate(5px, -4px) scaleY(1.03) scaleX(1.008); stroke-opacity: 0.11; }
+          22%  { transform: translate(12px, -2px) scaleY(1.06) scaleX(1.018); stroke-opacity: 0.14; }
+          30%  { transform: translate(4px, 2px) scaleY(1.01) scaleX(1.003); stroke-opacity: 0.09; }
+          40%  { transform: translate(-9px, 6px) scaleY(0.94) scaleX(0.984); stroke-opacity: 0.03; }
+          50%  { transform: translate(-3px, 4px) scaleY(0.97) scaleX(0.993); stroke-opacity: 0.06; }
+          58%  { transform: translate(2px, -1px) scaleY(1.01) scaleX(1.004); stroke-opacity: 0.09; }
+          68%  { transform: translate(8px, -6px) scaleY(1.05) scaleX(1.013); stroke-opacity: 0.13; }
+          78%  { transform: translate(-1px, 3px) scaleY(0.99) scaleX(0.998); stroke-opacity: 0.07; }
+          88%  { transform: translate(-6px, 5px) scaleY(0.96) scaleX(0.99); stroke-opacity: 0.04; }
+          100% { transform: translate(0, 0) scaleY(1) scaleX(1); stroke-opacity: 0.08; }
+        }
+        @keyframes fractal-wave-3 {
+          0%   { transform: translate(0, 0) scaleY(1) scaleX(1); stroke-opacity: 0.05; }
+          7%   { transform: translate(-3px, 2px) scaleY(0.98) scaleX(0.996); stroke-opacity: 0.04; }
+          15%  { transform: translate(-8px, 5px) scaleY(0.95) scaleX(0.987); stroke-opacity: 0.03; }
+          25%  { transform: translate(-2px, 1px) scaleY(0.99) scaleX(0.998); stroke-opacity: 0.06; }
+          35%  { transform: translate(9px, -6px) scaleY(1.05) scaleX(1.014); stroke-opacity: 0.12; }
+          45%  { transform: translate(13px, -3px) scaleY(1.07) scaleX(1.02); stroke-opacity: 0.15; }
+          55%  { transform: translate(6px, -1px) scaleY(1.02) scaleX(1.006); stroke-opacity: 0.10; }
+          65%  { transform: translate(-4px, 4px) scaleY(0.97) scaleX(0.992); stroke-opacity: 0.05; }
+          75%  { transform: translate(-7px, 6px) scaleY(0.94) scaleX(0.985); stroke-opacity: 0.03; }
+          85%  { transform: translate(3px, -2px) scaleY(1.01) scaleX(1.004); stroke-opacity: 0.08; }
+          100% { transform: translate(0, 0) scaleY(1) scaleX(1); stroke-opacity: 0.05; }
         }
       `}</style>
 

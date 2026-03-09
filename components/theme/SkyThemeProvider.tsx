@@ -115,22 +115,30 @@ export function SkyThemeProvider({ children }: { children: ReactNode }) {
 
   // Listen for TimeThemeProvider mode changes
   useEffect(() => {
+    // Map ThemeMode values to sky phases
+    const modeToPhase: Record<string, SkyPhase> = {
+      light: 'day',
+      morning: 'day',
+      dark: 'night',
+      night: 'midnight',
+      sunrise: 'dawn',
+      sunset: 'evening',
+      dusk: 'dusk',
+    }
+
     // Check localStorage for initial mode
     if (typeof window !== 'undefined') {
       try {
         const stored = localStorage.getItem('project_exodus_theme_prefs')
         if (stored) {
           const prefs = JSON.parse(stored)
-          const mode = prefs.mode as 'auto' | 'morning' | 'night'
+          const mode = prefs.mode as string
 
-          if (mode === 'morning') {
-            setManualMode('morning')
-            setCurrentPhase('day')
-            setTheme(skyThemes.day)
-          } else if (mode === 'night') {
-            setManualMode('night')
-            setCurrentPhase('midnight')
-            setTheme(skyThemes.midnight)
+          if (mode && mode !== 'auto' && modeToPhase[mode]) {
+            const phase = modeToPhase[mode]
+            setManualMode(mode as 'auto' | 'morning' | 'night')
+            setCurrentPhase(phase)
+            setTheme(skyThemes[phase])
           } else {
             setManualMode(null)
           }
@@ -141,23 +149,20 @@ export function SkyThemeProvider({ children }: { children: ReactNode }) {
     }
 
     // Listen for theme-mode-change events from TimeThemeProvider
-    const handleModeChange = (event: CustomEvent<{ mode: 'auto' | 'morning' | 'night' }>) => {
+    const handleModeChange = (event: CustomEvent<{ mode: string }>) => {
       const { mode } = event.detail
 
-      if (mode === 'morning') {
-        setManualMode('morning')
-        setCurrentPhase('day')
-        setTheme(skyThemes.day)
-      } else if (mode === 'night') {
-        setManualMode('night')
-        setCurrentPhase('midnight')
-        setTheme(skyThemes.midnight)
-      } else if (mode === 'auto') {
+      if (mode === 'auto') {
         setManualMode(null)
         // When returning to auto, immediately update to current time-based phase
         const now = new Date()
         const hour = now.getHours()
         const phase = getPhaseFromTime(hour)
+        setCurrentPhase(phase)
+        setTheme(skyThemes[phase])
+      } else if (modeToPhase[mode]) {
+        const phase = modeToPhase[mode]
+        setManualMode(mode as 'auto' | 'morning' | 'night')
         setCurrentPhase(phase)
         setTheme(skyThemes[phase])
       }
