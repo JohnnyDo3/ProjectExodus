@@ -1152,11 +1152,11 @@ function ProjectsPhilosophy({ totalProjects, totalContributors }: {
       <div className="absolute inset-0 bg-gradient-to-r from-[var(--background)]/90 via-[var(--background)]/40 to-transparent" />
 
       {/* Content — Our Philosophy */}
-      <div className="absolute inset-0 flex items-end">
-        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pb-14 sm:pb-20">
-          <div className="max-w-2xl">
+      <div className="absolute inset-0 flex items-center justify-center pt-16">
+        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
+          <div className="max-w-2xl mx-auto text-center">
             {/* Compass mark */}
-            <div className="flex items-center gap-3 mb-4">
+            <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-8 h-8 rounded-full border border-[var(--primary)]/50 flex items-center justify-center bg-[var(--primary)]/20">
                 <Compass className="w-4 h-4 text-[var(--primary)]" />
               </div>
@@ -1170,16 +1170,16 @@ function ProjectsPhilosophy({ totalProjects, totalContributors }: {
               <span className="text-[var(--primary)]">Minds Converge</span>
             </h1>
 
-            <p className="text-sm sm:text-base text-[var(--foreground)]/80 mt-4 leading-relaxed max-w-lg font-medium">
-              Project Exodus initiatives are collaborative think tanks where visionaries, builders, and changemakers unite to launch sustainable ventures. Every project here is a seed planted by the community — nurtured through shared research, open discussion, and collective ambition.
+            <p className="text-sm sm:text-base text-[var(--foreground)]/80 mt-4 leading-relaxed max-w-lg mx-auto font-medium">
+              Project Exodus initiatives are collaborative think tanks where visionaries, builders, and changemakers unite to launch sustainable ventures. Every project here is an initiative driven by the community — developed through shared research, open discussion, and collective ambition.
             </p>
 
-            <p className="text-xs sm:text-sm text-[var(--foreground)]/60 mt-2 leading-relaxed max-w-md">
-              Join an initiative that speaks to you, or plant a seed of your own. The path forward is walked together.
+            <p className="text-xs sm:text-sm text-[var(--foreground)]/60 mt-2 leading-relaxed max-w-md mx-auto">
+              Join an initiative that speaks to you, or launch one of your own. The path forward is walked together.
             </p>
 
             {/* Action row */}
-            <div className="flex items-center gap-3 mt-6">
+            <div className="flex items-center justify-center gap-3 mt-6">
               <Link href="/community/projects/new">
                 <Button
                   size="lg"
@@ -1202,7 +1202,7 @@ function ProjectsPhilosophy({ totalProjects, totalContributors }: {
             </div>
 
             {/* Community stats */}
-            <div className="flex items-center gap-6 mt-5 text-xs text-[var(--foreground)]/70 font-medium">
+            <div className="flex items-center justify-center gap-6 mt-5 text-xs text-[var(--foreground)]/70 font-medium">
               <span className="flex items-center gap-1.5">
                 <Users className="w-3.5 h-3.5 text-[var(--primary)]" />
                 <strong className="text-[var(--foreground)] font-bold">{totalContributors}</strong> members collaborating
