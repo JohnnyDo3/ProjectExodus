@@ -108,53 +108,46 @@ function getPhaseFromTime(hour: number): SkyPhase {
   return 'midnight'
 }
 
-export function SkyThemeProvider({ children }: { children: ReactNode }) {
-  const [currentPhase, setCurrentPhase] = useState<SkyPhase>('day')
-  const [theme, setTheme] = useState<SkyTheme>(skyThemes.day)
-  const [manualMode, setManualMode] = useState<'auto' | 'morning' | 'night' | null>(null)
+// Map ThemeMode values to sky phases
+const modeToPhase: Record<string, SkyPhase> = {
+  light: 'day',
+  morning: 'day',
+  dark: 'night',
+  night: 'midnight',
+  sunrise: 'dawn',
+  sunset: 'evening',
+  dusk: 'dusk',
+}
 
-  // Listen for TimeThemeProvider mode changes
-  useEffect(() => {
-    // Map ThemeMode values to sky phases
-    const modeToPhase: Record<string, SkyPhase> = {
-      light: 'day',
-      morning: 'day',
-      dark: 'night',
-      night: 'midnight',
-      sunrise: 'dawn',
-      sunset: 'evening',
-      dusk: 'dusk',
-    }
-
-    // Check localStorage for initial mode
-    if (typeof window !== 'undefined') {
-      try {
-        const stored = localStorage.getItem('project_exodus_theme_prefs')
-        if (stored) {
-          const prefs = JSON.parse(stored)
-          const mode = prefs.mode as string
-
-          if (mode && mode !== 'auto' && modeToPhase[mode]) {
-            const phase = modeToPhase[mode]
-            setManualMode(mode as 'auto' | 'morning' | 'night')
-            setCurrentPhase(phase)
-            setTheme(skyThemes[phase])
-          } else {
-            setManualMode(null)
-          }
+function getInitialPhaseFromStorage(): { phase: SkyPhase; mode: string | null } {
+  if (typeof window !== 'undefined') {
+    try {
+      const stored = localStorage.getItem('project_exodus_theme_prefs')
+      if (stored) {
+        const prefs = JSON.parse(stored)
+        const mode = prefs.mode as string
+        if (mode && mode !== 'auto' && modeToPhase[mode]) {
+          return { phase: modeToPhase[mode], mode }
         }
-      } catch (error) {
-        console.error('[SkyTheme] Failed to load initial mode from localStorage:', error)
       }
-    }
+    } catch {}
+  }
+  return { phase: getPhaseFromTime(new Date().getHours()), mode: null }
+}
 
-    // Listen for theme-mode-change events from TimeThemeProvider
+export function SkyThemeProvider({ children }: { children: ReactNode }) {
+  const [initialState] = useState(getInitialPhaseFromStorage)
+  const [currentPhase, setCurrentPhase] = useState<SkyPhase>(initialState.phase)
+  const [theme, setTheme] = useState<SkyTheme>(skyThemes[initialState.phase])
+  const [manualMode, setManualMode] = useState<string | null>(initialState.mode)
+
+  // Listen for theme-mode-change events from TimeThemeProvider
+  useEffect(() => {
     const handleModeChange = (event: CustomEvent<{ mode: string }>) => {
       const { mode } = event.detail
 
       if (mode === 'auto') {
         setManualMode(null)
-        // When returning to auto, immediately update to current time-based phase
         const now = new Date()
         const hour = now.getHours()
         const phase = getPhaseFromTime(hour)
@@ -162,7 +155,7 @@ export function SkyThemeProvider({ children }: { children: ReactNode }) {
         setTheme(skyThemes[phase])
       } else if (modeToPhase[mode]) {
         const phase = modeToPhase[mode]
-        setManualMode(mode as 'auto' | 'morning' | 'night')
+        setManualMode(mode)
         setCurrentPhase(phase)
         setTheme(skyThemes[phase])
       }
