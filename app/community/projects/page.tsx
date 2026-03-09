@@ -1044,7 +1044,7 @@ function ProjectsPhilosophy({ totalProjects, totalContributors }: {
 }) {
   return (
     <div className="relative w-full overflow-hidden"
-      style={{ minHeight: 'clamp(420px, 60vh, 720px)' }}
+      style={{ minHeight: 'clamp(560px, 85vh, 920px)' }}
     >
       {/* Background layer — abstract landscape */}
       <div className="absolute inset-0" style={{
@@ -1154,7 +1154,101 @@ function ProjectsPhilosophy({ totalProjects, totalContributors }: {
       {/* Content — Our Philosophy */}
       <div className="absolute inset-0 flex items-center justify-center pt-24 sm:pt-28">
         <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl mx-auto text-center">
+
+          {/* ── Flanking decorative panels (visible on lg+) ── */}
+          <div className="hidden lg:flex absolute inset-0 items-center justify-between pointer-events-none px-6 xl:px-16">
+            {/* Left panel — botanical sketch */}
+            <div className="flex flex-col items-center gap-6 opacity-[0.07]">
+              <svg width="120" height="280" viewBox="0 0 120 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+                {/* Central stem */}
+                <path d="M60,280 Q58,220 60,160 Q62,100 55,40" stroke="var(--foreground)" strokeWidth="1.2" fill="none" />
+                {/* Root system */}
+                <path d="M60,280 Q45,270 35,260" stroke="var(--foreground)" strokeWidth="0.8" fill="none" />
+                <path d="M60,280 Q75,272 85,265" stroke="var(--foreground)" strokeWidth="0.8" fill="none" />
+                <path d="M60,280 Q50,275 40,278" stroke="var(--foreground)" strokeWidth="0.5" fill="none" />
+                {/* Branching leaves — left side */}
+                <path d="M58,220 Q30,210 20,195" stroke="var(--foreground)" strokeWidth="0.7" fill="none" />
+                <ellipse cx="22" cy="198" rx="18" ry="10" transform="rotate(-25 22 198)" fill="var(--primary)" fillOpacity="0.12" stroke="var(--primary)" strokeOpacity="0.15" strokeWidth="0.4" />
+                <line x1="22" y1="198" x2="40" y2="210" stroke="var(--primary)" strokeOpacity="0.1" strokeWidth="0.3" />
+                <path d="M57,180 Q25,165 15,145" stroke="var(--foreground)" strokeWidth="0.7" fill="none" />
+                <ellipse cx="18" cy="148" rx="20" ry="11" transform="rotate(-30 18 148)" fill="var(--primary)" fillOpacity="0.1" stroke="var(--primary)" strokeOpacity="0.12" strokeWidth="0.4" />
+                <line x1="18" y1="148" x2="38" y2="165" stroke="var(--primary)" strokeOpacity="0.08" strokeWidth="0.3" />
+                {/* Branching leaves — right side */}
+                <path d="M61,200 Q88,188 100,172" stroke="var(--foreground)" strokeWidth="0.7" fill="none" />
+                <ellipse cx="97" cy="175" rx="16" ry="9" transform="rotate(30 97 175)" fill="var(--primary)" fillOpacity="0.1" stroke="var(--primary)" strokeOpacity="0.12" strokeWidth="0.4" />
+                <path d="M60,155 Q85,140 98,120" stroke="var(--foreground)" strokeWidth="0.6" fill="none" />
+                <ellipse cx="95" cy="123" rx="15" ry="8" transform="rotate(25 95 123)" fill="var(--primary)" fillOpacity="0.08" stroke="var(--primary)" strokeOpacity="0.1" strokeWidth="0.4" />
+                {/* Top bud / flower */}
+                <circle cx="55" cy="38" r="6" fill="var(--primary)" fillOpacity="0.15" />
+                <circle cx="55" cy="38" r="10" fill="none" stroke="var(--primary)" strokeOpacity="0.08" strokeWidth="0.5" />
+                {[0, 60, 120, 180, 240, 300].map((a) => {
+                  const rad = (a * Math.PI) / 180
+                  return <ellipse key={a} cx={55 + Math.cos(rad) * 12} cy={38 + Math.sin(rad) * 12} rx="5" ry="2.5" transform={`rotate(${a} ${55 + Math.cos(rad) * 12} ${38 + Math.sin(rad) * 12})`} fill="var(--primary)" fillOpacity="0.06" />
+                })}
+                {/* Small side buds */}
+                <circle cx="20" cy="195" r="2" fill="var(--accent)" fillOpacity="0.2" />
+                <circle cx="98" cy="170" r="2" fill="var(--accent)" fillOpacity="0.15" />
+                {/* Tendril curls */}
+                <path d="M57,140 Q48,135 50,125 Q53,120 48,115" stroke="var(--foreground)" strokeWidth="0.4" fill="none" />
+                <path d="M62,110 Q72,105 70,95 Q67,90 72,85" stroke="var(--foreground)" strokeWidth="0.4" fill="none" />
+              </svg>
+            </div>
+
+            {/* Right panel — geometric sacred pattern */}
+            <div className="flex flex-col items-center gap-6 opacity-[0.07]">
+              <svg width="120" height="280" viewBox="0 0 120 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+                {/* Seed of life pattern — interlocking circles */}
+                <circle cx="60" cy="60" r="24" fill="none" stroke="var(--foreground)" strokeWidth="0.6" />
+                <circle cx="60" cy="40" r="24" fill="none" stroke="var(--foreground)" strokeWidth="0.5" />
+                <circle cx="60" cy="80" r="24" fill="none" stroke="var(--foreground)" strokeWidth="0.5" />
+                <circle cx="41" cy="49" r="24" fill="none" stroke="var(--foreground)" strokeWidth="0.5" />
+                <circle cx="79" cy="49" r="24" fill="none" stroke="var(--foreground)" strokeWidth="0.5" />
+                <circle cx="41" cy="71" r="24" fill="none" stroke="var(--foreground)" strokeWidth="0.5" />
+                <circle cx="79" cy="71" r="24" fill="none" stroke="var(--foreground)" strokeWidth="0.5" />
+                {/* Central petal glow */}
+                <circle cx="60" cy="60" r="4" fill="var(--primary)" fillOpacity="0.15" />
+
+                {/* Vertical connecting line */}
+                <line x1="60" y1="100" x2="60" y2="140" stroke="var(--foreground)" strokeWidth="0.4" strokeDasharray="3 4" />
+
+                {/* Metatron-inspired diamond */}
+                <g transform="translate(60, 175)">
+                  <polygon points="0,-40 35,0 0,40 -35,0" fill="none" stroke="var(--foreground)" strokeWidth="0.6" />
+                  <polygon points="0,-25 22,0 0,25 -22,0" fill="none" stroke="var(--foreground)" strokeWidth="0.4" />
+                  <polygon points="0,-12 11,0 0,12 -11,0" fill="none" stroke="var(--primary)" strokeOpacity="0.3" strokeWidth="0.5" />
+                  <circle cx="0" cy="0" r="3" fill="var(--primary)" fillOpacity="0.12" />
+                  {/* Corner dots */}
+                  <circle cx="0" cy="-40" r="2" fill="var(--foreground)" fillOpacity="0.15" />
+                  <circle cx="35" cy="0" r="2" fill="var(--foreground)" fillOpacity="0.15" />
+                  <circle cx="0" cy="40" r="2" fill="var(--foreground)" fillOpacity="0.15" />
+                  <circle cx="-35" cy="0" r="2" fill="var(--foreground)" fillOpacity="0.15" />
+                  {/* Cross lines */}
+                  <line x1="0" y1="-40" x2="0" y2="40" stroke="var(--foreground)" strokeWidth="0.3" />
+                  <line x1="-35" y1="0" x2="35" y2="0" stroke="var(--foreground)" strokeWidth="0.3" />
+                </g>
+
+                {/* Bottom — sprouting ankh-like symbol */}
+                <g transform="translate(60, 248)">
+                  <circle cx="0" cy="-12" r="8" fill="none" stroke="var(--foreground)" strokeWidth="0.6" />
+                  <line x1="0" y1="-4" x2="0" y2="20" stroke="var(--foreground)" strokeWidth="0.6" />
+                  <line x1="-10" y1="6" x2="10" y2="6" stroke="var(--foreground)" strokeWidth="0.5" />
+                  {/* Small leaves from the ankh stem */}
+                  <ellipse cx="-6" cy="14" rx="4" ry="2" transform="rotate(-30 -6 14)" fill="var(--primary)" fillOpacity="0.1" />
+                  <ellipse cx="6" cy="12" rx="4" ry="2" transform="rotate(30 6 12)" fill="var(--primary)" fillOpacity="0.1" />
+                </g>
+              </svg>
+            </div>
+          </div>
+
+          <div className="max-w-2xl mx-auto text-center relative">
+
+            {/* Sacred divider — top */}
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[var(--primary)]/40 to-transparent" />
+              <span className="text-xl text-[var(--primary)]/60">☥</span>
+              <div className="flex-1 h-px bg-gradient-to-l from-transparent via-[var(--primary)]/40 to-transparent" />
+            </div>
+
             {/* Compass mark */}
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-8 h-8 rounded-full border border-[var(--primary)]/50 flex items-center justify-center bg-[var(--primary)]/20">
@@ -1165,21 +1259,60 @@ function ProjectsPhilosophy({ totalProjects, totalContributors }: {
               </span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[var(--foreground)] leading-[1.05] tracking-tight drop-shadow-md">
-              Ideas Grow When<br />
-              <span className="text-[var(--primary)]">Minds Converge</span>
-            </h1>
+            {/* Decorative corner borders */}
+            <div className="relative">
+              <div className="absolute -top-3 -left-4 w-10 h-10 border-t-2 border-l-2 border-[var(--primary)]/20 rounded-tl-sm" />
+              <div className="absolute -top-3 -right-4 w-10 h-10 border-t-2 border-r-2 border-[var(--primary)]/20 rounded-tr-sm" />
+              <div className="absolute -bottom-3 -left-4 w-10 h-10 border-b-2 border-l-2 border-[var(--primary)]/20 rounded-bl-sm" />
+              <div className="absolute -bottom-3 -right-4 w-10 h-10 border-b-2 border-r-2 border-[var(--primary)]/20 rounded-br-sm" />
 
-            <p className="text-sm sm:text-base text-[var(--foreground)]/80 mt-4 leading-relaxed max-w-lg mx-auto font-medium">
-              Project Exodus initiatives are collaborative think tanks where visionaries, builders, and changemakers unite to launch sustainable ventures. Every project here is an initiative driven by the community — developed through shared research, open discussion, and collective ambition.
-            </p>
+              <div className="px-6 py-4">
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[var(--foreground)] leading-[1.05] tracking-tight drop-shadow-md">
+                  Ideas Grow When<br />
+                  <span className="text-[var(--primary)]">Minds Converge</span>
+                </h1>
 
-            <p className="text-xs sm:text-sm text-[var(--foreground)]/60 mt-2 leading-relaxed max-w-md mx-auto">
-              Join an initiative that speaks to you, or launch one of your own. The path forward is walked together.
-            </p>
+                <p className="text-base sm:text-lg font-serif italic text-[var(--foreground)]/70 mt-4 leading-relaxed max-w-lg mx-auto">
+                  &ldquo;A single seed holds a forest. A single idea, shared freely, holds a future.&rdquo;
+                </p>
+
+                <p className="text-sm sm:text-base text-[var(--foreground)]/80 mt-4 leading-relaxed max-w-lg mx-auto font-medium">
+                  Project Exodus initiatives are collaborative think tanks where visionaries, builders, and changemakers unite to launch sustainable ventures. Every project here is an initiative driven by the community — developed through shared research, open discussion, and collective ambition.
+                </p>
+
+                <p className="text-xs sm:text-sm text-[var(--foreground)]/60 mt-2 leading-relaxed max-w-md mx-auto">
+                  Join an initiative that speaks to you, or launch one of your own. The path forward is walked together.
+                </p>
+              </div>
+            </div>
+
+            {/* The Covenant — inspired by learn page philosophy */}
+            <div className="mt-5">
+              <h3 className="text-[10px] font-black text-[var(--primary)] uppercase tracking-[0.2em] mb-3">
+                The Collective Covenant
+              </h3>
+              <div className="grid sm:grid-cols-2 gap-3 max-w-lg mx-auto text-left">
+                <div className="p-3 bg-[var(--card)]/60 rounded-xl border border-[var(--border)]/50 backdrop-blur-sm">
+                  <p className="font-bold text-[var(--foreground)] text-xs mb-1">We Build Together:</p>
+                  <ul className="text-[11px] text-[var(--muted-foreground)] space-y-0.5">
+                    <li>• Open research, shared freely</li>
+                    <li>• Transparent governance</li>
+                    <li>• Tools for collective action</li>
+                  </ul>
+                </div>
+                <div className="p-3 bg-[var(--card)]/60 rounded-xl border border-[var(--border)]/50 backdrop-blur-sm">
+                  <p className="font-bold text-[var(--foreground)] text-xs mb-1">You Contribute:</p>
+                  <ul className="text-[11px] text-[var(--muted-foreground)] space-y-0.5">
+                    <li>• Your skills and perspective</li>
+                    <li>• The courage to experiment</li>
+                    <li>• Commitment to the mission</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
 
             {/* Action row */}
-            <div className="flex items-center justify-center gap-3 mt-6">
+            <div className="flex items-center justify-center gap-3 mt-5">
               <Link href="/community/projects/new">
                 <Button
                   size="lg"
@@ -1202,7 +1335,7 @@ function ProjectsPhilosophy({ totalProjects, totalContributors }: {
             </div>
 
             {/* Community stats */}
-            <div className="flex items-center justify-center gap-6 mt-5 text-xs text-[var(--foreground)]/70 font-medium">
+            <div className="flex items-center justify-center gap-6 mt-4 text-xs text-[var(--foreground)]/70 font-medium">
               <span className="flex items-center gap-1.5">
                 <Users className="w-3.5 h-3.5 text-[var(--primary)]" />
                 <strong className="text-[var(--foreground)] font-bold">{totalContributors}</strong> members collaborating
@@ -1213,6 +1346,18 @@ function ProjectsPhilosophy({ totalProjects, totalContributors }: {
                 <strong className="text-[var(--foreground)] font-bold">{totalProjects}</strong> initiatives launched
               </span>
             </div>
+
+            {/* Sacred divider — bottom */}
+            <div className="flex items-center justify-center gap-4 mt-5">
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[var(--primary)]/40 to-transparent" />
+              <span className="text-xl text-[var(--primary)]/60">✦</span>
+              <div className="flex-1 h-px bg-gradient-to-l from-transparent via-[var(--primary)]/40 to-transparent" />
+            </div>
+
+            {/* Attribution */}
+            <p className="text-[9px] text-[var(--foreground)]/30 tracking-[0.25em] uppercase mt-2">
+              — The Project Exodus Vision
+            </p>
           </div>
         </div>
       </div>
