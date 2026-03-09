@@ -445,6 +445,43 @@ function FooterLandscape() {
         {/* Ground texture */}
         <path d="M0,105 Q300,100 600,105 Q900,100 1200,105" stroke="var(--foreground)" strokeOpacity="0.06" strokeWidth="0.5" fill="none" />
         <path d="M0,112 Q400,108 800,112 Q1000,108 1200,112" stroke="var(--foreground)" strokeOpacity="0.04" strokeWidth="0.4" fill="none" />
+
+        {/* Dragonflies near the river */}
+        <g opacity="0.25">
+          {/* Dragonfly 1 */}
+          <g transform="translate(350, 60)">
+            <line x1="0" y1="0" x2="8" y2="0" stroke="var(--accent)" strokeWidth="0.5" />
+            <ellipse cx="-1" cy="0" rx="2" ry="0.8" fill="var(--accent)" fillOpacity="0.3" />
+            <ellipse cx="2" cy="-2" rx="4" ry="1.2" transform="rotate(-15 2 -2)" fill="var(--accent)" fillOpacity="0.12" stroke="var(--accent)" strokeOpacity="0.2" strokeWidth="0.3" />
+            <ellipse cx="2" cy="2" rx="4" ry="1.2" transform="rotate(15 2 2)" fill="var(--accent)" fillOpacity="0.12" stroke="var(--accent)" strokeOpacity="0.2" strokeWidth="0.3" />
+          </g>
+          {/* Dragonfly 2 */}
+          <g transform="translate(850, 55) scale(-1,1)">
+            <line x1="0" y1="0" x2="7" y2="0" stroke="var(--accent)" strokeWidth="0.4" />
+            <ellipse cx="-1" cy="0" rx="1.5" ry="0.6" fill="var(--accent)" fillOpacity="0.25" />
+            <ellipse cx="2" cy="-1.5" rx="3.5" ry="1" transform="rotate(-15 2 -1.5)" fill="var(--accent)" fillOpacity="0.1" stroke="var(--accent)" strokeOpacity="0.15" strokeWidth="0.3" />
+            <ellipse cx="2" cy="1.5" rx="3.5" ry="1" transform="rotate(15 2 1.5)" fill="var(--accent)" fillOpacity="0.1" stroke="var(--accent)" strokeOpacity="0.15" strokeWidth="0.3" />
+          </g>
+        </g>
+
+        {/* Cattails by the river */}
+        <g opacity="0.15">
+          <line x1="560" y1="72" x2="560" y2="58" stroke="var(--primary)" strokeWidth="0.5" />
+          <ellipse cx="560" cy="57" rx="1.5" ry="4" fill="var(--foreground)" fillOpacity="0.3" />
+          <line x1="564" y1="74" x2="564" y2="62" stroke="var(--primary)" strokeWidth="0.5" />
+          <ellipse cx="564" cy="61" rx="1.3" ry="3.5" fill="var(--foreground)" fillOpacity="0.25" />
+          <line x1="556" y1="73" x2="556" y2="64" stroke="var(--primary)" strokeWidth="0.4" />
+          <path d="M556,64 Q554,60 556,58" stroke="var(--primary)" strokeOpacity="0.3" strokeWidth="0.3" fill="none" />
+        </g>
+
+        {/* Stone bridge */}
+        <g opacity="0.12">
+          <path d="M470,72 Q490,62 510,72" fill="none" stroke="var(--foreground)" strokeWidth="1" />
+          <line x1="475" y1="72" x2="475" y2="78" stroke="var(--foreground)" strokeWidth="0.5" />
+          <line x1="505" y1="72" x2="505" y2="78" stroke="var(--foreground)" strokeWidth="0.5" />
+          {/* Stone texture */}
+          <path d="M480,68 Q490,65 500,68" stroke="var(--foreground)" strokeWidth="0.3" fill="none" />
+        </g>
       </svg>
     </div>
   )
@@ -468,6 +505,291 @@ function TopographicTexture() {
       <circle cx="300" cy="600" r="100" fill="none" stroke="var(--foreground)" strokeOpacity="0.012" strokeWidth="0.5" />
       <circle cx="300" cy="600" r="150" fill="none" stroke="var(--foreground)" strokeOpacity="0.008" strokeWidth="0.5" />
     </svg>
+  )
+}
+
+// ─── Animated Fireflies ──────────────────────────────────────────────────────
+// Tiny glowing dots that drift and pulse across the page. Pure CSS animation.
+function Fireflies() {
+  const flies = [
+    { x: '12%', y: '18%', delay: '0s', dur: '6s', size: 3 },
+    { x: '78%', y: '25%', delay: '1.5s', dur: '7s', size: 2.5 },
+    { x: '35%', y: '42%', delay: '0.8s', dur: '5.5s', size: 2 },
+    { x: '62%', y: '58%', delay: '2.2s', dur: '8s', size: 3.5 },
+    { x: '88%', y: '35%', delay: '3s', dur: '6.5s', size: 2 },
+    { x: '22%', y: '72%', delay: '1s', dur: '7.5s', size: 2.5 },
+    { x: '50%', y: '15%', delay: '4s', dur: '6s', size: 2 },
+    { x: '92%', y: '68%', delay: '0.5s', dur: '5s', size: 3 },
+    { x: '8%', y: '50%', delay: '2.8s', dur: '7s', size: 2 },
+    { x: '45%', y: '82%', delay: '1.8s', dur: '6.5s', size: 2.5 },
+    { x: '70%', y: '45%', delay: '3.5s', dur: '5.5s', size: 2 },
+    { x: '30%', y: '90%', delay: '0.3s', dur: '8s', size: 3 },
+  ]
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden z-[1]">
+      {flies.map((f, i) => (
+        <div
+          key={i}
+          className="absolute rounded-full"
+          style={{
+            left: f.x,
+            top: f.y,
+            width: f.size,
+            height: f.size,
+            background: 'var(--primary)',
+            boxShadow: `0 0 ${f.size * 2}px ${f.size}px var(--primary)`,
+            animation: `firefly-float ${f.dur} ease-in-out infinite alternate, firefly-glow ${f.dur} ease-in-out infinite`,
+            animationDelay: f.delay,
+            opacity: 0,
+          }}
+        />
+      ))}
+    </div>
+  )
+}
+
+// ─── Drifting Clouds ─────────────────────────────────────────────────────────
+// Soft cloud shapes that drift slowly across the billboard.
+function DriftingClouds() {
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      {/* Cloud 1 — large, slow */}
+      <svg className="absolute" style={{ top: '8%', left: '-10%', animation: 'cloud-drift-1 45s linear infinite', opacity: 0.04 }} width="200" height="60" viewBox="0 0 200 60" fill="none">
+        <ellipse cx="100" cy="35" rx="80" ry="20" fill="var(--foreground)" />
+        <ellipse cx="70" cy="28" rx="50" ry="22" fill="var(--foreground)" />
+        <ellipse cx="130" cy="25" rx="55" ry="25" fill="var(--foreground)" />
+        <ellipse cx="100" cy="20" rx="40" ry="18" fill="var(--foreground)" />
+      </svg>
+      {/* Cloud 2 — smaller, faster */}
+      <svg className="absolute" style={{ top: '15%', left: '-5%', animation: 'cloud-drift-2 35s linear infinite', animationDelay: '10s', opacity: 0.03 }} width="140" height="45" viewBox="0 0 140 45" fill="none">
+        <ellipse cx="70" cy="28" rx="55" ry="14" fill="var(--foreground)" />
+        <ellipse cx="50" cy="22" rx="35" ry="16" fill="var(--foreground)" />
+        <ellipse cx="90" cy="18" rx="40" ry="18" fill="var(--foreground)" />
+      </svg>
+      {/* Cloud 3 — wispy, high */}
+      <svg className="absolute" style={{ top: '4%', left: '-8%', animation: 'cloud-drift-3 55s linear infinite', animationDelay: '20s', opacity: 0.025 }} width="180" height="30" viewBox="0 0 180 30" fill="none">
+        <ellipse cx="90" cy="18" rx="80" ry="8" fill="var(--foreground)" />
+        <ellipse cx="60" cy="14" rx="40" ry="10" fill="var(--foreground)" />
+        <ellipse cx="130" cy="12" rx="45" ry="11" fill="var(--foreground)" />
+      </svg>
+    </div>
+  )
+}
+
+// ─── Wildlife Silhouettes ────────────────────────────────────────────────────
+// A fox and deer silhouette in the billboard landscape.
+function WildlifeSilhouettes() {
+  return (
+    <>
+      {/* Fox — small, sitting on the right hillside */}
+      <g transform="translate(1000, 252)" opacity="0.06">
+        <path d="M0,0 Q-2,-8 -1,-12 L2,-15 L3,-10 Q5,-12 7,-15 L8,-10 Q9,-8 8,0 Q6,-2 4,-2 Q2,-2 0,0Z" fill="var(--foreground)" />
+        {/* Tail */}
+        <path d="M-1,0 Q-6,-2 -8,-5 Q-6,-3 -3,-1" fill="var(--foreground)" />
+      </g>
+      {/* Deer — standing on distant ridge */}
+      <g transform="translate(420, 225)" opacity="0.04">
+        {/* Body */}
+        <ellipse cx="0" cy="0" rx="8" ry="4" fill="var(--foreground)" />
+        {/* Neck & head */}
+        <path d="M6,-3 Q8,-10 7,-14" stroke="var(--foreground)" strokeWidth="1.5" fill="none" />
+        <circle cx="7" cy="-15" r="2.5" fill="var(--foreground)" />
+        {/* Antlers */}
+        <path d="M6,-17 Q4,-22 2,-24" stroke="var(--foreground)" strokeWidth="0.6" fill="none" />
+        <path d="M3,-22 Q1,-23 0,-22" stroke="var(--foreground)" strokeWidth="0.4" fill="none" />
+        <path d="M8,-17 Q10,-22 12,-24" stroke="var(--foreground)" strokeWidth="0.6" fill="none" />
+        <path d="M11,-22 Q13,-23 14,-22" stroke="var(--foreground)" strokeWidth="0.4" fill="none" />
+        {/* Legs */}
+        <line x1="-4" y1="3" x2="-5" y2="10" stroke="var(--foreground)" strokeWidth="0.8" />
+        <line x1="-2" y1="3" x2="-2" y2="10" stroke="var(--foreground)" strokeWidth="0.8" />
+        <line x1="3" y1="3" x2="2" y2="10" stroke="var(--foreground)" strokeWidth="0.8" />
+        <line x1="5" y1="3" x2="6" y2="10" stroke="var(--foreground)" strokeWidth="0.8" />
+      </g>
+    </>
+  )
+}
+
+// ─── Shooting Star ───────────────────────────────────────────────────────────
+// A brief streak across the billboard sky, animated.
+function ShootingStar() {
+  return (
+    <div className="absolute pointer-events-none" style={{ top: '10%', left: '20%', animation: 'shooting-star 8s ease-in infinite', animationDelay: '3s' }}>
+      <svg width="80" height="2" viewBox="0 0 80 2" fill="none" className="opacity-[0.15]">
+        <line x1="0" y1="1" x2="80" y2="1" stroke="var(--primary)" strokeWidth="1.5" strokeLinecap="round" />
+        <line x1="0" y1="1" x2="30" y2="1" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" opacity="0.6" />
+      </svg>
+    </div>
+  )
+}
+
+// ─── Large Decorative Compass Rose ───────────────────────────────────────────
+// A detailed compass rose that sits between the billboard and the rows.
+function DecorativeCompassRose() {
+  return (
+    <div className="flex items-center justify-center py-6">
+      <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="opacity-[0.08]">
+        {/* Outer ring */}
+        <circle cx="40" cy="40" r="36" fill="none" stroke="var(--foreground)" strokeWidth="0.6" />
+        <circle cx="40" cy="40" r="34" fill="none" stroke="var(--foreground)" strokeWidth="0.3" />
+        {/* Degree tick marks */}
+        {Array.from({ length: 36 }).map((_, i) => {
+          const angle = i * 10
+          const rad = (angle * Math.PI) / 180
+          const r1 = i % 9 === 0 ? 30 : 33
+          const r2 = 36
+          return (
+            <line
+              key={i}
+              x1={40 + Math.cos(rad) * r1}
+              y1={40 - Math.sin(rad) * r1}
+              x2={40 + Math.cos(rad) * r2}
+              y2={40 - Math.sin(rad) * r2}
+              stroke="var(--foreground)"
+              strokeWidth={i % 9 === 0 ? '0.6' : '0.3'}
+            />
+          )
+        })}
+        {/* Cardinal points — elongated diamonds */}
+        {/* North */}
+        <polygon points="40,6 37,36 40,30 43,36" fill="var(--foreground)" fillOpacity="0.5" />
+        <polygon points="40,6 37,36 40,42 43,36" fill="var(--foreground)" fillOpacity="0.15" />
+        {/* South */}
+        <polygon points="40,74 37,44 40,50 43,44" fill="var(--foreground)" fillOpacity="0.15" />
+        <polygon points="40,74 37,44 40,38 43,44" fill="var(--foreground)" fillOpacity="0.35" />
+        {/* East */}
+        <polygon points="74,40 44,37 50,40 44,43" fill="var(--foreground)" fillOpacity="0.15" />
+        <polygon points="74,40 44,37 38,40 44,43" fill="var(--foreground)" fillOpacity="0.3" />
+        {/* West */}
+        <polygon points="6,40 36,37 30,40 36,43" fill="var(--foreground)" fillOpacity="0.3" />
+        <polygon points="6,40 36,37 42,40 36,43" fill="var(--foreground)" fillOpacity="0.15" />
+        {/* Intercardinal lines */}
+        {[45, 135, 225, 315].map((angle) => {
+          const rad = (angle * Math.PI) / 180
+          return (
+            <line
+              key={angle}
+              x1={40 + Math.cos(rad) * 8}
+              y1={40 - Math.sin(rad) * 8}
+              x2={40 + Math.cos(rad) * 26}
+              y2={40 - Math.sin(rad) * 26}
+              stroke="var(--foreground)"
+              strokeWidth="0.4"
+            />
+          )
+        })}
+        {/* Center circle */}
+        <circle cx="40" cy="40" r="3" fill="var(--foreground)" fillOpacity="0.15" stroke="var(--foreground)" strokeWidth="0.5" />
+        <circle cx="40" cy="40" r="1" fill="var(--foreground)" fillOpacity="0.4" />
+        {/* Cardinal letters */}
+        <text x="40" y="4" textAnchor="middle" fontSize="5" fontWeight="bold" fill="var(--foreground)" fillOpacity="0.7">N</text>
+        <text x="40" y="79" textAnchor="middle" fontSize="4" fill="var(--foreground)" fillOpacity="0.5">S</text>
+        <text x="78" y="42" textAnchor="end" fontSize="4" fill="var(--foreground)" fillOpacity="0.5">E</text>
+        <text x="2" y="42" textAnchor="start" fontSize="4" fill="var(--foreground)" fillOpacity="0.5">W</text>
+      </svg>
+    </div>
+  )
+}
+
+// ─── Additional Margin Illustrations ─────────────────────────────────────────
+
+// A snail on a leaf
+function MarginSnail({ className = '' }: { className?: string }) {
+  return (
+    <svg width="40" height="32" viewBox="0 0 40 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={`opacity-[0.1] ${className}`}>
+      {/* Leaf platform */}
+      <path d="M4,24 Q20,18 36,24" fill="var(--primary)" fillOpacity="0.15" stroke="var(--primary)" strokeOpacity="0.2" strokeWidth="0.5" />
+      <line x1="20" y1="21" x2="20" y2="28" stroke="var(--primary)" strokeOpacity="0.1" strokeWidth="0.3" />
+      {/* Snail body */}
+      <path d="M14,22 Q12,20 14,18 Q16,16 18,18" fill="var(--foreground)" fillOpacity="0.12" stroke="var(--foreground)" strokeOpacity="0.2" strokeWidth="0.5" />
+      {/* Shell spiral */}
+      <circle cx="20" cy="18" r="4" fill="var(--foreground)" fillOpacity="0.08" stroke="var(--foreground)" strokeOpacity="0.2" strokeWidth="0.5" />
+      <path d="M20,14 Q22,16 20,18 Q18,17 19,15" stroke="var(--foreground)" strokeOpacity="0.15" strokeWidth="0.3" fill="none" />
+      {/* Antennae */}
+      <path d="M14,18 Q12,14 11,12" stroke="var(--foreground)" strokeOpacity="0.15" strokeWidth="0.3" fill="none" />
+      <circle cx="11" cy="12" r="0.6" fill="var(--foreground)" fillOpacity="0.2" />
+      <path d="M15,17 Q14,14 13,13" stroke="var(--foreground)" strokeOpacity="0.15" strokeWidth="0.3" fill="none" />
+      <circle cx="13" cy="13" r="0.5" fill="var(--foreground)" fillOpacity="0.2" />
+    </svg>
+  )
+}
+
+// An acorn with a sprouting root
+function MarginAcorn({ className = '' }: { className?: string }) {
+  return (
+    <svg width="32" height="44" viewBox="0 0 32 44" fill="none" xmlns="http://www.w3.org/2000/svg" className={`opacity-[0.1] ${className}`}>
+      {/* Cap */}
+      <path d="M8,16 Q8,10 16,10 Q24,10 24,16" fill="var(--foreground)" fillOpacity="0.12" stroke="var(--foreground)" strokeOpacity="0.2" strokeWidth="0.5" />
+      <path d="M10,14 Q16,12 22,14" stroke="var(--foreground)" strokeOpacity="0.08" strokeWidth="0.3" fill="none" />
+      {/* Stem */}
+      <line x1="16" y1="10" x2="16" y2="6" stroke="var(--foreground)" strokeOpacity="0.2" strokeWidth="0.6" />
+      {/* Body */}
+      <path d="M8,16 Q8,26 16,28 Q24,26 24,16" fill="var(--foreground)" fillOpacity="0.08" stroke="var(--foreground)" strokeOpacity="0.18" strokeWidth="0.5" />
+      {/* Root sprouting from bottom */}
+      <path d="M16,28 Q15,34 14,38" stroke="var(--primary)" strokeOpacity="0.25" strokeWidth="0.5" fill="none" />
+      <path d="M14,38 Q12,40 10,41" stroke="var(--primary)" strokeOpacity="0.15" strokeWidth="0.4" fill="none" />
+      <path d="M14,36 Q16,38 18,40" stroke="var(--primary)" strokeOpacity="0.15" strokeWidth="0.4" fill="none" />
+      {/* Tiny root hairs */}
+      <path d="M10,41 Q9,42 8,42" stroke="var(--primary)" strokeOpacity="0.1" strokeWidth="0.3" fill="none" />
+      <path d="M18,40 Q19,42 20,42" stroke="var(--primary)" strokeOpacity="0.1" strokeWidth="0.3" fill="none" />
+    </svg>
+  )
+}
+
+// An unfurling fern frond
+function MarginFern({ className = '' }: { className?: string }) {
+  return (
+    <svg width="36" height="56" viewBox="0 0 36 56" fill="none" xmlns="http://www.w3.org/2000/svg" className={`opacity-[0.1] ${className}`}>
+      {/* Main stem curling upward */}
+      <path d="M18,54 Q16,40 18,28 Q20,18 22,12 Q24,8 22,6" stroke="var(--primary)" strokeOpacity="0.35" strokeWidth="0.8" fill="none" />
+      {/* Fiddlehead curl at top */}
+      <path d="M22,6 Q18,4 18,8 Q18,10 20,10" stroke="var(--primary)" strokeOpacity="0.3" strokeWidth="0.6" fill="none" />
+      {/* Left leaflets */}
+      <path d="M17,44 Q12,42 10,40" stroke="var(--primary)" strokeOpacity="0.2" strokeWidth="0.4" fill="none" />
+      <ellipse cx="10" cy="40" rx="2.5" ry="1" transform="rotate(-30 10 40)" fill="var(--primary)" fillOpacity="0.1" />
+      <path d="M17,38 Q11,35 9,33" stroke="var(--primary)" strokeOpacity="0.2" strokeWidth="0.4" fill="none" />
+      <ellipse cx="9" cy="33" rx="2.5" ry="1" transform="rotate(-25 9 33)" fill="var(--primary)" fillOpacity="0.1" />
+      <path d="M18,32 Q13,28 11,26" stroke="var(--primary)" strokeOpacity="0.18" strokeWidth="0.4" fill="none" />
+      <ellipse cx="11" cy="26" rx="2" ry="0.8" transform="rotate(-20 11 26)" fill="var(--primary)" fillOpacity="0.08" />
+      <path d="M19,26 Q15,22 14,20" stroke="var(--primary)" strokeOpacity="0.15" strokeWidth="0.4" fill="none" />
+      <ellipse cx="14" cy="20" rx="1.5" ry="0.7" transform="rotate(-15 14 20)" fill="var(--primary)" fillOpacity="0.07" />
+      {/* Right leaflets */}
+      <path d="M19,44 Q24,42 26,41" stroke="var(--primary)" strokeOpacity="0.2" strokeWidth="0.4" fill="none" />
+      <ellipse cx="26" cy="41" rx="2.5" ry="1" transform="rotate(30 26 41)" fill="var(--primary)" fillOpacity="0.1" />
+      <path d="M19,38 Q25,36 27,35" stroke="var(--primary)" strokeOpacity="0.2" strokeWidth="0.4" fill="none" />
+      <ellipse cx="27" cy="35" rx="2.5" ry="1" transform="rotate(25 27 35)" fill="var(--primary)" fillOpacity="0.1" />
+      <path d="M20,32 Q25,30 27,28" stroke="var(--primary)" strokeOpacity="0.18" strokeWidth="0.4" fill="none" />
+      <ellipse cx="27" cy="28" rx="2" ry="0.8" transform="rotate(20 27 28)" fill="var(--primary)" fillOpacity="0.08" />
+      <path d="M21,26 Q25,24 26,22" stroke="var(--primary)" strokeOpacity="0.15" strokeWidth="0.4" fill="none" />
+      <ellipse cx="26" cy="22" rx="1.5" ry="0.7" transform="rotate(15 26 22)" fill="var(--primary)" fillOpacity="0.07" />
+      {/* Ground moss dots */}
+      <circle cx="14" cy="52" r="1" fill="var(--primary)" fillOpacity="0.1" />
+      <circle cx="20" cy="53" r="0.8" fill="var(--primary)" fillOpacity="0.08" />
+      <circle cx="24" cy="51" r="1.2" fill="var(--primary)" fillOpacity="0.08" />
+    </svg>
+  )
+}
+
+// ─── Waypoint Trail ──────────────────────────────────────────────────────────
+// A vertical dotted path with waypoint markers connecting the page sections.
+function WaypointTrail() {
+  return (
+    <div className="hidden lg:flex absolute left-1/2 top-0 bottom-0 -translate-x-1/2 pointer-events-none z-0">
+      <svg width="20" height="100%" viewBox="0 0 20 600" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg" className="opacity-[0.06]">
+        {/* Dotted vertical trail */}
+        <line x1="10" y1="0" x2="10" y2="600" stroke="var(--foreground)" strokeWidth="0.8" strokeDasharray="4 8" />
+        {/* Waypoint markers */}
+        <circle cx="10" cy="60" r="3" fill="none" stroke="var(--primary)" strokeWidth="0.8" />
+        <circle cx="10" cy="60" r="1" fill="var(--primary)" />
+        <circle cx="10" cy="240" r="3" fill="none" stroke="var(--primary)" strokeWidth="0.8" />
+        <circle cx="10" cy="240" r="1" fill="var(--primary)" />
+        <circle cx="10" cy="420" r="3" fill="none" stroke="var(--primary)" strokeWidth="0.8" />
+        <circle cx="10" cy="420" r="1" fill="var(--primary)" />
+        {/* Small diamond markers between waypoints */}
+        <polygon points="10,145 12,150 10,155 8,150" fill="var(--foreground)" fillOpacity="0.3" />
+        <polygon points="10,325 12,330 10,335 8,330" fill="var(--foreground)" fillOpacity="0.3" />
+        <polygon points="10,510 12,515 10,520 8,515" fill="var(--foreground)" fillOpacity="0.3" />
+      </svg>
+    </div>
   )
 }
 
@@ -849,7 +1171,49 @@ function Billboard({ project, totalProjects, totalContributors }: {
               <polygon points="0,-12 -3,-3 0,-5 3,-3" fill="var(--foreground)" />
               <text x="0" y="-15" textAnchor="middle" fontSize="4" fill="var(--foreground)" fillOpacity="0.8">N</text>
             </g>
+
+            {/* Wildlife silhouettes */}
+            <WildlifeSilhouettes />
+
+            {/* Moon / second celestial hint (faint crescent far left) */}
+            <g opacity="0.03">
+              <circle cx="120" cy="80" r="18" fill="var(--foreground)" />
+              <circle cx="126" cy="76" r="16" fill="var(--background)" />
+            </g>
+
+            {/* Constellation dots — tiny star pattern */}
+            <g opacity="0.04">
+              <circle cx="200" cy="60" r="1" fill="var(--foreground)" />
+              <circle cx="220" cy="50" r="0.8" fill="var(--foreground)" />
+              <circle cx="240" cy="65" r="1.2" fill="var(--foreground)" />
+              <circle cx="215" cy="75" r="0.7" fill="var(--foreground)" />
+              <circle cx="235" cy="45" r="0.9" fill="var(--foreground)" />
+              <line x1="200" y1="60" x2="220" y2="50" stroke="var(--foreground)" strokeWidth="0.2" />
+              <line x1="220" y1="50" x2="240" y2="65" stroke="var(--foreground)" strokeWidth="0.2" />
+              <line x1="240" y1="65" x2="215" y2="75" stroke="var(--foreground)" strokeWidth="0.2" />
+              <line x1="215" y1="75" x2="200" y2="60" stroke="var(--foreground)" strokeWidth="0.2" />
+              <line x1="220" y1="50" x2="235" y2="45" stroke="var(--foreground)" strokeWidth="0.2" />
+            </g>
+
+            {/* Pond/lake in the middle distance */}
+            <ellipse cx="720" cy="285" rx="35" ry="8" fill="var(--accent)" fillOpacity="0.04" stroke="var(--accent)" strokeOpacity="0.04" strokeWidth="0.5" />
+            <ellipse cx="720" cy="287" rx="25" ry="4" fill="var(--accent)" fillOpacity="0.03" />
+
+            {/* Fence line along a field */}
+            <g opacity="0.035">
+              <line x1="100" y1="305" x2="100" y2="295" stroke="var(--foreground)" strokeWidth="0.6" />
+              <line x1="120" y1="303" x2="120" y2="293" stroke="var(--foreground)" strokeWidth="0.6" />
+              <line x1="140" y1="301" x2="140" y2="291" stroke="var(--foreground)" strokeWidth="0.6" />
+              <line x1="100" y1="297" x2="140" y2="293" stroke="var(--foreground)" strokeWidth="0.3" />
+              <line x1="100" y1="301" x2="140" y2="297" stroke="var(--foreground)" strokeWidth="0.3" />
+            </g>
           </svg>
+
+          {/* Drifting clouds overlay */}
+          <DriftingClouds />
+
+          {/* Shooting star */}
+          <ShootingStar />
         </div>
       )}
 
@@ -1046,11 +1410,43 @@ export default function ProjectsPage() {
 
   return (
     <div className="min-h-screen bg-[var(--background)] relative">
-      {/* Keyframe for ghost seed sway */}
+      {/* Keyframes for animations */}
       <style>{`
         @keyframes gentle-sway {
           0% { transform: rotate(-3deg) translateY(0); }
           100% { transform: rotate(3deg) translateY(-2px); }
+        }
+        @keyframes firefly-float {
+          0% { transform: translate(0, 0); }
+          25% { transform: translate(12px, -18px); }
+          50% { transform: translate(-8px, -30px); }
+          75% { transform: translate(15px, -12px); }
+          100% { transform: translate(-5px, 6px); }
+        }
+        @keyframes firefly-glow {
+          0%, 100% { opacity: 0; }
+          15% { opacity: 0.6; }
+          30% { opacity: 0.2; }
+          50% { opacity: 0.8; }
+          70% { opacity: 0.3; }
+          85% { opacity: 0.7; }
+        }
+        @keyframes cloud-drift-1 {
+          0% { transform: translateX(-200px); }
+          100% { transform: translateX(calc(100vw + 200px)); }
+        }
+        @keyframes cloud-drift-2 {
+          0% { transform: translateX(-150px); }
+          100% { transform: translateX(calc(100vw + 150px)); }
+        }
+        @keyframes cloud-drift-3 {
+          0% { transform: translateX(-180px); }
+          100% { transform: translateX(calc(100vw + 180px)); }
+        }
+        @keyframes shooting-star {
+          0%, 90%, 100% { opacity: 0; transform: translate(0, 0) rotate(-25deg); }
+          92% { opacity: 0.3; }
+          95% { opacity: 0; transform: translate(200px, 80px) rotate(-25deg); }
         }
       `}</style>
 
@@ -1066,20 +1462,41 @@ export default function ProjectsPage() {
         />
       )}
 
+      {/* ═══ COMPASS TRANSITION ═══ */}
+      <DecorativeCompassRose />
+
       {/* ═══ THE JOURNEY ═══ */}
       <main className="relative py-10">
+        {/* Animated fireflies scattered across the section */}
+        <Fireflies />
+
+        {/* Vertical waypoint trail down the center */}
+        <WaypointTrail />
+
         {/* Floating margin illustrations — positioned absolutely for decoration */}
         <div className="hidden lg:block absolute top-16 right-6 xl:right-12">
           <MarginButterfly />
         </div>
+        <div className="hidden lg:block absolute top-[20%] left-4 xl:left-10">
+          <MarginFern />
+        </div>
         <div className="hidden lg:block absolute top-[35%] left-4 xl:left-10">
           <MarginMushrooms />
+        </div>
+        <div className="hidden lg:block absolute top-[48%] right-6 xl:right-12">
+          <MarginSnail />
         </div>
         <div className="hidden lg:block absolute top-[65%] right-8 xl:right-14">
           <MarginFlowers />
         </div>
+        <div className="hidden lg:block absolute top-[78%] left-6 xl:left-12">
+          <MarginAcorn />
+        </div>
         <div className="hidden lg:block absolute bottom-32 left-6 xl:left-12">
           <MarginButterfly className="opacity-[0.08] -scale-x-100" />
+        </div>
+        <div className="hidden lg:block absolute bottom-16 right-6 xl:right-10">
+          <MarginFern className="opacity-[0.08] -scale-x-100" />
         </div>
 
         {/* Rows with vine dividers between them */}
