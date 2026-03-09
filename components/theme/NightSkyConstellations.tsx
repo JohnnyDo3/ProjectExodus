@@ -3,6 +3,82 @@
 import { useEffect, useRef } from 'react'
 import { useSkyTheme } from './SkyThemeProvider'
 
+// --- Fractal noise utilities for complex, organic wave patterns ---
+
+// Fractal Brownian motion using layered sine waves (spectral synthesis)
+// Each octave doubles in frequency and halves in amplitude, creating self-similar detail
+function fractalTwinkle(
+  time: number,
+  harmonics: number[],
+  phases: number[],
+  amps: number[],
+  drift: number
+): number {
+  let value = 0
+  let totalAmp = 0
+  const driftOffset = time * drift
+
+  for (let i = 0; i < harmonics.length; i++) {
+    // Each harmonic is a sine wave at a different frequency
+    // The drift slowly shifts phases for an evolving, never-repeating pattern
+    value += amps[i] * Math.sin(time * harmonics[i] + phases[i] + driftOffset * (i + 1) * 0.1)
+    totalAmp += amps[i]
+  }
+
+  // Normalize to 0-1 range
+  return (value / totalAmp + 1) * 0.5
+}
+
+// Generate fractal harmonic series for a star
+// Uses golden-ratio-like spacing to avoid simple periodic repetition
+function generateHarmonics(baseSpeed: number, octaves: number): {
+  harmonics: number[]
+  phases: number[]
+  amps: number[]
+} {
+  const harmonics: number[] = []
+  const phases: number[] = []
+  const amps: number[] = []
+
+  // Lacunarity (frequency multiplier between octaves) - use irrational-ish value
+  // to prevent perfect harmonic alignment, creating richer interference patterns
+  const lacunarity = 1.618 + Math.random() * 0.5  // golden ratio + variation
+  const persistence = 0.45 + Math.random() * 0.15  // amplitude decay per octave
+
+  for (let i = 0; i < octaves; i++) {
+    harmonics.push(baseSpeed * Math.pow(lacunarity, i))
+    phases.push(Math.random() * Math.PI * 2)
+    amps.push(Math.pow(persistence, i))
+  }
+
+  return { harmonics, phases, amps }
+}
+
+// 2D fractal noise for spatial effects (nebula shimmer, milky way texture)
+// Approximation using layered sine products (cheaper than Perlin)
+function fractalNoise2D(x: number, y: number, time: number, octaves: number = 4): number {
+  let value = 0
+  let amplitude = 1
+  let frequency = 1
+  let totalAmplitude = 0
+
+  for (let i = 0; i < octaves; i++) {
+    // Use different prime-based offsets per octave to decorrelate
+    const ox = x * frequency + time * 0.03 * (i + 1) + i * 17.31
+    const oy = y * frequency + time * 0.02 * (i + 1) + i * 31.17
+    // Product of two sines in different directions creates 2D variation
+    value += amplitude * (
+      Math.sin(ox * 1.7 + oy * 0.9) *
+      Math.sin(oy * 1.3 - ox * 0.7 + time * 0.01 * (i + 1))
+    )
+    totalAmplitude += amplitude
+    frequency *= 2.17  // non-integer lacunarity for richer patterns
+    amplitude *= 0.48
+  }
+
+  return (value / totalAmplitude + 1) * 0.5
+}
+
 interface Star {
   x: number
   y: number
@@ -13,6 +89,11 @@ interface Star {
   isConstellation: boolean
   constellationId?: number
   color: [number, number, number]
+  // Fractal twinkling parameters - each star gets unique harmonic series
+  harmonics: number[]      // frequency multipliers for each octave
+  harmonicPhases: number[] // phase offsets for each octave
+  harmonicAmps: number[]   // amplitude weights for each octave
+  fractalDrift: number     // slow drift speed for evolving patterns
 }
 
 interface Constellation {
@@ -245,16 +326,24 @@ function generateStars(logicalWidth: number, logicalHeight: number, starCount: n
   constellationPositions.forEach((pos, index) => {
     const constellationId = constellations.findIndex(c => c.stars.includes(index))
     const isKeyStar = keyStars.has(index)
+    const baseSpeed = 0.5 + Math.random() * 1.5
+    // Key stars get more octaves for richer, more complex twinkling
+    const octaves = isKeyStar ? 6 : 4
+    const { harmonics, phases, amps } = generateHarmonics(baseSpeed, octaves)
     stars.push({
       x: (pos.x / 100) * logicalWidth,
       y: (pos.y / 100) * logicalHeight,
       size: isKeyStar ? 3 + Math.random() : 1.5 + Math.random(),
       brightness: isKeyStar ? 0.95 + Math.random() * 0.05 : 0.8 + Math.random() * 0.15,
-      twinkleSpeed: 0.5 + Math.random() * 1.5,
+      twinkleSpeed: baseSpeed,
       pulsePhase: Math.random() * Math.PI * 2,
       isConstellation: true,
       constellationId,
-      color: isKeyStar ? getKeyStarColor(index) : getStarColor()
+      color: isKeyStar ? getKeyStarColor(index) : getStarColor(),
+      harmonics,
+      harmonicPhases: phases,
+      harmonicAmps: amps,
+      fractalDrift: 0.02 + Math.random() * 0.08,
     })
   })
 
@@ -276,15 +365,23 @@ function generateStars(logicalWidth: number, logicalHeight: number, starCount: n
       ? padding * 0.6 + Math.random() * padding * 0.4
       : Math.random() * padding
 
+    const baseSpeed = 0.5 + Math.random() * 2
+    // Background stars get 3-5 octaves — dimmer stars get fewer for perf
+    const octaves = size > 1 ? 5 : 3
+    const { harmonics: h, phases: p, amps: a } = generateHarmonics(baseSpeed, octaves)
     stars.push({
       x: centerX + Math.cos(angle) * radius,
       y: centerY + Math.sin(angle) * radius,
       size,
       brightness: 0.3 + Math.random() * 0.7,
-      twinkleSpeed: 0.5 + Math.random() * 2,
+      twinkleSpeed: baseSpeed,
       pulsePhase: Math.random() * Math.PI * 2,
       isConstellation: false,
-      color: getStarColor()
+      color: getStarColor(),
+      harmonics: h,
+      harmonicPhases: p,
+      harmonicAmps: a,
+      fractalDrift: 0.01 + Math.random() * 0.05,
     })
   }
 
@@ -459,16 +556,19 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 3000 }:
       ctx.fillStyle = milkyWayGradient
       ctx.fillRect(bandStartX, milkyCenterY - bandHeight / 2, bandWidth, bandHeight)
 
-      // Galactic center
+      // Galactic center with fractal shimmer
       const galacticCenterX = w * 0.6
       const galacticRadius = w * 0.25
+      // Fractal noise creates slow, organic pulsing of the galactic core
+      const galacticNoise = fractalNoise2D(galacticCenterX * 0.002, milkyCenterY * 0.002, time, 5)
+      const galacticBreath = 0.85 + 0.15 * galacticNoise
       const centerGradient = ctx.createRadialGradient(
         galacticCenterX, milkyCenterY, 0,
-        galacticCenterX, milkyCenterY, galacticRadius
+        galacticCenterX, milkyCenterY, galacticRadius * (0.97 + 0.06 * galacticNoise)
       )
-      centerGradient.addColorStop(0, 'rgba(180, 160, 200, 0.35)')
-      centerGradient.addColorStop(0.3, 'rgba(130, 120, 160, 0.22)')
-      centerGradient.addColorStop(0.6, 'rgba(80, 90, 130, 0.12)')
+      centerGradient.addColorStop(0, `rgba(180, 160, 200, ${0.35 * galacticBreath})`)
+      centerGradient.addColorStop(0.3, `rgba(130, 120, 160, ${0.22 * galacticBreath})`)
+      centerGradient.addColorStop(0.6, `rgba(80, 90, 130, ${0.12 * galacticBreath})`)
       centerGradient.addColorStop(1, 'rgba(0, 0, 0, 0)')
       ctx.fillStyle = centerGradient
       ctx.beginPath()
@@ -481,15 +581,19 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 3000 }:
         { x: w * 0.58, y: milkyCenterY + 40, radius: 100 },
         { x: w * 0.78, y: milkyCenterY - 10, radius: 90 }
       ]
-      dustLanes.forEach(lane => {
-        const dustGradient = ctx.createRadialGradient(lane.x, lane.y, 0, lane.x, lane.y, lane.radius)
-        dustGradient.addColorStop(0, 'rgba(5, 8, 15, 0.3)')
-        dustGradient.addColorStop(0.4, 'rgba(5, 8, 15, 0.15)')
-        dustGradient.addColorStop(0.7, 'rgba(5, 8, 15, 0.05)')
+      dustLanes.forEach((lane, idx) => {
+        // Fractal noise makes dust lanes slowly shift and breathe
+        const dustNoise = fractalNoise2D(lane.x * 0.003, lane.y * 0.003, time * 0.7 + idx * 50, 3)
+        const dustRadius = lane.radius * (0.9 + 0.2 * dustNoise)
+        const dustOpacity = 0.8 + 0.2 * dustNoise
+        const dustGradient = ctx.createRadialGradient(lane.x, lane.y, 0, lane.x, lane.y, dustRadius)
+        dustGradient.addColorStop(0, `rgba(5, 8, 15, ${0.3 * dustOpacity})`)
+        dustGradient.addColorStop(0.4, `rgba(5, 8, 15, ${0.15 * dustOpacity})`)
+        dustGradient.addColorStop(0.7, `rgba(5, 8, 15, ${0.05 * dustOpacity})`)
         dustGradient.addColorStop(1, 'rgba(0, 0, 0, 0)')
         ctx.fillStyle = dustGradient
         ctx.beginPath()
-        ctx.arc(lane.x, lane.y, lane.radius, 0, Math.PI * 2)
+        ctx.arc(lane.x, lane.y, dustRadius, 0, Math.PI * 2)
         ctx.fill()
       })
 
@@ -500,24 +604,40 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 3000 }:
         { x: w * 0.8, y: milkyCenterY - 30, radius: 150, color: 'rgba(160, 150, 210, 0.06)' },
         { x: w * 0.45, y: milkyCenterY + 70, radius: 190, color: 'rgba(150, 140, 200, 0.05)' }
       ]
-      nebulas.forEach(nebula => {
-        const nebulaGradient = ctx.createRadialGradient(nebula.x, nebula.y, 0, nebula.x, nebula.y, nebula.radius)
-        nebulaGradient.addColorStop(0, nebula.color)
-        nebulaGradient.addColorStop(0.5, nebula.color.replace(/[\d.]+\)$/, '0.02)'))
+      nebulas.forEach((nebula, idx) => {
+        // Fractal noise modulates nebula opacity and position for organic breathing
+        const noiseVal = fractalNoise2D(nebula.x * 0.005, nebula.y * 0.005, time + idx * 100, 4)
+        const breathe = 0.7 + 0.3 * noiseVal
+        const radiusShift = nebula.radius * (0.95 + 0.1 * noiseVal)
+        // Slight position drift from fractal noise
+        const driftX = nebula.x + (noiseVal - 0.5) * 8
+        const driftY = nebula.y + (fractalNoise2D(nebula.y * 0.005, nebula.x * 0.005, time + idx * 200, 3) - 0.5) * 8
+
+        const nebulaGradient = ctx.createRadialGradient(driftX, driftY, 0, driftX, driftY, radiusShift)
+        const baseColor = nebula.color.replace(/[\d.]+\)$/, `${parseFloat(nebula.color.match(/[\d.]+\)$/)?.[0] || '0.08') * breathe})`)
+        nebulaGradient.addColorStop(0, baseColor)
+        nebulaGradient.addColorStop(0.3, nebula.color.replace(/[\d.]+\)$/, `${0.04 * breathe})`))
+        nebulaGradient.addColorStop(0.6, nebula.color.replace(/[\d.]+\)$/, `${0.015 * breathe})`))
         nebulaGradient.addColorStop(1, 'rgba(0, 0, 0, 0)')
         ctx.fillStyle = nebulaGradient
         ctx.beginPath()
-        ctx.arc(nebula.x, nebula.y, nebula.radius, 0, Math.PI * 2)
+        ctx.arc(driftX, driftY, radiusShift, 0, Math.PI * 2)
         ctx.fill()
       })
 
-      // --- Draw stars ---
+      // --- Draw stars with fractal twinkling ---
       stars.forEach(star => {
         const isHighlighted = star.isConstellation &&
           activeConstellation === star.constellationId
 
         const starColor = isHighlighted ? [255, 255, 255] : star.color
-        const twinkle = 0.8 + 0.2 * Math.sin(time * star.twinkleSpeed + star.pulsePhase)
+        // Fractal twinkle: layered harmonics create complex, organic brightness patterns
+        // Each star's unique harmonic series produces never-repeating shimmer
+        const fractalValue = fractalTwinkle(
+          time, star.harmonics, star.harmonicPhases, star.harmonicAmps, star.fractalDrift
+        )
+        // Map fractal noise to twinkle range: mostly bright with complex dips
+        const twinkle = 0.65 + 0.35 * fractalValue
         const alpha = Math.min(1, star.brightness * 1.5 * twinkle)
 
         ctx.save()
