@@ -13,6 +13,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { JoinProjectButton } from '@/components/projects/JoinProjectButton'
 import React, { useState, useEffect, useRef, useCallback } from 'react'
+import { BirdFlightCanvas } from '@/components/community/BirdFlightCanvas'
 
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -1064,7 +1065,7 @@ function ScrollRow({ title, subtitle, projects, ghostCount }: ProjectRow) {
 function ProjectsPhilosophy() {
   return (
     <div className="relative w-full overflow-hidden"
-      style={{ minHeight: 'clamp(480px, 75vh, 800px)' }}
+      style={{ minHeight: '100vh' }}
     >
       {/* Background layer */}
       <div className="absolute inset-0" style={{
@@ -1124,6 +1125,9 @@ function ProjectsPhilosophy() {
             ))}
           </svg>
         </div>
+
+      {/* Bird flight — first-person soaring POV */}
+      <BirdFlightCanvas />
 
       {/* Gradient veils — blend canvas into page */}
       <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/60 to-[var(--background)]/15" />
@@ -1275,11 +1279,14 @@ export default function ProjectsPage() {
       {/* Keyframes for heat-wave animation */}
       <style>{`
         @keyframes heat-wave {
-          0% { transform: translateY(0) scaleY(1); stroke-opacity: 0.03; }
-          25% { transform: translateY(-3px) scaleY(1.02); stroke-opacity: 0.05; }
-          50% { transform: translateY(2px) scaleY(0.98); stroke-opacity: 0.02; }
-          75% { transform: translateY(-1.5px) scaleY(1.01); stroke-opacity: 0.045; }
-          100% { transform: translateY(0) scaleY(1); stroke-opacity: 0.03; }
+          0% { transform: translate(0, 0) scaleY(1) scaleX(1); stroke-opacity: 0.03; }
+          15% { transform: translate(8px, -6px) scaleY(1.04) scaleX(1.01); stroke-opacity: 0.055; }
+          30% { transform: translate(-5px, 4px) scaleY(0.96) scaleX(0.99); stroke-opacity: 0.025; }
+          45% { transform: translate(12px, -3px) scaleY(1.03) scaleX(1.02); stroke-opacity: 0.05; }
+          60% { transform: translate(-8px, 5px) scaleY(0.97) scaleX(0.98); stroke-opacity: 0.02; }
+          75% { transform: translate(6px, -7px) scaleY(1.05) scaleX(1.01); stroke-opacity: 0.06; }
+          90% { transform: translate(-3px, 2px) scaleY(0.98) scaleX(1.0); stroke-opacity: 0.035; }
+          100% { transform: translate(0, 0) scaleY(1) scaleX(1); stroke-opacity: 0.03; }
         }
       `}</style>
 
