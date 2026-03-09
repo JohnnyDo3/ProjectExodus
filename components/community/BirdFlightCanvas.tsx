@@ -4,27 +4,24 @@ import { useEffect, useRef, useCallback } from 'react'
 import * as THREE from 'three'
 
 /**
- * BirdFlightCanvas — First-person aerial bird POV soaring through open sky.
+ * BirdFlightCanvas — Stormy rainfall seen from below, laying on your back.
  *
- * Creates an optical illusion of soaring forward through scattered particles
- * (clouds, light motes, atmospheric haze) with:
- *   - Subtle warp/tunnel vignette at the edges
- *   - Wind gust bursts that streak particles sideways
- *   - Mouse-interactive banking (look where you steer)
- *   - Depth-fog that dissolves into the distance
+ * Creates the perspective of looking straight up at a dark sky while rain
+ * pours down toward you. Drops appear tiny at a vanishing point overhead,
+ * then rush toward the camera — growing larger and spreading outward as
+ * they fall past. Occasional lightning pulses illuminate the scene.
  *
- * Pure aerial perspective — no ground or landscape features.
+ * Mouse-reactive: tilt your view to see rain shift with parallax.
  * Designed to sit behind the ProjectsPhilosophy hero and fade out on scroll.
  */
 
 // ── Config ───────────────────────────────────────────────────────────────────
 
-const PARTICLE_COUNT = 1400
-const FIELD_DEPTH = 300
-const FIELD_SPREAD = 120
-const FLY_SPEED = 0.45
-const WIND_GUST_INTERVAL = 3500 // ms between gusts
-const WIND_GUST_DURATION = 1200
+const DROP_COUNT = 900
+const FIELD_DEPTH = 350
+const FIELD_SPREAD = 80
+const FALL_SPEED = 1.8
+const SPLASH_COUNT = 60
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -46,7 +43,6 @@ export function BirdFlightCanvas() {
   const smoothMouseRef = useRef({ x: 0, y: 0 })
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
-    // Normalise to -1..1
     mouseRef.current.x = (e.clientX / window.innerWidth) * 2 - 1
     mouseRef.current.y = (e.clientY / window.innerHeight) * 2 - 1
   }, [])
@@ -59,23 +55,24 @@ export function BirdFlightCanvas() {
 
     const scene = new THREE.Scene()
 
-    // Fog — gives that atmospheric depth-fade
-    const fogColor = new THREE.Color('#8db5c7') // cool sky blue, blends with any theme
-    scene.fog = new THREE.FogExp2(fogColor, 0.008)
+    // Stormy fog — dark, heavy atmosphere
+    const fogColor = new THREE.Color('#2a3540')
+    scene.fog = new THREE.FogExp2(fogColor, 0.005)
     scene.background = null // transparent — page bg shows through
 
-    // ── Camera ────────────────────────────────────────────────────────────
+    // ── Camera — looking straight up ──────────────────────────────────────
 
     const aspect = container.clientWidth / container.clientHeight
-    const camera = new THREE.PerspectiveCamera(72, aspect, 0.1, FIELD_DEPTH + 50)
+    const camera = new THREE.PerspectiveCamera(85, aspect, 0.1, FIELD_DEPTH + 50)
     camera.position.set(0, 0, 0)
+    // Looking up — rain falls toward us along -Z mapped to "overhead"
     camera.lookAt(0, 0, -1)
 
     // ── Renderer ──────────────────────────────────────────────────────────
 
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
-      antialias: false, // perf
+      antialias: false,
       powerPreference: 'high-performance',
     })
     renderer.setSize(container.clientWidth, container.clientHeight)
@@ -84,51 +81,44 @@ export function BirdFlightCanvas() {
     container.appendChild(renderer.domElement)
     rendererRef.current = renderer
 
-    // ── Particles — mixed cloud puffs, leaf-like bits, light motes ──────
+    // ── Raindrops — elongated streaks with perspective ────────────────────
 
     const geometry = new THREE.BufferGeometry()
-    const positions = new Float32Array(PARTICLE_COUNT * 3)
-    const sizes = new Float32Array(PARTICLE_COUNT)
-    const alphas = new Float32Array(PARTICLE_COUNT)
-    const types = new Float32Array(PARTICLE_COUNT) // 0=mote, 1=leaf, 2=cloud wisp
+    const positions = new Float32Array(DROP_COUNT * 3)
+    const sizes = new Float32Array(DROP_COUNT)
+    const alphas = new Float32Array(DROP_COUNT)
+    const speeds = new Float32Array(DROP_COUNT)
 
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
+    for (let i = 0; i < DROP_COUNT; i++) {
       const i3 = i * 3
-      positions[i3] = randRange(-FIELD_SPREAD, FIELD_SPREAD)
-      positions[i3 + 1] = randRange(-FIELD_SPREAD * 0.6, FIELD_SPREAD * 0.6)
-      positions[i3 + 2] = randRange(-FIELD_DEPTH, 10)
+      // Spread drops in a cone — tighter near the far point, wider near camera
+      const depth = randRange(-FIELD_DEPTH, 10)
+      const depthRatio = (depth + FIELD_DEPTH) / FIELD_DEPTH
+      const spread = FIELD_SPREAD * depthRatio * 0.6 + 10
+      positions[i3] = randRange(-spread, spread)
+      positions[i3 + 1] = randRange(-spread * 0.7, spread * 0.7)
+      positions[i3 + 2] = depth
 
-      const type = Math.random()
-      if (type < 0.55) {
-        // Light motes — small atmospheric particles
-        types[i] = 0
-        sizes[i] = randRange(2, 5)
-        alphas[i] = randRange(0.3, 0.7)
-      } else if (type < 0.82) {
-        // Haze wisps — medium atmospheric haze
-        types[i] = 1
-        sizes[i] = randRange(5, 11)
-        alphas[i] = randRange(0.15, 0.4)
-      } else {
-        // Cloud puffs — large, faint
-        types[i] = 2
-        sizes[i] = randRange(16, 40)
-        alphas[i] = randRange(0.06, 0.18)
-      }
+      // Closer drops are larger and more visible
+      const closeness = 1 - (depth + FIELD_DEPTH) / (FIELD_DEPTH + 10)
+      sizes[i] = randRange(2, 6) + closeness * 8
+      alphas[i] = randRange(0.15, 0.5) + closeness * 0.3
+      speeds[i] = FALL_SPEED * randRange(0.7, 1.4)
     }
 
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
     geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1))
     geometry.setAttribute('alpha', new THREE.BufferAttribute(alphas, 1))
 
-    // Custom shader for soft round particles with per-vertex alpha
-    const particleMaterial = new THREE.ShaderMaterial({
+    // Custom shader — elongated vertical streaks that look like rain
+    const dropMaterial = new THREE.ShaderMaterial({
       transparent: true,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
       uniforms: {
-        uColor: { value: new THREE.Color('#d4e8f2') },
+        uColor: { value: new THREE.Color('#b8d4e8') },
         uTime: { value: 0 },
+        uFlash: { value: 0 },
       },
       vertexShader: /* glsl */ `
         attribute float size;
@@ -138,7 +128,8 @@ export function BirdFlightCanvas() {
         void main() {
           vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
           float dist = -mvPosition.z;
-          gl_PointSize = size * (180.0 / dist);
+          // Drops get larger as they approach
+          gl_PointSize = size * (200.0 / max(dist, 1.0));
           gl_Position = projectionMatrix * mvPosition;
           vAlpha = alpha;
           vDist = dist;
@@ -147,93 +138,110 @@ export function BirdFlightCanvas() {
       fragmentShader: /* glsl */ `
         uniform vec3 uColor;
         uniform float uTime;
+        uniform float uFlash;
         varying float vAlpha;
         varying float vDist;
         void main() {
-          // Soft circle
-          float d = length(gl_PointCoord - vec2(0.5));
+          vec2 uv = gl_PointCoord - vec2(0.5);
+
+          // Elongated raindrop shape — stretched vertically
+          float dx = uv.x * 3.0;
+          float dy = uv.y * 1.0;
+          float d = sqrt(dx * dx + dy * dy);
           if (d > 0.5) discard;
-          float softEdge = 1.0 - smoothstep(0.25, 0.5, d);
+
+          float softEdge = 1.0 - smoothstep(0.15, 0.5, d);
+
+          // Bright core streak down the center
+          float coreStreak = exp(-abs(uv.x) * 12.0) * softEdge;
 
           // Distance fade
-          float distFade = 1.0 - smoothstep(60.0, 320.0, vDist);
+          float distFade = 1.0 - smoothstep(40.0, 350.0, vDist);
 
-          gl_FragColor = vec4(uColor, vAlpha * softEdge * distFade);
+          // Lightning flash boost
+          float flash = 1.0 + uFlash * 2.5;
+
+          float finalAlpha = (vAlpha * softEdge * 0.6 + coreStreak * 0.5) * distFade * flash;
+          vec3 color = uColor + vec3(coreStreak * 0.3) + vec3(uFlash * 0.4);
+
+          gl_FragColor = vec4(color, finalAlpha);
         }
       `,
     })
 
-    const particles = new THREE.Points(geometry, particleMaterial)
-    scene.add(particles)
+    const drops = new THREE.Points(geometry, dropMaterial)
+    scene.add(drops)
 
-    // ── Wind streak lines — thin geometry streaks for gust effect ────────
+    // ── Splash particles — brief bursts where drops "hit" near camera ────
 
-    const streakCount = 60
-    const streakGeo = new THREE.BufferGeometry()
-    const streakPositions = new Float32Array(streakCount * 6) // 2 verts per line
-    const streakAlphas = new Float32Array(streakCount * 2)
+    const splashGeo = new THREE.BufferGeometry()
+    const splashPositions = new Float32Array(SPLASH_COUNT * 3)
+    const splashAlphas = new Float32Array(SPLASH_COUNT)
+    const splashSizes = new Float32Array(SPLASH_COUNT)
+    const splashLife = new Float32Array(SPLASH_COUNT) // 0 = dead, >0 = alive
 
-    for (let i = 0; i < streakCount; i++) {
-      const x = randRange(-FIELD_SPREAD * 0.8, FIELD_SPREAD * 0.8)
-      const y = randRange(-FIELD_SPREAD * 0.4, FIELD_SPREAD * 0.4)
-      const z = randRange(-FIELD_DEPTH * 0.7, -10)
-      const len = randRange(3, 10)
-      const i6 = i * 6
-      streakPositions[i6] = x
-      streakPositions[i6 + 1] = y
-      streakPositions[i6 + 2] = z
-      streakPositions[i6 + 3] = x + len
-      streakPositions[i6 + 4] = y + randRange(-0.5, 0.5)
-      streakPositions[i6 + 5] = z
-      streakAlphas[i * 2] = 0
-      streakAlphas[i * 2 + 1] = 0
+    for (let i = 0; i < SPLASH_COUNT; i++) {
+      splashPositions[i * 3] = 0
+      splashPositions[i * 3 + 1] = 0
+      splashPositions[i * 3 + 2] = -999 // hidden
+      splashAlphas[i] = 0
+      splashSizes[i] = 0
+      splashLife[i] = 0
     }
 
-    streakGeo.setAttribute('position', new THREE.BufferAttribute(streakPositions, 3))
-    streakGeo.setAttribute('alpha', new THREE.BufferAttribute(streakAlphas, 1))
+    splashGeo.setAttribute('position', new THREE.BufferAttribute(splashPositions, 3))
+    splashGeo.setAttribute('alpha', new THREE.BufferAttribute(splashAlphas, 1))
+    splashGeo.setAttribute('size', new THREE.BufferAttribute(splashSizes, 1))
 
-    const streakMaterial = new THREE.ShaderMaterial({
+    const splashMaterial = new THREE.ShaderMaterial({
       transparent: true,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
       uniforms: {
-        uColor: { value: new THREE.Color('#e8f4fa') },
-        uGustStrength: { value: 0 },
+        uColor: { value: new THREE.Color('#cde4f0') },
       },
       vertexShader: /* glsl */ `
+        attribute float size;
         attribute float alpha;
         varying float vAlpha;
-        uniform float uGustStrength;
         void main() {
           vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+          float dist = -mvPosition.z;
+          gl_PointSize = size * (120.0 / max(dist, 1.0));
           gl_Position = projectionMatrix * mvPosition;
-          vAlpha = alpha * uGustStrength;
+          vAlpha = alpha;
         }
       `,
       fragmentShader: /* glsl */ `
         uniform vec3 uColor;
         varying float vAlpha;
         void main() {
-          gl_FragColor = vec4(uColor, vAlpha * 0.55);
+          float d = length(gl_PointCoord - vec2(0.5));
+          if (d > 0.5) discard;
+          // Expanding ring shape
+          float ring = smoothstep(0.3, 0.4, d) * (1.0 - smoothstep(0.4, 0.5, d));
+          float dot = 1.0 - smoothstep(0.0, 0.2, d);
+          float shape = ring * 0.7 + dot * 0.3;
+          gl_FragColor = vec4(uColor, vAlpha * shape);
         }
       `,
     })
 
-    const streaks = new THREE.LineSegments(streakGeo, streakMaterial)
-    scene.add(streaks)
+    const splashes = new THREE.Points(splashGeo, splashMaterial)
+    scene.add(splashes)
 
-    // ── Warp ring lines — subtle concentric rings for tunnel feel ────────
+    // ── Depth rings — concentric rings overhead for tunnel/vortex feel ────
 
     const ringGroup = new THREE.Group()
-    const ringCount = 18
+    const ringCount = 14
     for (let i = 0; i < ringCount; i++) {
-      const z = -15 - i * (FIELD_DEPTH / ringCount)
-      const radius = 30 + i * 4
-      const ringGeo = new THREE.RingGeometry(radius - 0.3, radius, 64)
+      const z = -20 - i * (FIELD_DEPTH / ringCount)
+      const radius = 8 + i * 6
+      const ringGeo = new THREE.RingGeometry(radius - 0.2, radius, 64)
       const ringMat = new THREE.MeshBasicMaterial({
-        color: new THREE.Color('#b0d4e4'),
+        color: new THREE.Color('#5a7a8f'),
         transparent: true,
-        opacity: 0.035 - i * 0.0012,
+        opacity: 0.025 - i * 0.001,
         side: THREE.DoubleSide,
         depthWrite: false,
       })
@@ -246,17 +254,10 @@ export function BirdFlightCanvas() {
     // ── Animation state ─────────────────────────────────────────────────
 
     let time = 0
-    let gustActive = false
-    let gustTimer = 0
-    let gustDir = 1
-    let gustProgress = 0
-
-    // Wind gust scheduler
-    const gustInterval = setInterval(() => {
-      gustActive = true
-      gustTimer = 0
-      gustDir = Math.random() > 0.5 ? 1 : -1
-    }, WIND_GUST_INTERVAL)
+    let nextSplash = 0
+    let flashTimer = 0
+    let flashActive = false
+    let nextFlashTime = randRange(4, 9)
 
     // ── Animate ─────────────────────────────────────────────────────────
 
@@ -267,83 +268,117 @@ export function BirdFlightCanvas() {
       const delta = clock.getDelta()
       time += delta
 
-      // Smooth mouse follow (bird banking)
+      // Smooth mouse follow
       const sm = smoothMouseRef.current
       const m = mouseRef.current
       sm.x = lerp(sm.x, m.x, 0.03)
       sm.y = lerp(sm.y, m.y, 0.03)
 
-      // Tilt camera based on mouse — like a bird banking
-      camera.rotation.z = -sm.x * 0.08
-      camera.rotation.x = sm.y * 0.05
-      camera.rotation.y = -sm.x * 0.12
+      // Subtle camera tilt from mouse — looking around while laying down
+      camera.rotation.z = -sm.x * 0.06
+      camera.rotation.x = sm.y * 0.04
+      camera.rotation.y = -sm.x * 0.08
 
-      // Wind gust handling
-      if (gustActive) {
-        gustTimer += delta * 1000
-        gustProgress = gustTimer / WIND_GUST_DURATION
-        if (gustProgress >= 1) {
-          gustActive = false
-          gustProgress = 0
-        }
+      // Lightning flash
+      if (time > nextFlashTime && !flashActive) {
+        flashActive = true
+        flashTimer = 0
+        nextFlashTime = time + randRange(5, 14)
       }
-      const gustStrength = gustActive
-        ? Math.sin(gustProgress * Math.PI) // ease in-out
-        : 0
-
-      streakMaterial.uniforms.uGustStrength.value = gustStrength
-
-      // Update streak alphas for gust visibility
-      const sAlphas = streakGeo.attributes.alpha as THREE.BufferAttribute
-      for (let i = 0; i < streakCount; i++) {
-        sAlphas.array[i * 2] = gustStrength * randRange(0.3, 1.0)
-        sAlphas.array[i * 2 + 1] = gustStrength * randRange(0.1, 0.5)
+      if (flashActive) {
+        flashTimer += delta
+        // Quick double-flash pattern
+        const t = flashTimer
+        let flash = 0
+        if (t < 0.06) flash = 1.0
+        else if (t < 0.12) flash = 0.1
+        else if (t < 0.18) flash = 0.6
+        else if (t < 0.3) flash = Math.max(0, 0.6 - (t - 0.18) * 5)
+        else flashActive = false
+        dropMaterial.uniforms.uFlash.value = flash
+      } else {
+        dropMaterial.uniforms.uFlash.value = 0
       }
-      sAlphas.needsUpdate = true
 
-      // Move particles toward camera (flying forward illusion)
+      // Move raindrops toward camera (falling toward viewer)
       const posAttr = geometry.attributes.position as THREE.BufferAttribute
-      for (let i = 0; i < PARTICLE_COUNT; i++) {
+      for (let i = 0; i < DROP_COUNT; i++) {
         const i3 = i * 3
 
-        // Forward motion — particles rush toward camera
-        posAttr.array[i3 + 2] += FLY_SPEED * (1 + sizes[i] * 0.03)
+        // Fall toward camera
+        posAttr.array[i3 + 2] += speeds[i] * (1 + sizes[i] * 0.02)
 
-        // Gentle sway (organic, bird-like drift)
-        posAttr.array[i3] += Math.sin(time * 0.3 + i * 0.1) * 0.02
-        posAttr.array[i3 + 1] += Math.cos(time * 0.2 + i * 0.07) * 0.015
+        // Slight lateral drift — wind
+        posAttr.array[i3] += Math.sin(time * 0.5 + i * 0.3) * 0.03
+        posAttr.array[i3 + 1] += Math.cos(time * 0.4 + i * 0.2) * 0.02
 
-        // Wind gust push
-        if (gustStrength > 0) {
-          posAttr.array[i3] += gustDir * gustStrength * 0.4 * (sizes[i] > 10 ? 0.3 : 1)
-          posAttr.array[i3 + 1] += gustStrength * 0.08 * Math.sin(i)
+        // Radial spread as drops get closer — perspective expansion
+        const z = posAttr.array[i3 + 2]
+        if (z > -50) {
+          const pushFactor = (z + 50) / 50
+          const angle = Math.atan2(posAttr.array[i3 + 1], posAttr.array[i3])
+          posAttr.array[i3] += Math.cos(angle) * pushFactor * 0.15
+          posAttr.array[i3 + 1] += Math.sin(angle) * pushFactor * 0.15
         }
 
-        // Mouse-reactive parallax — particles shift opposite to mouse (depth illusion)
-        posAttr.array[i3] -= sm.x * 0.06 * (sizes[i] > 10 ? 0.15 : 0.5)
-        posAttr.array[i3 + 1] += sm.y * 0.04 * (sizes[i] > 10 ? 0.15 : 0.5)
+        // Mouse-reactive parallax — rain shifts as you look around
+        posAttr.array[i3] -= sm.x * 0.04 * (sizes[i] > 8 ? 0.2 : 0.5)
+        posAttr.array[i3 + 1] += sm.y * 0.03 * (sizes[i] > 8 ? 0.2 : 0.5)
 
-        // Recycle particles that pass the camera
-        if (posAttr.array[i3 + 2] > 15) {
-          posAttr.array[i3] = randRange(-FIELD_SPREAD, FIELD_SPREAD)
-          posAttr.array[i3 + 1] = randRange(-FIELD_SPREAD * 0.6, FIELD_SPREAD * 0.6)
-          posAttr.array[i3 + 2] = -FIELD_DEPTH + randRange(-10, 10)
+        // Recycle drops that pass the camera — spawn them far away again
+        if (posAttr.array[i3 + 2] > 12) {
+          const depth = -FIELD_DEPTH + randRange(-20, 20)
+          const depthRatio = (depth + FIELD_DEPTH) / FIELD_DEPTH
+          const spread = FIELD_SPREAD * depthRatio * 0.6 + 10
+          posAttr.array[i3] = randRange(-spread, spread)
+          posAttr.array[i3 + 1] = randRange(-spread * 0.7, spread * 0.7)
+          posAttr.array[i3 + 2] = depth
+
+          // Trigger splash at camera plane
+          if (nextSplash < SPLASH_COUNT) {
+            const si = nextSplash * 3
+            const spa = splashGeo.attributes.position as THREE.BufferAttribute
+            spa.array[si] = posAttr.array[i3] * 0.3
+            spa.array[si + 1] = posAttr.array[i3 + 1] * 0.3
+            spa.array[si + 2] = randRange(-5, 5)
+            splashLife[nextSplash] = 1.0
+            ;(splashGeo.attributes.size as THREE.BufferAttribute).array[nextSplash] = randRange(4, 12)
+            spa.needsUpdate = true
+            nextSplash = (nextSplash + 1) % SPLASH_COUNT
+          }
         }
       }
       posAttr.needsUpdate = true
 
-      // Warp rings — subtle pulse and drift
+      // Update splash particles — expand and fade
+      const splashPosAttr = splashGeo.attributes.position as THREE.BufferAttribute
+      const splashAlphaAttr = splashGeo.attributes.alpha as THREE.BufferAttribute
+      const splashSizeAttr = splashGeo.attributes.size as THREE.BufferAttribute
+      for (let i = 0; i < SPLASH_COUNT; i++) {
+        if (splashLife[i] > 0) {
+          splashLife[i] -= delta * 2.5
+          splashAlphaAttr.array[i] = Math.max(0, splashLife[i] * 0.4)
+          splashSizeAttr.array[i] += delta * 20
+          if (splashLife[i] <= 0) {
+            splashPosAttr.array[i * 3 + 2] = -999 // hide
+          }
+        }
+      }
+      splashAlphaAttr.needsUpdate = true
+      splashSizeAttr.needsUpdate = true
+      splashPosAttr.needsUpdate = true
+
+      // Depth rings — subtle drift and pulse
       ringGroup.children.forEach((ring, idx) => {
-        ring.position.z += FLY_SPEED * 0.6
+        ring.position.z += FALL_SPEED * 0.3
         if (ring.position.z > 5) {
           ring.position.z = -FIELD_DEPTH + idx * 2
         }
-        // Gentle scale pulse
-        const pulse = 1 + Math.sin(time * 0.8 + idx * 0.5) * 0.02
+        const pulse = 1 + Math.sin(time * 0.6 + idx * 0.4) * 0.03
         ring.scale.set(pulse, pulse, 1)
       })
 
-      particleMaterial.uniforms.uTime.value = time
+      dropMaterial.uniforms.uTime.value = time
 
       renderer.render(scene, camera)
     }
@@ -371,14 +406,13 @@ export function BirdFlightCanvas() {
 
     return () => {
       cancelAnimationFrame(frameRef.current)
-      clearInterval(gustInterval)
       window.removeEventListener('mousemove', handleMouseMove)
       window.removeEventListener('resize', handleResize)
 
       geometry.dispose()
-      particleMaterial.dispose()
-      streakGeo.dispose()
-      streakMaterial.dispose()
+      dropMaterial.dispose()
+      splashGeo.dispose()
+      splashMaterial.dispose()
       ringGroup.children.forEach((child) => {
         if (child instanceof THREE.Mesh) {
           child.geometry.dispose()

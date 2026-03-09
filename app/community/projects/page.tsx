@@ -1202,7 +1202,7 @@ function ProjectsPhilosophy() {
           </svg>
         </div>
 
-      {/* Bird flight — first-person soaring POV */}
+      {/* Rainfall — looking up at a stormy sky, rain falling toward you */}
       <BirdFlightCanvas />
 
       {/* Gradient veils — blend canvas into page while preserving illusion */}
