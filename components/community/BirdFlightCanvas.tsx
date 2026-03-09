@@ -4,15 +4,16 @@ import { useEffect, useRef, useCallback } from 'react'
 import * as THREE from 'three'
 
 /**
- * BirdFlightCanvas — First-person bird POV flight through an organic landscape.
+ * BirdFlightCanvas — First-person aerial bird POV soaring through open sky.
  *
  * Creates an optical illusion of soaring forward through scattered particles
- * (clouds, leaves, light motes) with:
+ * (clouds, light motes, atmospheric haze) with:
  *   - Subtle warp/tunnel vignette at the edges
  *   - Wind gust bursts that streak particles sideways
  *   - Mouse-interactive banking (look where you steer)
  *   - Depth-fog that dissolves into the distance
  *
+ * Pure aerial perspective — no ground or landscape features.
  * Designed to sit behind the ProjectsPhilosophy hero and fade out on scroll.
  */
 
@@ -99,17 +100,17 @@ export function BirdFlightCanvas() {
 
       const type = Math.random()
       if (type < 0.55) {
-        // Light motes — small, bright
+        // Light motes — small atmospheric particles
         types[i] = 0
         sizes[i] = randRange(1.5, 4)
         alphas[i] = randRange(0.15, 0.5)
       } else if (type < 0.82) {
-        // Leaf-like — medium
+        // Haze wisps — medium atmospheric haze
         types[i] = 1
         sizes[i] = randRange(4, 9)
         alphas[i] = randRange(0.08, 0.25)
       } else {
-        // Cloud wisps — large, faint
+        // Cloud puffs — large, faint
         types[i] = 2
         sizes[i] = randRange(14, 35)
         alphas[i] = randRange(0.03, 0.1)

@@ -580,39 +580,6 @@ function DriftingClouds() {
   )
 }
 
-// ─── Wildlife Silhouettes ────────────────────────────────────────────────────
-// A fox and deer silhouette in the billboard landscape.
-function WildlifeSilhouettes() {
-  return (
-    <>
-      {/* Fox — small, sitting on the right hillside */}
-      <g transform="translate(1000, 252)" opacity="0.06">
-        <path d="M0,0 Q-2,-8 -1,-12 L2,-15 L3,-10 Q5,-12 7,-15 L8,-10 Q9,-8 8,0 Q6,-2 4,-2 Q2,-2 0,0Z" fill="var(--foreground)" />
-        {/* Tail */}
-        <path d="M-1,0 Q-6,-2 -8,-5 Q-6,-3 -3,-1" fill="var(--foreground)" />
-      </g>
-      {/* Deer — standing on distant ridge */}
-      <g transform="translate(420, 225)" opacity="0.04">
-        {/* Body */}
-        <ellipse cx="0" cy="0" rx="8" ry="4" fill="var(--foreground)" />
-        {/* Neck & head */}
-        <path d="M6,-3 Q8,-10 7,-14" stroke="var(--foreground)" strokeWidth="1.5" fill="none" />
-        <circle cx="7" cy="-15" r="2.5" fill="var(--foreground)" />
-        {/* Antlers */}
-        <path d="M6,-17 Q4,-22 2,-24" stroke="var(--foreground)" strokeWidth="0.6" fill="none" />
-        <path d="M3,-22 Q1,-23 0,-22" stroke="var(--foreground)" strokeWidth="0.4" fill="none" />
-        <path d="M8,-17 Q10,-22 12,-24" stroke="var(--foreground)" strokeWidth="0.6" fill="none" />
-        <path d="M11,-22 Q13,-23 14,-22" stroke="var(--foreground)" strokeWidth="0.4" fill="none" />
-        {/* Legs */}
-        <line x1="-4" y1="3" x2="-5" y2="10" stroke="var(--foreground)" strokeWidth="0.8" />
-        <line x1="-2" y1="3" x2="-2" y2="10" stroke="var(--foreground)" strokeWidth="0.8" />
-        <line x1="3" y1="3" x2="2" y2="10" stroke="var(--foreground)" strokeWidth="0.8" />
-        <line x1="5" y1="3" x2="6" y2="10" stroke="var(--foreground)" strokeWidth="0.8" />
-      </g>
-    </>
-  )
-}
-
 // ─── Shooting Star ───────────────────────────────────────────────────────────
 // A brief streak across the billboard sky, animated.
 function ShootingStar() {
@@ -1076,7 +1043,7 @@ function ProjectsPhilosophy({ totalProjects, totalContributors }: {
         <BirdFlightCanvas />
       </div>
 
-      {/* Background layer — abstract landscape */}
+      {/* Background layer — aerial sky */}
       <div className="absolute inset-0" style={{
           background: `
             radial-gradient(ellipse 80% 60% at 20% 80%, var(--primary)/0.12 0%, transparent 70%),
@@ -1095,65 +1062,25 @@ function ProjectsPhilosophy({ totalProjects, totalContributors }: {
               return <line key={angle} x1={900 + Math.cos(rad) * 50} y1={120 - Math.sin(rad) * 50} x2={900 + Math.cos(rad) * 75} y2={120 - Math.sin(rad) * 75} stroke="var(--primary)" strokeOpacity="0.03" strokeWidth="0.5" />
             })}
 
-            {/* Mountain ranges */}
-            <path d="M0,280 Q100,220 200,260 Q350,180 450,240 Q550,200 650,230 Q750,170 850,220 Q950,195 1050,240 Q1150,210 1200,250 L1200,400 L0,400Z" fill="var(--primary)" fillOpacity="0.04" />
-            <path d="M0,300 Q80,270 180,290 Q280,260 380,285 Q500,250 600,275 Q720,255 840,280 Q940,260 1060,278 Q1140,265 1200,275 L1200,400 L0,400Z" fill="var(--primary)" fillOpacity="0.025" />
-
-            {/* Horizon glow */}
-            <line x1="0" y1="265" x2="1200" y2="265" stroke="var(--primary)" strokeOpacity="0.12" strokeWidth="1" />
-
-            {/* Converging paths — symbolizing people coming together */}
-            <path d="M200,400 Q250,350 350,310 Q450,275 530,255" fill="none" stroke="var(--foreground)" strokeOpacity="0.06" strokeWidth="1.2" />
-            <path d="M800,400 Q750,350 650,310 Q550,275 530,255" fill="none" stroke="var(--foreground)" strokeOpacity="0.06" strokeWidth="1.2" />
-            <path d="M500,400 Q510,360 520,320 Q525,285 530,255" fill="none" stroke="var(--foreground)" strokeOpacity="0.05" strokeWidth="1" />
-            {/* Meeting point beacon */}
-            <circle cx="530" cy="252" r="4" fill="var(--primary)" fillOpacity="0.15" />
-            <circle cx="530" cy="252" r="8" fill="none" stroke="var(--primary)" strokeOpacity="0.08" strokeWidth="0.6" />
-            <circle cx="530" cy="252" r="14" fill="none" stroke="var(--primary)" strokeOpacity="0.04" strokeWidth="0.4" />
-
-            {/* Interconnected nodes — representing the think tank network */}
-            <g opacity="0.07">
-              <circle cx="380" cy="200" r="3" fill="var(--primary)" />
-              <circle cx="450" cy="175" r="2.5" fill="var(--primary)" />
-              <circle cx="520" cy="190" r="3.5" fill="var(--primary)" />
-              <circle cx="590" cy="170" r="2" fill="var(--primary)" />
-              <circle cx="650" cy="195" r="3" fill="var(--primary)" />
-              <circle cx="480" cy="220" r="2" fill="var(--primary)" />
-              <circle cx="560" cy="215" r="2.5" fill="var(--primary)" />
-              <line x1="380" y1="200" x2="450" y2="175" stroke="var(--primary)" strokeWidth="0.4" />
-              <line x1="450" y1="175" x2="520" y2="190" stroke="var(--primary)" strokeWidth="0.4" />
-              <line x1="520" y1="190" x2="590" y2="170" stroke="var(--primary)" strokeWidth="0.4" />
-              <line x1="590" y1="170" x2="650" y2="195" stroke="var(--primary)" strokeWidth="0.4" />
-              <line x1="520" y1="190" x2="480" y2="220" stroke="var(--primary)" strokeWidth="0.3" />
-              <line x1="520" y1="190" x2="560" y2="215" stroke="var(--primary)" strokeWidth="0.3" />
-              <line x1="480" y1="220" x2="560" y2="215" stroke="var(--primary)" strokeWidth="0.3" />
-              <line x1="380" y1="200" x2="480" y2="220" stroke="var(--primary)" strokeWidth="0.2" />
-              <line x1="650" y1="195" x2="560" y2="215" stroke="var(--primary)" strokeWidth="0.2" />
-            </g>
-
-            {/* Trees */}
-            <line x1="180" y1="310" x2="180" y2="280" stroke="var(--primary)" strokeOpacity="0.08" strokeWidth="1.5" />
-            <circle cx="180" cy="274" r="12" fill="var(--primary)" fillOpacity="0.04" />
-            <line x1="350" y1="295" x2="350" y2="272" stroke="var(--primary)" strokeOpacity="0.07" strokeWidth="1.2" />
-            <circle cx="350" cy="268" r="9" fill="var(--primary)" fillOpacity="0.035" />
-            <line x1="680" y1="270" x2="680" y2="258" stroke="var(--primary)" strokeOpacity="0.06" strokeWidth="0.8" />
-            <circle cx="680" cy="255" r="6" fill="var(--primary)" fillOpacity="0.03" />
-            <line x1="850" y1="260" x2="850" y2="252" stroke="var(--primary)" strokeOpacity="0.05" strokeWidth="0.6" />
-            <circle cx="850" cy="250" r="4" fill="var(--primary)" fillOpacity="0.025" />
-
-            {/* Birds in formation */}
+            {/* Distant birds in formation — fellow travelers */}
             <g opacity="0.06">
               <path d="M300,150 l-4,4 l4,-1.5 l4,1.5 l-4,-4" stroke="var(--foreground)" strokeWidth="0.8" fill="none" />
               <path d="M320,143 l-3.5,3.5 l3.5,-1.2 l3.5,1.2 l-3.5,-3.5" stroke="var(--foreground)" strokeWidth="0.7" fill="none" />
               <path d="M312,155 l-3,3 l3,-1 l3,1 l-3,-3" stroke="var(--foreground)" strokeWidth="0.6" fill="none" />
             </g>
 
-            {/* Ground contour lines */}
-            <path d="M0,320 Q200,300 400,315 Q600,295 800,310 Q1000,290 1200,305" fill="none" stroke="var(--foreground)" strokeOpacity="0.025" strokeWidth="0.8" />
-            <path d="M0,345 Q250,330 500,342 Q750,325 1000,338 Q1100,332 1200,340" fill="none" stroke="var(--foreground)" strokeOpacity="0.02" strokeWidth="0.6" />
+            {/* Second flock — further away */}
+            <g opacity="0.04">
+              <path d="M700,90 l-3,3 l3,-1 l3,1 l-3,-3" stroke="var(--foreground)" strokeWidth="0.6" fill="none" />
+              <path d="M715,85 l-2.5,2.5 l2.5,-0.8 l2.5,0.8 l-2.5,-2.5" stroke="var(--foreground)" strokeWidth="0.5" fill="none" />
+              <path d="M708,95 l-2,2 l2,-0.7 l2,0.7 l-2,-2" stroke="var(--foreground)" strokeWidth="0.4" fill="none" />
+              <path d="M725,88 l-2,2 l2,-0.7 l2,0.7 l-2,-2" stroke="var(--foreground)" strokeWidth="0.4" fill="none" />
+            </g>
 
-            {/* Wildlife silhouettes */}
-            <WildlifeSilhouettes />
+            {/* High-altitude wind currents */}
+            <path d="M0,180 Q200,170 400,185 Q600,175 800,190 Q1000,178 1200,186" fill="none" stroke="var(--foreground)" strokeOpacity="0.02" strokeWidth="0.6" />
+            <path d="M0,220 Q300,210 500,225 Q700,215 900,228 Q1100,218 1200,224" fill="none" stroke="var(--foreground)" strokeOpacity="0.015" strokeWidth="0.5" />
+            <path d="M0,260 Q250,252 500,262 Q750,254 1000,265 Q1150,258 1200,262" fill="none" stroke="var(--foreground)" strokeOpacity="0.012" strokeWidth="0.4" />
 
             {/* Constellation */}
             <g opacity="0.04">
@@ -1164,13 +1091,13 @@ function ProjectsPhilosophy({ totalProjects, totalContributors }: {
               <line x1="220" y1="50" x2="240" y2="65" stroke="var(--foreground)" strokeWidth="0.2" />
             </g>
 
-            {/* Compass rose */}
-            <g transform="translate(1130, 370)" opacity="0.05">
-              <line x1="0" y1="-12" x2="0" y2="12" stroke="var(--foreground)" strokeWidth="0.8" />
-              <line x1="-12" y1="0" x2="12" y2="0" stroke="var(--foreground)" strokeWidth="0.8" />
-              <polygon points="0,-12 -3,-3 0,-5 3,-3" fill="var(--foreground)" />
-              <text x="0" y="-15" textAnchor="middle" fontSize="4" fill="var(--foreground)" fillOpacity="0.8">N</text>
-            </g>
+            {/* Scattered stars / light motes */}
+            <circle cx="100" cy="40" r="0.8" fill="var(--foreground)" fillOpacity="0.03" />
+            <circle cx="450" cy="55" r="0.6" fill="var(--foreground)" fillOpacity="0.025" />
+            <circle cx="550" cy="30" r="0.9" fill="var(--foreground)" fillOpacity="0.03" />
+            <circle cx="1050" cy="70" r="0.7" fill="var(--foreground)" fillOpacity="0.025" />
+            <circle cx="150" cy="100" r="0.5" fill="var(--foreground)" fillOpacity="0.02" />
+            <circle cx="800" cy="45" r="0.8" fill="var(--foreground)" fillOpacity="0.025" />
           </svg>
 
           <DriftingClouds />
@@ -1185,100 +1112,7 @@ function ProjectsPhilosophy({ totalProjects, totalContributors }: {
       <div className="absolute inset-0 flex items-center justify-center pt-24 sm:pt-28">
         <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
 
-          {/* ── Flanking decorative panels (visible on lg+) ── */}
-          <div className="hidden lg:flex absolute inset-0 items-center justify-between pointer-events-none px-6 xl:px-16">
-            {/* Left panel — botanical sketch */}
-            <div className="flex flex-col items-center gap-6 opacity-[0.07]">
-              <svg width="120" height="280" viewBox="0 0 120 280" fill="none" xmlns="http://www.w3.org/2000/svg">
-                {/* Central stem */}
-                <path d="M60,280 Q58,220 60,160 Q62,100 55,40" stroke="var(--foreground)" strokeWidth="1.2" fill="none" />
-                {/* Root system */}
-                <path d="M60,280 Q45,270 35,260" stroke="var(--foreground)" strokeWidth="0.8" fill="none" />
-                <path d="M60,280 Q75,272 85,265" stroke="var(--foreground)" strokeWidth="0.8" fill="none" />
-                <path d="M60,280 Q50,275 40,278" stroke="var(--foreground)" strokeWidth="0.5" fill="none" />
-                {/* Branching leaves — left side */}
-                <path d="M58,220 Q30,210 20,195" stroke="var(--foreground)" strokeWidth="0.7" fill="none" />
-                <ellipse cx="22" cy="198" rx="18" ry="10" transform="rotate(-25 22 198)" fill="var(--primary)" fillOpacity="0.12" stroke="var(--primary)" strokeOpacity="0.15" strokeWidth="0.4" />
-                <line x1="22" y1="198" x2="40" y2="210" stroke="var(--primary)" strokeOpacity="0.1" strokeWidth="0.3" />
-                <path d="M57,180 Q25,165 15,145" stroke="var(--foreground)" strokeWidth="0.7" fill="none" />
-                <ellipse cx="18" cy="148" rx="20" ry="11" transform="rotate(-30 18 148)" fill="var(--primary)" fillOpacity="0.1" stroke="var(--primary)" strokeOpacity="0.12" strokeWidth="0.4" />
-                <line x1="18" y1="148" x2="38" y2="165" stroke="var(--primary)" strokeOpacity="0.08" strokeWidth="0.3" />
-                {/* Branching leaves — right side */}
-                <path d="M61,200 Q88,188 100,172" stroke="var(--foreground)" strokeWidth="0.7" fill="none" />
-                <ellipse cx="97" cy="175" rx="16" ry="9" transform="rotate(30 97 175)" fill="var(--primary)" fillOpacity="0.1" stroke="var(--primary)" strokeOpacity="0.12" strokeWidth="0.4" />
-                <path d="M60,155 Q85,140 98,120" stroke="var(--foreground)" strokeWidth="0.6" fill="none" />
-                <ellipse cx="95" cy="123" rx="15" ry="8" transform="rotate(25 95 123)" fill="var(--primary)" fillOpacity="0.08" stroke="var(--primary)" strokeOpacity="0.1" strokeWidth="0.4" />
-                {/* Top bud / flower */}
-                <circle cx="55" cy="38" r="6" fill="var(--primary)" fillOpacity="0.15" />
-                <circle cx="55" cy="38" r="10" fill="none" stroke="var(--primary)" strokeOpacity="0.08" strokeWidth="0.5" />
-                {[0, 60, 120, 180, 240, 300].map((a) => {
-                  const rad = (a * Math.PI) / 180
-                  return <ellipse key={a} cx={55 + Math.cos(rad) * 12} cy={38 + Math.sin(rad) * 12} rx="5" ry="2.5" transform={`rotate(${a} ${55 + Math.cos(rad) * 12} ${38 + Math.sin(rad) * 12})`} fill="var(--primary)" fillOpacity="0.06" />
-                })}
-                {/* Small side buds */}
-                <circle cx="20" cy="195" r="2" fill="var(--accent)" fillOpacity="0.2" />
-                <circle cx="98" cy="170" r="2" fill="var(--accent)" fillOpacity="0.15" />
-                {/* Tendril curls */}
-                <path d="M57,140 Q48,135 50,125 Q53,120 48,115" stroke="var(--foreground)" strokeWidth="0.4" fill="none" />
-                <path d="M62,110 Q72,105 70,95 Q67,90 72,85" stroke="var(--foreground)" strokeWidth="0.4" fill="none" />
-              </svg>
-            </div>
-
-            {/* Right panel — geometric sacred pattern */}
-            <div className="flex flex-col items-center gap-6 opacity-[0.07]">
-              <svg width="120" height="280" viewBox="0 0 120 280" fill="none" xmlns="http://www.w3.org/2000/svg">
-                {/* Seed of life pattern — interlocking circles */}
-                <circle cx="60" cy="60" r="24" fill="none" stroke="var(--foreground)" strokeWidth="0.6" />
-                <circle cx="60" cy="40" r="24" fill="none" stroke="var(--foreground)" strokeWidth="0.5" />
-                <circle cx="60" cy="80" r="24" fill="none" stroke="var(--foreground)" strokeWidth="0.5" />
-                <circle cx="41" cy="49" r="24" fill="none" stroke="var(--foreground)" strokeWidth="0.5" />
-                <circle cx="79" cy="49" r="24" fill="none" stroke="var(--foreground)" strokeWidth="0.5" />
-                <circle cx="41" cy="71" r="24" fill="none" stroke="var(--foreground)" strokeWidth="0.5" />
-                <circle cx="79" cy="71" r="24" fill="none" stroke="var(--foreground)" strokeWidth="0.5" />
-                {/* Central petal glow */}
-                <circle cx="60" cy="60" r="4" fill="var(--primary)" fillOpacity="0.15" />
-
-                {/* Vertical connecting line */}
-                <line x1="60" y1="100" x2="60" y2="140" stroke="var(--foreground)" strokeWidth="0.4" strokeDasharray="3 4" />
-
-                {/* Metatron-inspired diamond */}
-                <g transform="translate(60, 175)">
-                  <polygon points="0,-40 35,0 0,40 -35,0" fill="none" stroke="var(--foreground)" strokeWidth="0.6" />
-                  <polygon points="0,-25 22,0 0,25 -22,0" fill="none" stroke="var(--foreground)" strokeWidth="0.4" />
-                  <polygon points="0,-12 11,0 0,12 -11,0" fill="none" stroke="var(--primary)" strokeOpacity="0.3" strokeWidth="0.5" />
-                  <circle cx="0" cy="0" r="3" fill="var(--primary)" fillOpacity="0.12" />
-                  {/* Corner dots */}
-                  <circle cx="0" cy="-40" r="2" fill="var(--foreground)" fillOpacity="0.15" />
-                  <circle cx="35" cy="0" r="2" fill="var(--foreground)" fillOpacity="0.15" />
-                  <circle cx="0" cy="40" r="2" fill="var(--foreground)" fillOpacity="0.15" />
-                  <circle cx="-35" cy="0" r="2" fill="var(--foreground)" fillOpacity="0.15" />
-                  {/* Cross lines */}
-                  <line x1="0" y1="-40" x2="0" y2="40" stroke="var(--foreground)" strokeWidth="0.3" />
-                  <line x1="-35" y1="0" x2="35" y2="0" stroke="var(--foreground)" strokeWidth="0.3" />
-                </g>
-
-                {/* Bottom — sprouting ankh-like symbol */}
-                <g transform="translate(60, 248)">
-                  <circle cx="0" cy="-12" r="8" fill="none" stroke="var(--foreground)" strokeWidth="0.6" />
-                  <line x1="0" y1="-4" x2="0" y2="20" stroke="var(--foreground)" strokeWidth="0.6" />
-                  <line x1="-10" y1="6" x2="10" y2="6" stroke="var(--foreground)" strokeWidth="0.5" />
-                  {/* Small leaves from the ankh stem */}
-                  <ellipse cx="-6" cy="14" rx="4" ry="2" transform="rotate(-30 -6 14)" fill="var(--primary)" fillOpacity="0.1" />
-                  <ellipse cx="6" cy="12" rx="4" ry="2" transform="rotate(30 6 12)" fill="var(--primary)" fillOpacity="0.1" />
-                </g>
-              </svg>
-            </div>
-          </div>
-
-          <div className="max-w-2xl mx-auto text-center relative">
-
-            {/* Sacred divider — top */}
-            <div className="flex items-center justify-center gap-4 mb-6">
-              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[var(--primary)]/40 to-transparent" />
-              <span className="text-xl text-[var(--primary)]/60">☥</span>
-              <div className="flex-1 h-px bg-gradient-to-l from-transparent via-[var(--primary)]/40 to-transparent" />
-            </div>
-
+          <div className="max-w-2xl mx-auto text-center">
             {/* Compass mark */}
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-8 h-8 rounded-full border border-[var(--primary)]/50 flex items-center justify-center bg-[var(--primary)]/20">
@@ -1289,57 +1123,22 @@ function ProjectsPhilosophy({ totalProjects, totalContributors }: {
               </span>
             </div>
 
-            {/* Decorative corner borders */}
-            <div className="relative">
-              <div className="absolute -top-3 -left-4 w-10 h-10 border-t-2 border-l-2 border-[var(--primary)]/20 rounded-tl-sm" />
-              <div className="absolute -top-3 -right-4 w-10 h-10 border-t-2 border-r-2 border-[var(--primary)]/20 rounded-tr-sm" />
-              <div className="absolute -bottom-3 -left-4 w-10 h-10 border-b-2 border-l-2 border-[var(--primary)]/20 rounded-bl-sm" />
-              <div className="absolute -bottom-3 -right-4 w-10 h-10 border-b-2 border-r-2 border-[var(--primary)]/20 rounded-br-sm" />
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[var(--foreground)] leading-[1.05] tracking-tight drop-shadow-md">
+              Ideas Grow When<br />
+              <span className="text-[var(--primary)]">Minds Converge</span>
+            </h1>
 
-              <div className="px-6 py-4">
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[var(--foreground)] leading-[1.05] tracking-tight drop-shadow-md">
-                  Ideas Grow When<br />
-                  <span className="text-[var(--primary)]">Minds Converge</span>
-                </h1>
+            <p className="text-base sm:text-lg font-serif italic text-[var(--foreground)]/70 mt-4 leading-relaxed max-w-lg mx-auto">
+              &ldquo;A single seed holds a forest. A single idea, shared freely, holds a future.&rdquo;
+            </p>
 
-                <p className="text-base sm:text-lg font-serif italic text-[var(--foreground)]/70 mt-4 leading-relaxed max-w-lg mx-auto">
-                  &ldquo;A single seed holds a forest. A single idea, shared freely, holds a future.&rdquo;
-                </p>
+            <p className="text-sm sm:text-base text-[var(--foreground)]/80 mt-4 leading-relaxed max-w-lg mx-auto font-medium">
+              Project Exodus initiatives are collaborative think tanks where visionaries, builders, and changemakers unite to launch sustainable ventures. Every project here is an initiative driven by the community — developed through shared research, open discussion, and collective ambition.
+            </p>
 
-                <p className="text-sm sm:text-base text-[var(--foreground)]/80 mt-4 leading-relaxed max-w-lg mx-auto font-medium">
-                  Project Exodus initiatives are collaborative think tanks where visionaries, builders, and changemakers unite to launch sustainable ventures. Every project here is an initiative driven by the community — developed through shared research, open discussion, and collective ambition.
-                </p>
-
-                <p className="text-xs sm:text-sm text-[var(--foreground)]/60 mt-2 leading-relaxed max-w-md mx-auto">
-                  Join an initiative that speaks to you, or launch one of your own. The path forward is walked together.
-                </p>
-              </div>
-            </div>
-
-            {/* The Covenant — inspired by learn page philosophy */}
-            <div className="mt-5">
-              <h3 className="text-[10px] font-black text-[var(--primary)] uppercase tracking-[0.2em] mb-3">
-                The Collective Covenant
-              </h3>
-              <div className="grid sm:grid-cols-2 gap-3 max-w-lg mx-auto text-left">
-                <div className="p-3 bg-[var(--card)]/60 rounded-xl border border-[var(--border)]/50 backdrop-blur-sm">
-                  <p className="font-bold text-[var(--foreground)] text-xs mb-1">We Build Together:</p>
-                  <ul className="text-[11px] text-[var(--muted-foreground)] space-y-0.5">
-                    <li>• Open research, shared freely</li>
-                    <li>• Transparent governance</li>
-                    <li>• Tools for collective action</li>
-                  </ul>
-                </div>
-                <div className="p-3 bg-[var(--card)]/60 rounded-xl border border-[var(--border)]/50 backdrop-blur-sm">
-                  <p className="font-bold text-[var(--foreground)] text-xs mb-1">You Contribute:</p>
-                  <ul className="text-[11px] text-[var(--muted-foreground)] space-y-0.5">
-                    <li>• Your skills and perspective</li>
-                    <li>• The courage to experiment</li>
-                    <li>• Commitment to the mission</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+            <p className="text-xs sm:text-sm text-[var(--foreground)]/60 mt-2 leading-relaxed max-w-md mx-auto">
+              Join an initiative that speaks to you, or launch one of your own. The path forward is walked together.
+            </p>
 
             {/* Action row */}
             <div className="flex items-center justify-center gap-3 mt-5">
@@ -1377,17 +1176,6 @@ function ProjectsPhilosophy({ totalProjects, totalContributors }: {
               </span>
             </div>
 
-            {/* Sacred divider — bottom */}
-            <div className="flex items-center justify-center gap-4 mt-5">
-              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[var(--primary)]/40 to-transparent" />
-              <span className="text-xl text-[var(--primary)]/60">✦</span>
-              <div className="flex-1 h-px bg-gradient-to-l from-transparent via-[var(--primary)]/40 to-transparent" />
-            </div>
-
-            {/* Attribution */}
-            <p className="text-[9px] text-[var(--foreground)]/30 tracking-[0.25em] uppercase mt-2">
-              — The Project Exodus Vision
-            </p>
           </div>
         </div>
       </div>
