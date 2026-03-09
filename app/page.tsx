@@ -478,33 +478,6 @@ export default function Home() {
                   But the tree stands as a testament to <span className="font-bold text-[var(--foreground)]">the seed that was planted with intention</span>.
                 </p>
 
-                {/* The Covenant */}
-                <div className="pt-6 space-y-4">
-                  <h3 className="text-lg font-black text-[var(--primary)] uppercase tracking-wider">
-                    Our Covenant
-                  </h3>
-
-                  <div className="grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto text-left">
-                    <div className="p-4 bg-[var(--card)] rounded-xl border border-[var(--border)]">
-                      <p className="font-bold text-[var(--foreground)] mb-1">We Build With:</p>
-                      <ul className="text-sm text-[var(--muted-foreground)] space-y-1">
-                        <li>• Purpose in every innovation</li>
-                        <li>• Care in every partnership</li>
-                        <li>• Intention in every decision</li>
-                      </ul>
-                    </div>
-
-                    <div className="p-4 bg-[var(--card)] rounded-xl border border-[var(--border)]">
-                      <p className="font-bold text-[var(--foreground)] mb-1">We Share With:</p>
-                      <ul className="text-sm text-[var(--muted-foreground)] space-y-1">
-                        <li>• Transparency in every action</li>
-                        <li>• Generosity in every harvest</li>
-                        <li>• Vision for every tomorrow</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-
                 {/* Final statement */}
                 <p className="text-base text-[var(--muted-foreground)] italic pt-4">
                   Planted with purpose, grown with care, shared with all.
