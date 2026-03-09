@@ -6,10 +6,8 @@ import {
   Users,
   User,
   Target,
-  Play,
   Compass,
   Leaf,
-  TreePine,
   Plus,
 } from 'lucide-react'
 import Link from 'next/link'
@@ -1036,262 +1034,183 @@ function ScrollRow({ title, subtitle, projects, ghostCount }: ProjectRow) {
   )
 }
 
-// ─── Billboard / The Horizon ─────────────────────────────────────────────────
-// The featured project is the guiding star — the first light on the horizon
-// of a new world. This is what an Exodus looks like from the front of the line.
+// ─── Projects Philosophy Hero ────────────────────────────────────────────────
+// Instead of spotlighting a single project, this hero section markets the
+// Projects page itself — a collective think tank for sustainable ventures.
 
-function Billboard({ project, totalProjects, totalContributors }: {
-  project: any
+function ProjectsPhilosophy({ totalProjects, totalContributors }: {
   totalProjects: number
   totalContributors: number
 }) {
-  const status = STATUS_CONFIG[project.status] || STATUS_CONFIG.ACTIVE
-
   return (
     <div className="relative w-full overflow-hidden"
-      style={{ minHeight: 'clamp(400px, 60vh, 700px)' }}
+      style={{ minHeight: 'clamp(420px, 60vh, 720px)' }}
     >
-      {/* Background layer */}
-      {project.coverImage ? (
-        <img
-          src={project.coverImage}
-          alt={project.name}
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-      ) : (
-        <div className="absolute inset-0" style={{
+      {/* Background layer — abstract landscape */}
+      <div className="absolute inset-0" style={{
           background: `
             radial-gradient(ellipse 80% 60% at 20% 80%, var(--primary)/0.12 0%, transparent 70%),
             radial-gradient(ellipse 60% 50% at 80% 20%, var(--accent)/0.08 0%, transparent 70%),
             linear-gradient(175deg, var(--background) 0%, var(--muted) 40%, var(--card) 70%, var(--background) 100%)
           `
         }}>
-          {/* Full landscape illustration */}
           <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1200 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
 
             {/* Sun / celestial body */}
             <circle cx="900" cy="120" r="45" fill="var(--primary)" fillOpacity="0.06" />
             <circle cx="900" cy="120" r="60" fill="none" stroke="var(--primary)" strokeOpacity="0.04" strokeWidth="0.8" />
             <circle cx="900" cy="120" r="80" fill="none" stroke="var(--primary)" strokeOpacity="0.02" strokeWidth="0.5" />
-            {/* Sun rays */}
             {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((angle) => {
               const rad = (angle * Math.PI) / 180
               return <line key={angle} x1={900 + Math.cos(rad) * 50} y1={120 - Math.sin(rad) * 50} x2={900 + Math.cos(rad) * 75} y2={120 - Math.sin(rad) * 75} stroke="var(--primary)" strokeOpacity="0.03" strokeWidth="0.5" />
             })}
 
-            {/* Distant mountain range */}
-            <path
-              d="M0,280 Q100,220 200,260 Q350,180 450,240 Q550,200 650,230 Q750,170 850,220 Q950,195 1050,240 Q1150,210 1200,250 L1200,400 L0,400Z"
-              fill="var(--primary)"
-              fillOpacity="0.04"
-            />
-            {/* Second mountain layer — closer, slightly darker */}
-            <path
-              d="M0,300 Q80,270 180,290 Q280,260 380,285 Q500,250 600,275 Q720,255 840,280 Q940,260 1060,278 Q1140,265 1200,275 L1200,400 L0,400Z"
-              fill="var(--primary)"
-              fillOpacity="0.025"
-            />
+            {/* Mountain ranges */}
+            <path d="M0,280 Q100,220 200,260 Q350,180 450,240 Q550,200 650,230 Q750,170 850,220 Q950,195 1050,240 Q1150,210 1200,250 L1200,400 L0,400Z" fill="var(--primary)" fillOpacity="0.04" />
+            <path d="M0,300 Q80,270 180,290 Q280,260 380,285 Q500,250 600,275 Q720,255 840,280 Q940,260 1060,278 Q1140,265 1200,275 L1200,400 L0,400Z" fill="var(--primary)" fillOpacity="0.025" />
 
-            {/* Horizon glow line */}
+            {/* Horizon glow */}
             <line x1="0" y1="265" x2="1200" y2="265" stroke="var(--primary)" strokeOpacity="0.12" strokeWidth="1" />
 
-            {/* Winding path through the landscape */}
-            <path
-              d="M500,400 Q480,370 510,340 Q540,310 520,285 Q500,265 530,250"
-              fill="none" stroke="var(--foreground)" strokeOpacity="0.06" strokeWidth="1.5"
-            />
-            <path
-              d="M540,400 Q520,370 550,340 Q580,310 560,285 Q540,265 530,250"
-              fill="none" stroke="var(--foreground)" strokeOpacity="0.06" strokeWidth="1.5"
-            />
-            {/* Path dashes getting smaller toward horizon */}
-            <line x1="520" y1="360" x2="535" y2="360" stroke="var(--foreground)" strokeOpacity="0.04" strokeWidth="0.6" />
-            <line x1="525" y1="330" x2="538" y2="330" stroke="var(--foreground)" strokeOpacity="0.035" strokeWidth="0.5" />
-            <line x1="528" y1="300" x2="537" y2="300" stroke="var(--foreground)" strokeOpacity="0.03" strokeWidth="0.4" />
+            {/* Converging paths — symbolizing people coming together */}
+            <path d="M200,400 Q250,350 350,310 Q450,275 530,255" fill="none" stroke="var(--foreground)" strokeOpacity="0.06" strokeWidth="1.2" />
+            <path d="M800,400 Q750,350 650,310 Q550,275 530,255" fill="none" stroke="var(--foreground)" strokeOpacity="0.06" strokeWidth="1.2" />
+            <path d="M500,400 Q510,360 520,320 Q525,285 530,255" fill="none" stroke="var(--foreground)" strokeOpacity="0.05" strokeWidth="1" />
+            {/* Meeting point beacon */}
+            <circle cx="530" cy="252" r="4" fill="var(--primary)" fillOpacity="0.15" />
+            <circle cx="530" cy="252" r="8" fill="none" stroke="var(--primary)" strokeOpacity="0.08" strokeWidth="0.6" />
+            <circle cx="530" cy="252" r="14" fill="none" stroke="var(--primary)" strokeOpacity="0.04" strokeWidth="0.4" />
 
-            {/* Trees along the path — varying sizes for depth */}
-            {/* Large foreground tree (left) */}
+            {/* Interconnected nodes — representing the think tank network */}
+            <g opacity="0.07">
+              <circle cx="380" cy="200" r="3" fill="var(--primary)" />
+              <circle cx="450" cy="175" r="2.5" fill="var(--primary)" />
+              <circle cx="520" cy="190" r="3.5" fill="var(--primary)" />
+              <circle cx="590" cy="170" r="2" fill="var(--primary)" />
+              <circle cx="650" cy="195" r="3" fill="var(--primary)" />
+              <circle cx="480" cy="220" r="2" fill="var(--primary)" />
+              <circle cx="560" cy="215" r="2.5" fill="var(--primary)" />
+              <line x1="380" y1="200" x2="450" y2="175" stroke="var(--primary)" strokeWidth="0.4" />
+              <line x1="450" y1="175" x2="520" y2="190" stroke="var(--primary)" strokeWidth="0.4" />
+              <line x1="520" y1="190" x2="590" y2="170" stroke="var(--primary)" strokeWidth="0.4" />
+              <line x1="590" y1="170" x2="650" y2="195" stroke="var(--primary)" strokeWidth="0.4" />
+              <line x1="520" y1="190" x2="480" y2="220" stroke="var(--primary)" strokeWidth="0.3" />
+              <line x1="520" y1="190" x2="560" y2="215" stroke="var(--primary)" strokeWidth="0.3" />
+              <line x1="480" y1="220" x2="560" y2="215" stroke="var(--primary)" strokeWidth="0.3" />
+              <line x1="380" y1="200" x2="480" y2="220" stroke="var(--primary)" strokeWidth="0.2" />
+              <line x1="650" y1="195" x2="560" y2="215" stroke="var(--primary)" strokeWidth="0.2" />
+            </g>
+
+            {/* Trees */}
             <line x1="180" y1="310" x2="180" y2="280" stroke="var(--primary)" strokeOpacity="0.08" strokeWidth="1.5" />
             <circle cx="180" cy="274" r="12" fill="var(--primary)" fillOpacity="0.04" />
-            <circle cx="180" cy="274" r="8" fill="var(--primary)" fillOpacity="0.03" />
-            {/* Medium tree */}
             <line x1="350" y1="295" x2="350" y2="272" stroke="var(--primary)" strokeOpacity="0.07" strokeWidth="1.2" />
             <circle cx="350" cy="268" r="9" fill="var(--primary)" fillOpacity="0.035" />
-            {/* Small distant tree */}
             <line x1="680" y1="270" x2="680" y2="258" stroke="var(--primary)" strokeOpacity="0.06" strokeWidth="0.8" />
             <circle cx="680" cy="255" r="6" fill="var(--primary)" fillOpacity="0.03" />
-            {/* Tiny trees on the ridge */}
             <line x1="850" y1="260" x2="850" y2="252" stroke="var(--primary)" strokeOpacity="0.05" strokeWidth="0.6" />
             <circle cx="850" cy="250" r="4" fill="var(--primary)" fillOpacity="0.025" />
-            <line x1="1020" y1="265" x2="1020" y2="258" stroke="var(--primary)" strokeOpacity="0.04" strokeWidth="0.5" />
-            <circle cx="1020" cy="256" r="3.5" fill="var(--primary)" fillOpacity="0.02" />
-            {/* Tree cluster right side */}
-            <line x1="1080" y1="268" x2="1080" y2="255" stroke="var(--primary)" strokeOpacity="0.05" strokeWidth="0.7" />
-            <circle cx="1080" cy="252" r="5" fill="var(--primary)" fillOpacity="0.025" />
-            <line x1="1095" y1="270" x2="1095" y2="260" stroke="var(--primary)" strokeOpacity="0.04" strokeWidth="0.6" />
-            <circle cx="1095" cy="258" r="4" fill="var(--primary)" fillOpacity="0.02" />
 
             {/* Birds in formation */}
             <g opacity="0.06">
               <path d="M300,150 l-4,4 l4,-1.5 l4,1.5 l-4,-4" stroke="var(--foreground)" strokeWidth="0.8" fill="none" />
               <path d="M320,143 l-3.5,3.5 l3.5,-1.2 l3.5,1.2 l-3.5,-3.5" stroke="var(--foreground)" strokeWidth="0.7" fill="none" />
               <path d="M312,155 l-3,3 l3,-1 l3,1 l-3,-3" stroke="var(--foreground)" strokeWidth="0.6" fill="none" />
-              <path d="M335,148 l-3,3 l3,-1 l3,1 l-3,-3" stroke="var(--foreground)" strokeWidth="0.6" fill="none" />
-              <path d="M325,158 l-2.5,2.5 l2.5,-0.8 l2.5,0.8 l-2.5,-2.5" stroke="var(--foreground)" strokeWidth="0.5" fill="none" />
             </g>
-            {/* Second bird group, farther */}
-            <g opacity="0.04">
-              <path d="M750,100 l-3,3 l3,-1 l3,1 l-3,-3" stroke="var(--foreground)" strokeWidth="0.6" fill="none" />
-              <path d="M765,95 l-2.5,2.5 l2.5,-0.8 l2.5,0.8 l-2.5,-2.5" stroke="var(--foreground)" strokeWidth="0.5" fill="none" />
-              <path d="M758,105 l-2,2 l2,-0.7 l2,0.7 l-2,-2" stroke="var(--foreground)" strokeWidth="0.4" fill="none" />
-            </g>
-
-            {/* Scattered waypoint markers */}
-            <circle cx="180" cy="258" r="2" fill="var(--primary)" fillOpacity="0.2" />
-            <circle cx="480" cy="238" r="1.5" fill="var(--accent)" fillOpacity="0.2" />
-            <circle cx="780" cy="218" r="2" fill="var(--primary)" fillOpacity="0.15" />
-            <circle cx="1020" cy="242" r="1.5" fill="var(--accent)" fillOpacity="0.15" />
 
             {/* Ground contour lines */}
             <path d="M0,320 Q200,300 400,315 Q600,295 800,310 Q1000,290 1200,305" fill="none" stroke="var(--foreground)" strokeOpacity="0.025" strokeWidth="0.8" />
             <path d="M0,345 Q250,330 500,342 Q750,325 1000,338 Q1100,332 1200,340" fill="none" stroke="var(--foreground)" strokeOpacity="0.02" strokeWidth="0.6" />
 
-            {/* Small plants / grass tufts in foreground */}
-            <path d="M60,350 Q62,342 60,338" stroke="var(--primary)" strokeOpacity="0.05" strokeWidth="0.5" fill="none" />
-            <path d="M63,350 Q65,344 67,340" stroke="var(--primary)" strokeOpacity="0.04" strokeWidth="0.5" fill="none" />
-            <path d="M150,340 Q152,333 150,328" stroke="var(--primary)" strokeOpacity="0.04" strokeWidth="0.5" fill="none" />
-            <path d="M820,345 Q822,338 820,333" stroke="var(--primary)" strokeOpacity="0.04" strokeWidth="0.5" fill="none" />
-            <path d="M823,345 Q826,340 828,335" stroke="var(--primary)" strokeOpacity="0.03" strokeWidth="0.5" fill="none" />
-            <path d="M1150,335 Q1152,328 1150,324" stroke="var(--primary)" strokeOpacity="0.04" strokeWidth="0.5" fill="none" />
+            {/* Wildlife silhouettes */}
+            <WildlifeSilhouettes />
 
-            {/* Compass rose — bottom right */}
+            {/* Constellation */}
+            <g opacity="0.04">
+              <circle cx="200" cy="60" r="1" fill="var(--foreground)" />
+              <circle cx="220" cy="50" r="0.8" fill="var(--foreground)" />
+              <circle cx="240" cy="65" r="1.2" fill="var(--foreground)" />
+              <line x1="200" y1="60" x2="220" y2="50" stroke="var(--foreground)" strokeWidth="0.2" />
+              <line x1="220" y1="50" x2="240" y2="65" stroke="var(--foreground)" strokeWidth="0.2" />
+            </g>
+
+            {/* Compass rose */}
             <g transform="translate(1130, 370)" opacity="0.05">
               <line x1="0" y1="-12" x2="0" y2="12" stroke="var(--foreground)" strokeWidth="0.8" />
               <line x1="-12" y1="0" x2="12" y2="0" stroke="var(--foreground)" strokeWidth="0.8" />
               <polygon points="0,-12 -3,-3 0,-5 3,-3" fill="var(--foreground)" />
               <text x="0" y="-15" textAnchor="middle" fontSize="4" fill="var(--foreground)" fillOpacity="0.8">N</text>
             </g>
-
-            {/* Wildlife silhouettes */}
-            <WildlifeSilhouettes />
-
-            {/* Moon / second celestial hint (faint crescent far left) */}
-            <g opacity="0.03">
-              <circle cx="120" cy="80" r="18" fill="var(--foreground)" />
-              <circle cx="126" cy="76" r="16" fill="var(--background)" />
-            </g>
-
-            {/* Constellation dots — tiny star pattern */}
-            <g opacity="0.04">
-              <circle cx="200" cy="60" r="1" fill="var(--foreground)" />
-              <circle cx="220" cy="50" r="0.8" fill="var(--foreground)" />
-              <circle cx="240" cy="65" r="1.2" fill="var(--foreground)" />
-              <circle cx="215" cy="75" r="0.7" fill="var(--foreground)" />
-              <circle cx="235" cy="45" r="0.9" fill="var(--foreground)" />
-              <line x1="200" y1="60" x2="220" y2="50" stroke="var(--foreground)" strokeWidth="0.2" />
-              <line x1="220" y1="50" x2="240" y2="65" stroke="var(--foreground)" strokeWidth="0.2" />
-              <line x1="240" y1="65" x2="215" y2="75" stroke="var(--foreground)" strokeWidth="0.2" />
-              <line x1="215" y1="75" x2="200" y2="60" stroke="var(--foreground)" strokeWidth="0.2" />
-              <line x1="220" y1="50" x2="235" y2="45" stroke="var(--foreground)" strokeWidth="0.2" />
-            </g>
-
-            {/* Pond/lake in the middle distance */}
-            <ellipse cx="720" cy="285" rx="35" ry="8" fill="var(--accent)" fillOpacity="0.04" stroke="var(--accent)" strokeOpacity="0.04" strokeWidth="0.5" />
-            <ellipse cx="720" cy="287" rx="25" ry="4" fill="var(--accent)" fillOpacity="0.03" />
-
-            {/* Fence line along a field */}
-            <g opacity="0.035">
-              <line x1="100" y1="305" x2="100" y2="295" stroke="var(--foreground)" strokeWidth="0.6" />
-              <line x1="120" y1="303" x2="120" y2="293" stroke="var(--foreground)" strokeWidth="0.6" />
-              <line x1="140" y1="301" x2="140" y2="291" stroke="var(--foreground)" strokeWidth="0.6" />
-              <line x1="100" y1="297" x2="140" y2="293" stroke="var(--foreground)" strokeWidth="0.3" />
-              <line x1="100" y1="301" x2="140" y2="297" stroke="var(--foreground)" strokeWidth="0.3" />
-            </g>
           </svg>
 
-          {/* Drifting clouds overlay */}
           <DriftingClouds />
-
-          {/* Shooting star */}
           <ShootingStar />
         </div>
-      )}
 
       {/* Gradient veils */}
       <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/70 to-[var(--background)]/30" />
       <div className="absolute inset-0 bg-gradient-to-r from-[var(--background)]/90 via-[var(--background)]/40 to-transparent" />
 
-      {/* Content */}
+      {/* Content — Our Philosophy */}
       <div className="absolute inset-0 flex items-end">
         <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pb-14 sm:pb-20">
           <div className="max-w-2xl">
-            {/* Exodus compass mark */}
+            {/* Compass mark */}
             <div className="flex items-center gap-3 mb-4">
               <div className="w-8 h-8 rounded-full border border-[var(--primary)]/50 flex items-center justify-center bg-[var(--primary)]/20">
                 <Compass className="w-4 h-4 text-[var(--primary)]" />
               </div>
-              <div className="flex items-center gap-2">
-                <span
-                  className="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest rounded-full"
-                  style={{ background: status.bg, color: status.text, boxShadow: `0 0 12px ${status.glow}` }}
-                >
-                  {status.label}
-                </span>
-                <span className="text-[10px] font-bold text-[var(--foreground)]/70 uppercase tracking-widest">
-                  Featured
-                </span>
-              </div>
+              <span className="text-[10px] font-bold text-[var(--primary)] uppercase tracking-[0.2em]">
+                Our Philosophy
+              </span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[var(--foreground)] leading-[1.05] tracking-tight drop-shadow-md">
-              {project.name}
+              Ideas Grow When<br />
+              <span className="text-[var(--primary)]">Minds Converge</span>
             </h1>
 
-            {project.description && (
-              <p className="text-sm sm:text-base text-[var(--foreground)]/80 mt-3 leading-relaxed line-clamp-2 max-w-lg font-medium">
-                {project.description}
-              </p>
-            )}
+            <p className="text-sm sm:text-base text-[var(--foreground)]/80 mt-4 leading-relaxed max-w-lg font-medium">
+              Project Exodus initiatives are collaborative think tanks where visionaries, builders, and changemakers unite to launch sustainable ventures. Every project here is a seed planted by the community — nurtured through shared research, open discussion, and collective ambition.
+            </p>
+
+            <p className="text-xs sm:text-sm text-[var(--foreground)]/60 mt-2 leading-relaxed max-w-md">
+              Join an initiative that speaks to you, or plant a seed of your own. The path forward is walked together.
+            </p>
 
             {/* Action row */}
             <div className="flex items-center gap-3 mt-6">
-              <Link href={`/community/projects/${project.slug}`}>
+              <Link href="/community/projects/new">
                 <Button
                   size="lg"
                   className="h-10 text-sm font-bold uppercase tracking-wider rounded-full gap-2 px-6"
                 >
-                  <Play className="w-4 h-4 fill-current" />
-                  Explore
+                  <Plus className="w-4 h-4" />
+                  Start an Initiative
                 </Button>
               </Link>
-              <Link href="/community/projects/new">
+              <a href="#initiatives">
                 <Button
                   size="lg"
                   variant="outline"
                   className="h-10 text-sm font-bold uppercase tracking-wider rounded-full gap-2 px-6 border-[var(--primary)]/50 hover:bg-[var(--primary)]/20"
                 >
-                  <Plus className="w-4 h-4" />
-                  Create
+                  <Target className="w-4 h-4" />
+                  Browse Projects
                 </Button>
-              </Link>
-              <JoinProjectButton projectId={project.id} projectName={project.name} />
+              </a>
             </div>
 
-            {/* Journey stats */}
+            {/* Community stats */}
             <div className="flex items-center gap-6 mt-5 text-xs text-[var(--foreground)]/70 font-medium">
               <span className="flex items-center gap-1.5">
                 <Users className="w-3.5 h-3.5 text-[var(--primary)]" />
-                <strong className="text-[var(--foreground)] font-bold">{project._count.members}</strong> contributors
+                <strong className="text-[var(--foreground)] font-bold">{totalContributors}</strong> members collaborating
               </span>
               <span className="text-[var(--foreground)]/30">|</span>
               <span className="flex items-center gap-1.5">
                 <Leaf className="w-3.5 h-3.5 text-[var(--primary)]" />
-                <strong className="text-[var(--foreground)] font-bold">{totalProjects}</strong> initiatives
-              </span>
-              <span className="text-[var(--foreground)]/30">|</span>
-              <span className="flex items-center gap-1.5">
-                <TreePine className="w-3.5 h-3.5 text-[var(--primary)]" />
-                <strong className="text-[var(--foreground)] font-bold">{totalContributors}</strong> members
+                <strong className="text-[var(--foreground)] font-bold">{totalProjects}</strong> initiatives launched
               </span>
             </div>
           </div>
@@ -1344,11 +1263,6 @@ export default function ProjectsPage() {
   const planning = projects.filter((p) => p.status === 'PLANNING')
   const completed = projects.filter((p) => p.status === 'COMPLETED')
 
-  const featured = [...active].sort((a, b) => (b._count?.members || 0) - (a._count?.members || 0))[0]
-    || projects[0]
-
-  const activeWithoutFeatured = featured ? active.filter((p) => p.id !== featured.id) : active
-
   const CARDS_PER_ROW = 7
   const ghostsFor = (arr: any[]) => Math.max(CARDS_PER_ROW - arr.length, 2)
 
@@ -1356,8 +1270,8 @@ export default function ProjectsPage() {
     {
       title: 'Active Initiatives',
       subtitle: 'Active initiatives shaping the path forward',
-      projects: activeWithoutFeatured,
-      ghostCount: ghostsFor(activeWithoutFeatured),
+      projects: active,
+      ghostCount: ghostsFor(active),
     },
     {
       title: 'In Planning',
@@ -1454,19 +1368,16 @@ export default function ProjectsPage() {
       <TopographicTexture />
 
       {/* ═══ THE HORIZON ═══ */}
-      {featured && (
-        <Billboard
-          project={featured}
-          totalProjects={projects.length}
-          totalContributors={totalContributors}
-        />
-      )}
+      <ProjectsPhilosophy
+        totalProjects={projects.length}
+        totalContributors={totalContributors}
+      />
 
       {/* ═══ COMPASS TRANSITION ═══ */}
       <DecorativeCompassRose />
 
       {/* ═══ THE JOURNEY ═══ */}
-      <main className="relative py-10">
+      <main id="initiatives" className="relative py-10">
         {/* Animated fireflies scattered across the section */}
         <Fireflies />
 
