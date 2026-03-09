@@ -221,7 +221,7 @@ function GhostCard({ index = 0 }: { index?: number }) {
             <Plus className="w-5 h-5 text-[var(--primary)]" />
           </div>
           <span className="text-xs font-bold text-[var(--primary)] uppercase tracking-widest">
-            Plant a Seed
+            Create Your Own
           </span>
         </div>
       </div>
@@ -315,7 +315,7 @@ function ProjectCard({ project, index }: { project: any; index: number }) {
                 size="sm"
                 className="h-8 text-[11px] font-bold uppercase tracking-wider rounded-full px-4"
               >
-                View Project
+                View Initiative
               </Button>
             </Link>
             <JoinProjectButton projectId={project.id} projectName={project.name} />
@@ -632,7 +632,7 @@ function Billboard({ project, totalProjects, totalContributors }: {
               <span className="text-[var(--border)]">|</span>
               <span className="flex items-center gap-1.5">
                 <Leaf className="w-3.5 h-3.5 text-[var(--primary)]" />
-                <strong className="text-[var(--foreground)]">{totalProjects}</strong> projects
+                <strong className="text-[var(--foreground)]">{totalProjects}</strong> initiatives
               </span>
               <span className="text-[var(--border)]">|</span>
               <span className="flex items-center gap-1.5">
@@ -678,7 +678,7 @@ export default function ProjectsPage() {
           <div className="animate-pulse">
             <LoadingSeed />
           </div>
-          <p className="text-xs text-[var(--muted-foreground)] tracking-widest uppercase">Loading projects...</p>
+          <p className="text-xs text-[var(--muted-foreground)] tracking-widest uppercase">Loading initiatives...</p>
         </div>
       </div>
     )
@@ -700,7 +700,7 @@ export default function ProjectsPage() {
 
   const rows: ProjectRow[] = [
     {
-      title: 'Active Projects',
+      title: 'Active Initiatives',
       subtitle: 'Active initiatives shaping the path forward',
       projects: activeWithoutFeatured,
       ghostCount: ghostsFor(activeWithoutFeatured),
@@ -729,7 +729,7 @@ export default function ProjectsPage() {
         <div className="text-center space-y-5 px-4 max-w-md">
           <EmptyLandscape />
           <div>
-            <h2 className="text-2xl font-black text-[var(--foreground)]">No Projects Yet</h2>
+            <h2 className="text-2xl font-black text-[var(--foreground)]">No Initiatives Yet</h2>
             <p className="text-sm text-[var(--muted-foreground)] mt-2 leading-relaxed">
               The land is open. Be the first to plant a seed and start building.
             </p>
@@ -738,7 +738,7 @@ export default function ProjectsPage() {
             <Link href="/community/projects/new">
               <Button className="font-bold text-sm uppercase tracking-wider rounded-full px-6 gap-2">
                 <Plus className="w-4 h-4" />
-                Create Project
+                Create Initiative
               </Button>
             </Link>
             <Link href="/community">
