@@ -15,7 +15,7 @@ import {
 import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { JoinProjectButton } from '@/components/projects/JoinProjectButton'
-import { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -189,6 +189,293 @@ function LoadingSeed() {
       <path d="M26,36 Q28,39 29,43" stroke="var(--foreground)" strokeOpacity="0.08" strokeWidth="0.4" fill="none" />
     </svg>
   )
+}
+
+// ─── Row Header Illustrations ────────────────────────────────────────────────
+// Small thematic drawings beside each row title.
+
+// Active row — a young tree with spreading branches, leaves, and a small bird perched
+function ActiveRowIcon() {
+  return (
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0">
+      <line x1="18" y1="34" x2="18" y2="14" stroke="var(--primary)" strokeOpacity="0.5" strokeWidth="1.2" />
+      {/* Roots */}
+      <path d="M18,34 Q14,36 12,35" stroke="var(--primary)" strokeOpacity="0.2" strokeWidth="0.6" fill="none" />
+      <path d="M18,34 Q22,36 24,35" stroke="var(--primary)" strokeOpacity="0.2" strokeWidth="0.6" fill="none" />
+      {/* Branches */}
+      <path d="M18,22 Q12,18 8,16" stroke="var(--primary)" strokeOpacity="0.4" strokeWidth="0.8" fill="none" />
+      <path d="M18,18 Q24,14 28,13" stroke="var(--primary)" strokeOpacity="0.4" strokeWidth="0.8" fill="none" />
+      <path d="M18,26 Q24,24 26,22" stroke="var(--primary)" strokeOpacity="0.3" strokeWidth="0.7" fill="none" />
+      {/* Leaf clusters */}
+      <circle cx="8" cy="15" r="3.5" fill="var(--primary)" fillOpacity="0.15" />
+      <circle cx="11" cy="13" r="2.5" fill="var(--primary)" fillOpacity="0.12" />
+      <circle cx="28" cy="12" r="3" fill="var(--primary)" fillOpacity="0.15" />
+      <circle cx="25" cy="10" r="2.5" fill="var(--primary)" fillOpacity="0.1" />
+      <circle cx="18" cy="12" r="3.5" fill="var(--primary)" fillOpacity="0.18" />
+      <circle cx="15" cy="10" r="2" fill="var(--primary)" fillOpacity="0.1" />
+      <circle cx="26" cy="21" r="2.5" fill="var(--primary)" fillOpacity="0.12" />
+      {/* Small bird on branch */}
+      <ellipse cx="26" cy="13" rx="1.8" ry="1.2" fill="var(--foreground)" fillOpacity="0.2" />
+      <path d="M27.5,12.5 l1.5,-0.5" stroke="var(--foreground)" strokeOpacity="0.2" strokeWidth="0.4" />
+      <circle cx="25.5" cy="12.5" r="0.4" fill="var(--foreground)" fillOpacity="0.3" />
+    </svg>
+  )
+}
+
+// Planning row — an open seed packet with seeds spilling out and dotted growth lines
+function PlanningRowIcon() {
+  return (
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0">
+      {/* Seed packet body */}
+      <rect x="8" y="10" width="14" height="18" rx="2" fill="var(--foreground)" fillOpacity="0.06" stroke="var(--foreground)" strokeOpacity="0.2" strokeWidth="0.6" />
+      {/* Packet flap (open) */}
+      <path d="M8,14 Q15,8 22,14" fill="var(--foreground)" fillOpacity="0.04" stroke="var(--foreground)" strokeOpacity="0.15" strokeWidth="0.6" />
+      {/* Tiny leaf icon on packet */}
+      <path d="M13,20 Q15,17 17,18 Q15,19 13,20Z" fill="var(--primary)" fillOpacity="0.25" />
+      <line x1="15" y1="19" x2="15" y2="23" stroke="var(--primary)" strokeOpacity="0.2" strokeWidth="0.4" />
+      {/* Seeds spilling out */}
+      <ellipse cx="24" cy="24" rx="1.8" ry="1.2" transform="rotate(20 24 24)" fill="var(--foreground)" fillOpacity="0.15" stroke="var(--foreground)" strokeOpacity="0.2" strokeWidth="0.4" />
+      <ellipse cx="27" cy="27" rx="1.5" ry="1" transform="rotate(-15 27 27)" fill="var(--foreground)" fillOpacity="0.12" stroke="var(--foreground)" strokeOpacity="0.18" strokeWidth="0.4" />
+      <ellipse cx="26" cy="22" rx="1.3" ry="0.9" transform="rotate(40 26 22)" fill="var(--foreground)" fillOpacity="0.1" stroke="var(--foreground)" strokeOpacity="0.15" strokeWidth="0.4" />
+      <ellipse cx="29" cy="25" rx="1.2" ry="0.8" fill="var(--foreground)" fillOpacity="0.08" stroke="var(--foreground)" strokeOpacity="0.12" strokeWidth="0.3" />
+      {/* Dotted growth trajectory from a seed */}
+      <path d="M27,27 Q30,22 32,14" stroke="var(--primary)" strokeOpacity="0.2" strokeWidth="0.5" strokeDasharray="1.5 2" fill="none" />
+      {/* Tiny sprout at end of trajectory */}
+      <path d="M32,14 Q31,11 32,9" stroke="var(--primary)" strokeOpacity="0.3" strokeWidth="0.5" fill="none" />
+      <ellipse cx="31" cy="9.5" rx="1.5" ry="1" transform="rotate(-20 31 9.5)" fill="var(--primary)" fillOpacity="0.12" />
+      <ellipse cx="33" cy="9.5" rx="1.5" ry="1" transform="rotate(20 33 9.5)" fill="var(--primary)" fillOpacity="0.12" />
+    </svg>
+  )
+}
+
+// Completed row — a basket/bushel overflowing with harvested produce
+function CompletedRowIcon() {
+  return (
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0">
+      {/* Basket body */}
+      <path d="M6,18 Q7,30 18,32 Q29,30 30,18" fill="var(--foreground)" fillOpacity="0.05" stroke="var(--foreground)" strokeOpacity="0.25" strokeWidth="0.7" />
+      {/* Basket weave lines */}
+      <path d="M8,22 Q18,24 28,22" stroke="var(--foreground)" strokeOpacity="0.1" strokeWidth="0.4" fill="none" />
+      <path d="M9,26 Q18,28 27,26" stroke="var(--foreground)" strokeOpacity="0.08" strokeWidth="0.4" fill="none" />
+      {/* Handle */}
+      <path d="M10,18 Q18,8 26,18" fill="none" stroke="var(--foreground)" strokeOpacity="0.2" strokeWidth="0.7" />
+      {/* Overflowing produce — round fruits/vegetables */}
+      <circle cx="13" cy="16" r="3" fill="var(--primary)" fillOpacity="0.2" stroke="var(--primary)" strokeOpacity="0.15" strokeWidth="0.4" />
+      <circle cx="18" cy="14" r="3.5" fill="var(--primary)" fillOpacity="0.25" stroke="var(--primary)" strokeOpacity="0.15" strokeWidth="0.4" />
+      <circle cx="23" cy="16" r="2.8" fill="var(--primary)" fillOpacity="0.18" stroke="var(--primary)" strokeOpacity="0.12" strokeWidth="0.4" />
+      <circle cx="16" cy="12" r="2" fill="var(--accent)" fillOpacity="0.2" stroke="var(--accent)" strokeOpacity="0.15" strokeWidth="0.3" />
+      <circle cx="21" cy="12" r="2.2" fill="var(--accent)" fillOpacity="0.15" stroke="var(--accent)" strokeOpacity="0.12" strokeWidth="0.3" />
+      {/* Little leaf on top */}
+      <path d="M18,11 Q17,8 19,7" stroke="var(--primary)" strokeOpacity="0.3" strokeWidth="0.5" fill="none" />
+      <ellipse cx="19.5" cy="7.5" rx="1.5" ry="0.8" transform="rotate(30 19.5 7.5)" fill="var(--primary)" fillOpacity="0.15" />
+    </svg>
+  )
+}
+
+// ─── Section Divider ─────────────────────────────────────────────────────────
+// An organic vine line with small leaves connecting sections.
+function VineDivider() {
+  return (
+    <div className="flex items-center justify-center px-8 py-2">
+      <svg width="100%" height="24" viewBox="0 0 800 24" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg" className="max-w-2xl opacity-30">
+        {/* Main vine line */}
+        <path d="M0,12 Q100,6 200,12 Q300,18 400,12 Q500,6 600,12 Q700,18 800,12" stroke="var(--primary)" strokeOpacity="0.4" strokeWidth="0.8" fill="none" />
+        {/* Small leaves along the vine */}
+        <ellipse cx="100" cy="8" rx="4" ry="2" transform="rotate(-30 100 8)" fill="var(--primary)" fillOpacity="0.15" />
+        <ellipse cx="200" cy="12" rx="3.5" ry="1.8" transform="rotate(15 200 12)" fill="var(--primary)" fillOpacity="0.12" />
+        <ellipse cx="300" cy="16" rx="4" ry="2" transform="rotate(-20 300 16)" fill="var(--primary)" fillOpacity="0.13" />
+        <ellipse cx="400" cy="12" rx="3" ry="1.5" transform="rotate(25 400 12)" fill="var(--primary)" fillOpacity="0.1" />
+        <ellipse cx="500" cy="8" rx="3.5" ry="1.8" transform="rotate(-15 500 8)" fill="var(--primary)" fillOpacity="0.14" />
+        <ellipse cx="600" cy="12" rx="4" ry="2" transform="rotate(20 600 12)" fill="var(--primary)" fillOpacity="0.11" />
+        <ellipse cx="700" cy="16" rx="3" ry="1.5" transform="rotate(-25 700 16)" fill="var(--primary)" fillOpacity="0.12" />
+        {/* Tiny buds / berries */}
+        <circle cx="150" cy="10" r="1.5" fill="var(--accent)" fillOpacity="0.2" />
+        <circle cx="350" cy="15" r="1.2" fill="var(--accent)" fillOpacity="0.15" />
+        <circle cx="550" cy="9" r="1.3" fill="var(--accent)" fillOpacity="0.18" />
+        <circle cx="650" cy="14" r="1" fill="var(--accent)" fillOpacity="0.15" />
+        {/* Tendrils curling off */}
+        <path d="M150,10 Q145,5 148,3" stroke="var(--primary)" strokeOpacity="0.15" strokeWidth="0.4" fill="none" />
+        <path d="M450,10 Q455,5 452,3" stroke="var(--primary)" strokeOpacity="0.12" strokeWidth="0.4" fill="none" />
+        <path d="M650,14 Q645,19 648,21" stroke="var(--primary)" strokeOpacity="0.12" strokeWidth="0.4" fill="none" />
+      </svg>
+    </div>
+  )
+}
+
+// ─── Floating Margin Illustrations ───────────────────────────────────────────
+// Small decorative drawings that float in the page margins.
+
+// A small mushroom cluster
+function MarginMushrooms({ className = '' }: { className?: string }) {
+  return (
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className={`opacity-[0.12] ${className}`}>
+      {/* Large mushroom */}
+      <line x1="20" y1="36" x2="20" y2="24" stroke="var(--foreground)" strokeWidth="1.2" />
+      <path d="M10,24 Q14,14 20,14 Q26,14 30,24Z" fill="var(--foreground)" fillOpacity="0.15" stroke="var(--foreground)" strokeOpacity="0.2" strokeWidth="0.6" />
+      <circle cx="16" cy="19" r="1" fill="var(--foreground)" fillOpacity="0.1" />
+      <circle cx="22" cy="17" r="1.3" fill="var(--foreground)" fillOpacity="0.08" />
+      <circle cx="18" cy="22" r="0.8" fill="var(--foreground)" fillOpacity="0.1" />
+      {/* Small mushroom */}
+      <line x1="30" y1="36" x2="30" y2="28" stroke="var(--foreground)" strokeWidth="0.8" />
+      <path d="M24,28 Q27,22 30,22 Q33,22 36,28Z" fill="var(--foreground)" fillOpacity="0.1" stroke="var(--foreground)" strokeOpacity="0.15" strokeWidth="0.5" />
+      {/* Ground line */}
+      <path d="M8,36 Q20,34 32,36 Q38,37 42,36" stroke="var(--foreground)" strokeOpacity="0.15" strokeWidth="0.5" fill="none" />
+      {/* Grass tufts */}
+      <path d="M12,36 Q11,32 12,30" stroke="var(--primary)" strokeOpacity="0.2" strokeWidth="0.4" fill="none" />
+      <path d="M14,36 Q15,33 14,31" stroke="var(--primary)" strokeOpacity="0.15" strokeWidth="0.4" fill="none" />
+      <path d="M36,36 Q35,33 36,31" stroke="var(--primary)" strokeOpacity="0.15" strokeWidth="0.4" fill="none" />
+    </svg>
+  )
+}
+
+// A butterfly with dotted flight path
+function MarginButterfly({ className = '' }: { className?: string }) {
+  return (
+    <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" className={`opacity-[0.12] ${className}`}>
+      {/* Flight path */}
+      <path d="M4,38 Q10,30 16,32 Q22,28 26,22 Q30,16 28,12" stroke="var(--foreground)" strokeOpacity="0.15" strokeWidth="0.4" strokeDasharray="2 3" fill="none" />
+      {/* Butterfly body */}
+      <line x1="28" y1="14" x2="28" y2="8" stroke="var(--foreground)" strokeOpacity="0.3" strokeWidth="0.6" />
+      {/* Wings */}
+      <ellipse cx="24" cy="10" rx="4.5" ry="3" transform="rotate(-20 24 10)" fill="var(--primary)" fillOpacity="0.2" stroke="var(--primary)" strokeOpacity="0.15" strokeWidth="0.4" />
+      <ellipse cx="32" cy="10" rx="4.5" ry="3" transform="rotate(20 32 10)" fill="var(--primary)" fillOpacity="0.2" stroke="var(--primary)" strokeOpacity="0.15" strokeWidth="0.4" />
+      <ellipse cx="25" cy="13" rx="3" ry="2" transform="rotate(-15 25 13)" fill="var(--accent)" fillOpacity="0.15" stroke="var(--accent)" strokeOpacity="0.1" strokeWidth="0.3" />
+      <ellipse cx="31" cy="13" rx="3" ry="2" transform="rotate(15 31 13)" fill="var(--accent)" fillOpacity="0.15" stroke="var(--accent)" strokeOpacity="0.1" strokeWidth="0.3" />
+      {/* Antennae */}
+      <path d="M28,8 Q26,4 24,3" stroke="var(--foreground)" strokeOpacity="0.2" strokeWidth="0.3" fill="none" />
+      <path d="M28,8 Q30,4 32,3" stroke="var(--foreground)" strokeOpacity="0.2" strokeWidth="0.3" fill="none" />
+      <circle cx="24" cy="3" r="0.6" fill="var(--foreground)" fillOpacity="0.2" />
+      <circle cx="32" cy="3" r="0.6" fill="var(--foreground)" fillOpacity="0.2" />
+    </svg>
+  )
+}
+
+// Wildflowers cluster
+function MarginFlowers({ className = '' }: { className?: string }) {
+  return (
+    <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" className={`opacity-[0.12] ${className}`}>
+      {/* Stems */}
+      <path d="M16,48 Q14,38 16,28" stroke="var(--primary)" strokeOpacity="0.3" strokeWidth="0.6" fill="none" />
+      <path d="M26,48 Q26,36 26,24" stroke="var(--primary)" strokeOpacity="0.3" strokeWidth="0.6" fill="none" />
+      <path d="M36,48 Q38,38 36,30" stroke="var(--primary)" strokeOpacity="0.3" strokeWidth="0.6" fill="none" />
+      {/* Leaves on stems */}
+      <ellipse cx="13" cy="36" rx="3" ry="1.5" transform="rotate(-30 13 36)" fill="var(--primary)" fillOpacity="0.15" />
+      <ellipse cx="29" cy="34" rx="2.5" ry="1.3" transform="rotate(25 29 34)" fill="var(--primary)" fillOpacity="0.12" />
+      <ellipse cx="39" cy="36" rx="2.5" ry="1.3" transform="rotate(30 39 36)" fill="var(--primary)" fillOpacity="0.13" />
+      {/* Flower 1 — simple daisy */}
+      <circle cx="16" cy="26" r="2" fill="var(--accent)" fillOpacity="0.25" />
+      {[0, 60, 120, 180, 240, 300].map((a) => {
+        const rad = (a * Math.PI) / 180
+        return <ellipse key={a} cx={16 + Math.cos(rad) * 3.5} cy={26 + Math.sin(rad) * 3.5} rx="2" ry="1" transform={`rotate(${a} ${16 + Math.cos(rad) * 3.5} ${26 + Math.sin(rad) * 3.5})`} fill="var(--primary)" fillOpacity="0.12" />
+      })}
+      {/* Flower 2 — tall simple bloom */}
+      <circle cx="26" cy="22" r="2.5" fill="var(--primary)" fillOpacity="0.2" />
+      <circle cx="26" cy="22" r="4.5" fill="none" stroke="var(--primary)" strokeOpacity="0.1" strokeWidth="0.4" />
+      {/* Flower 3 — bell shape */}
+      <path d="M33,30 Q36,24 39,30" fill="var(--accent)" fillOpacity="0.15" stroke="var(--accent)" strokeOpacity="0.15" strokeWidth="0.4" />
+      <path d="M34,30 Q36,26 38,30" fill="var(--accent)" fillOpacity="0.1" />
+      {/* Ground texture */}
+      <path d="M6,48 Q26,46 46,48" stroke="var(--foreground)" strokeOpacity="0.08" strokeWidth="0.4" fill="none" />
+    </svg>
+  )
+}
+
+// ─── Footer Landscape ────────────────────────────────────────────────────────
+// A wide closing illustration — a river winding through a valley with scattered
+// settlements, fields, and the faint outline of a new city on the horizon.
+function FooterLandscape() {
+  return (
+    <div className="w-full overflow-hidden">
+      <svg width="100%" height="120" viewBox="0 0 1200 120" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg" className="opacity-[0.15]">
+        {/* Distant hills */}
+        <path d="M0,50 Q100,30 200,45 Q350,25 500,40 Q650,28 800,42 Q950,30 1100,38 L1200,45 L1200,120 L0,120Z" fill="var(--primary)" fillOpacity="0.15" />
+        <path d="M0,60 Q150,45 300,55 Q500,40 700,52 Q900,42 1100,50 L1200,55 L1200,120 L0,120Z" fill="var(--primary)" fillOpacity="0.1" />
+
+        {/* River winding through */}
+        <path d="M-10,80 Q100,65 200,75 Q350,85 500,70 Q650,60 800,72 Q950,82 1100,68 L1210,75" fill="none" stroke="var(--accent)" strokeOpacity="0.3" strokeWidth="2" />
+        <path d="M-10,84 Q100,70 200,79 Q350,88 500,74 Q650,64 800,76 Q950,86 1100,72 L1210,78" fill="none" stroke="var(--accent)" strokeOpacity="0.15" strokeWidth="1" />
+
+        {/* Small trees along the riverbank */}
+        {[80, 180, 320, 480, 620, 750, 920, 1050].map((x, i) => {
+          const y = 55 + (i % 3) * 5
+          const h = 6 + (i % 2) * 3
+          return (
+            <g key={x}>
+              <line x1={x} y1={y + 3} x2={x} y2={y - h + 3} stroke="var(--primary)" strokeOpacity="0.25" strokeWidth="0.6" />
+              <circle cx={x} cy={y - h + 1} r={2 + (i % 2)} fill="var(--primary)" fillOpacity="0.12" />
+            </g>
+          )
+        })}
+
+        {/* Field patterns — small dashed lines suggesting cultivated land */}
+        <g opacity="0.15">
+          <line x1="150" y1="90" x2="250" y2="90" stroke="var(--primary)" strokeWidth="0.4" strokeDasharray="3 4" />
+          <line x1="155" y1="94" x2="245" y2="94" stroke="var(--primary)" strokeWidth="0.3" strokeDasharray="3 4" />
+          <line x1="160" y1="98" x2="240" y2="98" stroke="var(--primary)" strokeWidth="0.3" strokeDasharray="3 4" />
+        </g>
+        <g opacity="0.12">
+          <line x1="700" y1="88" x2="780" y2="88" stroke="var(--primary)" strokeWidth="0.4" strokeDasharray="3 4" />
+          <line x1="705" y1="92" x2="775" y2="92" stroke="var(--primary)" strokeWidth="0.3" strokeDasharray="3 4" />
+          <line x1="710" y1="96" x2="770" y2="96" stroke="var(--primary)" strokeWidth="0.3" strokeDasharray="3 4" />
+        </g>
+
+        {/* Distant settlement — tiny rectangles on the horizon */}
+        <g opacity="0.12">
+          <rect x="420" y="38" width="4" height="8" fill="var(--foreground)" />
+          <rect x="426" y="35" width="3" height="11" fill="var(--foreground)" />
+          <rect x="431" y="37" width="5" height="9" fill="var(--foreground)" />
+          <rect x="438" y="33" width="3" height="13" fill="var(--foreground)" />
+          <rect x="443" y="36" width="4" height="10" fill="var(--foreground)" />
+        </g>
+
+        {/* Windmill */}
+        <g opacity="0.15">
+          <line x1="900" y1="55" x2="900" y2="40" stroke="var(--foreground)" strokeWidth="0.8" />
+          <line x1="895" y1="40" x2="905" y2="40" stroke="var(--foreground)" strokeWidth="0.4" />
+          <line x1="900" y1="36" x2="900" y2="44" stroke="var(--foreground)" strokeWidth="0.4" />
+          <line x1="896" y1="37" x2="904" y2="43" stroke="var(--foreground)" strokeWidth="0.3" />
+          <line x1="904" y1="37" x2="896" y2="43" stroke="var(--foreground)" strokeWidth="0.3" />
+        </g>
+
+        {/* Birds heading toward the horizon */}
+        <path d="M550,20 l-3,2.5 l3,-1 l3,1 l-3,-2.5" stroke="var(--foreground)" strokeOpacity="0.2" strokeWidth="0.5" fill="none" />
+        <path d="M560,17 l-2.5,2 l2.5,-0.8 l2.5,0.8 l-2.5,-2" stroke="var(--foreground)" strokeOpacity="0.15" strokeWidth="0.4" fill="none" />
+        <path d="M555,23 l-2,1.5 l2,-0.6 l2,0.6 l-2,-1.5" stroke="var(--foreground)" strokeOpacity="0.12" strokeWidth="0.3" fill="none" />
+
+        {/* Ground texture */}
+        <path d="M0,105 Q300,100 600,105 Q900,100 1200,105" stroke="var(--foreground)" strokeOpacity="0.06" strokeWidth="0.5" fill="none" />
+        <path d="M0,112 Q400,108 800,112 Q1000,108 1200,112" stroke="var(--foreground)" strokeOpacity="0.04" strokeWidth="0.4" fill="none" />
+      </svg>
+    </div>
+  )
+}
+
+// ─── Topographic Background ──────────────────────────────────────────────────
+// Subtle contour lines that fill the page background behind the rows.
+function TopographicTexture() {
+  return (
+    <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 1200 800" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Large sweeping contour lines */}
+      <path d="M0,100 Q200,80 400,120 Q600,90 800,130 Q1000,100 1200,110" fill="none" stroke="var(--foreground)" strokeOpacity="0.02" strokeWidth="0.8" />
+      <path d="M0,200 Q300,170 500,210 Q700,180 900,220 Q1100,190 1200,200" fill="none" stroke="var(--foreground)" strokeOpacity="0.018" strokeWidth="0.7" />
+      <path d="M0,320 Q200,300 450,340 Q650,310 850,350 Q1050,320 1200,330" fill="none" stroke="var(--foreground)" strokeOpacity="0.015" strokeWidth="0.6" />
+      <path d="M0,450 Q250,420 500,460 Q750,430 1000,470 Q1150,440 1200,450" fill="none" stroke="var(--foreground)" strokeOpacity="0.018" strokeWidth="0.7" />
+      <path d="M0,580 Q300,560 600,590 Q800,565 1000,595 Q1150,575 1200,580" fill="none" stroke="var(--foreground)" strokeOpacity="0.015" strokeWidth="0.6" />
+      <path d="M0,700 Q200,680 400,710 Q600,685 800,720 Q1000,695 1200,710" fill="none" stroke="var(--foreground)" strokeOpacity="0.02" strokeWidth="0.8" />
+      {/* Circular contours — like a topographic hill */}
+      <circle cx="900" cy="350" r="80" fill="none" stroke="var(--foreground)" strokeOpacity="0.012" strokeWidth="0.5" />
+      <circle cx="900" cy="350" r="120" fill="none" stroke="var(--foreground)" strokeOpacity="0.01" strokeWidth="0.5" />
+      <circle cx="300" cy="600" r="100" fill="none" stroke="var(--foreground)" strokeOpacity="0.012" strokeWidth="0.5" />
+      <circle cx="300" cy="600" r="150" fill="none" stroke="var(--foreground)" strokeOpacity="0.008" strokeWidth="0.5" />
+    </svg>
+  )
+}
+
+// Row icon map for each row type
+const ROW_ICONS: Record<string, () => React.JSX.Element> = {
+  'Active Initiatives': ActiveRowIcon,
+  'In Planning': PlanningRowIcon,
+  'Completed': CompletedRowIcon,
 }
 
 // ─── Ghost Card ──────────────────────────────────────────────────────────────
@@ -365,14 +652,17 @@ function ScrollRow({ title, subtitle, projects, ghostCount }: ProjectRow) {
   return (
     <section className="relative group/row">
       {/* Row header */}
-      <div className="flex items-baseline justify-between mb-4 px-4 sm:px-6 lg:px-8">
-        <div>
-          <h2 className="text-lg sm:text-xl font-bold text-[var(--foreground)] tracking-tight">
-            {title}
-          </h2>
-          <p className="text-[11px] text-[var(--muted-foreground)] mt-0.5 tracking-wide">
-            {subtitle}
-          </p>
+      <div className="flex items-center justify-between mb-4 px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-3">
+          {ROW_ICONS[title] && React.createElement(ROW_ICONS[title])}
+          <div>
+            <h2 className="text-lg sm:text-xl font-bold text-[var(--foreground)] tracking-tight">
+              {title}
+            </h2>
+            <p className="text-[11px] text-[var(--muted-foreground)] mt-0.5 tracking-wide">
+              {subtitle}
+            </p>
+          </div>
         </div>
         {projects.length > 0 && (
           <span className="text-xs text-[var(--muted-foreground)] font-medium tabular-nums">
@@ -755,7 +1045,7 @@ export default function ProjectsPage() {
   // ─── Render ────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-[var(--background)]">
+    <div className="min-h-screen bg-[var(--background)] relative">
       {/* Keyframe for ghost seed sway */}
       <style>{`
         @keyframes gentle-sway {
@@ -763,6 +1053,9 @@ export default function ProjectsPage() {
           100% { transform: rotate(3deg) translateY(-2px); }
         }
       `}</style>
+
+      {/* ═══ TOPOGRAPHIC BACKGROUND ═══ */}
+      <TopographicTexture />
 
       {/* ═══ THE HORIZON ═══ */}
       {featured && (
@@ -774,17 +1067,39 @@ export default function ProjectsPage() {
       )}
 
       {/* ═══ THE JOURNEY ═══ */}
-      <main className="space-y-10 py-10">
-        {rows.map((row) => (
-          <ScrollRow
-            key={row.title}
-            title={row.title}
-            subtitle={row.subtitle}
-            projects={row.projects}
-            ghostCount={row.ghostCount}
-          />
-        ))}
+      <main className="relative py-10">
+        {/* Floating margin illustrations — positioned absolutely for decoration */}
+        <div className="hidden lg:block absolute top-16 right-6 xl:right-12">
+          <MarginButterfly />
+        </div>
+        <div className="hidden lg:block absolute top-[35%] left-4 xl:left-10">
+          <MarginMushrooms />
+        </div>
+        <div className="hidden lg:block absolute top-[65%] right-8 xl:right-14">
+          <MarginFlowers />
+        </div>
+        <div className="hidden lg:block absolute bottom-32 left-6 xl:left-12">
+          <MarginButterfly className="opacity-[0.08] -scale-x-100" />
+        </div>
+
+        {/* Rows with vine dividers between them */}
+        <div className="space-y-2">
+          {rows.map((row, i) => (
+            <React.Fragment key={row.title}>
+              {i > 0 && <VineDivider />}
+              <ScrollRow
+                title={row.title}
+                subtitle={row.subtitle}
+                projects={row.projects}
+                ghostCount={row.ghostCount}
+              />
+            </React.Fragment>
+          ))}
+        </div>
       </main>
+
+      {/* ═══ CLOSING LANDSCAPE ═══ */}
+      <FooterLandscape />
     </div>
   )
 }
