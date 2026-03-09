@@ -61,7 +61,7 @@ export function BirdFlightCanvas() {
 
     // Fog — gives that atmospheric depth-fade
     const fogColor = new THREE.Color('#8db5c7') // cool sky blue, blends with any theme
-    scene.fog = new THREE.FogExp2(fogColor, 0.012)
+    scene.fog = new THREE.FogExp2(fogColor, 0.008)
     scene.background = null // transparent — page bg shows through
 
     // ── Camera ────────────────────────────────────────────────────────────
@@ -102,18 +102,18 @@ export function BirdFlightCanvas() {
       if (type < 0.55) {
         // Light motes — small atmospheric particles
         types[i] = 0
-        sizes[i] = randRange(1.5, 4)
-        alphas[i] = randRange(0.15, 0.5)
+        sizes[i] = randRange(2, 5)
+        alphas[i] = randRange(0.3, 0.7)
       } else if (type < 0.82) {
         // Haze wisps — medium atmospheric haze
         types[i] = 1
-        sizes[i] = randRange(4, 9)
-        alphas[i] = randRange(0.08, 0.25)
+        sizes[i] = randRange(5, 11)
+        alphas[i] = randRange(0.15, 0.4)
       } else {
         // Cloud puffs — large, faint
         types[i] = 2
-        sizes[i] = randRange(14, 35)
-        alphas[i] = randRange(0.03, 0.1)
+        sizes[i] = randRange(16, 40)
+        alphas[i] = randRange(0.06, 0.18)
       }
     }
 
@@ -127,7 +127,7 @@ export function BirdFlightCanvas() {
       depthWrite: false,
       blending: THREE.AdditiveBlending,
       uniforms: {
-        uColor: { value: new THREE.Color('#c8dce8') },
+        uColor: { value: new THREE.Color('#d4e8f2') },
         uTime: { value: 0 },
       },
       vertexShader: /* glsl */ `
@@ -156,7 +156,7 @@ export function BirdFlightCanvas() {
           float softEdge = 1.0 - smoothstep(0.25, 0.5, d);
 
           // Distance fade
-          float distFade = 1.0 - smoothstep(40.0, 280.0, vDist);
+          float distFade = 1.0 - smoothstep(60.0, 320.0, vDist);
 
           gl_FragColor = vec4(uColor, vAlpha * softEdge * distFade);
         }
@@ -197,7 +197,7 @@ export function BirdFlightCanvas() {
       depthWrite: false,
       blending: THREE.AdditiveBlending,
       uniforms: {
-        uColor: { value: new THREE.Color('#e0eef5') },
+        uColor: { value: new THREE.Color('#e8f4fa') },
         uGustStrength: { value: 0 },
       },
       vertexShader: /* glsl */ `
@@ -214,7 +214,7 @@ export function BirdFlightCanvas() {
         uniform vec3 uColor;
         varying float vAlpha;
         void main() {
-          gl_FragColor = vec4(uColor, vAlpha * 0.35);
+          gl_FragColor = vec4(uColor, vAlpha * 0.55);
         }
       `,
     })
@@ -231,9 +231,9 @@ export function BirdFlightCanvas() {
       const radius = 30 + i * 4
       const ringGeo = new THREE.RingGeometry(radius - 0.3, radius, 64)
       const ringMat = new THREE.MeshBasicMaterial({
-        color: new THREE.Color('#a0c4d4'),
+        color: new THREE.Color('#b0d4e4'),
         transparent: true,
-        opacity: 0.015 - i * 0.0006,
+        opacity: 0.035 - i * 0.0012,
         side: THREE.DoubleSide,
         depthWrite: false,
       })

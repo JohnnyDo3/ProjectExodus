@@ -522,8 +522,8 @@ function HeatWaveEffect() {
             x2={600 + offset * 2.2}
             y2={800}
             stroke="var(--foreground)"
-            strokeOpacity={0.018 - Math.abs(offset) * 0.00002}
-            strokeWidth={0.3}
+            strokeOpacity={0.045 - Math.abs(offset) * 0.00004}
+            strokeWidth={0.5}
           />
         ))}
         {/* Horizontal depth lines — spacing increases with distance from vanishing point */}
@@ -538,8 +538,8 @@ function HeatWaveEffect() {
               x2={600 + spread}
               y2={y}
               stroke="var(--foreground)"
-              strokeOpacity={0.012 + i * 0.002}
-              strokeWidth={0.25 + i * 0.04}
+              strokeOpacity={0.035 + i * 0.006}
+              strokeWidth={0.4 + i * 0.06}
             />
           )
         })}
@@ -550,8 +550,8 @@ function HeatWaveEffect() {
             d={`M0,${40 + i * 65} Q100,${30 + i * 65} 250,${45 + i * 65} Q400,${28 + i * 65} 550,${48 + i * 65} Q700,${32 + i * 65} 850,${44 + i * 65} Q1000,${30 + i * 65} 1200,${42 + i * 65}`}
             fill="none"
             stroke="var(--foreground)"
-            strokeOpacity={0.015 + (i % 4) * 0.004}
-            strokeWidth={0.3 + (i % 3) * 0.15}
+            strokeOpacity={0.04 + (i % 4) * 0.012}
+            strokeWidth={0.5 + (i % 3) * 0.2}
             style={{
               animation: `heat-wave ${7 + i * 0.9}s ease-in-out infinite`,
               animationDelay: `${i * 0.6}s`,
@@ -1070,8 +1070,8 @@ function ProjectsPhilosophy() {
       {/* Background layer */}
       <div className="absolute inset-0" style={{
           background: `
-            radial-gradient(ellipse 80% 60% at 20% 80%, var(--primary)/0.12 0%, transparent 70%),
-            radial-gradient(ellipse 60% 50% at 80% 20%, var(--accent)/0.08 0%, transparent 70%),
+            radial-gradient(ellipse 80% 60% at 20% 80%, var(--primary)/0.18 0%, transparent 70%),
+            radial-gradient(ellipse 60% 50% at 80% 20%, var(--accent)/0.14 0%, transparent 70%),
             linear-gradient(175deg, var(--background) 0%, var(--muted) 40%, var(--card) 70%, var(--background) 100%)
           `
         }}>
@@ -1087,8 +1087,8 @@ function ProjectsPhilosophy() {
                 x2={600 + offset * 2.4}
                 y2={400}
                 stroke="var(--foreground)"
-                strokeOpacity={0.025 - Math.abs(offset) * 0.00002}
-                strokeWidth={0.4}
+                strokeOpacity={0.06 - Math.abs(offset) * 0.00004}
+                strokeWidth={0.6}
               />
             ))}
             {/* Horizontal cross-lines that get closer together toward vanishing point */}
@@ -1103,8 +1103,8 @@ function ProjectsPhilosophy() {
                   x2={600 + spread}
                   y2={y}
                   stroke="var(--foreground)"
-                  strokeOpacity={0.015 + i * 0.003}
-                  strokeWidth={0.3 + i * 0.05}
+                  strokeOpacity={0.04 + i * 0.008}
+                  strokeWidth={0.5 + i * 0.08}
                 />
               )
             })}
@@ -1115,8 +1115,8 @@ function ProjectsPhilosophy() {
                 d={`M0,${80 + i * 40} Q150,${72 + i * 40} 300,${82 + i * 40} Q450,${68 + i * 40} 600,${85 + i * 40} Q750,${74 + i * 40} 900,${80 + i * 40} Q1050,${70 + i * 40} 1200,${83 + i * 40}`}
                 fill="none"
                 stroke="var(--foreground)"
-                strokeOpacity={0.02 + (i % 3) * 0.005}
-                strokeWidth={0.4 + (i % 2) * 0.2}
+                strokeOpacity={0.06 + (i % 3) * 0.015}
+                strokeWidth={0.6 + (i % 2) * 0.3}
                 style={{
                   animation: `heat-wave ${6 + i * 1.2}s ease-in-out infinite`,
                   animationDelay: `${i * 0.8}s`,
@@ -1129,12 +1129,12 @@ function ProjectsPhilosophy() {
       {/* Bird flight — first-person soaring POV */}
       <BirdFlightCanvas />
 
-      {/* Gradient veils — blend canvas into page */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/60 to-[var(--background)]/15" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[var(--background)]/80 via-[var(--background)]/30 to-transparent" />
+      {/* Gradient veils — blend canvas into page while preserving illusion */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/30 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[var(--background)]/40 via-transparent to-transparent" />
 
       {/* Content — Our Philosophy */}
-      <div className="absolute inset-0 flex items-center justify-center">
+      <div className="absolute inset-0 flex items-start justify-center pt-[12vh] sm:pt-[14vh]">
         <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
 
           <div className="max-w-2xl mx-auto text-center">
@@ -1279,14 +1279,14 @@ export default function ProjectsPage() {
       {/* Keyframes for heat-wave animation */}
       <style>{`
         @keyframes heat-wave {
-          0% { transform: translate(0, 0) scaleY(1) scaleX(1); stroke-opacity: 0.03; }
-          15% { transform: translate(8px, -6px) scaleY(1.04) scaleX(1.01); stroke-opacity: 0.055; }
-          30% { transform: translate(-5px, 4px) scaleY(0.96) scaleX(0.99); stroke-opacity: 0.025; }
-          45% { transform: translate(12px, -3px) scaleY(1.03) scaleX(1.02); stroke-opacity: 0.05; }
-          60% { transform: translate(-8px, 5px) scaleY(0.97) scaleX(0.98); stroke-opacity: 0.02; }
-          75% { transform: translate(6px, -7px) scaleY(1.05) scaleX(1.01); stroke-opacity: 0.06; }
-          90% { transform: translate(-3px, 2px) scaleY(0.98) scaleX(1.0); stroke-opacity: 0.035; }
-          100% { transform: translate(0, 0) scaleY(1) scaleX(1); stroke-opacity: 0.03; }
+          0% { transform: translate(0, 0) scaleY(1) scaleX(1); stroke-opacity: 0.07; }
+          15% { transform: translate(8px, -6px) scaleY(1.04) scaleX(1.01); stroke-opacity: 0.12; }
+          30% { transform: translate(-5px, 4px) scaleY(0.96) scaleX(0.99); stroke-opacity: 0.05; }
+          45% { transform: translate(12px, -3px) scaleY(1.03) scaleX(1.02); stroke-opacity: 0.11; }
+          60% { transform: translate(-8px, 5px) scaleY(0.97) scaleX(0.98); stroke-opacity: 0.04; }
+          75% { transform: translate(6px, -7px) scaleY(1.05) scaleX(1.01); stroke-opacity: 0.13; }
+          90% { transform: translate(-3px, 2px) scaleY(0.98) scaleX(1.0); stroke-opacity: 0.08; }
+          100% { transform: translate(0, 0) scaleY(1) scaleX(1); stroke-opacity: 0.07; }
         }
       `}</style>
 
