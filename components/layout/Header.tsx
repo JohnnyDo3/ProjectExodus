@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
-import { Menu, X, Leaf, User, LogOut, Settings, Users, Calendar, LayoutDashboard, ChevronRight, MessageCircle, Bell, ChevronDown, Lock, Crown, GraduationCap } from 'lucide-react'
+import { Menu, X, Leaf, User, LogOut, Settings, Users, Calendar, LayoutDashboard, ChevronRight, MessageCircle, Bell, ChevronDown, Lock, Crown, GraduationCap, Fish } from 'lucide-react'
 import NotificationBell from '@/components/notifications/NotificationBell'
 import { useDigitalScrollContext } from '@/components/learning/DigitalScroll/DigitalScrollContext'
 import { useSageContextSafe } from '@/components/ai/SageContext'
@@ -435,6 +435,15 @@ export function Header() {
             <ThemeToggle />
             {session && (
               <Link
+                href="/fishbowl"
+                className="relative p-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
+                title="The Fishbowl"
+              >
+                <Fish className="w-5 h-5 text-[var(--foreground)]" />
+              </Link>
+            )}
+            {session && (
+              <Link
                 href="/messages"
                 className="relative p-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
                 title="Messages"
@@ -702,6 +711,15 @@ export function Header() {
                       <div className="flex items-center gap-3">
                         <MessageCircle className="w-5 h-5 text-theme-primary" />
                         <span className="font-bold text-[var(--foreground)]">Messages</span>
+                      </div>
+                      <ChevronRight className="w-5 h-5 text-theme-muted" />
+                    </div>
+                  </Link>
+                  <Link href="/fishbowl" onClick={() => setMobileMenuOpen(false)}>
+                    <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-[var(--muted)] hover:bg-theme-primary/10 transition-colors">
+                      <div className="flex items-center gap-3">
+                        <Fish className="w-5 h-5 text-cyan-500" />
+                        <span className="font-bold text-[var(--foreground)]">The Fishbowl</span>
                       </div>
                       <ChevronRight className="w-5 h-5 text-theme-muted" />
                     </div>
