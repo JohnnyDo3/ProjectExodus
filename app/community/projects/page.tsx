@@ -512,9 +512,40 @@ function HeatWaveEffect() {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden">
       <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1200 800" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        {/* Perspective grid — lines converge toward a vanishing point at top-center */}
+        {[-500, -380, -260, -160, -80, 0, 80, 160, 260, 380, 500].map((offset, i) => (
+          <line
+            key={`grid-${i}`}
+            x1={600 + offset * 0.1}
+            y1={0}
+            x2={600 + offset * 2.2}
+            y2={800}
+            stroke="var(--foreground)"
+            strokeOpacity={0.018 - Math.abs(offset) * 0.00002}
+            strokeWidth={0.3}
+          />
+        ))}
+        {/* Horizontal depth lines — spacing increases with distance from vanishing point */}
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => {
+          const y = i * i * 11
+          const spread = 20 + i * i * 15
+          return (
+            <line
+              key={`depth-${i}`}
+              x1={600 - spread}
+              y1={y}
+              x2={600 + spread}
+              y2={y}
+              stroke="var(--foreground)"
+              strokeOpacity={0.012 + i * 0.002}
+              strokeWidth={0.25 + i * 0.04}
+            />
+          )
+        })}
+        {/* Animated heat wave shimmer lines */}
         {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((i) => (
           <path
-            key={i}
+            key={`wave-${i}`}
             d={`M0,${40 + i * 65} Q100,${30 + i * 65} 250,${45 + i * 65} Q400,${28 + i * 65} 550,${48 + i * 65} Q700,${32 + i * 65} 850,${44 + i * 65} Q1000,${30 + i * 65} 1200,${42 + i * 65}`}
             fill="none"
             stroke="var(--foreground)"
@@ -1033,7 +1064,7 @@ function ScrollRow({ title, subtitle, projects, ghostCount }: ProjectRow) {
 function ProjectsPhilosophy() {
   return (
     <div className="relative w-full overflow-hidden"
-      style={{ minHeight: 'clamp(560px, 85vh, 920px)' }}
+      style={{ minHeight: 'clamp(480px, 75vh, 800px)' }}
     >
       {/* Background layer */}
       <div className="absolute inset-0" style={{
@@ -1043,11 +1074,43 @@ function ProjectsPhilosophy() {
             linear-gradient(175deg, var(--background) 0%, var(--muted) 40%, var(--card) 70%, var(--background) 100%)
           `
         }}>
-          {/* Heat wave frequency lines across the hero */}
+          {/* Single-point perspective lines converging to vanishing point */}
           <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1200 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            {/* Vanishing point at center-horizon (600, 160) */}
+            {/* Radiating perspective lines — creates depth illusion */}
+            {[-540, -420, -300, -200, -120, -60, 0, 60, 120, 200, 300, 420, 540].map((offset, i) => (
+              <line
+                key={`persp-${i}`}
+                x1={600 + offset * 0.08}
+                y1={160}
+                x2={600 + offset * 2.4}
+                y2={400}
+                stroke="var(--foreground)"
+                strokeOpacity={0.025 - Math.abs(offset) * 0.00002}
+                strokeWidth={0.4}
+              />
+            ))}
+            {/* Horizontal cross-lines that get closer together toward vanishing point */}
+            {[0, 1, 2, 3, 4, 5, 6].map((i) => {
+              const y = 160 + (i * i) * 5.5
+              const spread = 30 + i * i * 12
+              return (
+                <line
+                  key={`horiz-${i}`}
+                  x1={600 - spread}
+                  y1={y}
+                  x2={600 + spread}
+                  y2={y}
+                  stroke="var(--foreground)"
+                  strokeOpacity={0.015 + i * 0.003}
+                  strokeWidth={0.3 + i * 0.05}
+                />
+              )
+            })}
+            {/* Heat wave frequency lines — animated shimmer */}
             {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
               <path
-                key={i}
+                key={`wave-${i}`}
                 d={`M0,${80 + i * 40} Q150,${72 + i * 40} 300,${82 + i * 40} Q450,${68 + i * 40} 600,${85 + i * 40} Q750,${74 + i * 40} 900,${80 + i * 40} Q1050,${70 + i * 40} 1200,${83 + i * 40}`}
                 fill="none"
                 stroke="var(--foreground)"
@@ -1067,34 +1130,34 @@ function ProjectsPhilosophy() {
       <div className="absolute inset-0 bg-gradient-to-r from-[var(--background)]/80 via-[var(--background)]/30 to-transparent" />
 
       {/* Content — Our Philosophy */}
-      <div className="absolute inset-0 flex items-center justify-center pt-24 sm:pt-28">
+      <div className="absolute inset-0 flex items-center justify-center pt-16 sm:pt-20">
         <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
 
           <div className="max-w-2xl mx-auto text-center">
             {/* Compass mark */}
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="w-8 h-8 rounded-full border border-[var(--primary)]/50 flex items-center justify-center bg-[var(--primary)]/20">
-                <Compass className="w-4 h-4 text-[var(--primary)]" />
+            <div className="flex items-center justify-center gap-3 mb-3">
+              <div className="w-7 h-7 rounded-full border border-[var(--primary)]/50 flex items-center justify-center bg-[var(--primary)]/20">
+                <Compass className="w-3.5 h-3.5 text-[var(--primary)]" />
               </div>
-              <span className="text-[10px] font-bold text-[var(--primary)] uppercase tracking-[0.2em]">
+              <span className="text-[9px] font-bold text-[var(--primary)] uppercase tracking-[0.2em]">
                 Our Philosophy
               </span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[var(--foreground)] leading-[1.05] tracking-tight drop-shadow-md">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[var(--foreground)] leading-[1.08] tracking-tight drop-shadow-md">
               Ideas Grow When<br />
               <span className="text-[var(--primary)]">Minds Converge</span>
             </h1>
 
-            <p className="text-base sm:text-lg font-serif italic text-[var(--foreground)]/70 mt-4 leading-relaxed max-w-lg mx-auto">
+            <p className="text-sm sm:text-base font-serif italic text-[var(--foreground)]/70 mt-3 leading-relaxed max-w-md mx-auto">
               &ldquo;A single seed holds a forest. A single idea, shared freely, holds a future.&rdquo;
             </p>
 
-            <p className="text-sm sm:text-base text-[var(--foreground)]/80 mt-4 leading-relaxed max-w-lg mx-auto font-medium">
+            <p className="text-xs sm:text-sm text-[var(--foreground)]/80 mt-3 leading-relaxed max-w-md mx-auto font-medium">
               Project Exodus initiatives are collaborative think tanks where visionaries, builders, and changemakers unite to launch sustainable ventures. Every project here is an initiative driven by the community — developed through shared research, open discussion, and collective ambition.
             </p>
 
-            <p className="text-xs sm:text-sm text-[var(--foreground)]/60 mt-2 leading-relaxed max-w-md mx-auto">
+            <p className="text-[11px] sm:text-xs text-[var(--foreground)]/60 mt-2 leading-relaxed max-w-sm mx-auto">
               Join an initiative that speaks to you, or launch one of your own. The path forward is walked together.
             </p>
 
@@ -1212,11 +1275,11 @@ export default function ProjectsPage() {
       {/* Keyframes for heat-wave animation */}
       <style>{`
         @keyframes heat-wave {
-          0% { transform: translateY(0) scaleY(1); opacity: 0.04; }
-          25% { transform: translateY(-2px) scaleY(1.01); opacity: 0.06; }
-          50% { transform: translateY(1px) scaleY(0.99); opacity: 0.03; }
-          75% { transform: translateY(-1px) scaleY(1.005); opacity: 0.055; }
-          100% { transform: translateY(0) scaleY(1); opacity: 0.04; }
+          0% { transform: translateY(0) scaleY(1); stroke-opacity: 0.03; }
+          25% { transform: translateY(-3px) scaleY(1.02); stroke-opacity: 0.05; }
+          50% { transform: translateY(2px) scaleY(0.98); stroke-opacity: 0.02; }
+          75% { transform: translateY(-1.5px) scaleY(1.01); stroke-opacity: 0.045; }
+          100% { transform: translateY(0) scaleY(1); stroke-opacity: 0.03; }
         }
       `}</style>
 
