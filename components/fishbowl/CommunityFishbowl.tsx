@@ -107,17 +107,9 @@ export function CommunityFishbowl() {
           </div>
         )}
 
-        {/* Bottom fade to content */}
-        <div className="absolute bottom-0 left-0 right-0 z-20 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/60 to-transparent h-16">
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex flex-col items-center gap-0.5">
-            <span className="text-[10px] font-bold text-theme-muted uppercase tracking-wider">Explore Network</span>
-            <ChevronDown className="w-4 h-4 text-theme-muted animate-bounce" />
-          </div>
-        </div>
-
         {/* Fish stats bar at bottom of bowl */}
         {users.length > 0 && (
-          <div className="absolute bottom-16 left-0 right-0 z-20">
+          <div className="absolute bottom-3 left-0 right-0 z-20">
             <div className="container mx-auto px-4">
               <div className="flex items-center justify-center gap-3 flex-wrap">
                 {([0, 1, 2, 3, 4, 5] as const).map(tier => {
@@ -138,6 +130,14 @@ export function CommunityFishbowl() {
             </div>
           </div>
         )}
+      </div>
+
+      {/* Bottom fade - positioned below the tank so sand/plants/decor stay fully visible */}
+      <div className="relative z-20 -mt-2 bg-gradient-to-b from-transparent via-[var(--background)]/70 to-[var(--background)] h-10">
+        <div className="absolute bottom-1 left-1/2 -translate-x-1/2 flex flex-col items-center gap-0.5">
+          <span className="text-[10px] font-bold text-theme-muted uppercase tracking-wider">Explore Network</span>
+          <ChevronDown className="w-4 h-4 text-theme-muted animate-bounce" />
+        </div>
       </div>
     </div>
   )
