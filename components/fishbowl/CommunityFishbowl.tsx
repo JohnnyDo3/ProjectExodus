@@ -80,7 +80,7 @@ export function CommunityFishbowl() {
                   <span className="text-[10px] font-bold text-cyan-400 ml-1">Top Fish</span>
                 </div>
                 <Link
-                  href="/fishbowl"
+                  href="/fishbowl/personal"
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-cyan-600 to-blue-600 text-white hover:from-cyan-500 hover:to-blue-500 transition-all"
                 >
                   <Fish className="w-3.5 h-3.5" />

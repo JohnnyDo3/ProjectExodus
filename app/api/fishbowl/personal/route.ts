@@ -16,11 +16,11 @@ export async function GET() {
 
     // Get the user's following and followers
     const [following, followers, currentUser] = await Promise.all([
-      prisma.follows.findMany({
+      prisma.userFollow.findMany({
         where: { followerId: userId },
         select: { followingId: true },
       }),
-      prisma.follows.findMany({
+      prisma.userFollow.findMany({
         where: { followingId: userId },
         select: { followerId: true },
       }),
