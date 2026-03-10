@@ -155,8 +155,8 @@ export function Header() {
 
   const communityMenuItems = [
     { label: 'Discussions', href: '/community/discussions', myLabel: 'Discussions' },
-    { label: 'Projects', href: '/community/projects', myLabel: 'Projects' },
-    { label: 'Network', href: '/network', myLabel: 'Network' },
+    { label: 'Initiatives', href: '/community/projects', myLabel: 'Initiatives' },
+    { label: 'Fish Tank', href: '/fishbowl', myLabel: 'Fish Tank' },
   ]
 
   const handleSignOut = async () => {
@@ -228,7 +228,7 @@ export function Header() {
           <div className="hidden lg:flex items-center gap-4 xl:gap-6">
             {navigation.map((item) => {
               const isActive = pathname === item.href ||
-                (item.name === 'Community' && pathname.startsWith('/community')) ||
+                (item.name === 'Community' && (pathname.startsWith('/community') || pathname === '/fishbowl')) ||
                 (item.name === 'Learn' && (pathname.startsWith('/learn') || pathname.startsWith('/exodology')))
 
               // Learn gets a hover dropdown with Exodology for logged-in users
@@ -574,7 +574,7 @@ export function Header() {
               <div className="space-y-2">
                 {navigation.map((item) => {
                   const isActive = pathname === item.href ||
-                    (item.name === 'Community' && pathname.startsWith('/community')) ||
+                    (item.name === 'Community' && (pathname.startsWith('/community') || pathname === '/fishbowl')) ||
                     (item.name === 'Learn' && (pathname.startsWith('/learn') || pathname.startsWith('/exodology')))
                   return (
                     <Link

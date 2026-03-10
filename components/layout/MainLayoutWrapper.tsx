@@ -29,7 +29,7 @@ export function MainLayoutWrapper({
   const isAdminRoute = pathname?.startsWith('/admin')
 
   // Full-screen pages that should not have footer and should not scroll
-  const isFullScreenPage = pathname === '/messages' || pathname === '/notifications' || pathname === '/network'
+  const isFullScreenPage = pathname === '/messages' || pathname === '/notifications' || pathname === '/network' || pathname === '/fishbowl'
 
   // Learning module pages - no footer, full viewport height, no scroll
   const isLearningPage = pathname?.startsWith('/learn/modules/')
