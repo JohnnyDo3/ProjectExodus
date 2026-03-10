@@ -7,6 +7,7 @@ import { useSession, signOut } from 'next-auth/react'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import { Menu, X, Leaf, User, LogOut, Settings, Users, Calendar, LayoutDashboard, ChevronRight, MessageCircle, Bell, ChevronDown, Lock, Crown, GraduationCap, Fish } from 'lucide-react'
 import NotificationBell from '@/components/notifications/NotificationBell'
+import { PersonalFishbowl } from '@/components/fishbowl/PersonalFishbowl'
 import { useDigitalScrollContext } from '@/components/learning/DigitalScroll/DigitalScrollContext'
 import { useSageContextSafe } from '@/components/ai/SageContext'
 
@@ -433,15 +434,7 @@ export function Header() {
           {/* Desktop Auth Section */}
           <div className="hidden lg:flex items-center gap-3 xl:gap-4">
             <ThemeToggle />
-            {session && (
-              <Link
-                href="/network"
-                className="relative p-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
-                title="The Fishbowl"
-              >
-                <Fish className="w-5 h-5 text-[var(--foreground)]" />
-              </Link>
-            )}
+            {session && <PersonalFishbowl />}
             {session && (
               <Link
                 href="/messages"
