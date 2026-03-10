@@ -159,24 +159,29 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
   }, [fish, onClick])
 
   // Tail wag animation via CSS
-  const wagAmount = Math.sin(pos.phase * 2) * 3
+  const wagAmount = Math.sin(pos.phase * 2) * 4
+  // Subtle bob for liveliness
+  const bobAmount = Math.sin(pos.phase * 1.3) * 1.5
 
   return (
     <div
       ref={ref}
-      className="absolute cursor-pointer transition-transform duration-100"
+      className="absolute cursor-pointer"
       style={{
         left: `${pos.x}px`,
-        top: `${pos.y}px`,
+        top: `${pos.y + bobAmount}px`,
         transform: `scaleX(${pos.direction === 'left' ? 1 : -1}) rotate(${wagAmount}deg)`,
         zIndex: 10 + Math.floor(pos.y / 10),
-        filter: isHovered.current ? 'brightness(1.2) drop-shadow(0 0 8px rgba(255,255,255,0.5))' : 'none',
+        filter: isHovered.current
+          ? `brightness(1.3) drop-shadow(0 0 12px rgba(34,211,238,0.6)) drop-shadow(0 0 4px rgba(255,255,255,0.3))`
+          : `drop-shadow(0 2px 4px rgba(0,0,0,0.2))`,
+        transition: 'filter 0.3s ease',
       }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
     >
-      <FishSVG tier={fish.tier} size={fishSize} />
+      <FishSVG tier={fish.tier} size={fishSize} id={`swim-${fish.id}`} />
     </div>
   )
 })
