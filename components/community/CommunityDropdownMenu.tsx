@@ -20,13 +20,13 @@ const menuItems = [
     description: 'Join the conversation'
   },
   {
-    label: 'Projects',
+    label: 'Initiatives',
     href: '/community/projects',
     icon: Rocket,
     description: 'Collaborate on initiatives'
   },
   {
-    label: 'Network',
+    label: 'Fishbowl',
     href: '/community/users',
     icon: Users,
     description: 'Connect with changemakers'

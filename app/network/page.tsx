@@ -1138,11 +1138,11 @@ export default function NetworkPage() {
   // ============================================
 
   return (
-    <div className="h-full flex flex-col overflow-hidden bg-[#0A1628]">
+    <div className="min-h-full bg-[#0A1628]">
       {/* ============================================ */}
       {/* FISHBOWL HEADER */}
       {/* ============================================ */}
-      <div className="flex-shrink-0 bg-gradient-to-r from-[#0D2137]/95 via-[#123855]/95 to-[#0D2137]/95 backdrop-blur-sm border-b-2 border-cyan-800/50">
+      <div className="sticky top-0 z-40 bg-gradient-to-r from-[#0D2137]/95 via-[#123855]/95 to-[#0D2137]/95 backdrop-blur-sm border-b-2 border-cyan-800/50">
         <div className="container mx-auto px-4 sm:px-6 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -1230,11 +1230,12 @@ export default function NetworkPage() {
       <AnimatePresence>
         {showFishbowl && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 280, opacity: 1 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.4, ease: 'easeInOut' }}
-            className="flex-shrink-0 px-3 sm:px-4 pt-3 overflow-hidden"
+            className="px-3 sm:px-4 pt-3 pb-3"
+            style={{ height: 'calc(100vh - 80px)' }}
           >
             <div className="w-full h-full rounded-2xl border-2 border-cyan-800/40 shadow-lg shadow-cyan-900/20 overflow-hidden">
               <Fishbowl users={fishbowlUsers} />
@@ -1246,7 +1247,7 @@ export default function NetworkPage() {
       {/* ============================================ */}
       {/* NETWORK CONTENT (scrollable) */}
       {/* ============================================ */}
-      <div className="flex-1 overflow-y-auto min-h-0">
+      <div>
         {/* Stats + View Toggle */}
         <section className="pt-6 pb-4">
           <div className="container mx-auto px-4 sm:px-6">
