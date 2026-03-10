@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { SwimmingFish, type FishData } from './SwimmingFish'
 import { DecorationLayer } from './AquaticDecorations'
+import { PlecoPair, SnailTrio } from './TankCreatures'
 import { FishOverlay } from './FishOverlay'
 import { WaterEffects } from './WaterEffects'
 import { AmbientSounds } from './AmbientSounds'
@@ -182,6 +183,12 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE }: FishbowlPr
           index={i}
         />
       ))}
+
+      {/* Clown pleco pair (bottom feeders, mates for life) */}
+      {dimensions.width > 0 && <PlecoPair containerWidth={dimensions.width} />}
+
+      {/* Glass-cleaning snails */}
+      <SnailTrio containerWidth={dimensions.width} containerHeight={dimensions.height} />
 
       {/* Bottom decorations */}
       <DecorationLayer width={dimensions.width} />
