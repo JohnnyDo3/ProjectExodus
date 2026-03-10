@@ -5,15 +5,10 @@ import { memo, useEffect, useState, useRef } from 'react'
 // ─── Clown Pleco (Bottom Feeder) ────────────────────────────────────
 // Two plecos that stay near the bottom, always near each other (mates for life)
 
-interface PlecoProps {
-  id: string
-  x: number
-  facingRight: boolean
-  color?: string
-}
-
 const ClownPlecoSVG = memo(({ id, facingRight, size = 40 }: { id: string; facingRight: boolean; size?: number }) => {
-  const scaleX = facingRight ? 1 : -1
+  // SVG draws head on left (x≈14) and tail on right (x≈62).
+  // Default orientation faces LEFT, so mirror when facingRight.
+  const scaleX = facingRight ? -1 : 1
   return (
     <svg width={size} height={size * 0.5} viewBox="0 0 80 40" fill="none">
       <defs>
@@ -81,6 +76,7 @@ export const PlecoPair = memo(({ containerWidth }: { containerWidth: number }) =
 
       // Slow wandering along the bottom
       const baseX = containerWidth * 0.15 + Math.sin(t * 0.3) * (containerWidth * 0.3)
+      // direction = derivative sign: cos(t*0.3) > 0 means moving right
       const direction = Math.cos(t * 0.3) > 0 ? 1 : -1
 
       setPos({ x: baseX, direction })
@@ -92,9 +88,9 @@ export const PlecoPair = memo(({ containerWidth }: { containerWidth: number }) =
   }, [containerWidth])
 
   const facingRight = pos.direction > 0
-  // Second pleco follows close behind, slightly offset
+  // Second pleco follows close behind
   const pleco2X = pos.x + (facingRight ? -35 : 35)
-  const pleco2Y = 2 // slightly different vertical offset
+  const pleco2Y = 2
 
   return (
     <div className="absolute bottom-[18px] left-0 w-full z-20 pointer-events-none" style={{ height: '40px' }}>
@@ -133,14 +129,12 @@ const PlecoHearts = memo(({ x1, x2 }: { x1: number; x2: number }) => {
   const midX = (x1 + x2) / 2
 
   useEffect(() => {
-    // Show heart every 6-10 seconds
     const show = () => {
       setShowHeart(true)
       setTimeout(() => setShowHeart(false), 2000)
     }
 
     const interval = setInterval(show, 6000 + Math.random() * 4000)
-    // Show first heart after a short delay
     const initialTimeout = setTimeout(show, 2000)
 
     return () => {
@@ -170,7 +164,7 @@ PlecoHearts.displayName = 'PlecoHearts'
 
 
 // ─── Glass Snail ────────────────────────────────────────────────────
-// Snails that crawl along the edges of the glass
+// Snails that crawl along the glass — edges AND across the front glass
 
 interface SnailColor {
   shell: string
@@ -201,7 +195,9 @@ const SNAIL_COLORS: Record<string, SnailColor> = {
 }
 
 const SnailSVG = memo(({ id, color, facingRight, size = 20 }: { id: string; color: SnailColor; facingRight: boolean; size?: number }) => {
-  const scaleX = facingRight ? 1 : -1
+  // SVG draws head on left (x≈7), shell on right (x≈22).
+  // Default orientation faces LEFT, so mirror when facingRight.
+  const scaleX = facingRight ? -1 : 1
   return (
     <svg width={size} height={size} viewBox="0 0 40 40" fill="none">
       <defs>
@@ -240,16 +236,52 @@ const SnailSVG = memo(({ id, color, facingRight, size = 20 }: { id: string; colo
 })
 SnailSVG.displayName = 'SnailSVG'
 
-type SnailEdge = 'bottom' | 'left' | 'right'
+type SnailEdge = 'bottom' | 'left' | 'right' | 'front'
 
 interface SnailState {
   edge: SnailEdge
   progress: number // 0-1 along that edge
   speed: number
-  color: string
+  // For front-glass: random waypoints
+  frontPath: { startX: number; startY: number; endX: number; endY: number }
 }
 
-// Single snail that crawls along glass edges
+// Pick a random front-glass path (diagonal/curvy traverse)
+function randomFrontPath(containerWidth: number, containerHeight: number) {
+  // Start from a random edge point, end at another random edge point
+  const side = Math.random()
+  let startX: number, startY: number, endX: number, endY: number
+
+  if (side < 0.25) {
+    // Start from bottom
+    startX = Math.random() * containerWidth
+    startY = containerHeight - 30
+    endX = Math.random() * containerWidth
+    endY = containerHeight * (0.15 + Math.random() * 0.3)
+  } else if (side < 0.5) {
+    // Start from left
+    startX = 10
+    startY = containerHeight * (0.3 + Math.random() * 0.5)
+    endX = containerWidth * (0.4 + Math.random() * 0.5)
+    endY = containerHeight * (0.1 + Math.random() * 0.4)
+  } else if (side < 0.75) {
+    // Start from right
+    startX = containerWidth - 30
+    startY = containerHeight * (0.3 + Math.random() * 0.5)
+    endX = containerWidth * (0.1 + Math.random() * 0.4)
+    endY = containerHeight * (0.1 + Math.random() * 0.4)
+  } else {
+    // Start from top area
+    startX = Math.random() * containerWidth
+    startY = containerHeight * 0.15
+    endX = Math.random() * containerWidth
+    endY = containerHeight * (0.5 + Math.random() * 0.35)
+  }
+
+  return { startX, startY, endX, endY }
+}
+
+// Single snail that crawls along glass edges AND across the front glass
 const GlassSnail = memo(({ id, colorName, containerWidth, containerHeight, initialEdge, initialProgress }: {
   id: string
   colorName: 'pink' | 'blue' | 'gold'
@@ -259,31 +291,59 @@ const GlassSnail = memo(({ id, colorName, containerWidth, containerHeight, initi
   initialProgress: number
 }) => {
   const color = SNAIL_COLORS[colorName]
-  const [state, setState] = useState<SnailState>({
+  const [state, setState] = useState<SnailState>(() => ({
     edge: initialEdge,
     progress: initialProgress,
     speed: 0.00015 + Math.random() * 0.0001,
-    color: colorName,
-  })
+    frontPath: randomFrontPath(containerWidth || 800, containerHeight || 600),
+  }))
   const animRef = useRef<number>(0)
+  const prevProgressRef = useRef(initialProgress)
 
   useEffect(() => {
     if (containerWidth === 0 || containerHeight === 0) return
 
     const animate = () => {
       setState(prev => {
-        let { edge, progress, speed } = prev
+        let { edge, progress, speed, frontPath } = prev
+        prevProgressRef.current = progress
         progress += speed
 
         // Transition between edges
         if (progress >= 1) {
           progress = 0
-          if (edge === 'bottom') edge = Math.random() > 0.5 ? 'right' : 'left'
-          else if (edge === 'left') edge = 'bottom'
-          else edge = 'bottom'
+          if (edge === 'front') {
+            // After crossing the glass, go to a random edge
+            const pick = Math.random()
+            if (pick < 0.4) edge = 'bottom'
+            else if (pick < 0.65) edge = 'left'
+            else if (pick < 0.9) edge = 'right'
+            else {
+              edge = 'front'
+              frontPath = randomFrontPath(containerWidth, containerHeight)
+            }
+          } else if (edge === 'bottom') {
+            // From bottom, sometimes go across glass, sometimes edges
+            const pick = Math.random()
+            if (pick < 0.4) edge = 'front'
+            else if (pick < 0.7) edge = 'right'
+            else edge = 'left'
+            if (edge === 'front') frontPath = randomFrontPath(containerWidth, containerHeight)
+          } else if (edge === 'left') {
+            const pick = Math.random()
+            if (pick < 0.35) edge = 'front'
+            else edge = 'bottom'
+            if (edge === 'front') frontPath = randomFrontPath(containerWidth, containerHeight)
+          } else {
+            // right
+            const pick = Math.random()
+            if (pick < 0.35) edge = 'front'
+            else edge = 'bottom'
+            if (edge === 'front') frontPath = randomFrontPath(containerWidth, containerHeight)
+          }
         }
 
-        return { ...prev, edge, progress }
+        return { ...prev, edge, progress, frontPath }
       })
       animRef.current = requestAnimationFrame(animate)
     }
@@ -300,21 +360,37 @@ const GlassSnail = memo(({ id, colorName, containerWidth, containerHeight, initi
       x = state.progress * containerWidth
       y = containerHeight - 22
       rotation = 0
-      facingRight = true
+      facingRight = true // moving left to right along bottom
       break
     case 'left':
       x = 4
       y = containerHeight - 22 - state.progress * (containerHeight * 0.6)
       rotation = 90
-      facingRight = true
+      facingRight = true // moving upward on left wall
       break
     case 'right':
       x = containerWidth - 24
       y = containerHeight - 22 - state.progress * (containerHeight * 0.6)
       rotation = -90
-      facingRight = false
+      facingRight = true // moving upward on right wall
       break
+    case 'front': {
+      // Crawling across the front glass — lerp between start and end
+      const { startX, startY, endX, endY } = state.frontPath
+      const t = state.progress
+      x = startX + (endX - startX) * t
+      y = startY + (endY - startY) * t
+      // Face the direction of travel
+      const dx = endX - startX
+      const dy = endY - startY
+      rotation = Math.atan2(dy, dx) * (180 / Math.PI) + 90
+      facingRight = dx > 0
+      break
+    }
   }
+
+  // On front glass, add slight transparency to simulate being pressed against glass
+  const isFront = state.edge === 'front'
 
   return (
     <div
@@ -323,10 +399,26 @@ const GlassSnail = memo(({ id, colorName, containerWidth, containerHeight, initi
         left: `${x}px`,
         top: `${y}px`,
         transform: `rotate(${rotation}deg)`,
-        transition: 'left 0.3s linear, top 0.3s linear',
+        transition: 'left 0.3s linear, top 0.3s linear, transform 0.4s ease',
+        opacity: isFront ? 0.85 : 1,
+        filter: isFront ? 'drop-shadow(0 0 3px rgba(100,200,255,0.15))' : 'none',
       }}
     >
-      <SnailSVG id={id} color={color} facingRight={facingRight} size={18} />
+      <SnailSVG id={id} color={color} facingRight={facingRight} size={isFront ? 22 : 18} />
+      {/* Slime trail on glass */}
+      {isFront && (
+        <div
+          className="absolute rounded-full pointer-events-none"
+          style={{
+            width: '6px',
+            height: '6px',
+            background: `radial-gradient(circle, ${color.body}30 0%, transparent 70%)`,
+            left: '50%',
+            top: '100%',
+            transform: 'translateX(-50%)',
+          }}
+        />
+      )}
     </div>
   )
 })
@@ -343,8 +435,8 @@ export const SnailTrio = memo(({ containerWidth, containerHeight }: { containerW
         colorName="pink"
         containerWidth={containerWidth}
         containerHeight={containerHeight}
-        initialEdge="bottom"
-        initialProgress={0.15}
+        initialEdge="front"
+        initialProgress={0.1}
       />
       <GlassSnail
         id="snail-blue"
@@ -359,8 +451,8 @@ export const SnailTrio = memo(({ containerWidth, containerHeight }: { containerW
         colorName="gold"
         containerWidth={containerWidth}
         containerHeight={containerHeight}
-        initialEdge="right"
-        initialProgress={0.1}
+        initialEdge="bottom"
+        initialProgress={0.6}
       />
     </>
   )

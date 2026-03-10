@@ -273,6 +273,7 @@ export default function PersonalFishbowlPage() {
               ownerCustomization={userCustomization}
               ownerId={data.user?.id}
               contained
+              theme={activeDecor}
             />
           </div>
         ) : (
