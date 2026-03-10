@@ -19,12 +19,13 @@ interface FishbowlProps {
   maxVisible?: number
   ownerCustomization?: FishCustomization | null
   ownerId?: string
+  contained?: boolean
 }
 
 // Only show a subset of fish at any given time. Fish swim in and out.
 const DEFAULT_MAX_VISIBLE = 12
 
-export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomization, ownerId }: FishbowlProps) {
+export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomization, ownerId, contained = false }: FishbowlProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
   const [hoveredFish, setHoveredFish] = useState<FishData | null>(null)
@@ -184,6 +185,7 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomi
           onLeave={handleFishLeave}
           onClick={handleFishClick}
           index={i}
+          contained={contained}
         />
       ))}
 

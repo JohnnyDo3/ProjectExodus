@@ -272,6 +272,7 @@ export default function PersonalFishbowlPage() {
               users={fishbowlUsers}
               ownerCustomization={userCustomization}
               ownerId={data.user?.id}
+              contained
             />
           </div>
         ) : (

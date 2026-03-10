@@ -32,6 +32,7 @@ interface SwimmingFishProps {
   onLeave: () => void
   onClick: (fish: FishData, rect: DOMRect) => void
   index: number
+  contained?: boolean
 }
 
 const FISH_MARGIN = 120 // space for offscreen entry/exit
@@ -44,7 +45,7 @@ function randomBetween(a: number, b: number) {
   return a + Math.random() * (b - a)
 }
 
-export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHover, onLeave, onClick, index }: SwimmingFishProps) => {
+export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHover, onLeave, onClick, index, contained = false }: SwimmingFishProps) => {
   const ref = useRef<HTMLDivElement>(null)
   const stateRef = useRef<SwimmingFishState | null>(null)
   const animRef = useRef<number>(0)
@@ -53,7 +54,7 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
 
   const fishSize = 36 + fish.tier * 8 // bigger fish for higher tiers
 
-  // Initialize fish position - enter from a random side
+  // Initialize fish position - enter from a random side (or start inside if contained)
   useEffect(() => {
     if (containerWidth === 0 || containerHeight === 0) return
 
@@ -64,19 +65,34 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
     )
     const speed = randomBetween(MIN_SPEED, MAX_SPEED)
 
-    stateRef.current = {
-      x: enterFromLeft ? -FISH_MARGIN : containerWidth + FISH_MARGIN,
-      y,
-      vx: enterFromLeft ? speed : -speed,
-      vy: randomBetween(-0.1, 0.1),
-      direction: enterFromLeft ? 'right' : 'left',
-      phase: Math.random() * Math.PI * 2,
-      entering: true,
-      exiting: false,
+    if (contained) {
+      // Start inside the tank at a random position
+      const padding = fishSize + 10
+      stateRef.current = {
+        x: randomBetween(padding, containerWidth - padding),
+        y,
+        vx: enterFromLeft ? speed : -speed,
+        vy: randomBetween(-0.1, 0.1),
+        direction: enterFromLeft ? 'right' : 'left',
+        phase: Math.random() * Math.PI * 2,
+        entering: false,
+        exiting: false,
+      }
+    } else {
+      stateRef.current = {
+        x: enterFromLeft ? -FISH_MARGIN : containerWidth + FISH_MARGIN,
+        y,
+        vx: enterFromLeft ? speed : -speed,
+        vy: randomBetween(-0.1, 0.1),
+        direction: enterFromLeft ? 'right' : 'left',
+        phase: Math.random() * Math.PI * 2,
+        entering: true,
+        exiting: false,
+      }
     }
 
     setPos({ x: stateRef.current.x, y: stateRef.current.y, direction: stateRef.current.direction, phase: 0 })
-  }, [containerWidth, containerHeight, index])
+  }, [containerWidth, containerHeight, index, contained, fishSize])
 
   // Animation loop
   useEffect(() => {
@@ -115,19 +131,39 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
           s.vy = Math.max(-0.3, Math.min(0.3, s.vy))
         }
 
-        // When fish exits one side, re-enter from opposite side
-        if (s.x < -FISH_MARGIN - 20) {
-          s.x = containerWidth + FISH_MARGIN
-          s.y = randomBetween(minY, maxY)
-          s.vx = -randomBetween(MIN_SPEED, MAX_SPEED)
-          s.direction = 'left'
-          s.entering = true
-        } else if (s.x > containerWidth + FISH_MARGIN + 20) {
-          s.x = -FISH_MARGIN
-          s.y = randomBetween(minY, maxY)
-          s.vx = randomBetween(MIN_SPEED, MAX_SPEED)
-          s.direction = 'right'
-          s.entering = true
+        // Occasional speed variation for natural movement (contained mode)
+        if (contained && Math.random() < 0.01) {
+          const newSpeed = randomBetween(MIN_SPEED, MAX_SPEED)
+          s.vx = s.vx > 0 ? newSpeed : -newSpeed
+        }
+
+        if (contained) {
+          // Bounce off left/right walls, keeping fish fully inside the tank
+          const padding = fishSize / 2 + 8
+          if (s.x <= padding) {
+            s.x = padding
+            s.vx = randomBetween(MIN_SPEED, MAX_SPEED)
+            s.direction = 'right'
+          } else if (s.x >= containerWidth - padding) {
+            s.x = containerWidth - padding
+            s.vx = -randomBetween(MIN_SPEED, MAX_SPEED)
+            s.direction = 'left'
+          }
+        } else {
+          // When fish exits one side, re-enter from opposite side
+          if (s.x < -FISH_MARGIN - 20) {
+            s.x = containerWidth + FISH_MARGIN
+            s.y = randomBetween(minY, maxY)
+            s.vx = -randomBetween(MIN_SPEED, MAX_SPEED)
+            s.direction = 'left'
+            s.entering = true
+          } else if (s.x > containerWidth + FISH_MARGIN + 20) {
+            s.x = -FISH_MARGIN
+            s.y = randomBetween(minY, maxY)
+            s.vx = randomBetween(MIN_SPEED, MAX_SPEED)
+            s.direction = 'right'
+            s.entering = true
+          }
         }
 
         s.direction = s.vx > 0 ? 'right' : 'left'
