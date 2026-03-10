@@ -14,6 +14,8 @@ import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { SkeletonUserCard } from '@/components/ui/SkeletonUserCard'
 import { UserPreviewCard } from '@/components/network/UserPreviewCard'
+import { CommunityFishbowl } from '@/components/fishbowl/CommunityFishbowl'
+import '@/components/fishbowl/fishbowl.css'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
 import {
@@ -246,81 +248,62 @@ export default function NetworkPage() {
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
-      {/* Sacred Header - The Tapestry */}
-      <section className="relative py-8 sm:py-12 overflow-hidden bg-gradient-to-br from-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] via-[var(--background)] to-[color-mix(in_srgb,var(--accent)_10%,var(--background))] border-b border-[var(--border)]">
-        {/* Decorative Thread Pattern */}
-        <div className="absolute inset-0 opacity-5 pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-[var(--primary)] to-transparent" />
-          <div className="absolute top-0 left-1/2 w-px h-full bg-gradient-to-b from-transparent via-[var(--accent)] to-transparent" />
-          <div className="absolute top-0 left-3/4 w-px h-full bg-gradient-to-b from-transparent via-[var(--secondary)] to-transparent" />
-        </div>
+      {/* Community Fishbowl Landing */}
+      <CommunityFishbowl />
 
-        <div className="container mx-auto px-4 relative">
-          <div className="max-w-6xl mx-auto">
-            {/* Sacred Title */}
-            <div className="text-center mb-6 sm:mb-8">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--muted)] mb-4">
-                <Orbit className="w-4 h-4 text-[var(--primary)]" />
-                <span className="text-xs font-bold text-[var(--foreground)]/70 uppercase tracking-wider">The Sacred Tapestry</span>
-              </div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-[var(--foreground)] mb-2">
-                {session?.user ? 'Your Constellation' : 'The Path of Connection'}
-              </h1>
-              <p className="text-sm sm:text-base text-theme-muted font-medium max-w-lg mx-auto italic">
-                "A network is not a number. It is a constellation of souls walking the same path."
-              </p>
-            </div>
-
-            {/* Sacred Stats - Thread Counts */}
-            {session?.user && (
-              <div className="flex justify-center gap-4 sm:gap-8">
+      {/* Stats Bar */}
+      {session?.user && (
+        <section className="bg-[var(--card)] border-b border-[var(--border)]">
+          <div className="container mx-auto px-4">
+            <div className="max-w-6xl mx-auto">
+              <div className="flex justify-center gap-4 sm:gap-8 py-3">
                 <button
                   onClick={() => setActiveView('following')}
-                  className={`group text-center px-4 py-3 rounded-xl transition-all border-2 ${
+                  className={`group text-center px-4 py-2 rounded-xl transition-all border-2 ${
                     activeView === 'following'
                       ? 'border-blue-500/50 bg-blue-500/10'
                       : 'border-transparent hover:border-[var(--border)] hover:bg-[var(--muted)]'
                   }`}
                 >
-                  <div className="flex items-center justify-center gap-1.5 mb-1">
+                  <div className="flex items-center justify-center gap-1.5 mb-0.5">
                     <Footprints className="w-4 h-4 text-blue-500" />
-                    <p className="text-xl sm:text-2xl font-black text-blue-500">{followingUsers.length}</p>
+                    <p className="text-lg sm:text-xl font-black text-blue-500">{followingUsers.length}</p>
                   </div>
                   <p className="text-[10px] sm:text-xs font-bold text-theme-muted">Walking With</p>
                 </button>
                 <button
                   onClick={() => setActiveView('followers')}
-                  className={`group text-center px-4 py-3 rounded-xl transition-all border-2 ${
+                  className={`group text-center px-4 py-2 rounded-xl transition-all border-2 ${
                     activeView === 'followers'
                       ? 'border-pink-500/50 bg-pink-500/10'
                       : 'border-transparent hover:border-[var(--border)] hover:bg-[var(--muted)]'
                   }`}
                 >
-                  <div className="flex items-center justify-center gap-1.5 mb-1">
+                  <div className="flex items-center justify-center gap-1.5 mb-0.5">
                     <Heart className="w-4 h-4 text-pink-500" />
-                    <p className="text-xl sm:text-2xl font-black text-pink-500">{followers.length}</p>
+                    <p className="text-lg sm:text-xl font-black text-pink-500">{followers.length}</p>
                   </div>
                   <p className="text-[10px] sm:text-xs font-bold text-theme-muted">Fellow Travelers</p>
                 </button>
                 <button
                   onClick={() => setActiveView('tree')}
-                  className={`group text-center px-4 py-3 rounded-xl transition-all border-2 ${
+                  className={`group text-center px-4 py-2 rounded-xl transition-all border-2 ${
                     activeView === 'tree'
                       ? 'border-emerald-500/50 bg-emerald-500/10'
                       : 'border-transparent hover:border-[var(--border)] hover:bg-[var(--muted)]'
                   }`}
                 >
-                  <div className="flex items-center justify-center gap-1.5 mb-1">
+                  <div className="flex items-center justify-center gap-1.5 mb-0.5">
                     <Link2 className="w-4 h-4 text-emerald-500" />
-                    <p className="text-xl sm:text-2xl font-black text-emerald-500">{mutualCount}</p>
+                    <p className="text-lg sm:text-xl font-black text-emerald-500">{mutualCount}</p>
                   </div>
                   <p className="text-[10px] sm:text-xs font-bold text-theme-muted">Kindred Spirits</p>
                 </button>
               </div>
-            )}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Navigation Tabs - Sacred Paths */}
       <section className="sticky top-16 z-40 bg-[var(--card)] border-b border-[var(--border)]">

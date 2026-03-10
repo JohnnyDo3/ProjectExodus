@@ -12,6 +12,7 @@ export async function GET() {
         name: true,
         stockScore: true,
         image: true,
+        fishCustomization: true,
       },
       orderBy: {
         stockScore: 'desc',

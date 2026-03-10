@@ -1,12 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Fish, Users, Info } from 'lucide-react'
+import { useState, useEffect, useCallback } from 'react'
+import { Fish, Users, Info, Sparkles, Palette, Shell, Anchor, TreePalm } from 'lucide-react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Fishbowl } from '@/components/fishbowl/Fishbowl'
-import { FishSVG, getTierFromScore, getTierName } from '@/components/fishbowl/FishSpecies'
+import { FishSVG, getTierFromScore, getTierName, type FishCustomization, type FishTier } from '@/components/fishbowl/FishSpecies'
+import { FishCustomizer } from '@/components/fishbowl/FishCustomizer'
 import '@/components/fishbowl/fishbowl.css'
 
 interface FishbowlUser {
@@ -14,6 +15,7 @@ interface FishbowlUser {
   name: string | null
   stockScore: number
   image: string | null
+  fishCustomization?: FishCustomization | null
   isMutual?: boolean
   isFollowing?: boolean
   isFollower?: boolean
@@ -29,12 +31,22 @@ interface PersonalFishbowlData {
   }
 }
 
+const DECOR_THEMES = [
+  { id: 'ocean', name: 'Ocean Reef', icon: Shell, description: 'Coral reef with ocean plants' },
+  { id: 'tropical', name: 'Tropical', icon: TreePalm, description: 'Lush tropical vegetation' },
+  { id: 'shipwreck', name: 'Shipwreck', icon: Anchor, description: 'Sunken ship vibes' },
+  { id: 'minimal', name: 'Minimal', icon: Fish, description: 'Clean, simple look' },
+] as const
+
 export default function FishbowlPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
   const [data, setData] = useState<PersonalFishbowlData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [showInfo, setShowInfo] = useState(false)
+  const [showCustomizer, setShowCustomizer] = useState(false)
+  const [activeDecor, setActiveDecor] = useState<string>('ocean')
+  const [showDecorPanel, setShowDecorPanel] = useState(false)
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -61,6 +73,23 @@ export default function FishbowlPage() {
     fetchData()
   }, [status])
 
+  const handleSaveCustomization = useCallback(async (customization: FishCustomization) => {
+    const res = await fetch('/api/fishbowl/personal/customize', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(customization),
+    })
+    const json = await res.json()
+    if (!json.success) throw new Error(json.error)
+
+    setData(prev => prev ? {
+      ...prev,
+      user: prev.user ? { ...prev.user, fishCustomization: customization } : null,
+    } : null)
+
+    setShowCustomizer(false)
+  }, [])
+
   if (status === 'loading' || isLoading) {
     return (
       <div className="h-full flex items-center justify-center bg-[#0A1628]">
@@ -81,6 +110,17 @@ export default function FishbowlPage() {
 
   const userTier = data.user ? getTierFromScore(data.user.stockScore) : 0
   const userTierName = data.user ? getTierName(userTier) : 'Guppy'
+  const userCustomization = (data.user?.fishCustomization as FishCustomization | null) || null
+
+  // Available species based on stock score
+  const availableSpecies = [
+    { tier: 0 as FishTier, name: 'Guppy', unlockScore: 0 },
+    { tier: 1 as FishTier, name: 'Tetra', unlockScore: 10 },
+    { tier: 2 as FishTier, name: 'Angelfish', unlockScore: 25 },
+    { tier: 3 as FishTier, name: 'Clownfish', unlockScore: 50 },
+    { tier: 4 as FishTier, name: 'Blue Tang', unlockScore: 100 },
+    { tier: 5 as FishTier, name: 'Royal Betta', unlockScore: 200 },
+  ]
 
   return (
     <div className="h-full flex flex-col overflow-hidden bg-[#0A1628]">
@@ -99,11 +139,11 @@ export default function FishbowlPage() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               {/* Your fish info */}
               {data.user && (
                 <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-cyan-900/30 border border-cyan-800/40">
-                  <FishSVG tier={userTier} size={24} />
+                  <FishSVG tier={userTier} size={24} customization={userCustomization} id="header-my-fish" />
                   <div>
                     <p className="text-[10px] text-cyan-500 font-medium">YOUR FISH</p>
                     <p className="text-xs font-bold text-cyan-200">{userTierName} · {data.user.stockScore} STOCK</p>
@@ -111,7 +151,7 @@ export default function FishbowlPage() {
                 </div>
               )}
               {/* Stats */}
-              <div className="hidden sm:flex items-center gap-3">
+              <div className="hidden md:flex items-center gap-2">
                 <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-900/30 border border-cyan-800/40">
                   <span className="text-[10px] text-cyan-500 font-medium">Following</span>
                   <span className="text-xs font-bold text-cyan-300">{data.stats.following}</span>
@@ -125,6 +165,27 @@ export default function FishbowlPage() {
                   <span className="text-xs font-bold text-teal-300">{data.stats.mutual}</span>
                 </div>
               </div>
+              {/* Customize fish button */}
+              <button
+                onClick={() => setShowCustomizer(true)}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-purple-600/80 to-pink-600/80 text-white hover:from-purple-500/80 hover:to-pink-500/80 transition-all border border-purple-500/30"
+                title="Customize your fish"
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Customize</span>
+              </button>
+              {/* Decor toggle */}
+              <button
+                onClick={() => setShowDecorPanel(!showDecorPanel)}
+                className={`p-2 rounded-lg border transition-colors ${
+                  showDecorPanel
+                    ? 'bg-cyan-600/30 border-cyan-500/50 text-cyan-300'
+                    : 'bg-cyan-900/30 border-cyan-800/40 text-cyan-500 hover:border-cyan-600/60'
+                }`}
+                title="Tank decor"
+              >
+                <Palette className="w-4 h-4" />
+              </button>
               {/* Info toggle */}
               <button
                 onClick={() => setShowInfo(!showInfo)}
@@ -143,30 +204,69 @@ export default function FishbowlPage() {
             </div>
           </div>
 
-          {/* Info panel */}
-          {showInfo && (
+          {/* Decor panel */}
+          {showDecorPanel && (
             <div className="mt-3 p-3 rounded-xl bg-[#0A1628]/80 border border-cyan-800/30 animate-in slide-in-from-top duration-200">
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
-                {([0, 1, 2, 3, 4, 5] as const).map(tier => (
-                  <div key={tier} className="flex items-center gap-2 p-2 rounded-lg bg-cyan-900/20">
-                    <FishSVG tier={tier} size={20} />
-                    <div>
-                      <p className="text-[9px] text-cyan-500 font-medium">{getTierName(tier)}</p>
-                      <p className="text-[9px] text-cyan-600">
-                        {tier === 0 && '0-9'}
-                        {tier === 1 && '10-24'}
-                        {tier === 2 && '25-49'}
-                        {tier === 3 && '50-99'}
-                        {tier === 4 && '100-199'}
-                        {tier === 5 && '200+'}
-                        {' STOCK'}
+              <p className="text-[10px] text-cyan-500 font-bold uppercase mb-2">Tank Theme</p>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                {DECOR_THEMES.map(theme => (
+                  <button
+                    key={theme.id}
+                    onClick={() => setActiveDecor(theme.id)}
+                    className={`flex items-center gap-2 p-2.5 rounded-lg border transition-all ${
+                      activeDecor === theme.id
+                        ? 'border-cyan-400 bg-cyan-900/40 shadow-lg shadow-cyan-900/20'
+                        : 'border-cyan-800/30 bg-cyan-900/10 hover:border-cyan-600/50'
+                    }`}
+                  >
+                    <theme.icon className={`w-4 h-4 ${activeDecor === theme.id ? 'text-cyan-300' : 'text-cyan-600'}`} />
+                    <div className="text-left">
+                      <p className={`text-[10px] font-bold ${activeDecor === theme.id ? 'text-cyan-200' : 'text-cyan-400'}`}>
+                        {theme.name}
                       </p>
+                      <p className="text-[8px] text-cyan-600">{theme.description}</p>
                     </div>
-                  </div>
+                  </button>
                 ))}
               </div>
+            </div>
+          )}
+
+          {/* Info panel - Fish species guide */}
+          {showInfo && (
+            <div className="mt-3 p-3 rounded-xl bg-[#0A1628]/80 border border-cyan-800/30 animate-in slide-in-from-top duration-200">
+              <p className="text-[10px] text-cyan-500 font-bold uppercase mb-2">Fish Species & Stock Levels</p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
+                {availableSpecies.map(sp => {
+                  const isUnlocked = (data.user?.stockScore || 0) >= sp.unlockScore
+                  return (
+                    <div
+                      key={sp.tier}
+                      className={`flex items-center gap-2 p-2 rounded-lg ${
+                        isUnlocked ? 'bg-cyan-900/30 border border-cyan-700/30' : 'bg-cyan-950/30 border border-cyan-900/20 opacity-50'
+                      }`}
+                    >
+                      <FishSVG tier={sp.tier} size={20} />
+                      <div>
+                        <p className="text-[9px] text-cyan-500 font-medium">{sp.name}</p>
+                        <p className="text-[9px] text-cyan-600">
+                          {sp.unlockScore === 0 ? '0-9' :
+                           sp.unlockScore === 10 ? '10-24' :
+                           sp.unlockScore === 25 ? '25-49' :
+                           sp.unlockScore === 50 ? '50-99' :
+                           sp.unlockScore === 100 ? '100-199' : '200+'
+                          } STOCK
+                        </p>
+                        {!isUnlocked && (
+                          <p className="text-[8px] text-amber-500/70 font-bold">LOCKED</p>
+                        )}
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
               <p className="mt-2 text-[10px] text-cyan-600 text-center">
-                Each connection is a fish in your personal tank. Hover to see who they are. Click to view profile, message, or connect.
+                Each connection is a fish in your personal tank. Your stock score unlocks higher-tier species. Customize colors, scales, and patterns!
               </p>
             </div>
           )}
@@ -177,7 +277,11 @@ export default function FishbowlPage() {
       <div className="flex-1 p-3 sm:p-4 overflow-hidden min-h-0">
         {fishbowlUsers.length > 0 ? (
           <div className="w-full h-full rounded-2xl border-2 border-cyan-800/40 shadow-lg shadow-cyan-900/20 overflow-hidden">
-            <Fishbowl users={fishbowlUsers} />
+            <Fishbowl
+              users={fishbowlUsers}
+              ownerCustomization={userCustomization}
+              ownerId={data.user?.id}
+            />
           </div>
         ) : (
           <div className="w-full h-full rounded-2xl border-2 border-cyan-800/40 shadow-lg shadow-cyan-900/20 overflow-hidden flex items-center justify-center" style={{ background: 'linear-gradient(180deg, #0A1628 0%, #0D2137 40%, #123855 100%)' }}>
@@ -229,6 +333,16 @@ export default function FishbowlPage() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Fish Customizer Modal */}
+      {showCustomizer && data.user && (
+        <FishCustomizer
+          stockScore={data.user.stockScore}
+          currentCustomization={userCustomization}
+          onSave={handleSaveCustomization}
+          onClose={() => setShowCustomizer(false)}
+        />
       )}
     </div>
   )
