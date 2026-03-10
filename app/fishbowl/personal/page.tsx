@@ -103,10 +103,8 @@ export default function PersonalFishbowlPage() {
 
   if (!session || !data) return null
 
-  const fishbowlUsers = [
-    ...(data.user ? [data.user] : []),
-    ...data.connections,
-  ]
+  // Personal tank shows ONLY the user's own fish
+  const fishbowlUsers = data.user ? [data.user] : []
 
   const userTier = data.user ? getTierFromScore(data.user.stockScore) : 0
   const userTierName = data.user ? getTierName(userTier) : 'Guppy'
@@ -135,7 +133,7 @@ export default function PersonalFishbowlPage() {
               <div>
                 <h1 className="text-xl font-black text-cyan-100">MY TANK</h1>
                 <p className="text-xs font-medium text-cyan-500/80">
-                  Your personal aquarium · {fishbowlUsers.length} fish swimming
+                  Your personal aquarium
                 </p>
               </div>
             </div>
@@ -150,21 +148,6 @@ export default function PersonalFishbowlPage() {
                   </div>
                 </div>
               )}
-              {/* Stats */}
-              <div className="hidden md:flex items-center gap-2">
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-900/30 border border-cyan-800/40">
-                  <span className="text-[10px] text-cyan-500 font-medium">Following</span>
-                  <span className="text-xs font-bold text-cyan-300">{data.stats.following}</span>
-                </div>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-900/30 border border-cyan-800/40">
-                  <span className="text-[10px] text-cyan-500 font-medium">Followers</span>
-                  <span className="text-xs font-bold text-cyan-300">{data.stats.followers}</span>
-                </div>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-teal-900/30 border border-teal-800/40">
-                  <span className="text-[10px] text-teal-500 font-medium">Mutual</span>
-                  <span className="text-xs font-bold text-teal-300">{data.stats.mutual}</span>
-                </div>
-              </div>
               {/* Customize fish button */}
               <button
                 onClick={() => setShowCustomizer(true)}
@@ -308,40 +291,6 @@ export default function PersonalFishbowlPage() {
           </div>
         )}
       </div>
-
-      {/* Connections bar at bottom */}
-      {data.connections.length > 0 && (
-        <div className="flex-shrink-0 bg-gradient-to-r from-[#0D2137]/95 via-[#123855]/95 to-[#0D2137]/95 backdrop-blur-sm border-t-2 border-cyan-800/50">
-          <div className="container mx-auto px-6 py-2">
-            <div className="flex items-center gap-3 overflow-x-auto scrollbar-hide">
-              <span className="text-[10px] text-cyan-600 font-bold uppercase whitespace-nowrap flex-shrink-0">
-                Connections ({data.connections.length})
-              </span>
-              <div className="flex items-center gap-2">
-                {data.connections.slice(0, 20).map(conn => {
-                  const tier = getTierFromScore(conn.stockScore)
-                  return (
-                    <Link
-                      key={conn.id}
-                      href={`/profile/${conn.id}`}
-                      className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-cyan-900/30 border border-cyan-800/30 hover:border-cyan-600/50 transition-colors whitespace-nowrap flex-shrink-0 group"
-                      title={`${conn.name} · ${conn.stockScore} STOCK`}
-                    >
-                      <FishSVG tier={tier} size={16} id={`bar-${conn.id}`} />
-                      <span className="text-[10px] font-bold text-cyan-400 group-hover:text-cyan-200 max-w-[80px] truncate">
-                        {conn.name}
-                      </span>
-                      {conn.isMutual && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-teal-400 flex-shrink-0" />
-                      )}
-                    </Link>
-                  )
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Fish Customizer Modal */}
       {showCustomizer && data.user && (
