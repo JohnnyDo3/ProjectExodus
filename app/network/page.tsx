@@ -1142,7 +1142,7 @@ export default function NetworkPage() {
       {/* ============================================ */}
       {/* FISHBOWL HEADER */}
       {/* ============================================ */}
-      <div className="sticky top-0 z-40 bg-gradient-to-r from-[#0D2137]/95 via-[#123855]/95 to-[#0D2137]/95 backdrop-blur-sm border-b-2 border-cyan-800/50">
+      <div className="bg-gradient-to-r from-[#0D2137]/95 via-[#123855]/95 to-[#0D2137]/95 backdrop-blur-sm border-b-2 border-cyan-800/50">
         <div className="container mx-auto px-4 sm:px-6 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
