@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback, memo } from 'react'
-import { FishSVG, getTierFromScore, getTierName, type FishTier } from './FishSpecies'
+import { FishSVG, getTierFromScore, getTierName, type FishTier, type FishCustomization } from './FishSpecies'
 
 export interface FishData {
   id: string
@@ -10,6 +10,7 @@ export interface FishData {
   stockScore: number
   image: string | null
   tier: FishTier
+  customization?: FishCustomization | null
 }
 
 interface SwimmingFishState {
@@ -181,7 +182,7 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
     >
-      <FishSVG tier={fish.tier} size={fishSize} id={`swim-${fish.id}`} />
+      <FishSVG tier={fish.tier} size={fishSize} customization={fish.customization} id={`swim-${fish.id}`} />
     </div>
   )
 })

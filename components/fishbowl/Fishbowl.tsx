@@ -7,7 +7,7 @@ import { PlecoPair, SnailTrio } from './TankCreatures'
 import { FishOverlay } from './FishOverlay'
 import { WaterEffects } from './WaterEffects'
 import { AmbientSounds } from './AmbientSounds'
-import { getTierFromScore } from './FishSpecies'
+import { getTierFromScore, type FishCustomization } from './FishSpecies'
 
 interface FishbowlProps {
   users: Array<{
@@ -17,12 +17,14 @@ interface FishbowlProps {
     image: string | null
   }>
   maxVisible?: number
+  ownerCustomization?: FishCustomization | null
+  ownerId?: string
 }
 
 // Only show a subset of fish at any given time. Fish swim in and out.
 const DEFAULT_MAX_VISIBLE = 12
 
-export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE }: FishbowlProps) {
+export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomization, ownerId }: FishbowlProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
   const [hoveredFish, setHoveredFish] = useState<FishData | null>(null)
@@ -43,8 +45,9 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE }: FishbowlPr
         stockScore: u.stockScore,
         image: u.image,
         tier: getTierFromScore(u.stockScore),
+        customization: u.id === ownerId ? ownerCustomization : undefined,
       })),
-    [users]
+    [users, ownerId, ownerCustomization]
   )
 
   // Rotate which fish are visible - never fully packed

@@ -1,16 +1,18 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Fish, Users, UserCheck, Heart, X, ExternalLink } from 'lucide-react'
+import { Fish, Users, UserCheck, Heart, X, ExternalLink, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 import { Fishbowl } from './Fishbowl'
-import { FishSVG, getTierFromScore, getTierName } from './FishSpecies'
+import { FishSVG, getTierFromScore, getTierName, type FishCustomization } from './FishSpecies'
+import { FishCustomizer } from './FishCustomizer'
 
 interface PersonalFishbowlUser {
   id: string
   name: string | null
   stockScore: number
   image: string | null
+  fishCustomization?: FishCustomization | null
   isMutual?: boolean
   isFollowing?: boolean
   isFollower?: boolean
@@ -30,35 +32,42 @@ export function PersonalFishbowl() {
   const [isOpen, setIsOpen] = useState(false)
   const [data, setData] = useState<PersonalFishbowlData | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [showCustomizer, setShowCustomizer] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   // Close on outside click
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false)
+        if (!showCustomizer) setIsOpen(false)
       }
     }
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside)
       return () => document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [isOpen])
+  }, [isOpen, showCustomizer])
 
   // Close on Escape
   useEffect(() => {
     function handleEscape(event: KeyboardEvent) {
-      if (event.key === 'Escape') setIsOpen(false)
+      if (event.key === 'Escape') {
+        if (showCustomizer) {
+          setShowCustomizer(false)
+        } else {
+          setIsOpen(false)
+        }
+      }
     }
     if (isOpen) {
       document.addEventListener('keydown', handleEscape)
       return () => document.removeEventListener('keydown', handleEscape)
     }
-  }, [isOpen])
+  }, [isOpen, showCustomizer])
 
   // Fetch data when opened
-  const fetchData = useCallback(async () => {
-    if (data) return // Already fetched
+  const fetchData = useCallback(async (force = false) => {
+    if (data && !force) return // Already fetched
     setIsLoading(true)
     try {
       const res = await fetch('/api/fishbowl/personal')
@@ -79,6 +88,24 @@ export function PersonalFishbowl() {
     if (next) fetchData()
   }
 
+  const handleSaveCustomization = useCallback(async (customization: FishCustomization) => {
+    const res = await fetch('/api/fishbowl/personal/customize', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(customization),
+    })
+    const json = await res.json()
+    if (!json.success) throw new Error(json.error)
+
+    // Update local state with new customization
+    setData(prev => prev ? {
+      ...prev,
+      user: prev.user ? { ...prev.user, fishCustomization: customization } : null,
+    } : null)
+
+    setShowCustomizer(false)
+  }, [])
+
   // All fish for the mini bowl: user + their connections
   const fishbowlUsers = data
     ? [
@@ -89,6 +116,7 @@ export function PersonalFishbowl() {
 
   const userTier = data?.user ? getTierFromScore(data.user.stockScore) : 0
   const userTierName = data?.user ? getTierName(userTier) : 'Guppy'
+  const userCustomization = (data?.user?.fishCustomization as FishCustomization | null) || null
 
   return (
     <div ref={dropdownRef} className="relative">
@@ -152,7 +180,12 @@ export function PersonalFishbowl() {
               {/* Mini fishbowl */}
               <div className="h-[220px] relative">
                 {fishbowlUsers.length > 0 ? (
-                  <Fishbowl users={fishbowlUsers} maxVisible={8} />
+                  <Fishbowl
+                    users={fishbowlUsers}
+                    maxVisible={8}
+                    ownerCustomization={userCustomization}
+                    ownerId={data.user?.id}
+                  />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center" style={{ background: 'linear-gradient(180deg, #0A1628 0%, #0D2137 40%, #123855 100%)' }}>
                     <div className="text-center space-y-2">
@@ -169,7 +202,12 @@ export function PersonalFishbowl() {
                 <div className="px-4 py-3 border-t border-cyan-800/30 bg-cyan-900/10">
                   <div className="flex items-center gap-3">
                     <div className="flex-shrink-0">
-                      <FishSVG tier={userTier} size={32} id="personal-my-fish" />
+                      <FishSVG
+                        tier={userTier}
+                        size={32}
+                        customization={userCustomization}
+                        id="personal-my-fish"
+                      />
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-black text-cyan-200 truncate">{data.user.name}</p>
@@ -177,20 +215,29 @@ export function PersonalFishbowl() {
                         {userTierName} · {data.user.stockScore} STOCK
                       </p>
                     </div>
-                    {/* Stats */}
-                    <div className="flex items-center gap-3">
-                      <div className="text-center">
-                        <p className="text-sm font-black text-cyan-300">{data.stats.following}</p>
-                        <p className="text-[8px] font-bold text-cyan-600 uppercase">Following</p>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-sm font-black text-cyan-300">{data.stats.followers}</p>
-                        <p className="text-[8px] font-bold text-cyan-600 uppercase">Followers</p>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-sm font-black text-teal-300">{data.stats.mutual}</p>
-                        <p className="text-[8px] font-bold text-cyan-600 uppercase">Mutual</p>
-                      </div>
+                    {/* Customize button */}
+                    <button
+                      onClick={() => setShowCustomizer(true)}
+                      className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[10px] font-bold bg-cyan-800/30 text-cyan-300 hover:bg-cyan-700/40 hover:text-cyan-200 transition-colors border border-cyan-700/30"
+                      title="Customize your fish"
+                    >
+                      <Sparkles className="w-3 h-3" />
+                      Customize
+                    </button>
+                  </div>
+                  {/* Stats row */}
+                  <div className="flex items-center justify-center gap-4 mt-2 pt-2 border-t border-cyan-800/20">
+                    <div className="text-center">
+                      <p className="text-sm font-black text-cyan-300">{data.stats.following}</p>
+                      <p className="text-[8px] font-bold text-cyan-600 uppercase">Following</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-sm font-black text-cyan-300">{data.stats.followers}</p>
+                      <p className="text-[8px] font-bold text-cyan-600 uppercase">Followers</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-sm font-black text-teal-300">{data.stats.mutual}</p>
+                      <p className="text-[8px] font-bold text-cyan-600 uppercase">Mutual</p>
                     </div>
                   </div>
                 </div>
@@ -264,6 +311,16 @@ export function PersonalFishbowl() {
             </>
           ) : null}
         </div>
+      )}
+
+      {/* Fish Customizer Modal */}
+      {showCustomizer && data?.user && (
+        <FishCustomizer
+          stockScore={data.user.stockScore}
+          currentCustomization={userCustomization}
+          onSave={handleSaveCustomization}
+          onClose={() => setShowCustomizer(false)}
+        />
       )}
     </div>
   )

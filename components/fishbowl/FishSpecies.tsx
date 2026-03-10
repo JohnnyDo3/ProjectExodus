@@ -290,27 +290,167 @@ const BettaFish = memo(({ colors, size, id }: { colors: FishColors; size: number
 ))
 BettaFish.displayName = 'BettaFish'
 
+export type FishPattern = 'none' | 'stripes' | 'spots' | 'gradient' | 'galaxy' | 'neon'
+
+export type FishSpecies = 'guppy' | 'tetra' | 'angelfish' | 'clownfish' | 'tang' | 'betta'
+
+const SPECIES_TO_TIER: Record<FishSpecies, FishTier> = {
+  guppy: 0,
+  tetra: 1,
+  angelfish: 2,
+  clownfish: 3,
+  tang: 4,
+  betta: 5,
+}
+
+// Pattern overlay component rendered inside each fish SVG
+const PatternOverlay = memo(({ pattern, id, viewBox }: { pattern: FishPattern; id: string; viewBox: string }) => {
+  if (pattern === 'none') return null
+
+  const [, , w, h] = viewBox.split(' ').map(Number)
+
+  switch (pattern) {
+    case 'stripes':
+      return (
+        <g opacity="0.25">
+          {Array.from({ length: Math.ceil(w / 8) }, (_, i) => (
+            <line key={i} x1={i * 8} y1="0" x2={i * 8} y2={h} stroke="white" strokeWidth="1.5" />
+          ))}
+        </g>
+      )
+    case 'spots':
+      return (
+        <g opacity="0.2">
+          {Array.from({ length: 6 }, (_, i) => {
+            const cx = (w * 0.2) + (i % 3) * (w * 0.25)
+            const cy = (h * 0.3) + Math.floor(i / 3) * (h * 0.35)
+            return <circle key={i} cx={cx} cy={cy} r={w * 0.04} fill="white" />
+          })}
+        </g>
+      )
+    case 'gradient':
+      return (
+        <>
+          <defs>
+            <linearGradient id={`pat-grad-${id}`} x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="white" stopOpacity="0.25" />
+              <stop offset="50%" stopColor="white" stopOpacity="0" />
+              <stop offset="100%" stopColor="white" stopOpacity="0.2" />
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width={w} height={h} fill={`url(#pat-grad-${id})`} />
+        </>
+      )
+    case 'galaxy':
+      return (
+        <g opacity="0.3">
+          {Array.from({ length: 12 }, (_, i) => {
+            const cx = (w * 0.1) + Math.random() * (w * 0.8)
+            const cy = (h * 0.1) + Math.random() * (h * 0.8)
+            // Use deterministic positions based on index
+            const px = (w * 0.15) + ((i * 7.3) % (w * 0.7))
+            const py = (h * 0.15) + ((i * 5.7) % (h * 0.7))
+            return <circle key={i} cx={px} cy={py} r={0.8 + (i % 3) * 0.5} fill="white" opacity={0.4 + (i % 4) * 0.15} />
+          })}
+        </g>
+      )
+    case 'neon':
+      return (
+        <>
+          <defs>
+            <filter id={`pat-neon-${id}`}>
+              <feGaussianBlur stdDeviation="2" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+          <g opacity="0.35" filter={`url(#pat-neon-${id})`}>
+            <path d={`M${w * 0.15},${h * 0.5} Q${w * 0.35},${h * 0.2} ${w * 0.55},${h * 0.5} Q${w * 0.75},${h * 0.8} ${w * 0.85},${h * 0.5}`}
+              stroke="white" strokeWidth="1.5" fill="none" />
+          </g>
+        </>
+      )
+    default:
+      return null
+  }
+})
+PatternOverlay.displayName = 'PatternOverlay'
+
+export interface FishCustomization {
+  species?: FishSpecies | null
+  colors?: Partial<FishColors> | null
+  pattern?: FishPattern | null
+}
+
 interface FishSVGProps {
   tier: FishTier
   size?: number
   customColors?: Partial<FishColors>
+  customization?: FishCustomization | null
   id?: string
 }
 
-export const FishSVG = memo(({ tier, size = 48, customColors, id }: FishSVGProps) => {
-  const colors = { ...TIER_COLORS[tier], ...customColors }
+export const FishSVG = memo(({ tier, size = 48, customColors, customization, id }: FishSVGProps) => {
+  // Determine which species to render: customization species override > tier default
+  let renderTier = tier
+  if (customization?.species) {
+    renderTier = SPECIES_TO_TIER[customization.species]
+  }
+
+  // Merge colors: tier defaults < customColors prop < customization colors
+  const colors = {
+    ...TIER_COLORS[renderTier],
+    ...customColors,
+    ...(customization?.colors || {}),
+  }
+  const pattern = customization?.pattern || 'none'
   // Use a stable ID for gradient references to avoid collisions
   const gradientId = id || `fish-${tier}-${size}`
 
-  switch (tier) {
-    case 0: return <GuppyFish colors={colors} size={size} id={gradientId} />
-    case 1: return <TetraFish colors={colors} size={size} id={gradientId} />
-    case 2: return <AngelfishFish colors={colors} size={size} id={gradientId} />
-    case 3: return <ClownfishFish colors={colors} size={size} id={gradientId} />
-    case 4: return <TangFish colors={colors} size={size} id={gradientId} />
-    case 5: return <BettaFish colors={colors} size={size} id={gradientId} />
+  // Viewbox dimensions per species for pattern overlay
+  const viewBoxes: Record<FishTier, string> = {
+    0: '0 0 60 39',
+    1: '0 0 70 38',
+    2: '0 0 56 62',
+    3: '0 0 76 46',
+    4: '0 0 82 50',
+    5: '0 0 90 86',
   }
+
+  const fishElement = (() => {
+    switch (renderTier) {
+      case 0: return <GuppyFish colors={colors} size={size} id={gradientId} />
+      case 1: return <TetraFish colors={colors} size={size} id={gradientId} />
+      case 2: return <AngelfishFish colors={colors} size={size} id={gradientId} />
+      case 3: return <ClownfishFish colors={colors} size={size} id={gradientId} />
+      case 4: return <TangFish colors={colors} size={size} id={gradientId} />
+      case 5: return <BettaFish colors={colors} size={size} id={gradientId} />
+    }
+  })()
+
+  if (pattern === 'none') return fishElement
+
+  // Wrap in a container with pattern overlay
+  const vb = viewBoxes[renderTier]
+  const [, , vw, vh] = vb.split(' ').map(Number)
+  const aspect = renderTier === 2 ? 1.1 : renderTier === 5 ? 0.95 : renderTier === 1 ? 0.55 : renderTier === 3 || renderTier === 4 ? 0.6 : 0.65
+
+  return (
+    <div className="relative inline-block">
+      {fishElement}
+      <svg
+        width={size}
+        height={size * aspect}
+        viewBox={vb}
+        className="absolute inset-0 pointer-events-none"
+      >
+        <PatternOverlay pattern={pattern} id={gradientId} viewBox={vb} />
+      </svg>
+    </div>
+  )
 })
 FishSVG.displayName = 'FishSVG'
 
-export { TIER_COLORS }
+export { TIER_COLORS, SPECIES_TO_TIER }

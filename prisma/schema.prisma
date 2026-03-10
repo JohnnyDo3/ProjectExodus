@@ -68,6 +68,9 @@ model User {
   // Reputation / contribution score (computed from projects, articles, modules, followers, connections)
   stockScore    Int       @default(0)
 
+  // Fish Tank Customization (JSON: { species, colors: { body, fin, accent, eye }, pattern })
+  fishCustomization Json?
+
   role          UserRole  @default(USER)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
