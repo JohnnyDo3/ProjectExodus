@@ -156,7 +156,7 @@ export function Header() {
   const communityMenuItems = [
     { label: 'Discussions', href: '/community/discussions', myLabel: 'Discussions' },
     { label: 'Projects', href: '/community/projects', myLabel: 'Projects' },
-    { label: 'Fishbowl', href: '/network', myLabel: 'Fishbowl' },
+    { label: 'Network', href: '/network', myLabel: 'Network' },
   ]
 
   const handleSignOut = async () => {
@@ -435,7 +435,7 @@ export function Header() {
             <ThemeToggle />
             {session && (
               <Link
-                href="/fishbowl/personal"
+                href="/fishbowl"
                 className="relative p-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
                 title="My Fishbowl"
               >
@@ -715,7 +715,7 @@ export function Header() {
                       <ChevronRight className="w-5 h-5 text-theme-muted" />
                     </div>
                   </Link>
-                  <Link href="/fishbowl/personal" onClick={() => setMobileMenuOpen(false)}>
+                  <Link href="/fishbowl" onClick={() => setMobileMenuOpen(false)}>
                     <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-[var(--muted)] hover:bg-theme-primary/10 transition-colors">
                       <div className="flex items-center gap-3">
                         <Fish className="w-5 h-5 text-cyan-500" />

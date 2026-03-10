@@ -1,1721 +1,995 @@
 'use client'
 
 // ============================================
-// THE FISHBOWL
-// "We are all fish in the same bowl —
-//  swimming together, shimmering together,
-//  connected by the water we share."
+// THE SACRED TAPESTRY
+// "A network is not a number. It is a constellation
+//  of souls walking the same path."
 // ============================================
 
-import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
-import { Fishbowl } from '@/components/fishbowl/Fishbowl'
-import { FishSVG, getTierFromScore, getTierName } from '@/components/fishbowl/FishSpecies'
+import { SkeletonUserCard } from '@/components/ui/SkeletonUserCard'
+import { UserPreviewCard } from '@/components/network/UserPreviewCard'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
-import '@/components/fishbowl/fishbowl.css'
 import {
   Users,
   Search,
   UserPlus,
   UserCheck,
-  Sparkles,
-  Activity,
-  ChevronRight,
-  ChevronLeft,
-  Filter,
-  X,
-  MapPin,
-  Briefcase,
-  Heart,
-  Globe,
-  Compass,
-  ArrowRight,
-  Clock,
-  Check,
-  Loader2,
-  Fish,
-  BookOpen,
   MessageCircle,
-  Info,
-  Eye,
-  EyeOff,
+  Loader2,
+  Heart,
+  ArrowRight,
+  Compass,
+  Sparkles,
+  GitBranch,
+  Activity,
+  Bell,
+  ChevronRight,
+  Star,
+  TrendingUp,
+  Clock,
+  Filter,
+  Orbit,
+  Link2,
+  Footprints,
+  Flame,
 } from 'lucide-react'
 
 // ============================================
-// TYPES
+// ARCHETYPE TRAITS (for connection theming)
 // ============================================
 
-type PrimaryView = 'fishbowl' | 'directory'
-type NetworkTab = 'all' | 'following' | 'followers' | 'mutual' | 'suggestions' | 'pending'
-
-interface PendingRequest {
-  id: string
-  requester: NetworkCardUser
-  message: string | null
-  createdAt: string
+const ARCHETYPE_TRAITS: Record<string, { gradient: string; trait: string; symbol: string }> = {
+  michael: { gradient: 'from-red-600 to-orange-500', trait: 'Strength', symbol: '🔥' },
+  gabriel: { gradient: 'from-sky-500 to-blue-600', trait: 'Truth', symbol: '📯' },
+  raphael: { gradient: 'from-emerald-500 to-green-600', trait: 'Healing', symbol: '💚' },
+  uriel: { gradient: 'from-amber-500 to-yellow-500', trait: 'Wisdom', symbol: '💡' },
+  camael: { gradient: 'from-pink-500 to-rose-600', trait: 'Love', symbol: '💗' },
+  jophiel: { gradient: 'from-violet-500 to-purple-600', trait: 'Creativity', symbol: '✨' },
+  zadkiel: { gradient: 'from-indigo-500 to-blue-700', trait: 'Grace', symbol: '⚖️' },
 }
 
-interface NetworkStats {
-  following: number
-  followers: number
-  mutual: number
-  suggestions: number
-  pending: number
+const getArchetypeTrait = (archetype: string | null) => {
+  return ARCHETYPE_TRAITS[archetype || 'uriel'] || ARCHETYPE_TRAITS.uriel
 }
 
-interface FishbowlUser {
-  id: string
-  name: string | null
-  stockScore: number
-  image: string | null
-}
-
-export interface NetworkCardUser {
+interface UserProfile {
   id: string
   name: string | null
   email: string
   image: string | null
-  headline: string | null
   bio: string | null
+  headline: string | null
   location: string | null
-  company?: string | null
-  jobTitle?: string | null
-  interests?: string[]
-  expertise?: string[]
+  phone: string | null
+  interests: string[]
+  expertise: string[]
   guardianArchetype: string | null
-  declaration?: string | null
-  _count?: {
+  declaration: string | null
+  createdAt: string
+  _count: {
     followers: number
-    following?: number
-    projectMemberships?: number
-    articles?: number
-    createdProjects?: number
+    following: number
+    projectMemberships: number
+    articles: number
+    createdProjects: number
   }
-  matchScore?: number
-  matchReasons?: string[]
   isFollowing?: boolean
-  connectionStatus?: string
 }
 
-// ============================================
-// AQUATIC USER CARD
-// ============================================
-
-function AquaticUserCard({
-  user,
-  isFollowing = false,
-  isFollowingMe = false,
-  isLoadingFollow = false,
-  onFollow,
-  onMessage,
-  isLoggedIn = false,
-  index = 0,
-}: {
-  user: NetworkCardUser
-  isFollowing?: boolean
-  isFollowingMe?: boolean
-  isLoadingFollow?: boolean
-  onFollow?: (userId: string) => void
-  onMessage?: (userId: string) => void
-  isLoggedIn?: boolean
-  index?: number
-}) {
-  const stockScore = useMemo(() => {
-    if (!user._count) return 0
-    return (
-      ((user._count.createdProjects || 0) * 10) +
-      ((user._count.articles || 0) * 5) +
-      ((user._count.followers || 0) * 1) +
-      ((user._count.projectMemberships || 0) * 2)
-    )
-  }, [user._count])
-
-  const tier = getTierFromScore(stockScore)
-  const tierName = getTierName(tier)
-
-  const relationshipBadge = useMemo(() => {
-    if (isFollowing && isFollowingMe) {
-      return { label: 'MUTUAL', bg: 'bg-gradient-to-r from-teal-500 to-cyan-400' }
-    }
-    if (isFollowing) {
-      return { label: 'FOLLOWING', bg: 'bg-gradient-to-r from-cyan-500 to-blue-500' }
-    }
-    if (isFollowingMe) {
-      return { label: 'FOLLOWS YOU', bg: 'bg-gradient-to-r from-purple-500 to-violet-500' }
-    }
-    return null
-  }, [isFollowing, isFollowingMe])
-
-  const tags = user.interests?.length ? user.interests : user.expertise || []
-
-  return (
-    <motion.div
-      layout
-      layoutId={`aquatic-${user.id}`}
-      initial={{ opacity: 0, y: 30, scale: 0.92 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.88, y: -10 }}
-      transition={{
-        layout: { type: 'spring', stiffness: 150, damping: 25, mass: 1 },
-        opacity: { duration: 0.4, ease: 'easeOut' },
-        scale: { duration: 0.4, ease: 'easeOut' },
-        y: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
-        delay: Math.min(index * 0.06, 0.6),
-      }}
-      whileHover={{ y: -6, transition: { duration: 0.3, ease: 'easeOut' } }}
-      className="group relative"
-    >
-      {/* Glow layer */}
-      <div
-        className="absolute -inset-[1px] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        style={{
-          background: 'radial-gradient(ellipse at 50% 0%, rgba(34,211,238,0.25), transparent 70%)',
-          filter: 'blur(16px)',
-        }}
-      />
-
-      {/* Card */}
-      <div
-        className="relative rounded-2xl overflow-hidden border border-cyan-800/30 transition-all duration-500"
-        style={{
-          background: 'rgba(10, 22, 40, 0.75)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-        }}
-      >
-        {/* Tier gradient accent bar */}
-        <div className="h-1 relative overflow-hidden"
-          style={{
-            background: `linear-gradient(to right, ${
-              tier >= 4 ? '#8b5cf6, #3b82f6' :
-              tier >= 2 ? '#f59e0b, #10b981' :
-              '#06b6d4, #0ea5e9'
-            })`,
-          }}
-        />
-
-        <div className="p-4 sm:p-5 relative">
-          {/* Top row: Fish + Avatar + Info */}
-          <div className="flex items-start gap-3 sm:gap-4 mb-3">
-            {/* Avatar with fish badge */}
-            <Link href={`/profile/${user.id}`} className="flex-shrink-0">
-              <motion.div
-                whileHover={{ scale: 1.08 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-                className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl p-[2px]"
-                style={{
-                  background: `linear-gradient(135deg, ${
-                    tier >= 4 ? '#8b5cf6, #3b82f6' :
-                    tier >= 2 ? '#f59e0b, #10b981' :
-                    '#06b6d4, #0ea5e9'
-                  })`,
-                  boxShadow: `0 0 16px rgba(34,211,238,0.3)`,
-                }}
-              >
-                {user.image ? (
-                  <img
-                    src={user.image}
-                    alt={user.name || 'User'}
-                    className="w-full h-full rounded-[10px] object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full rounded-[10px] bg-[#0A1628] flex items-center justify-center">
-                    <span className="text-xl font-black text-cyan-400">
-                      {(user.name?.[0] || user.email[0]).toUpperCase()}
-                    </span>
-                  </div>
-                )}
-                {/* Fish species badge */}
-                <div className="absolute -bottom-1 -right-1 w-6 h-6 flex items-center justify-center">
-                  <FishSVG tier={tier} size={22} />
-                </div>
-              </motion.div>
-            </Link>
-
-            {/* Info */}
-            <div className="flex-1 min-w-0">
-              <div className="flex items-start justify-between gap-2">
-                <div className="min-w-0">
-                  <Link href={`/profile/${user.id}`}>
-                    <h3 className="text-sm sm:text-base font-black text-cyan-100 truncate hover:text-cyan-300 transition-colors">
-                      {user.name || 'Anonymous'}
-                    </h3>
-                  </Link>
-                  {user.headline && (
-                    <p className="text-[11px] sm:text-xs text-cyan-400/70 truncate mt-0.5">
-                      {user.headline}
-                    </p>
-                  )}
-                  {(user.jobTitle || user.company) && (
-                    <p className="text-[10px] sm:text-[11px] text-cyan-500/60 truncate mt-0.5 flex items-center gap-1">
-                      <Briefcase className="w-3 h-3 flex-shrink-0" />
-                      {user.jobTitle}{user.jobTitle && user.company ? ' at ' : ''}{user.company}
-                    </p>
-                  )}
-                </div>
-                {relationshipBadge && (
-                  <span className={`flex-shrink-0 px-2 py-0.5 ${relationshipBadge.bg} text-white text-[9px] font-black rounded-full shadow-sm`}>
-                    {relationshipBadge.label}
-                  </span>
-                )}
-              </div>
-              {user.location && (
-                <div className="flex items-center gap-1 mt-1 text-[10px] sm:text-[11px] text-cyan-500/60">
-                  <MapPin className="w-3 h-3 flex-shrink-0" />
-                  <span className="truncate">{user.location}</span>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Bio */}
-          {user.bio && (
-            <p className="text-[11px] sm:text-xs text-cyan-300/60 line-clamp-2 mb-3 leading-relaxed">
-              {user.bio}
-            </p>
-          )}
-
-          {/* Tags */}
-          {tags.length > 0 && (
-            <div className="flex flex-wrap gap-1.5 mb-3">
-              {tags.slice(0, 4).map((tag) => (
-                <span
-                  key={tag}
-                  className="px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-cyan-900/40 text-cyan-300 border border-cyan-800/30"
-                >
-                  {tag}
-                </span>
-              ))}
-              {tags.length > 4 && (
-                <span className="px-2 py-0.5 rounded-full bg-cyan-900/20 text-cyan-500/70 text-[9px] sm:text-[10px] font-bold">
-                  +{tags.length - 4}
-                </span>
-              )}
-            </div>
-          )}
-
-          {/* Match score (for suggestions) */}
-          {user.matchScore !== undefined && user.matchScore > 0 && (
-            <div className="flex items-center gap-2 mb-3 px-2.5 py-1.5 rounded-lg bg-cyan-900/30 border border-cyan-800/30">
-              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-              <span className="text-[10px] font-bold text-cyan-300">
-                {Math.round(user.matchScore)}% match
-              </span>
-              {user.matchReasons && user.matchReasons.length > 0 && (
-                <span className="text-[9px] text-cyan-500/70 truncate">
-                  {user.matchReasons[0]}
-                </span>
-              )}
-            </div>
-          )}
-
-          {/* Stats row */}
-          <div className="grid grid-cols-3 gap-1 p-2.5 rounded-xl mb-3 bg-cyan-900/20 border border-cyan-800/20">
-            <div className="text-center">
-              <p className="text-base sm:text-lg font-black text-cyan-300">
-                {user._count?.followers ?? 0}
-              </p>
-              <p className="text-[8px] sm:text-[9px] font-bold text-cyan-600 uppercase tracking-wider">
-                Followers
-              </p>
-            </div>
-            <div className="text-center">
-              <p className="text-base sm:text-lg font-black text-teal-300">
-                {user._count?.projectMemberships ?? 0}
-              </p>
-              <p className="text-[8px] sm:text-[9px] font-bold text-cyan-600 uppercase tracking-wider">
-                Projects
-              </p>
-            </div>
-            <div className="text-center">
-              <p className="text-base sm:text-lg font-black text-blue-300">
-                {stockScore}
-              </p>
-              <p className="text-[8px] sm:text-[9px] font-bold text-cyan-600 uppercase tracking-wider">
-                Stock
-              </p>
-            </div>
-          </div>
-
-          {/* Fish tier badge */}
-          <div className="flex items-center gap-2 p-2 rounded-lg bg-cyan-900/25 border-l-3 border-cyan-500/50 mb-3"
-            style={{ borderLeft: '3px solid rgba(34,211,238,0.4)' }}
-          >
-            <FishSVG tier={tier} size={18} />
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-[11px] font-black text-cyan-300">
-                {tierName.toUpperCase()}
-              </span>
-              <span className="text-[9px] text-cyan-500/70">
-                Tier {tier + 1}
-              </span>
-            </div>
-          </div>
-
-          {/* Action buttons */}
-          <div className="flex gap-2">
-            {onFollow && (
-              <button
-                onClick={() => onFollow(user.id)}
-                disabled={isLoadingFollow || !isLoggedIn}
-                className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-bold transition-all duration-300 ${
-                  isFollowing
-                    ? 'bg-cyan-900/30 text-cyan-300 border border-cyan-700/40 hover:border-cyan-600/60'
-                    : 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white hover:from-cyan-500 hover:to-blue-500 shadow-lg shadow-cyan-900/30'
-                } disabled:opacity-50`}
-              >
-                {isLoadingFollow ? (
-                  <Loader2 className="w-3 h-3 animate-spin" />
-                ) : isFollowing ? (
-                  <>
-                    <UserCheck className="w-3 h-3" />
-                    Following
-                  </>
-                ) : (
-                  <>
-                    <UserPlus className="w-3 h-3" />
-                    Follow
-                  </>
-                )}
-              </button>
-            )}
-            {onMessage && (
-              <button
-                disabled={!isLoggedIn}
-                onClick={() => onMessage(user.id)}
-                className="px-3 py-2 rounded-xl bg-cyan-900/30 text-cyan-300 border border-cyan-700/40 hover:border-cyan-600/60 transition-all duration-300 disabled:opacity-50"
-                title="Send Message"
-              >
-                <MessageCircle className="w-3 h-3" />
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  )
-}
-
-// ============================================
-// SKELETON CARD
-// ============================================
-
-function AquaticCardSkeleton({ index = 0 }: { index?: number }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: index * 0.05 }}
-      className="relative rounded-2xl overflow-hidden border border-cyan-800/20"
-      style={{ background: 'rgba(10, 22, 40, 0.75)' }}
-    >
-      <div className="h-1 bg-cyan-900/40 animate-pulse" />
-      <div className="p-4 sm:p-5 space-y-3">
-        <div className="flex items-start gap-3">
-          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-cyan-900/40 animate-pulse" />
-          <div className="flex-1 space-y-2">
-            <div className="h-4 bg-cyan-900/40 rounded-lg animate-pulse w-2/3" />
-            <div className="h-3 bg-cyan-900/30 rounded-lg animate-pulse w-1/2" />
-            <div className="h-3 bg-cyan-900/20 rounded-lg animate-pulse w-1/3" />
-          </div>
-        </div>
-        <div className="flex gap-1.5">
-          {[...Array(3)].map((_, i) => (
-            <div key={i} className="h-5 w-16 bg-cyan-900/30 rounded-full animate-pulse" />
-          ))}
-        </div>
-        <div className="grid grid-cols-3 gap-1 p-2.5 rounded-xl bg-cyan-900/20 animate-pulse h-14" />
-        <div className="h-10 bg-cyan-900/20 rounded-lg animate-pulse" />
-        <div className="flex gap-2">
-          <div className="flex-1 h-9 bg-cyan-900/30 rounded-xl animate-pulse" />
-          <div className="w-10 h-9 bg-cyan-900/30 rounded-xl animate-pulse" />
-        </div>
-      </div>
-    </motion.div>
-  )
-}
-
-// ============================================
-// NETWORK TAB BAR
-// ============================================
-
-function NetworkTabBar({
-  active,
-  onChange,
-  stats,
-}: {
-  active: NetworkTab
-  onChange: (tab: NetworkTab) => void
-  stats: NetworkStats
-}) {
-  const tabs: { id: NetworkTab; label: string; icon: React.ReactNode; count?: number }[] = [
-    { id: 'all', label: 'All', icon: <Users className="w-3.5 h-3.5" /> },
-    { id: 'following', label: 'Following', icon: <UserCheck className="w-3.5 h-3.5" />, count: stats.following },
-    { id: 'followers', label: 'Followers', icon: <Heart className="w-3.5 h-3.5" />, count: stats.followers },
-    { id: 'mutual', label: 'Mutual', icon: <Activity className="w-3.5 h-3.5" />, count: stats.mutual },
-    { id: 'suggestions', label: 'Discover', icon: <Compass className="w-3.5 h-3.5" />, count: stats.suggestions },
-    { id: 'pending', label: 'Pending', icon: <Clock className="w-3.5 h-3.5" />, count: stats.pending },
-  ]
-
-  return (
-    <div className="flex items-center gap-1 overflow-x-auto no-scrollbar pb-1">
-      {tabs.map((tab) => (
-        <button
-          key={tab.id}
-          onClick={() => onChange(tab.id)}
-          className={`relative flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all duration-300 ${
-            active === tab.id
-              ? 'text-cyan-300 bg-cyan-900/40 border border-cyan-700/40'
-              : 'text-cyan-500/70 hover:text-cyan-300 hover:bg-cyan-900/20'
-          }`}
-        >
-          {tab.icon}
-          {tab.label}
-          {tab.count !== undefined && tab.count > 0 && (
-            <span
-              className={`px-1.5 py-0.5 rounded-full text-[9px] font-black ${
-                active === tab.id
-                  ? 'bg-cyan-500 text-[#0A1628]'
-                  : 'bg-cyan-900/40 text-cyan-500'
-              }`}
-            >
-              {tab.count}
-            </span>
-          )}
-        </button>
-      ))}
-    </div>
-  )
-}
-
-// ============================================
-// VIEW TOGGLE
-// ============================================
-
-function ViewToggle({
-  active,
-  onChange,
-}: {
-  active: PrimaryView
-  onChange: (view: PrimaryView) => void
-}) {
-  return (
-    <div className="relative inline-flex rounded-full p-1 bg-cyan-900/40 border border-cyan-800/30">
-      <motion.div
-        className="absolute top-1 bottom-1 rounded-full bg-gradient-to-r from-cyan-600 to-blue-600"
-        layout
-        layoutId="fishbowl-view-pill"
-        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-        animate={{
-          left: active === 'fishbowl' ? '4px' : '50%',
-          right: active === 'directory' ? '4px' : '50%',
-        }}
-      />
-      <button
-        onClick={() => onChange('fishbowl')}
-        className={`relative z-10 flex items-center gap-2 px-5 py-2 rounded-full text-sm font-bold transition-colors duration-300 ${
-          active === 'fishbowl' ? 'text-white' : 'text-cyan-500/70'
-        }`}
-      >
-        <Fish className="w-4 h-4" />
-        My Network
-      </button>
-      <button
-        onClick={() => onChange('directory')}
-        className={`relative z-10 flex items-center gap-2 px-5 py-2 rounded-full text-sm font-bold transition-colors duration-300 ${
-          active === 'directory' ? 'text-white' : 'text-cyan-500/70'
-        }`}
-      >
-        <Globe className="w-4 h-4" />
-        Directory
-      </button>
-    </div>
-  )
-}
-
-// ============================================
-// STAT BUBBLE
-// ============================================
-
-function StatBubble({
-  label,
-  value,
-  icon,
-  delay,
-}: {
-  label: string
-  value: number
-  icon: React.ReactNode
-  delay: number
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8, y: 20 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      transition={{ delay, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className="relative group"
-    >
-      <div
-        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        style={{
-          background: 'radial-gradient(circle, rgba(34,211,238,0.15), transparent)',
-          filter: 'blur(12px)',
-        }}
-      />
-      <div className="relative flex flex-col items-center gap-1 px-5 py-3 rounded-2xl border border-cyan-800/30 bg-cyan-900/20 backdrop-blur-sm transition-all duration-300 hover:bg-cyan-900/30 hover:border-cyan-700/40">
-        <div className="text-cyan-400 mb-0.5">{icon}</div>
-        <span className="text-2xl sm:text-3xl font-black text-cyan-100">{value}</span>
-        <span className="text-[10px] font-bold text-cyan-500 uppercase tracking-wider">{label}</span>
-      </div>
-    </motion.div>
-  )
-}
-
-// ============================================
-// PENDING REQUEST CARD
-// ============================================
-
-function PendingRequestCard({
-  request,
-  onAccept,
-  onReject,
-  isProcessing,
-  index,
-}: {
-  request: PendingRequest
-  onAccept: (id: string) => void
-  onReject: (id: string) => void
-  isProcessing: boolean
-  index: number
-}) {
-  return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.9 }}
-      transition={{ delay: index * 0.06 }}
-      className="relative rounded-2xl overflow-hidden border border-cyan-800/30 p-4 sm:p-5"
-      style={{
-        background: 'rgba(10, 22, 40, 0.75)',
-        backdropFilter: 'blur(16px)',
-      }}
-    >
-      <div className="flex items-start gap-3">
-        <Link href={`/profile/${request.requester.id}`} className="flex-shrink-0">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-600 to-blue-600 p-[2px]">
-            {request.requester.image ? (
-              <img src={request.requester.image} alt={request.requester.name || ''} className="w-full h-full rounded-[10px] object-cover" />
-            ) : (
-              <div className="w-full h-full rounded-[10px] bg-[#0A1628] flex items-center justify-center">
-                <span className="text-lg font-black text-cyan-400">
-                  {(request.requester.name?.[0] || '?').toUpperCase()}
-                </span>
-              </div>
-            )}
-          </div>
-        </Link>
-        <div className="flex-1 min-w-0">
-          <Link href={`/profile/${request.requester.id}`}>
-            <h4 className="text-sm font-black text-cyan-100 truncate hover:text-cyan-300 transition-colors">
-              {request.requester.name || 'Anonymous'}
-            </h4>
-          </Link>
-          {request.requester.headline && (
-            <p className="text-[11px] text-cyan-500/70 truncate">{request.requester.headline}</p>
-          )}
-          {request.message && (
-            <p className="text-xs text-cyan-400/60 mt-2 italic line-clamp-2">
-              &ldquo;{request.message}&rdquo;
-            </p>
-          )}
-          <div className="flex gap-2 mt-3">
-            <button
-              onClick={() => onAccept(request.id)}
-              disabled={isProcessing}
-              className="flex items-center gap-1 text-xs font-bold h-7 px-3 rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 text-white hover:from-cyan-500 hover:to-blue-500 transition-all disabled:opacity-50"
-            >
-              <Check className="w-3 h-3" />
-              Accept
-            </button>
-            <button
-              onClick={() => onReject(request.id)}
-              disabled={isProcessing}
-              className="flex items-center gap-1 text-xs font-bold h-7 px-3 rounded-lg bg-cyan-900/30 text-cyan-300 border border-cyan-700/40 hover:border-cyan-600/60 transition-all disabled:opacity-50"
-            >
-              <X className="w-3 h-3" />
-              Decline
-            </button>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  )
-}
-
-// ============================================
-// EMPTY STATE
-// ============================================
-
-function EmptyState({
-  icon,
-  title,
-  message,
-  action,
-}: {
-  icon: React.ReactNode
-  title: string
-  message: string
-  action?: React.ReactNode
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col items-center justify-center py-20 text-center"
-    >
-      <div className="w-20 h-20 rounded-2xl flex items-center justify-center mb-4 text-cyan-500/50 bg-cyan-900/20 border border-cyan-800/20">
-        {icon}
-      </div>
-      <h3 className="text-lg font-black text-cyan-100 mb-1">{title}</h3>
-      <p className="text-sm text-cyan-500/70 font-medium max-w-sm">{message}</p>
-      {action}
-    </motion.div>
-  )
-}
-
-// ============================================
-// MAIN PAGE
-// ============================================
+type ViewMode = 'feed' | 'following' | 'followers' | 'discover' | 'tree'
 
 export default function NetworkPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
   const searchParams = useSearchParams()
+  const initialView = (searchParams.get('view') as ViewMode) || 'feed'
 
-  // Primary view
-  const initialView = (searchParams.get('view') as PrimaryView) || 'fishbowl'
-  const [primaryView, setPrimaryView] = useState<PrimaryView>(initialView)
-  const [networkTab, setNetworkTab] = useState<NetworkTab>('all')
-
-  // Fishbowl data
-  const [fishbowlUsers, setFishbowlUsers] = useState<FishbowlUser[]>([])
-  const [showFishbowl, setShowFishbowl] = useState(true)
-  const [showInfo, setShowInfo] = useState(false)
-
-  // Network data states
-  const [allUsers, setAllUsers] = useState<NetworkCardUser[]>([])
-  const [followingUsers, setFollowingUsers] = useState<NetworkCardUser[]>([])
-  const [followerUsers, setFollowerUsers] = useState<NetworkCardUser[]>([])
-  const [suggestions, setSuggestions] = useState<NetworkCardUser[]>([])
-  const [pendingRequests, setPendingRequests] = useState<PendingRequest[]>([])
-  const [followingIds, setFollowingIds] = useState<Set<string>>(new Set())
-  const [followerIds, setFollowerIds] = useState<Set<string>>(new Set())
-
-  // Directory states
-  const [directoryUsers, setDirectoryUsers] = useState<NetworkCardUser[]>([])
-  const [directoryTotal, setDirectoryTotal] = useState(0)
-  const [directoryPage, setDirectoryPage] = useState(1)
-  const [directoryTotalPages, setDirectoryTotalPages] = useState(1)
-
-  // UI states
+  const [activeView, setActiveView] = useState<ViewMode>(initialView)
+  const [allUsers, setAllUsers] = useState<UserProfile[]>([])
+  const [followingUsers, setFollowingUsers] = useState<UserProfile[]>([])
+  const [followers, setFollowers] = useState<UserProfile[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [isLoading, setIsLoading] = useState(true)
-  const [isDirectoryLoading, setIsDirectoryLoading] = useState(false)
-  const [loadingFollowId, setLoadingFollowId] = useState<string | null>(null)
-  const [processingRequestId, setProcessingRequestId] = useState<string | null>(null)
-  const [showFilters, setShowFilters] = useState(false)
-  const [locationFilter, setLocationFilter] = useState('')
-  const [skillsFilter, setSkillsFilter] = useState<string[]>([])
-  const [interestsFilter, setInterestsFilter] = useState<string[]>([])
-  const [newSkill, setNewSkill] = useState('')
-  const [newInterest, setNewInterest] = useState('')
-  const [sortBy, setSortBy] = useState<'newest' | 'popular' | 'alphabetical'>('newest')
+  const [followingIds, setFollowingIds] = useState<Set<string>>(new Set())
+  const [followerIds, setFollowerIds] = useState<Set<string>>(new Set())
+  const [loadingFollow, setLoadingFollow] = useState<Set<string>>(new Set())
 
-  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null)
-
-  // Stats
-  const stats: NetworkStats = useMemo(() => ({
-    following: followingUsers.length,
-    followers: followerUsers.length,
-    mutual: followingUsers.filter(u => followerIds.has(u.id)).length,
-    suggestions: suggestions.length,
-    pending: pendingRequests.length,
-  }), [followingUsers, followerUsers, followerIds, suggestions, pendingRequests])
-
-  // Current user fish info
-  const currentFishUser = useMemo(() => {
-    return fishbowlUsers.find(u => u.id === session?.user?.id)
-  }, [fishbowlUsers, session?.user?.id])
-
-  const currentTier = currentFishUser ? getTierFromScore(currentFishUser.stockScore) : 0
-  const currentTierName = currentFishUser ? getTierName(currentTier) : 'Guppy'
-
-  // ============================================
-  // DATA FETCHING
-  // ============================================
-
-  const fetchFishbowlData = useCallback(async () => {
-    try {
-      const res = await fetch('/api/fishbowl')
-      const data = await res.json()
-      if (data.success) {
-        setFishbowlUsers(data.data)
-      }
-    } catch (error) {
-      console.error('Error fetching fishbowl data:', error)
-    }
-  }, [])
-
-  const fetchNetworkData = useCallback(async () => {
-    if (!session?.user?.id) return
+  // Fetch all data
+  const fetchData = useCallback(async () => {
     setIsLoading(true)
-
     try {
-      const [followingRes, followersRes, suggestionsRes, pendingRes] = await Promise.all([
-        fetch('/api/users/following'),
-        fetch('/api/users/followers'),
-        fetch('/api/network/suggestions'),
-        fetch('/api/connections/requests'),
-      ])
-
-      const [followingData, followersData, suggestionsData, pendingData] = await Promise.all([
-        followingRes.json(),
-        followersRes.json(),
-        suggestionsRes.json(),
-        pendingRes.json(),
-      ])
-
-      if (followingData.success) {
-        const users = followingData.data || followingData.following || []
-        setFollowingUsers(users)
-        setFollowingIds(new Set(users.map((u: NetworkCardUser) => u.id)))
+      const usersRes = await fetch('/api/users', { cache: 'no-store' })
+      if (usersRes.ok) {
+        const usersData = await usersRes.json()
+        if (usersData.success) {
+          setAllUsers(usersData.data)
+        }
       }
 
-      if (followersData.success) {
-        const users = followersData.data || followersData.followers || []
-        setFollowerUsers(users)
-        setFollowerIds(new Set(users.map((u: NetworkCardUser) => u.id)))
-      }
+      if (session?.user?.id) {
+        const [followingRes, followersRes] = await Promise.all([
+          fetch('/api/users/following', { cache: 'no-store' }),
+          fetch('/api/users/followers', { cache: 'no-store' }),
+        ])
 
-      if (suggestionsData.success) {
-        const sugData = suggestionsData.data?.suggestions || suggestionsData.data || []
-        setSuggestions(Array.isArray(sugData) ? sugData : [])
-      }
-
-      if (pendingData.success) {
-        const rawRequests = pendingData.data?.requests || pendingData.data || []
-        const requests = (Array.isArray(rawRequests) ? rawRequests : []).map((r: any) => ({
-          id: r.id,
-          requester: r.user || r.requester || { id: r.userId, name: null, email: '', image: null, headline: null, bio: null, location: null, guardianArchetype: null, interests: [] },
-          message: r.message || null,
-          createdAt: r.createdAt,
-        }))
-        setPendingRequests(requests)
-      }
-
-      // Combine all unique users for the "all" tab
-      const allMap = new Map<string, NetworkCardUser>()
-      const addUsers = (users: NetworkCardUser[]) => {
-        users.forEach(u => {
-          if (!allMap.has(u.id) && u.id !== session.user?.id) {
-            allMap.set(u.id, u)
+        if (followingRes.ok) {
+          const followingData = await followingRes.json()
+          if (followingData.success) {
+            setFollowingUsers(followingData.data)
+            setFollowingIds(new Set(followingData.data.map((u: UserProfile) => u.id)))
           }
-        })
-      }
-      if (followingData.success) addUsers(followingData.data || followingData.following || [])
-      if (followersData.success) addUsers(followersData.data || followersData.followers || [])
-      if (suggestionsData.success) addUsers(suggestionsData.data || suggestionsData.suggestions || [])
+        }
 
-      setAllUsers(Array.from(allMap.values()))
+        if (followersRes.ok) {
+          const followersData = await followersRes.json()
+          if (followersData.success) {
+            setFollowers(followersData.data)
+            setFollowerIds(new Set(followersData.data.map((u: UserProfile) => u.id)))
+          }
+        }
+      }
     } catch (error) {
       console.error('Error fetching network data:', error)
-      toast.error('Failed to load network data')
     } finally {
       setIsLoading(false)
     }
   }, [session?.user?.id])
 
-  const fetchDirectoryUsers = useCallback(async () => {
-    setIsDirectoryLoading(true)
-    try {
-      const params = new URLSearchParams({
-        q: searchQuery,
-        location: locationFilter,
-        page: directoryPage.toString(),
-        limit: '18',
-      })
-
-      if (skillsFilter.length > 0) {
-        params.append('skills', skillsFilter.join(','))
-      }
-      if (interestsFilter.length > 0) {
-        params.append('interests', interestsFilter.join(','))
-      }
-
-      const res = await fetch(`/api/users/search?${params}`)
-      const data = await res.json()
-
-      if (data.success) {
-        setDirectoryUsers(data.data.users.map((u: any) => ({
-          ...u,
-          bio: u.bio || null,
-          headline: u.headline || null,
-          location: u.location || null,
-          interests: u.interests || [],
-          expertise: u.expertise || [],
-          guardianArchetype: u.guardianArchetype || null,
-          _count: u._count || { followers: 0 },
-        })))
-        setDirectoryTotalPages(data.data.pagination.totalPages)
-        setDirectoryTotal(data.data.pagination.total)
-      }
-    } catch (error) {
-      console.error('Error fetching directory:', error)
-    } finally {
-      setIsDirectoryLoading(false)
-    }
-  }, [searchQuery, locationFilter, skillsFilter, interestsFilter, directoryPage])
-
-  // ============================================
-  // EFFECTS
-  // ============================================
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
 
   useEffect(() => {
-    if (session?.user?.id) {
-      fetchNetworkData()
-      fetchFishbowlData()
-    }
-  }, [session?.user?.id, fetchNetworkData, fetchFishbowlData])
-
-  useEffect(() => {
-    if (primaryView === 'directory') {
-      fetchDirectoryUsers()
-    }
-  }, [primaryView, fetchDirectoryUsers])
-
-  // Debounced search for directory
-  useEffect(() => {
-    if (primaryView !== 'directory') return
-    if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current)
-    searchTimeoutRef.current = setTimeout(() => {
-      setDirectoryPage(1)
-      fetchDirectoryUsers()
-    }, 400)
-    return () => {
-      if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current)
-    }
-  }, [searchQuery, locationFilter, skillsFilter, interestsFilter])
-
-  // ============================================
-  // HANDLERS
-  // ============================================
+    const url = new URL(window.location.href)
+    url.searchParams.set('view', activeView)
+    window.history.replaceState({}, '', url.toString())
+  }, [activeView])
 
   const handleFollow = async (userId: string) => {
-    if (!session?.user?.id) {
+    if (!session?.user) {
       toast.error('Please sign in to follow users')
       return
     }
 
-    setLoadingFollowId(userId)
-    const wasFollowing = followingIds.has(userId)
+    setLoadingFollow((prev) => new Set(prev).add(userId))
 
     try {
-      const res = await fetch(`/api/users/${userId}/follow`, {
-        method: wasFollowing ? 'DELETE' : 'POST',
-      })
+      const isCurrentlyFollowing = followingIds.has(userId)
 
-      if (res.ok) {
-        const newIds = new Set(followingIds)
-        if (wasFollowing) {
-          newIds.delete(userId)
-          setFollowingUsers(prev => prev.filter(u => u.id !== userId))
-          toast.success('Unfollowed')
-        } else {
-          newIds.add(userId)
-          const user = allUsers.find(u => u.id === userId) || suggestions.find(u => u.id === userId) || directoryUsers.find(u => u.id === userId)
-          if (user) {
-            setFollowingUsers(prev => [...prev, user])
-          }
-          toast.success('Following!')
-        }
-        setFollowingIds(newIds)
+      if (isCurrentlyFollowing) {
+        const url = new URL('/api/users/follow', window.location.origin)
+        url.searchParams.set('userId', userId)
+        await fetch(url.toString(), { method: 'DELETE' })
+        toast.success('Unfollowed successfully!')
+      } else {
+        await fetch('/api/users/follow', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId }),
+        })
+        toast.success("Following! You'll see their activity in your feed.")
       }
+
+      await fetchData()
     } catch (error) {
-      toast.error('Something went wrong')
+      console.error('Error following/unfollowing user:', error)
+      toast.error('Failed to update follow status')
     } finally {
-      setLoadingFollowId(null)
-    }
-  }
-
-  const handleMessage = (userId: string) => {
-    router.push(`/messages?to=${userId}`)
-  }
-
-  const handleAcceptRequest = async (requestId: string) => {
-    setProcessingRequestId(requestId)
-    try {
-      const res = await fetch(`/api/connections/${requestId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'accept' }),
+      setLoadingFollow((prev) => {
+        const newSet = new Set(prev)
+        newSet.delete(userId)
+        return newSet
       })
-      if (res.ok) {
-        setPendingRequests(prev => prev.filter(r => r.id !== requestId))
-        toast.success('Connection accepted!')
-        fetchNetworkData()
-      }
-    } catch {
-      toast.error('Failed to accept')
-    } finally {
-      setProcessingRequestId(null)
     }
   }
 
-  const handleRejectRequest = async (requestId: string) => {
-    setProcessingRequestId(requestId)
-    try {
-      const res = await fetch(`/api/connections/${requestId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'reject' }),
-      })
-      if (res.ok) {
-        setPendingRequests(prev => prev.filter(r => r.id !== requestId))
-        toast.success('Request declined')
-      }
-    } catch {
-      toast.error('Failed to decline')
-    } finally {
-      setProcessingRequestId(null)
-    }
-  }
+  // Get users for list views
+  const getListUsers = (type: 'following' | 'followers' | 'discover') => {
+    let users: UserProfile[] = []
 
-  const handleViewChange = (view: PrimaryView) => {
-    setPrimaryView(view)
-    router.replace(`/network?view=${view}`, { scroll: false })
-  }
-
-  // ============================================
-  // FILTER HELPERS
-  // ============================================
-
-  const addSkillFilter = () => {
-    if (newSkill.trim() && !skillsFilter.includes(newSkill.trim())) {
-      setSkillsFilter(prev => [...prev, newSkill.trim()])
-      setNewSkill('')
-      setDirectoryPage(1)
-    }
-  }
-
-  const addInterestFilter = () => {
-    if (newInterest.trim() && !interestsFilter.includes(newInterest.trim())) {
-      setInterestsFilter(prev => [...prev, newInterest.trim()])
-      setNewInterest('')
-      setDirectoryPage(1)
-    }
-  }
-
-  const clearAllFilters = () => {
-    setSearchQuery('')
-    setLocationFilter('')
-    setSkillsFilter([])
-    setInterestsFilter([])
-    setDirectoryPage(1)
-  }
-
-  const hasActiveFilters = searchQuery || locationFilter || skillsFilter.length > 0 || interestsFilter.length > 0
-
-  // ============================================
-  // FILTERED + SORTED USERS (Network View)
-  // ============================================
-
-  const getNetworkUsers = useCallback((): NetworkCardUser[] => {
-    let users: NetworkCardUser[] = []
-
-    switch (networkTab) {
+    switch (type) {
       case 'following':
         users = followingUsers
         break
       case 'followers':
-        users = followerUsers
+        users = followers
         break
-      case 'mutual':
-        users = followingUsers.filter(u => followerIds.has(u.id))
-        break
-      case 'suggestions':
-        users = suggestions
-        break
-      case 'all':
-      default:
-        users = allUsers
+      case 'discover':
+        users = allUsers.filter(u => !followingIds.has(u.id) && u.id !== session?.user?.id)
         break
     }
 
-    // Apply search filter
     if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase()
-      users = users.filter(u =>
-        u.name?.toLowerCase().includes(q) ||
-        u.email.toLowerCase().includes(q) ||
-        u.headline?.toLowerCase().includes(q) ||
-        u.location?.toLowerCase().includes(q) ||
-        u.interests?.some(i => i.toLowerCase().includes(q)) ||
-        u.expertise?.some(e => e.toLowerCase().includes(q))
+      const query = searchQuery.toLowerCase()
+      users = users.filter(
+        (user) =>
+          user.name?.toLowerCase().includes(query) ||
+          user.location?.toLowerCase().includes(query) ||
+          user.bio?.toLowerCase().includes(query) ||
+          user.headline?.toLowerCase().includes(query)
       )
     }
 
-    // Sort
-    switch (sortBy) {
-      case 'popular':
-        users = [...users].sort((a, b) => (b._count?.followers ?? 0) - (a._count?.followers ?? 0))
-        break
-      case 'alphabetical':
-        users = [...users].sort((a, b) => (a.name || '').localeCompare(b.name || ''))
-        break
-      default:
-        break
-    }
-
     return users
-  }, [networkTab, followingUsers, followerUsers, followerIds, suggestions, allUsers, searchQuery, sortBy])
+  }
 
-  const networkUsers = useMemo(() => getNetworkUsers(), [getNetworkUsers])
+  // Calculate mutual connections
+  const mutualCount = Array.from(followingIds).filter(id => followerIds.has(id)).length
 
-  // ============================================
-  // LOADING STATE
-  // ============================================
+  // Get suggested connections (users who follow you but you don't follow back)
+  const suggestedConnections = followers
+    .filter(f => !followingIds.has(f.id))
+    .slice(0, 5)
+
+  // Get recent followers
+  const recentFollowers = [...followers]
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .slice(0, 3)
 
   if (status === 'loading') {
     return (
-      <div className="h-full flex items-center justify-center bg-[#0A1628]">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-center space-y-4"
-        >
-          <div className="w-16 h-16 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-lg font-bold text-cyan-400">Filling the fishbowl...</p>
-        </motion.div>
-      </div>
-    )
-  }
-
-  if (!session) {
-    return (
-      <div className="h-full flex items-center justify-center bg-[#0A1628]">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center space-y-6 max-w-md px-6"
-        >
-          <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
-            <Fish className="w-10 h-10 text-white" />
-          </div>
-          <h2 className="text-3xl font-black text-cyan-100">
-            Join the Fishbowl
-          </h2>
-          <p className="text-cyan-400/80 font-medium">
-            Sign in to swim with your community
-          </p>
-          <Link href="/auth/signin">
-            <button className="font-bold text-base px-8 py-3 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white hover:from-cyan-500 hover:to-blue-500 transition-all">
-              Sign In
-              <ArrowRight className="w-4 h-4 ml-2 inline" />
-            </button>
-          </Link>
-        </motion.div>
-      </div>
-    )
-  }
-
-  // ============================================
-  // RENDER
-  // ============================================
-
-  return (
-    <div className="min-h-full bg-[#0A1628]">
-      {/* ============================================ */}
-      {/* FISHBOWL HEADER */}
-      {/* ============================================ */}
-      <div className="bg-gradient-to-r from-[#0D2137]/95 via-[#123855]/95 to-[#0D2137]/95 backdrop-blur-sm border-b-2 border-cyan-800/50">
-        <div className="container mx-auto px-4 sm:px-6 py-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-cyan-900/50 flex items-center justify-center border border-cyan-700/50">
-                <Fish className="w-5 h-5 text-cyan-400" />
-              </div>
-              <div>
-                <h1 className="text-xl font-black text-cyan-100">THE FISHBOWL</h1>
-                <p className="text-xs font-medium text-cyan-500/80">
-                  Community aquarium · Every member is a fish
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 sm:gap-3">
-              {/* Your fish info */}
-              {currentFishUser && (
-                <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-cyan-900/30 border border-cyan-800/40">
-                  <FishSVG tier={currentTier} size={24} />
-                  <div>
-                    <p className="text-[10px] text-cyan-500 font-medium">YOUR FISH</p>
-                    <p className="text-xs font-bold text-cyan-200">{currentTierName} · {currentFishUser.stockScore} STOCK</p>
-                  </div>
-                </div>
-              )}
-              {/* Stats */}
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-cyan-900/30 border border-cyan-800/40">
-                <Users className="w-4 h-4 text-cyan-500" />
-                <span className="text-xs font-bold text-cyan-300">{fishbowlUsers.length}</span>
-              </div>
-              {/* Toggle fishbowl visibility */}
-              <button
-                onClick={() => setShowFishbowl(!showFishbowl)}
-                className="p-2 rounded-lg bg-cyan-900/30 border border-cyan-800/40 hover:border-cyan-600/60 transition-colors"
-                title={showFishbowl ? 'Hide aquarium' : 'Show aquarium'}
-              >
-                {showFishbowl ? (
-                  <EyeOff className="w-4 h-4 text-cyan-500" />
-                ) : (
-                  <Eye className="w-4 h-4 text-cyan-500" />
-                )}
-              </button>
-              {/* Info toggle */}
-              <button
-                onClick={() => setShowInfo(!showInfo)}
-                className="p-2 rounded-lg bg-cyan-900/30 border border-cyan-800/40 hover:border-cyan-600/60 transition-colors"
-              >
-                <Info className="w-4 h-4 text-cyan-500" />
-              </button>
-            </div>
-          </div>
-
-          {/* Info panel */}
-          {showInfo && (
-            <div className="mt-3 p-3 rounded-xl bg-[#0A1628]/80 border border-cyan-800/30 animate-in slide-in-from-top duration-200">
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
-                {([0, 1, 2, 3, 4, 5] as const).map(tier => (
-                  <div key={tier} className="flex items-center gap-2 p-2 rounded-lg bg-cyan-900/20">
-                    <FishSVG tier={tier} size={20} />
-                    <div>
-                      <p className="text-[9px] text-cyan-500 font-medium">{getTierName(tier)}</p>
-                      <p className="text-[9px] text-cyan-600">
-                        {tier === 0 && '0-9'}
-                        {tier === 1 && '10-24'}
-                        {tier === 2 && '25-49'}
-                        {tier === 3 && '50-99'}
-                        {tier === 4 && '100-199'}
-                        {tier === 5 && '200+'}
-                        {' STOCK'}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <p className="mt-2 text-[10px] text-cyan-600 text-center">
-                Hover over a fish to see who it is. Click to view profile, message, or connect.
-              </p>
-            </div>
-          )}
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="w-16 h-16 border-4 border-theme-primary border-t-transparent rounded-full animate-spin mx-auto" />
+          <p className="text-lg font-bold text-theme-muted">Loading...</p>
         </div>
       </div>
+    )
+  }
 
-      {/* ============================================ */}
-      {/* FISHBOWL AQUARIUM */}
-      {/* ============================================ */}
-      <AnimatePresence>
-        {showFishbowl && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.4, ease: 'easeInOut' }}
-            className="px-3 sm:px-4 pt-3 pb-3"
-            style={{ height: 'calc(100vh - 80px)' }}
-          >
-            <div className="w-full h-full rounded-2xl border-2 border-cyan-800/40 shadow-lg shadow-cyan-900/20 overflow-hidden">
-              <Fishbowl users={fishbowlUsers} />
+  return (
+    <div className="min-h-screen bg-[var(--background)]">
+      {/* Sacred Header - The Tapestry */}
+      <section className="relative py-8 sm:py-12 overflow-hidden bg-gradient-to-br from-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] via-[var(--background)] to-[color-mix(in_srgb,var(--accent)_10%,var(--background))] border-b border-[var(--border)]">
+        {/* Decorative Thread Pattern */}
+        <div className="absolute inset-0 opacity-5 pointer-events-none">
+          <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-[var(--primary)] to-transparent" />
+          <div className="absolute top-0 left-1/2 w-px h-full bg-gradient-to-b from-transparent via-[var(--accent)] to-transparent" />
+          <div className="absolute top-0 left-3/4 w-px h-full bg-gradient-to-b from-transparent via-[var(--secondary)] to-transparent" />
+        </div>
+
+        <div className="container mx-auto px-4 relative">
+          <div className="max-w-6xl mx-auto">
+            {/* Sacred Title */}
+            <div className="text-center mb-6 sm:mb-8">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--muted)] mb-4">
+                <Orbit className="w-4 h-4 text-[var(--primary)]" />
+                <span className="text-xs font-bold text-[var(--foreground)]/70 uppercase tracking-wider">The Sacred Tapestry</span>
+              </div>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-[var(--foreground)] mb-2">
+                {session?.user ? 'Your Constellation' : 'The Path of Connection'}
+              </h1>
+              <p className="text-sm sm:text-base text-theme-muted font-medium max-w-lg mx-auto italic">
+                "A network is not a number. It is a constellation of souls walking the same path."
+              </p>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
-      {/* ============================================ */}
-      {/* NETWORK CONTENT (scrollable) */}
-      {/* ============================================ */}
-      <div>
-        {/* Stats + View Toggle */}
-        <section className="pt-6 pb-4">
-          <div className="container mx-auto px-4 sm:px-6">
-            <div className="max-w-6xl mx-auto">
-              {/* Stats */}
-              <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-6">
-                <StatBubble
-                  label="Following"
-                  value={stats.following}
-                  icon={<UserCheck className="w-5 h-5" />}
-                  delay={0.1}
-                />
-                <StatBubble
-                  label="Followers"
-                  value={stats.followers}
-                  icon={<Heart className="w-5 h-5" />}
-                  delay={0.2}
-                />
-                <StatBubble
-                  label="Mutual"
-                  value={stats.mutual}
-                  icon={<Activity className="w-5 h-5" />}
-                  delay={0.3}
-                />
-                {stats.pending > 0 && (
-                  <StatBubble
-                    label="Pending"
-                    value={stats.pending}
-                    icon={<Clock className="w-5 h-5" />}
-                    delay={0.4}
-                  />
-                )}
+            {/* Sacred Stats - Thread Counts */}
+            {session?.user && (
+              <div className="flex justify-center gap-4 sm:gap-8">
+                <button
+                  onClick={() => setActiveView('following')}
+                  className={`group text-center px-4 py-3 rounded-xl transition-all border-2 ${
+                    activeView === 'following'
+                      ? 'border-blue-500/50 bg-blue-500/10'
+                      : 'border-transparent hover:border-[var(--border)] hover:bg-[var(--muted)]'
+                  }`}
+                >
+                  <div className="flex items-center justify-center gap-1.5 mb-1">
+                    <Footprints className="w-4 h-4 text-blue-500" />
+                    <p className="text-xl sm:text-2xl font-black text-blue-500">{followingUsers.length}</p>
+                  </div>
+                  <p className="text-[10px] sm:text-xs font-bold text-theme-muted">Walking With</p>
+                </button>
+                <button
+                  onClick={() => setActiveView('followers')}
+                  className={`group text-center px-4 py-3 rounded-xl transition-all border-2 ${
+                    activeView === 'followers'
+                      ? 'border-pink-500/50 bg-pink-500/10'
+                      : 'border-transparent hover:border-[var(--border)] hover:bg-[var(--muted)]'
+                  }`}
+                >
+                  <div className="flex items-center justify-center gap-1.5 mb-1">
+                    <Heart className="w-4 h-4 text-pink-500" />
+                    <p className="text-xl sm:text-2xl font-black text-pink-500">{followers.length}</p>
+                  </div>
+                  <p className="text-[10px] sm:text-xs font-bold text-theme-muted">Fellow Travelers</p>
+                </button>
+                <button
+                  onClick={() => setActiveView('tree')}
+                  className={`group text-center px-4 py-3 rounded-xl transition-all border-2 ${
+                    activeView === 'tree'
+                      ? 'border-emerald-500/50 bg-emerald-500/10'
+                      : 'border-transparent hover:border-[var(--border)] hover:bg-[var(--muted)]'
+                  }`}
+                >
+                  <div className="flex items-center justify-center gap-1.5 mb-1">
+                    <Link2 className="w-4 h-4 text-emerald-500" />
+                    <p className="text-xl sm:text-2xl font-black text-emerald-500">{mutualCount}</p>
+                  </div>
+                  <p className="text-[10px] sm:text-xs font-bold text-theme-muted">Kindred Spirits</p>
+                </button>
               </div>
+            )}
+          </div>
+        </div>
+      </section>
 
-              {/* View Toggle */}
-              <div className="flex justify-center mb-4">
-                <ViewToggle active={primaryView} onChange={handleViewChange} />
-              </div>
+      {/* Navigation Tabs - Sacred Paths */}
+      <section className="sticky top-16 z-40 bg-[var(--card)] border-b border-[var(--border)]">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 gap-1">
+              {[
+                { id: 'feed' as ViewMode, label: 'The Journey', icon: Activity },
+                { id: 'following' as ViewMode, label: 'Walking With', icon: Footprints, count: followingUsers.length },
+                { id: 'followers' as ViewMode, label: 'Fellow Travelers', icon: Heart, count: followers.length },
+                { id: 'discover' as ViewMode, label: 'Seek New Paths', icon: Compass },
+                { id: 'tree' as ViewMode, label: 'Constellation', icon: Orbit },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveView(tab.id)}
+                  className={`flex items-center gap-1.5 px-3 sm:px-4 py-3 font-bold text-xs sm:text-sm whitespace-nowrap border-b-3 transition-all ${
+                    activeView === tab.id
+                      ? 'text-theme-primary border-theme-primary'
+                      : 'text-theme-muted border-transparent hover:text-[var(--foreground)]'
+                  }`}
+                >
+                  <tab.icon className="w-4 h-4" />
+                  {tab.label}
+                  {tab.count !== undefined && (
+                    <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold ${
+                      activeView === tab.id ? 'bg-theme-primary text-white' : 'bg-[var(--muted)]'
+                    }`}>
+                      {tab.count}
+                    </span>
+                  )}
+                </button>
+              ))}
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Controls Bar */}
-        <section className="pb-4">
-          <div className="container mx-auto px-4 sm:px-6">
-            <div className="max-w-6xl mx-auto space-y-4">
-              {/* Network sub-tabs */}
-              <AnimatePresence mode="wait">
-                {primaryView === 'fishbowl' && (
-                  <motion.div
-                    key="network-tabs"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <LayoutGroup>
-                      <NetworkTabBar active={networkTab} onChange={setNetworkTab} stats={stats} />
-                    </LayoutGroup>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+      {/* Main Content */}
+      <section className="py-6">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            {isLoading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <SkeletonUserCard key={i} />
+                ))}
+              </div>
+            ) : activeView === 'feed' ? (
+              /* The Journey - Feed View */
+              <div className="grid lg:grid-cols-3 gap-6">
+                {/* Main Feed */}
+                <div className="lg:col-span-2 space-y-4">
+                  {!session?.user ? (
+                    <Card className="border-2 border-[var(--primary)]/30 bg-gradient-to-br from-[var(--card)] to-[var(--muted)]">
+                      <CardContent className="p-8 text-center">
+                        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center">
+                          <Orbit className="w-8 h-8 text-white" />
+                        </div>
+                        <h3 className="text-xl font-black mb-2">Begin Your Journey</h3>
+                        <p className="text-sm text-theme-muted mb-4 italic max-w-sm mx-auto">
+                          "We provide the space to connect. You bring the intention to relate."
+                        </p>
+                        <Link href="/auth/signin">
+                          <Button className="font-bold">
+                            Enter the Tapestry <ArrowRight className="w-4 h-4 ml-2" />
+                          </Button>
+                        </Link>
+                      </CardContent>
+                    </Card>
+                  ) : (
+                    <>
+                      {/* Paths Crossing - Recent Activity */}
+                      <Card className="border border-[var(--border)]">
+                        <CardContent className="p-4">
+                          <h3 className="text-sm font-black mb-4 flex items-center gap-2">
+                            <Activity className="w-4 h-4 text-theme-primary" />
+                            Paths Crossing
+                          </h3>
 
-              {/* Search bar */}
-              <div className="flex gap-2 sm:gap-3">
-                <div className="flex-1 relative">
-                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-cyan-500/50" />
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder={primaryView === 'fishbowl' ? 'Search your network...' : 'Search all members...'}
-                    className="w-full pl-11 pr-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 bg-cyan-900/20 border border-cyan-800/30 text-cyan-100 placeholder:text-cyan-600/50 focus:outline-none focus:border-cyan-600/60 backdrop-blur-sm"
-                  />
-                  {searchQuery && (
-                    <button
-                      onClick={() => setSearchQuery('')}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-cyan-500/50 hover:text-cyan-300"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
+                          {/* Recent followers section */}
+                          {recentFollowers.length > 0 && (
+                            <div className="space-y-3">
+                              {recentFollowers.map((follower) => {
+                                const trait = getArchetypeTrait(follower.guardianArchetype)
+                                return (
+                                  <div key={follower.id} className="flex items-center gap-3 p-3 bg-[var(--muted)] rounded-xl border border-[var(--border)]">
+                                    <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${trait.gradient} flex items-center justify-center overflow-hidden ring-2 ring-white/20`}>
+                                      {follower.image ? (
+                                        <img src={follower.image} alt="" className="w-full h-full object-cover" />
+                                      ) : (
+                                        <span className="text-white font-bold">{(follower.name || 'U')[0]}</span>
+                                      )}
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <p className="text-sm font-bold text-[var(--foreground)] truncate">
+                                        {follower.name || 'Seeker'} <span className="font-normal text-theme-muted">joined your path</span>
+                                      </p>
+                                      <div className="flex items-center gap-2">
+                                        <span className="text-[10px] px-1.5 py-0.5 bg-[var(--background)] rounded text-theme-muted">{trait.trait}</span>
+                                        <p className="text-xs text-theme-muted truncate">{follower.headline || 'Fellow traveler'}</p>
+                                      </div>
+                                    </div>
+                                    {!followingIds.has(follower.id) && (
+                                      <Button
+                                        size="sm"
+                                        onClick={() => handleFollow(follower.id)}
+                                        disabled={loadingFollow.has(follower.id)}
+                                        className="text-xs"
+                                      >
+                                        {loadingFollow.has(follower.id) ? (
+                                          <Loader2 className="w-3 h-3 animate-spin" />
+                                        ) : (
+                                          <>Walk Together</>
+                                        )}
+                                      </Button>
+                                    )}
+                                  </div>
+                                )
+                              })}
+                            </div>
+                          )}
+
+                          {recentFollowers.length === 0 && (
+                            <div className="text-center py-8 text-theme-muted">
+                              <Footprints className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                              <p className="text-sm font-medium">The path is quiet</p>
+                              <p className="text-xs">New connections will appear as paths cross</p>
+                            </div>
+                          )}
+                        </CardContent>
+                      </Card>
+
+                      {/* Souls Seeking Connection */}
+                      {suggestedConnections.length > 0 && (
+                        <Card className="border border-[var(--border)]">
+                          <CardContent className="p-4">
+                            <div className="flex items-center justify-between mb-4">
+                              <h3 className="text-sm font-black flex items-center gap-2">
+                                <Heart className="w-4 h-4 text-pink-500" />
+                                Souls Seeking Connection
+                              </h3>
+                              <button
+                                onClick={() => setActiveView('discover')}
+                                className="text-xs text-theme-primary font-bold hover:underline"
+                              >
+                                Seek More
+                              </button>
+                            </div>
+                            <div className="space-y-3">
+                              {suggestedConnections.map((user) => {
+                                const trait = getArchetypeTrait(user.guardianArchetype)
+                                return (
+                                  <div key={user.id} className="flex items-center gap-3 p-3 bg-[var(--muted)] rounded-xl border border-[var(--border)]">
+                                    <Link href={`/profile/${user.id}`}>
+                                      <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${trait.gradient} flex items-center justify-center overflow-hidden cursor-pointer hover:ring-2 ring-theme-primary transition-all`}>
+                                        {user.image ? (
+                                          <img src={user.image} alt="" className="w-full h-full object-cover" />
+                                        ) : (
+                                          <span className="text-white font-bold text-lg">{(user.name || 'U')[0]}</span>
+                                        )}
+                                      </div>
+                                    </Link>
+                                    <div className="flex-1 min-w-0">
+                                      <Link href={`/profile/${user.id}`}>
+                                        <p className="text-sm font-bold text-[var(--foreground)] truncate hover:underline cursor-pointer">
+                                          {user.name || 'Seeker'}
+                                        </p>
+                                      </Link>
+                                      <div className="flex items-center gap-2">
+                                        <span className="text-[10px] px-1.5 py-0.5 bg-[var(--background)] rounded text-theme-muted">{trait.trait}</span>
+                                        <p className="text-xs text-theme-muted truncate">{user.headline || 'Fellow traveler'}</p>
+                                      </div>
+                                      <p className="text-[10px] text-pink-500 font-medium">Already walks your path</p>
+                                    </div>
+                                    <Button
+                                      size="sm"
+                                      onClick={() => handleFollow(user.id)}
+                                      disabled={loadingFollow.has(user.id)}
+                                      className="text-xs"
+                                    >
+                                      {loadingFollow.has(user.id) ? (
+                                        <Loader2 className="w-3 h-3 animate-spin" />
+                                      ) : (
+                                        <>
+                                          <Link2 className="w-3 h-3 mr-1" />
+                                          Connect
+                                        </>
+                                      )}
+                                    </Button>
+                                  </div>
+                                )
+                              })}
+                            </div>
+                          </CardContent>
+                        </Card>
+                      )}
+
+                      {/* New Paths to Explore */}
+                      <Card className="border border-[var(--border)]">
+                        <CardContent className="p-4">
+                          <div className="flex items-center justify-between mb-4">
+                            <h3 className="text-sm font-black flex items-center gap-2">
+                              <Compass className="w-4 h-4 text-emerald-500" />
+                              New Paths to Explore
+                            </h3>
+                            <button
+                              onClick={() => setActiveView('discover')}
+                              className="text-xs text-theme-primary font-bold hover:underline"
+                            >
+                              Seek All
+                            </button>
+                          </div>
+                          <div className="grid sm:grid-cols-2 gap-3">
+                            {allUsers
+                              .filter(u => !followingIds.has(u.id) && !followerIds.has(u.id) && u.id !== session?.user?.id)
+                              .slice(0, 4)
+                              .map((user) => {
+                                const trait = getArchetypeTrait(user.guardianArchetype)
+                                return (
+                                  <div key={user.id} className="flex items-center gap-3 p-3 bg-[var(--muted)] rounded-xl border border-[var(--border)]">
+                                    <Link href={`/profile/${user.id}`}>
+                                      <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${trait.gradient} flex items-center justify-center overflow-hidden cursor-pointer hover:ring-2 ring-theme-primary transition-all`}>
+                                        {user.image ? (
+                                          <img src={user.image} alt="" className="w-full h-full object-cover" />
+                                        ) : (
+                                          <span className="text-white font-bold">{(user.name || 'U')[0]}</span>
+                                        )}
+                                      </div>
+                                    </Link>
+                                    <div className="flex-1 min-w-0">
+                                      <Link href={`/profile/${user.id}`}>
+                                        <p className="text-sm font-bold text-[var(--foreground)] truncate hover:underline cursor-pointer">
+                                          {user.name || 'Seeker'}
+                                        </p>
+                                      </Link>
+                                      <span className="text-[10px] px-1.5 py-0.5 bg-[var(--background)] rounded text-theme-muted">{trait.trait}</span>
+                                    </div>
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={() => handleFollow(user.id)}
+                                      disabled={loadingFollow.has(user.id)}
+                                      className="text-xs px-2"
+                                    >
+                                      {loadingFollow.has(user.id) ? (
+                                        <Loader2 className="w-3 h-3 animate-spin" />
+                                      ) : (
+                                        <UserPlus className="w-3 h-3" />
+                                      )}
+                                    </Button>
+                                  </div>
+                                )
+                              })}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </>
                   )}
                 </div>
 
-                {primaryView === 'directory' && (
-                  <button
-                    onClick={() => setShowFilters(!showFilters)}
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-cyan-900/20 border border-cyan-800/30 text-cyan-300 hover:border-cyan-600/60 transition-all"
-                  >
-                    <Filter className="w-3.5 h-3.5" />
-                    Filters
-                    {hasActiveFilters && (
-                      <span className="ml-1 px-1.5 py-0.5 bg-cyan-500 text-[#0A1628] rounded-full text-[9px] font-black">
-                        {[locationFilter, ...skillsFilter, ...interestsFilter].filter(Boolean).length}
-                      </span>
-                    )}
-                  </button>
-                )}
-
-                {primaryView === 'fishbowl' && (
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-                    className="px-3 py-2 rounded-xl text-xs font-bold border border-cyan-800/30 bg-cyan-900/20 text-cyan-300"
-                  >
-                    <option value="newest">Newest</option>
-                    <option value="popular">Most Popular</option>
-                    <option value="alphabetical">A-Z</option>
-                  </select>
-                )}
-              </div>
-
-              {/* Directory filters panel */}
-              <AnimatePresence>
-                {showFilters && primaryView === 'directory' && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3, ease: 'easeInOut' }}
-                    className="overflow-hidden"
-                  >
-                    <div className="grid sm:grid-cols-3 gap-4 p-4 rounded-xl border border-cyan-800/30 bg-cyan-900/20 backdrop-blur-sm">
-                      {/* Location */}
-                      <div>
-                        <label className="flex items-center gap-1 text-xs font-bold text-cyan-300 mb-2">
-                          <MapPin className="w-3 h-3" />
-                          LOCATION
-                        </label>
-                        <input
-                          type="text"
-                          value={locationFilter}
-                          onChange={(e) => { setLocationFilter(e.target.value); setDirectoryPage(1) }}
-                          placeholder="e.g., San Francisco"
-                          className="w-full px-3 py-2 rounded-lg bg-[#0A1628] border border-cyan-800/30 text-cyan-100 placeholder:text-cyan-700 focus:outline-none focus:border-cyan-600/60 transition-colors text-sm"
-                        />
-                      </div>
-
-                      {/* Skills */}
-                      <div>
-                        <label className="flex items-center gap-1 text-xs font-bold text-cyan-300 mb-2">
-                          <Briefcase className="w-3 h-3" />
-                          SKILLS
-                        </label>
-                        <div className="flex flex-wrap gap-1 mb-2">
-                          {skillsFilter.map((skill) => (
-                            <span key={skill} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-cyan-600 text-white text-[10px] font-bold">
-                              {skill}
-                              <button onClick={() => { setSkillsFilter(s => s.filter(x => x !== skill)); setDirectoryPage(1) }}>
-                                <X className="w-2.5 h-2.5" />
-                              </button>
-                            </span>
-                          ))}
-                        </div>
-                        <div className="flex gap-1">
-                          <input
-                            type="text"
-                            value={newSkill}
-                            onChange={(e) => setNewSkill(e.target.value)}
-                            onKeyDown={(e) => e.key === 'Enter' && addSkillFilter()}
-                            placeholder="Add skill"
-                            className="flex-1 px-3 py-1.5 rounded-lg bg-[#0A1628] border border-cyan-800/30 text-cyan-100 placeholder:text-cyan-700 focus:outline-none focus:border-cyan-600/60 text-xs"
-                          />
-                          <button onClick={addSkillFilter} className="text-xs h-7 px-2 rounded-lg bg-cyan-800/40 text-cyan-300 hover:bg-cyan-700/40 font-bold">+</button>
-                        </div>
-                      </div>
-
-                      {/* Interests */}
-                      <div>
-                        <label className="flex items-center gap-1 text-xs font-bold text-cyan-300 mb-2">
-                          <Sparkles className="w-3 h-3" />
-                          INTERESTS
-                        </label>
-                        <div className="flex flex-wrap gap-1 mb-2">
-                          {interestsFilter.map((interest) => (
-                            <span key={interest} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-cyan-500 text-cyan-300 text-[10px] font-bold">
-                              {interest}
-                              <button onClick={() => { setInterestsFilter(i => i.filter(x => x !== interest)); setDirectoryPage(1) }}>
-                                <X className="w-2.5 h-2.5" />
-                              </button>
-                            </span>
-                          ))}
-                        </div>
-                        <div className="flex gap-1">
-                          <input
-                            type="text"
-                            value={newInterest}
-                            onChange={(e) => setNewInterest(e.target.value)}
-                            onKeyDown={(e) => e.key === 'Enter' && addInterestFilter()}
-                            placeholder="Add interest"
-                            className="flex-1 px-3 py-1.5 rounded-lg bg-[#0A1628] border border-cyan-800/30 text-cyan-100 placeholder:text-cyan-700 focus:outline-none focus:border-cyan-600/60 text-xs"
-                          />
-                          <button onClick={addInterestFilter} className="text-xs h-7 px-2 rounded-lg bg-cyan-800/40 text-cyan-300 hover:bg-cyan-700/40 font-bold">+</button>
-                        </div>
-                      </div>
-                    </div>
-
-                    {hasActiveFilters && (
-                      <div className="flex justify-end mt-2">
+                {/* Sidebar - Sacred Actions */}
+                <div className="space-y-4">
+                  {/* Quick Actions */}
+                  <Card className="border border-[var(--border)]">
+                    <CardContent className="p-4">
+                      <h3 className="text-sm font-black mb-3">Explore</h3>
+                      <div className="space-y-2">
                         <button
-                          onClick={clearAllFilters}
-                          className="text-xs font-bold text-cyan-500/70 hover:text-cyan-300 transition-colors"
+                          onClick={() => setActiveView('tree')}
+                          className="w-full flex items-center gap-3 p-3 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white rounded-xl hover:opacity-90 transition-opacity"
                         >
-                          Clear all filters
+                          <Orbit className="w-5 h-5" />
+                          <div className="text-left">
+                            <p className="text-sm font-bold">View Constellation</p>
+                            <p className="text-xs opacity-80">See your threads of connection</p>
+                          </div>
+                          <ChevronRight className="w-4 h-4 ml-auto" />
+                        </button>
+                        <button
+                          onClick={() => setActiveView('discover')}
+                          className="w-full flex items-center gap-3 p-3 bg-[var(--muted)] rounded-xl hover:bg-[color-mix(in_srgb,var(--muted)_80%,var(--primary))] transition-colors border border-[var(--border)]"
+                        >
+                          <Compass className="w-5 h-5 text-emerald-500" />
+                          <div className="text-left">
+                            <p className="text-sm font-bold">Seek New Paths</p>
+                            <p className="text-xs text-theme-muted">Find kindred spirits</p>
+                          </div>
+                          <ChevronRight className="w-4 h-4 ml-auto text-theme-muted" />
                         </button>
                       </div>
-                    )}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </div>
-        </section>
+                    </CardContent>
+                  </Card>
 
-        {/* Content */}
-        <section className="pb-16">
-          <div className="container mx-auto px-4 sm:px-6">
-            <div className="max-w-6xl mx-auto">
-              <AnimatePresence mode="wait">
-                {/* ============================================ */}
-                {/* NETWORK VIEW */}
-                {/* ============================================ */}
-                {primaryView === 'fishbowl' && (
-                  <motion.div
-                    key="network-view"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.4, ease: 'easeOut' }}
-                  >
-                    {/* Pending requests tab */}
-                    {networkTab === 'pending' ? (
-                      <div>
-                        {pendingRequests.length === 0 ? (
-                          <EmptyState
-                            icon={<Clock className="w-12 h-12" />}
-                            title="No pending requests"
-                            message="When someone sends you a connection request, it will appear here."
-                          />
-                        ) : (
-                          <LayoutGroup>
-                            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                              <AnimatePresence>
-                                {pendingRequests.map((request, i) => (
-                                  <PendingRequestCard
-                                    key={request.id}
-                                    request={request}
-                                    onAccept={handleAcceptRequest}
-                                    onReject={handleRejectRequest}
-                                    isProcessing={processingRequestId === request.id}
-                                    index={i}
-                                  />
-                                ))}
-                              </AnimatePresence>
-                            </div>
-                          </LayoutGroup>
-                        )}
-                      </div>
-                    ) : isLoading ? (
-                      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {[...Array(6)].map((_, i) => (
-                          <AquaticCardSkeleton key={i} index={i} />
-                        ))}
-                      </div>
-                    ) : networkUsers.length === 0 ? (
-                      <EmptyState
-                        icon={
-                          networkTab === 'suggestions'
-                            ? <Compass className="w-12 h-12" />
-                            : <Fish className="w-12 h-12" />
-                        }
-                        title={
-                          searchQuery
-                            ? 'No fish found'
-                            : networkTab === 'following'
-                              ? 'Not following anyone yet'
-                              : networkTab === 'followers'
-                                ? 'No followers yet'
-                                : networkTab === 'mutual'
-                                  ? 'No mutual connections'
-                                  : networkTab === 'suggestions'
-                                    ? 'No suggestions right now'
-                                    : 'Your fishbowl is empty'
-                        }
-                        message={
-                          searchQuery
-                            ? 'Try a different search term'
-                            : 'Start discovering people in the Directory view!'
-                        }
-                        action={
-                          !searchQuery && (
-                            <button
-                              onClick={() => handleViewChange('directory')}
-                              className="font-bold mt-3 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white text-sm hover:from-cyan-500 hover:to-blue-500 transition-all flex items-center gap-2"
-                            >
-                              <Globe className="w-4 h-4" />
-                              Browse Directory
-                            </button>
-                          )
-                        }
-                      />
-                    ) : (
-                      <LayoutGroup>
-                        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                          <AnimatePresence mode="popLayout">
-                            {networkUsers.map((user, i) => (
-                              <AquaticUserCard
-                                key={user.id}
-                                user={user}
-                                isFollowing={followingIds.has(user.id)}
-                                isFollowingMe={followerIds.has(user.id)}
-                                isLoadingFollow={loadingFollowId === user.id}
-                                onFollow={handleFollow}
-                                onMessage={handleMessage}
-                                isLoggedIn={!!session}
-                                index={i}
-                              />
-                            ))}
-                          </AnimatePresence>
-                        </div>
-                      </LayoutGroup>
-                    )}
-                  </motion.div>
-                )}
-
-                {/* ============================================ */}
-                {/* DIRECTORY VIEW */}
-                {/* ============================================ */}
-                {primaryView === 'directory' && (
-                  <motion.div
-                    key="directory-view"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 20 }}
-                    transition={{ duration: 0.4, ease: 'easeOut' }}
-                  >
-                    {/* Results count */}
-                    <div className="mb-4 flex items-center justify-between">
-                      <p className="text-xs font-bold text-cyan-500/70">
-                        {directoryTotal} member{directoryTotal !== 1 ? 's' : ''}
-                        {hasActiveFilters && ' matching filters'}
-                      </p>
-                    </div>
-
-                    {isDirectoryLoading ? (
-                      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {[...Array(9)].map((_, i) => (
-                          <AquaticCardSkeleton key={i} index={i} />
-                        ))}
-                      </div>
-                    ) : directoryUsers.length === 0 ? (
-                      <EmptyState
-                        icon={<Fish className="w-12 h-12" />}
-                        title={hasActiveFilters ? 'No fish found' : 'No members yet'}
-                        message={hasActiveFilters ? 'Try adjusting your filters' : 'Be the first to join the fishbowl!'}
-                        action={
-                          hasActiveFilters && (
-                            <button
-                              onClick={clearAllFilters}
-                              className="font-bold mt-3 px-4 py-2 rounded-xl bg-cyan-900/30 text-cyan-300 border border-cyan-700/40 text-sm hover:border-cyan-600/60 transition-all"
-                            >
-                              Clear Filters
-                            </button>
-                          )
-                        }
-                      />
-                    ) : (
-                      <>
-                        <LayoutGroup>
-                          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <AnimatePresence mode="popLayout">
-                              {directoryUsers.map((user, i) => (
-                                <AquaticUserCard
-                                  key={user.id}
-                                  user={user}
-                                  isFollowing={followingIds.has(user.id)}
-                                  isFollowingMe={followerIds.has(user.id)}
-                                  isLoadingFollow={loadingFollowId === user.id}
-                                  onFollow={handleFollow}
-                                  onMessage={handleMessage}
-                                  isLoggedIn={!!session}
-                                  index={i}
-                                />
-                              ))}
-                            </AnimatePresence>
+                  {/* Tapestry Threads */}
+                  {session?.user && (
+                    <Card className="border border-[var(--border)]">
+                      <CardContent className="p-4">
+                        <h3 className="text-sm font-black mb-3 flex items-center gap-2">
+                          <Flame className="w-4 h-4 text-amber-500" />
+                          Tapestry Threads
+                        </h3>
+                        <div className="space-y-3">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs text-theme-muted">Total Threads</span>
+                            <span className="text-sm font-bold">{followingUsers.length + followers.length}</span>
                           </div>
-                        </LayoutGroup>
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs text-theme-muted">Kindred Spirits</span>
+                            <span className="text-sm font-bold text-emerald-500">{mutualCount}</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs text-theme-muted">Walking With</span>
+                            <span className="text-sm font-bold text-blue-500">{followingUsers.length}</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs text-theme-muted">Fellow Travelers</span>
+                            <span className="text-sm font-bold text-pink-500">{followers.length}</span>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+                </div>
+              </div>
+            ) : activeView === 'tree' ? (
+              /* Tree Map View */
+              <NetworkTreeMap
+                currentUserId={session?.user?.id || null}
+                followingUsers={followingUsers}
+                followers={followers}
+                followingIds={followingIds}
+                followerIds={followerIds}
+                onFollow={handleFollow}
+                loadingFollow={loadingFollow}
+              />
+            ) : (
+              /* List Views (Following, Followers, Discover) */
+              <div className="space-y-4">
+                {/* Search */}
+                <div className="flex gap-3">
+                  <div className="flex-1 relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-theme-muted" />
+                    <input
+                      type="text"
+                      placeholder="Search by name, location, or bio..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-[var(--border)] bg-[var(--background)] text-sm focus:border-theme-primary focus:outline-none"
+                    />
+                  </div>
+                </div>
 
-                        {/* Pagination */}
-                        {directoryTotalPages > 1 && (
-                          <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="flex items-center justify-center gap-2 mt-10"
-                          >
-                            <button
-                              onClick={() => setDirectoryPage(p => Math.max(1, p - 1))}
-                              disabled={directoryPage === 1}
-                              className="flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-bold bg-cyan-900/20 border border-cyan-800/30 text-cyan-300 hover:border-cyan-600/60 transition-all disabled:opacity-40"
-                            >
-                              <ChevronLeft className="w-3.5 h-3.5" />
-                              Prev
-                            </button>
-
-                            <div className="flex gap-1">
-                              {generatePageNumbers(directoryPage, directoryTotalPages).map((page, i) => (
-                                page === '...' ? (
-                                  <span key={`dots-${i}`} className="px-2 py-1 text-xs text-cyan-600">
-                                    ...
-                                  </span>
-                                ) : (
-                                  <button
-                                    key={page}
-                                    onClick={() => setDirectoryPage(page as number)}
-                                    className={`w-8 h-8 rounded-lg text-xs font-bold transition-all duration-300 ${
-                                      directoryPage === page
-                                        ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg shadow-cyan-900/30'
-                                        : 'text-cyan-500/70 hover:bg-cyan-900/30'
-                                    }`}
-                                  >
-                                    {page}
-                                  </button>
-                                )
-                              ))}
-                            </div>
-
-                            <button
-                              onClick={() => setDirectoryPage(p => Math.min(directoryTotalPages, p + 1))}
-                              disabled={directoryPage === directoryTotalPages}
-                              className="flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-bold bg-cyan-900/20 border border-cyan-800/30 text-cyan-300 hover:border-cyan-600/60 transition-all disabled:opacity-40"
-                            >
-                              Next
-                              <ChevronRight className="w-3.5 h-3.5" />
-                            </button>
-                          </motion.div>
-                        )}
-                      </>
-                    )}
-                  </motion.div>
+                {/* Results */}
+                {getListUsers(activeView as 'following' | 'followers' | 'discover').length === 0 ? (
+                  <Card className="border-2 border-dashed border-[var(--border)] bg-gradient-to-br from-[var(--card)] to-[var(--muted)]/30">
+                    <CardContent className="p-8 text-center">
+                      {activeView === 'following' && <Footprints className="w-12 h-12 text-blue-400/50 mx-auto mb-3" />}
+                      {activeView === 'followers' && <Heart className="w-12 h-12 text-pink-400/50 mx-auto mb-3" />}
+                      {activeView === 'discover' && <Compass className="w-12 h-12 text-emerald-400/50 mx-auto mb-3" />}
+                      <h3 className="text-lg font-black mb-2 text-[var(--foreground)]">
+                        {activeView === 'following' && 'No paths walked yet'}
+                        {activeView === 'followers' && 'No travelers found you yet'}
+                        {activeView === 'discover' && 'All paths explored'}
+                      </h3>
+                      <p className="text-sm text-theme-muted">
+                        {activeView === 'following' && 'Find kindred spirits to walk with'}
+                        {activeView === 'followers' && 'Share your journey to attract fellow travelers'}
+                        {activeView === 'discover' && "You've connected with everyone in the community"}
+                      </p>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {getListUsers(activeView as 'following' | 'followers' | 'discover').map((user) => (
+                      <UserPreviewCard
+                        key={user.id}
+                        user={user}
+                        isFollowing={followingIds.has(user.id)}
+                        isFollowingMe={followerIds.has(user.id)}
+                        isLoadingFollow={loadingFollow.has(user.id)}
+                        onFollow={handleFollow}
+                        onMessage={(userId) => router.push(`/messages?user=${userId}`)}
+                        isLoggedIn={!!session?.user}
+                        variant="full"
+                      />
+                    ))}
+                  </div>
                 )}
-              </AnimatePresence>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+// Constellation View - Visual network as stars
+function NetworkTreeMap({
+  currentUserId,
+  followingUsers,
+  followers,
+  followingIds,
+  followerIds,
+  onFollow,
+  loadingFollow,
+}: {
+  currentUserId: string | null
+  followingUsers: UserProfile[]
+  followers: UserProfile[]
+  followingIds: Set<string>
+  followerIds: Set<string>
+  onFollow: (userId: string) => void
+  loadingFollow: Set<string>
+}) {
+  const router = useRouter()
+
+  if (!currentUserId) {
+    return (
+      <Card className="border-2 border-[var(--primary)]/30 bg-gradient-to-br from-[var(--card)] to-[var(--muted)]">
+        <CardContent className="p-8 text-center">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center">
+            <Orbit className="w-8 h-8 text-white" />
+          </div>
+          <h3 className="text-xl font-black mb-2">Sign In to View Your Constellation</h3>
+          <p className="text-sm text-theme-muted mb-4">
+            See the connections that form your network
+          </p>
+          <Link href="/auth/signin">
+            <Button className="font-bold">
+              Sign In <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          </Link>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  // Get connection types
+  const mutualConnections = followingUsers.filter(u => followerIds.has(u.id))
+  const onlyFollowing = followingUsers.filter(u => !followerIds.has(u.id))
+  const onlyFollowers = followers.filter(f => !followingIds.has(f.id))
+
+  return (
+    <div className="space-y-6">
+      {/* Connection Thread Legend */}
+      <div className="flex flex-wrap items-center justify-center gap-6 py-4">
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 ring-2 ring-emerald-300/30" />
+          <span className="text-xs font-medium text-theme-muted">Kindred ({mutualConnections.length})</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 ring-2 ring-blue-300/30" />
+          <span className="text-xs font-medium text-theme-muted">Walking With ({onlyFollowing.length})</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 ring-2 ring-pink-300/30" />
+          <span className="text-xs font-medium text-theme-muted">Fellow Travelers ({onlyFollowers.length})</span>
+        </div>
+      </div>
+
+      {/* Constellation Visualization */}
+      <div className="relative">
+        {/* Center Star - You */}
+        <div className="flex flex-col items-center mb-8">
+          <div className="relative">
+            {/* Orbital rings effect */}
+            <div className="absolute inset-0 -m-4 rounded-full border border-[var(--primary)]/20 animate-pulse" />
+            <div className="absolute inset-0 -m-8 rounded-full border border-[var(--accent)]/10" />
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center text-white font-black text-lg shadow-xl ring-4 ring-white/20 relative z-10">
+              <span className="text-2xl">✦</span>
             </div>
           </div>
-        </section>
+          <p className="text-sm font-bold mt-4 text-[var(--foreground)]">Your Center</p>
+          <p className="text-xs text-theme-muted">{followingUsers.length + followers.length} threads woven</p>
+        </div>
+
+        {/* Connection Branches */}
+        <div className="grid md:grid-cols-3 gap-6">
+          {/* Kindred Spirits Branch */}
+          <div className="space-y-4">
+            <div className="text-center">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
+                <Link2 className="w-4 h-4 text-emerald-500" />
+                <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">
+                  Kindred
+                </span>
+              </div>
+              <div className="w-px h-6 bg-gradient-to-b from-emerald-500/50 to-transparent mx-auto" />
+            </div>
+            <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2 scrollbar-thin">
+              {mutualConnections.map((user, idx) => (
+                <TreeNode
+                  key={user.id}
+                  user={user}
+                  type="mutual"
+                  delay={idx * 100}
+                  onFollow={onFollow}
+                  isLoadingFollow={loadingFollow.has(user.id)}
+                  onViewProfile={() => router.push(`/profile/${user.id}`)}
+                />
+              ))}
+              {mutualConnections.length === 0 && (
+                <div className="text-center py-6 text-theme-muted">
+                  <Star className="w-6 h-6 mx-auto mb-2 opacity-30" />
+                  <p className="text-xs">No kindred spirits yet</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Walking With Branch */}
+          <div className="space-y-4">
+            <div className="text-center">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-500/20 rounded-full">
+                <Footprints className="w-4 h-4 text-blue-500" />
+                <span className="text-sm font-bold text-blue-600 dark:text-blue-400">
+                  Walking With
+                </span>
+              </div>
+              <div className="w-px h-6 bg-gradient-to-b from-blue-500/50 to-transparent mx-auto" />
+            </div>
+            <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2 scrollbar-thin">
+              {onlyFollowing.map((user, idx) => (
+                <TreeNode
+                  key={user.id}
+                  user={user}
+                  type="following"
+                  delay={idx * 100}
+                  onFollow={onFollow}
+                  isLoadingFollow={loadingFollow.has(user.id)}
+                  onViewProfile={() => router.push(`/profile/${user.id}`)}
+                />
+              ))}
+              {onlyFollowing.length === 0 && (
+                <div className="text-center py-6 text-theme-muted">
+                  <Footprints className="w-6 h-6 mx-auto mb-2 opacity-30" />
+                  <p className="text-xs">Find paths to walk</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Fellow Travelers Branch */}
+          <div className="space-y-4">
+            <div className="text-center">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-pink-500/10 border border-pink-500/20 rounded-full">
+                <Heart className="w-4 h-4 text-pink-500" />
+                <span className="text-sm font-bold text-pink-600 dark:text-pink-400">
+                  Fellow Travelers
+                </span>
+              </div>
+              <div className="w-px h-6 bg-gradient-to-b from-pink-500/50 to-transparent mx-auto" />
+            </div>
+            <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2 scrollbar-thin">
+              {onlyFollowers.map((user, idx) => (
+                <TreeNode
+                  key={user.id}
+                  user={user}
+                  type="follower"
+                  delay={idx * 100}
+                  onFollow={onFollow}
+                  isLoadingFollow={loadingFollow.has(user.id)}
+                  onViewProfile={() => router.push(`/profile/${user.id}`)}
+                />
+              ))}
+              {onlyFollowers.length === 0 && (
+                <div className="text-center py-6 text-theme-muted">
+                  <Heart className="w-6 h-6 mx-auto mb-2 opacity-30" />
+                  <p className="text-xs">Share your journey</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )
 }
 
-// ============================================
-// HELPERS
-// ============================================
+// Tree Node Component - Connection Card
+function TreeNode({
+  user,
+  type,
+  delay,
+  onFollow,
+  isLoadingFollow,
+  onViewProfile,
+}: {
+  user: UserProfile
+  type: 'mutual' | 'following' | 'follower'
+  delay: number
+  onFollow: (userId: string) => void
+  isLoadingFollow: boolean
+  onViewProfile: () => void
+}) {
+  const trait = getArchetypeTrait(user.guardianArchetype)
+  const typeColors = {
+    mutual: 'border-l-emerald-500',
+    following: 'border-l-blue-500',
+    follower: 'border-l-pink-500',
+  }
 
-function generatePageNumbers(current: number, total: number): (number | string)[] {
-  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1)
+  return (
+    <div
+      className={`flex items-center gap-3 p-3 bg-[var(--card)] border border-[var(--border)] border-l-4 ${typeColors[type]} rounded-xl hover:shadow-lg hover:bg-[var(--muted)]/50 transition-all cursor-pointer group`}
+      style={{ animationDelay: `${delay}ms` }}
+      onClick={onViewProfile}
+    >
+      {/* Avatar with archetype gradient */}
+      <div className={`w-11 h-11 rounded-full bg-gradient-to-br ${trait.gradient} flex items-center justify-center overflow-hidden flex-shrink-0 ring-2 ring-white/20`}>
+        {user.image ? (
+          <img src={user.image} alt="" className="w-full h-full object-cover" />
+        ) : (
+          <span className="text-white font-bold text-lg">{(user.name || 'U')[0]}</span>
+        )}
+      </div>
 
-  const pages: (number | string)[] = [1]
+      {/* Info */}
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-bold text-[var(--foreground)] truncate group-hover:underline">
+          {user.name || 'Seeker'}
+        </p>
+        <div className="flex items-center gap-2">
+          <span className="text-[10px] px-1.5 py-0.5 bg-[var(--muted)] rounded text-theme-muted">{trait.trait}</span>
+          <span className="text-[10px] text-theme-muted">{user._count.followers} connected</span>
+        </div>
+      </div>
 
-  if (current > 3) pages.push('...')
-
-  const start = Math.max(2, current - 1)
-  const end = Math.min(total - 1, current + 1)
-
-  for (let i = start; i <= end; i++) pages.push(i)
-
-  if (current < total - 2) pages.push('...')
-
-  pages.push(total)
-
-  return pages
+      {/* Action */}
+      {type === 'follower' && (
+        <Button
+          size="sm"
+          onClick={(e) => {
+            e.stopPropagation()
+            onFollow(user.id)
+          }}
+          disabled={isLoadingFollow}
+          className="text-xs"
+        >
+          {isLoadingFollow ? (
+            <Loader2 className="w-3 h-3 animate-spin" />
+          ) : (
+            <>
+              <Link2 className="w-3 h-3 mr-1" />
+              Connect
+            </>
+          )}
+        </Button>
+      )}
+      {type === 'following' && (
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={(e) => {
+            e.stopPropagation()
+            window.location.href = `/messages?user=${user.id}`
+          }}
+          className="text-xs"
+        >
+          <MessageCircle className="w-3 h-3" />
+        </Button>
+      )}
+      {type === 'mutual' && (
+        <div className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center">
+          <Star className="w-3 h-3 text-emerald-500" />
+        </div>
+      )}
+    </div>
+  )
 }
