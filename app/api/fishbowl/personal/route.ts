@@ -55,7 +55,7 @@ export async function GET() {
     })
 
     // Tag each connection with their relationship
-    const taggedConnections = connections.map(u => ({
+    const taggedConnections = connections.map((u: { id: string; name: string | null; stockScore: number | null; image: string | null }) => ({
       ...u,
       isMutual: mutualIds.includes(u.id),
       isFollowing: followingIds.has(u.id),
