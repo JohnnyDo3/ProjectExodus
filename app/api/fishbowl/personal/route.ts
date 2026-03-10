@@ -30,8 +30,8 @@ export async function GET() {
       }),
     ])
 
-    const followingIds = new Set(following.map(f => f.followingId))
-    const followerIds = new Set(followers.map(f => f.followerId))
+    const followingIds = new Set(following.map((f: { followingId: string }) => f.followingId))
+    const followerIds = new Set(followers.map((f: { followerId: string }) => f.followerId))
 
     // Mutual connections: people user follows AND who follow user back
     const mutualIds = [...followingIds].filter(id => followerIds.has(id))
