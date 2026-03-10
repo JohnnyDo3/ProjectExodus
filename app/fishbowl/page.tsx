@@ -93,7 +93,7 @@ export default function FishbowlPage() {
                 <Fish className="w-5 h-5 text-cyan-400" />
               </div>
               <div>
-                <h1 className="text-xl font-black text-cyan-100">MY FISHBOWL</h1>
+                <h1 className="text-xl font-black text-cyan-100">MY TANK</h1>
                 <p className="text-xs font-medium text-cyan-500/80">
                   Your personal aquarium · {fishbowlUsers.length} fish swimming
                 </p>

@@ -100,7 +100,7 @@ export function PersonalFishbowl() {
             ? 'bg-cyan-500/20 text-cyan-500'
             : 'hover:bg-[var(--muted)] text-[var(--foreground)]'
         }`}
-        title="My Fishbowl"
+        title="My Tank"
       >
         <Fish className="w-5 h-5" />
         {/* Connection count badge */}
@@ -123,7 +123,7 @@ export function PersonalFishbowl() {
           <div className="flex items-center justify-between px-4 py-3 border-b border-cyan-800/40 bg-gradient-to-r from-[#0D2137] via-[#123855] to-[#0D2137]">
             <div className="flex items-center gap-2">
               <Fish className="w-4 h-4 text-cyan-400" />
-              <span className="text-sm font-black text-cyan-100">MY FISHBOWL</span>
+              <span className="text-sm font-black text-cyan-100">MY TANK</span>
             </div>
             <div className="flex items-center gap-2">
               <Link
