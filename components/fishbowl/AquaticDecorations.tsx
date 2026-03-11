@@ -508,8 +508,15 @@ const MINIMAL_DECOR: DecoConfig = {
     { x: 650, y: 82, variant: 'small', color: '#78716C' },
   ],
   kelps: [
-    { x: 100, height: 35, variant: 'thin', color: '#388E3C', delay: 0 },
-    { x: 500, height: 40, variant: 'thin', color: '#388E3C', delay: 1 },
+    { x: 40, height: 50, variant: 'bushy', color: '#2E7D32', delay: 0 },
+    { x: 120, height: 45, variant: 'wide', color: '#388E3C', delay: 0.6 },
+    { x: 200, height: 55, variant: 'bushy', color: '#1B5E20', delay: 1.2 },
+    { x: 300, height: 40, variant: 'thin', color: '#388E3C', delay: 0.3 },
+    { x: 380, height: 50, variant: 'wide', color: '#2E7D32', delay: 1.8 },
+    { x: 470, height: 55, variant: 'bushy', color: '#388E3C', delay: 0.9 },
+    { x: 560, height: 45, variant: 'wide', color: '#1B5E20', delay: 1.5 },
+    { x: 650, height: 50, variant: 'bushy', color: '#2E7D32', delay: 0.4 },
+    { x: 740, height: 40, variant: 'wide', color: '#388E3C', delay: 2.0 },
   ],
   corals: [],
   bubbles: [
