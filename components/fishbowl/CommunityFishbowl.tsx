@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Fish, Users, ChevronDown, Eye, EyeOff } from 'lucide-react'
+import { Fish, Eye, EyeOff } from 'lucide-react'
 import Link from 'next/link'
 import { Fishbowl } from './Fishbowl'
 import { FishSVG, getTierFromScore, getTierName, type FishCustomization } from './FishSpecies'
@@ -145,10 +145,10 @@ export function CommunityFishbowl() {
           </div>
         </div>
 
-        {/* The fishbowl — fills the viewport below the lid */}
-        <div className="absolute inset-0 pt-20">
+        {/* The fishbowl — fills the viewport below the lid, above the base */}
+        <div className="absolute inset-0 pt-20 pb-16">
           {users.length > 0 ? (
-            <Fishbowl users={users} maxVisible={15} />
+            <Fishbowl users={users} maxVisible={15} squareCorners />
           ) : (
             <div
               className="w-full h-full flex items-center justify-center"
@@ -163,35 +163,34 @@ export function CommunityFishbowl() {
           )}
         </div>
 
-        {/* Fish stats bar at bottom of viewport */}
-        {users.length > 0 && (
-          <div className="absolute bottom-16 left-0 right-0 z-20">
-            <div className="container mx-auto px-4">
-              <div className="flex items-center justify-center gap-3 flex-wrap">
-                {([0, 1, 2, 3, 4, 5] as const).map(tier => {
-                  const count = users.filter(u => getTierFromScore(u.stockScore) === tier).length
-                  if (count === 0) return null
-                  return (
-                    <div
-                      key={tier}
-                      className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0A1628]/70 backdrop-blur-sm border border-cyan-800/30"
-                    >
-                      <FishSVG tier={tier} size={14} />
-                      <span className="text-[9px] font-bold text-cyan-400">{count}</span>
-                      <span className="text-[8px] text-cyan-600">{getTierName(tier)}</span>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          </div>
-        )}
+        {/* === BLACK BASE with fish type stats built in === */}
+        <div className="absolute bottom-0 left-0 right-0 z-30 h-16 bg-black border-t-2 border-gray-800">
+          {/* Base surface texture */}
+          <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-black to-gray-950" />
+          {/* Top rim highlight where glass meets base */}
+          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-gray-600/50 to-transparent" />
 
-        {/* Explore Network prompt at very bottom of viewport */}
-        <div className="absolute bottom-0 left-0 right-0 z-20 h-14 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/60 to-transparent flex items-end justify-center pb-2">
-          <div className="flex flex-col items-center gap-0.5">
-            <span className="text-[10px] font-bold text-theme-muted uppercase tracking-wider">Explore Network</span>
-            <ChevronDown className="w-4 h-4 text-theme-muted animate-bounce" />
+          {/* Fish type counts */}
+          <div className="relative z-10 h-full flex items-center justify-center">
+            <div className="flex items-center gap-4 flex-wrap justify-center px-4">
+              {([0, 1, 2, 3, 4, 5] as const).map(tier => {
+                const tierCount = users.filter(u => getTierFromScore(u.stockScore) === tier).length
+                return (
+                  <div
+                    key={tier}
+                    className="flex items-center gap-1.5"
+                  >
+                    <FishSVG tier={tier} size={16} id={`base-tier-${tier}`} />
+                    <span className={`text-xs font-black ${tierCount > 0 ? 'text-cyan-300' : 'text-gray-600'}`}>
+                      {tierCount}
+                    </span>
+                    <span className={`text-[9px] font-bold ${tierCount > 0 ? 'text-cyan-500/70' : 'text-gray-700'}`}>
+                      {getTierName(tier)}
+                    </span>
+                  </div>
+                )
+              })}
+            </div>
           </div>
         </div>
       </div>
