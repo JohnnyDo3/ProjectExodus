@@ -1,6 +1,6 @@
 'use client'
 
-import { memo, useMemo } from 'react'
+import { memo, useMemo, type ReactNode } from 'react'
 
 // Aquatic decorations for the fishbowl — split into background and foreground
 // layers so fish can swim between them for depth.
@@ -18,28 +18,33 @@ export const SandyBottom = memo(({ color = '#C4A862', lighter = '#D4B872', detai
   lighter?: string
   detail?: string
 }) => (
-  <svg className="absolute bottom-0 left-0 w-full" height="80" preserveAspectRatio="none" viewBox="0 0 800 80" shapeRendering="crispEdges">
-    <rect x="0" y="20" width="800" height="60" fill={color} />
-    <rect x="0" y="15" width="800" height="10" fill={lighter} />
-    <rect x="0" y="12" width="60" height="4" fill={lighter} />
-    <rect x="50" y="8" width="80" height="6" fill={lighter} />
-    <rect x="120" y="10" width="40" height="6" fill={lighter} />
-    <rect x="180" y="6" width="100" height="10" fill={lighter} />
-    <rect x="300" y="10" width="60" height="6" fill={lighter} />
-    <rect x="380" y="5" width="90" height="12" fill={lighter} />
-    <rect x="500" y="8" width="70" height="8" fill={lighter} />
-    <rect x="580" y="12" width="50" height="4" fill={lighter} />
-    <rect x="650" y="6" width="80" height="10" fill={lighter} />
-    <rect x="740" y="10" width="60" height="6" fill={lighter} />
+  <svg className="absolute bottom-0 left-0 w-full" height="140" preserveAspectRatio="none" viewBox="0 0 800 140" shapeRendering="crispEdges">
+    <rect x="0" y="30" width="800" height="110" fill={color} />
+    <rect x="0" y="22" width="800" height="14" fill={lighter} />
+    <rect x="0" y="18" width="60" height="6" fill={lighter} />
+    <rect x="50" y="12" width="80" height="8" fill={lighter} />
+    <rect x="120" y="14" width="40" height="8" fill={lighter} />
+    <rect x="180" y="8" width="100" height="14" fill={lighter} />
+    <rect x="300" y="14" width="60" height="8" fill={lighter} />
+    <rect x="380" y="6" width="90" height="16" fill={lighter} />
+    <rect x="500" y="10" width="70" height="12" fill={lighter} />
+    <rect x="580" y="16" width="50" height="6" fill={lighter} />
+    <rect x="650" y="8" width="80" height="14" fill={lighter} />
+    <rect x="740" y="14" width="60" height="8" fill={lighter} />
     {[30, 95, 150, 220, 290, 340, 420, 490, 560, 630, 710, 770].map((x, i) => (
-      <rect key={`grain-${i}`} x={x} y={22 + (i % 3) * 8} width="3" height="3" fill={detail} opacity="0.5" />
+      <rect key={`grain-${i}`} x={x} y={36 + (i % 3) * 12} width="4" height="4" fill={detail} opacity="0.5" />
     ))}
     {[60, 125, 200, 270, 350, 450, 530, 600, 680, 750].map((x, i) => (
-      <rect key={`grain2-${i}`} x={x} y={30 + (i % 4) * 6} width="2" height="2" fill={detail} opacity="0.4" />
+      <rect key={`grain2-${i}`} x={x} y={48 + (i % 4) * 10} width="3" height="3" fill={detail} opacity="0.4" />
     ))}
-    <rect x="110" y="24" width="4" height="3" fill="#E8D5B0" rx="1" />
-    <rect x="450" y="22" width="5" height="3" fill="#F0E0C0" rx="1" />
-    <rect x="690" y="26" width="4" height="3" fill="#E8D5B0" rx="1" />
+    {[45, 175, 310, 480, 620, 725].map((x, i) => (
+      <rect key={`grain3-${i}`} x={x} y={60 + (i % 3) * 14} width="3" height="3" fill={detail} opacity="0.3" />
+    ))}
+    <rect x="110" y="38" width="5" height="4" fill="#E8D5B0" rx="1" />
+    <rect x="450" y="34" width="6" height="4" fill="#F0E0C0" rx="1" />
+    <rect x="690" y="40" width="5" height="4" fill="#E8D5B0" rx="1" />
+    <rect x="260" y="44" width="4" height="3" fill="#F0E0C0" rx="1" />
+    <rect x="560" y="36" width="5" height="3" fill="#E8D5B0" rx="1" />
   </svg>
 ))
 SandyBottom.displayName = 'SandyBottom'
@@ -98,9 +103,9 @@ export const Kelp = memo(({ x, height = 60, variant = 'thin', color = '#2E7D32',
         <>
           {Array.from({ length: Math.floor(height / 6) }, (_, i) => (
             <g key={i}>
-              <rect x={x + (i % 2 === 0 ? 0 : 2)} y={100 - (i + 1) * 6} width="4" height="6" fill={i % 3 === 0 ? lighter : color} />
+              <rect x={x + (i % 2 === 0 ? 0 : 2)} y={200 - (i + 1) * 6} width="4" height="6" fill={i % 3 === 0 ? lighter : color} />
               {i % 2 === 0 && (
-                <rect x={x + (i % 4 === 0 ? -3 : 6)} y={100 - (i + 1) * 6 + 1} width="4" height="3" fill={lighter} opacity="0.7" />
+                <rect x={x + (i % 4 === 0 ? -3 : 6)} y={200 - (i + 1) * 6 + 1} width="4" height="3" fill={lighter} opacity="0.7" />
               )}
             </g>
           ))}
@@ -110,11 +115,11 @@ export const Kelp = memo(({ x, height = 60, variant = 'thin', color = '#2E7D32',
         <>
           {Array.from({ length: Math.floor(height / 6) }, (_, i) => (
             <g key={i}>
-              <rect x={x + (i % 2 === 0 ? -1 : 1)} y={100 - (i + 1) * 6} width="8" height="6" fill={i % 3 === 0 ? lighter : color} />
+              <rect x={x + (i % 2 === 0 ? -1 : 1)} y={200 - (i + 1) * 6} width="8" height="6" fill={i % 3 === 0 ? lighter : color} />
               {i % 3 === 0 && (
                 <>
-                  <rect x={x - 4 + (i % 2) * 2} y={100 - (i + 1) * 6} width="4" height="4" fill={lighter} opacity="0.6" />
-                  <rect x={x + 8 - (i % 2) * 2} y={100 - (i + 1) * 6 + 1} width="4" height="4" fill={color} opacity="0.7" />
+                  <rect x={x - 4 + (i % 2) * 2} y={200 - (i + 1) * 6} width="4" height="4" fill={lighter} opacity="0.6" />
+                  <rect x={x + 8 - (i % 2) * 2} y={200 - (i + 1) * 6 + 1} width="4" height="4" fill={color} opacity="0.7" />
                 </>
               )}
             </g>
@@ -127,9 +132,9 @@ export const Kelp = memo(({ x, height = 60, variant = 'thin', color = '#2E7D32',
             const spread = Math.min(i * 0.5, 4)
             return (
               <g key={i}>
-                <rect x={x - spread + (i % 2)} y={100 - (i + 1) * 5} width={6 + spread * 2} height="5" fill={i % 2 === 0 ? color : darker} />
+                <rect x={x - spread + (i % 2)} y={200 - (i + 1) * 5} width={6 + spread * 2} height="5" fill={i % 2 === 0 ? color : darker} />
                 {i % 2 === 0 && (
-                  <rect x={x + 1} y={100 - (i + 1) * 5} width="3" height="3" fill={lighter} opacity="0.5" />
+                  <rect x={x + 1} y={200 - (i + 1) * 5} width="3" height="3" fill={lighter} opacity="0.5" />
                 )}
               </g>
             )
@@ -431,7 +436,7 @@ const DragonStoneArch = memo(({ x, y }: { x: number; y: number }) => (
 ))
 DragonStoneArch.displayName = 'DragonStoneArch'
 
-// ─── SHIPWRECK: Sunken Submarine ─────────────────────────────────────
+// ─── SHIPWRECK: Sunken Submarine (enhanced) ─────────────────────────
 
 const SunkenSubmarine = memo(({ x, y }: { x: number; y: number }) => (
   <g transform={`translate(${x}, ${y})`}>
@@ -445,14 +450,43 @@ const SunkenSubmarine = memo(({ x, y }: { x: number; y: number }) => (
     {/* Hull bottom */}
     <rect x="14" y="42" width="76" height="4" fill="#263238" />
 
+    {/* Hull panel lines */}
+    <rect x="14" y="24" width="48" height="1" fill="#2C3E50" opacity="0.3" />
+    <rect x="14" y="32" width="48" height="1" fill="#2C3E50" opacity="0.25" />
+    {/* Rivets along hull */}
+    {[18, 26, 34, 42, 50, 58, 74, 82].map((rx, i) => (
+      <circle key={`rivet-t-${i}`} cx={rx} cy={13} r="0.8" fill="#78909C" opacity="0.4" />
+    ))}
+    {[18, 26, 34, 42, 50, 58, 74, 82].map((rx, i) => (
+      <circle key={`rivet-b-${i}`} cx={rx} cy={43} r="0.8" fill="#546E7A" opacity="0.35" />
+    ))}
+
+    {/* Torpedo tubes at bow */}
+    <rect x="88" y="24" width="10" height="3" fill="#455A64" />
+    <rect x="88" y="30" width="10" height="3" fill="#455A64" />
+    <circle cx="98" cy="25.5" r="1.5" fill="#263238" />
+    <circle cx="98" cy="31.5" r="1.5" fill="#263238" />
+
+    {/* Hydroplanes (fins) */}
+    <rect x="4" y="18" width="6" height="2" fill="#607D8B" />
+    <rect x="2" y="16" width="4" height="2" fill="#78909C" opacity="0.7" />
+    <rect x="4" y="34" width="6" height="2" fill="#607D8B" />
+    <rect x="2" y="36" width="4" height="2" fill="#78909C" opacity="0.7" />
+
     {/* Conning tower (sail) */}
     <rect x="38" y="0" width="20" height="12" fill="#546E7A" />
     <rect x="40" y="-4" width="16" height="6" fill="#607D8B" />
     {/* Periscope — bent */}
     <rect x="46" y="-14" width="3" height="12" fill="#78909C" />
     <rect x="44" y="-16" width="6" height="3" fill="#90A4AE" />
-    {/* Periscope bend */}
     <rect x="48" y="-12" width="3" height="4" fill="#78909C" transform="rotate(15, 49, -10)" />
+    {/* Radar mast */}
+    <rect x="52" y="-8" width="2" height="8" fill="#78909C" />
+    <rect x="50" y="-10" width="6" height="2" fill="#90A4AE" />
+
+    {/* Trailing kelp from conning tower */}
+    <rect x="40" y="-4" width="3" height="8" fill="#2E7D32" opacity="0.35" style={{ animation: 'kelpSway 5s ease-in-out 0s infinite', transformOrigin: '41px -4px' }} />
+    <rect x="54" y="-2" width="2" height="6" fill="#388E3C" opacity="0.3" style={{ animation: 'kelpSway 4s ease-in-out 1s infinite', transformOrigin: '55px -2px' }} />
 
     {/* Hull breach (fish swim-through hole) */}
     <rect x="62" y="22" width="14" height="14" fill="#0A1628" opacity="0.8" />
@@ -462,44 +496,71 @@ const SunkenSubmarine = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="60" y="22" width="3" height="4" fill="#455A64" />
     <rect x="75" y="26" width="3" height="4" fill="#455A64" />
     <rect x="66" y="18" width="4" height="3" fill="#546E7A" />
+    {/* Bent metal shards */}
+    <rect x="61" y="34" width="2" height="3" fill="#546E7A" opacity="0.6" />
+    <rect x="74" y="22" width="2" height="3" fill="#546E7A" opacity="0.5" />
 
-    {/* Portholes */}
+    {/* Portholes — 3 now */}
     <circle cx="26" cy="28" r="4" fill="#0D2137" stroke="#78909C" strokeWidth="1.5" />
     <circle cx="26" cy="28" r="2" fill="#1A5276" opacity="0.5" />
     <circle cx="42" cy="28" r="4" fill="#0D2137" stroke="#78909C" strokeWidth="1.5" />
+    <circle cx="42" cy="28" r="2" fill="#1A5276" opacity="0.4" />
+    <circle cx="82" cy="28" r="4" fill="#0D2137" stroke="#78909C" strokeWidth="1.5" />
+    <circle cx="82" cy="28" r="2" fill="#1A5276" opacity="0.3" />
 
     {/* Propeller at stern */}
     <rect x="0" y="22" width="8" height="3" fill="#78909C" />
     <rect x="-4" y="18" width="6" height="14" fill="#607D8B" opacity="0.7" />
     <rect x="-2" y="16" width="2" height="4" fill="#90A4AE" opacity="0.6" />
     <rect x="-2" y="30" width="2" height="4" fill="#90A4AE" opacity="0.6" />
+    {/* Extra prop blades */}
+    <rect x="-6" y="20" width="4" height="2" fill="#90A4AE" opacity="0.4" />
+    <rect x="-6" y="28" width="4" height="2" fill="#90A4AE" opacity="0.4" />
 
-    {/* Rust patches */}
+    {/* Rust patches — more extensive */}
     <rect x="30" y="32" width="8" height="4" fill="#BF360C" opacity="0.3" />
     <rect x="50" y="14" width="6" height="4" fill="#E65100" opacity="0.25" />
     <rect x="18" y="38" width="10" height="3" fill="#BF360C" opacity="0.2" />
     <rect x="80" y="30" width="6" height="4" fill="#E65100" opacity="0.2" />
+    <rect x="40" y="40" width="12" height="3" fill="#BF360C" opacity="0.15" />
+    <rect x="70" y="14" width="8" height="3" fill="#E65100" opacity="0.15" />
+    <rect x="22" y="20" width="6" height="4" fill="#8B4513" opacity="0.15" />
 
-    {/* Barnacles */}
+    {/* Barnacles — more clusters */}
     <rect x="20" y="42" width="3" height="3" fill="#9CA3AF" opacity="0.4" />
     <rect x="56" y="44" width="4" height="2" fill="#9CA3AF" opacity="0.35" />
     <rect x="84" y="38" width="3" height="3" fill="#9CA3AF" opacity="0.4" />
+    <rect x="10" y="40" width="4" height="3" fill="#B0BEC5" opacity="0.3" />
+    <rect x="44" y="44" width="3" height="2" fill="#9CA3AF" opacity="0.3" />
+    <rect x="76" y="44" width="5" height="2" fill="#B0BEC5" opacity="0.3" />
 
-    {/* Algae growth */}
+    {/* Anemones growing on hull */}
+    <rect x="28" y="42" width="6" height="4" fill="#7B1FA2" opacity="0.5" />
+    <rect x="26" y="38" width="3" height="4" fill="#CE93D8" opacity="0.4" />
+    <rect x="33" y="40" width="3" height="4" fill="#BA68C8" opacity="0.4" />
+
+    {/* Algae growth — more */}
     <rect x="38" y="8" width="6" height="3" fill="#2E7D32" opacity="0.4" />
     <rect x="14" y="18" width="4" height="2" fill="#388E3C" opacity="0.3" />
     <rect x="72" y="42" width="8" height="2" fill="#1B5E20" opacity="0.4" />
+    <rect x="90" y="24" width="4" height="3" fill="#2E7D32" opacity="0.25" />
+    <rect x="8" y="28" width="3" height="2" fill="#388E3C" opacity="0.2" />
+
+    {/* Coral encrustation at base */}
+    <rect x="14" y="44" width="8" height="4" fill="#E91E63" opacity="0.25" />
+    <rect x="16" y="42" width="4" height="3" fill="#F48FB1" opacity="0.2" />
 
     {/* Aerator bubbles from hull breach */}
     <circle cx="68" cy="20" r="1.5" fill="rgba(255,255,255,0.3)" style={{ animation: 'bubbleRise 3s ease-in 0s infinite' }} />
     <circle cx="72" cy="18" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 3.5s ease-in 0.8s infinite' }} />
     <circle cx="70" cy="22" r="1.2" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4s ease-in 1.5s infinite' }} />
     <circle cx="66" cy="19" r="0.8" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4.5s ease-in 2.5s infinite' }} />
+    <circle cx="69" cy="16" r="0.6" fill="rgba(255,255,255,0.15)" style={{ animation: 'bubbleRise 5s ease-in 3.5s infinite' }} />
   </g>
 ))
 SunkenSubmarine.displayName = 'SunkenSubmarine'
 
-// ─── SHIPWRECK: Treasure & Anchor Cluster ────────────────────────────
+// ─── SHIPWRECK: Treasure & Anchor Cluster (enhanced) ─────────────────
 
 const TreasureCluster = memo(({ x, y }: { x: number; y: number }) => (
   <g transform={`translate(${x}, ${y})`}>
@@ -514,10 +575,16 @@ const TreasureCluster = memo(({ x, y }: { x: number; y: number }) => (
     {/* Anchor rust */}
     <rect x="40" y="10" width="4" height="6" fill="#B45309" opacity="0.3" />
     <rect x="32" y="36" width="6" height="2" fill="#B45309" opacity="0.25" />
+    <rect x="40" y="20" width="4" height="4" fill="#8B4513" opacity="0.2" />
+    {/* Chain links connecting anchor to chest */}
+    <rect x="28" y="28" width="3" height="3" fill="#4B5563" opacity="0.5" />
+    <rect x="32" y="26" width="3" height="3" fill="#6B7280" opacity="0.4" />
+    <rect x="24" y="30" width="3" height="3" fill="#4B5563" opacity="0.45" />
     {/* Rope coiled around anchor */}
     <rect x="36" y="16" width="12" height="2" fill="#A08060" opacity="0.6" />
     <rect x="34" y="20" width="14" height="2" fill="#C4A862" opacity="0.5" />
     <rect x="36" y="24" width="12" height="2" fill="#A08060" opacity="0.5" />
+    <rect x="38" y="28" width="8" height="2" fill="#A08060" opacity="0.4" />
 
     {/* Large treasure chest — open */}
     <rect x="0" y="28" width="32" height="16" fill="#6B4C3A" />
@@ -532,6 +599,10 @@ const TreasureCluster = memo(({ x, y }: { x: number; y: number }) => (
     {/* Lock */}
     <rect x="12" y="28" width="6" height="4" fill="#D4A43A" />
     <rect x="13" y="29" width="4" height="2" fill="#B8862D" />
+    {/* Chest wood grain */}
+    <rect x="2" y="34" width="28" height="1" fill="#5D3A2A" opacity="0.2" />
+    <rect x="2" y="36" width="28" height="1" fill="#5D3A2A" opacity="0.15" />
+
     {/* Gold and jewels spilling */}
     <circle cx="34" cy="42" r="3" fill="#FFD700" opacity="0.85" />
     <circle cx="38" cy="40" r="2" fill="#FFD700" opacity="0.7" />
@@ -539,16 +610,274 @@ const TreasureCluster = memo(({ x, y }: { x: number; y: number }) => (
     <circle cx="-4" cy="44" r="2" fill="#FFD700" opacity="0.5" />
     <circle cx="32" cy="36" r="1.5" fill="#E91E63" opacity="0.6" /> {/* Ruby */}
     <circle cx="28" cy="26" r="1.5" fill="#2196F3" opacity="0.6" /> {/* Sapphire */}
+    <circle cx="8" cy="26" r="1" fill="#4CAF50" opacity="0.5" /> {/* Emerald */}
     <rect x="4" y="24" width="8" height="3" fill="#FFD700" opacity="0.5" /> {/* Gold pile inside */}
     <rect x="14" y="22" width="6" height="4" fill="#FFC107" opacity="0.4" />
 
-    {/* Scattered coins */}
+    {/* Crown / tiara among treasure */}
+    <rect x="6" y="20" width="10" height="3" fill="#FFD700" opacity="0.7" />
+    <rect x="7" y="18" width="2" height="3" fill="#FFD700" opacity="0.6" />
+    <rect x="11" y="17" width="2" height="4" fill="#FFD700" opacity="0.6" />
+    <rect x="15" y="18" width="2" height="3" fill="#FFD700" opacity="0.6" />
+    <circle cx="12" cy="18" r="1" fill="#E91E63" opacity="0.5" /> {/* Crown jewel */}
+
+    {/* Pearl necklace draped over chest edge */}
+    {[0, 4, 8, 12, 16, 20].map((px, i) => (
+      <circle key={`pearl-${i}`} cx={-2 + px} cy={26 + (i % 2)} r="1" fill="#F5F5F5" opacity="0.5" />
+    ))}
+
+    {/* Sword stuck in sand */}
+    <rect x="60" y="16" width="2" height="30" fill="#9E9E9E" />
+    <rect x="56" y="14" width="10" height="3" fill="#BDBDBD" />
+    <rect x="60" y="10" width="2" height="6" fill="#795548" />
+    <rect x="59" y="8" width="4" height="3" fill="#A1887F" />
+    <rect x="60" y="40" width="2" height="6" fill="#78909C" opacity="0.5" />
+
+    {/* Small closed chest nearby */}
+    <rect x="64" y="38" width="16" height="8" fill="#5D3A2A" />
+    <rect x="66" y="36" width="12" height="4" fill="#6B4C3A" />
+    <rect x="64" y="42" width="16" height="1" fill="#D4A43A" opacity="0.4" />
+    <rect x="70" y="38" width="4" height="2" fill="#D4A43A" opacity="0.3" />
+
+    {/* Skeleton hand reaching from sand */}
+    <rect x="52" y="40" width="2" height="6" fill="#E0E0E0" opacity="0.4" />
+    <rect x="50" y="38" width="2" height="3" fill="#EEEEEE" opacity="0.35" />
+    <rect x="54" y="38" width="2" height="4" fill="#E0E0E0" opacity="0.3" />
+    <rect x="48" y="36" width="2" height="3" fill="#EEEEEE" opacity="0.3" />
+
+    {/* Scattered coins — more */}
     <circle cx="10" cy="46" r="1.5" fill="#FFD700" opacity="0.4" />
     <circle cx="22" cy="44" r="1" fill="#FFC107" opacity="0.3" />
     <circle cx="44" cy="44" r="1.5" fill="#FFD700" opacity="0.35" />
+    <circle cx="16" cy="48" r="1" fill="#FFD700" opacity="0.3" />
+    <circle cx="38" cy="46" r="1.2" fill="#FFC107" opacity="0.25" />
+    <circle cx="56" cy="46" r="1" fill="#FFD700" opacity="0.3" />
+    <circle cx="70" cy="46" r="1.2" fill="#FFD700" opacity="0.25" />
+    <circle cx="30" cy="48" r="0.8" fill="#FFC107" opacity="0.2" />
   </g>
 ))
 TreasureCluster.displayName = 'TreasureCluster'
+
+// ─── SHIPWRECK: Sunken Galleon (shipwreck) ──────────────────────────
+
+const SunkenShip = memo(({ x, y }: { x: number; y: number }) => (
+  <g transform={`translate(${x}, ${y})`}>
+    {/* Main hull — broken galleon on its side */}
+    <rect x="0" y="30" width="130" height="35" fill="#5D4037" />
+    <rect x="4" y="24" width="122" height="10" fill="#6D4C41" />
+    <rect x="8" y="18" width="114" height="8" fill="#795548" />
+    {/* Hull bottom (keel) */}
+    <rect x="10" y="65" width="110" height="6" fill="#3E2723" />
+    <rect x="20" y="68" width="90" height="4" fill="#4E342E" />
+
+    {/* Stern section — captain's quarters */}
+    <rect x="110" y="10" width="24" height="55" fill="#5D4037" />
+    <rect x="112" y="6" width="20" height="8" fill="#6D4C41" />
+    <rect x="114" y="2" width="16" height="6" fill="#795548" />
+    {/* Stern windows (broken) */}
+    <rect x="114" y="16" width="6" height="8" fill="#0A1628" opacity="0.8" />
+    <rect x="124" y="16" width="6" height="8" fill="#0A1628" opacity="0.7" />
+    <rect x="114" y="28" width="6" height="8" fill="#0A1628" opacity="0.6" />
+    {/* Window frames */}
+    <rect x="113" y="15" width="8" height="1" fill="#8D6E63" />
+    <rect x="113" y="25" width="8" height="1" fill="#8D6E63" />
+    <rect x="123" y="15" width="8" height="1" fill="#8D6E63" />
+    {/* Stern railing */}
+    <rect x="112" y="4" width="2" height="8" fill="#8D6E63" opacity="0.5" />
+    <rect x="130" y="4" width="2" height="8" fill="#8D6E63" opacity="0.4" />
+    <rect x="112" y="4" width="20" height="2" fill="#A1887F" opacity="0.4" />
+
+    {/* Bow section — pointed */}
+    <rect x="-10" y="36" width="14" height="20" fill="#6D4C41" />
+    <rect x="-14" y="40" width="8" height="12" fill="#795548" />
+    <rect x="-16" y="44" width="4" height="6" fill="#8D6E63" />
+
+    {/* Hull breach / gaping hole */}
+    <rect x="40" y="32" width="22" height="18" fill="#0A1628" opacity="0.8" />
+    <rect x="42" y="30" width="18" height="4" fill="#4E342E" />
+    <rect x="42" y="48" width="18" height="4" fill="#4E342E" />
+    {/* Torn planks around breach */}
+    <rect x="38" y="34" width="4" height="6" fill="#6D4C41" />
+    <rect x="60" y="36" width="4" height="8" fill="#6D4C41" />
+    <rect x="44" y="28" width="6" height="4" fill="#795548" />
+
+    {/* Visible ribs/frames inside hull */}
+    <rect x="44" y="34" width="2" height="14" fill="#8D6E63" opacity="0.5" />
+    <rect x="50" y="34" width="2" height="14" fill="#8D6E63" opacity="0.4" />
+    <rect x="56" y="34" width="2" height="14" fill="#8D6E63" opacity="0.5" />
+
+    {/* Deck planks */}
+    <rect x="10" y="28" width="100" height="2" fill="#8D6E63" opacity="0.4" />
+    <rect x="8" y="30" width="102" height="1" fill="#4E342E" opacity="0.3" />
+
+    {/* Railing remnants */}
+    <rect x="15" y="16" width="2" height="10" fill="#795548" opacity="0.6" />
+    <rect x="35" y="14" width="2" height="12" fill="#795548" opacity="0.5" />
+    <rect x="70" y="16" width="2" height="10" fill="#795548" opacity="0.6" />
+    <rect x="90" y="15" width="2" height="11" fill="#795548" opacity="0.5" />
+
+    {/* Broken mast stump */}
+    <rect x="56" y="-6" width="6" height="26" fill="#8D6E63" />
+    <rect x="54" y="-10" width="4" height="6" fill="#A1887F" />
+    <rect x="58" y="-12" width="3" height="4" fill="#8D6E63" />
+    <rect x="56" y="-14" width="2" height="4" fill="#A1887F" opacity="0.7" />
+    {/* Mast base ring */}
+    <rect x="54" y="18" width="10" height="2" fill="#6D4C41" />
+
+    {/* Second broken mast (shorter, further aft) */}
+    <rect x="90" y="4" width="5" height="16" fill="#8D6E63" opacity="0.8" />
+    <rect x="88" y="2" width="3" height="4" fill="#A1887F" opacity="0.6" />
+
+    {/* Crow's nest debris fallen nearby */}
+    <rect x="20" y="64" width="14" height="4" fill="#8D6E63" opacity="0.5" />
+    <rect x="22" y="62" width="10" height="4" fill="#A1887F" opacity="0.4" />
+
+    {/* Cannons poking from gun ports */}
+    <rect x="24" y="40" width="12" height="3" fill="#37474F" />
+    <rect x="22" y="39" width="4" height="5" fill="#455A64" />
+    <rect x="76" y="42" width="12" height="3" fill="#37474F" />
+    <rect x="74" y="41" width="4" height="5" fill="#455A64" />
+
+    {/* Figurehead broken off, lying near bow */}
+    <rect x="-20" y="60" width="12" height="8" fill="#D4A43A" opacity="0.5" />
+    <rect x="-18" y="56" width="8" height="6" fill="#E8C468" opacity="0.4" />
+
+    {/* Rust and decay */}
+    <rect x="30" y="50" width="10" height="4" fill="#BF360C" opacity="0.25" />
+    <rect x="80" y="34" width="8" height="6" fill="#E65100" opacity="0.2" />
+    <rect x="100" y="44" width="12" height="4" fill="#BF360C" opacity="0.2" />
+    <rect x="12" y="38" width="6" height="4" fill="#E65100" opacity="0.15" />
+    <rect x="66" y="56" width="8" height="3" fill="#BF360C" opacity="0.15" />
+
+    {/* Barnacles */}
+    <rect x="0" y="58" width="4" height="3" fill="#9CA3AF" opacity="0.4" />
+    <rect x="68" y="62" width="3" height="3" fill="#9CA3AF" opacity="0.35" />
+    <rect x="120" y="52" width="3" height="3" fill="#9CA3AF" opacity="0.4" />
+    <rect x="96" y="64" width="4" height="2" fill="#9CA3AF" opacity="0.3" />
+
+    {/* Algae growth */}
+    <rect x="54" y="14" width="8" height="3" fill="#2E7D32" opacity="0.4" />
+    <rect x="8" y="60" width="10" height="2" fill="#388E3C" opacity="0.3" />
+    <rect x="110" y="58" width="8" height="2" fill="#1B5E20" opacity="0.4" />
+    <rect x="30" y="22" width="6" height="2" fill="#2E7D32" opacity="0.3" />
+
+    {/* Coral growing on hull */}
+    <rect x="88" y="56" width="8" height="6" fill="#E91E63" opacity="0.3" />
+    <rect x="90" y="52" width="4" height="4" fill="#F48FB1" opacity="0.25" />
+
+    {/* Chain draped over railing */}
+    <rect x="14" y="14" width="22" height="2" fill="#4B5563" opacity="0.5" />
+    <rect x="12" y="16" width="4" height="4" fill="#4B5563" opacity="0.4" />
+    <rect x="34" y="16" width="4" height="6" fill="#4B5563" opacity="0.4" />
+
+    {/* Scattered debris around base */}
+    <rect x="-6" y="68" width="8" height="3" fill="#6D4C41" opacity="0.4" />
+    <rect x="130" y="66" width="6" height="4" fill="#795548" opacity="0.3" />
+    <rect x="70" y="70" width="10" height="2" fill="#5D4037" opacity="0.3" />
+
+    {/* Bubbles from interior */}
+    <circle cx="50" cy="30" r="1.5" fill="rgba(255,255,255,0.3)" style={{ animation: 'bubbleRise 3.5s ease-in 0s infinite' }} />
+    <circle cx="54" cy="28" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4s ease-in 1.2s infinite' }} />
+    <circle cx="48" cy="32" r="1.2" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4.5s ease-in 2s infinite' }} />
+  </g>
+))
+SunkenShip.displayName = 'SunkenShip'
+
+// ─── SHIPWRECK: Sunken Sailboat ─────────────────────────────────────
+
+const SunkenSailboat = memo(({ x, y }: { x: number; y: number }) => (
+  <g transform={`translate(${x}, ${y})`}>
+    {/* Hull — small boat tilted */}
+    <rect x="0" y="30" width="80" height="20" fill="#6D4C41" />
+    <rect x="4" y="26" width="72" height="6" fill="#795548" />
+    <rect x="8" y="22" width="64" height="6" fill="#8D6E63" />
+    {/* Hull bottom / keel */}
+    <rect x="6" y="50" width="68" height="4" fill="#4E342E" />
+    <rect x="14" y="52" width="52" height="3" fill="#3E2723" />
+
+    {/* Bow — pointed */}
+    <rect x="-4" y="34" width="8" height="12" fill="#795548" />
+    <rect x="-8" y="38" width="6" height="6" fill="#8D6E63" />
+
+    {/* Stern */}
+    <rect x="76" y="26" width="8" height="24" fill="#6D4C41" />
+    <rect x="78" y="22" width="6" height="6" fill="#795548" />
+    {/* Rudder */}
+    <rect x="82" y="36" width="3" height="16" fill="#5D4037" />
+    <rect x="84" y="40" width="2" height="10" fill="#4E342E" />
+
+    {/* Name plate on stern */}
+    <rect x="77" y="34" width="6" height="3" fill="#D4A43A" opacity="0.3" />
+
+    {/* Mast — snapped halfway up */}
+    <rect x="32" y="-20" width="4" height="48" fill="#8D6E63" />
+    <rect x="30" y="-24" width="3" height="6" fill="#A1887F" />
+    {/* Jagged snap point */}
+    <rect x="34" y="-22" width="2" height="4" fill="#8D6E63" opacity="0.7" />
+    {/* Mast base plate */}
+    <rect x="30" y="26" width="8" height="2" fill="#6D4C41" />
+
+    {/* Tattered sail remnants */}
+    <rect x="36" y="-16" width="18" height="24" fill="#D7CCC8" opacity="0.35" />
+    <rect x="38" y="-14" width="14" height="20" fill="#EFEBE9" opacity="0.25" />
+    {/* Sail tears (transparent gaps) */}
+    <rect x="42" y="-8" width="6" height="4" fill="#0A1628" opacity="0.15" />
+    <rect x="40" y="0" width="4" height="3" fill="#0A1628" opacity="0.1" />
+    {/* Sail edges (tattered) */}
+    <rect x="52" y="-12" width="3" height="4" fill="#BCAAA4" opacity="0.2" />
+    <rect x="50" y="-2" width="4" height="3" fill="#D7CCC8" opacity="0.2" />
+    <rect x="54" y="2" width="2" height="4" fill="#BCAAA4" opacity="0.15" />
+
+    {/* Boom (horizontal spar) — broken */}
+    <rect x="34" y="6" width="24" height="3" fill="#A1887F" />
+    <rect x="56" y="4" width="3" height="3" fill="#8D6E63" opacity="0.6" />
+
+    {/* Rigging ropes */}
+    <rect x="34" y="-18" width="1" height="22" fill="#A08060" opacity="0.4" />
+    <rect x="36" y="-16" width="1" height="20" fill="#C4A862" opacity="0.3" />
+    {/* Loose rope on deck */}
+    <rect x="12" y="28" width="16" height="1" fill="#A08060" opacity="0.4" />
+    <rect x="10" y="30" width="4" height="4" fill="#C4A862" opacity="0.3" />
+
+    {/* Small bow anchor */}
+    <rect x="-6" y="28" width="2" height="12" fill="#4B5563" opacity="0.5" />
+    <rect x="-10" y="38" width="10" height="2" fill="#4B5563" opacity="0.4" />
+
+    {/* Lantern hanging from mast */}
+    <rect x="28" y="-14" width="4" height="5" fill="#FF8F00" opacity="0.3" />
+    <rect x="27" y="-15" width="6" height="2" fill="#4B5563" opacity="0.4" />
+    <rect x="29" y="-10" width="2" height="2" fill="#4B5563" opacity="0.3" />
+
+    {/* Hull planking detail */}
+    <rect x="4" y="34" width="72" height="1" fill="#8D6E63" opacity="0.3" />
+    <rect x="6" y="40" width="68" height="1" fill="#8D6E63" opacity="0.25" />
+    <rect x="8" y="46" width="64" height="1" fill="#8D6E63" opacity="0.2" />
+
+    {/* Barnacles */}
+    <rect x="0" y="44" width="3" height="3" fill="#9CA3AF" opacity="0.4" />
+    <rect x="60" y="48" width="4" height="2" fill="#9CA3AF" opacity="0.35" />
+    <rect x="76" y="44" width="3" height="3" fill="#9CA3AF" opacity="0.3" />
+
+    {/* Algae growth */}
+    <rect x="20" y="22" width="6" height="2" fill="#2E7D32" opacity="0.4" />
+    <rect x="50" y="50" width="8" height="2" fill="#388E3C" opacity="0.3" />
+    <rect x="32" y="-24" width="4" height="2" fill="#1B5E20" opacity="0.4" />
+
+    {/* Seaweed growing through hull cracks */}
+    <rect x="46" y="18" width="3" height="10" fill="#2E7D32" opacity="0.3" />
+    <rect x="44" y="14" width="4" height="6" fill="#4CAF50" opacity="0.25" />
+
+    {/* Small crab on hull */}
+    <rect x="64" y="28" width="4" height="2" fill="#E65100" opacity="0.5" />
+    <rect x="62" y="26" width="2" height="2" fill="#BF360C" opacity="0.4" />
+    <rect x="68" y="26" width="2" height="2" fill="#BF360C" opacity="0.4" />
+
+    {/* Bubbles */}
+    <circle cx="40" cy="20" r="1" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4s ease-in 0.5s infinite' }} />
+    <circle cx="36" cy="22" r="0.8" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 5s ease-in 2s infinite' }} />
+  </g>
+))
+SunkenSailboat.displayName = 'SunkenSailboat'
 
 // ─── MINIMAL: Stacked Stone Cairn ────────────────────────────────────
 
@@ -594,7 +923,7 @@ StoneCairn.displayName = 'StoneCairn'
 // ─── MINIMAL: Bamboo Grove ───────────────────────────────────────────
 
 const BambooGrove = memo(({ x, y }: { x: number; y: number }) => (
-  <g transform={`translate(${x}, ${y})`} style={{ animation: 'kelpSway 6s ease-in-out 0s infinite', transformOrigin: `${x + 20}px 100%` }}>
+  <g transform={`translate(${x}, ${y})`} style={{ animation: 'kelpSway 6s ease-in-out 0s infinite', transformOrigin: '20px 100%' }}>
     {/* Stalk 1 - tall */}
     <rect x="6" y="-10" width="4" height="70" fill="#558B2F" />
     <rect x="6" y="0" width="4" height="2" fill="#689F38" opacity="0.6" />
@@ -652,30 +981,30 @@ interface LayeredDecoConfig {
 const OCEAN_LAYOUT: LayeredDecoConfig = {
   background: {
     kelps: [
-      { x: 30, height: 65, variant: 'bushy', color: '#2E7D32', delay: 0 },
-      { x: 100, height: 55, variant: 'wide', color: '#388E3C', delay: 0.5 },
-      { x: 550, height: 70, variant: 'bushy', color: '#1B5E20', delay: 0.3 },
-      { x: 740, height: 60, variant: 'wide', color: '#2E7D32', delay: 0.8 },
+      { x: 30, height: 80, variant: 'bushy', color: '#2E7D32', delay: 0 },
+      { x: 100, height: 70, variant: 'wide', color: '#388E3C', delay: 0.5 },
+      { x: 550, height: 85, variant: 'bushy', color: '#1B5E20', delay: 0.3 },
+      { x: 740, height: 75, variant: 'wide', color: '#2E7D32', delay: 0.8 },
     ],
     structures: [
-      { type: 'coral-arch', x: 180, y: 36 },
-      { type: 'sunken-temple', x: 500, y: 38 },
+      { type: 'coral-arch', x: 180, y: 78 },
+      { type: 'sunken-temple', x: 500, y: 82 },
     ],
   },
   foreground: {
     rocks: [
-      { x: 50, y: 82, variant: 'medium', color: '#78716C' },
-      { x: 380, y: 84, variant: 'small', color: '#6B7280' },
-      { x: 680, y: 82, variant: 'small', color: '#78716C' },
+      { x: 50, y: 172, variant: 'medium', color: '#78716C' },
+      { x: 380, y: 176, variant: 'small', color: '#6B7280' },
+      { x: 680, y: 172, variant: 'small', color: '#78716C' },
     ],
     corals: [
-      { x: 130, y: 74, variant: 'branch', color: '#E91E63' },
-      { x: 420, y: 76, variant: 'fan', color: '#FF5722' },
-      { x: 650, y: 72, variant: 'brain', color: '#E91E63' },
+      { x: 130, y: 158, variant: 'branch', color: '#E91E63' },
+      { x: 420, y: 162, variant: 'fan', color: '#FF5722' },
+      { x: 650, y: 156, variant: 'brain', color: '#E91E63' },
     ],
     kelps: [
-      { x: 160, height: 30, variant: 'thin', color: '#388E3C', delay: 1 },
-      { x: 460, height: 25, variant: 'thin', color: '#388E3C', delay: 1.5 },
+      { x: 160, height: 40, variant: 'thin', color: '#388E3C', delay: 1 },
+      { x: 460, height: 35, variant: 'thin', color: '#388E3C', delay: 1.5 },
     ],
   },
 }
@@ -684,29 +1013,29 @@ const TROPICAL_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#D4A43A', lighter: '#E8C468', detail: '#B8862D' },
   background: {
     kelps: [
-      { x: 40, height: 65, variant: 'bushy', color: '#00C853', delay: 0 },
-      { x: 650, height: 60, variant: 'bushy', color: '#00C853', delay: 1.2 },
-      { x: 760, height: 55, variant: 'wide', color: '#00E676', delay: 0.4 },
+      { x: 40, height: 80, variant: 'bushy', color: '#00C853', delay: 0 },
+      { x: 650, height: 75, variant: 'bushy', color: '#00C853', delay: 1.2 },
+      { x: 760, height: 70, variant: 'wide', color: '#00E676', delay: 0.4 },
     ],
     structures: [
-      { type: 'volcano', x: 160, y: 38 },
-      { type: 'dragon-stone', x: 480, y: 36 },
+      { type: 'volcano', x: 160, y: 82 },
+      { type: 'dragon-stone', x: 480, y: 78 },
     ],
   },
   foreground: {
     rocks: [
-      { x: 80, y: 82, variant: 'small', color: '#A8A29E' },
-      { x: 350, y: 84, variant: 'small', color: '#78716C' },
-      { x: 600, y: 82, variant: 'medium', color: '#78716C' },
+      { x: 80, y: 172, variant: 'small', color: '#A8A29E' },
+      { x: 350, y: 176, variant: 'small', color: '#78716C' },
+      { x: 600, y: 172, variant: 'medium', color: '#78716C' },
     ],
     corals: [
-      { x: 120, y: 72, variant: 'branch', color: '#FF6D00' },
-      { x: 310, y: 74, variant: 'fan', color: '#FF1744' },
-      { x: 700, y: 76, variant: 'brain', color: '#FF6D00' },
+      { x: 120, y: 156, variant: 'branch', color: '#FF6D00' },
+      { x: 310, y: 158, variant: 'fan', color: '#FF1744' },
+      { x: 700, y: 162, variant: 'brain', color: '#FF6D00' },
     ],
     kelps: [
-      { x: 260, height: 28, variant: 'thin', color: '#69F0AE', delay: 0.8 },
-      { x: 440, height: 25, variant: 'thin', color: '#00E676', delay: 1.8 },
+      { x: 260, height: 38, variant: 'thin', color: '#69F0AE', delay: 0.8 },
+      { x: 440, height: 35, variant: 'thin', color: '#00E676', delay: 1.8 },
     ],
   },
 }
@@ -715,27 +1044,29 @@ const SHIPWRECK_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#8B7355', lighter: '#A08B6C', detail: '#6B5B45' },
   background: {
     kelps: [
-      { x: 70, height: 40, variant: 'thin', color: '#2E7D32', delay: 0 },
-      { x: 550, height: 45, variant: 'wide', color: '#2E7D32', delay: 0.5 },
-      { x: 750, height: 35, variant: 'thin', color: '#1B5E20', delay: 1.5 },
+      { x: 20, height: 50, variant: 'thin', color: '#2E7D32', delay: 0 },
+      { x: 420, height: 55, variant: 'wide', color: '#2E7D32', delay: 0.5 },
+      { x: 750, height: 45, variant: 'thin', color: '#1B5E20', delay: 1.5 },
     ],
     structures: [
-      { type: 'submarine', x: 120, y: 42 },
-      { type: 'treasure', x: 520, y: 42 },
+      { type: 'shipwreck', x: 40, y: 60 },
+      { type: 'submarine', x: 260, y: 100 },
+      { type: 'sailboat', x: 490, y: 98 },
+      { type: 'treasure', x: 640, y: 100 },
     ],
   },
   foreground: {
     rocks: [
-      { x: 30, y: 78, variant: 'large', color: '#57534E' },
-      { x: 380, y: 82, variant: 'medium', color: '#44403C' },
-      { x: 680, y: 80, variant: 'medium', color: '#57534E' },
+      { x: 30, y: 168, variant: 'large', color: '#57534E' },
+      { x: 380, y: 172, variant: 'medium', color: '#44403C' },
+      { x: 680, y: 170, variant: 'medium', color: '#57534E' },
     ],
     corals: [
-      { x: 440, y: 78, variant: 'brain', color: '#795548' },
+      { x: 440, y: 166, variant: 'brain', color: '#795548' },
     ],
     kelps: [
-      { x: 300, height: 22, variant: 'thin', color: '#1B5E20', delay: 1 },
-      { x: 470, height: 18, variant: 'thin', color: '#2E7D32', delay: 2 },
+      { x: 200, height: 30, variant: 'thin', color: '#1B5E20', delay: 1 },
+      { x: 560, height: 25, variant: 'thin', color: '#2E7D32', delay: 2 },
     ],
   },
 }
@@ -743,27 +1074,27 @@ const SHIPWRECK_LAYOUT: LayeredDecoConfig = {
 const MINIMAL_LAYOUT: LayeredDecoConfig = {
   background: {
     kelps: [
-      { x: 30, height: 65, variant: 'bushy', color: '#2E7D32', delay: 0 },
-      { x: 120, height: 55, variant: 'wide', color: '#388E3C', delay: 0.6 },
-      { x: 560, height: 60, variant: 'bushy', color: '#1B5E20', delay: 1.5 },
-      { x: 650, height: 55, variant: 'wide', color: '#2E7D32', delay: 0.4 },
-      { x: 740, height: 50, variant: 'bushy', color: '#388E3C', delay: 2.0 },
+      { x: 30, height: 80, variant: 'bushy', color: '#2E7D32', delay: 0 },
+      { x: 120, height: 70, variant: 'wide', color: '#388E3C', delay: 0.6 },
+      { x: 560, height: 75, variant: 'bushy', color: '#1B5E20', delay: 1.5 },
+      { x: 650, height: 70, variant: 'wide', color: '#2E7D32', delay: 0.4 },
+      { x: 740, height: 65, variant: 'bushy', color: '#388E3C', delay: 2.0 },
     ],
     structures: [
-      { type: 'cairn', x: 250, y: 38 },
-      { type: 'bamboo', x: 500, y: 36 },
+      { type: 'cairn', x: 250, y: 82 },
+      { type: 'bamboo', x: 500, y: 78 },
     ],
   },
   foreground: {
     rocks: [
-      { x: 170, y: 84, variant: 'small', color: '#78716C' },
-      { x: 400, y: 82, variant: 'small', color: '#6B7280' },
+      { x: 170, y: 176, variant: 'small', color: '#78716C' },
+      { x: 400, y: 172, variant: 'small', color: '#6B7280' },
     ],
     corals: [],
     kelps: [
-      { x: 200, height: 25, variant: 'thin', color: '#388E3C', delay: 0.3 },
-      { x: 350, height: 22, variant: 'thin', color: '#388E3C', delay: 1.2 },
-      { x: 470, height: 28, variant: 'thin', color: '#2E7D32', delay: 0.9 },
+      { x: 200, height: 35, variant: 'thin', color: '#388E3C', delay: 0.3 },
+      { x: 350, height: 30, variant: 'thin', color: '#388E3C', delay: 1.2 },
+      { x: 470, height: 38, variant: 'thin', color: '#2E7D32', delay: 0.9 },
     ],
   },
 }
@@ -778,17 +1109,25 @@ const THEME_LAYOUTS: Record<string, LayeredDecoConfig> = {
 // ─── Structure renderer ──────────────────────────────────────────────
 
 function renderStructure(s: { type: string; x: number; y: number }) {
+  let inner: ReactNode
   switch (s.type) {
-    case 'coral-arch': return <CoralReefArch key={`${s.type}-${s.x}`} x={s.x} y={s.y} />
-    case 'sunken-temple': return <SunkenTemple key={`${s.type}-${s.x}`} x={s.x} y={s.y} />
-    case 'volcano': return <VolcanoFormation key={`${s.type}-${s.x}`} x={s.x} y={s.y} />
-    case 'dragon-stone': return <DragonStoneArch key={`${s.type}-${s.x}`} x={s.x} y={s.y} />
-    case 'submarine': return <SunkenSubmarine key={`${s.type}-${s.x}`} x={s.x} y={s.y} />
-    case 'treasure': return <TreasureCluster key={`${s.type}-${s.x}`} x={s.x} y={s.y} />
-    case 'cairn': return <StoneCairn key={`${s.type}-${s.x}`} x={s.x} y={s.y} />
-    case 'bamboo': return <BambooGrove key={`${s.type}-${s.x}`} x={s.x} y={s.y} />
+    case 'coral-arch': inner = <CoralReefArch x={0} y={0} />; break
+    case 'sunken-temple': inner = <SunkenTemple x={0} y={0} />; break
+    case 'volcano': inner = <VolcanoFormation x={0} y={0} />; break
+    case 'dragon-stone': inner = <DragonStoneArch x={0} y={0} />; break
+    case 'submarine': inner = <SunkenSubmarine x={0} y={0} />; break
+    case 'treasure': inner = <TreasureCluster x={0} y={0} />; break
+    case 'shipwreck': inner = <SunkenShip x={0} y={0} />; break
+    case 'sailboat': inner = <SunkenSailboat x={0} y={0} />; break
+    case 'cairn': inner = <StoneCairn x={0} y={0} />; break
+    case 'bamboo': inner = <BambooGrove x={0} y={0} />; break
     default: return null
   }
+  return (
+    <g key={`${s.type}-${s.x}`} transform={`translate(${s.x}, ${s.y}) scale(2)`}>
+      {inner}
+    </g>
+  )
 }
 
 // ─── Background decoration layer (behind fish) ──────────────────────
@@ -799,11 +1138,11 @@ export const DecorationBackground = memo(({ width, theme = 'ocean' }: { width: n
   const bg = useMemo(() => layout.background, [layout])
 
   return (
-    <div className="absolute bottom-0 left-0 w-full z-[1]" style={{ height: '120px' }}>
+    <div className="absolute bottom-0 left-0 w-full z-[1]" style={{ height: '240px' }}>
       <SandyBottom color={sandColors.color} lighter={sandColors.lighter} detail={sandColors.detail} />
       <svg
         className="absolute bottom-0 left-0 w-full h-full"
-        viewBox="0 0 800 100"
+        viewBox="0 0 800 200"
         preserveAspectRatio="xMidYMax meet"
         shapeRendering="crispEdges"
       >
@@ -822,10 +1161,10 @@ export const DecorationForeground = memo(({ width, theme = 'ocean' }: { width: n
   const fg = useMemo(() => layout.foreground, [layout])
 
   return (
-    <div className="absolute bottom-0 left-0 w-full z-[25]" style={{ height: '120px', pointerEvents: 'none' }}>
+    <div className="absolute bottom-0 left-0 w-full z-[25]" style={{ height: '240px', pointerEvents: 'none' }}>
       <svg
         className="absolute bottom-0 left-0 w-full h-full"
-        viewBox="0 0 800 100"
+        viewBox="0 0 800 200"
         preserveAspectRatio="xMidYMax meet"
         shapeRendering="crispEdges"
       >
