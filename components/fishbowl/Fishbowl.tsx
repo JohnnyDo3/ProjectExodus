@@ -248,12 +248,6 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomi
       {/* Ambient sounds */}
       <AmbientSounds enabled={soundEnabled} />
 
-      {/* Fish count indicator */}
-      <div className="absolute top-3 right-3 z-30 px-3 py-1.5 rounded-lg bg-[#0A1628]/70 backdrop-blur-sm border border-cyan-800/40">
-        <p className="text-[10px] font-bold text-cyan-500">
-          🐟 {visibleFish.length}/{allFish.length} swimming
-        </p>
-      </div>
     </div>
   )
 }

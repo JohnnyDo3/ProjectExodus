@@ -93,7 +93,7 @@ export function CommunityFishbowl() {
       <div className="relative h-screen overflow-hidden">
 
         {/* === BLACK LID HEADER === */}
-        <div className="absolute top-0 left-0 right-0 z-30 h-14 bg-black border-b-2 border-gray-800">
+        <div className="absolute top-0 left-0 right-0 z-30 h-20 bg-black border-b-2 border-gray-800">
           {/* Lid surface texture */}
           <div className="absolute inset-0 bg-gradient-to-b from-gray-900 via-black to-gray-950" />
           {/* Subtle rim highlight */}
@@ -106,7 +106,7 @@ export function CommunityFishbowl() {
                 <Fish className="w-5 h-5 text-cyan-400" />
               </div>
               <div>
-                <h2 className="text-sm font-black text-cyan-100 tracking-wide">COMMUNITY FISHBOWL</h2>
+                <h2 className="text-base font-black text-cyan-100 tracking-widest">COMMUNITY FISHBOWL</h2>
                 <p className="text-[10px] font-medium text-cyan-500/70">
                   {users.length} members swimming together
                 </p>
@@ -145,76 +145,8 @@ export function CommunityFishbowl() {
           </div>
         </div>
 
-        {/* === LED LIGHT BEAMS shining down from the lid === */}
-        <div className="absolute top-14 left-0 right-0 z-20 pointer-events-none h-[45%]">
-          {/* Beam 1 - left side */}
-          <div
-            className="absolute top-0 fishbowl-light-beam"
-            style={{
-              left: '15%',
-              width: '6%',
-              height: '100%',
-              background: 'linear-gradient(180deg, rgba(180,220,255,0.18) 0%, rgba(180,220,255,0.06) 40%, transparent 100%)',
-              clipPath: 'polygon(30% 0%, 70% 0%, 100% 100%, 0% 100%)',
-              filter: 'blur(8px)',
-            }}
-          />
-          {/* Beam 2 - left-center */}
-          <div
-            className="absolute top-0 fishbowl-light-beam"
-            style={{
-              left: '33%',
-              width: '5%',
-              height: '100%',
-              background: 'linear-gradient(180deg, rgba(160,210,255,0.15) 0%, rgba(160,210,255,0.04) 45%, transparent 100%)',
-              clipPath: 'polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%)',
-              filter: 'blur(10px)',
-              animationDelay: '1.5s',
-            }}
-          />
-          {/* Beam 3 - center */}
-          <div
-            className="absolute top-0 fishbowl-light-beam"
-            style={{
-              left: '48%',
-              width: '7%',
-              height: '100%',
-              background: 'linear-gradient(180deg, rgba(200,230,255,0.22) 0%, rgba(200,230,255,0.07) 35%, transparent 100%)',
-              clipPath: 'polygon(30% 0%, 70% 0%, 100% 100%, 0% 100%)',
-              filter: 'blur(6px)',
-              animationDelay: '0.8s',
-            }}
-          />
-          {/* Beam 4 - right-center */}
-          <div
-            className="absolute top-0 fishbowl-light-beam"
-            style={{
-              left: '65%',
-              width: '5%',
-              height: '100%',
-              background: 'linear-gradient(180deg, rgba(170,215,255,0.16) 0%, rgba(170,215,255,0.05) 42%, transparent 100%)',
-              clipPath: 'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)',
-              filter: 'blur(9px)',
-              animationDelay: '2.2s',
-            }}
-          />
-          {/* Beam 5 - right side */}
-          <div
-            className="absolute top-0 fishbowl-light-beam"
-            style={{
-              left: '82%',
-              width: '6%',
-              height: '100%',
-              background: 'linear-gradient(180deg, rgba(190,225,255,0.14) 0%, rgba(190,225,255,0.04) 40%, transparent 100%)',
-              clipPath: 'polygon(35% 0%, 65% 0%, 100% 100%, 0% 100%)',
-              filter: 'blur(8px)',
-              animationDelay: '3s',
-            }}
-          />
-        </div>
-
         {/* The fishbowl — fills the viewport below the lid */}
-        <div className="absolute inset-0 pt-14">
+        <div className="absolute inset-0 pt-20">
           {users.length > 0 ? (
             <Fishbowl users={users} maxVisible={15} />
           ) : (

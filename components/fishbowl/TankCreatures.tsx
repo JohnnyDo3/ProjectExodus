@@ -409,12 +409,13 @@ export const SnailGroup = memo(({ count, containerWidth, containerHeight }: {
   const snailsRef = useRef<SnailPos[]>([])
   const [positions, setPositions] = useState<{ x: number; y: number; facingRight: boolean }[]>([])
 
+
   // Initialize snail data
   useEffect(() => {
     if (containerWidth === 0 || containerHeight === 0) return
     snailsRef.current = Array.from({ length: count }, (_, i) => {
       const startX = (containerWidth * (i + 1)) / (count + 1)
-      const startY = containerHeight * (0.60 + Math.random() * 0.30)
+      const startY = containerHeight * (0.15 + Math.random() * 0.70)
       const target = pickRandomTarget(containerWidth, containerHeight)
       return {
         x: startX,
@@ -423,7 +424,7 @@ export const SnailGroup = memo(({ count, containerWidth, containerHeight }: {
         targetY: target.y,
         facingRight: target.x > startX,
         wobblePhase: Math.random() * Math.PI * 2,
-        speed: 0.8 + Math.random() * 0.4,
+        speed: 0.2 + Math.random() * 0.15,
         pauseUntil: 0,
       }
     })
