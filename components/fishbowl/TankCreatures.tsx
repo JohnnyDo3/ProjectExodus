@@ -101,7 +101,7 @@ export const PlecoPair = memo(({ containerWidth }: { containerWidth: number }) =
       // Meet in the middle-ish
       const meetX = containerWidth * (0.25 + Math.random() * 0.45)
       p1Ref.current.targetX = meetX
-      p2Ref.current.targetX = meetX + 35
+      p2Ref.current.targetX = meetX + 50
 
       // After convergence → together
       const t2 = setTimeout(() => {
@@ -154,13 +154,13 @@ export const PlecoPair = memo(({ containerWidth }: { containerWidth: number }) =
           s1.targetX = containerWidth * (0.05 + Math.random() * 0.40)
         }
       }
-      s1.x = Math.max(10, Math.min(containerWidth - 50, s1.x))
+      s1.x = Math.max(10, Math.min(containerWidth - 60, s1.x))
 
       // Update pleco 2
       const s2 = p2Ref.current
       if (currentPhase === 'together') {
         // Follow pleco 1 closely
-        const followX = s1.x + (s1.x > s2.x ? -35 : 35)
+        const followX = s1.x + (s1.x > s2.x ? -50 : 50)
         const dx2 = followX - s2.x
         s2.x += dx2 * 0.05
       } else {
@@ -171,7 +171,7 @@ export const PlecoPair = memo(({ containerWidth }: { containerWidth: number }) =
           s2.targetX = containerWidth * (0.55 + Math.random() * 0.35)
         }
       }
-      s2.x = Math.max(10, Math.min(containerWidth - 50, s2.x))
+      s2.x = Math.max(10, Math.min(containerWidth - 60, s2.x))
 
       // Determine facing direction
       const p1Right = currentPhase === 'together'
@@ -192,7 +192,7 @@ export const PlecoPair = memo(({ containerWidth }: { containerWidth: number }) =
   const showHearts = phase === 'together' || (phase === 'converging' && Math.abs(p1.x - p2.x) < 80)
 
   return (
-    <div className="absolute bottom-[18px] left-0 w-full z-20 pointer-events-none" style={{ height: '40px' }}>
+    <div className="absolute bottom-[18px] left-0 w-full z-20 pointer-events-none" style={{ height: '54px' }}>
       {/* Pleco 1 */}
       <div
         className="absolute"
@@ -202,7 +202,7 @@ export const PlecoPair = memo(({ containerWidth }: { containerWidth: number }) =
           transition: 'left 0.15s linear',
         }}
       >
-        <ClownPlecoSVG id="pleco-1" facingRight={p1.facingRight} size={38} />
+        <ClownPlecoSVG id="pleco-1" facingRight={p1.facingRight} size={54} />
       </div>
       {/* Pleco 2 (mate) */}
       <div
@@ -213,7 +213,7 @@ export const PlecoPair = memo(({ containerWidth }: { containerWidth: number }) =
           transition: 'left 0.15s linear',
         }}
       >
-        <ClownPlecoSVG id="pleco-2" facingRight={p2.facingRight} size={34} />
+        <ClownPlecoSVG id="pleco-2" facingRight={p2.facingRight} size={48} />
       </div>
       {/* Hearts when reunited */}
       {showHearts && <PlecoHearts x1={p1.x} x2={p2.x} />}
@@ -248,7 +248,7 @@ const PlecoHearts = memo(({ x1, x2 }: { x1: number; x2: number }) => {
       className="absolute pointer-events-none"
       style={{
         left: `${midX + 10}px`,
-        bottom: '28px',
+        bottom: '38px',
         animation: 'heartFloat 2s ease-out forwards',
       }}
     >
