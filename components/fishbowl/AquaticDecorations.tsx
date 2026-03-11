@@ -957,6 +957,480 @@ const BambooGrove = memo(({ x, y }: { x: number; y: number }) => (
 ))
 BambooGrove.displayName = 'BambooGrove'
 
+// ═══════════════════════════════════════════════════════════════════════
+// NEW THEME STRUCTURES — Each serves as the focal point of its own theme
+// ═══════════════════════════════════════════════════════════════════════
+
+// ─── CASTLE THEME: Sunken Medieval Castle ────────────────────────────
+
+const SunkenCastle = memo(({ x, y }: { x: number; y: number }) => (
+  <g transform={`translate(${x}, ${y})`}>
+    {/* Main keep — tall central tower */}
+    <rect x="30" y="-20" width="40" height="80" fill="#6B6B6B" />
+    <rect x="28" y="-24" width="44" height="8" fill="#7A7A7A" />
+    {/* Battlements on main keep */}
+    <rect x="28" y="-30" width="8" height="8" fill="#7A7A7A" />
+    <rect x="40" y="-30" width="8" height="8" fill="#7A7A7A" />
+    <rect x="52" y="-30" width="8" height="8" fill="#7A7A7A" />
+    <rect x="64" y="-30" width="8" height="8" fill="#7A7A7A" />
+    {/* Keep windows */}
+    <rect x="38" y="-14" width="6" height="8" fill="#1A1A2E" opacity="0.8" />
+    <rect x="38" y="-16" width="6" height="3" fill="#2A2A3E" opacity="0.6" />
+    <rect x="50" y="-14" width="6" height="8" fill="#1A1A2E" opacity="0.8" />
+    <rect x="50" y="-16" width="6" height="3" fill="#2A2A3E" opacity="0.6" />
+    <rect x="44" y="6" width="10" height="14" fill="#1A1A2E" opacity="0.7" />
+    {/* Keep stone texture */}
+    <rect x="32" y="-10" width="36" height="1" fill="#8A8A8A" opacity="0.3" />
+    <rect x="32" y="0" width="36" height="1" fill="#5A5A5A" opacity="0.3" />
+    <rect x="32" y="10" width="36" height="1" fill="#8A8A8A" opacity="0.25" />
+    <rect x="32" y="20" width="36" height="1" fill="#5A5A5A" opacity="0.25" />
+    <rect x="32" y="30" width="36" height="1" fill="#8A8A8A" opacity="0.2" />
+    <rect x="32" y="40" width="36" height="1" fill="#5A5A5A" opacity="0.2" />
+
+    {/* Left tower — shorter, round-style */}
+    <rect x="4" y="-6" width="28" height="66" fill="#5E5E5E" />
+    <rect x="2" y="-10" width="32" height="6" fill="#6E6E6E" />
+    {/* Left tower battlements */}
+    <rect x="2" y="-16" width="6" height="8" fill="#6E6E6E" />
+    <rect x="12" y="-16" width="6" height="8" fill="#6E6E6E" />
+    <rect x="22" y="-16" width="6" height="8" fill="#6E6E6E" />
+    {/* Left tower windows */}
+    <rect x="12" y="0" width="5" height="6" fill="#1A1A2E" opacity="0.7" />
+    <rect x="12" y="-2" width="5" height="3" fill="#2A2A3E" opacity="0.5" />
+    <rect x="12" y="20" width="5" height="6" fill="#1A1A2E" opacity="0.6" />
+
+    {/* Right tower — tallest, partially collapsed */}
+    <rect x="68" y="-12" width="26" height="72" fill="#5E5E5E" />
+    <rect x="66" y="-16" width="30" height="6" fill="#6E6E6E" />
+    {/* Right tower battlements (some broken) */}
+    <rect x="66" y="-22" width="6" height="8" fill="#6E6E6E" />
+    <rect x="76" y="-22" width="6" height="8" fill="#6E6E6E" />
+    <rect x="86" y="-20" width="6" height="6" fill="#6E6E6E" opacity="0.6" />
+    {/* Collapsed corner */}
+    <rect x="88" y="20" width="8" height="14" fill="#7A7A7A" opacity="0.5" />
+    <rect x="90" y="34" width="6" height="8" fill="#6B6B6B" opacity="0.4" />
+    {/* Right tower window */}
+    <rect x="76" y="-4" width="5" height="6" fill="#1A1A2E" opacity="0.7" />
+    <rect x="76" y="-6" width="5" height="3" fill="#2A2A3E" opacity="0.5" />
+
+    {/* Castle wall connecting towers at base */}
+    <rect x="0" y="46" width="100" height="14" fill="#5A5A5A" />
+    <rect x="2" y="40" width="96" height="8" fill="#686868" />
+    {/* Wall gate (portcullis) */}
+    <rect x="40" y="30" width="18" height="22" fill="#1A1A2E" opacity="0.8" />
+    <rect x="42" y="28" width="14" height="4" fill="#4A4A4A" />
+    {/* Portcullis bars */}
+    <rect x="43" y="32" width="1" height="18" fill="#4A4A4A" opacity="0.5" />
+    <rect x="47" y="32" width="1" height="18" fill="#4A4A4A" opacity="0.5" />
+    <rect x="51" y="32" width="1" height="18" fill="#4A4A4A" opacity="0.5" />
+    <rect x="55" y="32" width="1" height="18" fill="#4A4A4A" opacity="0.5" />
+
+    {/* Moss and algae on walls */}
+    <rect x="6" y="38" width="8" height="3" fill="#2E7D32" opacity="0.4" />
+    <rect x="70" y="42" width="10" height="2" fill="#388E3C" opacity="0.35" />
+    <rect x="30" y="-18" width="6" height="3" fill="#1B5E20" opacity="0.4" />
+    <rect x="80" y="-14" width="8" height="2" fill="#2E7D32" opacity="0.3" />
+    <rect x="10" y="52" width="12" height="2" fill="#2E7D32" opacity="0.3" />
+
+    {/* Barnacles */}
+    <rect x="2" y="48" width="3" height="3" fill="#9CA3AF" opacity="0.4" />
+    <rect x="90" y="50" width="4" height="3" fill="#9CA3AF" opacity="0.35" />
+    <rect x="36" y="46" width="3" height="2" fill="#9CA3AF" opacity="0.3" />
+
+    {/* Coral growth on tower */}
+    <rect x="0" y="30" width="5" height="6" fill="#C2185B" opacity="0.3" />
+    <rect x="92" y="10" width="4" height="5" fill="#FF5722" opacity="0.3" />
+
+    {/* Fallen stones / rubble */}
+    <rect x="-6" y="54" width="8" height="4" fill="#7A7A7A" opacity="0.5" />
+    <rect x="98" y="48" width="6" height="6" fill="#6B6B6B" opacity="0.5" />
+    <rect x="94" y="54" width="10" height="4" fill="#7A7A7A" opacity="0.4" />
+
+    {/* Bubbles from interior */}
+    <circle cx="48" cy="-28" r="1.5" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4s ease-in 0s infinite' }} />
+    <circle cx="78" cy="-20" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 5s ease-in 1.5s infinite' }} />
+    <circle cx="14" cy="-14" r="1.2" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4.5s ease-in 3s infinite' }} />
+  </g>
+))
+SunkenCastle.displayName = 'SunkenCastle'
+
+// ─── CASTLE THEME: Castle Drawbridge Ruins ───────────────────────────
+
+const CastleDrawbridge = memo(({ x, y }: { x: number; y: number }) => (
+  <g transform={`translate(${x}, ${y})`}>
+    {/* Left gate pillar */}
+    <rect x="0" y="10" width="14" height="50" fill="#6B6B6B" />
+    <rect x="-2" y="6" width="18" height="6" fill="#7A7A7A" />
+    <rect x="-2" y="0" width="6" height="8" fill="#7A7A7A" />
+    <rect x="10" y="0" width="6" height="8" fill="#7A7A7A" />
+    {/* Torch bracket */}
+    <rect x="12" y="16" width="4" height="2" fill="#5D4037" />
+    <rect x="14" y="12" width="2" height="4" fill="#5D4037" />
+    <rect x="13" y="10" width="4" height="3" fill="#FF8F00" opacity="0.4" />
+
+    {/* Right gate pillar */}
+    <rect x="56" y="10" width="14" height="50" fill="#6B6B6B" />
+    <rect x="54" y="6" width="18" height="6" fill="#7A7A7A" />
+    <rect x="54" y="0" width="6" height="8" fill="#7A7A7A" />
+    <rect x="66" y="0" width="6" height="8" fill="#7A7A7A" />
+
+    {/* Fallen drawbridge (wooden planks at angle) */}
+    <rect x="10" y="36" width="52" height="6" fill="#5D4037" />
+    <rect x="12" y="34" width="48" height="4" fill="#795548" />
+    <rect x="14" y="32" width="44" height="3" fill="#8D6E63" opacity="0.8" />
+    {/* Plank lines */}
+    <rect x="18" y="34" width="1" height="6" fill="#4E342E" opacity="0.4" />
+    <rect x="26" y="34" width="1" height="6" fill="#4E342E" opacity="0.4" />
+    <rect x="34" y="34" width="1" height="6" fill="#4E342E" opacity="0.4" />
+    <rect x="42" y="34" width="1" height="6" fill="#4E342E" opacity="0.4" />
+    <rect x="50" y="34" width="1" height="6" fill="#4E342E" opacity="0.4" />
+    {/* Chain links */}
+    <rect x="12" y="28" width="3" height="6" fill="#78909C" opacity="0.6" />
+    <rect x="14" y="26" width="2" height="3" fill="#90A4AE" opacity="0.5" />
+    <rect x="56" y="28" width="3" height="6" fill="#78909C" opacity="0.6" />
+
+    {/* Moss */}
+    <rect x="0" y="54" width="6" height="2" fill="#2E7D32" opacity="0.4" />
+    <rect x="60" y="56" width="8" height="2" fill="#388E3C" opacity="0.35" />
+    <rect x="24" y="40" width="4" height="2" fill="#1B5E20" opacity="0.3" />
+
+    {/* Bubbles */}
+    <circle cx="35" cy="30" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4s ease-in 1s infinite' }} />
+  </g>
+))
+CastleDrawbridge.displayName = 'CastleDrawbridge'
+
+// ─── PYRAMID THEME: Sunken Egyptian Pyramid ──────────────────────────
+
+const SunkenPyramid = memo(({ x, y }: { x: number; y: number }) => (
+  <g transform={`translate(${x}, ${y})`}>
+    {/* Pyramid body — stepped layers */}
+    <rect x="0" y="48" width="120" height="12" fill="#B8860B" />
+    <rect x="8" y="38" width="104" height="12" fill="#C49A1A" />
+    <rect x="16" y="28" width="88" height="12" fill="#D4A82A" />
+    <rect x="24" y="18" width="72" height="12" fill="#D4B03A" />
+    <rect x="32" y="8" width="56" height="12" fill="#DEB84A" />
+    <rect x="40" y="0" width="40" height="10" fill="#E8C45A" />
+    <rect x="48" y="-6" width="24" height="8" fill="#F0D070" />
+    <rect x="54" y="-12" width="12" height="8" fill="#F8D880" />
+    {/* Capstone */}
+    <rect x="56" y="-16" width="8" height="6" fill="#FFE082" />
+    <rect x="58" y="-18" width="4" height="4" fill="#FFF59D" opacity="0.8" />
+
+    {/* Stone block lines */}
+    {[48, 38, 28, 18, 8, 0].map((ty, i) => (
+      <g key={`row-${i}`}>
+        {Array.from({ length: 8 - i }, (_, j) => (
+          <rect key={`block-${i}-${j}`} x={i * 8 + j * (120 - i * 16) / (8 - i)} y={ty + 4} width="1" height={i < 3 ? 8 : 6} fill="#8B7355" opacity={0.2 + i * 0.02} />
+        ))}
+      </g>
+    ))}
+
+    {/* Entrance — dark doorway */}
+    <rect x="50" y="34" width="18" height="24" fill="#1A1A2E" opacity="0.85" />
+    <rect x="48" y="30" width="22" height="6" fill="#B8860B" />
+    {/* Entrance lintel with hieroglyphic detail */}
+    <rect x="50" y="31" width="3" height="3" fill="#FFD54F" opacity="0.5" />
+    <rect x="55" y="31" width="3" height="3" fill="#FFD54F" opacity="0.5" />
+    <rect x="60" y="31" width="3" height="3" fill="#FFD54F" opacity="0.5" />
+    <rect x="65" y="31" width="3" height="3" fill="#FFD54F" opacity="0.5" />
+
+    {/* Sand drift against base */}
+    <rect x="-4" y="56" width="30" height="6" fill="#C4A862" opacity="0.5" />
+    <rect x="96" y="56" width="28" height="4" fill="#C4A862" opacity="0.4" />
+
+    {/* Erosion and weathering */}
+    <rect x="20" y="42" width="6" height="4" fill="#A07820" opacity="0.4" />
+    <rect x="90" y="34" width="8" height="4" fill="#A07820" opacity="0.3" />
+    <rect x="14" y="50" width="4" height="3" fill="#8B7355" opacity="0.4" />
+
+    {/* Algae growth */}
+    <rect x="4" y="52" width="8" height="2" fill="#2E7D32" opacity="0.3" />
+    <rect x="100" y="48" width="10" height="2" fill="#388E3C" opacity="0.25" />
+    <rect x="46" y="52" width="6" height="2" fill="#1B5E20" opacity="0.3" />
+
+    {/* Coral encrustation at base */}
+    <rect x="110" y="46" width="8" height="6" fill="#E91E63" opacity="0.3" />
+    <rect x="-4" y="48" width="6" height="5" fill="#FF5722" opacity="0.25" />
+
+    {/* Bubbles from entrance */}
+    <circle cx="58" cy="28" r="1.5" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4s ease-in 0s infinite' }} />
+    <circle cx="62" cy="30" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 5s ease-in 2s infinite' }} />
+  </g>
+))
+SunkenPyramid.displayName = 'SunkenPyramid'
+
+// ─── PYRAMID THEME: Sphinx Statue ────────────────────────────────────
+
+const SunkenSphinx = memo(({ x, y }: { x: number; y: number }) => (
+  <g transform={`translate(${x}, ${y})`}>
+    {/* Body — recumbent lion shape */}
+    <rect x="10" y="24" width="60" height="20" fill="#C49A1A" />
+    <rect x="8" y="20" width="64" height="8" fill="#D4A82A" />
+    <rect x="14" y="16" width="56" height="6" fill="#D4B03A" />
+    {/* Back slope */}
+    <rect x="50" y="12" width="20" height="6" fill="#C49A1A" opacity="0.6" />
+
+    {/* Front paws — extended */}
+    <rect x="0" y="34" width="16" height="10" fill="#DEB84A" />
+    <rect x="-4" y="38" width="8" height="6" fill="#D4A82A" />
+    <rect x="60" y="34" width="14" height="10" fill="#DEB84A" />
+    <rect x="68" y="38" width="8" height="6" fill="#D4A82A" />
+
+    {/* Head — human face */}
+    <rect x="0" y="4" width="20" height="20" fill="#D4B03A" />
+    <rect x="-2" y="0" width="24" height="6" fill="#E8C45A" />
+    {/* Headdress (nemes) */}
+    <rect x="-4" y="-4" width="28" height="6" fill="#1565C0" opacity="0.5" />
+    <rect x="-6" y="-2" width="4" height="18" fill="#1565C0" opacity="0.4" />
+    <rect x="22" y="-2" width="4" height="18" fill="#1565C0" opacity="0.4" />
+    {/* Eyes */}
+    <rect x="4" y="8" width="4" height="3" fill="#1A1A2E" opacity="0.7" />
+    <rect x="12" y="8" width="4" height="3" fill="#1A1A2E" opacity="0.7" />
+    {/* Nose (partially broken) */}
+    <rect x="8" y="12" width="4" height="4" fill="#C49A1A" />
+    {/* Mouth */}
+    <rect x="6" y="18" width="8" height="2" fill="#B8860B" opacity="0.5" />
+
+    {/* Weathering and erosion */}
+    <rect x="30" y="22" width="8" height="4" fill="#B8860B" opacity="0.3" />
+    <rect x="48" y="26" width="6" height="3" fill="#A07820" opacity="0.3" />
+
+    {/* Sand buildup */}
+    <rect x="-8" y="40" width="20" height="6" fill="#C4A862" opacity="0.4" />
+    <rect x="60" y="42" width="18" height="4" fill="#C4A862" opacity="0.35" />
+
+    {/* Algae */}
+    <rect x="20" y="38" width="6" height="2" fill="#2E7D32" opacity="0.3" />
+    <rect x="54" y="30" width="4" height="2" fill="#388E3C" opacity="0.25" />
+
+    {/* Bubbles */}
+    <circle cx="10" cy="0" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4.5s ease-in 0.5s infinite' }} />
+  </g>
+))
+SunkenSphinx.displayName = 'SunkenSphinx'
+
+// ─── TEMPLE THEME: Sunken Torii Gate ─────────────────────────────────
+
+const SunkenTorii = memo(({ x, y }: { x: number; y: number }) => (
+  <g transform={`translate(${x}, ${y})`}>
+    {/* Left pillar */}
+    <rect x="4" y="4" width="10" height="56" fill="#B71C1C" />
+    <rect x="2" y="0" width="14" height="6" fill="#C62828" />
+    {/* Pillar ring detail */}
+    <rect x="2" y="14" width="14" height="2" fill="#D32F2F" opacity="0.5" />
+    <rect x="2" y="44" width="14" height="2" fill="#D32F2F" opacity="0.5" />
+
+    {/* Right pillar */}
+    <rect x="66" y="4" width="10" height="56" fill="#B71C1C" />
+    <rect x="64" y="0" width="14" height="6" fill="#C62828" />
+    <rect x="64" y="14" width="14" height="2" fill="#D32F2F" opacity="0.5" />
+    <rect x="64" y="44" width="14" height="2" fill="#D32F2F" opacity="0.5" />
+
+    {/* Top beam (kasagi) — curved ends */}
+    <rect x="-4" y="-8" width="88" height="6" fill="#C62828" />
+    <rect x="-6" y="-10" width="92" height="4" fill="#D32F2F" />
+    <rect x="-8" y="-12" width="4" height="4" fill="#C62828" />
+    <rect x="84" y="-12" width="4" height="4" fill="#C62828" />
+    {/* Curved tips */}
+    <rect x="-10" y="-14" width="4" height="3" fill="#B71C1C" />
+    <rect x="86" y="-14" width="4" height="3" fill="#B71C1C" />
+
+    {/* Lower beam (nuki) */}
+    <rect x="0" y="6" width="80" height="4" fill="#D32F2F" />
+    <rect x="2" y="4" width="76" height="3" fill="#E53935" opacity="0.6" />
+
+    {/* Center tablet (gakuzuka) */}
+    <rect x="30" y="-4" width="20" height="10" fill="#FFD54F" opacity="0.5" />
+    <rect x="32" y="-2" width="16" height="6" fill="#FFF59D" opacity="0.4" />
+    {/* Kanji-like detail */}
+    <rect x="36" y="-1" width="2" height="4" fill="#B71C1C" opacity="0.5" />
+    <rect x="40" y="-1" width="2" height="4" fill="#B71C1C" opacity="0.5" />
+    <rect x="35" y="1" width="8" height="1" fill="#B71C1C" opacity="0.4" />
+
+    {/* Algae and barnacles */}
+    <rect x="4" y="52" width="8" height="3" fill="#2E7D32" opacity="0.4" />
+    <rect x="66" y="54" width="8" height="2" fill="#388E3C" opacity="0.35" />
+    <rect x="20" y="8" width="4" height="2" fill="#1B5E20" opacity="0.3" />
+    <rect x="56" y="6" width="3" height="2" fill="#9CA3AF" opacity="0.3" />
+
+    {/* Barnacles on pillars */}
+    <rect x="12" y="36" width="3" height="3" fill="#9CA3AF" opacity="0.35" />
+    <rect x="64" y="28" width="3" height="2" fill="#9CA3AF" opacity="0.3" />
+
+    {/* Bubbles */}
+    <circle cx="40" cy="-12" r="1.2" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4s ease-in 0s infinite' }} />
+    <circle cx="36" cy="-8" r="0.8" fill="rgba(255,255,255,0.18)" style={{ animation: 'bubbleRise 5s ease-in 2s infinite' }} />
+  </g>
+))
+SunkenTorii.displayName = 'SunkenTorii'
+
+// ─── TEMPLE THEME: Stone Pagoda ──────────────────────────────────────
+
+const StonePagoda = memo(({ x, y }: { x: number; y: number }) => (
+  <g transform={`translate(${x}, ${y})`}>
+    {/* Base platform */}
+    <rect x="4" y="50" width="52" height="10" fill="#78716C" />
+    <rect x="8" y="46" width="44" height="6" fill="#8D8D8D" />
+
+    {/* First tier (bottom, widest) */}
+    <rect x="10" y="34" width="40" height="14" fill="#9E9E9E" />
+    <rect x="6" y="32" width="48" height="4" fill="#BDBDBD" />
+    {/* Roof overhang */}
+    <rect x="2" y="30" width="56" height="3" fill="#78716C" />
+    <rect x="0" y="28" width="60" height="3" fill="#6B7280" />
+    <rect x="-2" y="27" width="3" height="3" fill="#57534E" />
+    <rect x="59" y="27" width="3" height="3" fill="#57534E" />
+
+    {/* Second tier */}
+    <rect x="14" y="18" width="32" height="12" fill="#9E9E9E" />
+    <rect x="10" y="16" width="40" height="3" fill="#BDBDBD" />
+    {/* Roof */}
+    <rect x="6" y="14" width="48" height="3" fill="#78716C" />
+    <rect x="4" y="12" width="52" height="3" fill="#6B7280" />
+    <rect x="2" y="11" width="3" height="3" fill="#57534E" />
+    <rect x="55" y="11" width="3" height="3" fill="#57534E" />
+
+    {/* Third tier */}
+    <rect x="18" y="4" width="24" height="10" fill="#9E9E9E" />
+    <rect x="14" y="2" width="32" height="3" fill="#BDBDBD" />
+    {/* Roof */}
+    <rect x="10" y="0" width="40" height="3" fill="#78716C" />
+    <rect x="8" y="-2" width="44" height="3" fill="#6B7280" />
+    <rect x="6" y="-3" width="3" height="3" fill="#57534E" />
+    <rect x="51" y="-3" width="3" height="3" fill="#57534E" />
+
+    {/* Spire / finial */}
+    <rect x="26" y="-10" width="8" height="10" fill="#BDBDBD" />
+    <rect x="28" y="-16" width="4" height="8" fill="#9E9E9E" />
+    <rect x="29" y="-20" width="2" height="6" fill="#78716C" />
+
+    {/* Window/door openings */}
+    <rect x="24" y="38" width="8" height="8" fill="#1A1A2E" opacity="0.6" />
+    <rect x="26" y="22" width="6" height="6" fill="#1A1A2E" opacity="0.5" />
+    <rect x="27" y="7" width="5" height="5" fill="#1A1A2E" opacity="0.4" />
+
+    {/* Moss and algae */}
+    <rect x="4" y="54" width="6" height="2" fill="#2E7D32" opacity="0.4" />
+    <rect x="44" y="52" width="8" height="2" fill="#388E3C" opacity="0.35" />
+    <rect x="0" y="28" width="4" height="2" fill="#1B5E20" opacity="0.3" />
+
+    {/* Bubbles */}
+    <circle cx="30" cy="-18" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4s ease-in 1s infinite' }} />
+  </g>
+))
+StonePagoda.displayName = 'StonePagoda'
+
+// ─── ATLANTIS THEME: Atlantean Dome ──────────────────────────────────
+
+const AtlanteanDome = memo(({ x, y }: { x: number; y: number }) => (
+  <g transform={`translate(${x}, ${y})`}>
+    {/* Base platform — ornate stonework */}
+    <rect x="0" y="42" width="100" height="18" fill="#1A5276" />
+    <rect x="4" y="36" width="92" height="8" fill="#1F618D" />
+    <rect x="8" y="32" width="84" height="6" fill="#2471A3" />
+    {/* Platform decorative band */}
+    <rect x="6" y="40" width="88" height="2" fill="#5DADE2" opacity="0.3" />
+    <rect x="10" y="34" width="80" height="1" fill="#85C1E9" opacity="0.25" />
+
+    {/* Dome structure */}
+    <rect x="16" y="16" width="68" height="18" fill="#2471A3" />
+    <rect x="20" y="8" width="60" height="10" fill="#2E86C1" />
+    <rect x="26" y="2" width="48" height="8" fill="#3498DB" />
+    <rect x="32" y="-4" width="36" height="8" fill="#5DADE2" />
+    <rect x="38" y="-8" width="24" height="6" fill="#85C1E9" />
+    <rect x="44" y="-12" width="12" height="6" fill="#AED6F1" />
+    <rect x="48" y="-14" width="4" height="4" fill="#D4E6F1" opacity="0.8" />
+
+    {/* Dome windows — glowing */}
+    <rect x="30" y="10" width="8" height="10" fill="#00BCD4" opacity="0.5" />
+    <rect x="32" y="8" width="4" height="3" fill="#4DD0E1" opacity="0.4" />
+    <rect x="46" y="10" width="8" height="10" fill="#00BCD4" opacity="0.5" />
+    <rect x="48" y="8" width="4" height="3" fill="#4DD0E1" opacity="0.4" />
+    <rect x="62" y="10" width="8" height="10" fill="#00BCD4" opacity="0.5" />
+    <rect x="64" y="8" width="4" height="3" fill="#4DD0E1" opacity="0.4" />
+
+    {/* Central entrance */}
+    <rect x="38" y="26" width="24" height="16" fill="#0A1628" opacity="0.8" />
+    <rect x="36" y="24" width="28" height="4" fill="#2471A3" />
+    {/* Entrance arch detail */}
+    <rect x="40" y="22" width="20" height="3" fill="#5DADE2" opacity="0.4" />
+
+    {/* Pillars flanking entrance */}
+    <rect x="30" y="20" width="6" height="22" fill="#2E86C1" />
+    <rect x="28" y="18" width="10" height="4" fill="#5DADE2" opacity="0.5" />
+    <rect x="64" y="20" width="6" height="22" fill="#2E86C1" />
+    <rect x="62" y="18" width="10" height="4" fill="#5DADE2" opacity="0.5" />
+
+    {/* Decorative trident symbol atop dome */}
+    <rect x="49" y="-22" width="2" height="10" fill="#85C1E9" />
+    <rect x="46" y="-24" width="2" height="6" fill="#85C1E9" opacity="0.7" />
+    <rect x="52" y="-24" width="2" height="6" fill="#85C1E9" opacity="0.7" />
+    <rect x="48" y="-26" width="4" height="3" fill="#AED6F1" opacity="0.6" />
+    <rect x="45" y="-26" width="2" height="2" fill="#AED6F1" opacity="0.5" />
+    <rect x="53" y="-26" width="2" height="2" fill="#AED6F1" opacity="0.5" />
+
+    {/* Bioluminescent glow accents */}
+    <rect x="12" y="38" width="4" height="3" fill="#00E5FF" opacity="0.25" />
+    <rect x="84" y="38" width="4" height="3" fill="#00E5FF" opacity="0.25" />
+    <rect x="18" y="28" width="3" height="2" fill="#00E5FF" opacity="0.2" />
+    <rect x="80" y="28" width="3" height="2" fill="#00E5FF" opacity="0.2" />
+
+    {/* Coral and algae */}
+    <rect x="0" y="52" width="8" height="3" fill="#2E7D32" opacity="0.3" />
+    <rect x="88" y="50" width="10" height="3" fill="#1B5E20" opacity="0.3" />
+    <rect x="98" y="44" width="6" height="5" fill="#E91E63" opacity="0.25" />
+
+    {/* Bubbles */}
+    <circle cx="50" cy="-24" r="1.5" fill="rgba(255,255,255,0.3)" style={{ animation: 'bubbleRise 3.5s ease-in 0s infinite' }} />
+    <circle cx="46" cy="-14" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4.5s ease-in 1.5s infinite' }} />
+    <circle cx="56" cy="-10" r="1.2" fill="rgba(255,255,255,0.22)" style={{ animation: 'bubbleRise 4s ease-in 3s infinite' }} />
+  </g>
+))
+AtlanteanDome.displayName = 'AtlanteanDome'
+
+// ─── ATLANTIS THEME: Atlantean Obelisk ───────────────────────────────
+
+const AtlanteanObelisk = memo(({ x, y }: { x: number; y: number }) => (
+  <g transform={`translate(${x}, ${y})`}>
+    {/* Base — stepped platform */}
+    <rect x="0" y="46" width="40" height="14" fill="#1A5276" />
+    <rect x="4" y="40" width="32" height="8" fill="#1F618D" />
+    <rect x="8" y="36" width="24" height="6" fill="#2471A3" />
+
+    {/* Obelisk shaft — tall and narrow */}
+    <rect x="12" y="-20" width="16" height="58" fill="#2E86C1" />
+    <rect x="10" y="-16" width="20" height="4" fill="#3498DB" />
+    {/* Pyramidion (pointed top) */}
+    <rect x="14" y="-28" width="12" height="10" fill="#5DADE2" />
+    <rect x="16" y="-34" width="8" height="8" fill="#85C1E9" />
+    <rect x="18" y="-38" width="4" height="6" fill="#AED6F1" />
+    <rect x="19" y="-40" width="2" height="4" fill="#D4E6F1" opacity="0.8" />
+
+    {/* Hieroglyphic-style carvings */}
+    <rect x="14" y="-10" width="4" height="4" fill="#00BCD4" opacity="0.4" />
+    <rect x="22" y="-10" width="4" height="4" fill="#00BCD4" opacity="0.4" />
+    <rect x="16" y="0" width="8" height="2" fill="#00BCD4" opacity="0.3" />
+    <rect x="14" y="8" width="4" height="4" fill="#00BCD4" opacity="0.35" />
+    <rect x="22" y="8" width="4" height="4" fill="#00BCD4" opacity="0.35" />
+    <rect x="16" y="18" width="8" height="2" fill="#00BCD4" opacity="0.3" />
+    <rect x="18" y="26" width="4" height="4" fill="#00BCD4" opacity="0.3" />
+
+    {/* Glowing eye symbol */}
+    <rect x="16" y="-6" width="8" height="2" fill="#00E5FF" opacity="0.3" />
+    <rect x="18" y="-8" width="4" height="2" fill="#00E5FF" opacity="0.4" />
+
+    {/* Coral and algae */}
+    <rect x="0" y="54" width="6" height="3" fill="#2E7D32" opacity="0.35" />
+    <rect x="32" y="52" width="6" height="2" fill="#388E3C" opacity="0.3" />
+    <rect x="26" y="20" width="4" height="3" fill="#1B5E20" opacity="0.25" />
+
+    {/* Bubbles */}
+    <circle cx="20" cy="-38" r="1" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4s ease-in 0.5s infinite' }} />
+  </g>
+))
+AtlanteanObelisk.displayName = 'AtlanteanObelisk'
+
 
 // ═══════════════════════════════════════════════════════════════════════
 // THEMED LAYOUT CONFIGS
@@ -1099,11 +1573,129 @@ const MINIMAL_LAYOUT: LayeredDecoConfig = {
   },
 }
 
+const CASTLE_LAYOUT: LayeredDecoConfig = {
+  sandColors: { color: '#6B6B6B', lighter: '#8A8A8A', detail: '#5A5A5A' },
+  background: {
+    kelps: [
+      { x: 20, height: 55, variant: 'thin', color: '#1B5E20', delay: 0 },
+      { x: 680, height: 50, variant: 'wide', color: '#2E7D32', delay: 0.8 },
+      { x: 760, height: 45, variant: 'thin', color: '#1B5E20', delay: 1.5 },
+    ],
+    structures: [
+      { type: 'castle', x: 200, y: 56 },
+      { type: 'drawbridge', x: 560, y: 90 },
+    ],
+  },
+  foreground: {
+    rocks: [
+      { x: 60, y: 170, variant: 'large', color: '#57534E' },
+      { x: 420, y: 174, variant: 'medium', color: '#44403C' },
+      { x: 700, y: 172, variant: 'medium', color: '#57534E' },
+    ],
+    corals: [
+      { x: 140, y: 164, variant: 'brain', color: '#795548' },
+    ],
+    kelps: [
+      { x: 470, height: 30, variant: 'thin', color: '#1B5E20', delay: 1.2 },
+    ],
+  },
+}
+
+const PYRAMID_LAYOUT: LayeredDecoConfig = {
+  sandColors: { color: '#C4A862', lighter: '#D4B872', detail: '#A08B52' },
+  background: {
+    kelps: [
+      { x: 20, height: 45, variant: 'thin', color: '#2E7D32', delay: 0 },
+      { x: 700, height: 50, variant: 'wide', color: '#388E3C', delay: 0.6 },
+      { x: 770, height: 40, variant: 'thin', color: '#1B5E20', delay: 1.8 },
+    ],
+    structures: [
+      { type: 'pyramid', x: 80, y: 56 },
+      { type: 'sphinx', x: 520, y: 88 },
+    ],
+  },
+  foreground: {
+    rocks: [
+      { x: 40, y: 172, variant: 'medium', color: '#A08B6C' },
+      { x: 380, y: 176, variant: 'small', color: '#B89B52' },
+      { x: 660, y: 170, variant: 'large', color: '#8B7355' },
+    ],
+    corals: [
+      { x: 450, y: 166, variant: 'fan', color: '#E91E63' },
+    ],
+    kelps: [
+      { x: 340, height: 28, variant: 'thin', color: '#2E7D32', delay: 1 },
+    ],
+  },
+}
+
+const TEMPLE_LAYOUT: LayeredDecoConfig = {
+  sandColors: { color: '#8D8D8D', lighter: '#A8A8A8', detail: '#6B6B6B' },
+  background: {
+    kelps: [
+      { x: 30, height: 60, variant: 'bushy', color: '#2E7D32', delay: 0 },
+      { x: 420, height: 55, variant: 'wide', color: '#388E3C', delay: 0.4 },
+      { x: 740, height: 50, variant: 'bushy', color: '#1B5E20', delay: 1.2 },
+    ],
+    structures: [
+      { type: 'torii', x: 120, y: 82 },
+      { type: 'pagoda', x: 480, y: 72 },
+    ],
+  },
+  foreground: {
+    rocks: [
+      { x: 60, y: 174, variant: 'small', color: '#78716C' },
+      { x: 350, y: 170, variant: 'medium', color: '#6B7280' },
+      { x: 680, y: 174, variant: 'small', color: '#78716C' },
+    ],
+    corals: [
+      { x: 280, y: 162, variant: 'branch', color: '#E91E63' },
+      { x: 620, y: 166, variant: 'fan', color: '#FF5722' },
+    ],
+    kelps: [
+      { x: 200, height: 35, variant: 'thin', color: '#388E3C', delay: 0.8 },
+    ],
+  },
+}
+
+const ATLANTIS_LAYOUT: LayeredDecoConfig = {
+  sandColors: { color: '#1A5276', lighter: '#2471A3', detail: '#154360' },
+  background: {
+    kelps: [
+      { x: 30, height: 55, variant: 'wide', color: '#00695C', delay: 0 },
+      { x: 670, height: 50, variant: 'bushy', color: '#004D40', delay: 0.5 },
+      { x: 760, height: 45, variant: 'thin', color: '#00695C', delay: 1.5 },
+    ],
+    structures: [
+      { type: 'atlantean-dome', x: 100, y: 56 },
+      { type: 'atlantean-obelisk', x: 560, y: 68 },
+    ],
+  },
+  foreground: {
+    rocks: [
+      { x: 50, y: 172, variant: 'medium', color: '#1F618D' },
+      { x: 400, y: 176, variant: 'small', color: '#2471A3' },
+      { x: 700, y: 170, variant: 'medium', color: '#1A5276' },
+    ],
+    corals: [
+      { x: 300, y: 162, variant: 'fan', color: '#00BCD4' },
+      { x: 650, y: 166, variant: 'brain', color: '#0097A7' },
+    ],
+    kelps: [
+      { x: 450, height: 30, variant: 'thin', color: '#00897B', delay: 1 },
+    ],
+  },
+}
+
 const THEME_LAYOUTS: Record<string, LayeredDecoConfig> = {
   ocean: OCEAN_LAYOUT,
   tropical: TROPICAL_LAYOUT,
   shipwreck: SHIPWRECK_LAYOUT,
   minimal: MINIMAL_LAYOUT,
+  castle: CASTLE_LAYOUT,
+  pyramid: PYRAMID_LAYOUT,
+  temple: TEMPLE_LAYOUT,
+  atlantis: ATLANTIS_LAYOUT,
 }
 
 // ─── Structure renderer ──────────────────────────────────────────────
@@ -1121,6 +1713,14 @@ function renderStructure(s: { type: string; x: number; y: number }) {
     case 'sailboat': inner = <SunkenSailboat x={0} y={0} />; break
     case 'cairn': inner = <StoneCairn x={0} y={0} />; break
     case 'bamboo': inner = <BambooGrove x={0} y={0} />; break
+    case 'castle': inner = <SunkenCastle x={0} y={0} />; break
+    case 'drawbridge': inner = <CastleDrawbridge x={0} y={0} />; break
+    case 'pyramid': inner = <SunkenPyramid x={0} y={0} />; break
+    case 'sphinx': inner = <SunkenSphinx x={0} y={0} />; break
+    case 'torii': inner = <SunkenTorii x={0} y={0} />; break
+    case 'pagoda': inner = <StonePagoda x={0} y={0} />; break
+    case 'atlantean-dome': inner = <AtlanteanDome x={0} y={0} />; break
+    case 'atlantean-obelisk': inner = <AtlanteanObelisk x={0} y={0} />; break
     default: return null
   }
   return (
