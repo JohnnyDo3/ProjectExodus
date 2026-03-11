@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { SwimmingFish, type FishData } from './SwimmingFish'
-import { DecorationBackground, DecorationForeground } from './AquaticDecorations'
+import { DecorationBackground, DecorationMidground, DecorationForeground } from './AquaticDecorations'
 import { PlecoPair, SnailGroup } from './TankCreatures'
 import { AlgaeOverlay } from './AlgaeSystem'
 import { FishOverlay } from './FishOverlay'
@@ -177,8 +177,11 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomi
       {/* Water caustics/light effects */}
       <WaterEffects width={dimensions.width} height={dimensions.height} />
 
-      {/* Background decorations — tall plants, structures (behind fish) */}
+      {/* Background decorations — tall plants (behind everything) */}
       <DecorationBackground width={dimensions.width} theme={theme} />
+
+      {/* Midground structures — between background sand and foreground glass */}
+      <DecorationMidground width={dimensions.width} theme={theme} />
 
       {/* Swimming fish (z-index 10-20, swim between decoration layers) */}
       {dimensions.width > 0 && visibleFish.map((fish, i) => (

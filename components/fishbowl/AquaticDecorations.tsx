@@ -1456,6 +1456,8 @@ interface LayeredDecoConfig {
   sandColors?: { color: string; lighter: string; detail: string }
   background: {
     kelps: Array<{ x: number; height: number; variant: 'thin' | 'wide' | 'bushy'; color: string; delay: number }>
+  }
+  midground: {
     structures: Array<{ type: string; x: number; y: number }>
   }
   foreground: {
@@ -1473,6 +1475,8 @@ const OCEAN_LAYOUT: LayeredDecoConfig = {
       { x: 550, height: 85, variant: 'bushy', color: '#1B5E20', delay: 0.3 },
       { x: 740, height: 75, variant: 'wide', color: '#2E7D32', delay: 0.8 },
     ],
+  },
+  midground: {
     structures: [
       { type: 'coral-arch', x: 180, y: 78 },
       { type: 'sunken-temple', x: 500, y: 82 },
@@ -1504,6 +1508,8 @@ const TROPICAL_LAYOUT: LayeredDecoConfig = {
       { x: 650, height: 75, variant: 'bushy', color: '#00C853', delay: 1.2 },
       { x: 760, height: 70, variant: 'wide', color: '#00E676', delay: 0.4 },
     ],
+  },
+  midground: {
     structures: [
       { type: 'volcano', x: 160, y: 82 },
       { type: 'dragon-stone', x: 480, y: 78 },
@@ -1535,9 +1541,11 @@ const SHIPWRECK_LAYOUT: LayeredDecoConfig = {
       { x: 420, height: 55, variant: 'wide', color: '#2E7D32', delay: 0.5 },
       { x: 750, height: 45, variant: 'thin', color: '#1B5E20', delay: 1.5 },
     ],
+  },
+  midground: {
     structures: [
-      { type: 'shipwreck', x: 200, y: 68 },
-      { type: 'treasure', x: 480, y: 110 },
+      { type: 'shipwreck', x: 40, y: 60 },
+      { type: 'treasure', x: 640, y: 100 },
     ],
   },
   foreground: {
@@ -1564,6 +1572,8 @@ const SAILBOAT_LAYOUT: LayeredDecoConfig = {
       { x: 620, height: 50, variant: 'bushy', color: '#388E3C', delay: 0.8 },
       { x: 740, height: 45, variant: 'thin', color: '#1B5E20', delay: 1.5 },
     ],
+  },
+  midground: {
     structures: [
       { type: 'sailboat', x: 300, y: 96 },
     ],
@@ -1593,6 +1603,8 @@ const SUBMARINE_LAYOUT: LayeredDecoConfig = {
       { x: 650, height: 55, variant: 'wide', color: '#2E7D32', delay: 0.5 },
       { x: 760, height: 45, variant: 'thin', color: '#1B5E20', delay: 1.5 },
     ],
+  },
+  midground: {
     structures: [
       { type: 'submarine', x: 260, y: 88 },
     ],
@@ -1622,9 +1634,11 @@ const MINIMAL_LAYOUT: LayeredDecoConfig = {
       { x: 650, height: 70, variant: 'wide', color: '#2E7D32', delay: 0.4 },
       { x: 740, height: 65, variant: 'bushy', color: '#388E3C', delay: 2.0 },
     ],
+  },
+  midground: {
     structures: [
-      { type: 'cairn', x: 280, y: 86 },
-      { type: 'bamboo', x: 440, y: 80 },
+      { type: 'cairn', x: 250, y: 82 },
+      { type: 'bamboo', x: 500, y: 78 },
     ],
   },
   foreground: {
@@ -1649,9 +1663,11 @@ const CASTLE_LAYOUT: LayeredDecoConfig = {
       { x: 680, height: 50, variant: 'wide', color: '#2E7D32', delay: 0.8 },
       { x: 760, height: 45, variant: 'thin', color: '#1B5E20', delay: 1.5 },
     ],
+  },
+  midground: {
     structures: [
-      { type: 'castle', x: 220, y: 64 },
-      { type: 'drawbridge', x: 460, y: 98 },
+      { type: 'castle', x: 200, y: 56 },
+      { type: 'drawbridge', x: 560, y: 90 },
     ],
   },
   foreground: {
@@ -1677,9 +1693,11 @@ const PYRAMID_LAYOUT: LayeredDecoConfig = {
       { x: 700, height: 50, variant: 'wide', color: '#388E3C', delay: 0.6 },
       { x: 770, height: 40, variant: 'thin', color: '#1B5E20', delay: 1.8 },
     ],
+  },
+  midground: {
     structures: [
-      { type: 'pyramid', x: 200, y: 64 },
-      { type: 'sphinx', x: 440, y: 96 },
+      { type: 'pyramid', x: 80, y: 56 },
+      { type: 'sphinx', x: 520, y: 88 },
     ],
   },
   foreground: {
@@ -1705,9 +1723,11 @@ const TEMPLE_LAYOUT: LayeredDecoConfig = {
       { x: 420, height: 55, variant: 'wide', color: '#388E3C', delay: 0.4 },
       { x: 740, height: 50, variant: 'bushy', color: '#1B5E20', delay: 1.2 },
     ],
+  },
+  midground: {
     structures: [
-      { type: 'torii', x: 220, y: 86 },
-      { type: 'pagoda', x: 420, y: 76 },
+      { type: 'torii', x: 120, y: 82 },
+      { type: 'pagoda', x: 480, y: 72 },
     ],
   },
   foreground: {
@@ -1734,9 +1754,11 @@ const ATLANTIS_LAYOUT: LayeredDecoConfig = {
       { x: 670, height: 50, variant: 'bushy', color: '#004D40', delay: 0.5 },
       { x: 760, height: 45, variant: 'thin', color: '#00695C', delay: 1.5 },
     ],
+  },
+  midground: {
     structures: [
-      { type: 'atlantean-dome', x: 200, y: 64 },
-      { type: 'atlantean-obelisk', x: 450, y: 76 },
+      { type: 'atlantean-dome', x: 100, y: 56 },
+      { type: 'atlantean-obelisk', x: 560, y: 68 },
     ],
   },
   foreground: {
@@ -1817,12 +1839,32 @@ export const DecorationBackground = memo(({ width, theme = 'ocean' }: { width: n
         shapeRendering="crispEdges"
       >
         {bg.kelps.map((k, i) => <Kelp key={`bg-kelp-${i}`} {...k} />)}
-        {bg.structures.map(s => renderStructure(s))}
       </svg>
     </div>
   )
 })
 DecorationBackground.displayName = 'DecorationBackground'
+
+// ─── Midground decoration layer (structures between bg & fg) ─────────
+
+export const DecorationMidground = memo(({ width, theme = 'ocean' }: { width: number; theme?: string }) => {
+  const layout = THEME_LAYOUTS[theme] || THEME_LAYOUTS.ocean
+  const mg = useMemo(() => layout.midground, [layout])
+
+  return (
+    <div className="absolute bottom-0 left-0 w-full z-[12]" style={{ height: '240px', pointerEvents: 'none' }}>
+      <svg
+        className="absolute bottom-0 left-0 w-full h-full"
+        viewBox="0 0 800 200"
+        preserveAspectRatio="xMidYMax meet"
+        shapeRendering="crispEdges"
+      >
+        {mg.structures.map(s => renderStructure(s))}
+      </svg>
+    </div>
+  )
+})
+DecorationMidground.displayName = 'DecorationMidground'
 
 // ─── Foreground decoration layer (in front of fish) ──────────────────
 
@@ -1851,6 +1893,7 @@ DecorationForeground.displayName = 'DecorationForeground'
 export const DecorationLayer = memo(({ width, theme = 'ocean' }: { width: number; theme?: string }) => (
   <>
     <DecorationBackground width={width} theme={theme} />
+    <DecorationMidground width={width} theme={theme} />
     <DecorationForeground width={width} theme={theme} />
   </>
 ))
