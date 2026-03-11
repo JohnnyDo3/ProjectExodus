@@ -32,11 +32,11 @@ const ALL_SPECIES: { species: FishSpecies; tier: FishTier; name: string; unlockS
 
 const ALL_PATTERNS: { pattern: FishPattern; name: string; description: string }[] = [
   { pattern: 'none', name: 'Default', description: 'Natural look' },
-  { pattern: 'stripes', name: 'Stripes', description: 'Vertical stripe pattern' },
-  { pattern: 'spots', name: 'Spots', description: 'Dotted pattern' },
-  { pattern: 'gradient', name: 'Gradient', description: 'Soft gradient overlay' },
-  { pattern: 'galaxy', name: 'Galaxy', description: 'Starry sparkle effect' },
-  { pattern: 'neon', name: 'Neon', description: 'Glowing neon line' },
+  { pattern: 'scales', name: 'Scales', description: 'Classic fish scale pattern' },
+  { pattern: 'fine-scales', name: 'Fine Scales', description: 'Detailed small scales' },
+  { pattern: 'armored', name: 'Armored', description: 'Heavy plated scales' },
+  { pattern: 'shimmer', name: 'Shimmer', description: 'Iridescent scale sheen' },
+  { pattern: 'koi', name: 'Koi', description: 'Koi-style patches with scales' },
 ]
 
 const COLOR_PRESETS: { name: string; colors: Partial<FishColors> }[] = [

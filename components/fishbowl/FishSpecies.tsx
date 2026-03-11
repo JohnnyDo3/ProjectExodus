@@ -290,7 +290,7 @@ const BettaFish = memo(({ colors, size, id }: { colors: FishColors; size: number
 ))
 BettaFish.displayName = 'BettaFish'
 
-export type FishPattern = 'none' | 'stripes' | 'spots' | 'gradient' | 'galaxy' | 'neon'
+export type FishPattern = 'none' | 'scales' | 'fine-scales' | 'armored' | 'shimmer' | 'koi'
 
 export type FishSpecies = 'guppy' | 'tetra' | 'angelfish' | 'clownfish' | 'tang' | 'betta'
 
@@ -303,78 +303,151 @@ const SPECIES_TO_TIER: Record<FishSpecies, FishTier> = {
   betta: 5,
 }
 
-// Pattern overlay component rendered inside each fish SVG
-const PatternOverlay = memo(({ pattern, id, viewBox }: { pattern: FishPattern; id: string; viewBox: string }) => {
+// Body clip paths for each fish species — patterns are clipped to these shapes
+// so they only appear on the fish body, not as a floating square
+const BODY_CLIPS: Record<FishTier, string> = {
+  0: 'M8 19 Q8 7 26 7 Q44 7 44 19 Q44 31 26 31 Q8 31 8 19 Z',                           // Guppy ellipse
+  1: 'M10 19 Q10 8 28 6 Q46 4 52 19 Q46 34 28 32 Q10 30 10 19 Z',                        // Tetra torpedo
+  2: 'M10 30 Q10 14 24 10 Q38 6 44 30 Q38 54 24 50 Q10 46 10 30 Z',                      // Angelfish diamond
+  3: 'M12 23 Q12 8 30 5 Q50 2 60 23 Q50 44 30 41 Q12 38 12 23 Z',                        // Clownfish rounded
+  4: 'M12 25 Q12 8 32 4 Q54 0 64 25 Q54 50 32 46 Q12 42 12 25 Z',                        // Tang oval
+  5: 'M16 35 Q16 18 30 14 Q46 10 56 35 Q46 56 30 52 Q16 48 16 35 Z',                     // Betta body
+}
+
+// Scale pattern generator — produces rows of overlapping arc shapes
+// that look like real fish scales when rendered on the body
+const ScalePattern = memo(({ id, viewBox, scaleSize, opacity }: {
+  id: string; viewBox: string; scaleSize: number; opacity: number
+}) => {
+  const [, , w, h] = viewBox.split(' ').map(Number)
+  const cols = Math.ceil(w / scaleSize) + 1
+  const rows = Math.ceil(h / (scaleSize * 0.7)) + 1
+
+  return (
+    <g opacity={opacity}>
+      {Array.from({ length: rows }, (_, row) =>
+        Array.from({ length: cols }, (_, col) => {
+          const x = col * scaleSize + (row % 2 ? scaleSize * 0.5 : 0)
+          const y = row * scaleSize * 0.7
+          const r = scaleSize * 0.55
+          return (
+            <path
+              key={`${row}-${col}`}
+              d={`M${x - r},${y} A${r},${r * 0.9} 0 0,1 ${x + r},${y}`}
+              stroke="white"
+              strokeWidth={scaleSize * 0.08}
+              fill="none"
+            />
+          )
+        })
+      )}
+    </g>
+  )
+})
+ScalePattern.displayName = 'ScalePattern'
+
+// Pattern overlay component — renders scale-based patterns clipped to the fish body
+const PatternOverlay = memo(({ pattern, id, viewBox, tier }: {
+  pattern: FishPattern; id: string; viewBox: string; tier: FishTier
+}) => {
   if (pattern === 'none') return null
 
   const [, , w, h] = viewBox.split(' ').map(Number)
+  const clipId = `clip-${id}`
 
-  switch (pattern) {
-    case 'stripes':
-      return (
-        <g opacity="0.25">
-          {Array.from({ length: Math.ceil(w / 8) }, (_, i) => (
-            <line key={i} x1={i * 8} y1="0" x2={i * 8} y2={h} stroke="white" strokeWidth="1.5" />
-          ))}
-        </g>
-      )
-    case 'spots':
-      return (
-        <g opacity="0.2">
-          {Array.from({ length: 6 }, (_, i) => {
-            const cx = (w * 0.2) + (i % 3) * (w * 0.25)
-            const cy = (h * 0.3) + Math.floor(i / 3) * (h * 0.35)
-            return <circle key={i} cx={cx} cy={cy} r={w * 0.04} fill="white" />
-          })}
-        </g>
-      )
-    case 'gradient':
-      return (
-        <>
-          <defs>
-            <linearGradient id={`pat-grad-${id}`} x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="white" stopOpacity="0.25" />
-              <stop offset="50%" stopColor="white" stopOpacity="0" />
-              <stop offset="100%" stopColor="white" stopOpacity="0.2" />
-            </linearGradient>
-          </defs>
-          <rect x="0" y="0" width={w} height={h} fill={`url(#pat-grad-${id})`} />
-        </>
-      )
-    case 'galaxy':
-      return (
-        <g opacity="0.3">
-          {Array.from({ length: 12 }, (_, i) => {
-            const cx = (w * 0.1) + Math.random() * (w * 0.8)
-            const cy = (h * 0.1) + Math.random() * (h * 0.8)
-            // Use deterministic positions based on index
-            const px = (w * 0.15) + ((i * 7.3) % (w * 0.7))
-            const py = (h * 0.15) + ((i * 5.7) % (h * 0.7))
-            return <circle key={i} cx={px} cy={py} r={0.8 + (i % 3) * 0.5} fill="white" opacity={0.4 + (i % 4) * 0.15} />
-          })}
-        </g>
-      )
-    case 'neon':
-      return (
-        <>
-          <defs>
-            <filter id={`pat-neon-${id}`}>
-              <feGaussianBlur stdDeviation="2" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
-          <g opacity="0.35" filter={`url(#pat-neon-${id})`}>
-            <path d={`M${w * 0.15},${h * 0.5} Q${w * 0.35},${h * 0.2} ${w * 0.55},${h * 0.5} Q${w * 0.75},${h * 0.8} ${w * 0.85},${h * 0.5}`}
-              stroke="white" strokeWidth="1.5" fill="none" />
+  const patternContent = (() => {
+    switch (pattern) {
+      case 'scales':
+        // Classic fish scales — medium-sized overlapping arcs
+        return <ScalePattern id={id} viewBox={viewBox} scaleSize={w * 0.08} opacity={0.3} />
+
+      case 'fine-scales':
+        // Smaller, denser scale pattern — more detailed look
+        return <ScalePattern id={id} viewBox={viewBox} scaleSize={w * 0.05} opacity={0.22} />
+
+      case 'armored':
+        // Heavy armored plates — larger, bolder scales with fill
+        return (
+          <g opacity={0.2}>
+            {(() => {
+              const sz = w * 0.12
+              const cols = Math.ceil(w / sz) + 1
+              const rows = Math.ceil(h / (sz * 0.7)) + 1
+              return Array.from({ length: rows }, (_, row) =>
+                Array.from({ length: cols }, (_, col) => {
+                  const x = col * sz + (row % 2 ? sz * 0.5 : 0)
+                  const y = row * sz * 0.7
+                  const r = sz * 0.55
+                  return (
+                    <path
+                      key={`${row}-${col}`}
+                      d={`M${x - r},${y} A${r},${r * 0.85} 0 0,1 ${x + r},${y}`}
+                      stroke="white"
+                      strokeWidth={sz * 0.12}
+                      fill="white"
+                      fillOpacity="0.06"
+                    />
+                  )
+                })
+              )
+            })()}
           </g>
-        </>
-      )
-    default:
-      return null
-  }
+        )
+
+      case 'shimmer':
+        // Iridescent shimmer scales with subtle gradient fill
+        return (
+          <>
+            <defs>
+              <linearGradient id={`shimmer-${id}`} x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="white" stopOpacity="0.15" />
+                <stop offset="30%" stopColor="white" stopOpacity="0" />
+                <stop offset="60%" stopColor="white" stopOpacity="0.12" />
+                <stop offset="100%" stopColor="white" stopOpacity="0.05" />
+              </linearGradient>
+            </defs>
+            <ScalePattern id={id} viewBox={viewBox} scaleSize={w * 0.07} opacity={0.25} />
+            <rect x="0" y="0" width={w} height={h} fill={`url(#shimmer-${id})`} />
+          </>
+        )
+
+      case 'koi':
+        // Koi-style large irregular patches with scale texture underneath
+        return (
+          <>
+            <defs>
+              <radialGradient id={`koi1-${id}`} cx="0.3" cy="0.4" r="0.4">
+                <stop offset="0%" stopColor="white" stopOpacity="0.3" />
+                <stop offset="100%" stopColor="white" stopOpacity="0" />
+              </radialGradient>
+              <radialGradient id={`koi2-${id}`} cx="0.7" cy="0.6" r="0.35">
+                <stop offset="0%" stopColor="white" stopOpacity="0.25" />
+                <stop offset="100%" stopColor="white" stopOpacity="0" />
+              </radialGradient>
+            </defs>
+            <ScalePattern id={id} viewBox={viewBox} scaleSize={w * 0.06} opacity={0.15} />
+            <ellipse cx={w * 0.3} cy={h * 0.4} rx={w * 0.2} ry={h * 0.25} fill={`url(#koi1-${id})`} />
+            <ellipse cx={w * 0.65} cy={h * 0.55} rx={w * 0.18} ry={h * 0.2} fill={`url(#koi2-${id})`} />
+          </>
+        )
+
+      default:
+        return null
+    }
+  })()
+
+  return (
+    <>
+      <defs>
+        <clipPath id={clipId}>
+          <path d={BODY_CLIPS[tier]} />
+        </clipPath>
+      </defs>
+      <g clipPath={`url(#${clipId})`}>
+        {patternContent}
+      </g>
+    </>
+  )
 })
 PatternOverlay.displayName = 'PatternOverlay'
 
@@ -432,9 +505,8 @@ export const FishSVG = memo(({ tier, size = 48, customColors, customization, id 
 
   if (pattern === 'none') return fishElement
 
-  // Wrap in a container with pattern overlay
+  // Render pattern clipped to the fish body shape, overlaid on the fish
   const vb = viewBoxes[renderTier]
-  const [, , vw, vh] = vb.split(' ').map(Number)
   const aspect = renderTier === 2 ? 1.1 : renderTier === 5 ? 0.95 : renderTier === 1 ? 0.55 : renderTier === 3 || renderTier === 4 ? 0.6 : 0.65
 
   return (
@@ -446,7 +518,7 @@ export const FishSVG = memo(({ tier, size = 48, customColors, customization, id 
         viewBox={vb}
         className="absolute inset-0 pointer-events-none"
       >
-        <PatternOverlay pattern={pattern} id={gradientId} viewBox={vb} />
+        <PatternOverlay pattern={pattern} id={gradientId} viewBox={vb} tier={renderTier} />
       </svg>
     </div>
   )

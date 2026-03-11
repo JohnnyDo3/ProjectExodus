@@ -12,7 +12,7 @@ const SPECIES_BY_TIER: Record<number, string[]> = {
   5: ['guppy', 'tetra', 'angelfish', 'clownfish', 'tang', 'betta'],
 }
 
-const VALID_PATTERNS = ['none', 'stripes', 'spots', 'gradient', 'galaxy', 'neon']
+const VALID_PATTERNS = ['none', 'scales', 'fine-scales', 'armored', 'shimmer', 'koi']
 
 function getTierFromScore(score: number): number {
   if (score >= 200) return 5
