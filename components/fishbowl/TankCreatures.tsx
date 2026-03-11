@@ -1,6 +1,6 @@
 'use client'
 
-import { memo, useEffect, useState, useRef, useMemo, useCallback } from 'react'
+import { memo, useEffect, useState, useRef, useCallback } from 'react'
 
 // ─── Clown Pleco (Bottom Feeder) ────────────────────────────────────
 // Two plecos that stay near the bottom, always near each other (mates for life)
@@ -59,57 +59,164 @@ const ClownPlecoSVG = memo(({ id, facingRight, size = 40 }: { id: string; facing
 })
 ClownPlecoSVG.displayName = 'ClownPlecoSVG'
 
-// Animated pleco pair that stays together at the bottom
+// ─── Pleco Social Behavior ──────────────────────────────────────────
+// Mates for life: plecos alternate between wandering apart and journeying
+// together along the bottom of the tank.
+//   'apart'      — wander independently for 1, 4, 7, or 10 minutes
+//   'converging' — swim toward each other (~15 seconds)
+//   'together'   — travel side-by-side for half the apart duration
+
+type PlecoPhase = 'apart' | 'converging' | 'together'
+const PLECO_MEETING_INTERVALS_MS = [1, 4, 7, 10].map(m => m * 60 * 1000)
+
 export const PlecoPair = memo(({ containerWidth }: { containerWidth: number }) => {
-  const [pos, setPos] = useState({ x: containerWidth * 0.3, direction: 1 })
-  const animRef = useRef<number>(0)
-  const timeRef = useRef(Math.random() * 1000)
+  const [phase, setPhase] = useState<PlecoPhase>('together')
+  const phaseTimersRef = useRef<ReturnType<typeof setTimeout>[]>([])
+
+  // Pleco 1 position (leader when together)
+  const [p1, setP1] = useState({ x: containerWidth * 0.3, facingRight: true })
+  // Pleco 2 position (mate)
+  const [p2, setP2] = useState({ x: containerWidth * 0.35, facingRight: true })
+
+  // Refs for movement
+  const p1Ref = useRef({ x: containerWidth * 0.3, targetX: containerWidth * 0.5, speed: 0.4 })
+  const p2Ref = useRef({ x: containerWidth * 0.35, targetX: containerWidth * 0.6, speed: 0.35 })
+
+  // ─── Social cycle ───────────────────────────────────────
+  const startCycle = useCallback(() => {
+    phaseTimersRef.current.forEach(t => clearTimeout(t))
+    phaseTimersRef.current = []
+
+    // Pick random apart duration
+    const apartMs = PLECO_MEETING_INTERVALS_MS[Math.floor(Math.random() * PLECO_MEETING_INTERVALS_MS.length)]
+
+    // Start apart: give each pleco a random target on opposite sides
+    setPhase('apart')
+    p1Ref.current.targetX = containerWidth * (0.05 + Math.random() * 0.35) // left half
+    p2Ref.current.targetX = containerWidth * (0.55 + Math.random() * 0.35) // right half
+
+    // After apart time → converge
+    const t1 = setTimeout(() => {
+      setPhase('converging')
+      // Meet in the middle-ish
+      const meetX = containerWidth * (0.25 + Math.random() * 0.45)
+      p1Ref.current.targetX = meetX
+      p2Ref.current.targetX = meetX + 35
+
+      // After convergence → together
+      const t2 = setTimeout(() => {
+        setPhase('together')
+
+        // Together for half the apart time, then restart
+        const t3 = setTimeout(() => {
+          startCycle()
+        }, apartMs / 2)
+        phaseTimersRef.current.push(t3)
+      }, 15000) // 15 seconds to converge
+      phaseTimersRef.current.push(t2)
+    }, apartMs)
+    phaseTimersRef.current.push(t1)
+  }, [containerWidth])
 
   useEffect(() => {
     if (containerWidth === 0) return
-
-    const animate = () => {
-      timeRef.current += 0.008
-      const t = timeRef.current
-
-      const baseX = containerWidth * 0.15 + Math.sin(t * 0.3) * (containerWidth * 0.3)
-      const direction = Math.cos(t * 0.3) > 0 ? 1 : -1
-
-      setPos({ x: baseX, direction })
-      animRef.current = requestAnimationFrame(animate)
+    // Start with a short together period before first cycle
+    const initialTimer = setTimeout(() => startCycle(), 8000)
+    return () => {
+      clearTimeout(initialTimer)
+      phaseTimersRef.current.forEach(t => clearTimeout(t))
     }
+  }, [containerWidth, startCycle])
 
-    animRef.current = requestAnimationFrame(animate)
-    return () => cancelAnimationFrame(animRef.current)
-  }, [containerWidth])
+  // ─── Movement loop ──────────────────────────────────────
+  useEffect(() => {
+    if (containerWidth === 0) return
 
-  const facingRight = pos.direction > 0
-  const pleco2X = pos.x + (facingRight ? -35 : 35)
-  const pleco2Y = 2
+    const interval = setInterval(() => {
+      const currentPhase = phase
+
+      // Update pleco 1
+      const s1 = p1Ref.current
+      if (currentPhase === 'together') {
+        // Slow wandering (original sine-based movement)
+        s1.x += Math.sin(Date.now() * 0.0003) * 0.6
+        // Gently drift across the tank
+        s1.targetX = containerWidth * 0.15 + Math.sin(Date.now() * 0.00015) * (containerWidth * 0.35)
+        const dx1 = s1.targetX - s1.x
+        if (Math.abs(dx1) > 2) s1.x += Math.sign(dx1) * 0.3
+      } else {
+        // Move toward target
+        const dx1 = s1.targetX - s1.x
+        if (Math.abs(dx1) > 3) {
+          s1.x += Math.sign(dx1) * s1.speed * (currentPhase === 'converging' ? 1.5 : 1)
+        } else if (currentPhase === 'apart') {
+          // Pick new random target on their side
+          s1.targetX = containerWidth * (0.05 + Math.random() * 0.40)
+        }
+      }
+      s1.x = Math.max(10, Math.min(containerWidth - 50, s1.x))
+
+      // Update pleco 2
+      const s2 = p2Ref.current
+      if (currentPhase === 'together') {
+        // Follow pleco 1 closely
+        const followX = s1.x + (s1.x > s2.x ? -35 : 35)
+        const dx2 = followX - s2.x
+        s2.x += dx2 * 0.05
+      } else {
+        const dx2 = s2.targetX - s2.x
+        if (Math.abs(dx2) > 3) {
+          s2.x += Math.sign(dx2) * s2.speed * (currentPhase === 'converging' ? 1.5 : 1)
+        } else if (currentPhase === 'apart') {
+          s2.targetX = containerWidth * (0.55 + Math.random() * 0.35)
+        }
+      }
+      s2.x = Math.max(10, Math.min(containerWidth - 50, s2.x))
+
+      // Determine facing direction
+      const p1Right = currentPhase === 'together'
+        ? Math.sin(Date.now() * 0.00015) > 0
+        : s1.targetX > s1.x
+      const p2Right = currentPhase === 'together'
+        ? p1Right
+        : s2.targetX > s2.x
+
+      setP1({ x: s1.x, facingRight: p1Right })
+      setP2({ x: s2.x, facingRight: p2Right })
+    }, 100)
+
+    return () => clearInterval(interval)
+  }, [containerWidth, phase])
+
+  // Only show hearts when together or converging (close enough)
+  const showHearts = phase === 'together' || (phase === 'converging' && Math.abs(p1.x - p2.x) < 80)
 
   return (
     <div className="absolute bottom-[18px] left-0 w-full z-20 pointer-events-none" style={{ height: '40px' }}>
+      {/* Pleco 1 */}
       <div
         className="absolute"
         style={{
-          left: `${pos.x}px`,
+          left: `${p1.x}px`,
           bottom: '0px',
-          transition: 'left 0.5s linear',
+          transition: 'left 0.15s linear',
         }}
       >
-        <ClownPlecoSVG id="pleco-1" facingRight={facingRight} size={38} />
+        <ClownPlecoSVG id="pleco-1" facingRight={p1.facingRight} size={38} />
       </div>
+      {/* Pleco 2 (mate) */}
       <div
         className="absolute"
         style={{
-          left: `${pleco2X}px`,
-          bottom: `${pleco2Y}px`,
-          transition: 'left 0.7s linear',
+          left: `${p2.x}px`,
+          bottom: '2px',
+          transition: 'left 0.15s linear',
         }}
       >
-        <ClownPlecoSVG id="pleco-2" facingRight={facingRight} size={34} />
+        <ClownPlecoSVG id="pleco-2" facingRight={p2.facingRight} size={34} />
       </div>
-      <PlecoHearts x1={pos.x} x2={pleco2X} />
+      {/* Hearts when reunited */}
+      {showHearts && <PlecoHearts x1={p1.x} x2={p2.x} />}
     </div>
   )
 })
@@ -156,8 +263,7 @@ PlecoHearts.displayName = 'PlecoHearts'
 
 // ─── Glass Snail System ────────────────────────────────────────────
 // Snails that crawl on the glass with belly facing the viewer.
-// Social behavior: snails alternate between wandering apart and journeying together.
-// They also clean algae that builds up on the glass.
+// They wander independently, cleaning algae that builds up on the glass.
 
 interface SnailColor {
   shell: string
@@ -259,14 +365,11 @@ const SnailSVG = memo(({ id, color, facingRight = true, size = 22 }: {
 SnailSVG.displayName = 'SnailSVG'
 
 
-// ─── Snail Social Behavior ──────────────────────────────────────────
-// Snails alternate between:
-//   'apart'      — wandering independently for 1, 4, 7, or 10 minutes
-//   'converging' — moving toward a meeting point (~20 seconds)
-//   'together'   — journeying as a group for half the apart duration
-
-type SocialPhase = 'apart' | 'converging' | 'together'
-const MEETING_INTERVALS_MS = [1, 4, 7, 10].map(m => m * 60 * 1000) // minutes → ms
+// ─── Snail Movement ─────────────────────────────────────────────────
+// Snails wander independently across the front glass, cleaning algae.
+// Movement constraints:
+//   Front glass (center):  bottom 90% → y >= 0.10
+//   Near side walls:       bottom 77% → y >= 0.23
 
 interface SnailPos {
   x: number
@@ -276,18 +379,14 @@ interface SnailPos {
   facingRight: boolean
   wobblePhase: number
   speed: number
-  pauseUntil: number // timestamp: snail pauses until this time
+  pauseUntil: number
 }
 
-// Get y constraint based on x position in tank
-// Front glass (center): bottom 90% → y >= 0.10
-// Near side walls: bottom 77% → y >= 0.23
 function getMinY(xRatio: number): number {
-  if (xRatio < 0.12 || xRatio > 0.88) return 0.23 // side wall zone: bottom 77%
-  return 0.10 // front glass: bottom 90%
+  if (xRatio < 0.12 || xRatio > 0.88) return 0.23
+  return 0.10
 }
 
-// Pick a random target within movement bounds
 function pickRandomTarget(containerWidth: number, containerHeight: number): { x: number; y: number } {
   const x = 15 + Math.random() * (containerWidth - 30)
   const xRatio = x / containerWidth
@@ -297,19 +396,9 @@ function pickRandomTarget(containerWidth: number, containerHeight: number): { x:
   return { x, y }
 }
 
-// Get group offset so snails don't overlap when together
-function getGroupOffset(index: number, count: number): { x: number; y: number } {
-  const angle = (index / count) * Math.PI * 2
-  const radius = 18 + (index % 2) * 8
-  return {
-    x: Math.cos(angle) * radius,
-    y: Math.sin(angle) * radius * 0.5, // flatter spread
-  }
-}
-
 
 // ─── Snail Group Component ──────────────────────────────────────────
-// Manages all snails in a tank with unified social behavior.
+// Manages all snails in a tank. Each snail wanders independently.
 // count=3 for personal tank, count=6 for community bowl.
 
 export const SnailGroup = memo(({ count, containerWidth, containerHeight }: {
@@ -317,14 +406,6 @@ export const SnailGroup = memo(({ count, containerWidth, containerHeight }: {
   containerWidth: number
   containerHeight: number
 }) => {
-  // Social phase state
-  const [socialPhase, setSocialPhase] = useState<SocialPhase>('apart')
-  const meetingPointRef = useRef({ x: 0.5, y: 0.75 })
-  const groupTargetRef = useRef({ x: 0.5, y: 0.75 })
-  const apartDurationRef = useRef(0)
-  const phaseTimersRef = useRef<ReturnType<typeof setTimeout>[]>([])
-
-  // Snail positions (updated via interval, rendered with CSS transitions)
   const snailsRef = useRef<SnailPos[]>([])
   const [positions, setPositions] = useState<{ x: number; y: number; facingRight: boolean }[]>([])
 
@@ -342,72 +423,12 @@ export const SnailGroup = memo(({ count, containerWidth, containerHeight }: {
         targetY: target.y,
         facingRight: target.x > startX,
         wobblePhase: Math.random() * Math.PI * 2,
-        speed: 0.8 + Math.random() * 0.4, // px per tick (at 10fps = 8-12px/sec)
+        speed: 0.8 + Math.random() * 0.4,
         pauseUntil: 0,
       }
     })
     setPositions(snailsRef.current.map(s => ({ x: s.x, y: s.y, facingRight: s.facingRight })))
   }, [count, containerWidth, containerHeight])
-
-  // ─── Social behavior cycle ────────────────────────────────
-  const startSocialCycle = useCallback(() => {
-    // Clear any pending timers
-    phaseTimersRef.current.forEach(t => clearTimeout(t))
-    phaseTimersRef.current = []
-
-    // Pick random apart duration from [1, 4, 7, 10] minutes
-    const apartMs = MEETING_INTERVALS_MS[Math.floor(Math.random() * MEETING_INTERVALS_MS.length)]
-    apartDurationRef.current = apartMs
-    setSocialPhase('apart')
-
-    // After apart time → converge
-    const t1 = setTimeout(() => {
-      // Pick meeting point in bottom 80%
-      meetingPointRef.current = {
-        x: 0.20 + Math.random() * 0.60,
-        y: 0.45 + Math.random() * 0.40,
-      }
-      setSocialPhase('converging')
-
-      // Give ~20 seconds to converge, then together
-      const t2 = setTimeout(() => {
-        // Set initial group target near meeting point
-        groupTargetRef.current = { ...meetingPointRef.current }
-        setSocialPhase('together')
-
-        // Together for half the apart time
-        const togetherMs = apartMs / 2
-        const t3 = setTimeout(() => {
-          startSocialCycle() // restart cycle
-        }, togetherMs)
-        phaseTimersRef.current.push(t3)
-      }, 20000)
-      phaseTimersRef.current.push(t2)
-    }, apartMs)
-    phaseTimersRef.current.push(t1)
-  }, [])
-
-  useEffect(() => {
-    if (containerWidth === 0) return
-    startSocialCycle()
-    return () => {
-      phaseTimersRef.current.forEach(t => clearTimeout(t))
-    }
-  }, [containerWidth, startSocialCycle])
-
-  // ─── Group target drift during 'together' phase ──────────
-  useEffect(() => {
-    if (socialPhase !== 'together' || containerWidth === 0) return
-
-    const interval = setInterval(() => {
-      groupTargetRef.current = {
-        x: Math.max(0.10, Math.min(0.90, groupTargetRef.current.x + (Math.random() - 0.5) * 0.08)),
-        y: Math.max(0.15, Math.min(0.90, groupTargetRef.current.y + (Math.random() - 0.5) * 0.06)),
-      }
-    }, 4000)
-
-    return () => clearInterval(interval)
-  }, [socialPhase, containerWidth])
 
   // ─── Movement loop (10fps, CSS smooths visual) ───────────
   useEffect(() => {
@@ -416,47 +437,28 @@ export const SnailGroup = memo(({ count, containerWidth, containerHeight }: {
 
     const interval = setInterval(() => {
       const now = Date.now()
-      const phase = socialPhase // capture current phase
 
-      snailsRef.current.forEach((snail, i) => {
-        // Skip if paused
+      snailsRef.current.forEach((snail) => {
         if (now < snail.pauseUntil) return
 
-        let targetX = snail.targetX
-        let targetY = snail.targetY
-
-        if (phase === 'converging') {
-          // Move toward meeting point
-          targetX = meetingPointRef.current.x * containerWidth
-          targetY = meetingPointRef.current.y * containerHeight
-        } else if (phase === 'together') {
-          // Follow group target with offset
-          const offset = getGroupOffset(i, count)
-          targetX = groupTargetRef.current.x * containerWidth + offset.x
-          targetY = groupTargetRef.current.y * containerHeight + offset.y
-        }
-
-        const dx = targetX - snail.x
-        const dy = targetY - snail.y
+        const dx = snail.targetX - snail.x
+        const dy = snail.targetY - snail.y
         const dist = Math.sqrt(dx * dx + dy * dy)
 
-        // Speed adjustments
-        const speed = phase === 'converging' ? snail.speed * 1.8 : snail.speed
-
         if (dist > 3) {
-          // Add slight wobble perpendicular to direction
+          // Move toward target with slight organic wobble
           snail.wobblePhase += 0.15
           const wobbleAmt = Math.sin(snail.wobblePhase) * 0.3
           const perpX = -dy / dist
           const perpY = dx / dist
 
-          snail.x += (dx / dist) * speed + perpX * wobbleAmt
-          snail.y += (dy / dist) * speed + perpY * wobbleAmt
+          snail.x += (dx / dist) * snail.speed + perpX * wobbleAmt
+          snail.y += (dy / dist) * snail.speed + perpY * wobbleAmt
           snail.facingRight = dx > 0
-        } else if (phase === 'apart') {
+        } else {
           // Reached target — maybe pause, then pick new target
           if (Math.random() < 0.3) {
-            snail.pauseUntil = now + 2000 + Math.random() * 5000 // pause 2-7 seconds
+            snail.pauseUntil = now + 2000 + Math.random() * 5000
           }
           const newTarget = pickRandomTarget(containerWidth, containerHeight)
           snail.targetX = newTarget.x
@@ -470,16 +472,15 @@ export const SnailGroup = memo(({ count, containerWidth, containerHeight }: {
         snail.y = Math.max(minY, Math.min(containerHeight * 0.93, snail.y))
       })
 
-      // Update React state for rendering
       setPositions(snailsRef.current.map(s => ({
         x: s.x,
         y: s.y,
         facingRight: s.facingRight,
       })))
-    }, 100) // 10fps logic, CSS transitions smooth to ~60fps
+    }, 100)
 
     return () => clearInterval(interval)
-  }, [containerWidth, containerHeight, socialPhase, count])
+  }, [containerWidth, containerHeight, count])
 
   // ─── Render ───────────────────────────────────────────────
   if (containerWidth === 0 || containerHeight === 0) return null
