@@ -31,20 +31,33 @@ export const SandyBottom = memo(({ color = '#C4A862', lighter = '#D4B872', detai
     <rect x="580" y="16" width="50" height="6" fill={lighter} />
     <rect x="650" y="8" width="80" height="14" fill={lighter} />
     <rect x="740" y="14" width="60" height="8" fill={lighter} />
-    {[30, 95, 150, 220, 290, 340, 420, 490, 560, 630, 710, 770].map((x, i) => (
-      <rect key={`grain-${i}`} x={x} y={36 + (i % 3) * 12} width="4" height="4" fill={detail} opacity="0.5" />
+    {/* Primary grain layer — dense scatter */}
+    {[18, 42, 68, 95, 118, 150, 178, 205, 232, 258, 285, 310, 340, 368, 395, 420, 448, 478, 505, 535, 560, 588, 615, 642, 670, 698, 725, 752, 775].map((x, i) => (
+      <rect key={`grain-${i}`} x={x} y={34 + (i % 5) * 8} width="3" height="3" fill={detail} opacity={0.35 + (i % 3) * 0.1} />
     ))}
-    {[60, 125, 200, 270, 350, 450, 530, 600, 680, 750].map((x, i) => (
-      <rect key={`grain2-${i}`} x={x} y={48 + (i % 4) * 10} width="3" height="3" fill={detail} opacity="0.4" />
+    {/* Secondary grain layer — offset scatter */}
+    {[10, 35, 55, 82, 108, 135, 162, 190, 218, 245, 272, 298, 325, 355, 382, 410, 435, 462, 492, 518, 545, 572, 598, 628, 655, 682, 712, 738, 765, 790].map((x, i) => (
+      <rect key={`grain2-${i}`} x={x} y={44 + (i % 6) * 7} width="2" height="2" fill={detail} opacity={0.25 + (i % 4) * 0.08} />
     ))}
-    {[45, 175, 310, 480, 620, 725].map((x, i) => (
-      <rect key={`grain3-${i}`} x={x} y={60 + (i % 3) * 14} width="3" height="3" fill={detail} opacity="0.3" />
+    {/* Tertiary grain layer — fine particles */}
+    {[25, 58, 88, 122, 155, 188, 222, 255, 288, 320, 352, 385, 418, 452, 485, 518, 552, 585, 618, 652, 685, 718, 748, 780].map((x, i) => (
+      <rect key={`grain3-${i}`} x={x} y={52 + (i % 4) * 10} width="2" height="2" fill={detail} opacity={0.2 + (i % 3) * 0.07} />
     ))}
+    {/* Micro grain — finest detail */}
+    {[15, 38, 62, 90, 115, 142, 170, 198, 228, 260, 292, 318, 348, 378, 408, 438, 468, 498, 528, 558, 588, 618, 648, 678, 708, 740, 770, 795].map((x, i) => (
+      <rect key={`grain4-${i}`} x={x} y={62 + (i % 7) * 6} width="1" height="1" fill={detail} opacity={0.2 + (i % 3) * 0.05} />
+    ))}
+    {/* Tiny shell/pebble highlights */}
     <rect x="110" y="38" width="5" height="4" fill="#E8D5B0" rx="1" />
     <rect x="450" y="34" width="6" height="4" fill="#F0E0C0" rx="1" />
     <rect x="690" y="40" width="5" height="4" fill="#E8D5B0" rx="1" />
     <rect x="260" y="44" width="4" height="3" fill="#F0E0C0" rx="1" />
     <rect x="560" y="36" width="5" height="3" fill="#E8D5B0" rx="1" />
+    <rect x="175" y="50" width="3" height="3" fill="#E8D5B0" rx="1" />
+    <rect x="340" y="42" width="4" height="3" fill="#F0E0C0" rx="1" />
+    <rect x="620" y="48" width="3" height="3" fill="#E8D5B0" rx="1" />
+    <rect x="78" y="46" width="3" height="2" fill="#F0E0C0" rx="1" />
+    <rect x="730" y="38" width="4" height="3" fill="#E8D5B0" rx="1" />
   </svg>
 ))
 SandyBottom.displayName = 'SandyBottom'
@@ -1523,10 +1536,8 @@ const SHIPWRECK_LAYOUT: LayeredDecoConfig = {
       { x: 750, height: 45, variant: 'thin', color: '#1B5E20', delay: 1.5 },
     ],
     structures: [
-      { type: 'shipwreck', x: 40, y: 60 },
-      { type: 'submarine', x: 260, y: 100 },
-      { type: 'sailboat', x: 490, y: 98 },
-      { type: 'treasure', x: 640, y: 100 },
+      { type: 'shipwreck', x: 200, y: 68 },
+      { type: 'treasure', x: 480, y: 110 },
     ],
   },
   foreground: {
@@ -1539,8 +1550,65 @@ const SHIPWRECK_LAYOUT: LayeredDecoConfig = {
       { x: 440, y: 166, variant: 'brain', color: '#795548' },
     ],
     kelps: [
-      { x: 200, height: 30, variant: 'thin', color: '#1B5E20', delay: 1 },
-      { x: 560, height: 25, variant: 'thin', color: '#2E7D32', delay: 2 },
+      { x: 100, height: 30, variant: 'thin', color: '#1B5E20', delay: 1 },
+      { x: 620, height: 25, variant: 'thin', color: '#2E7D32', delay: 2 },
+    ],
+  },
+}
+
+const SAILBOAT_LAYOUT: LayeredDecoConfig = {
+  sandColors: { color: '#C4A862', lighter: '#D4B872', detail: '#B89B52' },
+  background: {
+    kelps: [
+      { x: 30, height: 55, variant: 'wide', color: '#2E7D32', delay: 0 },
+      { x: 620, height: 50, variant: 'bushy', color: '#388E3C', delay: 0.8 },
+      { x: 740, height: 45, variant: 'thin', color: '#1B5E20', delay: 1.5 },
+    ],
+    structures: [
+      { type: 'sailboat', x: 300, y: 96 },
+    ],
+  },
+  foreground: {
+    rocks: [
+      { x: 80, y: 172, variant: 'medium', color: '#78716C' },
+      { x: 500, y: 176, variant: 'small', color: '#A8A29E' },
+      { x: 680, y: 170, variant: 'medium', color: '#57534E' },
+    ],
+    corals: [
+      { x: 180, y: 162, variant: 'branch', color: '#FF6D00' },
+      { x: 550, y: 166, variant: 'fan', color: '#FF1744' },
+    ],
+    kelps: [
+      { x: 220, height: 30, variant: 'thin', color: '#388E3C', delay: 0.6 },
+      { x: 450, height: 28, variant: 'thin', color: '#2E7D32', delay: 1.4 },
+    ],
+  },
+}
+
+const SUBMARINE_LAYOUT: LayeredDecoConfig = {
+  sandColors: { color: '#5C5C5C', lighter: '#787878', detail: '#454545' },
+  background: {
+    kelps: [
+      { x: 20, height: 50, variant: 'thin', color: '#1B5E20', delay: 0 },
+      { x: 650, height: 55, variant: 'wide', color: '#2E7D32', delay: 0.5 },
+      { x: 760, height: 45, variant: 'thin', color: '#1B5E20', delay: 1.5 },
+    ],
+    structures: [
+      { type: 'submarine', x: 260, y: 88 },
+    ],
+  },
+  foreground: {
+    rocks: [
+      { x: 50, y: 170, variant: 'large', color: '#44403C' },
+      { x: 420, y: 174, variant: 'medium', color: '#57534E' },
+      { x: 700, y: 172, variant: 'medium', color: '#44403C' },
+    ],
+    corals: [
+      { x: 160, y: 164, variant: 'brain', color: '#795548' },
+    ],
+    kelps: [
+      { x: 350, height: 30, variant: 'thin', color: '#1B5E20', delay: 1 },
+      { x: 550, height: 28, variant: 'thin', color: '#2E7D32', delay: 1.8 },
     ],
   },
 }
@@ -1555,8 +1623,8 @@ const MINIMAL_LAYOUT: LayeredDecoConfig = {
       { x: 740, height: 65, variant: 'bushy', color: '#388E3C', delay: 2.0 },
     ],
     structures: [
-      { type: 'cairn', x: 250, y: 82 },
-      { type: 'bamboo', x: 500, y: 78 },
+      { type: 'cairn', x: 280, y: 86 },
+      { type: 'bamboo', x: 440, y: 80 },
     ],
   },
   foreground: {
@@ -1582,8 +1650,8 @@ const CASTLE_LAYOUT: LayeredDecoConfig = {
       { x: 760, height: 45, variant: 'thin', color: '#1B5E20', delay: 1.5 },
     ],
     structures: [
-      { type: 'castle', x: 200, y: 56 },
-      { type: 'drawbridge', x: 560, y: 90 },
+      { type: 'castle', x: 220, y: 64 },
+      { type: 'drawbridge', x: 460, y: 98 },
     ],
   },
   foreground: {
@@ -1610,8 +1678,8 @@ const PYRAMID_LAYOUT: LayeredDecoConfig = {
       { x: 770, height: 40, variant: 'thin', color: '#1B5E20', delay: 1.8 },
     ],
     structures: [
-      { type: 'pyramid', x: 80, y: 56 },
-      { type: 'sphinx', x: 520, y: 88 },
+      { type: 'pyramid', x: 200, y: 64 },
+      { type: 'sphinx', x: 440, y: 96 },
     ],
   },
   foreground: {
@@ -1638,8 +1706,8 @@ const TEMPLE_LAYOUT: LayeredDecoConfig = {
       { x: 740, height: 50, variant: 'bushy', color: '#1B5E20', delay: 1.2 },
     ],
     structures: [
-      { type: 'torii', x: 120, y: 82 },
-      { type: 'pagoda', x: 480, y: 72 },
+      { type: 'torii', x: 220, y: 86 },
+      { type: 'pagoda', x: 420, y: 76 },
     ],
   },
   foreground: {
@@ -1667,8 +1735,8 @@ const ATLANTIS_LAYOUT: LayeredDecoConfig = {
       { x: 760, height: 45, variant: 'thin', color: '#00695C', delay: 1.5 },
     ],
     structures: [
-      { type: 'atlantean-dome', x: 100, y: 56 },
-      { type: 'atlantean-obelisk', x: 560, y: 68 },
+      { type: 'atlantean-dome', x: 200, y: 64 },
+      { type: 'atlantean-obelisk', x: 450, y: 76 },
     ],
   },
   foreground: {
@@ -1691,6 +1759,8 @@ const THEME_LAYOUTS: Record<string, LayeredDecoConfig> = {
   ocean: OCEAN_LAYOUT,
   tropical: TROPICAL_LAYOUT,
   shipwreck: SHIPWRECK_LAYOUT,
+  sailboat: SAILBOAT_LAYOUT,
+  submarine: SUBMARINE_LAYOUT,
   minimal: MINIMAL_LAYOUT,
   castle: CASTLE_LAYOUT,
   pyramid: PYRAMID_LAYOUT,

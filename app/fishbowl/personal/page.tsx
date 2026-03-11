@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { Fish, Users, Info, Sparkles, Palette, Shell, Anchor, TreePalm, Castle, Pyramid, Landmark, Waves } from 'lucide-react'
+import { Fish, Users, Info, Sparkles, Palette, Shell, Anchor, TreePalm, Castle, Pyramid, Landmark, Waves, Sailboat, Ship } from 'lucide-react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
@@ -35,6 +35,8 @@ const DECOR_THEMES = [
   { id: 'ocean', name: 'Ocean Reef', icon: Shell, description: 'Coral reef with ocean plants' },
   { id: 'tropical', name: 'Tropical', icon: TreePalm, description: 'Lush tropical vegetation' },
   { id: 'shipwreck', name: 'Shipwreck', icon: Anchor, description: 'Sunken ship vibes' },
+  { id: 'sailboat', name: 'Sailboat', icon: Sailboat, description: 'Sunken sailboat wreck' },
+  { id: 'submarine', name: 'Submarine', icon: Ship, description: 'Sunken submarine base' },
   { id: 'castle', name: 'Castle', icon: Castle, description: 'Sunken medieval fortress' },
   { id: 'pyramid', name: 'Pyramid', icon: Pyramid, description: 'Ancient Egyptian ruins' },
   { id: 'temple', name: 'Temple', icon: Landmark, description: 'Japanese torii and pagoda' },
