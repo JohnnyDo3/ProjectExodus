@@ -1257,12 +1257,17 @@ export default function ProjectsPage() {
 
   useEffect(() => {
     async function load() {
+      const minDelay = new Promise(resolve => setTimeout(resolve, 4000))
       try {
-        const res = await fetch('/api/projects', { cache: 'no-store' })
+        const [res] = await Promise.all([
+          fetch('/api/projects', { cache: 'no-store' }),
+          minDelay,
+        ])
         if (!res.ok) throw new Error('Failed')
         const data = await res.json()
         setProjects(data.success ? data.data : [])
       } catch {
+        await minDelay
         setProjects([])
       } finally {
         setIsLoading(false)

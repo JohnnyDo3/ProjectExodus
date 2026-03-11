@@ -95,6 +95,22 @@
   transform-origin: top center;
 }
 
+/* Algae patch subtle pulsing (simulates organic growth/water movement) */
+@keyframes algaePulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  33% {
+    transform: translate(-50%, -50%) scale(1.03, 0.97);
+    opacity: 0.92;
+  }
+  66% {
+    transform: translate(-50%, -50%) scale(0.97, 1.03);
+    opacity: 1.05;
+  }
+}
+
 @keyframes heartFloat {
   0% {
     transform: translateY(0) scale(0.5);
