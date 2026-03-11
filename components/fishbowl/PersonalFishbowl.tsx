@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Fish, Users, UserCheck, Heart, X, ExternalLink, Sparkles } from 'lucide-react'
+import { Fish, Users, X, Sparkles, Plus, Minus } from 'lucide-react'
 import Link from 'next/link'
 import { Fishbowl } from './Fishbowl'
 import { FishSVG, getTierFromScore, getTierName, type FishCustomization } from './FishSpecies'
@@ -33,6 +33,13 @@ export function PersonalFishbowl() {
   const [data, setData] = useState<PersonalFishbowlData | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [showCustomizer, setShowCustomizer] = useState(false)
+  const [tankFriendIds, setTankFriendIds] = useState<Set<string>>(() => {
+    if (typeof window === 'undefined') return new Set()
+    try {
+      const saved = localStorage.getItem('personal-tank-friends')
+      return saved ? new Set(JSON.parse(saved)) : new Set()
+    } catch { return new Set() }
+  })
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   // Close on outside click
@@ -106,11 +113,25 @@ export function PersonalFishbowl() {
     setShowCustomizer(false)
   }, [])
 
-  // All fish for the mini bowl: user + their connections
+  // Toggle a friend in/out of the tank
+  const toggleFriendInTank = useCallback((friendId: string) => {
+    setTankFriendIds(prev => {
+      const next = new Set(prev)
+      if (next.has(friendId)) {
+        next.delete(friendId)
+      } else {
+        next.add(friendId)
+      }
+      localStorage.setItem('personal-tank-friends', JSON.stringify([...next]))
+      return next
+    })
+  }, [])
+
+  // Fish in the mini bowl: user + only selected friends
   const fishbowlUsers = data
     ? [
         ...(data.user ? [data.user] : []),
-        ...data.connections,
+        ...data.connections.filter(c => tankFriendIds.has(c.id)),
       ]
     : []
 
@@ -153,22 +174,12 @@ export function PersonalFishbowl() {
               <Fish className="w-4 h-4 text-cyan-400" />
               <span className="text-sm font-black text-cyan-100">MY TANK</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Link
-                href="/network"
-                onClick={() => setIsOpen(false)}
-                className="p-1.5 rounded-lg hover:bg-cyan-900/40 transition-colors"
-                title="Open community fishbowl"
-              >
-                <ExternalLink className="w-3.5 h-3.5 text-cyan-500" />
-              </Link>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="p-1.5 rounded-lg hover:bg-cyan-900/40 transition-colors"
-              >
-                <X className="w-3.5 h-3.5 text-cyan-500" />
-              </button>
-            </div>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="p-1.5 rounded-lg hover:bg-cyan-900/40 transition-colors"
+            >
+              <X className="w-3.5 h-3.5 text-cyan-500" />
+            </button>
           </div>
 
           {isLoading ? (
@@ -177,24 +188,57 @@ export function PersonalFishbowl() {
             </div>
           ) : data ? (
             <>
-              {/* Mini fishbowl */}
-              <div className="h-[220px] relative">
-                {fishbowlUsers.length > 0 ? (
-                  <Fishbowl
-                    users={fishbowlUsers}
-                    maxVisible={8}
-                    ownerCustomization={userCustomization}
-                    ownerId={data.user?.id}
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center" style={{ background: 'linear-gradient(180deg, #0A1628 0%, #0D2137 40%, #123855 100%)' }}>
-                    <div className="text-center space-y-2">
-                      <Fish className="w-8 h-8 text-cyan-700 mx-auto" />
-                      <p className="text-xs font-bold text-cyan-600">Your fishbowl is empty</p>
-                      <p className="text-[10px] text-cyan-700">Follow people to add fish!</p>
+              {/* Mini fishbowl with lid and base */}
+              <div className="relative">
+                {/* Black lid - covers top rounded corners */}
+                <div
+                  className="relative z-10 h-[10px]"
+                  style={{
+                    background: 'linear-gradient(180deg, #1A1A1A 0%, #0D0D0D 60%, #080808 100%)',
+                    boxShadow: '0 2px 6px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06)',
+                  }}
+                >
+                  {/* Lid edge highlight */}
+                  <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-800/20 to-transparent" />
+                </div>
+
+                {/* Tank glass area - override rounded corners since lid/base are square */}
+                <div className="h-[210px] relative [&>div]:!rounded-none">
+                  {fishbowlUsers.length > 0 ? (
+                    <Fishbowl
+                      users={fishbowlUsers}
+                      maxVisible={8}
+                      ownerCustomization={userCustomization}
+                      ownerId={data.user?.id}
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center" style={{ background: 'linear-gradient(180deg, #0A1628 0%, #0D2137 40%, #123855 100%)' }}>
+                      <div className="text-center space-y-2">
+                        <Fish className="w-8 h-8 text-cyan-700 mx-auto" />
+                        <p className="text-xs font-bold text-cyan-600">Your tank is empty</p>
+                        <p className="text-[10px] text-cyan-700">Add friends to see their fish!</p>
+                      </div>
                     </div>
+                  )}
+                </div>
+
+                {/* Dark oak wood base - square bottom */}
+                <div
+                  className="relative z-10 h-[14px]"
+                  style={{
+                    background: 'linear-gradient(180deg, #1C1208 0%, #0F0A04 40%, #0A0703 100%)',
+                    boxShadow: '0 3px 8px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04)',
+                  }}
+                >
+                  {/* Wood grain texture lines */}
+                  <div className="absolute inset-0 overflow-hidden opacity-[0.08]">
+                    <div className="absolute top-[3px] left-[5%] right-[8%] h-[1px] bg-amber-200/60" />
+                    <div className="absolute top-[7px] left-[12%] right-[3%] h-[1px] bg-amber-200/40" />
+                    <div className="absolute top-[10px] left-[3%] right-[15%] h-[1px] bg-amber-200/50" />
                   </div>
-                )}
+                  {/* Top edge highlight where glass meets wood */}
+                  <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-amber-900/30 to-transparent" />
+                </div>
               </div>
 
               {/* User's fish info */}
@@ -243,23 +287,45 @@ export function PersonalFishbowl() {
                 </div>
               )}
 
-              {/* Connection list - scrollable */}
+              {/* Connection list - scrollable, with add/remove toggle */}
               {data.connections.length > 0 && (
                 <div className="border-t border-cyan-800/30 max-h-[180px] overflow-y-auto">
-                  <div className="p-2 space-y-0.5">
+                  <div className="px-3 pt-2 pb-1">
+                    <p className="text-[9px] font-bold text-cyan-600 uppercase tracking-wider">Friends ({data.connections.length})</p>
+                  </div>
+                  <div className="p-2 pt-0 space-y-0.5">
                     {data.connections.slice(0, 20).map(conn => {
                       const tier = getTierFromScore(conn.stockScore)
+                      const isInTank = tankFriendIds.has(conn.id)
                       return (
-                        <Link
+                        <div
                           key={conn.id}
-                          href={`/profile/${conn.id}`}
-                          onClick={() => setIsOpen(false)}
                           className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-cyan-900/30 transition-colors group"
                         >
+                          {/* Add/remove from tank toggle */}
+                          <button
+                            onClick={(e) => { e.stopPropagation(); toggleFriendInTank(conn.id) }}
+                            className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center transition-all ${
+                              isInTank
+                                ? 'bg-cyan-500/25 border border-cyan-500/50 text-cyan-400 hover:bg-red-500/20 hover:border-red-500/50 hover:text-red-400'
+                                : 'bg-cyan-900/30 border border-cyan-800/40 text-cyan-700 hover:bg-cyan-500/20 hover:border-cyan-500/40 hover:text-cyan-400'
+                            }`}
+                            title={isInTank ? 'Remove from tank' : 'Add to tank'}
+                          >
+                            {isInTank ? (
+                              <Minus className="w-3 h-3" />
+                            ) : (
+                              <Plus className="w-3 h-3" />
+                            )}
+                          </button>
                           <div className="flex-shrink-0 w-5 h-5 flex items-center justify-center">
                             <FishSVG tier={tier} size={18} id={`pf-${conn.id}`} />
                           </div>
-                          <div className="flex-shrink-0 w-6 h-6 rounded-full overflow-hidden bg-cyan-900/40">
+                          <Link
+                            href={`/profile/${conn.id}`}
+                            onClick={() => setIsOpen(false)}
+                            className="flex-shrink-0 w-6 h-6 rounded-full overflow-hidden bg-cyan-900/40"
+                          >
                             {conn.image ? (
                               <img src={conn.image} alt="" className="w-full h-full object-cover" />
                             ) : (
@@ -269,10 +335,14 @@ export function PersonalFishbowl() {
                                 </span>
                               </div>
                             )}
-                          </div>
-                          <span className="flex-1 text-xs font-medium text-cyan-200 group-hover:text-cyan-100 truncate">
+                          </Link>
+                          <Link
+                            href={`/profile/${conn.id}`}
+                            onClick={() => setIsOpen(false)}
+                            className="flex-1 text-xs font-medium text-cyan-200 group-hover:text-cyan-100 truncate"
+                          >
                             {conn.name}
-                          </span>
+                          </Link>
                           {/* Relationship badge */}
                           {conn.isMutual ? (
                             <span className="px-1.5 py-0.5 rounded-full text-[8px] font-black bg-teal-500/20 text-teal-400 border border-teal-500/30">
@@ -290,7 +360,7 @@ export function PersonalFishbowl() {
                           <span className="text-[9px] text-cyan-600 font-bold">
                             {conn.stockScore}
                           </span>
-                        </Link>
+                        </div>
                       )
                     })}
                   </div>
