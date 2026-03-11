@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
+import { incrementStockScore, STOCK_POINTS } from '@/lib/stockScore'
 import {
   validateArticleContent,
   sanitizeHtml,
@@ -436,6 +437,11 @@ export async function POST(request: NextRequest) {
         },
       },
     })
+
+    // Award stock points for published articles
+    if (article.status === 'PUBLISHED') {
+      incrementStockScore(session.user.id, STOCK_POINTS.ARTICLE).catch(() => {})
+    }
 
     return NextResponse.json({
       success: true,

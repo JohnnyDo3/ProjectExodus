@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { prisma } from '@/lib/db/prisma'
+import { incrementStockScore, STOCK_POINTS } from '@/lib/stockScore'
 
 // Valid species that can be selected per tier
 const SPECIES_BY_TIER: Record<number, string[]> = {
@@ -91,10 +92,22 @@ export async function POST(req: NextRequest) {
       pattern: pattern || 'none',
     }
 
+    // Check if this is the user's first customization (one-time bonus)
+    const currentUser = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { fishCustomization: true },
+    })
+    const isFirstCustomization = !currentUser?.fishCustomization
+
     await prisma.user.update({
       where: { id: session.user.id },
       data: { fishCustomization: customization },
     })
+
+    // Award stock points for first fish customization (one-time)
+    if (isFirstCustomization) {
+      incrementStockScore(session.user.id, STOCK_POINTS.FISH_CUSTOMIZED).catch(() => {})
+    }
 
     return NextResponse.json({ success: true, data: customization })
   } catch (error) {

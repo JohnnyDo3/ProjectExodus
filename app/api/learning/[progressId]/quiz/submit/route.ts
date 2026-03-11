@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { prisma } from '@/lib/db'
+import { incrementStockScore, STOCK_POINTS } from '@/lib/stockScore'
 
 /**
  * POST /api/learning/[progressId]/quiz/submit
@@ -116,6 +117,11 @@ export async function POST(
         progressPercentage: isPerfectScore ? 100 : progress.progressPercentage,
       },
     })
+
+    // Award stock points when quiz is passed (module completed)
+    if (isPerfectScore && !progress.quizPassed) {
+      incrementStockScore(session.user.id, STOCK_POINTS.MODULE_COMPLETED).catch(() => {})
+    }
 
     return NextResponse.json({
       success: true,

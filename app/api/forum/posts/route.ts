@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
 import { rateLimit, rateLimitResponse } from '@/lib/rate-limit'
+import { incrementStockScore, STOCK_POINTS } from '@/lib/stockScore'
 
 // POST /api/forum/posts - Create new forum post
 export async function POST(request: NextRequest) {
@@ -74,6 +75,9 @@ export async function POST(request: NextRequest) {
         },
       },
     })
+
+    // Award stock points for creating a forum post
+    incrementStockScore(session.user.id, STOCK_POINTS.FORUM_POST).catch(() => {})
 
     return NextResponse.json({
       success: true,

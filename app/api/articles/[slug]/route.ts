@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
 import { sanitizeHtml, isValidUrl } from '@/lib/article/contentSecurity'
+import { incrementStockScore, STOCK_POINTS } from '@/lib/stockScore'
 
 /** Strip HTML tags from plain-text fields */
 function stripHtml(text: string): string {
@@ -159,6 +160,14 @@ export async function GET(
             },
           }),
         ])
+
+        // Award stock points for every 5 articles read
+        const totalReads = await prisma.articleRead.count({
+          where: { userId: session.user.id },
+        })
+        if (totalReads % 5 === 0) {
+          incrementStockScore(session.user.id, STOCK_POINTS.ARTICLE_READS_PER_5).catch(() => {})
+        }
       }
     } else {
       // For anonymous users, still increment (but this is less precise)

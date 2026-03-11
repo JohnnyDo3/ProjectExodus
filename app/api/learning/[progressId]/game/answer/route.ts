@@ -10,6 +10,7 @@ import {
   getPassingScoreForLevel,
   LearningLevel
 } from '@/types/learning'
+import { incrementStockScore, STOCK_POINTS } from '@/lib/stockScore'
 
 // POST /api/learning/[progressId]/game/answer
 // Submit an answer for the current round
@@ -235,6 +236,11 @@ export async function POST(
             completedAt: progress.completedAt || new Date()
           }
         })
+      }
+
+      // Award stock points when game is passed for the first time
+      if (passed && !progress.gamePassed) {
+        incrementStockScore(session.user.id, STOCK_POINTS.MODULE_COMPLETED).catch(() => {})
       }
     }
 

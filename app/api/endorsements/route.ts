@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { prisma } from '@/lib/db'
 import { handlePrismaError } from '@/lib/utils/prisma-errors'
+import { incrementStockScore, STOCK_POINTS } from '@/lib/stockScore'
 
 // POST /api/endorsements - Give an endorsement
 export async function POST(request: NextRequest) {
@@ -78,6 +79,9 @@ export async function POST(request: NextRequest) {
         skill
       }
     })
+
+    // Award stock points to the endorsed user
+    incrementStockScore(userId, STOCK_POINTS.ENDORSEMENT).catch(() => {})
 
     return NextResponse.json({
       success: true,

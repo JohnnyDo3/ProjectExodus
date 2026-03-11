@@ -263,6 +263,11 @@ const CoralReefArch = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="8" y="56" width="8" height="4" fill="#7B1FA2" opacity="0.6" />
     <rect x="6" y="52" width="4" height="4" fill="#CE93D8" opacity="0.5" />
     <rect x="14" y="54" width="4" height="4" fill="#BA68C8" opacity="0.5" />
+
+    {/* Aerator bubbles rising from arch crevices */}
+    <circle cx="42" cy="0" r="1.5" fill="rgba(255,255,255,0.3)" style={{ animation: 'bubbleRise 3.5s ease-in 0s infinite' }} />
+    <circle cx="38" cy="2" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4s ease-in 1s infinite' }} />
+    <circle cx="46" cy="-1" r="1.2" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 3s ease-in 2s infinite' }} />
   </g>
 ))
 CoralReefArch.displayName = 'CoralReefArch'
@@ -328,6 +333,10 @@ const SunkenTemple = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="72" y="46" width="10" height="6" fill="#9E9E9E" opacity="0.6" />
     <rect x="74" y="42" width="6" height="6" fill="#BDBDBD" opacity="0.5" />
     <rect x="-4" y="50" width="8" height="4" fill="#9E9E9E" opacity="0.5" />
+
+    {/* Aerator bubbles from temple crevices */}
+    <circle cx="40" cy="16" r="1.2" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4s ease-in 0.5s infinite' }} />
+    <circle cx="38" cy="18" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4.5s ease-in 2s infinite' }} />
   </g>
 ))
 SunkenTemple.displayName = 'SunkenTemple'
@@ -480,6 +489,12 @@ const SunkenSubmarine = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="38" y="8" width="6" height="3" fill="#2E7D32" opacity="0.4" />
     <rect x="14" y="18" width="4" height="2" fill="#388E3C" opacity="0.3" />
     <rect x="72" y="42" width="8" height="2" fill="#1B5E20" opacity="0.4" />
+
+    {/* Aerator bubbles from hull breach */}
+    <circle cx="68" cy="20" r="1.5" fill="rgba(255,255,255,0.3)" style={{ animation: 'bubbleRise 3s ease-in 0s infinite' }} />
+    <circle cx="72" cy="18" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 3.5s ease-in 0.8s infinite' }} />
+    <circle cx="70" cy="22" r="1.2" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4s ease-in 1.5s infinite' }} />
+    <circle cx="66" cy="19" r="0.8" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4.5s ease-in 2.5s infinite' }} />
   </g>
 ))
 SunkenSubmarine.displayName = 'SunkenSubmarine'
@@ -568,6 +583,10 @@ const StoneCairn = memo(({ x, y }: { x: number; y: number }) => (
     {/* Subtle moss at base */}
     <rect x="0" y="54" width="4" height="2" fill="#2E7D32" opacity="0.3" />
     <rect x="30" y="52" width="6" height="2" fill="#388E3C" opacity="0.25" />
+
+    {/* Gentle aerator bubbles from base crevice */}
+    <circle cx="18" cy="42" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 5s ease-in 0s infinite' }} />
+    <circle cx="20" cy="44" r="0.8" fill="rgba(255,255,255,0.15)" style={{ animation: 'bubbleRise 5.5s ease-in 2s infinite' }} />
   </g>
 ))
 StoneCairn.displayName = 'StoneCairn'
@@ -622,7 +641,6 @@ interface LayeredDecoConfig {
   background: {
     kelps: Array<{ x: number; height: number; variant: 'thin' | 'wide' | 'bushy'; color: string; delay: number }>
     structures: Array<{ type: string; x: number; y: number }>
-    bubbles: Array<{ x: number; count: number }>
   }
   foreground: {
     rocks: Array<{ x: number; y: number; variant: 'small' | 'medium' | 'large'; color: string }>
@@ -642,12 +660,6 @@ const OCEAN_LAYOUT: LayeredDecoConfig = {
     structures: [
       { type: 'coral-arch', x: 180, y: 36 },
       { type: 'sunken-temple', x: 500, y: 38 },
-    ],
-    bubbles: [
-      { x: 80, count: 3 },
-      { x: 340, count: 2 },
-      { x: 570, count: 4 },
-      { x: 720, count: 2 },
     ],
   },
   foreground: {
@@ -680,12 +692,6 @@ const TROPICAL_LAYOUT: LayeredDecoConfig = {
       { type: 'volcano', x: 160, y: 38 },
       { type: 'dragon-stone', x: 480, y: 36 },
     ],
-    bubbles: [
-      { x: 120, count: 3 },
-      { x: 400, count: 2 },
-      { x: 550, count: 3 },
-      { x: 700, count: 2 },
-    ],
   },
   foreground: {
     rocks: [
@@ -717,11 +723,6 @@ const SHIPWRECK_LAYOUT: LayeredDecoConfig = {
       { type: 'submarine', x: 120, y: 42 },
       { type: 'treasure', x: 520, y: 42 },
     ],
-    bubbles: [
-      { x: 200, count: 4 },
-      { x: 500, count: 3 },
-      { x: 680, count: 2 },
-    ],
   },
   foreground: {
     rocks: [
@@ -751,10 +752,6 @@ const MINIMAL_LAYOUT: LayeredDecoConfig = {
     structures: [
       { type: 'cairn', x: 250, y: 38 },
       { type: 'bamboo', x: 500, y: 36 },
-    ],
-    bubbles: [
-      { x: 300, count: 2 },
-      { x: 600, count: 2 },
     ],
   },
   foreground: {
@@ -812,7 +809,6 @@ export const DecorationBackground = memo(({ width, theme = 'ocean' }: { width: n
       >
         {bg.kelps.map((k, i) => <Kelp key={`bg-kelp-${i}`} {...k} />)}
         {bg.structures.map(s => renderStructure(s))}
-        {bg.bubbles.map((b, i) => <BubbleStream key={`bubble-${i}`} {...b} />)}
       </svg>
     </div>
   )

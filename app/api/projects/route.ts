@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
+import { incrementStockScore, STOCK_POINTS } from '@/lib/stockScore'
 
 export async function GET() {
   try {
@@ -220,6 +221,9 @@ export async function POST(request: NextRequest) {
         },
       })
     }
+
+    // Award stock points for creating a project
+    incrementStockScore(session.user.id, STOCK_POINTS.PROJECT).catch(() => {})
 
     return NextResponse.json({
       success: true,
