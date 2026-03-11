@@ -366,34 +366,32 @@ SnailSVG.displayName = 'SnailSVG'
 
 
 // ─── Snail Movement ─────────────────────────────────────────────────
-// Snails wander independently across the front glass, cleaning algae.
+// Realistic snail locomotion on aquarium glass. Based on gastropod research:
+//   - Forward-only movement (snails cannot reverse their pedal wave)
+//   - Sinuous, meandering paths with gradual heading drift (Brownian-like foraging)
+//   - Rarely turn sharply; heading changes are smooth and gradual
+//   - Full 360-degree heading (like a queen in chess, but only forward)
+//   - Frequent pauses of varying duration (resting/feeding stops)
+//   - Wall avoidance via gentle curving, not abrupt flips
+//
 // Movement constraints:
 //   Front glass (center):  bottom 90% → y >= 0.10
 //   Near side walls:       bottom 77% → y >= 0.23
 
-interface SnailPos {
+interface SnailState {
   x: number
   y: number
-  targetX: number
-  targetY: number
-  facingRight: boolean
-  wobblePhase: number
-  speed: number
-  pauseUntil: number
+  heading: number         // radians, current direction of travel
+  headingDrift: number    // gentle per-tick drift (sinuous wandering)
+  speed: number           // base movement speed
+  pauseUntil: number      // timestamp: paused until this time
+  driftPhase: number      // phase offset for organic heading oscillation
+  nextTurnTime: number    // timestamp: when to pick a new drift bias
 }
 
 function getMinY(xRatio: number): number {
   if (xRatio < 0.12 || xRatio > 0.88) return 0.23
   return 0.10
-}
-
-function pickRandomTarget(containerWidth: number, containerHeight: number): { x: number; y: number } {
-  const x = 15 + Math.random() * (containerWidth - 30)
-  const xRatio = x / containerWidth
-  const minY = getMinY(xRatio) * containerHeight
-  const maxY = containerHeight * 0.93
-  const y = minY + Math.random() * (maxY - minY)
-  return { x, y }
 }
 
 
@@ -406,29 +404,28 @@ export const SnailGroup = memo(({ count, containerWidth, containerHeight }: {
   containerWidth: number
   containerHeight: number
 }) => {
-  const snailsRef = useRef<SnailPos[]>([])
-  const [positions, setPositions] = useState<{ x: number; y: number; facingRight: boolean }[]>([])
-
+  const snailsRef = useRef<SnailState[]>([])
+  const [positions, setPositions] = useState<{ x: number; y: number; heading: number }[]>([])
 
   // Initialize snail data
   useEffect(() => {
     if (containerWidth === 0 || containerHeight === 0) return
+    const now = Date.now()
     snailsRef.current = Array.from({ length: count }, (_, i) => {
       const startX = (containerWidth * (i + 1)) / (count + 1)
       const startY = containerHeight * (0.15 + Math.random() * 0.70)
-      const target = pickRandomTarget(containerWidth, containerHeight)
       return {
         x: startX,
         y: startY,
-        targetX: target.x,
-        targetY: target.y,
-        facingRight: target.x > startX,
-        wobblePhase: Math.random() * Math.PI * 2,
-        speed: 0.2 + Math.random() * 0.15,
+        heading: Math.random() * Math.PI * 2,
+        headingDrift: (Math.random() - 0.5) * 0.02,
+        speed: 0.18 + Math.random() * 0.12,
         pauseUntil: 0,
+        driftPhase: Math.random() * Math.PI * 2,
+        nextTurnTime: now + 3000 + Math.random() * 8000,
       }
     })
-    setPositions(snailsRef.current.map(s => ({ x: s.x, y: s.y, facingRight: s.facingRight })))
+    setPositions(snailsRef.current.map(s => ({ x: s.x, y: s.y, heading: s.heading })))
   }, [count, containerWidth, containerHeight])
 
   // ─── Movement loop (10fps, CSS smooths visual) ───────────
@@ -436,47 +433,102 @@ export const SnailGroup = memo(({ count, containerWidth, containerHeight }: {
     if (containerWidth === 0 || containerHeight === 0) return
     if (snailsRef.current.length === 0) return
 
+    const MARGIN = 12
+    const maxX = containerWidth - MARGIN
+    const maxYRatio = 0.93
+
     const interval = setInterval(() => {
       const now = Date.now()
 
       snailsRef.current.forEach((snail) => {
+        // ── Pause check ──
         if (now < snail.pauseUntil) return
 
-        const dx = snail.targetX - snail.x
-        const dy = snail.targetY - snail.y
-        const dist = Math.sqrt(dx * dx + dy * dy)
+        // ── Heading drift: sinuous wandering ──
+        // Organic oscillation creates the characteristic sinuous snail trail
+        snail.driftPhase += 0.08
+        const sinuousDrift = Math.sin(snail.driftPhase) * 0.012
+        snail.heading += snail.headingDrift + sinuousDrift
 
-        if (dist > 3) {
-          // Move toward target with slight organic wobble
-          snail.wobblePhase += 0.15
-          const wobbleAmt = Math.sin(snail.wobblePhase) * 0.3
-          const perpX = -dy / dist
-          const perpY = dx / dist
-
-          snail.x += (dx / dist) * snail.speed + perpX * wobbleAmt
-          snail.y += (dy / dist) * snail.speed + perpY * wobbleAmt
-          snail.facingRight = dx > 0
-        } else {
-          // Reached target — maybe pause, then pick new target
-          if (Math.random() < 0.3) {
-            snail.pauseUntil = now + 2000 + Math.random() * 5000
+        // ── Periodic drift bias change (new meander direction) ──
+        if (now > snail.nextTurnTime) {
+          // Mostly gentle drift changes; very rarely a larger reorientation
+          if (Math.random() < 0.08) {
+            // Rare sharper turn (but still gradual, over many ticks)
+            snail.headingDrift = (Math.random() - 0.5) * 0.06
+          } else {
+            // Normal gentle meander shift
+            snail.headingDrift = (Math.random() - 0.5) * 0.025
           }
-          const newTarget = pickRandomTarget(containerWidth, containerHeight)
-          snail.targetX = newTarget.x
-          snail.targetY = newTarget.y
+          snail.nextTurnTime = now + 3000 + Math.random() * 10000
+
+          // Chance to pause (snails rest frequently while grazing)
+          if (Math.random() < 0.25) {
+            snail.pauseUntil = now + 2000 + Math.random() * 6000
+            return
+          }
         }
 
-        // Enforce bounds
+        // ── Move forward along heading ──
+        const vx = Math.cos(snail.heading) * snail.speed
+        const vy = Math.sin(snail.heading) * snail.speed
+        snail.x += vx
+        snail.y += vy
+
+        // ── Wall avoidance: curve gently away from edges ──
+        // Instead of bouncing or teleporting, snails curve their heading
+        // when approaching boundaries, mimicking natural wall-following behavior
         const xRatio = snail.x / containerWidth
         const minY = getMinY(xRatio) * containerHeight
-        snail.x = Math.max(10, Math.min(containerWidth - 10, snail.x))
-        snail.y = Math.max(minY, Math.min(containerHeight * 0.93, snail.y))
+        const maxY = containerHeight * maxYRatio
+
+        let wallSteer = 0
+
+        // Left wall
+        if (snail.x < MARGIN + 15) {
+          const urgency = 1 - (snail.x - MARGIN) / 15
+          // Steer heading toward right (heading ~0)
+          const toRight = -Math.sin(snail.heading) // positive when heading has leftward component
+          wallSteer += urgency * 0.04 * (toRight > 0 ? 1 : -1)
+          // If we need to choose a turn direction, pick whichever keeps us moving more inward
+          if (Math.abs(toRight) < 0.1) wallSteer += urgency * 0.03
+        }
+        // Right wall
+        if (snail.x > maxX - 15) {
+          const urgency = 1 - (maxX - snail.x) / 15
+          const toLeft = Math.sin(snail.heading)
+          wallSteer += urgency * 0.04 * (toLeft > 0 ? 1 : -1)
+          if (Math.abs(toLeft) < 0.1) wallSteer += urgency * 0.03
+        }
+        // Top boundary
+        if (snail.y < minY + 15) {
+          const urgency = 1 - (snail.y - minY) / 15
+          const toDown = -Math.cos(snail.heading)
+          wallSteer += urgency * 0.04 * (toDown > 0 ? 1 : -1)
+          if (Math.abs(toDown) < 0.1) wallSteer += urgency * 0.03
+        }
+        // Bottom boundary
+        if (snail.y > maxY - 15) {
+          const urgency = 1 - (maxY - snail.y) / 15
+          const toUp = Math.cos(snail.heading)
+          wallSteer += urgency * 0.04 * (toUp > 0 ? 1 : -1)
+          if (Math.abs(toUp) < 0.1) wallSteer += urgency * 0.03
+        }
+
+        snail.heading += wallSteer
+
+        // Hard clamp (safety net — snails shouldn't leave the glass)
+        snail.x = Math.max(MARGIN, Math.min(maxX, snail.x))
+        snail.y = Math.max(minY, Math.min(maxY, snail.y))
+
+        // Normalize heading to [0, 2π)
+        snail.heading = ((snail.heading % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2)
       })
 
       setPositions(snailsRef.current.map(s => ({
         x: s.x,
         y: s.y,
-        facingRight: s.facingRight,
+        heading: s.heading,
       })))
     }, 100)
 
@@ -488,38 +540,48 @@ export const SnailGroup = memo(({ count, containerWidth, containerHeight }: {
 
   return (
     <>
-      {positions.map((pos, i) => (
-        <div
-          key={`snail-${i}`}
-          className="absolute z-20 pointer-events-none"
-          style={{
-            left: `${pos.x}px`,
-            top: `${pos.y}px`,
-            transform: 'translate(-50%, -50%)',
-            transition: 'left 0.15s linear, top 0.15s linear',
-            opacity: 0.88,
-            filter: 'drop-shadow(0 0 3px rgba(100,200,255,0.12))',
-          }}
-        >
-          <SnailSVG
-            id={`snail-${i}`}
-            color={SNAIL_COLOR_LIST[i % SNAIL_COLOR_LIST.length]}
-            facingRight={pos.facingRight}
-            size={22}
-          />
-          {/* Slime trail dot */}
+      {positions.map((pos, i) => {
+        // Determine visual facing direction from heading
+        const facingRight = Math.cos(pos.heading) > 0
+        // Rotation angle for the snail SVG (visual heading)
+        // The SVG default points right, so rotate by heading angle
+        // We use scaleX flip inside the SVG for left/right, so only apply
+        // vertical tilt here for a subtle organic effect
+        const tiltDeg = Math.sin(pos.heading) * 12
+
+        return (
           <div
-            className="absolute rounded-full pointer-events-none"
+            key={`snail-${i}`}
+            className="absolute z-20 pointer-events-none"
             style={{
-              width: '7px',
-              height: '4px',
-              background: `radial-gradient(ellipse, ${SNAIL_COLOR_LIST[i % SNAIL_COLOR_LIST.length].body}25 0%, transparent 70%)`,
-              left: pos.facingRight ? '0%' : '85%',
-              top: '55%',
+              left: `${pos.x}px`,
+              top: `${pos.y}px`,
+              transform: `translate(-50%, -50%) rotate(${tiltDeg}deg)`,
+              transition: 'left 0.15s linear, top 0.15s linear, transform 0.15s linear',
+              opacity: 0.88,
+              filter: 'drop-shadow(0 0 3px rgba(100,200,255,0.12))',
             }}
-          />
-        </div>
-      ))}
+          >
+            <SnailSVG
+              id={`snail-${i}`}
+              color={SNAIL_COLOR_LIST[i % SNAIL_COLOR_LIST.length]}
+              facingRight={facingRight}
+              size={22}
+            />
+            {/* Slime trail dot */}
+            <div
+              className="absolute rounded-full pointer-events-none"
+              style={{
+                width: '7px',
+                height: '4px',
+                background: `radial-gradient(ellipse, ${SNAIL_COLOR_LIST[i % SNAIL_COLOR_LIST.length].body}25 0%, transparent 70%)`,
+                left: facingRight ? '0%' : '85%',
+                top: '55%',
+              }}
+            />
+          </div>
+        )
+      })}
     </>
   )
 })
