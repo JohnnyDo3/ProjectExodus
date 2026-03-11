@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { SwimmingFish, type FishData } from './SwimmingFish'
-import { DecorationLayer } from './AquaticDecorations'
+import { DecorationBackground, DecorationForeground } from './AquaticDecorations'
 import { PlecoPair, SnailGroup } from './TankCreatures'
 import { AlgaeOverlay } from './AlgaeSystem'
 import { FishOverlay } from './FishOverlay'
@@ -177,7 +177,10 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomi
       {/* Water caustics/light effects */}
       <WaterEffects width={dimensions.width} height={dimensions.height} />
 
-      {/* Swimming fish */}
+      {/* Background decorations — tall plants, structures (behind fish) */}
+      <DecorationBackground width={dimensions.width} theme={theme} />
+
+      {/* Swimming fish (z-index 10-20, swim between decoration layers) */}
       {dimensions.width > 0 && visibleFish.map((fish, i) => (
         <SwimmingFish
           key={fish.id}
@@ -201,8 +204,8 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomi
       {/* Glass-cleaning snails: 3 for personal, 6 for community */}
       <SnailGroup count={contained ? 3 : 6} containerWidth={dimensions.width} containerHeight={dimensions.height} />
 
-      {/* Bottom decorations */}
-      <DecorationLayer width={dimensions.width} theme={theme} />
+      {/* Foreground decorations — small rocks, corals, short plants (in front of fish) */}
+      <DecorationForeground width={dimensions.width} theme={theme} />
 
       {/* Hover overlay */}
       {hoveredFish && !clickedFish && (
