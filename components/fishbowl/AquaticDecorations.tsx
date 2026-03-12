@@ -1447,9 +1447,10 @@ AtlanteanObelisk.displayName = 'AtlanteanObelisk'
 
 // ═══════════════════════════════════════════════════════════════════════
 // THEMED LAYOUT CONFIGS
-// Now split into background and foreground for proper layering.
-//   background: tall plants, structures (behind fish)
-//   foreground: short rocks, small corals, small plants (in front of fish)
+// Three-layer depth system for realistic tank perspective:
+//   background (z-1):  tall plants against the back wall
+//   midground  (z-12): structures sitting on the sand between back & front
+//   foreground (z-25): rocks, corals, tiny grass-like plants at the glass
 // ═══════════════════════════════════════════════════════════════════════
 
 interface LayeredDecoConfig {
@@ -1470,10 +1471,13 @@ interface LayeredDecoConfig {
 const OCEAN_LAYOUT: LayeredDecoConfig = {
   background: {
     kelps: [
-      { x: 30, height: 80, variant: 'bushy', color: '#2E7D32', delay: 0 },
-      { x: 100, height: 70, variant: 'wide', color: '#388E3C', delay: 0.5 },
-      { x: 550, height: 85, variant: 'bushy', color: '#1B5E20', delay: 0.3 },
-      { x: 740, height: 75, variant: 'wide', color: '#2E7D32', delay: 0.8 },
+      { x: 15, height: 110, variant: 'bushy', color: '#2E7D32', delay: 0 },
+      { x: 60, height: 95, variant: 'wide', color: '#388E3C', delay: 0.5 },
+      { x: 110, height: 100, variant: 'bushy', color: '#1B5E20', delay: 1.2 },
+      { x: 520, height: 105, variant: 'bushy', color: '#1B5E20', delay: 0.3 },
+      { x: 580, height: 90, variant: 'wide', color: '#388E3C', delay: 0.9 },
+      { x: 720, height: 100, variant: 'bushy', color: '#2E7D32', delay: 0.8 },
+      { x: 770, height: 85, variant: 'wide', color: '#1B5E20', delay: 1.6 },
     ],
   },
   midground: {
@@ -1494,8 +1498,14 @@ const OCEAN_LAYOUT: LayeredDecoConfig = {
       { x: 650, y: 156, variant: 'brain', color: '#E91E63' },
     ],
     kelps: [
-      { x: 160, height: 40, variant: 'thin', color: '#388E3C', delay: 1 },
-      { x: 460, height: 35, variant: 'thin', color: '#388E3C', delay: 1.5 },
+      { x: 40, height: 12, variant: 'thin', color: '#388E3C', delay: 0.2 },
+      { x: 110, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.8 },
+      { x: 200, height: 14, variant: 'thin', color: '#388E3C', delay: 1.0 },
+      { x: 300, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.5 },
+      { x: 460, height: 12, variant: 'thin', color: '#388E3C', delay: 1.5 },
+      { x: 560, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.3 },
+      { x: 640, height: 14, variant: 'thin', color: '#388E3C', delay: 1.2 },
+      { x: 750, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.7 },
     ],
   },
 }
@@ -1504,9 +1514,11 @@ const TROPICAL_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#D4A43A', lighter: '#E8C468', detail: '#B8862D' },
   background: {
     kelps: [
-      { x: 40, height: 80, variant: 'bushy', color: '#00C853', delay: 0 },
-      { x: 650, height: 75, variant: 'bushy', color: '#00C853', delay: 1.2 },
-      { x: 760, height: 70, variant: 'wide', color: '#00E676', delay: 0.4 },
+      { x: 20, height: 110, variant: 'bushy', color: '#00C853', delay: 0 },
+      { x: 80, height: 95, variant: 'wide', color: '#00E676', delay: 0.6 },
+      { x: 630, height: 100, variant: 'bushy', color: '#00C853', delay: 1.2 },
+      { x: 700, height: 90, variant: 'wide', color: '#00E676', delay: 0.4 },
+      { x: 760, height: 105, variant: 'bushy', color: '#00C853', delay: 0.9 },
     ],
   },
   midground: {
@@ -1527,8 +1539,13 @@ const TROPICAL_LAYOUT: LayeredDecoConfig = {
       { x: 700, y: 162, variant: 'brain', color: '#FF6D00' },
     ],
     kelps: [
-      { x: 260, height: 38, variant: 'thin', color: '#69F0AE', delay: 0.8 },
-      { x: 440, height: 35, variant: 'thin', color: '#00E676', delay: 1.8 },
+      { x: 50, height: 14, variant: 'thin', color: '#69F0AE', delay: 0.2 },
+      { x: 180, height: 10, variant: 'thin', color: '#00E676', delay: 0.8 },
+      { x: 260, height: 12, variant: 'thin', color: '#69F0AE', delay: 1.0 },
+      { x: 400, height: 10, variant: 'thin', color: '#00E676', delay: 1.8 },
+      { x: 520, height: 14, variant: 'thin', color: '#69F0AE', delay: 0.5 },
+      { x: 650, height: 10, variant: 'thin', color: '#00E676', delay: 1.3 },
+      { x: 770, height: 12, variant: 'thin', color: '#69F0AE', delay: 0.7 },
     ],
   },
 }
@@ -1537,9 +1554,12 @@ const SHIPWRECK_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#8B7355', lighter: '#A08B6C', detail: '#6B5B45' },
   background: {
     kelps: [
-      { x: 20, height: 50, variant: 'thin', color: '#2E7D32', delay: 0 },
-      { x: 420, height: 55, variant: 'wide', color: '#2E7D32', delay: 0.5 },
-      { x: 750, height: 45, variant: 'thin', color: '#1B5E20', delay: 1.5 },
+      { x: 10, height: 85, variant: 'wide', color: '#2E7D32', delay: 0 },
+      { x: 60, height: 70, variant: 'thin', color: '#1B5E20', delay: 0.8 },
+      { x: 400, height: 80, variant: 'bushy', color: '#2E7D32', delay: 0.5 },
+      { x: 460, height: 70, variant: 'wide', color: '#1B5E20', delay: 1.0 },
+      { x: 720, height: 75, variant: 'bushy', color: '#2E7D32', delay: 1.5 },
+      { x: 770, height: 65, variant: 'thin', color: '#1B5E20', delay: 0.3 },
     ],
   },
   midground: {
@@ -1558,8 +1578,12 @@ const SHIPWRECK_LAYOUT: LayeredDecoConfig = {
       { x: 440, y: 166, variant: 'brain', color: '#795548' },
     ],
     kelps: [
-      { x: 100, height: 30, variant: 'thin', color: '#1B5E20', delay: 1 },
-      { x: 620, height: 25, variant: 'thin', color: '#2E7D32', delay: 2 },
+      { x: 70, height: 12, variant: 'thin', color: '#1B5E20', delay: 1 },
+      { x: 200, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.5 },
+      { x: 340, height: 14, variant: 'thin', color: '#1B5E20', delay: 1.5 },
+      { x: 520, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.8 },
+      { x: 620, height: 12, variant: 'thin', color: '#1B5E20', delay: 2 },
+      { x: 750, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.3 },
     ],
   },
 }
@@ -1568,9 +1592,12 @@ const SAILBOAT_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#C4A862', lighter: '#D4B872', detail: '#B89B52' },
   background: {
     kelps: [
-      { x: 30, height: 55, variant: 'wide', color: '#2E7D32', delay: 0 },
-      { x: 620, height: 50, variant: 'bushy', color: '#388E3C', delay: 0.8 },
-      { x: 740, height: 45, variant: 'thin', color: '#1B5E20', delay: 1.5 },
+      { x: 15, height: 95, variant: 'bushy', color: '#2E7D32', delay: 0 },
+      { x: 70, height: 85, variant: 'wide', color: '#388E3C', delay: 0.6 },
+      { x: 600, height: 90, variant: 'bushy', color: '#388E3C', delay: 0.8 },
+      { x: 660, height: 80, variant: 'wide', color: '#2E7D32', delay: 1.2 },
+      { x: 730, height: 95, variant: 'bushy', color: '#1B5E20', delay: 1.5 },
+      { x: 780, height: 75, variant: 'thin', color: '#388E3C', delay: 0.4 },
     ],
   },
   midground: {
@@ -1589,8 +1616,12 @@ const SAILBOAT_LAYOUT: LayeredDecoConfig = {
       { x: 550, y: 166, variant: 'fan', color: '#FF1744' },
     ],
     kelps: [
-      { x: 220, height: 30, variant: 'thin', color: '#388E3C', delay: 0.6 },
-      { x: 450, height: 28, variant: 'thin', color: '#2E7D32', delay: 1.4 },
+      { x: 30, height: 12, variant: 'thin', color: '#388E3C', delay: 0.6 },
+      { x: 150, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.2 },
+      { x: 280, height: 14, variant: 'thin', color: '#388E3C', delay: 1.0 },
+      { x: 420, height: 10, variant: 'thin', color: '#2E7D32', delay: 1.4 },
+      { x: 580, height: 12, variant: 'thin', color: '#388E3C', delay: 0.8 },
+      { x: 720, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.4 },
     ],
   },
 }
@@ -1599,9 +1630,11 @@ const SUBMARINE_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#5C5C5C', lighter: '#787878', detail: '#454545' },
   background: {
     kelps: [
-      { x: 20, height: 50, variant: 'thin', color: '#1B5E20', delay: 0 },
-      { x: 650, height: 55, variant: 'wide', color: '#2E7D32', delay: 0.5 },
-      { x: 760, height: 45, variant: 'thin', color: '#1B5E20', delay: 1.5 },
+      { x: 10, height: 80, variant: 'wide', color: '#1B5E20', delay: 0 },
+      { x: 55, height: 70, variant: 'thin', color: '#2E7D32', delay: 0.7 },
+      { x: 620, height: 85, variant: 'bushy', color: '#2E7D32', delay: 0.5 },
+      { x: 690, height: 75, variant: 'wide', color: '#1B5E20', delay: 1.0 },
+      { x: 750, height: 80, variant: 'bushy', color: '#2E7D32', delay: 1.5 },
     ],
   },
   midground: {
@@ -1619,8 +1652,12 @@ const SUBMARINE_LAYOUT: LayeredDecoConfig = {
       { x: 160, y: 164, variant: 'brain', color: '#795548' },
     ],
     kelps: [
-      { x: 350, height: 30, variant: 'thin', color: '#1B5E20', delay: 1 },
-      { x: 550, height: 28, variant: 'thin', color: '#2E7D32', delay: 1.8 },
+      { x: 100, height: 12, variant: 'thin', color: '#1B5E20', delay: 0.4 },
+      { x: 240, height: 10, variant: 'thin', color: '#2E7D32', delay: 1 },
+      { x: 350, height: 14, variant: 'thin', color: '#1B5E20', delay: 0.7 },
+      { x: 480, height: 10, variant: 'thin', color: '#2E7D32', delay: 1.8 },
+      { x: 580, height: 12, variant: 'thin', color: '#1B5E20', delay: 0.3 },
+      { x: 680, height: 10, variant: 'thin', color: '#2E7D32', delay: 1.2 },
     ],
   },
 }
@@ -1628,11 +1665,13 @@ const SUBMARINE_LAYOUT: LayeredDecoConfig = {
 const MINIMAL_LAYOUT: LayeredDecoConfig = {
   background: {
     kelps: [
-      { x: 30, height: 80, variant: 'bushy', color: '#2E7D32', delay: 0 },
-      { x: 120, height: 70, variant: 'wide', color: '#388E3C', delay: 0.6 },
-      { x: 560, height: 75, variant: 'bushy', color: '#1B5E20', delay: 1.5 },
-      { x: 650, height: 70, variant: 'wide', color: '#2E7D32', delay: 0.4 },
-      { x: 740, height: 65, variant: 'bushy', color: '#388E3C', delay: 2.0 },
+      { x: 15, height: 105, variant: 'bushy', color: '#2E7D32', delay: 0 },
+      { x: 70, height: 90, variant: 'wide', color: '#388E3C', delay: 0.6 },
+      { x: 130, height: 95, variant: 'bushy', color: '#1B5E20', delay: 1.2 },
+      { x: 540, height: 100, variant: 'bushy', color: '#1B5E20', delay: 1.5 },
+      { x: 620, height: 85, variant: 'wide', color: '#2E7D32', delay: 0.4 },
+      { x: 700, height: 95, variant: 'bushy', color: '#388E3C', delay: 0.9 },
+      { x: 760, height: 80, variant: 'wide', color: '#2E7D32', delay: 2.0 },
     ],
   },
   midground: {
@@ -1648,9 +1687,13 @@ const MINIMAL_LAYOUT: LayeredDecoConfig = {
     ],
     corals: [],
     kelps: [
-      { x: 200, height: 35, variant: 'thin', color: '#388E3C', delay: 0.3 },
-      { x: 350, height: 30, variant: 'thin', color: '#388E3C', delay: 1.2 },
-      { x: 470, height: 38, variant: 'thin', color: '#2E7D32', delay: 0.9 },
+      { x: 60, height: 12, variant: 'thin', color: '#388E3C', delay: 0.3 },
+      { x: 200, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.8 },
+      { x: 300, height: 14, variant: 'thin', color: '#388E3C', delay: 1.2 },
+      { x: 420, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.5 },
+      { x: 520, height: 12, variant: 'thin', color: '#388E3C', delay: 0.9 },
+      { x: 650, height: 10, variant: 'thin', color: '#2E7D32', delay: 1.6 },
+      { x: 760, height: 12, variant: 'thin', color: '#388E3C', delay: 0.2 },
     ],
   },
 }
@@ -1659,9 +1702,11 @@ const CASTLE_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#6B6B6B', lighter: '#8A8A8A', detail: '#5A5A5A' },
   background: {
     kelps: [
-      { x: 20, height: 55, variant: 'thin', color: '#1B5E20', delay: 0 },
-      { x: 680, height: 50, variant: 'wide', color: '#2E7D32', delay: 0.8 },
-      { x: 760, height: 45, variant: 'thin', color: '#1B5E20', delay: 1.5 },
+      { x: 10, height: 85, variant: 'bushy', color: '#1B5E20', delay: 0 },
+      { x: 60, height: 75, variant: 'wide', color: '#2E7D32', delay: 0.5 },
+      { x: 650, height: 80, variant: 'bushy', color: '#2E7D32', delay: 0.8 },
+      { x: 720, height: 70, variant: 'wide', color: '#1B5E20', delay: 1.2 },
+      { x: 770, height: 80, variant: 'bushy', color: '#2E7D32', delay: 1.5 },
     ],
   },
   midground: {
@@ -1680,7 +1725,11 @@ const CASTLE_LAYOUT: LayeredDecoConfig = {
       { x: 140, y: 164, variant: 'brain', color: '#795548' },
     ],
     kelps: [
-      { x: 470, height: 30, variant: 'thin', color: '#1B5E20', delay: 1.2 },
+      { x: 80, height: 12, variant: 'thin', color: '#1B5E20', delay: 0.4 },
+      { x: 250, height: 10, variant: 'thin', color: '#2E7D32', delay: 1.2 },
+      { x: 380, height: 14, variant: 'thin', color: '#1B5E20', delay: 0.7 },
+      { x: 530, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.2 },
+      { x: 660, height: 12, variant: 'thin', color: '#1B5E20', delay: 1.0 },
     ],
   },
 }
@@ -1689,9 +1738,11 @@ const PYRAMID_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#C4A862', lighter: '#D4B872', detail: '#A08B52' },
   background: {
     kelps: [
-      { x: 20, height: 45, variant: 'thin', color: '#2E7D32', delay: 0 },
-      { x: 700, height: 50, variant: 'wide', color: '#388E3C', delay: 0.6 },
-      { x: 770, height: 40, variant: 'thin', color: '#1B5E20', delay: 1.8 },
+      { x: 10, height: 80, variant: 'wide', color: '#2E7D32', delay: 0 },
+      { x: 55, height: 70, variant: 'thin', color: '#388E3C', delay: 0.5 },
+      { x: 670, height: 85, variant: 'bushy', color: '#388E3C', delay: 0.6 },
+      { x: 730, height: 75, variant: 'wide', color: '#2E7D32', delay: 1.0 },
+      { x: 780, height: 70, variant: 'thin', color: '#1B5E20', delay: 1.8 },
     ],
   },
   midground: {
@@ -1710,7 +1761,11 @@ const PYRAMID_LAYOUT: LayeredDecoConfig = {
       { x: 450, y: 166, variant: 'fan', color: '#E91E63' },
     ],
     kelps: [
-      { x: 340, height: 28, variant: 'thin', color: '#2E7D32', delay: 1 },
+      { x: 70, height: 12, variant: 'thin', color: '#2E7D32', delay: 0.3 },
+      { x: 200, height: 10, variant: 'thin', color: '#388E3C', delay: 1 },
+      { x: 340, height: 14, variant: 'thin', color: '#2E7D32', delay: 0.7 },
+      { x: 500, height: 10, variant: 'thin', color: '#388E3C', delay: 1.5 },
+      { x: 620, height: 12, variant: 'thin', color: '#2E7D32', delay: 0.4 },
     ],
   },
 }
@@ -1719,9 +1774,12 @@ const TEMPLE_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#8D8D8D', lighter: '#A8A8A8', detail: '#6B6B6B' },
   background: {
     kelps: [
-      { x: 30, height: 60, variant: 'bushy', color: '#2E7D32', delay: 0 },
-      { x: 420, height: 55, variant: 'wide', color: '#388E3C', delay: 0.4 },
-      { x: 740, height: 50, variant: 'bushy', color: '#1B5E20', delay: 1.2 },
+      { x: 15, height: 95, variant: 'bushy', color: '#2E7D32', delay: 0 },
+      { x: 70, height: 80, variant: 'wide', color: '#388E3C', delay: 0.6 },
+      { x: 390, height: 85, variant: 'bushy', color: '#2E7D32', delay: 0.4 },
+      { x: 450, height: 75, variant: 'wide', color: '#388E3C', delay: 1.0 },
+      { x: 710, height: 90, variant: 'bushy', color: '#1B5E20', delay: 1.2 },
+      { x: 770, height: 75, variant: 'wide', color: '#2E7D32', delay: 0.3 },
     ],
   },
   midground: {
@@ -1741,7 +1799,12 @@ const TEMPLE_LAYOUT: LayeredDecoConfig = {
       { x: 620, y: 166, variant: 'fan', color: '#FF5722' },
     ],
     kelps: [
-      { x: 200, height: 35, variant: 'thin', color: '#388E3C', delay: 0.8 },
+      { x: 40, height: 12, variant: 'thin', color: '#388E3C', delay: 0.2 },
+      { x: 160, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.8 },
+      { x: 300, height: 14, variant: 'thin', color: '#388E3C', delay: 1.2 },
+      { x: 480, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.5 },
+      { x: 600, height: 12, variant: 'thin', color: '#388E3C', delay: 0.9 },
+      { x: 740, height: 10, variant: 'thin', color: '#2E7D32', delay: 1.5 },
     ],
   },
 }
@@ -1750,9 +1813,11 @@ const ATLANTIS_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#1A5276', lighter: '#2471A3', detail: '#154360' },
   background: {
     kelps: [
-      { x: 30, height: 55, variant: 'wide', color: '#00695C', delay: 0 },
-      { x: 670, height: 50, variant: 'bushy', color: '#004D40', delay: 0.5 },
-      { x: 760, height: 45, variant: 'thin', color: '#00695C', delay: 1.5 },
+      { x: 15, height: 90, variant: 'bushy', color: '#00695C', delay: 0 },
+      { x: 65, height: 80, variant: 'wide', color: '#004D40', delay: 0.6 },
+      { x: 640, height: 85, variant: 'bushy', color: '#004D40', delay: 0.5 },
+      { x: 710, height: 75, variant: 'wide', color: '#00695C', delay: 1.0 },
+      { x: 770, height: 85, variant: 'bushy', color: '#004D40', delay: 1.5 },
     ],
   },
   midground: {
@@ -1772,7 +1837,12 @@ const ATLANTIS_LAYOUT: LayeredDecoConfig = {
       { x: 650, y: 166, variant: 'brain', color: '#0097A7' },
     ],
     kelps: [
-      { x: 450, height: 30, variant: 'thin', color: '#00897B', delay: 1 },
+      { x: 40, height: 12, variant: 'thin', color: '#00897B', delay: 0.3 },
+      { x: 180, height: 10, variant: 'thin', color: '#00695C', delay: 1 },
+      { x: 320, height: 14, variant: 'thin', color: '#00897B', delay: 0.6 },
+      { x: 480, height: 10, variant: 'thin', color: '#00695C', delay: 1.4 },
+      { x: 600, height: 12, variant: 'thin', color: '#00897B', delay: 0.8 },
+      { x: 750, height: 10, variant: 'thin', color: '#00695C', delay: 0.2 },
     ],
   },
 }
