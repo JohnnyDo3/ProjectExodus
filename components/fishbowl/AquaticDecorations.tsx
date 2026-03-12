@@ -223,33 +223,6 @@ export const BubbleStream = memo(({ x, count = 3 }: { x: number; count?: number 
 ))
 BubbleStream.displayName = 'BubbleStream'
 
-// ─── Aerator — continuous tiny bubbles from structure base ────────────
-// Simulates a fish-tank aerator: many tiny bubbles streaming upward
-
-export const Aerator = memo(({ x, y, spread = 20, count = 18 }: { x: number; y: number; spread?: number; count?: number }) => (
-  <g>
-    {Array.from({ length: count }, (_, i) => {
-      const cx = x + (Math.sin(i * 2.4) * spread * 0.5) + ((i % 3) - 1) * (spread * 0.15)
-      const delay = (i * 0.35) + (Math.sin(i * 1.7) * 0.4)
-      const dur = 3.2 + (i % 5) * 0.6
-      const r = 0.6 + (i % 4) * 0.25
-      return (
-        <circle
-          key={i}
-          cx={cx}
-          cy={y}
-          r={r}
-          fill="rgba(255, 255, 255, 0.35)"
-          stroke="rgba(255, 255, 255, 0.15)"
-          strokeWidth="0.3"
-          style={{ animation: `aeratorBubble ${dur}s ease-out ${delay}s infinite` }}
-        />
-      )
-    })}
-  </g>
-))
-Aerator.displayName = 'Aerator'
-
 
 // ═══════════════════════════════════════════════════════════════════════
 // THEME STRUCTURES — Large, detailed centerpiece decorations
@@ -315,7 +288,7 @@ const CoralReefArch = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="6" y="52" width="4" height="4" fill="#CE93D8" opacity="0.5" />
     <rect x="14" y="54" width="4" height="4" fill="#BA68C8" opacity="0.5" />
 
-    {/* Aerator bubbles rising from arch crevices */}
+    {/* Occasional bubbles rising from arch crevices */}
     <circle cx="42" cy="0" r="1.5" fill="rgba(255,255,255,0.3)" style={{ animation: 'bubbleRise 3.5s ease-in 0s infinite' }} />
     <circle cx="38" cy="2" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4s ease-in 1s infinite' }} />
     <circle cx="46" cy="-1" r="1.2" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 3s ease-in 2s infinite' }} />
@@ -385,7 +358,7 @@ const SunkenTemple = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="74" y="42" width="6" height="6" fill="#BDBDBD" opacity="0.5" />
     <rect x="-4" y="50" width="8" height="4" fill="#9E9E9E" opacity="0.5" />
 
-    {/* Aerator bubbles from temple crevices */}
+    {/* Occasional bubbles from temple crevices */}
     <circle cx="40" cy="16" r="1.2" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4s ease-in 0.5s infinite' }} />
     <circle cx="38" cy="18" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4.5s ease-in 2s infinite' }} />
   </g>
@@ -596,7 +569,7 @@ const SunkenSubmarine = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="14" y="44" width="8" height="4" fill="#E91E63" opacity="0.25" />
     <rect x="16" y="42" width="4" height="3" fill="#F48FB1" opacity="0.2" />
 
-    {/* Aerator bubbles from hull breach */}
+    {/* Occasional bubbles from hull breach */}
     <circle cx="68" cy="20" r="1.5" fill="rgba(255,255,255,0.3)" style={{ animation: 'bubbleRise 3s ease-in 0s infinite' }} />
     <circle cx="72" cy="18" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 3.5s ease-in 0.8s infinite' }} />
     <circle cx="70" cy="22" r="1.2" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4s ease-in 1.5s infinite' }} />
@@ -959,7 +932,7 @@ const StoneCairn = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="0" y="54" width="4" height="2" fill="#2E7D32" opacity="0.3" />
     <rect x="30" y="52" width="6" height="2" fill="#388E3C" opacity="0.25" />
 
-    {/* Gentle aerator bubbles from base crevice */}
+    {/* Gentle bubbles from base crevice */}
     <circle cx="18" cy="42" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 5s ease-in 0s infinite' }} />
     <circle cx="20" cy="44" r="0.8" fill="rgba(255,255,255,0.15)" style={{ animation: 'bubbleRise 5.5s ease-in 2s infinite' }} />
   </g>
@@ -1755,48 +1728,76 @@ const SUBMARINE_LAYOUT: LayeredDecoConfig = {
 const MINIMAL_LAYOUT: LayeredDecoConfig = {
   background: {
     kelps: [
-      { x: 5, height: 65, variant: 'bushy', color: '#2E7D32', delay: 0 },
-      { x: 30, height: 55, variant: 'wide', color: '#388E3C', delay: 0.5 },
-      { x: 55, height: 50, variant: 'thin', color: '#43A047', delay: 1.0 },
-      { x: 80, height: 60, variant: 'bushy', color: '#2E7D32', delay: 0.3 },
-      { x: 105, height: 45, variant: 'wide', color: '#4CAF50', delay: 0.8 },
-      { x: 130, height: 55, variant: 'thin', color: '#388E3C', delay: 1.4 },
-      { x: 430, height: 60, variant: 'bushy', color: '#2E7D32', delay: 0.4 },
-      { x: 460, height: 50, variant: 'wide', color: '#43A047', delay: 0.9 },
-      { x: 680, height: 55, variant: 'thin', color: '#388E3C', delay: 1.2 },
-      { x: 710, height: 60, variant: 'bushy', color: '#4CAF50', delay: 0.6 },
-      { x: 740, height: 50, variant: 'wide', color: '#2E7D32', delay: 1.6 },
-      { x: 770, height: 45, variant: 'thin', color: '#388E3C', delay: 0.2 },
+      // Dense planted tank — lush background wall of plants
+      { x: 5, height: 70, variant: 'bushy', color: '#2E7D32', delay: 0 },
+      { x: 25, height: 60, variant: 'wide', color: '#388E3C', delay: 0.4 },
+      { x: 50, height: 55, variant: 'thin', color: '#43A047', delay: 0.9 },
+      { x: 75, height: 65, variant: 'bushy', color: '#2E7D32', delay: 0.2 },
+      { x: 100, height: 50, variant: 'wide', color: '#4CAF50', delay: 0.7 },
+      { x: 125, height: 60, variant: 'thin', color: '#388E3C', delay: 1.3 },
+      { x: 155, height: 55, variant: 'bushy', color: '#33691E', delay: 0.5 },
+      { x: 180, height: 50, variant: 'wide', color: '#43A047', delay: 1.0 },
+      { x: 210, height: 65, variant: 'thin', color: '#2E7D32', delay: 0.3 },
+      { x: 240, height: 55, variant: 'bushy', color: '#388E3C', delay: 0.8 },
+      { x: 270, height: 60, variant: 'wide', color: '#4CAF50', delay: 1.5 },
+      { x: 300, height: 50, variant: 'thin', color: '#33691E', delay: 0.6 },
+      { x: 330, height: 65, variant: 'bushy', color: '#2E7D32', delay: 1.1 },
+      { x: 360, height: 55, variant: 'wide', color: '#43A047', delay: 0.4 },
+      { x: 390, height: 60, variant: 'thin', color: '#388E3C', delay: 0.9 },
+      { x: 420, height: 50, variant: 'bushy', color: '#4CAF50', delay: 1.4 },
+      { x: 450, height: 65, variant: 'wide', color: '#2E7D32', delay: 0.2 },
+      { x: 480, height: 55, variant: 'thin', color: '#33691E', delay: 0.7 },
+      { x: 510, height: 60, variant: 'bushy', color: '#388E3C', delay: 1.2 },
+      { x: 540, height: 50, variant: 'wide', color: '#43A047', delay: 0.5 },
+      { x: 570, height: 65, variant: 'thin', color: '#2E7D32', delay: 1.0 },
+      { x: 600, height: 55, variant: 'bushy', color: '#4CAF50', delay: 0.3 },
+      { x: 630, height: 60, variant: 'wide', color: '#33691E', delay: 0.8 },
+      { x: 660, height: 50, variant: 'thin', color: '#388E3C', delay: 1.3 },
+      { x: 690, height: 65, variant: 'bushy', color: '#2E7D32', delay: 0.6 },
+      { x: 715, height: 55, variant: 'wide', color: '#43A047', delay: 1.1 },
+      { x: 740, height: 60, variant: 'thin', color: '#4CAF50', delay: 0.4 },
+      { x: 765, height: 50, variant: 'bushy', color: '#33691E', delay: 0.9 },
+      { x: 790, height: 55, variant: 'wide', color: '#2E7D32', delay: 1.5 },
     ],
   },
   midground: {
-    structures: [
-      { type: 'cairn', x: 250, y: 106 },
-      { type: 'bamboo', x: 500, y: 102 },
-    ],
+    structures: [],
   },
   foreground: {
     rocks: [
       { x: 170, y: 282, variant: 'small', color: '#78716C' },
       { x: 400, y: 280, variant: 'small', color: '#6B7280' },
+      { x: 600, y: 281, variant: 'small', color: '#78716C' },
     ],
     corals: [
+      { x: 100, y: 278, variant: 'branch', color: '#81C784' },
       { x: 280, y: 278, variant: 'branch', color: '#81C784' },
       { x: 450, y: 276, variant: 'fan', color: '#A5D6A7' },
+      { x: 650, y: 277, variant: 'fan', color: '#81C784' },
     ],
     kelps: [
-      { x: 20, height: 12, variant: 'thin', color: '#388E3C', delay: 0.3 },
-      { x: 60, height: 10, variant: 'wide', color: '#43A047', delay: 0.7 },
-      { x: 140, height: 14, variant: 'thin', color: '#4CAF50', delay: 1.2 },
-      { x: 220, height: 10, variant: 'thin', color: '#388E3C', delay: 0.5 },
-      { x: 300, height: 12, variant: 'wide', color: '#2E7D32', delay: 0.9 },
-      { x: 380, height: 10, variant: 'thin', color: '#43A047', delay: 1.5 },
-      { x: 460, height: 14, variant: 'thin', color: '#388E3C', delay: 0.4 },
-      { x: 520, height: 10, variant: 'wide', color: '#4CAF50', delay: 1.0 },
-      { x: 600, height: 12, variant: 'thin', color: '#2E7D32', delay: 0.6 },
-      { x: 680, height: 10, variant: 'thin', color: '#388E3C', delay: 1.3 },
-      { x: 740, height: 14, variant: 'wide', color: '#43A047', delay: 0.2 },
-      { x: 780, height: 10, variant: 'thin', color: '#388E3C', delay: 0.8 },
+      // Dense foreground fringe
+      { x: 10, height: 14, variant: 'thin', color: '#388E3C', delay: 0.3 },
+      { x: 40, height: 12, variant: 'wide', color: '#43A047', delay: 0.7 },
+      { x: 70, height: 16, variant: 'bushy', color: '#4CAF50', delay: 1.2 },
+      { x: 100, height: 12, variant: 'thin', color: '#388E3C', delay: 0.5 },
+      { x: 140, height: 14, variant: 'wide', color: '#2E7D32', delay: 0.9 },
+      { x: 180, height: 10, variant: 'thin', color: '#43A047', delay: 1.5 },
+      { x: 220, height: 14, variant: 'bushy', color: '#33691E', delay: 0.4 },
+      { x: 260, height: 12, variant: 'wide', color: '#388E3C', delay: 1.0 },
+      { x: 300, height: 16, variant: 'thin', color: '#4CAF50', delay: 0.6 },
+      { x: 340, height: 12, variant: 'bushy', color: '#2E7D32', delay: 1.3 },
+      { x: 380, height: 14, variant: 'wide', color: '#43A047', delay: 0.2 },
+      { x: 420, height: 10, variant: 'thin', color: '#388E3C', delay: 0.8 },
+      { x: 460, height: 14, variant: 'bushy', color: '#33691E', delay: 1.4 },
+      { x: 500, height: 12, variant: 'wide', color: '#4CAF50', delay: 0.3 },
+      { x: 540, height: 16, variant: 'thin', color: '#2E7D32', delay: 0.9 },
+      { x: 580, height: 12, variant: 'wide', color: '#388E3C', delay: 0.5 },
+      { x: 620, height: 14, variant: 'bushy', color: '#43A047', delay: 1.1 },
+      { x: 660, height: 10, variant: 'thin', color: '#4CAF50', delay: 0.6 },
+      { x: 700, height: 14, variant: 'wide', color: '#33691E', delay: 1.3 },
+      { x: 740, height: 16, variant: 'bushy', color: '#2E7D32', delay: 0.2 },
+      { x: 780, height: 12, variant: 'thin', color: '#388E3C', delay: 0.8 },
     ],
   },
 }
@@ -1865,8 +1866,8 @@ const PYRAMID_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'pyramid', x: 80, y: 90 },
-      { type: 'sphinx', x: 520, y: 118 },
+      { type: 'pyramid', x: 80, y: 112 },
+      { type: 'sphinx', x: 520, y: 132 },
     ],
   },
   foreground: {
@@ -2005,28 +2006,6 @@ const THEME_LAYOUTS: Record<string, LayeredDecoConfig> = {
 
 // ─── Structure renderer ──────────────────────────────────────────────
 
-// Aerator emission points per structure type — where the "smoke stack" of bubbles originates
-const AERATOR_POINTS: Record<string, { x: number; y: number; spread: number; count: number }> = {
-  'coral-arch': { x: 42, y: -8, spread: 16, count: 22 },       // top of arch
-  'sunken-temple': { x: 30, y: -2, spread: 14, count: 18 },    // lintel top
-  'volcano': { x: 35, y: -4, spread: 10, count: 26 },          // crater mouth
-  'dragon-stone': { x: 39, y: -4, spread: 14, count: 20 },     // arch peak
-  'submarine': { x: 49, y: -16, spread: 8, count: 22 },        // conning tower
-  'treasure': { x: 42, y: -10, spread: 18, count: 16 },        // chest top
-  'shipwreck': { x: 50, y: 2, spread: 12, count: 24 },         // mast base
-  'sailboat': { x: 34, y: -24, spread: 8, count: 20 },         // mast top
-  'cairn': { x: 19, y: 4, spread: 10, count: 16 },             // top stone
-  'bamboo': { x: 8, y: -10, spread: 6, count: 14 },            // bamboo tips
-  'castle': { x: 48, y: -28, spread: 10, count: 24 },          // tallest tower
-  'drawbridge': { x: 35, y: 0, spread: 12, count: 18 },        // gatehouse
-  'pyramid': { x: 60, y: -18, spread: 8, count: 26 },          // pyramid apex
-  'sphinx': { x: 10, y: 0, spread: 12, count: 18 },            // sphinx head
-  'torii': { x: 40, y: -14, spread: 14, count: 20 },           // top beam
-  'pagoda': { x: 30, y: -20, spread: 10, count: 22 },          // roof peak
-  'atlantean-dome': { x: 50, y: -24, spread: 12, count: 24 },  // dome apex
-  'atlantean-obelisk': { x: 20, y: -40, spread: 6, count: 22 },// obelisk tip
-}
-
 function renderStructure(s: { type: string; x: number; y: number }) {
   let inner: ReactNode
   let showGroundShadow = true
@@ -2052,16 +2031,11 @@ function renderStructure(s: { type: string; x: number; y: number }) {
     default: return null
   }
 
-  // Get structure-specific aerator emission point
-  const aerator = AERATOR_POINTS[s.type]
-
   return (
     <g key={`${s.type}-${s.x}`} transform={`translate(${s.x}, ${s.y}) scale(2)`}>
       {/* Ground shadow beneath structure */}
       {showGroundShadow && <ellipse cx="40" cy="62" rx="42" ry="5" fill="#000" opacity="0.1" />}
       {inner}
-      {/* Aerator — smoke stack of tiny bubbles from structure's solid mass */}
-      {aerator && <Aerator x={aerator.x} y={aerator.y} spread={aerator.spread} count={aerator.count} />}
       {/* Scattered pebbles and sand disturbance at base */}
       <rect x="-8" y="58" width="4" height="3" fill="#78716C" opacity="0.3" />
       <rect x="-4" y="62" width="3" height="2" fill="#6B7280" opacity="0.25" />

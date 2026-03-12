@@ -92,33 +92,6 @@
 }
 
 
-/* Aerator — tiny bubbles streaming upward from structures */
-@keyframes aeratorBubble {
-  0% {
-    transform: translateY(0) translateX(0) scale(0.3);
-    opacity: 0;
-  }
-  5% {
-    opacity: 0.5;
-  }
-  25% {
-    transform: translateY(-40px) translateX(2px) scale(0.6);
-    opacity: 0.4;
-  }
-  50% {
-    transform: translateY(-90px) translateX(-1px) scale(0.7);
-    opacity: 0.3;
-  }
-  75% {
-    transform: translateY(-140px) translateX(3px) scale(0.5);
-    opacity: 0.15;
-  }
-  100% {
-    transform: translateY(-200px) translateX(0px) scale(0.3);
-    opacity: 0;
-  }
-}
-
 @keyframes heartFloat {
   0% {
     transform: translateY(0) scale(0.5);
