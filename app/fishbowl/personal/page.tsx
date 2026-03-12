@@ -155,7 +155,7 @@ export default function PersonalFishbowlPage() {
   return (
     <div className="h-full flex flex-col overflow-hidden bg-[#0A1628]">
       {/* Header */}
-      <div className="flex-shrink-0 bg-gradient-to-r from-[#0D2137]/95 via-[#123855]/95 to-[#0D2137]/95 backdrop-blur-sm border-b-2 border-cyan-800/50">
+      <div className="flex-shrink-0 bg-gradient-to-r from-[#0D2137]/95 via-[#123855]/95 to-[#0D2137]/95 backdrop-blur-sm border-b-2 border-cyan-800/50 relative z-30">
         <div className="container mx-auto px-6 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -240,9 +240,9 @@ export default function PersonalFishbowlPage() {
             </div>
           </div>
 
-          {/* Decor panel */}
+          {/* Decor panel — absolute overlay so tank doesn't resize */}
           {showDecorPanel && (
-            <div className="mt-3 p-3 rounded-xl bg-[#0A1628]/80 border border-cyan-800/30 animate-in slide-in-from-top duration-200">
+            <div className="absolute left-0 right-0 top-full mt-0 mx-4 p-3 rounded-xl bg-[#0A1628]/95 border border-cyan-800/30 animate-in slide-in-from-top duration-200 backdrop-blur-sm shadow-xl shadow-black/40">
               <p className="text-[10px] text-cyan-500 font-bold uppercase mb-2">Tank Theme</p>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {DECOR_THEMES.map(theme => (
@@ -268,9 +268,9 @@ export default function PersonalFishbowlPage() {
             </div>
           )}
 
-          {/* Info panel - Fish species guide */}
+          {/* Info panel - Fish species guide — absolute overlay */}
           {showInfo && (
-            <div className="mt-3 p-3 rounded-xl bg-[#0A1628]/80 border border-cyan-800/30 animate-in slide-in-from-top duration-200">
+            <div className="absolute left-0 right-0 top-full mt-0 mx-4 p-3 rounded-xl bg-[#0A1628]/95 border border-cyan-800/30 animate-in slide-in-from-top duration-200 backdrop-blur-sm shadow-xl shadow-black/40">
               <p className="text-[10px] text-cyan-500 font-bold uppercase mb-2">Fish Species & Stock Levels</p>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
                 {availableSpecies.map(sp => {
@@ -307,9 +307,9 @@ export default function PersonalFishbowlPage() {
             </div>
           )}
 
-          {/* Friend fish panel - add mutual follows to tank */}
+          {/* Friend fish panel — absolute overlay */}
           {showFriendPanel && (
-            <div className="mt-3 p-3 rounded-xl bg-[#0A1628]/80 border border-teal-800/30 animate-in slide-in-from-top duration-200">
+            <div className="absolute left-0 right-0 top-full mt-0 mx-4 p-3 rounded-xl bg-[#0A1628]/95 border border-teal-800/30 animate-in slide-in-from-top duration-200 backdrop-blur-sm shadow-xl shadow-black/40">
               <p className="text-[10px] text-teal-500 font-bold uppercase mb-2">
                 Add Friend&apos;s Fish to Tank
               </p>

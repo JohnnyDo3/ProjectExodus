@@ -41,10 +41,21 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const { species, colors, pattern } = body
 
-    // Get user's current stock score to validate species access
+    // Compute stock score dynamically (same formula as profile pages)
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { stockScore: true },
+      select: {
+        _count: {
+          select: {
+            createdProjects: true,
+            articles: true,
+            moduleProgress: { where: { completed: true } },
+            followers: true,
+            sentConnections: { where: { status: 'ACCEPTED' } },
+            receivedConnections: { where: { status: 'ACCEPTED' } },
+          },
+        },
+      },
     })
 
     if (!user) {
@@ -54,7 +65,14 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const tier = getTierFromScore(user.stockScore)
+    const c = (user as any)._count || {}
+    const computedScore =
+      (c.createdProjects || 0) * 10 +
+      (c.articles || 0) * 5 +
+      (c.moduleProgress || 0) * 3 +
+      (c.followers || 0) * 1 +
+      ((c.sentConnections || 0) + (c.receivedConnections || 0)) * 2
+    const tier = getTierFromScore(computedScore)
     const availableSpecies = SPECIES_BY_TIER[tier] || ['guppy']
 
     // Validate species

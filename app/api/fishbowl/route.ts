@@ -10,17 +10,41 @@ export async function GET() {
       select: {
         id: true,
         name: true,
-        stockScore: true,
         image: true,
         fishCustomization: true,
-      },
-      orderBy: {
-        stockScore: 'desc',
+        _count: {
+          select: {
+            createdProjects: true,
+            articles: true,
+            moduleProgress: { where: { completed: true } },
+            followers: true,
+            sentConnections: { where: { status: 'ACCEPTED' } },
+            receivedConnections: { where: { status: 'ACCEPTED' } },
+          },
+        },
       },
       take: 100,
     })
 
-    return NextResponse.json({ success: true, data: users })
+    // Compute stock scores dynamically (same formula as profile pages)
+    const usersWithScores = users.map((u: any) => {
+      const c = u._count || {}
+      const stockScore =
+        (c.createdProjects || 0) * 10 +
+        (c.articles || 0) * 5 +
+        (c.moduleProgress || 0) * 3 +
+        (c.followers || 0) * 1 +
+        ((c.sentConnections || 0) + (c.receivedConnections || 0)) * 2
+      return {
+        id: u.id,
+        name: u.name,
+        image: u.image,
+        fishCustomization: u.fishCustomization,
+        stockScore,
+      }
+    }).sort((a: any, b: any) => b.stockScore - a.stockScore)
+
+    return NextResponse.json({ success: true, data: usersWithScores })
   } catch (error) {
     console.error('Error fetching fishbowl users:', error)
     return NextResponse.json(

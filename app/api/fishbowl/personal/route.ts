@@ -26,12 +26,36 @@ export async function GET() {
       }),
       prisma.user.findUnique({
         where: { id: userId },
-        select: { id: true, name: true, stockScore: true, image: true, fishCustomization: true },
+        select: {
+          id: true,
+          name: true,
+          image: true,
+          fishCustomization: true,
+          _count: {
+            select: {
+              createdProjects: true,
+              articles: true,
+              moduleProgress: { where: { completed: true } },
+              followers: true,
+              sentConnections: { where: { status: 'ACCEPTED' } },
+              receivedConnections: { where: { status: 'ACCEPTED' } },
+            },
+          },
+        },
       }),
     ])
 
     const followingIds = new Set(following.map((f: { followingId: string }) => f.followingId))
     const followerIds = new Set(followers.map((f: { followerId: string }) => f.followerId))
+
+    // Compute stock score dynamically (same formula used on profile pages)
+    const counts = (currentUser as any)?._count || {}
+    const computedStockScore =
+      (counts.createdProjects || 0) * 10 +
+      (counts.articles || 0) * 5 +
+      (counts.moduleProgress || 0) * 3 +
+      (counts.followers || 0) * 1 +
+      ((counts.sentConnections || 0) + (counts.receivedConnections || 0)) * 2
 
     // Mutual connections: people user follows AND who follow user back
     const mutualIds = [...followingIds].filter(id => followerIds.has(id))
@@ -39,7 +63,7 @@ export async function GET() {
     // Get all unique connection IDs (following + followers)
     const allConnectionIds = new Set([...followingIds, ...followerIds])
 
-    // Fetch user data for all connections
+    // Fetch user data for all connections with counts for stock score computation
     const connections = await prisma.user.findMany({
       where: {
         id: { in: Array.from(allConnectionIds) },
@@ -48,25 +72,55 @@ export async function GET() {
       select: {
         id: true,
         name: true,
-        stockScore: true,
         image: true,
         fishCustomization: true,
+        _count: {
+          select: {
+            createdProjects: true,
+            articles: true,
+            moduleProgress: { where: { completed: true } },
+            followers: true,
+            sentConnections: { where: { status: 'ACCEPTED' } },
+            receivedConnections: { where: { status: 'ACCEPTED' } },
+          },
+        },
       },
-      orderBy: { stockScore: 'desc' },
     })
 
-    // Tag each connection with their relationship
-    const taggedConnections = connections.map((u: { id: string; name: string | null; stockScore: number | null; image: string | null }) => ({
-      ...u,
-      isMutual: mutualIds.includes(u.id),
-      isFollowing: followingIds.has(u.id),
-      isFollower: followerIds.has(u.id),
-    }))
+    // Tag each connection with their relationship and computed stock score
+    const taggedConnections = connections.map((u: any) => {
+      const c = u._count || {}
+      const score =
+        (c.createdProjects || 0) * 10 +
+        (c.articles || 0) * 5 +
+        (c.moduleProgress || 0) * 3 +
+        (c.followers || 0) * 1 +
+        ((c.sentConnections || 0) + (c.receivedConnections || 0)) * 2
+      return {
+        id: u.id,
+        name: u.name,
+        image: u.image,
+        fishCustomization: u.fishCustomization,
+        stockScore: score,
+        isMutual: mutualIds.includes(u.id),
+        isFollowing: followingIds.has(u.id),
+        isFollower: followerIds.has(u.id),
+      }
+    }).sort((a: any, b: any) => b.stockScore - a.stockScore)
+
+    // Build user object with computed stock score
+    const userData = currentUser ? {
+      id: currentUser.id,
+      name: currentUser.name,
+      image: currentUser.image,
+      fishCustomization: currentUser.fishCustomization,
+      stockScore: computedStockScore,
+    } : null
 
     return NextResponse.json({
       success: true,
       data: {
-        user: currentUser,
+        user: userData,
         connections: taggedConnections,
         stats: {
           following: followingIds.size,

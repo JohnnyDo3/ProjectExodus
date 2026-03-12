@@ -579,32 +579,10 @@ const SunkenSubmarine = memo(({ x, y }: { x: number; y: number }) => (
 ))
 SunkenSubmarine.displayName = 'SunkenSubmarine'
 
-// ─── SHIPWRECK: Treasure & Anchor Cluster (enhanced) ─────────────────
+// ─── SHIPWRECK: Treasure Chest Cluster ───────────────────────────────
 
 const TreasureCluster = memo(({ x, y }: { x: number; y: number }) => (
   <g transform={`translate(${x}, ${y})`}>
-    {/* Large anchor — detailed */}
-    <rect x="40" y="-10" width="4" height="50" fill="#4B5563" />
-    <circle cx="42" cy="-6" r="6" fill="none" stroke="#4B5563" strokeWidth="3" />
-    <rect x="28" y="34" width="28" height="4" fill="#4B5563" />
-    {/* Anchor flukes */}
-    <path d="M28 34 L22 44 L32 40 Z" fill="#6B7280" />
-    <path d="M56 34 L62 44 L52 40 Z" fill="#6B7280" />
-    <rect x="38" y="-12" width="8" height="3" fill="#6B7280" />
-    {/* Anchor rust */}
-    <rect x="40" y="10" width="4" height="6" fill="#B45309" opacity="0.3" />
-    <rect x="32" y="36" width="6" height="2" fill="#B45309" opacity="0.25" />
-    <rect x="40" y="20" width="4" height="4" fill="#8B4513" opacity="0.2" />
-    {/* Chain links connecting anchor to chest */}
-    <rect x="28" y="28" width="3" height="3" fill="#4B5563" opacity="0.5" />
-    <rect x="32" y="26" width="3" height="3" fill="#6B7280" opacity="0.4" />
-    <rect x="24" y="30" width="3" height="3" fill="#4B5563" opacity="0.45" />
-    {/* Rope coiled around anchor */}
-    <rect x="36" y="16" width="12" height="2" fill="#A08060" opacity="0.6" />
-    <rect x="34" y="20" width="14" height="2" fill="#C4A862" opacity="0.5" />
-    <rect x="36" y="24" width="12" height="2" fill="#A08060" opacity="0.5" />
-    <rect x="38" y="28" width="8" height="2" fill="#A08060" opacity="0.4" />
-
     {/* Large treasure chest — open */}
     <rect x="0" y="28" width="32" height="16" fill="#6B4C3A" />
     <rect x="2" y="24" width="28" height="6" fill="#7A5B48" />
@@ -664,7 +642,7 @@ const TreasureCluster = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="54" y="38" width="2" height="4" fill="#E0E0E0" opacity="0.3" />
     <rect x="48" y="36" width="2" height="3" fill="#EEEEEE" opacity="0.3" />
 
-    {/* Scattered coins — more */}
+    {/* Scattered coins */}
     <circle cx="10" cy="46" r="1.5" fill="#FFD700" opacity="0.4" />
     <circle cx="22" cy="44" r="1" fill="#FFC107" opacity="0.3" />
     <circle cx="44" cy="44" r="1.5" fill="#FFD700" opacity="0.35" />
@@ -673,126 +651,172 @@ const TreasureCluster = memo(({ x, y }: { x: number; y: number }) => (
     <circle cx="56" cy="46" r="1" fill="#FFD700" opacity="0.3" />
     <circle cx="70" cy="46" r="1.2" fill="#FFD700" opacity="0.25" />
     <circle cx="30" cy="48" r="0.8" fill="#FFC107" opacity="0.2" />
+
+    {/* Chain trailing in the sand */}
+    <path d="M34 44 Q40 42 46 44 Q50 46 54 44" stroke="#4B5563" strokeWidth="1.5" fill="none" opacity="0.35" />
   </g>
 ))
 TreasureCluster.displayName = 'TreasureCluster'
 
-// ─── SHIPWRECK: Sunken Galleon (shipwreck) ──────────────────────────
+// ─── Standalone Anchor (for sailboat theme) ─────────────────────────
+
+const SunkenAnchor = memo(({ x, y }: { x: number; y: number }) => (
+  <g transform={`translate(${x}, ${y})`}>
+    {/* Anchor shank (vertical bar) */}
+    <rect x="18" y="-10" width="4" height="54" fill="#4B5563" rx="1" />
+    {/* Ring at top */}
+    <circle cx="20" cy="-6" r="7" fill="none" stroke="#4B5563" strokeWidth="3.5" />
+    {/* Stock (horizontal bar at top) */}
+    <rect x="6" y="-12" width="28" height="3.5" fill="#6B7280" rx="1" />
+    {/* Crown / arms (curved flukes) */}
+    <path d="M8 38 Q6 32 10 28 Q14 26 18 30 L18 40 Q14 42 8 38Z" fill="#6B7280" />
+    <path d="M32 38 Q34 32 30 28 Q26 26 22 30 L22 40 Q26 42 32 38Z" fill="#6B7280" />
+    {/* Fluke tips (pointed) */}
+    <path d="M8 38 L2 46 L12 42 Z" fill="#546E7A" />
+    <path d="M32 38 L38 46 L28 42 Z" fill="#546E7A" />
+    {/* Rust patches */}
+    <ellipse cx="20" cy="10" rx="3" ry="4" fill="#B45309" opacity="0.25" />
+    <ellipse cx="12" cy="36" rx="3" ry="2" fill="#B45309" opacity="0.2" />
+    <ellipse cx="20" cy="24" rx="2" ry="3" fill="#8B4513" opacity="0.18" />
+    {/* Rope coiled around shank */}
+    <path d="M14 16 Q20 14 26 16" stroke="#A08060" strokeWidth="1.5" fill="none" opacity="0.55" />
+    <path d="M13 20 Q20 18 27 20" stroke="#C4A862" strokeWidth="1.5" fill="none" opacity="0.45" />
+    <path d="M14 24 Q20 22 26 24" stroke="#A08060" strokeWidth="1.5" fill="none" opacity="0.4" />
+    {/* Chain draped from ring */}
+    <path d="M14 -8 Q8 -4 4 2 Q2 8 4 14" stroke="#4B5563" strokeWidth="2" fill="none" opacity="0.45" />
+    {/* Barnacles */}
+    <circle cx="24" cy="32" r="1.5" fill="#9CA3AF" opacity="0.35" />
+    <circle cx="16" cy="18" r="1" fill="#9CA3AF" opacity="0.3" />
+    {/* Seaweed on anchor */}
+    <path d="M26 28 Q30 24 28 18" stroke="#2E7D32" strokeWidth="1" fill="none" opacity="0.35" />
+  </g>
+))
+SunkenAnchor.displayName = 'SunkenAnchor'
+
+// ─── SHIPWRECK: Sunken Pirate Galleon ────────────────────────────────
 
 const SunkenShip = memo(({ x, y }: { x: number; y: number }) => (
   <g transform={`translate(${x}, ${y})`}>
-    {/* Main hull — broken galleon on its side */}
-    <rect x="0" y="30" width="130" height="35" fill="#5D4037" />
-    <rect x="4" y="24" width="122" height="10" fill="#6D4C41" />
-    <rect x="8" y="18" width="114" height="8" fill="#795548" />
-    {/* Hull bottom (keel) */}
-    <rect x="10" y="65" width="110" height="6" fill="#3E2723" />
-    <rect x="20" y="68" width="90" height="4" fill="#4E342E" />
+    <defs>
+      <linearGradient id="hull-grad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#795548" />
+        <stop offset="50%" stopColor="#5D4037" />
+        <stop offset="100%" stopColor="#3E2723" />
+      </linearGradient>
+      <linearGradient id="stern-grad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#8D6E63" />
+        <stop offset="100%" stopColor="#5D4037" />
+      </linearGradient>
+    </defs>
 
-    {/* Stern section — captain's quarters */}
-    <rect x="110" y="10" width="24" height="55" fill="#5D4037" />
-    <rect x="112" y="6" width="20" height="8" fill="#6D4C41" />
-    <rect x="114" y="2" width="16" height="6" fill="#795548" />
-    {/* Stern windows (broken) */}
-    <rect x="114" y="16" width="6" height="8" fill="#0A1628" opacity="0.8" />
-    <rect x="124" y="16" width="6" height="8" fill="#0A1628" opacity="0.7" />
-    <rect x="114" y="28" width="6" height="8" fill="#0A1628" opacity="0.6" />
-    {/* Window frames */}
-    <rect x="113" y="15" width="8" height="1" fill="#8D6E63" />
-    <rect x="113" y="25" width="8" height="1" fill="#8D6E63" />
-    <rect x="123" y="15" width="8" height="1" fill="#8D6E63" />
-    {/* Stern railing */}
-    <rect x="112" y="4" width="2" height="8" fill="#8D6E63" opacity="0.5" />
-    <rect x="130" y="4" width="2" height="8" fill="#8D6E63" opacity="0.4" />
-    <rect x="112" y="4" width="20" height="2" fill="#A1887F" opacity="0.4" />
+    {/* Main hull — curved galleon shape, slightly tilted */}
+    <path d="M-14 46 Q-18 38 -12 30 Q0 20 20 18 L110 16 Q128 18 134 28 Q138 36 132 50 Q128 58 120 62 L10 64 Q-8 62 -14 46Z" fill="url(#hull-grad)" />
+    {/* Keel line */}
+    <path d="M-8 60 Q10 68 65 70 Q120 68 132 58" stroke="#3E2723" strokeWidth="3" fill="none" />
+    {/* Hull planking lines (curved) */}
+    <path d="M-10 36 Q30 32 70 30 Q110 32 130 36" stroke="#8D6E63" strokeWidth="0.8" fill="none" opacity="0.4" />
+    <path d="M-12 44 Q30 40 70 38 Q110 40 130 44" stroke="#8D6E63" strokeWidth="0.8" fill="none" opacity="0.35" />
+    <path d="M-10 52 Q30 48 70 46 Q110 48 128 52" stroke="#8D6E63" strokeWidth="0.8" fill="none" opacity="0.3" />
 
-    {/* Bow section — pointed */}
-    <rect x="-10" y="36" width="14" height="20" fill="#6D4C41" />
-    <rect x="-14" y="40" width="8" height="12" fill="#795548" />
-    <rect x="-16" y="44" width="4" height="6" fill="#8D6E63" />
+    {/* Gun ports (dark holes along hull) */}
+    <ellipse cx="20" cy="40" rx="4" ry="3" fill="#1A0E08" opacity="0.7" />
+    <ellipse cx="40" cy="38" rx="4" ry="3" fill="#1A0E08" opacity="0.7" />
+    <ellipse cx="60" cy="37" rx="4" ry="3" fill="#1A0E08" opacity="0.7" />
+    <ellipse cx="80" cy="38" rx="4" ry="3" fill="#1A0E08" opacity="0.7" />
+    <ellipse cx="100" cy="40" rx="4" ry="3" fill="#1A0E08" opacity="0.7" />
+    {/* Cannons poking out */}
+    <path d="M16 40 L10 40" stroke="#455A64" strokeWidth="2.5" strokeLinecap="round" />
+    <path d="M56 37 L50 38" stroke="#455A64" strokeWidth="2.5" strokeLinecap="round" />
+    <path d="M96 40 L90 40" stroke="#455A64" strokeWidth="2.5" strokeLinecap="round" />
 
-    {/* Hull breach / gaping hole */}
-    <rect x="40" y="32" width="22" height="18" fill="#0A1628" opacity="0.8" />
-    <rect x="42" y="30" width="18" height="4" fill="#4E342E" />
-    <rect x="42" y="48" width="18" height="4" fill="#4E342E" />
+    {/* Stern — ornate captain's quarters */}
+    <path d="M110 16 Q118 8 130 4 Q138 2 140 8 L142 56 Q140 62 132 64 L120 62 Q114 58 110 48Z" fill="url(#stern-grad)" />
+    {/* Stern gallery windows */}
+    <ellipse cx="128" cy="18" rx="4" ry="5" fill="#0A1628" opacity="0.8" />
+    <ellipse cx="128" cy="18" rx="4" ry="5" fill="none" stroke="#A1887F" strokeWidth="0.8" />
+    <ellipse cx="136" cy="20" rx="3" ry="4" fill="#0A1628" opacity="0.7" />
+    <ellipse cx="136" cy="20" rx="3" ry="4" fill="none" stroke="#A1887F" strokeWidth="0.7" />
+    <ellipse cx="128" cy="32" rx="4" ry="5" fill="#0A1628" opacity="0.6" />
+    <ellipse cx="128" cy="32" rx="4" ry="5" fill="none" stroke="#A1887F" strokeWidth="0.7" />
+    {/* Stern decorative scrollwork */}
+    <path d="M122 6 Q126 2 132 4" stroke="#D4A43A" strokeWidth="0.8" fill="none" opacity="0.5" />
+    <path d="M120 10 Q128 6 136 8" stroke="#D4A43A" strokeWidth="0.6" fill="none" opacity="0.4" />
+    {/* Stern railing / taffrail */}
+    <path d="M118 4 Q130 0 140 4" stroke="#A1887F" strokeWidth="1.5" fill="none" opacity="0.6" />
+
+    {/* Bow — sharp curved prow */}
+    <path d="M-12 30 Q-20 26 -24 20 Q-26 14 -22 10 Q-18 6 -14 8 Q-8 12 -4 18 Q0 22 4 24" fill="#6D4C41" />
+    {/* Bowsprit (angled forward spar) */}
+    <path d="M-22 12 L-40 -4" stroke="#8D6E63" strokeWidth="3" strokeLinecap="round" />
+    <path d="M-40 -4 L-44 -6" stroke="#A1887F" strokeWidth="2" strokeLinecap="round" />
+    {/* Figurehead beneath bowsprit */}
+    <path d="M-26 16 Q-30 12 -28 8 Q-26 6 -24 8 L-22 14" fill="#D4A43A" opacity="0.6" />
+    <circle cx="-27" cy="9" r="2" fill="#E8C468" opacity="0.5" />
+
+    {/* Hull breach — gaping dark hole */}
+    <ellipse cx="52" cy="42" rx="14" ry="10" fill="#0A1628" opacity="0.85" />
     {/* Torn planks around breach */}
-    <rect x="38" y="34" width="4" height="6" fill="#6D4C41" />
-    <rect x="60" y="36" width="4" height="8" fill="#6D4C41" />
-    <rect x="44" y="28" width="6" height="4" fill="#795548" />
+    <path d="M40 36 Q42 32 46 34" stroke="#6D4C41" strokeWidth="2" fill="none" />
+    <path d="M64 38 Q66 34 68 36" stroke="#6D4C41" strokeWidth="2" fill="none" />
+    <path d="M44 50 Q48 54 52 52" stroke="#5D4037" strokeWidth="1.5" fill="none" />
+    {/* Visible ribs inside breach */}
+    <path d="M46 36 L48 50" stroke="#A1887F" strokeWidth="1" opacity="0.5" />
+    <path d="M52 34 L53 52" stroke="#A1887F" strokeWidth="1" opacity="0.4" />
+    <path d="M58 35 L57 51" stroke="#A1887F" strokeWidth="1" opacity="0.5" />
 
-    {/* Visible ribs/frames inside hull */}
-    <rect x="44" y="34" width="2" height="14" fill="#8D6E63" opacity="0.5" />
-    <rect x="50" y="34" width="2" height="14" fill="#8D6E63" opacity="0.4" />
-    <rect x="56" y="34" width="2" height="14" fill="#8D6E63" opacity="0.5" />
+    {/* Main mast — broken, jagged top */}
+    <rect x="58" y="-12" width="5" height="32" fill="#8D6E63" rx="1" />
+    <path d="M58 -12 L60 -18 L63 -12" fill="#A1887F" /> {/* jagged break */}
+    {/* Crow's nest remnant */}
+    <path d="M54 -8 Q60 -10 66 -8" stroke="#6D4C41" strokeWidth="2" fill="none" />
+    {/* Mast rigging lines */}
+    <path d="M60 -14 Q40 4 20 18" stroke="#A08060" strokeWidth="0.6" fill="none" opacity="0.35" />
+    <path d="M60 -14 Q80 4 100 16" stroke="#A08060" strokeWidth="0.6" fill="none" opacity="0.3" />
 
-    {/* Deck planks */}
-    <rect x="10" y="28" width="100" height="2" fill="#8D6E63" opacity="0.4" />
-    <rect x="8" y="30" width="102" height="1" fill="#4E342E" opacity="0.3" />
+    {/* Mizzen mast (shorter, aft) */}
+    <rect x="96" y="2" width="4" height="16" fill="#8D6E63" opacity="0.8" rx="1" />
+    <path d="M96 2 L98 -2 L100 2" fill="#A1887F" opacity="0.7" />
 
-    {/* Railing remnants */}
-    <rect x="15" y="16" width="2" height="10" fill="#795548" opacity="0.6" />
-    <rect x="35" y="14" width="2" height="12" fill="#795548" opacity="0.5" />
-    <rect x="70" y="16" width="2" height="10" fill="#795548" opacity="0.6" />
-    <rect x="90" y="15" width="2" height="11" fill="#795548" opacity="0.5" />
+    {/* Tattered sail hanging from main mast */}
+    <path d="M63 -8 Q74 -4 78 6 Q76 14 68 18 L63 16Z" fill="#D7CCC8" opacity="0.3" />
+    <path d="M65 -6 Q72 -2 74 4 Q72 10 68 14" stroke="#BCAAA4" strokeWidth="0.5" fill="none" opacity="0.3" />
 
-    {/* Broken mast stump */}
-    <rect x="56" y="-6" width="6" height="26" fill="#8D6E63" />
-    <rect x="54" y="-10" width="4" height="6" fill="#A1887F" />
-    <rect x="58" y="-12" width="3" height="4" fill="#8D6E63" />
-    <rect x="56" y="-14" width="2" height="4" fill="#A1887F" opacity="0.7" />
-    {/* Mast base ring */}
-    <rect x="54" y="18" width="10" height="2" fill="#6D4C41" />
+    {/* Deck line */}
+    <path d="M-4 22 Q30 18 70 16 Q110 18 122 22" stroke="#6D4C41" strokeWidth="1.5" fill="none" opacity="0.5" />
 
-    {/* Second broken mast (shorter, further aft) */}
-    <rect x="90" y="4" width="5" height="16" fill="#8D6E63" opacity="0.8" />
-    <rect x="88" y="2" width="3" height="4" fill="#A1887F" opacity="0.6" />
+    {/* Railing posts (some broken, some standing) */}
+    <rect x="10" y="14" width="1.5" height="8" fill="#795548" opacity="0.6" rx="0.5" />
+    <rect x="30" y="12" width="1.5" height="10" fill="#795548" opacity="0.5" rx="0.5" />
+    <rect x="72" y="12" width="1.5" height="8" fill="#795548" opacity="0.5" rx="0.5" />
+    {/* Railing rope between posts */}
+    <path d="M10 16 Q20 14 30 14 Q50 12 72 14" stroke="#A08060" strokeWidth="0.7" fill="none" opacity="0.3" />
 
-    {/* Crow's nest debris fallen nearby */}
-    <rect x="20" y="64" width="14" height="4" fill="#8D6E63" opacity="0.5" />
-    <rect x="22" y="62" width="10" height="4" fill="#A1887F" opacity="0.4" />
+    {/* Chain draped along hull */}
+    <path d="M8 56 Q20 58 30 56 Q40 54 48 56" stroke="#4B5563" strokeWidth="1.5" fill="none" opacity="0.4" />
 
-    {/* Cannons poking from gun ports */}
-    <rect x="24" y="40" width="12" height="3" fill="#37474F" />
-    <rect x="22" y="39" width="4" height="5" fill="#455A64" />
-    <rect x="76" y="42" width="12" height="3" fill="#37474F" />
-    <rect x="74" y="41" width="4" height="5" fill="#455A64" />
-
-    {/* Figurehead broken off, lying near bow */}
-    <rect x="-20" y="60" width="12" height="8" fill="#D4A43A" opacity="0.5" />
-    <rect x="-18" y="56" width="8" height="6" fill="#E8C468" opacity="0.4" />
-
-    {/* Rust and decay */}
-    <rect x="30" y="50" width="10" height="4" fill="#BF360C" opacity="0.25" />
-    <rect x="80" y="34" width="8" height="6" fill="#E65100" opacity="0.2" />
-    <rect x="100" y="44" width="12" height="4" fill="#BF360C" opacity="0.2" />
-    <rect x="12" y="38" width="6" height="4" fill="#E65100" opacity="0.15" />
-    <rect x="66" y="56" width="8" height="3" fill="#BF360C" opacity="0.15" />
+    {/* Rust and decay patches */}
+    <ellipse cx="35" cy="50" rx="6" ry="3" fill="#BF360C" opacity="0.2" />
+    <ellipse cx="85" cy="36" rx="5" ry="4" fill="#E65100" opacity="0.15" />
+    <ellipse cx="106" cy="48" rx="7" ry="3" fill="#BF360C" opacity="0.18" />
 
     {/* Barnacles */}
-    <rect x="0" y="58" width="4" height="3" fill="#9CA3AF" opacity="0.4" />
-    <rect x="68" y="62" width="3" height="3" fill="#9CA3AF" opacity="0.35" />
-    <rect x="120" y="52" width="3" height="3" fill="#9CA3AF" opacity="0.4" />
-    <rect x="96" y="64" width="4" height="2" fill="#9CA3AF" opacity="0.3" />
+    <circle cx="2" cy="56" r="2" fill="#9CA3AF" opacity="0.35" />
+    <circle cx="70" cy="62" r="1.5" fill="#9CA3AF" opacity="0.3" />
+    <circle cx="126" cy="54" r="2" fill="#9CA3AF" opacity="0.35" />
 
-    {/* Algae growth */}
-    <rect x="54" y="14" width="8" height="3" fill="#2E7D32" opacity="0.4" />
-    <rect x="8" y="60" width="10" height="2" fill="#388E3C" opacity="0.3" />
-    <rect x="110" y="58" width="8" height="2" fill="#1B5E20" opacity="0.4" />
-    <rect x="30" y="22" width="6" height="2" fill="#2E7D32" opacity="0.3" />
+    {/* Algae growth on wood */}
+    <ellipse cx="58" cy="14" rx="5" ry="2" fill="#2E7D32" opacity="0.35" />
+    <ellipse cx="8" cy="58" rx="6" ry="1.5" fill="#388E3C" opacity="0.25" />
+    <ellipse cx="116" cy="56" rx="5" ry="1.5" fill="#1B5E20" opacity="0.35" />
 
     {/* Coral growing on hull */}
-    <rect x="88" y="56" width="8" height="6" fill="#E91E63" opacity="0.3" />
-    <rect x="90" y="52" width="4" height="4" fill="#F48FB1" opacity="0.25" />
+    <ellipse cx="92" cy="56" rx="5" ry="4" fill="#E91E63" opacity="0.25" />
+    <ellipse cx="94" cy="52" rx="3" ry="2" fill="#F48FB1" opacity="0.2" />
 
-    {/* Chain draped over railing */}
-    <rect x="14" y="14" width="22" height="2" fill="#4B5563" opacity="0.5" />
-    <rect x="12" y="16" width="4" height="4" fill="#4B5563" opacity="0.4" />
-    <rect x="34" y="16" width="4" height="6" fill="#4B5563" opacity="0.4" />
-
-    {/* Scattered debris around base */}
-    <rect x="-6" y="68" width="8" height="3" fill="#6D4C41" opacity="0.4" />
-    <rect x="130" y="66" width="6" height="4" fill="#795548" opacity="0.3" />
-    <rect x="70" y="70" width="10" height="2" fill="#5D4037" opacity="0.3" />
+    {/* Scattered wreckage on seabed */}
+    <path d="M-8 66 Q-4 64 0 66 Q4 68 -2 70" fill="#6D4C41" opacity="0.3" />
+    <path d="M130 64 Q134 62 138 64" fill="#795548" opacity="0.25" />
+    <ellipse cx="72" cy="70" rx="6" ry="1.5" fill="#5D4037" opacity="0.25" />
 
     {/* Bubbles from interior */}
     <circle cx="50" cy="30" r="1.5" fill="rgba(255,255,255,0.3)" style={{ animation: 'bubbleRise 3.5s ease-in 0s infinite' }} />
@@ -1653,6 +1677,7 @@ const SAILBOAT_LAYOUT: LayeredDecoConfig = {
   midground: {
     structures: [
       { type: 'sailboat', x: 300, y: 120 },
+      { type: 'anchor', x: 600, y: 118 },
     ],
   },
   foreground: {
@@ -2008,7 +2033,6 @@ const THEME_LAYOUTS: Record<string, LayeredDecoConfig> = {
 
 function renderStructure(s: { type: string; x: number; y: number }) {
   let inner: ReactNode
-  let showGroundShadow = true
   switch (s.type) {
     case 'coral-arch': inner = <CoralReefArch x={0} y={0} />; break
     case 'sunken-temple': inner = <SunkenTemple x={0} y={0} />; break
@@ -2017,7 +2041,8 @@ function renderStructure(s: { type: string; x: number; y: number }) {
     case 'submarine': inner = <SunkenSubmarine x={0} y={0} />; break
     case 'treasure': inner = <TreasureCluster x={0} y={0} />; break
     case 'shipwreck': inner = <SunkenShip x={0} y={0} />; break
-    case 'sailboat': inner = <SunkenSailboat x={0} y={0} />; showGroundShadow = false; break
+    case 'sailboat': inner = <SunkenSailboat x={0} y={0} />; break
+    case 'anchor': inner = <SunkenAnchor x={0} y={0} />; break
     case 'cairn': inner = <StoneCairn x={0} y={0} />; break
     case 'bamboo': inner = <BambooGrove x={0} y={0} />; break
     case 'castle': inner = <SunkenCastle x={0} y={0} />; break
@@ -2033,8 +2058,6 @@ function renderStructure(s: { type: string; x: number; y: number }) {
 
   return (
     <g key={`${s.type}-${s.x}`} transform={`translate(${s.x}, ${s.y}) scale(2)`}>
-      {/* Ground shadow beneath structure */}
-      {showGroundShadow && <ellipse cx="40" cy="62" rx="42" ry="5" fill="#000" opacity="0.1" />}
       {inner}
       {/* Scattered pebbles and sand disturbance at base */}
       <rect x="-8" y="58" width="4" height="3" fill="#78716C" opacity="0.3" />

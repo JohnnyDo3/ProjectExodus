@@ -66,7 +66,7 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
   const ref = useRef<HTMLDivElement>(null)
   const stateRef = useRef<SwimmingFishState | null>(null)
   const animRef = useRef<number>(0)
-  const [pos, setPos] = useState<{ x: number; y: number; direction: 'left' | 'right'; phase: number }>({ x: 0, y: 0, direction: 'right', phase: 0 })
+  const [pos, setPos] = useState<{ x: number; y: number; direction: 'left' | 'right'; phase: number; vy: number }>({ x: 0, y: 0, direction: 'right', phase: 0, vy: 0 })
   const isHovered = useRef(false)
 
   const fishSize = 36 + fish.tier * 8 // bigger fish for higher tiers
@@ -118,7 +118,7 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
       }
     }
 
-    setPos({ x: stateRef.current.x, y: stateRef.current.y, direction: stateRef.current.direction, phase: 0 })
+    setPos({ x: stateRef.current.x, y: stateRef.current.y, direction: stateRef.current.direction, phase: 0, vy: 0 })
   }, [containerWidth, containerHeight, index, contained, fishSize])
 
   // Animation loop with enhanced mechanics
@@ -248,7 +248,7 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
         posRegistry.set(fish.id, { x: s.x, y: s.y, vx: s.vx, size: fishSize })
       }
 
-      setPos({ x: s.x, y: s.y, direction: s.direction, phase: s.phase })
+      setPos({ x: s.x, y: s.y, direction: s.direction, phase: s.phase, vy: s.vy })
       animRef.current = requestAnimationFrame(animate)
     }
 
@@ -282,6 +282,11 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
   const wagAmount = Math.sin(pos.phase * 2) * (3 + speedFactor * 2)
   // Subtle bob for liveliness
   const bobAmount = Math.sin(pos.phase * 1.3) * 1.5
+  // Pitch angle — head points in direction of vertical movement
+  // Clamp to ±30 degrees for natural look; flip sign when facing left
+  const pitchRaw = Math.atan2(pos.vy, Math.abs(stateRef.current?.vx ?? 1)) * (180 / Math.PI)
+  const pitchDeg = Math.max(-30, Math.min(30, pitchRaw))
+  const flipSign = pos.direction === 'left' ? -1 : 1
 
   return (
     <div
@@ -290,7 +295,7 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
       style={{
         left: `${pos.x}px`,
         top: `${pos.y + bobAmount}px`,
-        transform: `scaleX(${pos.direction === 'left' ? 1 : -1}) rotate(${wagAmount}deg)`,
+        transform: `scaleX(${pos.direction === 'left' ? 1 : -1}) rotate(${pitchDeg * flipSign + wagAmount}deg)`,
         zIndex: 10 + Math.floor(pos.y / 10),
         filter: isHovered.current
           ? `brightness(1.3) drop-shadow(0 0 12px rgba(34,211,238,0.6)) drop-shadow(0 0 4px rgba(255,255,255,0.3))`
