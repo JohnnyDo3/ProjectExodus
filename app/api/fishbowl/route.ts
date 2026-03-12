@@ -16,7 +16,7 @@ export async function GET() {
           select: {
             createdProjects: true,
             articles: true,
-            moduleProgress: { where: { completed: true } },
+            learningProgress: { where: { status: 'COMPLETED' } },
             followers: true,
             sentConnections: { where: { status: 'ACCEPTED' } },
             receivedConnections: { where: { status: 'ACCEPTED' } },
@@ -32,7 +32,7 @@ export async function GET() {
       const stockScore =
         (c.createdProjects || 0) * 10 +
         (c.articles || 0) * 5 +
-        (c.moduleProgress || 0) * 3 +
+        (c.learningProgress || 0) * 3 +
         (c.followers || 0) * 1 +
         ((c.sentConnections || 0) + (c.receivedConnections || 0)) * 2
       return {

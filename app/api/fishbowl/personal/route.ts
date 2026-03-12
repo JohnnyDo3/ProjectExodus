@@ -35,7 +35,7 @@ export async function GET() {
             select: {
               createdProjects: true,
               articles: true,
-              moduleProgress: { where: { completed: true } },
+              learningProgress: { where: { status: 'COMPLETED' } },
               followers: true,
               sentConnections: { where: { status: 'ACCEPTED' } },
               receivedConnections: { where: { status: 'ACCEPTED' } },
@@ -53,7 +53,7 @@ export async function GET() {
     const computedStockScore =
       (counts.createdProjects || 0) * 10 +
       (counts.articles || 0) * 5 +
-      (counts.moduleProgress || 0) * 3 +
+      (counts.learningProgress || 0) * 3 +
       (counts.followers || 0) * 1 +
       ((counts.sentConnections || 0) + (counts.receivedConnections || 0)) * 2
 
@@ -78,7 +78,7 @@ export async function GET() {
           select: {
             createdProjects: true,
             articles: true,
-            moduleProgress: { where: { completed: true } },
+            learningProgress: { where: { status: 'COMPLETED' } },
             followers: true,
             sentConnections: { where: { status: 'ACCEPTED' } },
             receivedConnections: { where: { status: 'ACCEPTED' } },
@@ -93,7 +93,7 @@ export async function GET() {
       const score =
         (c.createdProjects || 0) * 10 +
         (c.articles || 0) * 5 +
-        (c.moduleProgress || 0) * 3 +
+        (c.learningProgress || 0) * 3 +
         (c.followers || 0) * 1 +
         ((c.sentConnections || 0) + (c.receivedConnections || 0)) * 2
       return {
