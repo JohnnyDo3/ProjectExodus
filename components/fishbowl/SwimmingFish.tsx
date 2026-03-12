@@ -286,7 +286,7 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
   // Clamp to ±30 degrees for natural look; flip sign when facing left
   const pitchRaw = Math.atan2(pos.vy, Math.abs(stateRef.current?.vx ?? 1)) * (180 / Math.PI)
   const pitchDeg = Math.max(-30, Math.min(30, pitchRaw))
-  const flipSign = pos.direction === 'left' ? -1 : 1
+  const flipSign = pos.direction === 'right' ? -1 : 1
 
   return (
     <div
