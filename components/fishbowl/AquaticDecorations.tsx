@@ -223,6 +223,33 @@ export const BubbleStream = memo(({ x, count = 3 }: { x: number; count?: number 
 ))
 BubbleStream.displayName = 'BubbleStream'
 
+// ─── Aerator — continuous tiny bubbles from structure base ────────────
+// Simulates a fish-tank aerator: many tiny bubbles streaming upward
+
+export const Aerator = memo(({ x, y, spread = 20, count = 18 }: { x: number; y: number; spread?: number; count?: number }) => (
+  <g>
+    {Array.from({ length: count }, (_, i) => {
+      const cx = x + (Math.sin(i * 2.4) * spread * 0.5) + ((i % 3) - 1) * (spread * 0.15)
+      const delay = (i * 0.35) + (Math.sin(i * 1.7) * 0.4)
+      const dur = 3.2 + (i % 5) * 0.6
+      const r = 0.6 + (i % 4) * 0.25
+      return (
+        <circle
+          key={i}
+          cx={cx}
+          cy={y}
+          r={r}
+          fill="rgba(255, 255, 255, 0.35)"
+          stroke="rgba(255, 255, 255, 0.15)"
+          strokeWidth="0.3"
+          style={{ animation: `aeratorBubble ${dur}s ease-out ${delay}s infinite` }}
+        />
+      )
+    })}
+  </g>
+))
+Aerator.displayName = 'Aerator'
+
 
 // ═══════════════════════════════════════════════════════════════════════
 // THEME STRUCTURES — Large, detailed centerpiece decorations
@@ -2007,6 +2034,8 @@ function renderStructure(s: { type: string; x: number; y: number }) {
       {/* Ground shadow beneath structure */}
       {showGroundShadow && <ellipse cx="40" cy="62" rx="42" ry="5" fill="#000" opacity="0.1" />}
       {inner}
+      {/* Aerator — tiny bubbles streaming from structure */}
+      <Aerator x={40} y={10} spread={24} count={20} />
       {/* Scattered pebbles and sand disturbance at base */}
       <rect x="-8" y="58" width="4" height="3" fill="#78716C" opacity="0.3" />
       <rect x="-4" y="62" width="3" height="2" fill="#6B7280" opacity="0.25" />

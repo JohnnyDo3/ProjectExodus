@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { Fish, Users, Info, Sparkles, Palette, Shell, Anchor, TreePalm, Castle, Pyramid, Landmark, Waves, Sailboat, Ship } from 'lucide-react'
+import { Fish, Users, Info, Sparkles, Palette, Shell, Anchor, TreePalm, Castle, Pyramid, Landmark, Waves, Sailboat, Ship, UserPlus, Plus, Minus } from 'lucide-react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
@@ -53,6 +53,14 @@ export default function PersonalFishbowlPage() {
   const [showCustomizer, setShowCustomizer] = useState(false)
   const [activeDecor, setActiveDecor] = useState<string>('ocean')
   const [showDecorPanel, setShowDecorPanel] = useState(false)
+  const [showFriendPanel, setShowFriendPanel] = useState(false)
+  const [tankFriendIds, setTankFriendIds] = useState<Set<string>>(() => {
+    if (typeof window === 'undefined') return new Set()
+    try {
+      const saved = localStorage.getItem('personal-tank-friends')
+      return saved ? new Set(JSON.parse(saved)) : new Set()
+    } catch { return new Set() }
+  })
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -78,6 +86,20 @@ export default function PersonalFishbowlPage() {
     }
     fetchData()
   }, [status])
+
+  // Toggle a friend in/out of the tank
+  const toggleFriendInTank = useCallback((friendId: string) => {
+    setTankFriendIds(prev => {
+      const next = new Set(prev)
+      if (next.has(friendId)) {
+        next.delete(friendId)
+      } else {
+        next.add(friendId)
+      }
+      localStorage.setItem('personal-tank-friends', JSON.stringify([...next]))
+      return next
+    })
+  }, [])
 
   const handleSaveCustomization = useCallback(async (customization: FishCustomization) => {
     const res = await fetch('/api/fishbowl/personal/customize', {
@@ -109,8 +131,12 @@ export default function PersonalFishbowlPage() {
 
   if (!session || !data) return null
 
-  // Personal tank shows ONLY the user's own fish
-  const fishbowlUsers = data.user ? [data.user] : []
+  // Personal tank shows user's fish + selected friends' fish
+  // Only mutual follows (friends) can be added
+  const mutualFriends = data.connections?.filter(c => c.isMutual) || []
+  const fishbowlUsers = data.user
+    ? [data.user, ...mutualFriends.filter(c => tankFriendIds.has(c.id))]
+    : []
 
   const userTier = data.user ? getTierFromScore(data.user.stockScore) : 0
   const userTierName = data.user ? getTierName(userTier) : 'Guppy'
@@ -179,8 +205,21 @@ export default function PersonalFishbowlPage() {
               <button
                 onClick={() => setShowInfo(!showInfo)}
                 className="p-2 rounded-lg bg-cyan-900/30 border border-cyan-800/40 hover:border-cyan-600/60 transition-colors"
+                title="Fish species guide"
               >
                 <Info className="w-4 h-4 text-cyan-500" />
+              </button>
+              {/* Add friend fish toggle */}
+              <button
+                onClick={() => setShowFriendPanel(!showFriendPanel)}
+                className={`p-2 rounded-lg border transition-colors ${
+                  showFriendPanel
+                    ? 'bg-teal-600/30 border-teal-500/50 text-teal-300'
+                    : 'bg-cyan-900/30 border-cyan-800/40 text-cyan-500 hover:border-cyan-600/60'
+                }`}
+                title="Add friend's fish to tank"
+              >
+                <UserPlus className="w-4 h-4" />
               </button>
               {/* Community fishbowl link */}
               <Link
@@ -263,8 +302,59 @@ export default function PersonalFishbowlPage() {
                 })}
               </div>
               <p className="mt-2 text-[10px] text-cyan-600 text-center">
-                Each connection is a fish in your personal tank. Your stock score unlocks higher-tier species. Customize colors, scales, and patterns!
+                Your stock score unlocks higher-tier species. Customize colors, scales, and patterns!
               </p>
+            </div>
+          )}
+
+          {/* Friend fish panel - add mutual follows to tank */}
+          {showFriendPanel && (
+            <div className="mt-3 p-3 rounded-xl bg-[#0A1628]/80 border border-teal-800/30 animate-in slide-in-from-top duration-200">
+              <p className="text-[10px] text-teal-500 font-bold uppercase mb-2">
+                Add Friend&apos;s Fish to Tank
+              </p>
+              {mutualFriends.length > 0 ? (
+                <div className="max-h-[160px] overflow-y-auto space-y-1">
+                  {mutualFriends.map(friend => {
+                    const friendTier = getTierFromScore(friend.stockScore)
+                    const isInTank = tankFriendIds.has(friend.id)
+                    return (
+                      <div
+                        key={friend.id}
+                        className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-cyan-900/30 transition-colors"
+                      >
+                        <button
+                          onClick={() => toggleFriendInTank(friend.id)}
+                          className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center transition-all ${
+                            isInTank
+                              ? 'bg-teal-500/25 border border-teal-500/50 text-teal-400 hover:bg-red-500/20 hover:border-red-500/50 hover:text-red-400'
+                              : 'bg-cyan-900/30 border border-cyan-800/40 text-cyan-700 hover:bg-teal-500/20 hover:border-teal-500/40 hover:text-teal-400'
+                          }`}
+                          title={isInTank ? 'Remove from tank' : 'Add to tank'}
+                        >
+                          {isInTank ? <Minus className="w-3 h-3" /> : <Plus className="w-3 h-3" />}
+                        </button>
+                        <FishSVG tier={friendTier} size={18} id={`pf-page-${friend.id}`} />
+                        <span className="flex-1 text-xs font-medium text-cyan-200 truncate">
+                          {friend.name}
+                        </span>
+                        <span className="px-1.5 py-0.5 rounded-full text-[8px] font-black bg-teal-500/20 text-teal-400 border border-teal-500/30">
+                          MUTUAL
+                        </span>
+                        <span className="text-[9px] text-cyan-600 font-bold">
+                          {friend.stockScore} STOCK
+                        </span>
+                      </div>
+                    )
+                  })}
+                </div>
+              ) : (
+                <div className="text-center py-4">
+                  <Users className="w-6 h-6 text-cyan-700 mx-auto mb-2" />
+                  <p className="text-[10px] text-cyan-600">No mutual friends yet.</p>
+                  <p className="text-[9px] text-cyan-700 mt-1">Follow people who follow you back to add their fish!</p>
+                </div>
+              )}
             </div>
           )}
         </div>
