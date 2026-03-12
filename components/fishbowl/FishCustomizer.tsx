@@ -134,7 +134,7 @@ export function FishCustomizer({ stockScore, currentCustomization, onSave, onClo
           <div className="flex flex-col items-center gap-2">
             <div className="relative">
               <FishSVG
-                tier={userTier}
+                tier={previewTier as FishTier}
                 size={80}
                 customization={previewCustomization}
                 id="customizer-preview"

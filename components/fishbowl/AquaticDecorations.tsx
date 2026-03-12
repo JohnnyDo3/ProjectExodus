@@ -1519,10 +1519,10 @@ const OCEAN_LAYOUT: LayeredDecoConfig = {
       { x: 60, height: 60, variant: 'thin', color: '#43A047', delay: 0.9 },
       { x: 80, height: 50, variant: 'bushy', color: '#1B5E20', delay: 0.2 },
       { x: 110, height: 45, variant: 'wide', color: '#4CAF50', delay: 1.1 },
-      { x: 140, height: 65, variant: 'thin', color: '#2E7D32', delay: 0.6 },
-      { x: 360, height: 55, variant: 'bushy', color: '#1B5E20', delay: 0.3 },
-      { x: 420, height: 60, variant: 'wide', color: '#388E3C', delay: 0.8 },
-      { x: 470, height: 50, variant: 'thin', color: '#43A047', delay: 1.4 },
+      { x: 155, height: 65, variant: 'thin', color: '#2E7D32', delay: 0.6 },
+      { x: 380, height: 55, variant: 'bushy', color: '#1B5E20', delay: 0.3 },
+      { x: 430, height: 60, variant: 'wide', color: '#388E3C', delay: 0.8 },
+      { x: 480, height: 50, variant: 'thin', color: '#43A047', delay: 1.4 },
       { x: 700, height: 65, variant: 'bushy', color: '#2E7D32', delay: 0.5 },
       { x: 730, height: 55, variant: 'wide', color: '#1B5E20', delay: 1.0 },
       { x: 760, height: 48, variant: 'thin', color: '#4CAF50', delay: 1.6 },
@@ -1540,10 +1540,10 @@ const OCEAN_LAYOUT: LayeredDecoConfig = {
       { x: 680, y: 280, variant: 'small', color: '#78716C' },
     ],
     corals: [
-      { x: 130, y: 274, variant: 'branch', color: '#E91E63' },
+      { x: 80, y: 274, variant: 'branch', color: '#E91E63' },
       { x: 320, y: 278, variant: 'brain', color: '#AB47BC' },
-      { x: 420, y: 276, variant: 'fan', color: '#FF5722' },
-      { x: 580, y: 274, variant: 'branch', color: '#F06292' },
+      { x: 440, y: 276, variant: 'fan', color: '#FF5722' },
+      { x: 650, y: 274, variant: 'branch', color: '#F06292' },
     ],
     kelps: [
       { x: 10, height: 12, variant: 'thin', color: '#388E3C', delay: 0.2 },
@@ -1724,7 +1724,7 @@ const SUBMARINE_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'submarine', x: 260, y: 120 },
+      { type: 'submarine', x: 260, y: 134 },
     ],
   },
   foreground: {
@@ -1819,8 +1819,8 @@ const CASTLE_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'castle', x: 200, y: 92 },
-      { type: 'drawbridge', x: 560, y: 114 },
+      { type: 'castle', x: 200, y: 108 },
+      { type: 'drawbridge', x: 560, y: 126 },
     ],
   },
   foreground: {
@@ -1959,8 +1959,8 @@ const ATLANTIS_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'atlantean-dome', x: 100, y: 92 },
-      { type: 'atlantean-obelisk', x: 560, y: 92 },
+      { type: 'atlantean-dome', x: 100, y: 108 },
+      { type: 'atlantean-obelisk', x: 560, y: 106 },
     ],
   },
   foreground: {
@@ -2005,6 +2005,28 @@ const THEME_LAYOUTS: Record<string, LayeredDecoConfig> = {
 
 // ─── Structure renderer ──────────────────────────────────────────────
 
+// Aerator emission points per structure type — where the "smoke stack" of bubbles originates
+const AERATOR_POINTS: Record<string, { x: number; y: number; spread: number; count: number }> = {
+  'coral-arch': { x: 42, y: -8, spread: 16, count: 22 },       // top of arch
+  'sunken-temple': { x: 30, y: -2, spread: 14, count: 18 },    // lintel top
+  'volcano': { x: 35, y: -4, spread: 10, count: 26 },          // crater mouth
+  'dragon-stone': { x: 39, y: -4, spread: 14, count: 20 },     // arch peak
+  'submarine': { x: 49, y: -16, spread: 8, count: 22 },        // conning tower
+  'treasure': { x: 42, y: -10, spread: 18, count: 16 },        // chest top
+  'shipwreck': { x: 50, y: 2, spread: 12, count: 24 },         // mast base
+  'sailboat': { x: 34, y: -24, spread: 8, count: 20 },         // mast top
+  'cairn': { x: 19, y: 4, spread: 10, count: 16 },             // top stone
+  'bamboo': { x: 8, y: -10, spread: 6, count: 14 },            // bamboo tips
+  'castle': { x: 48, y: -28, spread: 10, count: 24 },          // tallest tower
+  'drawbridge': { x: 35, y: 0, spread: 12, count: 18 },        // gatehouse
+  'pyramid': { x: 60, y: -18, spread: 8, count: 26 },          // pyramid apex
+  'sphinx': { x: 10, y: 0, spread: 12, count: 18 },            // sphinx head
+  'torii': { x: 40, y: -14, spread: 14, count: 20 },           // top beam
+  'pagoda': { x: 30, y: -20, spread: 10, count: 22 },          // roof peak
+  'atlantean-dome': { x: 50, y: -24, spread: 12, count: 24 },  // dome apex
+  'atlantean-obelisk': { x: 20, y: -40, spread: 6, count: 22 },// obelisk tip
+}
+
 function renderStructure(s: { type: string; x: number; y: number }) {
   let inner: ReactNode
   let showGroundShadow = true
@@ -2029,13 +2051,17 @@ function renderStructure(s: { type: string; x: number; y: number }) {
     case 'atlantean-obelisk': inner = <AtlanteanObelisk x={0} y={0} />; break
     default: return null
   }
+
+  // Get structure-specific aerator emission point
+  const aerator = AERATOR_POINTS[s.type]
+
   return (
     <g key={`${s.type}-${s.x}`} transform={`translate(${s.x}, ${s.y}) scale(2)`}>
       {/* Ground shadow beneath structure */}
       {showGroundShadow && <ellipse cx="40" cy="62" rx="42" ry="5" fill="#000" opacity="0.1" />}
       {inner}
-      {/* Aerator — tiny bubbles streaming from structure */}
-      <Aerator x={40} y={10} spread={24} count={20} />
+      {/* Aerator — smoke stack of tiny bubbles from structure's solid mass */}
+      {aerator && <Aerator x={aerator.x} y={aerator.y} spread={aerator.spread} count={aerator.count} />}
       {/* Scattered pebbles and sand disturbance at base */}
       <rect x="-8" y="58" width="4" height="3" fill="#78716C" opacity="0.3" />
       <rect x="-4" y="62" width="3" height="2" fill="#6B7280" opacity="0.25" />
