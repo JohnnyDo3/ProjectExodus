@@ -38,7 +38,7 @@ export function CommunityFishbowl() {
 
   if (isLoading) {
     return (
-      <div className="relative h-screen bg-[#0A1628] flex items-center justify-center">
+      <div className="relative bg-[#0A1628] flex items-center justify-center" style={{ height: '100dvh' }}>
         <div className="text-center space-y-3">
           <div className="w-12 h-12 border-3 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto" />
           <p className="text-sm font-bold text-cyan-400">Loading community fishbowl...</p>
@@ -90,7 +90,7 @@ export function CommunityFishbowl() {
   return (
     <div className="relative">
       {/* Full-viewport fishbowl container */}
-      <div className="relative h-screen overflow-hidden">
+      <div className="relative overflow-hidden" style={{ height: '100dvh' }}>
 
         {/* === BLACK LID HEADER === */}
         <div className="absolute top-0 left-0 right-0 z-30 h-20 bg-black border-b-2 border-gray-800">

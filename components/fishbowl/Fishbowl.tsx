@@ -109,6 +109,16 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomi
     const el = containerRef.current
     if (!el) return
 
+    // Immediate measurement as fallback (handles cases where ResizeObserver is slow)
+    const measure = () => {
+      const rect = el.getBoundingClientRect()
+      if (rect.width > 0 && rect.height > 0) {
+        setDimensions({ width: rect.width, height: rect.height })
+        setContainerRect(rect)
+      }
+    }
+    measure()
+
     const observer = new ResizeObserver(entries => {
       const entry = entries[0]
       if (entry) {
@@ -121,9 +131,14 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomi
     })
 
     observer.observe(el)
-    setContainerRect(el.getBoundingClientRect())
 
-    return () => observer.disconnect()
+    // Retry measurement after a short delay for iPad/mobile where layout may settle late
+    const retryTimeout = setTimeout(measure, 100)
+
+    return () => {
+      observer.disconnect()
+      clearTimeout(retryTimeout)
+    }
   }, [])
 
   // Update container rect on scroll

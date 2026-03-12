@@ -50,9 +50,9 @@ export function MainLayoutWrapper({
     return (
       <>
         {skyBackground}
-        <div className="relative z-10 h-screen flex flex-col">
+        <div className="relative z-10 flex flex-col" style={{ height: '100dvh' }}>
           <Header />
-          <div className="flex-1 overflow-hidden">
+          <div className="flex-1 overflow-hidden min-h-0">
             {children}
           </div>
         </div>
@@ -66,9 +66,9 @@ export function MainLayoutWrapper({
     return (
       <>
         {skyBackground}
-        <div className="relative z-10 h-screen flex flex-col">
+        <div className="relative z-10 flex flex-col" style={{ height: '100dvh' }}>
           <Header />
-          <div className="flex-1 overflow-hidden">
+          <div className="flex-1 overflow-hidden min-h-0">
             {children}
           </div>
         </div>
@@ -82,9 +82,9 @@ export function MainLayoutWrapper({
     return (
       <>
         {skyBackground}
-        <div className="relative z-10 h-screen flex flex-col overflow-hidden">
+        <div className="relative z-10 flex flex-col overflow-hidden" style={{ height: '100dvh' }}>
           <Header />
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto min-h-0">
             {children}
           </div>
         </div>
@@ -93,14 +93,14 @@ export function MainLayoutWrapper({
     )
   }
 
-  // Full-screen pages (messages, notifications) - no footer, viewport height with internal scroll only
+  // Full-screen pages (messages, notifications, fishbowl) - no footer, viewport height with internal scroll only
   if (isFullScreenPage) {
     return (
       <>
         {skyBackground}
-        <div className="relative z-10 h-screen flex flex-col">
+        <div className="relative z-10 flex flex-col" style={{ height: '100dvh' }}>
           <Header />
-          <div className="flex-1 overflow-hidden">
+          <div className="flex-1 overflow-hidden min-h-0">
             {children}
           </div>
         </div>
