@@ -7,7 +7,6 @@ import { PlecoPair, SnailGroup } from './TankCreatures'
 import { AlgaeOverlay } from './AlgaeSystem'
 import { FishOverlay } from './FishOverlay'
 import { WaterEffects } from './WaterEffects'
-import { AmbientSounds } from './AmbientSounds'
 import { getTierFromScore, type FishCustomization } from './FishSpecies'
 
 interface FishbowlProps {
@@ -36,7 +35,6 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomi
   const [overlayPos, setOverlayPos] = useState<{ x: number; y: number } | null>(null)
   const [containerRect, setContainerRect] = useState<DOMRect | null>(null)
   const [visibleFishIds, setVisibleFishIds] = useState<Set<string>>(new Set())
-  const [soundEnabled, setSoundEnabled] = useState(false)
 
   // Convert users to fish data
   const allFish: FishData[] = useMemo(() =>
@@ -232,28 +230,6 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomi
         />
       )}
 
-      {/* Sound toggle */}
-      <button
-        onClick={() => setSoundEnabled(prev => !prev)}
-        className="absolute bottom-3 right-3 z-30 p-2 rounded-lg bg-[#0A1628]/70 backdrop-blur-sm border border-cyan-800/40 hover:border-cyan-600/60 transition-colors"
-        title={soundEnabled ? 'Mute sounds' : 'Enable sounds'}
-      >
-        {soundEnabled ? (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-cyan-400">
-            <path d="M11 5L6 9H2v6h4l5 4V5z" />
-            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
-          </svg>
-        ) : (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-cyan-600">
-            <path d="M11 5L6 9H2v6h4l5 4V5z" />
-            <line x1="23" y1="9" x2="17" y2="15" />
-            <line x1="17" y1="9" x2="23" y2="15" />
-          </svg>
-        )}
-      </button>
-
-      {/* Ambient sounds */}
-      <AmbientSounds enabled={soundEnabled} />
 
     </div>
   )

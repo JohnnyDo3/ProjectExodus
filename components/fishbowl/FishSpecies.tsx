@@ -314,26 +314,26 @@ const BODY_CLIPS: Record<FishTier, string> = {
   5: 'M16 35 Q16 18 30 14 Q46 10 56 35 Q46 56 30 52 Q16 48 16 35 Z',                     // Betta body
 }
 
-// Scale pattern generator — produces rows of overlapping arc shapes
-// that look like real fish scales when rendered on the body
+// Scale pattern generator — produces columns of overlapping arc shapes
+// that tile horizontally across the fish body (head to tail)
 const ScalePattern = memo(({ id, viewBox, scaleSize, opacity }: {
   id: string; viewBox: string; scaleSize: number; opacity: number
 }) => {
   const [, , w, h] = viewBox.split(' ').map(Number)
-  const cols = Math.ceil(w / scaleSize) + 1
-  const rows = Math.ceil(h / (scaleSize * 0.7)) + 1
+  const cols = Math.ceil(w / (scaleSize * 0.7)) + 1
+  const rows = Math.ceil(h / scaleSize) + 1
 
   return (
     <g opacity={opacity}>
-      {Array.from({ length: rows }, (_, row) =>
-        Array.from({ length: cols }, (_, col) => {
-          const x = col * scaleSize + (row % 2 ? scaleSize * 0.5 : 0)
-          const y = row * scaleSize * 0.7
+      {Array.from({ length: cols }, (_, col) =>
+        Array.from({ length: rows }, (_, row) => {
+          const x = col * scaleSize * 0.7
+          const y = row * scaleSize + (col % 2 ? scaleSize * 0.5 : 0)
           const r = scaleSize * 0.55
           return (
             <path
-              key={`${row}-${col}`}
-              d={`M${x - r},${y} A${r},${r * 0.9} 0 0,1 ${x + r},${y}`}
+              key={`${col}-${row}`}
+              d={`M${x},${y - r} A${r * 0.9},${r} 0 0,1 ${x},${y + r}`}
               stroke="white"
               strokeWidth={scaleSize * 0.08}
               fill="none"
@@ -371,17 +371,17 @@ const PatternOverlay = memo(({ pattern, id, viewBox, tier }: {
           <g opacity={0.2}>
             {(() => {
               const sz = w * 0.12
-              const cols = Math.ceil(w / sz) + 1
-              const rows = Math.ceil(h / (sz * 0.7)) + 1
-              return Array.from({ length: rows }, (_, row) =>
-                Array.from({ length: cols }, (_, col) => {
-                  const x = col * sz + (row % 2 ? sz * 0.5 : 0)
-                  const y = row * sz * 0.7
+              const cols = Math.ceil(w / (sz * 0.7)) + 1
+              const rows = Math.ceil(h / sz) + 1
+              return Array.from({ length: cols }, (_, col) =>
+                Array.from({ length: rows }, (_, row) => {
+                  const x = col * sz * 0.7
+                  const y = row * sz + (col % 2 ? sz * 0.5 : 0)
                   const r = sz * 0.55
                   return (
                     <path
-                      key={`${row}-${col}`}
-                      d={`M${x - r},${y} A${r},${r * 0.85} 0 0,1 ${x + r},${y}`}
+                      key={`${col}-${row}`}
+                      d={`M${x},${y - r} A${r * 0.85},${r} 0 0,1 ${x},${y + r}`}
                       stroke="white"
                       strokeWidth={sz * 0.12}
                       fill="white"
