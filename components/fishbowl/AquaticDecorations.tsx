@@ -942,34 +942,44 @@ StoneCairn.displayName = 'StoneCairn'
 // ─── MINIMAL: Bamboo Grove ───────────────────────────────────────────
 
 const BambooGrove = memo(({ x, y }: { x: number; y: number }) => (
-  <g transform={`translate(${x}, ${y})`} style={{ animation: 'kelpSway 6s ease-in-out 0s infinite', transformOrigin: '20px 100%' }}>
-    {/* Stalk 1 - tall */}
+  <g transform={`translate(${x}, ${y})`}>
+    {/* Stalk 1 - tall (rigid) */}
     <rect x="6" y="-10" width="4" height="70" fill="#558B2F" />
     <rect x="6" y="0" width="4" height="2" fill="#689F38" opacity="0.6" />
     <rect x="6" y="16" width="4" height="2" fill="#689F38" opacity="0.6" />
     <rect x="6" y="32" width="4" height="2" fill="#689F38" opacity="0.6" />
     <rect x="6" y="48" width="4" height="2" fill="#689F38" opacity="0.6" />
-    {/* Leaves */}
-    <ellipse cx="0" cy="-8" rx="8" ry="2.5" fill="#7CB342" opacity="0.7" />
-    <ellipse cx="14" cy="-6" rx="7" ry="2" fill="#8BC34A" opacity="0.6" />
+    {/* Leaves — sway from stalk attachment */}
+    <g style={{ animation: 'kelpSway 5s ease-in-out 0s infinite', transformOrigin: '8px -8px' }}>
+      <ellipse cx="0" cy="-8" rx="8" ry="2.5" fill="#7CB342" opacity="0.7" />
+    </g>
+    <g style={{ animation: 'kelpSway 4.5s ease-in-out 0.6s infinite', transformOrigin: '8px -6px' }}>
+      <ellipse cx="14" cy="-6" rx="7" ry="2" fill="#8BC34A" opacity="0.6" />
+    </g>
 
-    {/* Stalk 2 - medium */}
+    {/* Stalk 2 - medium (rigid) */}
     <rect x="16" y="4" width="4" height="56" fill="#689F38" />
     <rect x="16" y="12" width="4" height="2" fill="#7CB342" opacity="0.6" />
     <rect x="16" y="28" width="4" height="2" fill="#7CB342" opacity="0.6" />
     <rect x="16" y="44" width="4" height="2" fill="#7CB342" opacity="0.6" />
-    {/* Leaves */}
-    <ellipse cx="24" cy="6" rx="7" ry="2" fill="#8BC34A" opacity="0.65" />
-    <ellipse cx="10" cy="8" rx="6" ry="2" fill="#7CB342" opacity="0.55" />
+    {/* Leaves — sway from stalk attachment */}
+    <g style={{ animation: 'kelpSway 5.5s ease-in-out 0.3s infinite', transformOrigin: '18px 6px' }}>
+      <ellipse cx="24" cy="6" rx="7" ry="2" fill="#8BC34A" opacity="0.65" />
+    </g>
+    <g style={{ animation: 'kelpSway 4s ease-in-out 0.9s infinite', transformOrigin: '18px 8px' }}>
+      <ellipse cx="10" cy="8" rx="6" ry="2" fill="#7CB342" opacity="0.55" />
+    </g>
 
-    {/* Stalk 3 - short */}
+    {/* Stalk 3 - short (rigid) */}
     <rect x="26" y="16" width="3" height="44" fill="#558B2F" />
     <rect x="26" y="24" width="3" height="2" fill="#689F38" opacity="0.6" />
     <rect x="26" y="40" width="3" height="2" fill="#689F38" opacity="0.6" />
-    {/* Leaf */}
-    <ellipse cx="34" cy="18" rx="6" ry="2" fill="#7CB342" opacity="0.6" />
+    {/* Leaf — sway from stalk attachment */}
+    <g style={{ animation: 'kelpSway 4.5s ease-in-out 0.5s infinite', transformOrigin: '27px 18px' }}>
+      <ellipse cx="34" cy="18" rx="6" ry="2" fill="#7CB342" opacity="0.6" />
+    </g>
 
-    {/* Stalk 4 - background, thinner */}
+    {/* Stalk 4 - background, thinner (rigid) */}
     <rect x="12" y="10" width="3" height="50" fill="#4CAF50" opacity="0.5" />
     <rect x="22" y="20" width="3" height="40" fill="#4CAF50" opacity="0.4" />
   </g>
@@ -1545,7 +1555,7 @@ const TROPICAL_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'volcano', x: 160, y: 106 },
+      { type: 'volcano', x: 160, y: 114 },
       { type: 'dragon-stone', x: 480, y: 102 },
     ],
   },
@@ -1687,7 +1697,7 @@ const SUBMARINE_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'submarine', x: 260, y: 112 },
+      { type: 'submarine', x: 260, y: 120 },
     ],
   },
   foreground: {
@@ -1782,7 +1792,7 @@ const CASTLE_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'castle', x: 200, y: 80 },
+      { type: 'castle', x: 200, y: 92 },
       { type: 'drawbridge', x: 560, y: 114 },
     ],
   },
@@ -1828,8 +1838,8 @@ const PYRAMID_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'pyramid', x: 80, y: 80 },
-      { type: 'sphinx', x: 520, y: 112 },
+      { type: 'pyramid', x: 80, y: 90 },
+      { type: 'sphinx', x: 520, y: 118 },
     ],
   },
   foreground: {
@@ -1875,7 +1885,7 @@ const TEMPLE_LAYOUT: LayeredDecoConfig = {
   midground: {
     structures: [
       { type: 'torii', x: 120, y: 106 },
-      { type: 'pagoda', x: 480, y: 96 },
+      { type: 'pagoda', x: 480, y: 100 },
     ],
   },
   foreground: {
@@ -1922,7 +1932,7 @@ const ATLANTIS_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'atlantean-dome', x: 100, y: 80 },
+      { type: 'atlantean-dome', x: 100, y: 92 },
       { type: 'atlantean-obelisk', x: 560, y: 92 },
     ],
   },
@@ -1970,6 +1980,7 @@ const THEME_LAYOUTS: Record<string, LayeredDecoConfig> = {
 
 function renderStructure(s: { type: string; x: number; y: number }) {
   let inner: ReactNode
+  let showGroundShadow = true
   switch (s.type) {
     case 'coral-arch': inner = <CoralReefArch x={0} y={0} />; break
     case 'sunken-temple': inner = <SunkenTemple x={0} y={0} />; break
@@ -1978,7 +1989,7 @@ function renderStructure(s: { type: string; x: number; y: number }) {
     case 'submarine': inner = <SunkenSubmarine x={0} y={0} />; break
     case 'treasure': inner = <TreasureCluster x={0} y={0} />; break
     case 'shipwreck': inner = <SunkenShip x={0} y={0} />; break
-    case 'sailboat': inner = <SunkenSailboat x={0} y={0} />; break
+    case 'sailboat': inner = <SunkenSailboat x={0} y={0} />; showGroundShadow = false; break
     case 'cairn': inner = <StoneCairn x={0} y={0} />; break
     case 'bamboo': inner = <BambooGrove x={0} y={0} />; break
     case 'castle': inner = <SunkenCastle x={0} y={0} />; break
@@ -1994,7 +2005,7 @@ function renderStructure(s: { type: string; x: number; y: number }) {
   return (
     <g key={`${s.type}-${s.x}`} transform={`translate(${s.x}, ${s.y}) scale(2)`}>
       {/* Ground shadow beneath structure */}
-      <ellipse cx="40" cy="62" rx="42" ry="5" fill="#000" opacity="0.1" />
+      {showGroundShadow && <ellipse cx="40" cy="62" rx="42" ry="5" fill="#000" opacity="0.1" />}
       {inner}
       {/* Scattered pebbles and sand disturbance at base */}
       <rect x="-8" y="58" width="4" height="3" fill="#78716C" opacity="0.3" />
