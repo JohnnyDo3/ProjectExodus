@@ -27,6 +27,7 @@ interface SwimmingFishState {
   speedMultiplier: number // varies over time for natural speed changes
   speedPhase: number // phase for speed oscillation
   schoolingAngle: number // slight angle when near other fish
+  smoothPitch: number // smoothly interpolated pitch for natural swimming
 }
 
 interface SwimmingFishProps {
@@ -100,6 +101,7 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
         speedMultiplier: 1,
         speedPhase: Math.random() * Math.PI * 2,
         schoolingAngle: 0,
+        smoothPitch: 0,
       }
     } else {
       stateRef.current = {
@@ -115,6 +117,7 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
         speedMultiplier: 1,
         speedPhase: Math.random() * Math.PI * 2,
         schoolingAngle: 0,
+        smoothPitch: 0,
       }
     }
 
@@ -246,6 +249,11 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
 
         // Update shared position registry for self-awareness
         posRegistry.set(fish.id, { x: s.x, y: s.y, vx: s.vx, size: fishSize })
+
+        // Smoothly interpolate pitch toward actual movement direction
+        const targetPitch = Math.atan2(s.vy, Math.abs(s.vx)) * (180 / Math.PI)
+        s.smoothPitch += (targetPitch - s.smoothPitch) * 0.015 * dt
+        s.smoothPitch = Math.max(-12, Math.min(12, s.smoothPitch))
       }
 
       setPos({ x: s.x, y: s.y, direction: s.direction, phase: s.phase, vy: s.vy })
@@ -277,15 +285,13 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
     }
   }, [fish, onClick])
 
-  // Tail wag animation — faster wag when swimming faster
-  const speedFactor = stateRef.current?.speedMultiplier ?? 1
-  const wagAmount = Math.sin(pos.phase * 2) * (3 + speedFactor * 2)
-  // Subtle bob for liveliness
-  const bobAmount = Math.sin(pos.phase * 1.3) * 1.5
-  // Pitch angle — head points in direction of vertical movement
-  // Clamp to ±30 degrees for natural look; flip sign when facing left
-  const pitchRaw = Math.atan2(pos.vy, Math.abs(stateRef.current?.vx ?? 1)) * (180 / Math.PI)
-  const pitchDeg = Math.max(-30, Math.min(30, pitchRaw))
+  // Smooth, majestic swimming motion — gentle undulation and bob
+  // Very gentle vertical bob (slow period, small amplitude)
+  const bobAmount = Math.sin(pos.phase * 0.35) * 0.8
+  // Subtle body undulation — slow, graceful wave motion
+  const undulation = Math.sin(pos.phase * 0.5) * 1.0
+  // Use smoothly interpolated pitch from animation loop
+  const pitchDeg = stateRef.current?.smoothPitch ?? 0
   const flipSign = pos.direction === 'right' ? -1 : 1
 
   return (
@@ -295,7 +301,7 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
       style={{
         left: `${pos.x}px`,
         top: `${pos.y + bobAmount}px`,
-        transform: `scaleX(${pos.direction === 'left' ? 1 : -1}) rotate(${pitchDeg * flipSign + wagAmount}deg)`,
+        transform: `scaleX(${pos.direction === 'left' ? 1 : -1}) rotate(${pitchDeg * flipSign + undulation}deg)`,
         zIndex: 10 + Math.floor(pos.y / 10),
         filter: isHovered.current
           ? `brightness(1.3) drop-shadow(0 0 12px rgba(34,211,238,0.6)) drop-shadow(0 0 4px rgba(255,255,255,0.3))`

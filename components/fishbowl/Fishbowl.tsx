@@ -15,6 +15,7 @@ interface FishbowlProps {
     name: string | null
     stockScore: number
     image: string | null
+    fishCustomization?: FishCustomization | null
   }>
   maxVisible?: number
   ownerCustomization?: FishCustomization | null
@@ -47,7 +48,7 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomi
         stockScore: u.stockScore,
         image: u.image,
         tier: getTierFromScore(u.stockScore),
-        customization: u.id === ownerId ? ownerCustomization : undefined,
+        customization: u.id === ownerId && ownerCustomization ? ownerCustomization : (u.fishCustomization as FishCustomization | undefined) || undefined,
       })),
     [users, ownerId, ownerCustomization]
   )

@@ -1611,18 +1611,42 @@ interface LayeredDecoConfig {
 const OCEAN_LAYOUT: LayeredDecoConfig = {
   background: {
     kelps: [
-      { x: 5, height: 70, variant: 'bushy', color: '#2E7D32', delay: 0 },
-      { x: 30, height: 55, variant: 'wide', color: '#388E3C', delay: 0.4 },
-      { x: 60, height: 60, variant: 'thin', color: '#43A047', delay: 0.9 },
-      { x: 80, height: 50, variant: 'bushy', color: '#1B5E20', delay: 0.2 },
-      { x: 110, height: 45, variant: 'wide', color: '#4CAF50', delay: 1.1 },
-      { x: 155, height: 65, variant: 'thin', color: '#2E7D32', delay: 0.6 },
-      { x: 380, height: 55, variant: 'bushy', color: '#1B5E20', delay: 0.3 },
-      { x: 430, height: 60, variant: 'wide', color: '#388E3C', delay: 0.8 },
-      { x: 480, height: 50, variant: 'thin', color: '#43A047', delay: 1.4 },
-      { x: 700, height: 65, variant: 'bushy', color: '#2E7D32', delay: 0.5 },
-      { x: 730, height: 55, variant: 'wide', color: '#1B5E20', delay: 1.0 },
-      { x: 760, height: 48, variant: 'thin', color: '#4CAF50', delay: 1.6 },
+      // Left bushy cluster
+      { x: 5, height: 175, variant: 'bushy', color: '#2E7D32', delay: 0 },
+      { x: 18, height: 155, variant: 'bushy', color: '#1B5E20', delay: 0.3 },
+      { x: 32, height: 165, variant: 'bushy', color: '#2E7D32', delay: 0.7 },
+      { x: 45, height: 140, variant: 'bushy', color: '#1B5E20', delay: 0.2 },
+      // Left-center wide cluster
+      { x: 65, height: 160, variant: 'wide', color: '#388E3C', delay: 0.4 },
+      { x: 80, height: 145, variant: 'wide', color: '#4CAF50', delay: 0.9 },
+      { x: 95, height: 155, variant: 'wide', color: '#388E3C', delay: 0.6 },
+      // Thin grass blades transition
+      { x: 115, height: 170, variant: 'thin', color: '#43A047', delay: 1.1 },
+      { x: 125, height: 150, variant: 'thin', color: '#2E7D32', delay: 0.5 },
+      { x: 135, height: 160, variant: 'thin', color: '#43A047', delay: 0.8 },
+      { x: 148, height: 140, variant: 'thin', color: '#4CAF50', delay: 1.3 },
+      // Mid-left bushy patch
+      { x: 370, height: 165, variant: 'bushy', color: '#1B5E20', delay: 0.3 },
+      { x: 385, height: 150, variant: 'bushy', color: '#2E7D32', delay: 0.8 },
+      { x: 400, height: 170, variant: 'bushy', color: '#1B5E20', delay: 0.5 },
+      // Mid wide cluster
+      { x: 420, height: 155, variant: 'wide', color: '#388E3C', delay: 0.4 },
+      { x: 435, height: 140, variant: 'wide', color: '#4CAF50', delay: 1.0 },
+      { x: 450, height: 150, variant: 'wide', color: '#388E3C', delay: 0.7 },
+      // Mid thin grass
+      { x: 470, height: 160, variant: 'thin', color: '#43A047', delay: 1.4 },
+      { x: 480, height: 145, variant: 'thin', color: '#2E7D32', delay: 0.6 },
+      // Right bushy cluster
+      { x: 690, height: 175, variant: 'bushy', color: '#2E7D32', delay: 0.5 },
+      { x: 705, height: 155, variant: 'bushy', color: '#1B5E20', delay: 1.0 },
+      { x: 718, height: 165, variant: 'bushy', color: '#2E7D32', delay: 0.3 },
+      // Right wide cluster
+      { x: 738, height: 150, variant: 'wide', color: '#388E3C', delay: 0.8 },
+      { x: 752, height: 140, variant: 'wide', color: '#4CAF50', delay: 1.2 },
+      // Right thin grass
+      { x: 770, height: 160, variant: 'thin', color: '#43A047', delay: 1.6 },
+      { x: 782, height: 145, variant: 'thin', color: '#2E7D32', delay: 0.4 },
+      { x: 793, height: 155, variant: 'thin', color: '#4CAF50', delay: 0.9 },
     ],
   },
   midground: {
@@ -1663,18 +1687,34 @@ const TROPICAL_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#D4A43A', lighter: '#E8C468', detail: '#B8862D' },
   background: {
     kelps: [
-      { x: 5, height: 70, variant: 'bushy', color: '#00C853', delay: 0 },
-      { x: 30, height: 55, variant: 'wide', color: '#00E676', delay: 0.5 },
-      { x: 55, height: 60, variant: 'thin', color: '#76FF03', delay: 0.9 },
-      { x: 80, height: 50, variant: 'bushy', color: '#00BFA5', delay: 0.3 },
-      { x: 110, height: 45, variant: 'wide', color: '#00E676', delay: 1.2 },
-      { x: 140, height: 65, variant: 'thin', color: '#64DD17', delay: 0.7 },
-      { x: 660, height: 55, variant: 'bushy', color: '#00C853', delay: 0.4 },
-      { x: 690, height: 60, variant: 'wide', color: '#76FF03', delay: 0.8 },
-      { x: 720, height: 50, variant: 'thin', color: '#00E676', delay: 1.5 },
-      { x: 750, height: 65, variant: 'bushy', color: '#00BFA5', delay: 0.2 },
-      { x: 775, height: 48, variant: 'wide', color: '#64DD17', delay: 1.1 },
-      { x: 795, height: 55, variant: 'thin', color: '#00C853', delay: 0.6 },
+      // Left bushy cluster
+      { x: 5, height: 180, variant: 'bushy', color: '#00C853', delay: 0 },
+      { x: 18, height: 160, variant: 'bushy', color: '#00BFA5', delay: 0.4 },
+      { x: 32, height: 170, variant: 'bushy', color: '#00C853', delay: 0.8 },
+      { x: 45, height: 145, variant: 'bushy', color: '#00BFA5', delay: 0.2 },
+      // Left wide cluster
+      { x: 65, height: 165, variant: 'wide', color: '#00E676', delay: 0.5 },
+      { x: 78, height: 150, variant: 'wide', color: '#00E676', delay: 1.0 },
+      { x: 92, height: 155, variant: 'wide', color: '#64DD17', delay: 0.7 },
+      // Left thin grass
+      { x: 110, height: 175, variant: 'thin', color: '#76FF03', delay: 0.9 },
+      { x: 120, height: 155, variant: 'thin', color: '#64DD17', delay: 0.3 },
+      { x: 130, height: 165, variant: 'thin', color: '#76FF03', delay: 1.2 },
+      { x: 142, height: 145, variant: 'thin', color: '#00E676', delay: 0.6 },
+      // Right bushy cluster
+      { x: 650, height: 170, variant: 'bushy', color: '#00C853', delay: 0.4 },
+      { x: 663, height: 155, variant: 'bushy', color: '#00BFA5', delay: 0.9 },
+      { x: 676, height: 165, variant: 'bushy', color: '#00C853', delay: 0.2 },
+      { x: 690, height: 145, variant: 'bushy', color: '#00BFA5', delay: 0.7 },
+      // Right wide cluster
+      { x: 710, height: 160, variant: 'wide', color: '#76FF03', delay: 0.8 },
+      { x: 723, height: 145, variant: 'wide', color: '#00E676', delay: 1.3 },
+      { x: 736, height: 155, variant: 'wide', color: '#64DD17', delay: 0.5 },
+      // Right thin grass
+      { x: 755, height: 170, variant: 'thin', color: '#76FF03', delay: 1.1 },
+      { x: 767, height: 150, variant: 'thin', color: '#00E676', delay: 0.3 },
+      { x: 778, height: 160, variant: 'thin', color: '#64DD17', delay: 0.6 },
+      { x: 790, height: 145, variant: 'thin', color: '#00C853', delay: 1.5 },
     ],
   },
   midground: {
@@ -1715,15 +1755,38 @@ const SHIPWRECK_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#8B7355', lighter: '#A08B6C', detail: '#6B5B45' },
   background: {
     kelps: [
-      { x: 5, height: 55, variant: 'wide', color: '#2E7D32', delay: 0 },
-      { x: 25, height: 50, variant: 'bushy', color: '#33691E', delay: 0.4 },
-      { x: 220, height: 45, variant: 'thin', color: '#558B2F', delay: 0.9 },
-      { x: 280, height: 50, variant: 'bushy', color: '#1B5E20', delay: 0.3 },
-      { x: 370, height: 50, variant: 'bushy', color: '#2E7D32', delay: 0.5 },
-      { x: 400, height: 45, variant: 'wide', color: '#33691E', delay: 1.1 },
-      { x: 430, height: 55, variant: 'thin', color: '#1B5E20', delay: 0.7 },
-      { x: 540, height: 55, variant: 'bushy', color: '#2E7D32', delay: 1.5 },
-      { x: 600, height: 50, variant: 'wide', color: '#558B2F', delay: 1.8 },
+      // Left wide cluster
+      { x: 5, height: 165, variant: 'wide', color: '#2E7D32', delay: 0 },
+      { x: 18, height: 145, variant: 'wide', color: '#33691E', delay: 0.5 },
+      { x: 32, height: 155, variant: 'wide', color: '#2E7D32', delay: 0.2 },
+      // Left bushy cluster
+      { x: 50, height: 170, variant: 'bushy', color: '#33691E', delay: 0.4 },
+      { x: 63, height: 150, variant: 'bushy', color: '#1B5E20', delay: 0.9 },
+      { x: 76, height: 160, variant: 'bushy', color: '#33691E', delay: 0.6 },
+      // Scattered thin near wreck
+      { x: 210, height: 155, variant: 'thin', color: '#558B2F', delay: 0.9 },
+      { x: 222, height: 140, variant: 'thin', color: '#2E7D32', delay: 0.3 },
+      { x: 234, height: 150, variant: 'thin', color: '#558B2F', delay: 0.7 },
+      // Mid bushy cluster
+      { x: 270, height: 165, variant: 'bushy', color: '#1B5E20', delay: 0.3 },
+      { x: 283, height: 150, variant: 'bushy', color: '#2E7D32', delay: 0.8 },
+      // Mid bushy cluster 2
+      { x: 360, height: 160, variant: 'bushy', color: '#2E7D32', delay: 0.5 },
+      { x: 373, height: 145, variant: 'bushy', color: '#1B5E20', delay: 1.0 },
+      { x: 386, height: 155, variant: 'bushy', color: '#2E7D32', delay: 0.3 },
+      // Mid wide cluster
+      { x: 400, height: 150, variant: 'wide', color: '#33691E', delay: 1.1 },
+      { x: 413, height: 140, variant: 'wide', color: '#558B2F', delay: 0.6 },
+      // Thin near treasure
+      { x: 430, height: 165, variant: 'thin', color: '#1B5E20', delay: 0.7 },
+      { x: 440, height: 148, variant: 'thin', color: '#2E7D32', delay: 1.3 },
+      // Right bushy cluster
+      { x: 530, height: 170, variant: 'bushy', color: '#2E7D32', delay: 1.5 },
+      { x: 543, height: 150, variant: 'bushy', color: '#33691E', delay: 0.4 },
+      { x: 556, height: 160, variant: 'bushy', color: '#1B5E20', delay: 0.9 },
+      // Right wide
+      { x: 590, height: 155, variant: 'wide', color: '#558B2F', delay: 1.8 },
+      { x: 603, height: 145, variant: 'wide', color: '#2E7D32', delay: 0.2 },
     ],
   },
   midground: {
@@ -1760,18 +1823,35 @@ const SAILBOAT_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#C4A862', lighter: '#D4B872', detail: '#B89B52' },
   background: {
     kelps: [
-      { x: 5, height: 60, variant: 'bushy', color: '#2E7D32', delay: 0 },
-      { x: 30, height: 55, variant: 'wide', color: '#388E3C', delay: 0.4 },
-      { x: 55, height: 50, variant: 'thin', color: '#43A047', delay: 0.8 },
-      { x: 80, height: 45, variant: 'bushy', color: '#1B5E20', delay: 1.2 },
-      { x: 110, height: 55, variant: 'wide', color: '#4CAF50', delay: 0.6 },
-      { x: 140, height: 50, variant: 'thin', color: '#2E7D32', delay: 1.5 },
-      { x: 620, height: 60, variant: 'bushy', color: '#2E7D32', delay: 0.3 },
-      { x: 650, height: 55, variant: 'wide', color: '#388E3C', delay: 0.9 },
-      { x: 680, height: 50, variant: 'thin', color: '#43A047', delay: 1.3 },
-      { x: 720, height: 55, variant: 'bushy', color: '#1B5E20', delay: 0.7 },
-      { x: 750, height: 50, variant: 'wide', color: '#4CAF50', delay: 1.0 },
-      { x: 780, height: 45, variant: 'thin', color: '#2E7D32', delay: 1.7 },
+      // Left bushy cluster
+      { x: 5, height: 170, variant: 'bushy', color: '#2E7D32', delay: 0 },
+      { x: 18, height: 155, variant: 'bushy', color: '#1B5E20', delay: 0.5 },
+      { x: 32, height: 165, variant: 'bushy', color: '#2E7D32', delay: 0.2 },
+      { x: 45, height: 140, variant: 'bushy', color: '#1B5E20', delay: 0.8 },
+      // Left wide cluster
+      { x: 65, height: 160, variant: 'wide', color: '#388E3C', delay: 0.4 },
+      { x: 78, height: 145, variant: 'wide', color: '#4CAF50', delay: 1.0 },
+      { x: 92, height: 150, variant: 'wide', color: '#388E3C', delay: 0.6 },
+      // Left thin grass
+      { x: 112, height: 165, variant: 'thin', color: '#43A047', delay: 0.8 },
+      { x: 122, height: 148, variant: 'thin', color: '#2E7D32', delay: 1.3 },
+      { x: 132, height: 155, variant: 'thin', color: '#4CAF50', delay: 0.3 },
+      { x: 142, height: 140, variant: 'thin', color: '#43A047', delay: 1.5 },
+      // Right bushy cluster
+      { x: 610, height: 175, variant: 'bushy', color: '#2E7D32', delay: 0.3 },
+      { x: 623, height: 155, variant: 'bushy', color: '#1B5E20', delay: 0.7 },
+      { x: 636, height: 165, variant: 'bushy', color: '#2E7D32', delay: 1.1 },
+      { x: 650, height: 145, variant: 'bushy', color: '#1B5E20', delay: 0.4 },
+      // Right wide cluster
+      { x: 670, height: 160, variant: 'wide', color: '#388E3C', delay: 0.9 },
+      { x: 683, height: 148, variant: 'wide', color: '#4CAF50', delay: 0.2 },
+      { x: 696, height: 155, variant: 'wide', color: '#388E3C', delay: 1.4 },
+      // Right thin grass
+      { x: 720, height: 165, variant: 'thin', color: '#43A047', delay: 0.7 },
+      { x: 732, height: 150, variant: 'thin', color: '#2E7D32', delay: 1.0 },
+      { x: 744, height: 155, variant: 'thin', color: '#4CAF50', delay: 0.5 },
+      { x: 758, height: 140, variant: 'thin', color: '#43A047', delay: 1.7 },
+      { x: 770, height: 150, variant: 'thin', color: '#2E7D32', delay: 0.3 },
     ],
   },
   midground: {
@@ -1808,16 +1888,34 @@ const SUBMARINE_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#5C5C5C', lighter: '#787878', detail: '#454545' },
   background: {
     kelps: [
-      { x: 5, height: 55, variant: 'wide', color: '#1B5E20', delay: 0 },
-      { x: 30, height: 50, variant: 'bushy', color: '#2E7D32', delay: 0.4 },
-      { x: 55, height: 45, variant: 'thin', color: '#33691E', delay: 0.8 },
-      { x: 80, height: 50, variant: 'wide', color: '#1B5E20', delay: 1.3 },
-      { x: 110, height: 55, variant: 'bushy', color: '#2E7D32', delay: 0.6 },
-      { x: 610, height: 50, variant: 'thin', color: '#33691E', delay: 0.3 },
-      { x: 650, height: 55, variant: 'bushy', color: '#2E7D32', delay: 0.5 },
-      { x: 690, height: 50, variant: 'wide', color: '#1B5E20', delay: 1.0 },
-      { x: 730, height: 45, variant: 'thin', color: '#2E7D32', delay: 1.5 },
-      { x: 760, height: 55, variant: 'bushy', color: '#33691E', delay: 0.9 },
+      // Left wide cluster
+      { x: 5, height: 165, variant: 'wide', color: '#1B5E20', delay: 0 },
+      { x: 18, height: 148, variant: 'wide', color: '#1B5E20', delay: 0.5 },
+      { x: 32, height: 155, variant: 'wide', color: '#2E7D32', delay: 0.2 },
+      // Left bushy cluster
+      { x: 50, height: 170, variant: 'bushy', color: '#2E7D32', delay: 0.4 },
+      { x: 63, height: 150, variant: 'bushy', color: '#33691E', delay: 0.9 },
+      { x: 76, height: 160, variant: 'bushy', color: '#2E7D32', delay: 0.6 },
+      // Left thin grass
+      { x: 95, height: 155, variant: 'thin', color: '#33691E', delay: 0.8 },
+      { x: 105, height: 140, variant: 'thin', color: '#2E7D32', delay: 1.3 },
+      { x: 115, height: 148, variant: 'thin', color: '#33691E', delay: 0.3 },
+      // Right thin cluster
+      { x: 600, height: 160, variant: 'thin', color: '#33691E', delay: 0.3 },
+      { x: 610, height: 145, variant: 'thin', color: '#2E7D32', delay: 0.8 },
+      { x: 622, height: 155, variant: 'thin', color: '#33691E', delay: 0.5 },
+      // Right bushy cluster
+      { x: 640, height: 170, variant: 'bushy', color: '#2E7D32', delay: 0.5 },
+      { x: 653, height: 150, variant: 'bushy', color: '#33691E', delay: 1.0 },
+      { x: 666, height: 162, variant: 'bushy', color: '#2E7D32', delay: 0.3 },
+      { x: 680, height: 145, variant: 'bushy', color: '#33691E', delay: 0.7 },
+      // Right wide cluster
+      { x: 700, height: 160, variant: 'wide', color: '#1B5E20', delay: 1.0 },
+      { x: 713, height: 148, variant: 'wide', color: '#2E7D32', delay: 0.4 },
+      { x: 726, height: 155, variant: 'wide', color: '#1B5E20', delay: 1.5 },
+      // Far right thin
+      { x: 748, height: 165, variant: 'thin', color: '#2E7D32', delay: 0.9 },
+      { x: 758, height: 148, variant: 'thin', color: '#33691E', delay: 0.2 },
     ],
   },
   midground: {
@@ -1853,36 +1951,79 @@ const SUBMARINE_LAYOUT: LayeredDecoConfig = {
 const MINIMAL_LAYOUT: LayeredDecoConfig = {
   background: {
     kelps: [
-      // Dense planted tank — lush background wall of plants
-      { x: 5, height: 70, variant: 'bushy', color: '#2E7D32', delay: 0 },
-      { x: 25, height: 60, variant: 'wide', color: '#388E3C', delay: 0.4 },
-      { x: 50, height: 55, variant: 'thin', color: '#43A047', delay: 0.9 },
-      { x: 75, height: 65, variant: 'bushy', color: '#2E7D32', delay: 0.2 },
-      { x: 100, height: 50, variant: 'wide', color: '#4CAF50', delay: 0.7 },
-      { x: 125, height: 60, variant: 'thin', color: '#388E3C', delay: 1.3 },
-      { x: 155, height: 55, variant: 'bushy', color: '#33691E', delay: 0.5 },
-      { x: 180, height: 50, variant: 'wide', color: '#43A047', delay: 1.0 },
-      { x: 210, height: 65, variant: 'thin', color: '#2E7D32', delay: 0.3 },
-      { x: 240, height: 55, variant: 'bushy', color: '#388E3C', delay: 0.8 },
-      { x: 270, height: 60, variant: 'wide', color: '#4CAF50', delay: 1.5 },
-      { x: 300, height: 50, variant: 'thin', color: '#33691E', delay: 0.6 },
-      { x: 330, height: 65, variant: 'bushy', color: '#2E7D32', delay: 1.1 },
-      { x: 360, height: 55, variant: 'wide', color: '#43A047', delay: 0.4 },
-      { x: 390, height: 60, variant: 'thin', color: '#388E3C', delay: 0.9 },
-      { x: 420, height: 50, variant: 'bushy', color: '#4CAF50', delay: 1.4 },
-      { x: 450, height: 65, variant: 'wide', color: '#2E7D32', delay: 0.2 },
-      { x: 480, height: 55, variant: 'thin', color: '#33691E', delay: 0.7 },
-      { x: 510, height: 60, variant: 'bushy', color: '#388E3C', delay: 1.2 },
-      { x: 540, height: 50, variant: 'wide', color: '#43A047', delay: 0.5 },
-      { x: 570, height: 65, variant: 'thin', color: '#2E7D32', delay: 1.0 },
-      { x: 600, height: 55, variant: 'bushy', color: '#4CAF50', delay: 0.3 },
-      { x: 630, height: 60, variant: 'wide', color: '#33691E', delay: 0.8 },
-      { x: 660, height: 50, variant: 'thin', color: '#388E3C', delay: 1.3 },
-      { x: 690, height: 65, variant: 'bushy', color: '#2E7D32', delay: 0.6 },
-      { x: 715, height: 55, variant: 'wide', color: '#43A047', delay: 1.1 },
-      { x: 740, height: 60, variant: 'thin', color: '#4CAF50', delay: 0.4 },
-      { x: 765, height: 50, variant: 'bushy', color: '#33691E', delay: 0.9 },
-      { x: 790, height: 55, variant: 'wide', color: '#2E7D32', delay: 1.5 },
+      // Dense planted tank — lush background wall grouped by species
+      // Bushy cluster 1
+      { x: 5, height: 180, variant: 'bushy', color: '#2E7D32', delay: 0 },
+      { x: 18, height: 160, variant: 'bushy', color: '#33691E', delay: 0.4 },
+      { x: 32, height: 170, variant: 'bushy', color: '#2E7D32', delay: 0.8 },
+      { x: 45, height: 150, variant: 'bushy', color: '#388E3C', delay: 0.2 },
+      { x: 58, height: 165, variant: 'bushy', color: '#33691E', delay: 0.6 },
+      // Wide cluster 1
+      { x: 78, height: 165, variant: 'wide', color: '#388E3C', delay: 0.7 },
+      { x: 92, height: 150, variant: 'wide', color: '#4CAF50', delay: 1.1 },
+      { x: 105, height: 160, variant: 'wide', color: '#43A047', delay: 0.3 },
+      { x: 118, height: 145, variant: 'wide', color: '#388E3C', delay: 0.9 },
+      // Thin cluster 1
+      { x: 138, height: 175, variant: 'thin', color: '#43A047', delay: 1.3 },
+      { x: 148, height: 155, variant: 'thin', color: '#2E7D32', delay: 0.5 },
+      { x: 158, height: 165, variant: 'thin', color: '#388E3C', delay: 1.0 },
+      { x: 168, height: 148, variant: 'thin', color: '#4CAF50', delay: 0.2 },
+      // Bushy cluster 2
+      { x: 190, height: 170, variant: 'bushy', color: '#2E7D32', delay: 0.8 },
+      { x: 203, height: 155, variant: 'bushy', color: '#33691E', delay: 0.3 },
+      { x: 216, height: 162, variant: 'bushy', color: '#388E3C', delay: 1.2 },
+      { x: 230, height: 148, variant: 'bushy', color: '#2E7D32', delay: 0.6 },
+      // Wide cluster 2
+      { x: 250, height: 165, variant: 'wide', color: '#4CAF50', delay: 1.5 },
+      { x: 263, height: 150, variant: 'wide', color: '#43A047', delay: 0.4 },
+      { x: 276, height: 158, variant: 'wide', color: '#388E3C', delay: 0.9 },
+      // Thin cluster 2
+      { x: 296, height: 170, variant: 'thin', color: '#33691E', delay: 0.6 },
+      { x: 306, height: 152, variant: 'thin', color: '#2E7D32', delay: 1.1 },
+      { x: 316, height: 162, variant: 'thin', color: '#43A047', delay: 0.3 },
+      // Bushy cluster 3
+      { x: 338, height: 175, variant: 'bushy', color: '#2E7D32', delay: 1.1 },
+      { x: 351, height: 155, variant: 'bushy', color: '#33691E', delay: 0.5 },
+      { x: 364, height: 165, variant: 'bushy', color: '#4CAF50', delay: 0.2 },
+      // Wide cluster 3
+      { x: 385, height: 160, variant: 'wide', color: '#43A047', delay: 0.4 },
+      { x: 398, height: 148, variant: 'wide', color: '#388E3C', delay: 0.9 },
+      { x: 411, height: 155, variant: 'wide', color: '#2E7D32', delay: 1.4 },
+      // Thin cluster 3
+      { x: 432, height: 168, variant: 'thin', color: '#388E3C', delay: 0.9 },
+      { x: 442, height: 150, variant: 'thin', color: '#4CAF50', delay: 0.3 },
+      { x: 452, height: 158, variant: 'thin', color: '#33691E', delay: 0.7 },
+      // Bushy cluster 4
+      { x: 472, height: 172, variant: 'bushy', color: '#388E3C', delay: 1.2 },
+      { x: 485, height: 155, variant: 'bushy', color: '#2E7D32', delay: 0.5 },
+      { x: 498, height: 165, variant: 'bushy', color: '#33691E', delay: 0.8 },
+      // Wide cluster 4
+      { x: 518, height: 160, variant: 'wide', color: '#43A047', delay: 0.5 },
+      { x: 531, height: 145, variant: 'wide', color: '#4CAF50', delay: 1.0 },
+      { x: 544, height: 155, variant: 'wide', color: '#388E3C', delay: 0.2 },
+      // Thin cluster 4
+      { x: 564, height: 175, variant: 'thin', color: '#2E7D32', delay: 1.0 },
+      { x: 574, height: 155, variant: 'thin', color: '#43A047', delay: 0.4 },
+      { x: 584, height: 165, variant: 'thin', color: '#33691E', delay: 0.8 },
+      // Bushy cluster 5
+      { x: 604, height: 168, variant: 'bushy', color: '#4CAF50', delay: 0.3 },
+      { x: 617, height: 152, variant: 'bushy', color: '#2E7D32', delay: 0.8 },
+      { x: 630, height: 160, variant: 'bushy', color: '#388E3C', delay: 1.3 },
+      // Wide cluster 5
+      { x: 650, height: 162, variant: 'wide', color: '#33691E', delay: 0.8 },
+      { x: 663, height: 148, variant: 'wide', color: '#43A047', delay: 0.3 },
+      { x: 676, height: 155, variant: 'wide', color: '#4CAF50', delay: 1.1 },
+      // Thin cluster 5
+      { x: 696, height: 170, variant: 'thin', color: '#388E3C', delay: 1.3 },
+      { x: 706, height: 152, variant: 'thin', color: '#2E7D32', delay: 0.6 },
+      { x: 716, height: 162, variant: 'thin', color: '#43A047', delay: 0.2 },
+      // Final bushy cluster
+      { x: 736, height: 165, variant: 'bushy', color: '#2E7D32', delay: 0.6 },
+      { x: 749, height: 148, variant: 'bushy', color: '#33691E', delay: 1.1 },
+      { x: 762, height: 158, variant: 'bushy', color: '#4CAF50', delay: 0.4 },
+      // Final wide
+      { x: 780, height: 155, variant: 'wide', color: '#388E3C', delay: 0.9 },
+      { x: 793, height: 145, variant: 'wide', color: '#2E7D32', delay: 1.5 },
     ],
   },
   midground: {
@@ -1931,16 +2072,38 @@ const CASTLE_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#6B6B6B', lighter: '#8A8A8A', detail: '#5A5A5A' },
   background: {
     kelps: [
-      { x: 5, height: 55, variant: 'bushy', color: '#1B5E20', delay: 0 },
-      { x: 30, height: 50, variant: 'wide', color: '#2E7D32', delay: 0.4 },
-      { x: 55, height: 45, variant: 'thin', color: '#33691E', delay: 0.9 },
-      { x: 80, height: 50, variant: 'bushy', color: '#1B5E20', delay: 1.3 },
-      { x: 110, height: 55, variant: 'wide', color: '#2E7D32', delay: 0.6 },
-      { x: 380, height: 50, variant: 'thin', color: '#33691E', delay: 0.3 },
-      { x: 440, height: 55, variant: 'bushy', color: '#2E7D32', delay: 0.8 },
-      { x: 510, height: 50, variant: 'wide', color: '#1B5E20', delay: 1.5 },
-      { x: 750, height: 45, variant: 'thin', color: '#2E7D32', delay: 0.5 },
-      { x: 780, height: 50, variant: 'bushy', color: '#33691E', delay: 1.1 },
+      // Left bushy cluster
+      { x: 5, height: 170, variant: 'bushy', color: '#1B5E20', delay: 0 },
+      { x: 18, height: 150, variant: 'bushy', color: '#2E7D32', delay: 0.5 },
+      { x: 32, height: 162, variant: 'bushy', color: '#1B5E20', delay: 0.2 },
+      { x: 45, height: 140, variant: 'bushy', color: '#33691E', delay: 0.8 },
+      // Left wide cluster
+      { x: 65, height: 155, variant: 'wide', color: '#2E7D32', delay: 0.4 },
+      { x: 78, height: 142, variant: 'wide', color: '#1B5E20', delay: 1.0 },
+      { x: 92, height: 150, variant: 'wide', color: '#2E7D32', delay: 0.6 },
+      // Left thin cluster
+      { x: 112, height: 160, variant: 'thin', color: '#33691E', delay: 0.9 },
+      { x: 122, height: 145, variant: 'thin', color: '#2E7D32', delay: 1.3 },
+      { x: 132, height: 152, variant: 'thin', color: '#33691E', delay: 0.3 },
+      // Mid thin cluster
+      { x: 370, height: 160, variant: 'thin', color: '#33691E', delay: 0.3 },
+      { x: 380, height: 145, variant: 'thin', color: '#2E7D32', delay: 0.7 },
+      { x: 392, height: 152, variant: 'thin', color: '#33691E', delay: 1.1 },
+      // Mid bushy cluster
+      { x: 430, height: 168, variant: 'bushy', color: '#2E7D32', delay: 0.8 },
+      { x: 443, height: 150, variant: 'bushy', color: '#1B5E20', delay: 0.3 },
+      { x: 456, height: 158, variant: 'bushy', color: '#33691E', delay: 1.2 },
+      // Mid wide cluster
+      { x: 500, height: 155, variant: 'wide', color: '#1B5E20', delay: 1.5 },
+      { x: 513, height: 140, variant: 'wide', color: '#2E7D32', delay: 0.4 },
+      { x: 526, height: 148, variant: 'wide', color: '#1B5E20', delay: 0.9 },
+      // Right thin cluster
+      { x: 740, height: 155, variant: 'thin', color: '#2E7D32', delay: 0.5 },
+      { x: 750, height: 142, variant: 'thin', color: '#33691E', delay: 1.0 },
+      { x: 762, height: 150, variant: 'thin', color: '#2E7D32', delay: 0.2 },
+      // Right bushy cluster
+      { x: 778, height: 165, variant: 'bushy', color: '#33691E', delay: 1.1 },
+      { x: 791, height: 148, variant: 'bushy', color: '#1B5E20', delay: 0.6 },
     ],
   },
   midground: {
@@ -1977,16 +2140,43 @@ const PYRAMID_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#C4A862', lighter: '#D4B872', detail: '#A08B52' },
   background: {
     kelps: [
-      { x: 5, height: 55, variant: 'wide', color: '#2E7D32', delay: 0 },
-      { x: 30, height: 50, variant: 'bushy', color: '#558B2F', delay: 0.5 },
-      { x: 55, height: 45, variant: 'thin', color: '#388E3C', delay: 1.0 },
-      { x: 280, height: 55, variant: 'bushy', color: '#2E7D32', delay: 0.3 },
-      { x: 350, height: 50, variant: 'wide', color: '#558B2F', delay: 0.6 },
-      { x: 480, height: 55, variant: 'bushy', color: '#388E3C', delay: 0.9 },
-      { x: 700, height: 60, variant: 'thin', color: '#558B2F', delay: 1.2 },
-      { x: 730, height: 50, variant: 'bushy', color: '#1B5E20', delay: 0.8 },
-      { x: 760, height: 45, variant: 'wide', color: '#2E7D32', delay: 1.5 },
-      { x: 790, height: 50, variant: 'thin', color: '#388E3C', delay: 1.8 },
+      // Left wide cluster
+      { x: 5, height: 165, variant: 'wide', color: '#2E7D32', delay: 0 },
+      { x: 18, height: 148, variant: 'wide', color: '#558B2F', delay: 0.5 },
+      { x: 32, height: 158, variant: 'wide', color: '#2E7D32', delay: 0.2 },
+      // Left bushy cluster
+      { x: 50, height: 170, variant: 'bushy', color: '#558B2F', delay: 0.5 },
+      { x: 63, height: 152, variant: 'bushy', color: '#2E7D32', delay: 1.0 },
+      { x: 76, height: 162, variant: 'bushy', color: '#388E3C', delay: 0.3 },
+      // Left thin grass
+      { x: 95, height: 155, variant: 'thin', color: '#388E3C', delay: 1.0 },
+      { x: 105, height: 140, variant: 'thin', color: '#558B2F', delay: 0.4 },
+      { x: 115, height: 148, variant: 'thin', color: '#2E7D32', delay: 0.8 },
+      // Mid bushy cluster
+      { x: 270, height: 168, variant: 'bushy', color: '#2E7D32', delay: 0.3 },
+      { x: 283, height: 150, variant: 'bushy', color: '#558B2F', delay: 0.7 },
+      { x: 296, height: 160, variant: 'bushy', color: '#388E3C', delay: 1.2 },
+      // Mid wide cluster
+      { x: 340, height: 155, variant: 'wide', color: '#558B2F', delay: 0.6 },
+      { x: 353, height: 142, variant: 'wide', color: '#2E7D32', delay: 1.1 },
+      { x: 366, height: 150, variant: 'wide', color: '#388E3C', delay: 0.4 },
+      // Mid-right bushy
+      { x: 470, height: 165, variant: 'bushy', color: '#388E3C', delay: 0.9 },
+      { x: 483, height: 148, variant: 'bushy', color: '#2E7D32', delay: 0.3 },
+      { x: 496, height: 158, variant: 'bushy', color: '#558B2F', delay: 1.4 },
+      // Right thin cluster
+      { x: 690, height: 170, variant: 'thin', color: '#558B2F', delay: 1.2 },
+      { x: 700, height: 152, variant: 'thin', color: '#2E7D32', delay: 0.5 },
+      { x: 712, height: 162, variant: 'thin', color: '#388E3C', delay: 0.9 },
+      // Right bushy cluster
+      { x: 728, height: 160, variant: 'bushy', color: '#1B5E20', delay: 0.8 },
+      { x: 741, height: 145, variant: 'bushy', color: '#2E7D32', delay: 0.3 },
+      // Right wide cluster
+      { x: 758, height: 155, variant: 'wide', color: '#2E7D32', delay: 1.5 },
+      { x: 771, height: 142, variant: 'wide', color: '#558B2F', delay: 0.6 },
+      // Far right thin
+      { x: 788, height: 160, variant: 'thin', color: '#388E3C', delay: 1.8 },
+      { x: 798, height: 145, variant: 'thin', color: '#2E7D32', delay: 0.4 },
     ],
   },
   midground: {
@@ -2023,16 +2213,32 @@ const TEMPLE_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#8D8D8D', lighter: '#A8A8A8', detail: '#6B6B6B' },
   background: {
     kelps: [
-      { x: 5, height: 60, variant: 'bushy', color: '#2E7D32', delay: 0 },
-      { x: 25, height: 55, variant: 'wide', color: '#388E3C', delay: 0.4 },
-      { x: 50, height: 50, variant: 'thin', color: '#43A047', delay: 0.8 },
-      { x: 75, height: 55, variant: 'bushy', color: '#1B5E20', delay: 1.2 },
-      { x: 100, height: 48, variant: 'wide', color: '#2E7D32', delay: 0.6 },
-      { x: 680, height: 60, variant: 'bushy', color: '#1B5E20', delay: 0.3 },
-      { x: 710, height: 55, variant: 'wide', color: '#388E3C', delay: 0.9 },
-      { x: 740, height: 50, variant: 'thin', color: '#43A047', delay: 1.5 },
-      { x: 770, height: 55, variant: 'bushy', color: '#2E7D32', delay: 0.5 },
-      { x: 795, height: 48, variant: 'wide', color: '#1B5E20', delay: 1.1 },
+      // Left bushy cluster
+      { x: 5, height: 172, variant: 'bushy', color: '#2E7D32', delay: 0 },
+      { x: 18, height: 155, variant: 'bushy', color: '#1B5E20', delay: 0.5 },
+      { x: 32, height: 164, variant: 'bushy', color: '#2E7D32', delay: 0.2 },
+      { x: 45, height: 142, variant: 'bushy', color: '#1B5E20', delay: 0.8 },
+      // Left wide cluster
+      { x: 63, height: 160, variant: 'wide', color: '#388E3C', delay: 0.4 },
+      { x: 76, height: 145, variant: 'wide', color: '#2E7D32', delay: 0.9 },
+      { x: 90, height: 152, variant: 'wide', color: '#388E3C', delay: 0.6 },
+      // Left thin cluster
+      { x: 108, height: 158, variant: 'thin', color: '#43A047', delay: 0.8 },
+      { x: 118, height: 142, variant: 'thin', color: '#2E7D32', delay: 1.2 },
+      { x: 128, height: 150, variant: 'thin', color: '#43A047', delay: 0.3 },
+      // Right bushy cluster
+      { x: 670, height: 175, variant: 'bushy', color: '#1B5E20', delay: 0.3 },
+      { x: 683, height: 155, variant: 'bushy', color: '#2E7D32', delay: 0.7 },
+      { x: 696, height: 165, variant: 'bushy', color: '#1B5E20', delay: 1.1 },
+      { x: 710, height: 148, variant: 'bushy', color: '#2E7D32', delay: 0.4 },
+      // Right wide cluster
+      { x: 728, height: 160, variant: 'wide', color: '#388E3C', delay: 0.9 },
+      { x: 741, height: 145, variant: 'wide', color: '#1B5E20', delay: 0.2 },
+      { x: 754, height: 152, variant: 'wide', color: '#388E3C', delay: 1.5 },
+      // Right thin cluster
+      { x: 772, height: 168, variant: 'thin', color: '#43A047', delay: 0.5 },
+      { x: 782, height: 150, variant: 'thin', color: '#2E7D32', delay: 1.0 },
+      { x: 793, height: 158, variant: 'thin', color: '#43A047', delay: 0.3 },
     ],
   },
   midground: {
@@ -2070,17 +2276,39 @@ const ATLANTIS_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#1A5276', lighter: '#2471A3', detail: '#154360' },
   background: {
     kelps: [
-      { x: 5, height: 60, variant: 'bushy', color: '#00695C', delay: 0 },
-      { x: 30, height: 55, variant: 'wide', color: '#004D40', delay: 0.4 },
-      { x: 55, height: 50, variant: 'thin', color: '#00897B', delay: 0.9 },
-      { x: 80, height: 55, variant: 'bushy', color: '#00695C', delay: 1.3 },
-      { x: 300, height: 48, variant: 'wide', color: '#004D40', delay: 0.6 },
-      { x: 400, height: 55, variant: 'bushy', color: '#00897B', delay: 0.3 },
-      { x: 500, height: 50, variant: 'thin', color: '#004D40', delay: 0.7 },
-      { x: 735, height: 55, variant: 'wide', color: '#00695C', delay: 0.8 },
-      { x: 760, height: 50, variant: 'thin', color: '#00897B', delay: 1.5 },
-      { x: 770, height: 55, variant: 'bushy', color: '#004D40', delay: 0.5 },
-      { x: 795, height: 48, variant: 'wide', color: '#00695C', delay: 1.1 },
+      // Left bushy cluster
+      { x: 5, height: 175, variant: 'bushy', color: '#00695C', delay: 0 },
+      { x: 18, height: 155, variant: 'bushy', color: '#004D40', delay: 0.4 },
+      { x: 32, height: 165, variant: 'bushy', color: '#00695C', delay: 0.8 },
+      { x: 45, height: 142, variant: 'bushy', color: '#00897B', delay: 0.2 },
+      // Left wide cluster
+      { x: 63, height: 162, variant: 'wide', color: '#004D40', delay: 0.9 },
+      { x: 76, height: 145, variant: 'wide', color: '#00695C', delay: 0.3 },
+      { x: 90, height: 155, variant: 'wide', color: '#004D40', delay: 1.3 },
+      // Left thin cluster
+      { x: 108, height: 160, variant: 'thin', color: '#00897B', delay: 0.5 },
+      { x: 118, height: 142, variant: 'thin', color: '#00695C', delay: 1.0 },
+      { x: 128, height: 152, variant: 'thin', color: '#00897B', delay: 0.3 },
+      // Mid wide cluster
+      { x: 290, height: 155, variant: 'wide', color: '#004D40', delay: 0.6 },
+      { x: 303, height: 140, variant: 'wide', color: '#00695C', delay: 1.1 },
+      { x: 316, height: 148, variant: 'wide', color: '#004D40', delay: 0.4 },
+      // Mid bushy cluster
+      { x: 390, height: 168, variant: 'bushy', color: '#00897B', delay: 0.3 },
+      { x: 403, height: 150, variant: 'bushy', color: '#00695C', delay: 0.8 },
+      { x: 416, height: 160, variant: 'bushy', color: '#004D40', delay: 1.2 },
+      // Mid thin cluster
+      { x: 490, height: 158, variant: 'thin', color: '#004D40', delay: 0.7 },
+      { x: 500, height: 142, variant: 'thin', color: '#00897B', delay: 0.2 },
+      { x: 512, height: 150, variant: 'thin', color: '#00695C', delay: 0.9 },
+      // Right wide cluster
+      { x: 725, height: 165, variant: 'wide', color: '#00695C', delay: 0.8 },
+      { x: 738, height: 148, variant: 'wide', color: '#004D40', delay: 0.3 },
+      { x: 751, height: 155, variant: 'wide', color: '#00695C', delay: 1.1 },
+      // Right bushy cluster
+      { x: 768, height: 170, variant: 'bushy', color: '#004D40', delay: 0.5 },
+      { x: 781, height: 152, variant: 'bushy', color: '#00695C', delay: 1.0 },
+      { x: 794, height: 160, variant: 'bushy', color: '#00897B', delay: 0.4 },
     ],
   },
   midground: {
