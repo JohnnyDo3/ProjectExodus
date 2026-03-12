@@ -7,11 +7,11 @@ import { memo, useMemo, type ReactNode } from 'react'
 // Sand covers bottom ~35% of tank (y≈208→320).
 //
 // Layer order (back to front / top to bottom):
-//   1. SandyBottom (perspective slope: back of tank y≈208, front y≈300)
-//   2. Background layer (plants rooted at back sand, baseY=240 — z-index 1)
-//   3. Midground layer (structures sitting on back sand — z-index 12)
-//   4. Fish swim here (z-index 10-20)
-//   5. Foreground layer (small rocks, corals, short plants at front sand, baseY=305 — z-index 25)
+//   1. SandyBottom (perspective slope: back of tank y≈208, front y≈300) — z-index 1
+//   2. Midground layer (background plants + structures in one SVG — z-index 12)
+//      Plants painted first (behind structures), structures painted second (in front)
+//   3. Fish swim here (z-index 10-20)
+//   4. Foreground layer (small rocks, corals, short plants at front sand, baseY=305 — z-index 25)
 
 // ─── Sandy Bottom ────────────────────────────────────────────────────
 
@@ -800,128 +800,218 @@ const SunkenShip = memo(({ x, y }: { x: number; y: number }) => (
     <defs>
       <linearGradient id="hull-grad" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0%" stopColor="#795548" />
-        <stop offset="50%" stopColor="#5D4037" />
+        <stop offset="40%" stopColor="#5D4037" />
         <stop offset="100%" stopColor="#3E2723" />
       </linearGradient>
       <linearGradient id="stern-grad" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0%" stopColor="#8D6E63" />
         <stop offset="100%" stopColor="#5D4037" />
       </linearGradient>
+      <linearGradient id="deck-grad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#6D4C41" />
+        <stop offset="100%" stopColor="#4E342E" />
+      </linearGradient>
     </defs>
 
-    {/* Main hull — curved galleon shape, slightly tilted */}
+    {/* Shadow on sand beneath the hull */}
+    <ellipse cx="60" cy="72" rx="80" ry="6" fill="#000" opacity="0.15" />
+
+    {/* Main hull — curved galleon shape, slightly listed to port */}
     <path d="M-14 46 Q-18 38 -12 30 Q0 20 20 18 L110 16 Q128 18 134 28 Q138 36 132 50 Q128 58 120 62 L10 64 Q-8 62 -14 46Z" fill="url(#hull-grad)" />
-    {/* Keel line */}
+    {/* Hull underside / keel */}
     <path d="M-8 60 Q10 68 65 70 Q120 68 132 58" stroke="#3E2723" strokeWidth="3" fill="none" />
-    {/* Hull planking lines (curved) */}
-    <path d="M-10 36 Q30 32 70 30 Q110 32 130 36" stroke="#8D6E63" strokeWidth="0.8" fill="none" opacity="0.4" />
-    <path d="M-12 44 Q30 40 70 38 Q110 40 130 44" stroke="#8D6E63" strokeWidth="0.8" fill="none" opacity="0.35" />
-    <path d="M-10 52 Q30 48 70 46 Q110 48 128 52" stroke="#8D6E63" strokeWidth="0.8" fill="none" opacity="0.3" />
+    {/* Copper bottom sheathing (anti-fouling) */}
+    <path d="M-6 56 Q30 62 65 64 Q100 62 126 54" fill="#5D4037" opacity="0.3" />
+    <path d="M0 58 Q30 64 65 66 Q100 64 120 56" stroke="#8B4513" strokeWidth="0.5" fill="none" opacity="0.25" />
 
-    {/* Gun ports (dark holes along hull) */}
-    <ellipse cx="20" cy="40" rx="4" ry="3" fill="#1A0E08" opacity="0.7" />
-    <ellipse cx="40" cy="38" rx="4" ry="3" fill="#1A0E08" opacity="0.7" />
-    <ellipse cx="60" cy="37" rx="4" ry="3" fill="#1A0E08" opacity="0.7" />
-    <ellipse cx="80" cy="38" rx="4" ry="3" fill="#1A0E08" opacity="0.7" />
-    <ellipse cx="100" cy="40" rx="4" ry="3" fill="#1A0E08" opacity="0.7" />
-    {/* Cannons poking out */}
-    <path d="M16 40 L10 40" stroke="#455A64" strokeWidth="2.5" strokeLinecap="round" />
-    <path d="M56 37 L50 38" stroke="#455A64" strokeWidth="2.5" strokeLinecap="round" />
-    <path d="M96 40 L90 40" stroke="#455A64" strokeWidth="2.5" strokeLinecap="round" />
+    {/* Hull planking lines (curved, following hull shape) */}
+    <path d="M-10 32 Q30 28 70 26 Q110 28 130 32" stroke="#8D6E63" strokeWidth="0.7" fill="none" opacity="0.4" />
+    <path d="M-12 38 Q30 34 70 32 Q110 34 130 38" stroke="#8D6E63" strokeWidth="0.7" fill="none" opacity="0.35" />
+    <path d="M-12 44 Q30 40 70 38 Q110 40 130 44" stroke="#8D6E63" strokeWidth="0.7" fill="none" opacity="0.3" />
+    <path d="M-10 50 Q30 46 70 44 Q110 46 128 50" stroke="#8D6E63" strokeWidth="0.7" fill="none" opacity="0.25" />
 
-    {/* Stern — ornate captain's quarters */}
+    {/* Gun deck stripe (painted band along hull) */}
+    <path d="M-6 34 Q30 30 70 28 Q110 30 130 34 L130 38 Q110 34 70 32 Q30 34 -6 38Z" fill="#D4A43A" opacity="0.12" />
+
+    {/* Gun ports — square with hinged lids */}
+    {[18, 38, 78, 98].map((gx, i) => (
+      <g key={`gp-${i}`}>
+        <rect x={gx - 3.5} y={34 - (gx < 60 ? 0 : 1)} width="7" height="6" fill="#1A0E08" opacity="0.75" rx="0.5" />
+        <rect x={gx - 4} y={34 - (gx < 60 ? 0 : 1)} width="8" height="1" fill="#6D4C41" opacity="0.5" />
+      </g>
+    ))}
+    {/* Cannons poking out of select ports */}
+    <path d="M15 37 L9 37" stroke="#455A64" strokeWidth="2.5" strokeLinecap="round" />
+    <path d="M75 36 L69 36" stroke="#455A64" strokeWidth="2.5" strokeLinecap="round" />
+    {/* Fallen cannon on seabed */}
+    <path d="M30 68 L42 67" stroke="#546E7A" strokeWidth="3" strokeLinecap="round" opacity="0.35" />
+
+    {/* Stern — ornate captain's quarters with gallery */}
     <path d="M110 16 Q118 8 130 4 Q138 2 140 8 L142 56 Q140 62 132 64 L120 62 Q114 58 110 48Z" fill="url(#stern-grad)" />
-    {/* Stern gallery windows */}
-    <ellipse cx="128" cy="18" rx="4" ry="5" fill="#0A1628" opacity="0.8" />
-    <ellipse cx="128" cy="18" rx="4" ry="5" fill="none" stroke="#A1887F" strokeWidth="0.8" />
-    <ellipse cx="136" cy="20" rx="3" ry="4" fill="#0A1628" opacity="0.7" />
-    <ellipse cx="136" cy="20" rx="3" ry="4" fill="none" stroke="#A1887F" strokeWidth="0.7" />
-    <ellipse cx="128" cy="32" rx="4" ry="5" fill="#0A1628" opacity="0.6" />
-    <ellipse cx="128" cy="32" rx="4" ry="5" fill="none" stroke="#A1887F" strokeWidth="0.7" />
-    {/* Stern decorative scrollwork */}
-    <path d="M122 6 Q126 2 132 4" stroke="#D4A43A" strokeWidth="0.8" fill="none" opacity="0.5" />
-    <path d="M120 10 Q128 6 136 8" stroke="#D4A43A" strokeWidth="0.6" fill="none" opacity="0.4" />
-    {/* Stern railing / taffrail */}
-    <path d="M118 4 Q130 0 140 4" stroke="#A1887F" strokeWidth="1.5" fill="none" opacity="0.6" />
+    {/* Stern window gallery — arched windows */}
+    <path d="M125 12 Q128 10 131 12 L131 24 Q128 26 125 24Z" fill="#0A1628" opacity="0.8" />
+    <path d="M125 12 Q128 10 131 12 L131 24 Q128 26 125 24Z" fill="none" stroke="#A1887F" strokeWidth="0.7" />
+    <path d="M133 14 Q135.5 12 138 14 L138 23 Q135.5 25 133 23Z" fill="#0A1628" opacity="0.7" />
+    <path d="M133 14 Q135.5 12 138 14 L138 23 Q135.5 25 133 23Z" fill="none" stroke="#A1887F" strokeWidth="0.6" />
+    {/* Lower stern windows */}
+    <path d="M126 30 Q128.5 28 131 30 L131 40 Q128.5 42 126 40Z" fill="#0A1628" opacity="0.6" />
+    <path d="M126 30 Q128.5 28 131 30 L131 40 Q128.5 42 126 40Z" fill="none" stroke="#A1887F" strokeWidth="0.6" />
+    {/* Stern lantern bracket */}
+    <path d="M136 2 L138 -2 L140 2" stroke="#A1887F" strokeWidth="1" fill="none" opacity="0.4" />
+    <rect x="137" y="-4" width="3" height="3" fill="#FF8F00" opacity="0.2" rx="0.5" />
+    {/* Stern decorative scrollwork — gilded trim */}
+    <path d="M120 6 Q126 2 132 4 Q136 6 140 4" stroke="#D4A43A" strokeWidth="0.8" fill="none" opacity="0.4" />
+    <path d="M118 10 Q126 6 134 8 Q138 10 142 8" stroke="#D4A43A" strokeWidth="0.6" fill="none" opacity="0.3" />
+    <path d="M120 50 Q130 54 140 50" stroke="#D4A43A" strokeWidth="0.5" fill="none" opacity="0.2" />
+    {/* Stern name plaque (worn) */}
+    <rect x="124" y="44" width="12" height="4" fill="#4E342E" opacity="0.5" rx="0.5" />
+    <rect x="125" y="45" width="10" height="2" fill="#D4A43A" opacity="0.15" rx="0.3" />
 
-    {/* Bow — sharp curved prow */}
+    {/* Bow — sharp curved prow with figurehead */}
     <path d="M-12 30 Q-20 26 -24 20 Q-26 14 -22 10 Q-18 6 -14 8 Q-8 12 -4 18 Q0 22 4 24" fill="#6D4C41" />
+    {/* Bow reinforcement bands */}
+    <path d="M-18 14 Q-14 10 -10 14" stroke="#4E342E" strokeWidth="1" fill="none" opacity="0.4" />
+    <path d="M-16 20 Q-10 16 -6 20" stroke="#4E342E" strokeWidth="1" fill="none" opacity="0.35" />
     {/* Bowsprit (angled forward spar) */}
     <path d="M-22 12 L-40 -4" stroke="#8D6E63" strokeWidth="3" strokeLinecap="round" />
-    <path d="M-40 -4 L-44 -6" stroke="#A1887F" strokeWidth="2" strokeLinecap="round" />
-    {/* Figurehead beneath bowsprit */}
-    <path d="M-26 16 Q-30 12 -28 8 Q-26 6 -24 8 L-22 14" fill="#D4A43A" opacity="0.6" />
-    <circle cx="-27" cy="9" r="2" fill="#E8C468" opacity="0.5" />
+    <path d="M-40 -4 L-46 -8" stroke="#A1887F" strokeWidth="2" strokeLinecap="round" />
+    {/* Jib boom beyond bowsprit */}
+    <path d="M-46 -8 L-52 -12" stroke="#BCAAA4" strokeWidth="1.2" strokeLinecap="round" opacity="0.6" />
+    {/* Bowsprit rigging (stays) */}
+    <path d="M-40 -4 Q-30 8 -14 18" stroke="#A08060" strokeWidth="0.5" fill="none" opacity="0.3" />
+    {/* Figurehead — carved sea creature */}
+    <path d="M-28 16 Q-32 12 -30 7 Q-28 4 -25 6 Q-23 8 -24 12 L-22 14" fill="#D4A43A" opacity="0.5" />
+    <circle cx="-28" cy="8" r="1.5" fill="#E8C468" opacity="0.4" />
+    <path d="M-30 7 Q-32 5 -30 3" stroke="#E8C468" strokeWidth="0.6" fill="none" opacity="0.35" />
 
-    {/* Hull breach — gaping dark hole */}
-    <ellipse cx="52" cy="42" rx="14" ry="10" fill="#0A1628" opacity="0.85" />
-    {/* Torn planks around breach */}
-    <path d="M40 36 Q42 32 46 34" stroke="#6D4C41" strokeWidth="2" fill="none" />
-    <path d="M64 38 Q66 34 68 36" stroke="#6D4C41" strokeWidth="2" fill="none" />
-    <path d="M44 50 Q48 54 52 52" stroke="#5D4037" strokeWidth="1.5" fill="none" />
-    {/* Visible ribs inside breach */}
-    <path d="M46 36 L48 50" stroke="#A1887F" strokeWidth="1" opacity="0.5" />
-    <path d="M52 34 L53 52" stroke="#A1887F" strokeWidth="1" opacity="0.4" />
-    <path d="M58 35 L57 51" stroke="#A1887F" strokeWidth="1" opacity="0.5" />
+    {/* Hull breach — gaping dark hole with depth */}
+    <ellipse cx="56" cy="42" rx="14" ry="10" fill="#0A1628" opacity="0.85" />
+    {/* Inner hull structure visible through breach */}
+    <path d="M48 36 L49 50" stroke="#A1887F" strokeWidth="0.8" opacity="0.4" />
+    <path d="M52 34 L53 52" stroke="#A1887F" strokeWidth="0.8" opacity="0.35" />
+    <path d="M56 33 L56 52" stroke="#A1887F" strokeWidth="0.8" opacity="0.4" />
+    <path d="M60 34 L59 51" stroke="#A1887F" strokeWidth="0.8" opacity="0.35" />
+    <path d="M64 36 L63 50" stroke="#A1887F" strokeWidth="0.8" opacity="0.3" />
+    {/* Torn planks framing the breach */}
+    <path d="M44 35 Q46 30 49 33" stroke="#6D4C41" strokeWidth="1.8" fill="none" />
+    <path d="M42 42 Q40 38 44 36" stroke="#5D4037" strokeWidth="1.5" fill="none" />
+    <path d="M68 36 Q70 32 72 35" stroke="#6D4C41" strokeWidth="1.8" fill="none" />
+    <path d="M68 48 Q72 52 70 46" stroke="#5D4037" strokeWidth="1.5" fill="none" />
+    <path d="M50 50 Q54 54 58 52" stroke="#4E342E" strokeWidth="1.2" fill="none" />
 
-    {/* Main mast — broken, jagged top */}
-    <rect x="58" y="-12" width="5" height="32" fill="#8D6E63" rx="1" />
-    <path d="M58 -12 L60 -18 L63 -12" fill="#A1887F" /> {/* jagged break */}
+    {/* Deck visible above hull */}
+    <path d="M-4 22 Q30 18 70 16 Q110 18 122 22 L118 24 Q80 20 70 18 Q30 20 0 24Z" fill="url(#deck-grad)" opacity="0.6" />
+    {/* Deck planking */}
+    <path d="M0 20 Q30 17 70 16 Q110 17 118 20" stroke="#8D6E63" strokeWidth="0.4" fill="none" opacity="0.3" />
+    {/* Hatch on deck */}
+    <rect x="38" y="17" width="8" height="4" fill="#3E2723" opacity="0.5" rx="0.5" />
+    <rect x="39" y="18" width="6" height="2" fill="#1A0E08" opacity="0.4" />
+    {/* Capstan on deck */}
+    <circle cx="88" cy="18" r="2.5" fill="#5D4037" opacity="0.4" />
+    <circle cx="88" cy="18" r="1" fill="#795548" opacity="0.3" />
+
+    {/* Main mast — broken with jagged splinter */}
+    <rect x="58" y="-14" width="5" height="34" fill="#8D6E63" rx="1" />
+    <path d="M58 -14 L59.5 -20 L61 -14" fill="#A1887F" />
+    <path d="M61 -14 L62 -17 L63 -14" fill="#795548" />
+    {/* Mast bands (iron hoops) */}
+    <rect x="57" y="-4" width="7" height="1.2" fill="#4B5563" opacity="0.35" rx="0.3" />
+    <rect x="57" y="8" width="7" height="1.2" fill="#4B5563" opacity="0.3" rx="0.3" />
     {/* Crow's nest remnant */}
-    <path d="M54 -8 Q60 -10 66 -8" stroke="#6D4C41" strokeWidth="2" fill="none" />
-    {/* Mast rigging lines */}
-    <path d="M60 -14 Q40 4 20 18" stroke="#A08060" strokeWidth="0.6" fill="none" opacity="0.35" />
-    <path d="M60 -14 Q80 4 100 16" stroke="#A08060" strokeWidth="0.6" fill="none" opacity="0.3" />
+    <path d="M53 -10 Q60 -13 67 -10" stroke="#5D4037" strokeWidth="2" fill="none" />
+    <path d="M54 -10 L54 -6" stroke="#5D4037" strokeWidth="1" opacity="0.5" />
+    <path d="M66 -10 L66 -6" stroke="#5D4037" strokeWidth="1" opacity="0.5" />
+    {/* Rigging lines (stays & shrouds) */}
+    <path d="M60 -16 Q42 0 22 18" stroke="#A08060" strokeWidth="0.5" fill="none" opacity="0.3" />
+    <path d="M60 -16 Q78 0 98 16" stroke="#A08060" strokeWidth="0.5" fill="none" opacity="0.25" />
+    <path d="M60 -4 Q46 6 32 16" stroke="#A08060" strokeWidth="0.4" fill="none" opacity="0.2" />
+    <path d="M60 -4 Q74 6 86 16" stroke="#A08060" strokeWidth="0.4" fill="none" opacity="0.2" />
+    {/* Dangling broken rope */}
+    <path d="M62 -16 Q66 -12 64 -6 Q62 0 66 4" stroke="#C4A862" strokeWidth="0.6" fill="none" opacity="0.25" />
 
-    {/* Mizzen mast (shorter, aft) */}
-    <rect x="96" y="2" width="4" height="16" fill="#8D6E63" opacity="0.8" rx="1" />
-    <path d="M96 2 L98 -2 L100 2" fill="#A1887F" opacity="0.7" />
+    {/* Mizzen mast (shorter, aft) — snapped lower */}
+    <rect x="96" y="0" width="4" height="18" fill="#8D6E63" opacity="0.8" rx="1" />
+    <path d="M96 0 L97.5 -3 L99 0" fill="#A1887F" opacity="0.6" />
+    <path d="M99 0 L100 -2 L100 0" fill="#795548" opacity="0.5" />
 
-    {/* Tattered sail hanging from main mast */}
-    <path d="M63 -8 Q74 -4 78 6 Q76 14 68 18 L63 16Z" fill="#D7CCC8" opacity="0.3" />
-    <path d="M65 -6 Q72 -2 74 4 Q72 10 68 14" stroke="#BCAAA4" strokeWidth="0.5" fill="none" opacity="0.3" />
+    {/* Foremast stub (forward) */}
+    <rect x="22" y="10" width="3.5" height="10" fill="#795548" opacity="0.6" rx="0.5" />
+    <path d="M22 10 L23 7 L25.5 10" fill="#A1887F" opacity="0.4" />
 
-    {/* Deck line */}
-    <path d="M-4 22 Q30 18 70 16 Q110 18 122 22" stroke="#6D4C41" strokeWidth="1.5" fill="none" opacity="0.5" />
+    {/* Tattered sail hanging from main mast — billowing with current */}
+    <path d="M63 -10 Q76 -6 80 4 Q78 12 72 18 Q68 20 63 16Z" fill="#D7CCC8" opacity="0.25" />
+    <path d="M64 -8 Q74 -4 76 2 Q74 10 70 16" stroke="#BCAAA4" strokeWidth="0.4" fill="none" opacity="0.25" />
+    {/* Sail holes (worn through) */}
+    <ellipse cx="72" cy="4" rx="2" ry="1.5" fill="#0A1628" opacity="0.15" />
+    <ellipse cx="68" cy="10" rx="1.5" ry="1" fill="#0A1628" opacity="0.1" />
 
-    {/* Railing posts (some broken, some standing) */}
-    <rect x="10" y="14" width="1.5" height="8" fill="#795548" opacity="0.6" rx="0.5" />
+    {/* Railing posts — mixture of intact and broken */}
+    <rect x="8" y="14" width="1.5" height="8" fill="#795548" opacity="0.6" rx="0.5" />
+    <rect x="18" y="13" width="1.5" height="4" fill="#795548" opacity="0.4" rx="0.5" />
     <rect x="30" y="12" width="1.5" height="10" fill="#795548" opacity="0.5" rx="0.5" />
     <rect x="72" y="12" width="1.5" height="8" fill="#795548" opacity="0.5" rx="0.5" />
-    {/* Railing rope between posts */}
-    <path d="M10 16 Q20 14 30 14 Q50 12 72 14" stroke="#A08060" strokeWidth="0.7" fill="none" opacity="0.3" />
+    <rect x="84" y="14" width="1.5" height="6" fill="#795548" opacity="0.4" rx="0.5" />
+    {/* Railing rope sagging between posts */}
+    <path d="M8 16 Q14 15 18 15" stroke="#A08060" strokeWidth="0.6" fill="none" opacity="0.25" />
+    <path d="M30 14 Q50 13 72 14" stroke="#A08060" strokeWidth="0.6" fill="none" opacity="0.25" />
 
-    {/* Chain draped along hull */}
-    <path d="M8 56 Q20 58 30 56 Q40 54 48 56" stroke="#4B5563" strokeWidth="1.5" fill="none" opacity="0.4" />
+    {/* Chain draped along hull — heavier detail */}
+    <path d="M6 58 Q14 60 22 58 Q30 56 38 58 Q46 60 52 58" stroke="#4B5563" strokeWidth="1.5" fill="none" opacity="0.35" />
+    {/* Anchor chain from bow descending to seabed */}
+    <path d="M-16 22 Q-20 40 -18 62 Q-16 70 -10 72" stroke="#4B5563" strokeWidth="1.2" fill="none" opacity="0.3" />
+    {/* Small anchor on seabed */}
+    <path d="M-12 72 L-8 68 L-4 72 M-8 68 L-8 62" stroke="#546E7A" strokeWidth="1.5" fill="none" opacity="0.3" />
 
-    {/* Rust and decay patches */}
-    <ellipse cx="35" cy="50" rx="6" ry="3" fill="#BF360C" opacity="0.2" />
-    <ellipse cx="85" cy="36" rx="5" ry="4" fill="#E65100" opacity="0.15" />
-    <ellipse cx="106" cy="48" rx="7" ry="3" fill="#BF360C" opacity="0.18" />
+    {/* Rust and decay — layered weathering */}
+    <ellipse cx="30" cy="48" rx="7" ry="3" fill="#BF360C" opacity="0.18" />
+    <ellipse cx="85" cy="34" rx="5" ry="3" fill="#E65100" opacity="0.14" />
+    <ellipse cx="108" cy="46" rx="6" ry="3" fill="#BF360C" opacity="0.16" />
+    <ellipse cx="14" cy="40" rx="4" ry="2" fill="#8B4513" opacity="0.12" />
+    <ellipse cx="118" cy="32" rx="3" ry="4" fill="#BF360C" opacity="0.1" />
+    {/* Waterline staining */}
+    <path d="M-8 28 Q30 24 70 22 Q110 24 130 28" stroke="#5D4037" strokeWidth="1.5" fill="none" opacity="0.15" />
 
-    {/* Barnacles */}
-    <circle cx="2" cy="56" r="2" fill="#9CA3AF" opacity="0.35" />
-    <circle cx="70" cy="62" r="1.5" fill="#9CA3AF" opacity="0.3" />
-    <circle cx="126" cy="54" r="2" fill="#9CA3AF" opacity="0.35" />
+    {/* Barnacle clusters — varied sizes */}
+    <circle cx="0" cy="56" r="2.5" fill="#9CA3AF" opacity="0.3" />
+    <circle cx="3" cy="58" r="1.5" fill="#B0BEC5" opacity="0.25" />
+    <circle cx="68" cy="62" r="2" fill="#9CA3AF" opacity="0.3" />
+    <circle cx="72" cy="60" r="1.2" fill="#B0BEC5" opacity="0.2" />
+    <circle cx="126" cy="52" r="2" fill="#9CA3AF" opacity="0.3" />
+    <circle cx="130" cy="55" r="1.5" fill="#B0BEC5" opacity="0.25" />
+    {/* Barnacle line along watermark */}
+    {[10, 25, 40, 90, 105].map((bx, i) => (
+      <circle key={`bn-${i}`} cx={bx} cy={54 + (i % 3)} r={0.8 + (i % 2) * 0.4} fill="#9CA3AF" opacity={0.2 + (i % 3) * 0.05} />
+    ))}
 
-    {/* Algae growth on wood */}
-    <ellipse cx="58" cy="14" rx="5" ry="2" fill="#2E7D32" opacity="0.35" />
-    <ellipse cx="8" cy="58" rx="6" ry="1.5" fill="#388E3C" opacity="0.25" />
-    <ellipse cx="116" cy="56" rx="5" ry="1.5" fill="#1B5E20" opacity="0.35" />
+    {/* Marine growth — algae, sponges, and moss */}
+    <ellipse cx="60" cy="14" rx="5" ry="2" fill="#2E7D32" opacity="0.3" />
+    <ellipse cx="6" cy="58" rx="5" ry="1.5" fill="#388E3C" opacity="0.25" />
+    <ellipse cx="116" cy="54" rx="4" ry="1.5" fill="#1B5E20" opacity="0.3" />
+    {/* Sponge colonies */}
+    <ellipse cx="100" cy="56" rx="4" ry="3" fill="#FF6F00" opacity="0.15" />
+    <ellipse cx="14" cy="62" rx="3" ry="2" fill="#FF8F00" opacity="0.12" />
 
     {/* Coral growing on hull */}
-    <ellipse cx="92" cy="56" rx="5" ry="4" fill="#E91E63" opacity="0.25" />
-    <ellipse cx="94" cy="52" rx="3" ry="2" fill="#F48FB1" opacity="0.2" />
+    <ellipse cx="90" cy="56" rx="6" ry="4" fill="#E91E63" opacity="0.2" />
+    <ellipse cx="92" cy="52" rx="3" ry="2" fill="#F48FB1" opacity="0.18" />
+    <ellipse cx="86" cy="58" rx="2" ry="1.5" fill="#EC407A" opacity="0.15" />
+    {/* Small fan coral on stern */}
+    <path d="M134 46 Q136 40 140 42 Q138 46 134 46Z" fill="#AB47BC" opacity="0.2" />
 
     {/* Scattered wreckage on seabed */}
-    <path d="M-8 66 Q-4 64 0 66 Q4 68 -2 70" fill="#6D4C41" opacity="0.3" />
-    <path d="M130 64 Q134 62 138 64" fill="#795548" opacity="0.25" />
-    <ellipse cx="72" cy="70" rx="6" ry="1.5" fill="#5D4037" opacity="0.25" />
+    <path d="M-10 68 Q-6 66 -2 68 Q2 70 -4 72" fill="#6D4C41" opacity="0.25" />
+    <path d="M130 66 Q136 64 140 66 Q136 68 130 68" fill="#795548" opacity="0.2" />
+    <ellipse cx="72" cy="72" rx="6" ry="1.5" fill="#5D4037" opacity="0.2" />
+    {/* Barrel on seabed */}
+    <ellipse cx="146" cy="68" rx="4" ry="3" fill="#5D4037" opacity="0.3" />
+    <path d="M142 68 L150 68" stroke="#6D4C41" strokeWidth="0.5" fill="none" opacity="0.3" />
+    <ellipse cx="146" cy="68" rx="4" ry="3" fill="none" stroke="#4B5563" strokeWidth="0.5" opacity="0.2" />
 
-    {/* Bubbles from interior */}
-    <circle cx="50" cy="30" r="1.5" fill="rgba(255,255,255,0.3)" style={{ animation: 'bubbleRise 3.5s ease-in 0s infinite' }} />
-    <circle cx="54" cy="28" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4s ease-in 1.2s infinite' }} />
-    <circle cx="48" cy="32" r="1.2" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4.5s ease-in 2s infinite' }} />
+    {/* Bubbles from interior — staggered timing */}
+    <circle cx="54" cy="30" r="1.5" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 3.5s ease-in 0s infinite' }} />
+    <circle cx="58" cy="28" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4s ease-in 1.2s infinite' }} />
+    <circle cx="52" cy="34" r="1.2" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4.5s ease-in 2s infinite' }} />
+    <circle cx="56" cy="26" r="0.7" fill="rgba(255,255,255,0.15)" style={{ animation: 'bubbleRise 5.5s ease-in 3.5s infinite' }} />
   </g>
 ))
 SunkenShip.displayName = 'SunkenShip'
@@ -1587,9 +1677,8 @@ AtlanteanObelisk.displayName = 'AtlanteanObelisk'
 
 // ═══════════════════════════════════════════════════════════════════════
 // THEMED LAYOUT CONFIGS
-// Three-layer depth system with z-axis perspective (top = back of tank):
-//   background (z-1):  plants rooted at back sand surface (baseY=240)
-//   midground  (z-12): structures sitting on back sand
+// Two-layer depth system with z-axis perspective (top = back of tank):
+//   midground  (z-12): plants rooted at back sand (baseY=240) + structures (same SVG for correct layering)
 //   foreground (z-25): rocks, corals, tiny grass-like plants at front glass (baseY=305)
 // ═══════════════════════════════════════════════════════════════════════
 
@@ -1651,8 +1740,8 @@ const OCEAN_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'coral-arch', x: 180, y: 102 },
-      { type: 'sunken-temple', x: 500, y: 106 },
+      { type: 'coral-arch', x: 180, y: 126 },
+      { type: 'sunken-temple', x: 500, y: 130 },
     ],
   },
   foreground: {
@@ -1719,8 +1808,8 @@ const TROPICAL_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'volcano', x: 160, y: 114 },
-      { type: 'dragon-stone', x: 480, y: 102 },
+      { type: 'volcano', x: 160, y: 136 },
+      { type: 'dragon-stone', x: 480, y: 126 },
     ],
   },
   foreground: {
@@ -1791,8 +1880,8 @@ const SHIPWRECK_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'shipwreck', x: 40, y: 88 },
-      { type: 'treasure', x: 640, y: 124 },
+      { type: 'shipwreck', x: 40, y: 112 },
+      { type: 'treasure', x: 640, y: 146 },
     ],
   },
   foreground: {
@@ -1856,8 +1945,8 @@ const SAILBOAT_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'sailboat', x: 300, y: 120 },
-      { type: 'anchor', x: 600, y: 118 },
+      { type: 'sailboat', x: 300, y: 142 },
+      { type: 'anchor', x: 600, y: 140 },
     ],
   },
   foreground: {
@@ -1920,7 +2009,7 @@ const SUBMARINE_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'submarine', x: 260, y: 134 },
+      { type: 'submarine', x: 260, y: 154 },
     ],
   },
   foreground: {
@@ -2108,8 +2197,8 @@ const CASTLE_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'castle', x: 200, y: 108 },
-      { type: 'drawbridge', x: 560, y: 126 },
+      { type: 'castle', x: 200, y: 132 },
+      { type: 'drawbridge', x: 560, y: 148 },
     ],
   },
   foreground: {
@@ -2181,8 +2270,8 @@ const PYRAMID_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'pyramid', x: 80, y: 112 },
-      { type: 'sphinx', x: 520, y: 132 },
+      { type: 'pyramid', x: 80, y: 134 },
+      { type: 'sphinx', x: 520, y: 152 },
     ],
   },
   foreground: {
@@ -2243,8 +2332,8 @@ const TEMPLE_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'torii', x: 120, y: 106 },
-      { type: 'pagoda', x: 480, y: 100 },
+      { type: 'torii', x: 120, y: 130 },
+      { type: 'pagoda', x: 480, y: 124 },
     ],
   },
   foreground: {
@@ -2313,8 +2402,8 @@ const ATLANTIS_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'atlantean-dome', x: 100, y: 108 },
-      { type: 'atlantean-obelisk', x: 560, y: 106 },
+      { type: 'atlantean-dome', x: 100, y: 132 },
+      { type: 'atlantean-obelisk', x: 560, y: 130 },
     ],
   },
   foreground: {
@@ -2402,33 +2491,27 @@ function renderStructure(s: { type: string; x: number; y: number }) {
   )
 }
 
-// ─── Background decoration layer (behind fish) ──────────────────────
+// ─── Background decoration layer (sand substrate only) ──────────────
 
 export const DecorationBackground = memo(({ width, theme = 'ocean' }: { width: number; theme?: string }) => {
   const layout = THEME_LAYOUTS[theme] || THEME_LAYOUTS.ocean
   const sandColors = layout.sandColors || { color: '#C4A862', lighter: '#D4B872', detail: '#B89B52' }
-  const bg = useMemo(() => layout.background, [layout])
 
   return (
     <div className="absolute bottom-0 left-0 w-full z-[1]" style={{ height: '400px' }}>
       <SandyBottom color={sandColors.color} lighter={sandColors.lighter} detail={sandColors.detail} />
-      <svg
-        className="absolute bottom-0 left-0 w-full h-full"
-        viewBox="0 0 800 320"
-        preserveAspectRatio="xMidYMax meet"
-        shapeRendering="crispEdges"
-      >
-        {bg.kelps.map((k, i) => <Kelp key={`bg-kelp-${i}`} {...k} baseY={240} />)}
-      </svg>
     </div>
   )
 })
 DecorationBackground.displayName = 'DecorationBackground'
 
-// ─── Midground decoration layer (structures between bg & fg) ─────────
+// ─── Midground decoration layer (background plants + structures) ─────
+// Plants and structures share one SVG so paint order handles layering
+// correctly: plants paint first (behind), structures paint second (in front).
 
 export const DecorationMidground = memo(({ width, theme = 'ocean' }: { width: number; theme?: string }) => {
   const layout = THEME_LAYOUTS[theme] || THEME_LAYOUTS.ocean
+  const bg = useMemo(() => layout.background, [layout])
   const mg = useMemo(() => layout.midground, [layout])
 
   return (
@@ -2439,6 +2522,9 @@ export const DecorationMidground = memo(({ width, theme = 'ocean' }: { width: nu
         preserveAspectRatio="xMidYMax meet"
         shapeRendering="crispEdges"
       >
+        {/* Background plants painted first — behind structures */}
+        {bg.kelps.map((k, i) => <Kelp key={`bg-kelp-${i}`} {...k} baseY={240} />)}
+        {/* Structures painted second — in front of plants */}
         {mg.structures.map(s => renderStructure(s))}
       </svg>
     </div>
