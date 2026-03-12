@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Get metadata if available — sanitize string values to prevent XSS
-    let info: Record<string, string> = {}
+    const info: Record<string, string> = {}
     try {
       const infoResult = await parser.getInfo()
       const rawInfo = infoResult.info || {}

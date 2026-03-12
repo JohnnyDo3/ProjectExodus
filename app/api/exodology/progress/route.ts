@@ -30,7 +30,7 @@ async function updateStreak(userId: string, activityType: string) {
   const today = new Date()
 
   // Get or create streak record
-  let streak = await prisma.exodologyStreak.findUnique({
+  const streak = await prisma.exodologyStreak.findUnique({
     where: { userId }
   })
 
@@ -61,7 +61,7 @@ async function updateStreak(userId: string, activityType: string) {
 
   let newCurrentStreak = streak.currentStreak
   let newLongestStreak = streak.longestStreak
-  let newTotalDays = streak.totalLearningDays + 1
+  const newTotalDays = streak.totalLearningDays + 1
   let streakStartDate = streak.streakStartDate
 
   if (wasActiveYesterday || !lastActivity) {

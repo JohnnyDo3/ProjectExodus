@@ -1897,8 +1897,8 @@ export default function ExodologyPathPage() {
 
   // Get first incomplete lesson for "Continue Learning"
   const getNextLesson = () => {
-    for (const module of path.modules) {
-      for (const lesson of module.lessons) {
+    for (const courseModule of path.modules) {
+      for (const lesson of courseModule.lessons) {
         if (!isLessonCompleted(lesson.id)) {
           return lesson.id
         }
@@ -1927,9 +1927,9 @@ export default function ExodologyPathPage() {
   const totalModules = path.modules.length
 
   // Group modules by week
-  const modulesByWeek = path.modules.reduce((acc, module) => {
-    if (!acc[module.week]) acc[module.week] = []
-    acc[module.week].push(module)
+  const modulesByWeek = path.modules.reduce((acc, courseModule) => {
+    if (!acc[courseModule.week]) acc[courseModule.week] = []
+    acc[courseModule.week].push(courseModule)
     return acc
   }, {} as Record<number, Module[]>)
 
@@ -1956,12 +1956,12 @@ export default function ExodologyPathPage() {
   }
 
   // Calculate module completion
-  const getModuleProgress = (module: Module) => {
-    const completedInModule = module.lessons.filter(lesson => isLessonCompleted(lesson.id)).length
+  const getModuleProgress = (courseModule: Module) => {
+    const completedInModule = courseModule.lessons.filter(lesson => isLessonCompleted(lesson.id)).length
     return {
       completed: completedInModule,
-      total: module.lessons.length,
-      percentage: module.lessons.length > 0 ? (completedInModule / module.lessons.length) * 100 : 0
+      total: courseModule.lessons.length,
+      percentage: courseModule.lessons.length > 0 ? (completedInModule / courseModule.lessons.length) * 100 : 0
     }
   }
 
@@ -2102,21 +2102,21 @@ export default function ExodologyPathPage() {
                         Week {week}
                       </h3>
                       <div className="space-y-4">
-                        {modules.map((module) => {
-                          const Icon = module.icon
-                          const isExpanded = expandedModules.has(module.id)
+                        {modules.map((courseModule) => {
+                          const Icon = courseModule.icon
+                          const isExpanded = expandedModules.has(courseModule.id)
 
-                          const moduleProgress = getModuleProgress(module)
+                          const moduleProgress = getModuleProgress(courseModule)
 
                           return (
-                            <div key={module.id} className={`border-2 rounded-xl overflow-hidden ${
+                            <div key={courseModule.id} className={`border-2 rounded-xl overflow-hidden ${
                               moduleProgress.percentage === 100
                                 ? 'border-green-500/50 bg-green-500/5'
                                 : 'border-[var(--border)]'
                             }`}>
                               {/* Module Header */}
                               <button
-                                onClick={() => toggleModule(module.id)}
+                                onClick={() => toggleModule(courseModule.id)}
                                 className="w-full flex items-center gap-4 p-4 bg-[var(--card)] hover:bg-[var(--muted)]/50 transition-colors text-left"
                               >
                                 <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${
@@ -2129,14 +2129,14 @@ export default function ExodologyPathPage() {
                                   )}
                                 </div>
                                 <div className="flex-1">
-                                  <h4 className="font-bold text-[var(--foreground)]">{module.title}</h4>
-                                  <p className="text-sm text-[var(--muted-foreground)]">{module.subtitle}</p>
+                                  <h4 className="font-bold text-[var(--foreground)]">{courseModule.title}</h4>
+                                  <p className="text-sm text-[var(--muted-foreground)]">{courseModule.subtitle}</p>
                                 </div>
                                 <div className="flex items-center gap-4">
                                   {/* Progress Ring */}
                                   {session && <ProgressRing progress={moduleProgress.percentage} />}
                                   <span className="text-sm text-[var(--muted-foreground)]">
-                                    {moduleProgress.completed}/{module.lessons.length}
+                                    {moduleProgress.completed}/{courseModule.lessons.length}
                                   </span>
                                   <ChevronDown className={`w-5 h-5 text-[var(--muted-foreground)] transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
                                 </div>
@@ -2154,12 +2154,12 @@ export default function ExodologyPathPage() {
                                   >
                                     <div className="p-4 border-t border-[var(--border)] bg-[var(--muted)]/20">
                                       <p className="text-sm text-[var(--muted-foreground)] mb-4">
-                                        {module.description}
+                                        {courseModule.description}
                                       </p>
 
                                       {/* Lessons */}
                                       <div className="space-y-2">
-                                        {module.lessons.map((lesson, i) => {
+                                        {courseModule.lessons.map((lesson, i) => {
                                           const LessonIcon = getLessonIcon(lesson.type)
                                           const isLocked = !session || !lesson.available
                                           const completed = isLessonCompleted(lesson.id)
@@ -2242,9 +2242,9 @@ export default function ExodologyPathPage() {
                                       </div>
 
                                       {/* Module Assessment */}
-                                      {module.assessment && (
+                                      {courseModule.assessment && (
                                         <Link
-                                          href={session ? `/exodology/paths/${pathId}/assessments/${module.id}` : '#'}
+                                          href={session ? `/exodology/paths/${pathId}/assessments/${courseModule.id}` : '#'}
                                           className={session ? '' : 'pointer-events-none'}
                                         >
                                           <div className={`mt-4 p-3 rounded-lg bg-gradient-to-r from-[var(--primary)]/10 to-[var(--accent)]/10 border border-[var(--primary)]/20 transition-all ${
@@ -2253,7 +2253,7 @@ export default function ExodologyPathPage() {
                                             <div className="flex items-center justify-between">
                                               <div className="flex items-center gap-2">
                                                 <Award className="w-4 h-4 text-[var(--primary)]" />
-                                                <span className="text-sm font-bold text-[var(--foreground)]">{module.assessment.title}</span>
+                                                <span className="text-sm font-bold text-[var(--foreground)]">{courseModule.assessment.title}</span>
                                               </div>
                                               {session ? (
                                                 <ChevronRight className="w-4 h-4 text-[var(--primary)]" />
@@ -2261,7 +2261,7 @@ export default function ExodologyPathPage() {
                                                 <Lock className="w-4 h-4 text-[var(--muted-foreground)]" />
                                               )}
                                             </div>
-                                            <p className="text-xs text-[var(--muted-foreground)] mt-1">{module.assessment.description}</p>
+                                            <p className="text-xs text-[var(--muted-foreground)] mt-1">{courseModule.assessment.description}</p>
                                           </div>
                                         </Link>
                                       )}

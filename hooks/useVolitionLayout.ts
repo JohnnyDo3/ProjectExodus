@@ -100,7 +100,7 @@ function loadLayoutData(): VolitionLayoutData {
           : []
 
         // Validate cardOrder structure
-        let validatedCardOrder: CardOrderMap = {}
+        const validatedCardOrder: CardOrderMap = {}
         if (parsed.cardOrder && typeof parsed.cardOrder === 'object') {
           for (const [key, value] of Object.entries(parsed.cardOrder)) {
             if (

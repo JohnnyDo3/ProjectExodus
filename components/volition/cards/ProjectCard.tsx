@@ -80,6 +80,8 @@ export function ProjectCard({
 }: ProjectCardProps) {
   const isCompact = viewMode === 'compact'
   const isMinimal = viewMode === 'minimal'
+  const [showMenu, setShowMenu] = useState(false)
+  const isOwner = project.creatorId === userId
 
   // Minimal view - just title header
   if (isMinimal) {
@@ -94,9 +96,6 @@ export function ProjectCard({
       </div>
     )
   }
-
-  const [showMenu, setShowMenu] = useState(false)
-  const isOwner = project.creatorId === userId
   const colors = statusColors[project.status] || statusColors.PLANNING
   const membership = project.membership
   const role = membership?.role || (isOwner ? 'OWNER' : undefined)

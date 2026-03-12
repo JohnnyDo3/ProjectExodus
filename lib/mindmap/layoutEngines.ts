@@ -104,7 +104,7 @@ export function applyTreeLayout(
   const positioned = new Map<string, Point>()
   const nodeMap = new Map(nodes.map(n => [n.id, n]))
 
-  let maxLevel = Math.max(...Array.from(levels.values()))
+  const maxLevel = Math.max(...Array.from(levels.values()))
 
   for (let level = 0; level <= maxLevel; level++) {
     const levelNodes = nodesByLevel.get(level) || []

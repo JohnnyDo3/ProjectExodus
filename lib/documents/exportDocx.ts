@@ -178,7 +178,7 @@ function parseHtmlToElements(html: string): ParsedElement[] {
   }
 
   const elements: ParsedElement[] = []
-  let remaining = html.trim()
+  const remaining = html.trim()
 
   // Match block-level elements
   const blockRegex =
@@ -506,7 +506,7 @@ function parseInlineContent(html: string, docx: any): any[] {
   const runs: any[] = []
 
   // Simple inline parsing - handles basic formatting
-  let content = html
+  const content = html
   const segments: { text: string; bold?: boolean; italic?: boolean; underline?: boolean; strike?: boolean; code?: boolean; link?: string }[] = []
 
   // Process inline tags

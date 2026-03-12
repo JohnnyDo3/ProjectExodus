@@ -141,7 +141,9 @@ function MiniMatching({ items, topicColor, onComplete, onClose }: MiniMatchingPr
   const [incorrect, setIncorrect] = useState<Set<string>>(new Set())
 
   const gameItems = items.slice(0, 4)
+  const gameItemIds = gameItems.map(g => g.id).join(',')
   // Memoize shuffled definitions so they don't re-shuffle on every render
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const shuffledDefs = useMemo(() => {
     const arr = [...gameItems]
     for (let i = arr.length - 1; i > 0; i--) {
@@ -149,7 +151,7 @@ function MiniMatching({ items, topicColor, onComplete, onClose }: MiniMatchingPr
       [arr[i], arr[j]] = [arr[j], arr[i]]
     }
     return arr
-  }, [gameItems.map(g => g.id).join(',')])
+  }, [gameItemIds])
 
   const handleTermClick = (id: string) => {
     if (matched.has(id)) return

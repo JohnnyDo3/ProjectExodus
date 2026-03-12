@@ -12,14 +12,14 @@ export async function GET(
     const session = await auth()
     const { projectId, moduleId } = await params
 
-    const module = await prisma.projectLearningModule.findUnique({
+    const learningModule = await prisma.projectLearningModule.findUnique({
       where: { id: moduleId },
       include: {
         creator: {
           select: {
             id: true,
             name: true,
-            
+
             image: true,
           },
         },
@@ -31,7 +31,7 @@ export async function GET(
       },
     })
 
-    if (!module || module.projectId !== projectId) {
+    if (!learningModule || learningModule.projectId !== projectId) {
       return NextResponse.json(
         { success: false, error: 'Module not found' },
         { status: 404 }
@@ -65,7 +65,7 @@ export async function GET(
     return NextResponse.json({
       success: true,
       data: {
-        ...module,
+        ...learningModule,
         userProgress,
       },
     })
@@ -96,11 +96,11 @@ export async function PUT(
     const body = await request.json()
     const { action, progress, title, description, content, videoUrl, estimatedMinutes, order } = body
 
-    const module = await prisma.projectLearningModule.findUnique({
+    const learningModule = await prisma.projectLearningModule.findUnique({
       where: { id: moduleId },
     })
 
-    if (!module || module.projectId !== projectId) {
+    if (!learningModule || learningModule.projectId !== projectId) {
       return NextResponse.json(
         { success: false, error: 'Module not found' },
         { status: 404 }
@@ -155,7 +155,7 @@ export async function PUT(
               projectId,
               userId: session.user.id,
               type: 'LEARNING',
-              description: `Completed module: ${module.title}`,
+              description: `Completed module: ${learningModule.title}`,
               points: 10,
               referenceId: moduleId,
             },

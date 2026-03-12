@@ -70,7 +70,7 @@ export default function SocialFeedPage() {
 
   useEffect(() => {
     // Apply filter
-    let sorted = [...posts]
+    const sorted = [...posts]
 
     if (filter === 'newest') {
       sorted.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())

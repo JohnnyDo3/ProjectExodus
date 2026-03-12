@@ -131,7 +131,7 @@ export async function GET(
     })
 
     // If user is logged in, get their likes
-    let userLikesMap: Record<string, boolean> = {}
+    const userLikesMap: Record<string, boolean> = {}
     if (session?.user?.id) {
       const userLikes = await prisma.reviewLike.findMany({
         where: {

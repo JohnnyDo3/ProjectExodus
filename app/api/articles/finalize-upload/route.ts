@@ -91,7 +91,7 @@ async function processPdfFile(filePath: string): Promise<{
     const text = textResult.text || ''
     const numPages = textResult.total || 0
 
-    let info: Record<string, string> = {}
+    const info: Record<string, string> = {}
     try {
       const infoResult = await parser.getInfo()
       const rawInfo = infoResult.info || {}

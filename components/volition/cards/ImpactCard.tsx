@@ -79,21 +79,6 @@ export function ImpactCard({
 }: ImpactCardProps) {
   const isCompact = viewMode === 'compact'
   const isMinimal = viewMode === 'minimal'
-
-  // Minimal view - just title header
-  if (isMinimal) {
-    return (
-      <div className={`rounded-lg overflow-hidden ${className}`}>
-        <div className="p-2 bg-gradient-to-r from-green-500 to-emerald-500">
-          <div className="flex items-center gap-2">
-            <Leaf className="w-4 h-4 text-white flex-shrink-0" />
-            <h3 className="text-xs font-bold text-white truncate">Impact</h3>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
   const [badgeProgress, setBadgeProgress] = useState<BadgeProgress[]>([])
   const [badgeStats, setBadgeStats] = useState<BadgeStats>({
     badgesEarned: 0,
@@ -128,6 +113,20 @@ export function ImpactCard({
 
     fetchBadgeData()
   }, [])
+
+  // Minimal view - just title header
+  if (isMinimal) {
+    return (
+      <div className={`rounded-lg overflow-hidden ${className}`}>
+        <div className="p-2 bg-gradient-to-r from-green-500 to-emerald-500">
+          <div className="flex items-center gap-2">
+            <Leaf className="w-4 h-4 text-white flex-shrink-0" />
+            <h3 className="text-xs font-bold text-white truncate">Impact</h3>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   const getStatValue = (id: string): number => {
     switch (id) {
