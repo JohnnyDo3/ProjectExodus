@@ -1493,8 +1493,8 @@ const OCEAN_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'coral-arch', x: 180, y: 86 },
-      { type: 'sunken-temple', x: 500, y: 90 },
+      { type: 'coral-arch', x: 180, y: 102 },
+      { type: 'sunken-temple', x: 500, y: 106 },
     ],
   },
   foreground: {
@@ -1545,8 +1545,8 @@ const TROPICAL_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'volcano', x: 160, y: 90 },
-      { type: 'dragon-stone', x: 480, y: 86 },
+      { type: 'volcano', x: 160, y: 106 },
+      { type: 'dragon-stone', x: 480, y: 102 },
     ],
   },
   foreground: {
@@ -1594,8 +1594,8 @@ const SHIPWRECK_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'shipwreck', x: 40, y: 72 },
-      { type: 'treasure', x: 640, y: 108 },
+      { type: 'shipwreck', x: 40, y: 88 },
+      { type: 'treasure', x: 640, y: 124 },
     ],
   },
   foreground: {
@@ -1642,7 +1642,7 @@ const SAILBOAT_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'sailboat', x: 300, y: 104 },
+      { type: 'sailboat', x: 300, y: 120 },
     ],
   },
   foreground: {
@@ -1687,7 +1687,7 @@ const SUBMARINE_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'submarine', x: 260, y: 96 },
+      { type: 'submarine', x: 260, y: 112 },
     ],
   },
   foreground: {
@@ -1734,8 +1734,8 @@ const MINIMAL_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'cairn', x: 250, y: 90 },
-      { type: 'bamboo', x: 500, y: 86 },
+      { type: 'cairn', x: 250, y: 106 },
+      { type: 'bamboo', x: 500, y: 102 },
     ],
   },
   foreground: {
@@ -1782,8 +1782,8 @@ const CASTLE_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'castle', x: 200, y: 64 },
-      { type: 'drawbridge', x: 560, y: 98 },
+      { type: 'castle', x: 200, y: 80 },
+      { type: 'drawbridge', x: 560, y: 114 },
     ],
   },
   foreground: {
@@ -1828,8 +1828,8 @@ const PYRAMID_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'pyramid', x: 80, y: 64 },
-      { type: 'sphinx', x: 520, y: 96 },
+      { type: 'pyramid', x: 80, y: 80 },
+      { type: 'sphinx', x: 520, y: 112 },
     ],
   },
   foreground: {
@@ -1874,8 +1874,8 @@ const TEMPLE_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'torii', x: 120, y: 90 },
-      { type: 'pagoda', x: 480, y: 80 },
+      { type: 'torii', x: 120, y: 106 },
+      { type: 'pagoda', x: 480, y: 96 },
     ],
   },
   foreground: {
@@ -1922,8 +1922,8 @@ const ATLANTIS_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'atlantean-dome', x: 100, y: 64 },
-      { type: 'atlantean-obelisk', x: 560, y: 76 },
+      { type: 'atlantean-dome', x: 100, y: 80 },
+      { type: 'atlantean-obelisk', x: 560, y: 92 },
     ],
   },
   foreground: {
