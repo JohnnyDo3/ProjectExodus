@@ -4,13 +4,14 @@ import { memo, useMemo, type ReactNode } from 'react'
 
 // Aquatic decorations for the fishbowl — split into background, midground, and
 // foreground layers with z-axis depth perspective (top of sand = back of tank).
+// Sand covers bottom ~35% of tank (y≈208→320).
 //
 // Layer order (back to front / top to bottom):
-//   1. SandyBottom (perspective slope: back of tank y≈96, front y≈280)
-//   2. Background layer (tall plants rooted at back sand, baseY=180 — z-index 1)
+//   1. SandyBottom (perspective slope: back of tank y≈208, front y≈300)
+//   2. Background layer (plants rooted at back sand, baseY=240 — z-index 1)
 //   3. Midground layer (structures sitting on back sand — z-index 12)
 //   4. Fish swim here (z-index 10-20)
-//   5. Foreground layer (small rocks, corals, short plants at front sand, baseY=300 — z-index 25)
+//   5. Foreground layer (small rocks, corals, short plants at front sand, baseY=305 — z-index 25)
 
 // ─── Sandy Bottom ────────────────────────────────────────────────────
 
@@ -20,70 +21,49 @@ export const SandyBottom = memo(({ color = '#C4A862', lighter = '#D4B872', detai
   detail?: string
 }) => (
   <svg className="absolute bottom-0 left-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 800 320" shapeRendering="crispEdges">
-    {/* Perspective sand bed — slopes from back of tank (y≈96) to front/glass (y=320) */}
+    {/* Perspective sand bed — slopes from back of tank (y≈208) to front/glass (y=320) */}
     {/* Main sand body */}
-    <polygon points="0,96 50,92 120,98 200,90 280,94 360,88 440,92 520,86 600,90 680,84 750,88 800,92 800,320 0,320" fill={color} />
+    <polygon points="0,208 50,204 120,210 200,206 280,208 360,202 440,206 520,200 600,204 680,198 750,202 800,206 800,320 0,320" fill={color} />
     {/* Back surface highlight strip (top of sand = back wall of tank) */}
-    <polygon points="0,96 50,92 120,98 200,90 280,94 360,88 440,92 520,86 600,90 680,84 750,88 800,92 800,106 750,102 680,98 600,104 520,100 440,106 360,102 280,108 200,104 120,112 50,106 0,110" fill={lighter} />
+    <polygon points="0,208 50,204 120,210 200,206 280,208 360,202 440,206 520,200 600,204 680,198 750,202 800,206 800,218 750,214 680,210 600,216 520,212 440,218 360,214 280,220 200,216 120,224 50,218 0,222" fill={lighter} />
     {/* Depth shading — darker toward back (distance), lighter toward front */}
-    <rect x="0" y="92" width="800" height="26" fill="#000" opacity="0.1" />
-    <rect x="0" y="118" width="800" height="18" fill="#000" opacity="0.06" />
-    <rect x="0" y="136" width="800" height="14" fill="#000" opacity="0.03" />
+    <rect x="0" y="204" width="800" height="16" fill="#000" opacity="0.1" />
+    <rect x="0" y="220" width="800" height="10" fill="#000" opacity="0.06" />
     {/* Mid-depth sand transition */}
-    <rect x="0" y="200" width="800" height="3" fill={lighter} opacity="0.12" />
+    <rect x="0" y="260" width="800" height="3" fill={lighter} opacity="0.12" />
     {/* Front sand edge highlight (closest to viewer/glass) */}
-    <polygon points="0,268 40,270 100,266 180,272 260,268 340,270 420,266 500,270 580,268 660,272 740,266 800,270 800,278 0,278" fill={lighter} opacity="0.35" />
+    <polygon points="0,290 40,292 100,288 180,294 260,290 340,292 420,288 500,292 580,290 660,294 740,288 800,292 800,300 0,300" fill={lighter} opacity="0.35" />
 
     {/* === Grain detail with depth-scaled perspective === */}
     {/* Back grains — fine, sparse (further away) */}
-    {[30, 80, 140, 200, 260, 320, 380, 440, 500, 560, 620, 680, 740].map((gx, i) => (
-      <rect key={`bgr-${i}`} x={gx} y={106 + (i % 4) * 5} width="2" height="2" fill={detail} opacity={0.18 + (i % 3) * 0.04} />
-    ))}
-    {[55, 115, 175, 235, 295, 355, 415, 475, 535, 595, 655, 715].map((gx, i) => (
-      <rect key={`bgr2-${i}`} x={gx} y={110 + (i % 5) * 4} width="1" height="1" fill={detail} opacity={0.14 + (i % 3) * 0.03} />
+    {[80, 200, 380, 500, 620, 740].map((gx, i) => (
+      <rect key={`bgr-${i}`} x={gx} y={218 + (i % 4) * 4} width="2" height="2" fill={detail} opacity={0.18 + (i % 3) * 0.04} />
     ))}
     {/* Mid grains — medium detail */}
-    {[18, 42, 68, 95, 118, 150, 178, 205, 232, 258, 285, 310, 340, 368, 395, 420, 448, 478, 505, 535, 560, 588, 615, 642, 670, 698, 725, 752, 775].map((gx, i) => (
-      <rect key={`mgr-${i}`} x={gx} y={150 + (i % 6) * 10} width="3" height="3" fill={detail} opacity={0.22 + (i % 3) * 0.06} />
-    ))}
-    {[10, 35, 55, 82, 108, 135, 162, 190, 218, 245, 272, 298, 325, 355, 382, 410, 435, 462, 492, 518, 545, 572, 598, 628, 655, 682, 712, 738, 765, 790].map((gx, i) => (
-      <rect key={`mgr2-${i}`} x={gx} y={160 + (i % 7) * 8} width="2" height="2" fill={detail} opacity={0.18 + (i % 4) * 0.05} />
+    {[42, 118, 205, 285, 368, 448, 535, 615, 698, 775].map((gx, i) => (
+      <rect key={`mgr-${i}`} x={gx} y={245 + (i % 5) * 8} width="3" height="3" fill={detail} opacity={0.22 + (i % 3) * 0.06} />
     ))}
     {/* Front grains — larger, closer to viewer */}
-    {[15, 45, 75, 110, 145, 180, 215, 250, 285, 320, 355, 390, 425, 460, 495, 530, 565, 600, 635, 670, 705, 740, 775].map((gx, i) => (
-      <rect key={`fgr-${i}`} x={gx} y={240 + (i % 5) * 10} width="4" height="3" fill={detail} opacity={0.28 + (i % 3) * 0.07} />
-    ))}
-    {[25, 60, 100, 138, 170, 210, 248, 280, 315, 350, 388, 425, 460, 498, 535, 570, 608, 645, 680, 718, 755, 788].map((gx, i) => (
-      <rect key={`fgr2-${i}`} x={gx} y={250 + (i % 4) * 12} width="3" height="3" fill={detail} opacity={0.24 + (i % 3) * 0.06} />
+    {[45, 145, 250, 355, 460, 565, 670, 775].map((gx, i) => (
+      <rect key={`fgr-${i}`} x={gx} y={285 + (i % 4) * 6} width="4" height="3" fill={detail} opacity={0.28 + (i % 3) * 0.07} />
     ))}
 
-    {/* === Pebble and shell highlights at varying depths === */}
-    {/* Back pebbles (small — distance) */}
-    <rect x="110" y="110" width="3" height="2" fill="#E8D5B0" opacity="0.25" rx="1" />
-    <rect x="350" y="106" width="3" height="2" fill="#F0E0C0" opacity="0.22" rx="1" />
-    <rect x="560" y="112" width="3" height="2" fill="#E8D5B0" opacity="0.25" rx="1" />
-    <rect x="700" y="104" width="3" height="2" fill="#F0E0C0" opacity="0.22" rx="1" />
+    {/* === Pebble highlights === */}
+    {/* Back pebbles */}
+    <rect x="200" y="222" width="3" height="2" fill="#E8D5B0" opacity="0.25" rx="1" />
+    <rect x="560" y="220" width="3" height="2" fill="#F0E0C0" opacity="0.22" rx="1" />
     {/* Mid pebbles */}
-    <rect x="80" y="170" width="4" height="3" fill="#E8D5B0" opacity="0.32" rx="1" />
-    <rect x="260" y="178" width="5" height="3" fill="#F0E0C0" opacity="0.28" rx="1" />
-    <rect x="450" y="168" width="4" height="3" fill="#E8D5B0" opacity="0.32" rx="1" />
-    <rect x="620" y="176" width="5" height="3" fill="#F0E0C0" opacity="0.28" rx="1" />
-    <rect x="175" y="186" width="3" height="2" fill="#E8D5B0" opacity="0.26" rx="1" />
-    <rect x="520" y="182" width="4" height="3" fill="#F0E0C0" opacity="0.26" rx="1" />
-    {/* Front pebbles (larger — close to glass) */}
-    <rect x="60" y="262" width="6" height="4" fill="#E8D5B0" opacity="0.42" rx="1" />
-    <rect x="220" y="270" width="5" height="4" fill="#F0E0C0" opacity="0.38" rx="1" />
-    <rect x="400" y="266" width="6" height="4" fill="#E8D5B0" opacity="0.42" rx="1" />
-    <rect x="580" y="274" width="5" height="3" fill="#F0E0C0" opacity="0.38" rx="1" />
-    <rect x="720" y="264" width="6" height="4" fill="#E8D5B0" opacity="0.42" rx="1" />
-    <rect x="160" y="276" width="4" height="3" fill="#E8D5B0" opacity="0.35" rx="1" />
-    <rect x="490" y="280" width="5" height="3" fill="#F0E0C0" opacity="0.32" rx="1" />
-    <rect x="650" y="272" width="4" height="3" fill="#E8D5B0" opacity="0.35" rx="1" />
+    <rect x="120" y="258" width="4" height="3" fill="#E8D5B0" opacity="0.32" rx="1" />
+    <rect x="450" y="262" width="5" height="3" fill="#F0E0C0" opacity="0.28" rx="1" />
+    <rect x="680" y="256" width="4" height="3" fill="#E8D5B0" opacity="0.30" rx="1" />
+    {/* Front pebbles */}
+    <rect x="100" y="296" width="6" height="4" fill="#E8D5B0" opacity="0.42" rx="1" />
+    <rect x="400" y="300" width="5" height="4" fill="#F0E0C0" opacity="0.38" rx="1" />
+    <rect x="650" y="298" width="6" height="4" fill="#E8D5B0" opacity="0.42" rx="1" />
 
     {/* Sand ripple lines showing perspective depth */}
-    <line x1="50" y1="132" x2="750" y2="132" stroke={lighter} strokeWidth="1" opacity="0.07" />
-    <line x1="30" y1="180" x2="770" y2="180" stroke={lighter} strokeWidth="1" opacity="0.06" />
-    <line x1="20" y1="235" x2="780" y2="235" stroke={lighter} strokeWidth="1.5" opacity="0.08" />
+    <line x1="50" y1="250" x2="750" y2="250" stroke={lighter} strokeWidth="1" opacity="0.07" />
+    <line x1="30" y1="280" x2="770" y2="280" stroke={lighter} strokeWidth="1" opacity="0.06" />
   </svg>
 ))
 SandyBottom.displayName = 'SandyBottom'
@@ -1474,9 +1454,9 @@ AtlanteanObelisk.displayName = 'AtlanteanObelisk'
 // ═══════════════════════════════════════════════════════════════════════
 // THEMED LAYOUT CONFIGS
 // Three-layer depth system with z-axis perspective (top = back of tank):
-//   background (z-1):  tall plants rooted at back sand surface (baseY=180)
-//   midground  (z-12): structures sitting on back sand, moved UP/BACK from bottom
-//   foreground (z-25): rocks, corals, tiny grass-like plants at front glass (baseY=300)
+//   background (z-1):  plants rooted at back sand surface (baseY=240)
+//   midground  (z-12): structures sitting on back sand
+//   foreground (z-25): rocks, corals, tiny grass-like plants at front glass (baseY=305)
 // ═══════════════════════════════════════════════════════════════════════
 
 interface LayeredDecoConfig {
@@ -1497,40 +1477,31 @@ interface LayeredDecoConfig {
 const OCEAN_LAYOUT: LayeredDecoConfig = {
   background: {
     kelps: [
-      { x: 15, height: 110, variant: 'bushy', color: '#2E7D32', delay: 0 },
-      { x: 60, height: 95, variant: 'wide', color: '#388E3C', delay: 0.5 },
-      { x: 110, height: 100, variant: 'bushy', color: '#1B5E20', delay: 1.2 },
-      { x: 520, height: 105, variant: 'bushy', color: '#1B5E20', delay: 0.3 },
-      { x: 580, height: 90, variant: 'wide', color: '#388E3C', delay: 0.9 },
-      { x: 720, height: 100, variant: 'bushy', color: '#2E7D32', delay: 0.8 },
-      { x: 770, height: 85, variant: 'wide', color: '#1B5E20', delay: 1.6 },
+      { x: 15, height: 65, variant: 'bushy', color: '#2E7D32', delay: 0 },
+      { x: 80, height: 55, variant: 'wide', color: '#388E3C', delay: 0.5 },
+      { x: 550, height: 60, variant: 'bushy', color: '#1B5E20', delay: 0.3 },
+      { x: 730, height: 55, variant: 'wide', color: '#2E7D32', delay: 0.8 },
     ],
   },
   midground: {
     structures: [
-      { type: 'coral-arch', x: 180, y: 30 },
-      { type: 'sunken-temple', x: 500, y: 34 },
+      { type: 'coral-arch', x: 180, y: 86 },
+      { type: 'sunken-temple', x: 500, y: 90 },
     ],
   },
   foreground: {
     rocks: [
-      { x: 50, y: 252, variant: 'medium', color: '#78716C' },
-      { x: 380, y: 256, variant: 'small', color: '#6B7280' },
-      { x: 680, y: 252, variant: 'small', color: '#78716C' },
+      { x: 50, y: 278, variant: 'medium', color: '#78716C' },
+      { x: 680, y: 280, variant: 'small', color: '#78716C' },
     ],
     corals: [
-      { x: 130, y: 244, variant: 'branch', color: '#E91E63' },
-      { x: 420, y: 248, variant: 'fan', color: '#FF5722' },
-      { x: 650, y: 242, variant: 'brain', color: '#E91E63' },
+      { x: 130, y: 274, variant: 'branch', color: '#E91E63' },
+      { x: 420, y: 276, variant: 'fan', color: '#FF5722' },
     ],
     kelps: [
-      { x: 40, height: 12, variant: 'thin', color: '#388E3C', delay: 0.2 },
-      { x: 110, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.8 },
-      { x: 200, height: 14, variant: 'thin', color: '#388E3C', delay: 1.0 },
-      { x: 300, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.5 },
-      { x: 460, height: 12, variant: 'thin', color: '#388E3C', delay: 1.5 },
-      { x: 560, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.3 },
-      { x: 640, height: 14, variant: 'thin', color: '#388E3C', delay: 1.2 },
+      { x: 40, height: 10, variant: 'thin', color: '#388E3C', delay: 0.2 },
+      { x: 200, height: 12, variant: 'thin', color: '#388E3C', delay: 1.0 },
+      { x: 460, height: 10, variant: 'thin', color: '#2E7D32', delay: 1.5 },
       { x: 750, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.7 },
     ],
   },
@@ -1540,38 +1511,32 @@ const TROPICAL_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#D4A43A', lighter: '#E8C468', detail: '#B8862D' },
   background: {
     kelps: [
-      { x: 20, height: 110, variant: 'bushy', color: '#00C853', delay: 0 },
-      { x: 80, height: 95, variant: 'wide', color: '#00E676', delay: 0.6 },
-      { x: 630, height: 100, variant: 'bushy', color: '#00C853', delay: 1.2 },
-      { x: 700, height: 90, variant: 'wide', color: '#00E676', delay: 0.4 },
-      { x: 760, height: 105, variant: 'bushy', color: '#00C853', delay: 0.9 },
+      { x: 20, height: 65, variant: 'bushy', color: '#00C853', delay: 0 },
+      { x: 80, height: 55, variant: 'wide', color: '#00E676', delay: 0.6 },
+      { x: 700, height: 60, variant: 'bushy', color: '#00C853', delay: 0.4 },
+      { x: 760, height: 50, variant: 'wide', color: '#00C853', delay: 0.9 },
     ],
   },
   midground: {
     structures: [
-      { type: 'volcano', x: 160, y: 34 },
-      { type: 'dragon-stone', x: 480, y: 30 },
+      { type: 'volcano', x: 160, y: 90 },
+      { type: 'dragon-stone', x: 480, y: 86 },
     ],
   },
   foreground: {
     rocks: [
-      { x: 80, y: 252, variant: 'small', color: '#A8A29E' },
-      { x: 350, y: 256, variant: 'small', color: '#78716C' },
-      { x: 600, y: 252, variant: 'medium', color: '#78716C' },
+      { x: 80, y: 280, variant: 'small', color: '#A8A29E' },
+      { x: 600, y: 278, variant: 'medium', color: '#78716C' },
     ],
     corals: [
-      { x: 120, y: 242, variant: 'branch', color: '#FF6D00' },
-      { x: 310, y: 244, variant: 'fan', color: '#FF1744' },
-      { x: 700, y: 248, variant: 'brain', color: '#FF6D00' },
+      { x: 120, y: 274, variant: 'branch', color: '#FF6D00' },
+      { x: 310, y: 276, variant: 'fan', color: '#FF1744' },
     ],
     kelps: [
-      { x: 50, height: 14, variant: 'thin', color: '#69F0AE', delay: 0.2 },
-      { x: 180, height: 10, variant: 'thin', color: '#00E676', delay: 0.8 },
-      { x: 260, height: 12, variant: 'thin', color: '#69F0AE', delay: 1.0 },
-      { x: 400, height: 10, variant: 'thin', color: '#00E676', delay: 1.8 },
-      { x: 520, height: 14, variant: 'thin', color: '#69F0AE', delay: 0.5 },
-      { x: 650, height: 10, variant: 'thin', color: '#00E676', delay: 1.3 },
-      { x: 770, height: 12, variant: 'thin', color: '#69F0AE', delay: 0.7 },
+      { x: 50, height: 12, variant: 'thin', color: '#69F0AE', delay: 0.2 },
+      { x: 260, height: 10, variant: 'thin', color: '#69F0AE', delay: 1.0 },
+      { x: 520, height: 12, variant: 'thin', color: '#69F0AE', delay: 0.5 },
+      { x: 770, height: 10, variant: 'thin', color: '#69F0AE', delay: 0.7 },
     ],
   },
 }
@@ -1580,35 +1545,28 @@ const SHIPWRECK_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#8B7355', lighter: '#A08B6C', detail: '#6B5B45' },
   background: {
     kelps: [
-      { x: 10, height: 85, variant: 'wide', color: '#2E7D32', delay: 0 },
-      { x: 60, height: 70, variant: 'thin', color: '#1B5E20', delay: 0.8 },
-      { x: 400, height: 80, variant: 'bushy', color: '#2E7D32', delay: 0.5 },
-      { x: 460, height: 70, variant: 'wide', color: '#1B5E20', delay: 1.0 },
-      { x: 720, height: 75, variant: 'bushy', color: '#2E7D32', delay: 1.5 },
-      { x: 770, height: 65, variant: 'thin', color: '#1B5E20', delay: 0.3 },
+      { x: 10, height: 50, variant: 'wide', color: '#2E7D32', delay: 0 },
+      { x: 400, height: 45, variant: 'bushy', color: '#2E7D32', delay: 0.5 },
+      { x: 730, height: 50, variant: 'bushy', color: '#2E7D32', delay: 1.5 },
     ],
   },
   midground: {
     structures: [
-      { type: 'shipwreck', x: 40, y: 16 },
-      { type: 'treasure', x: 640, y: 52 },
+      { type: 'shipwreck', x: 40, y: 72 },
+      { type: 'treasure', x: 640, y: 108 },
     ],
   },
   foreground: {
     rocks: [
-      { x: 30, y: 248, variant: 'large', color: '#57534E' },
-      { x: 380, y: 252, variant: 'medium', color: '#44403C' },
-      { x: 680, y: 250, variant: 'medium', color: '#57534E' },
+      { x: 30, y: 276, variant: 'large', color: '#57534E' },
+      { x: 680, y: 278, variant: 'medium', color: '#57534E' },
     ],
     corals: [
-      { x: 440, y: 252, variant: 'brain', color: '#795548' },
+      { x: 440, y: 280, variant: 'brain', color: '#795548' },
     ],
     kelps: [
-      { x: 70, height: 12, variant: 'thin', color: '#1B5E20', delay: 1 },
       { x: 200, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.5 },
-      { x: 340, height: 14, variant: 'thin', color: '#1B5E20', delay: 1.5 },
       { x: 520, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.8 },
-      { x: 620, height: 12, variant: 'thin', color: '#1B5E20', delay: 2 },
       { x: 750, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.3 },
     ],
   },
@@ -1618,36 +1576,29 @@ const SAILBOAT_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#C4A862', lighter: '#D4B872', detail: '#B89B52' },
   background: {
     kelps: [
-      { x: 15, height: 95, variant: 'bushy', color: '#2E7D32', delay: 0 },
-      { x: 70, height: 85, variant: 'wide', color: '#388E3C', delay: 0.6 },
-      { x: 600, height: 90, variant: 'bushy', color: '#388E3C', delay: 0.8 },
-      { x: 660, height: 80, variant: 'wide', color: '#2E7D32', delay: 1.2 },
-      { x: 730, height: 95, variant: 'bushy', color: '#1B5E20', delay: 1.5 },
-      { x: 780, height: 75, variant: 'thin', color: '#388E3C', delay: 0.4 },
+      { x: 15, height: 55, variant: 'bushy', color: '#2E7D32', delay: 0 },
+      { x: 70, height: 50, variant: 'wide', color: '#388E3C', delay: 0.6 },
+      { x: 660, height: 55, variant: 'bushy', color: '#2E7D32', delay: 1.2 },
+      { x: 740, height: 50, variant: 'wide', color: '#1B5E20', delay: 1.5 },
     ],
   },
   midground: {
     structures: [
-      { type: 'sailboat', x: 300, y: 48 },
+      { type: 'sailboat', x: 300, y: 104 },
     ],
   },
   foreground: {
     rocks: [
-      { x: 80, y: 252, variant: 'medium', color: '#78716C' },
-      { x: 500, y: 256, variant: 'small', color: '#A8A29E' },
-      { x: 680, y: 250, variant: 'medium', color: '#57534E' },
+      { x: 80, y: 278, variant: 'medium', color: '#78716C' },
+      { x: 680, y: 276, variant: 'medium', color: '#57534E' },
     ],
     corals: [
-      { x: 180, y: 248, variant: 'branch', color: '#FF6D00' },
-      { x: 550, y: 252, variant: 'fan', color: '#FF1744' },
+      { x: 180, y: 276, variant: 'branch', color: '#FF6D00' },
     ],
     kelps: [
-      { x: 30, height: 12, variant: 'thin', color: '#388E3C', delay: 0.6 },
-      { x: 150, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.2 },
-      { x: 280, height: 14, variant: 'thin', color: '#388E3C', delay: 1.0 },
-      { x: 420, height: 10, variant: 'thin', color: '#2E7D32', delay: 1.4 },
-      { x: 580, height: 12, variant: 'thin', color: '#388E3C', delay: 0.8 },
-      { x: 720, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.4 },
+      { x: 30, height: 10, variant: 'thin', color: '#388E3C', delay: 0.6 },
+      { x: 280, height: 12, variant: 'thin', color: '#388E3C', delay: 1.0 },
+      { x: 580, height: 10, variant: 'thin', color: '#388E3C', delay: 0.8 },
     ],
   },
 }
@@ -1656,33 +1607,27 @@ const SUBMARINE_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#5C5C5C', lighter: '#787878', detail: '#454545' },
   background: {
     kelps: [
-      { x: 10, height: 80, variant: 'wide', color: '#1B5E20', delay: 0 },
-      { x: 55, height: 70, variant: 'thin', color: '#2E7D32', delay: 0.7 },
-      { x: 620, height: 85, variant: 'bushy', color: '#2E7D32', delay: 0.5 },
-      { x: 690, height: 75, variant: 'wide', color: '#1B5E20', delay: 1.0 },
-      { x: 750, height: 80, variant: 'bushy', color: '#2E7D32', delay: 1.5 },
+      { x: 10, height: 50, variant: 'wide', color: '#1B5E20', delay: 0 },
+      { x: 650, height: 55, variant: 'bushy', color: '#2E7D32', delay: 0.5 },
+      { x: 750, height: 50, variant: 'wide', color: '#2E7D32', delay: 1.5 },
     ],
   },
   midground: {
     structures: [
-      { type: 'submarine', x: 260, y: 40 },
+      { type: 'submarine', x: 260, y: 96 },
     ],
   },
   foreground: {
     rocks: [
-      { x: 50, y: 250, variant: 'large', color: '#44403C' },
-      { x: 420, y: 254, variant: 'medium', color: '#57534E' },
-      { x: 700, y: 252, variant: 'medium', color: '#44403C' },
+      { x: 50, y: 276, variant: 'large', color: '#44403C' },
+      { x: 700, y: 278, variant: 'medium', color: '#44403C' },
     ],
     corals: [
-      { x: 160, y: 250, variant: 'brain', color: '#795548' },
+      { x: 160, y: 278, variant: 'brain', color: '#795548' },
     ],
     kelps: [
-      { x: 100, height: 12, variant: 'thin', color: '#1B5E20', delay: 0.4 },
       { x: 240, height: 10, variant: 'thin', color: '#2E7D32', delay: 1 },
-      { x: 350, height: 14, variant: 'thin', color: '#1B5E20', delay: 0.7 },
       { x: 480, height: 10, variant: 'thin', color: '#2E7D32', delay: 1.8 },
-      { x: 580, height: 12, variant: 'thin', color: '#1B5E20', delay: 0.3 },
       { x: 680, height: 10, variant: 'thin', color: '#2E7D32', delay: 1.2 },
     ],
   },
@@ -1691,35 +1636,29 @@ const SUBMARINE_LAYOUT: LayeredDecoConfig = {
 const MINIMAL_LAYOUT: LayeredDecoConfig = {
   background: {
     kelps: [
-      { x: 15, height: 105, variant: 'bushy', color: '#2E7D32', delay: 0 },
-      { x: 70, height: 90, variant: 'wide', color: '#388E3C', delay: 0.6 },
-      { x: 130, height: 95, variant: 'bushy', color: '#1B5E20', delay: 1.2 },
-      { x: 540, height: 100, variant: 'bushy', color: '#1B5E20', delay: 1.5 },
-      { x: 620, height: 85, variant: 'wide', color: '#2E7D32', delay: 0.4 },
-      { x: 700, height: 95, variant: 'bushy', color: '#388E3C', delay: 0.9 },
-      { x: 760, height: 80, variant: 'wide', color: '#2E7D32', delay: 2.0 },
+      { x: 15, height: 60, variant: 'bushy', color: '#2E7D32', delay: 0 },
+      { x: 80, height: 50, variant: 'wide', color: '#388E3C', delay: 0.6 },
+      { x: 620, height: 55, variant: 'bushy', color: '#2E7D32', delay: 0.4 },
+      { x: 720, height: 50, variant: 'wide', color: '#388E3C', delay: 0.9 },
     ],
   },
   midground: {
     structures: [
-      { type: 'cairn', x: 250, y: 34 },
-      { type: 'bamboo', x: 500, y: 30 },
+      { type: 'cairn', x: 250, y: 90 },
+      { type: 'bamboo', x: 500, y: 86 },
     ],
   },
   foreground: {
     rocks: [
-      { x: 170, y: 256, variant: 'small', color: '#78716C' },
-      { x: 400, y: 252, variant: 'small', color: '#6B7280' },
+      { x: 170, y: 282, variant: 'small', color: '#78716C' },
+      { x: 400, y: 280, variant: 'small', color: '#6B7280' },
     ],
     corals: [],
     kelps: [
-      { x: 60, height: 12, variant: 'thin', color: '#388E3C', delay: 0.3 },
-      { x: 200, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.8 },
-      { x: 300, height: 14, variant: 'thin', color: '#388E3C', delay: 1.2 },
-      { x: 420, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.5 },
-      { x: 520, height: 12, variant: 'thin', color: '#388E3C', delay: 0.9 },
-      { x: 650, height: 10, variant: 'thin', color: '#2E7D32', delay: 1.6 },
-      { x: 760, height: 12, variant: 'thin', color: '#388E3C', delay: 0.2 },
+      { x: 60, height: 10, variant: 'thin', color: '#388E3C', delay: 0.3 },
+      { x: 300, height: 12, variant: 'thin', color: '#388E3C', delay: 1.2 },
+      { x: 520, height: 10, variant: 'thin', color: '#388E3C', delay: 0.9 },
+      { x: 760, height: 10, variant: 'thin', color: '#388E3C', delay: 0.2 },
     ],
   },
 }
@@ -1728,34 +1667,28 @@ const CASTLE_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#6B6B6B', lighter: '#8A8A8A', detail: '#5A5A5A' },
   background: {
     kelps: [
-      { x: 10, height: 85, variant: 'bushy', color: '#1B5E20', delay: 0 },
-      { x: 60, height: 75, variant: 'wide', color: '#2E7D32', delay: 0.5 },
-      { x: 650, height: 80, variant: 'bushy', color: '#2E7D32', delay: 0.8 },
-      { x: 720, height: 70, variant: 'wide', color: '#1B5E20', delay: 1.2 },
-      { x: 770, height: 80, variant: 'bushy', color: '#2E7D32', delay: 1.5 },
+      { x: 10, height: 50, variant: 'bushy', color: '#1B5E20', delay: 0 },
+      { x: 680, height: 50, variant: 'bushy', color: '#2E7D32', delay: 0.8 },
+      { x: 770, height: 45, variant: 'wide', color: '#2E7D32', delay: 1.5 },
     ],
   },
   midground: {
     structures: [
-      { type: 'castle', x: 200, y: 8 },
-      { type: 'drawbridge', x: 560, y: 42 },
+      { type: 'castle', x: 200, y: 64 },
+      { type: 'drawbridge', x: 560, y: 98 },
     ],
   },
   foreground: {
     rocks: [
-      { x: 60, y: 250, variant: 'large', color: '#57534E' },
-      { x: 420, y: 254, variant: 'medium', color: '#44403C' },
-      { x: 700, y: 252, variant: 'medium', color: '#57534E' },
+      { x: 60, y: 276, variant: 'large', color: '#57534E' },
+      { x: 700, y: 278, variant: 'medium', color: '#57534E' },
     ],
     corals: [
-      { x: 140, y: 250, variant: 'brain', color: '#795548' },
+      { x: 140, y: 278, variant: 'brain', color: '#795548' },
     ],
     kelps: [
-      { x: 80, height: 12, variant: 'thin', color: '#1B5E20', delay: 0.4 },
       { x: 250, height: 10, variant: 'thin', color: '#2E7D32', delay: 1.2 },
-      { x: 380, height: 14, variant: 'thin', color: '#1B5E20', delay: 0.7 },
       { x: 530, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.2 },
-      { x: 660, height: 12, variant: 'thin', color: '#1B5E20', delay: 1.0 },
     ],
   },
 }
@@ -1764,34 +1697,28 @@ const PYRAMID_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#C4A862', lighter: '#D4B872', detail: '#A08B52' },
   background: {
     kelps: [
-      { x: 10, height: 80, variant: 'wide', color: '#2E7D32', delay: 0 },
-      { x: 55, height: 70, variant: 'thin', color: '#388E3C', delay: 0.5 },
-      { x: 670, height: 85, variant: 'bushy', color: '#388E3C', delay: 0.6 },
-      { x: 730, height: 75, variant: 'wide', color: '#2E7D32', delay: 1.0 },
-      { x: 780, height: 70, variant: 'thin', color: '#1B5E20', delay: 1.8 },
+      { x: 10, height: 50, variant: 'wide', color: '#2E7D32', delay: 0 },
+      { x: 700, height: 55, variant: 'bushy', color: '#388E3C', delay: 0.6 },
+      { x: 780, height: 45, variant: 'thin', color: '#1B5E20', delay: 1.8 },
     ],
   },
   midground: {
     structures: [
-      { type: 'pyramid', x: 80, y: 8 },
-      { type: 'sphinx', x: 520, y: 40 },
+      { type: 'pyramid', x: 80, y: 64 },
+      { type: 'sphinx', x: 520, y: 96 },
     ],
   },
   foreground: {
     rocks: [
-      { x: 40, y: 252, variant: 'medium', color: '#A08B6C' },
-      { x: 380, y: 256, variant: 'small', color: '#B89B52' },
-      { x: 660, y: 250, variant: 'large', color: '#8B7355' },
+      { x: 40, y: 278, variant: 'medium', color: '#A08B6C' },
+      { x: 660, y: 276, variant: 'large', color: '#8B7355' },
     ],
     corals: [
-      { x: 450, y: 252, variant: 'fan', color: '#E91E63' },
+      { x: 450, y: 280, variant: 'fan', color: '#E91E63' },
     ],
     kelps: [
-      { x: 70, height: 12, variant: 'thin', color: '#2E7D32', delay: 0.3 },
       { x: 200, height: 10, variant: 'thin', color: '#388E3C', delay: 1 },
-      { x: 340, height: 14, variant: 'thin', color: '#2E7D32', delay: 0.7 },
       { x: 500, height: 10, variant: 'thin', color: '#388E3C', delay: 1.5 },
-      { x: 620, height: 12, variant: 'thin', color: '#2E7D32', delay: 0.4 },
     ],
   },
 }
@@ -1800,36 +1727,28 @@ const TEMPLE_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#8D8D8D', lighter: '#A8A8A8', detail: '#6B6B6B' },
   background: {
     kelps: [
-      { x: 15, height: 95, variant: 'bushy', color: '#2E7D32', delay: 0 },
-      { x: 70, height: 80, variant: 'wide', color: '#388E3C', delay: 0.6 },
-      { x: 390, height: 85, variant: 'bushy', color: '#2E7D32', delay: 0.4 },
-      { x: 450, height: 75, variant: 'wide', color: '#388E3C', delay: 1.0 },
-      { x: 710, height: 90, variant: 'bushy', color: '#1B5E20', delay: 1.2 },
-      { x: 770, height: 75, variant: 'wide', color: '#2E7D32', delay: 0.3 },
+      { x: 15, height: 55, variant: 'bushy', color: '#2E7D32', delay: 0 },
+      { x: 70, height: 50, variant: 'wide', color: '#388E3C', delay: 0.6 },
+      { x: 720, height: 55, variant: 'bushy', color: '#1B5E20', delay: 1.2 },
     ],
   },
   midground: {
     structures: [
-      { type: 'torii', x: 120, y: 34 },
-      { type: 'pagoda', x: 480, y: 24 },
+      { type: 'torii', x: 120, y: 90 },
+      { type: 'pagoda', x: 480, y: 80 },
     ],
   },
   foreground: {
     rocks: [
-      { x: 60, y: 254, variant: 'small', color: '#78716C' },
-      { x: 350, y: 250, variant: 'medium', color: '#6B7280' },
-      { x: 680, y: 254, variant: 'small', color: '#78716C' },
+      { x: 60, y: 280, variant: 'small', color: '#78716C' },
+      { x: 350, y: 278, variant: 'medium', color: '#6B7280' },
     ],
     corals: [
-      { x: 280, y: 248, variant: 'branch', color: '#E91E63' },
-      { x: 620, y: 252, variant: 'fan', color: '#FF5722' },
+      { x: 620, y: 280, variant: 'fan', color: '#FF5722' },
     ],
     kelps: [
-      { x: 40, height: 12, variant: 'thin', color: '#388E3C', delay: 0.2 },
       { x: 160, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.8 },
-      { x: 300, height: 14, variant: 'thin', color: '#388E3C', delay: 1.2 },
       { x: 480, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.5 },
-      { x: 600, height: 12, variant: 'thin', color: '#388E3C', delay: 0.9 },
       { x: 740, height: 10, variant: 'thin', color: '#2E7D32', delay: 1.5 },
     ],
   },
@@ -1839,35 +1758,28 @@ const ATLANTIS_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#1A5276', lighter: '#2471A3', detail: '#154360' },
   background: {
     kelps: [
-      { x: 15, height: 90, variant: 'bushy', color: '#00695C', delay: 0 },
-      { x: 65, height: 80, variant: 'wide', color: '#004D40', delay: 0.6 },
-      { x: 640, height: 85, variant: 'bushy', color: '#004D40', delay: 0.5 },
-      { x: 710, height: 75, variant: 'wide', color: '#00695C', delay: 1.0 },
-      { x: 770, height: 85, variant: 'bushy', color: '#004D40', delay: 1.5 },
+      { x: 15, height: 55, variant: 'bushy', color: '#00695C', delay: 0 },
+      { x: 65, height: 50, variant: 'wide', color: '#004D40', delay: 0.6 },
+      { x: 720, height: 55, variant: 'bushy', color: '#004D40', delay: 1.5 },
     ],
   },
   midground: {
     structures: [
-      { type: 'atlantean-dome', x: 100, y: 8 },
-      { type: 'atlantean-obelisk', x: 560, y: 20 },
+      { type: 'atlantean-dome', x: 100, y: 64 },
+      { type: 'atlantean-obelisk', x: 560, y: 76 },
     ],
   },
   foreground: {
     rocks: [
-      { x: 50, y: 252, variant: 'medium', color: '#1F618D' },
-      { x: 400, y: 256, variant: 'small', color: '#2471A3' },
-      { x: 700, y: 250, variant: 'medium', color: '#1A5276' },
+      { x: 50, y: 278, variant: 'medium', color: '#1F618D' },
+      { x: 700, y: 276, variant: 'medium', color: '#1A5276' },
     ],
     corals: [
-      { x: 300, y: 248, variant: 'fan', color: '#00BCD4' },
-      { x: 650, y: 252, variant: 'brain', color: '#0097A7' },
+      { x: 300, y: 276, variant: 'fan', color: '#00BCD4' },
     ],
     kelps: [
-      { x: 40, height: 12, variant: 'thin', color: '#00897B', delay: 0.3 },
       { x: 180, height: 10, variant: 'thin', color: '#00695C', delay: 1 },
-      { x: 320, height: 14, variant: 'thin', color: '#00897B', delay: 0.6 },
       { x: 480, height: 10, variant: 'thin', color: '#00695C', delay: 1.4 },
-      { x: 600, height: 12, variant: 'thin', color: '#00897B', delay: 0.8 },
       { x: 750, height: 10, variant: 'thin', color: '#00695C', delay: 0.2 },
     ],
   },
@@ -1947,7 +1859,7 @@ export const DecorationBackground = memo(({ width, theme = 'ocean' }: { width: n
         preserveAspectRatio="xMidYMax meet"
         shapeRendering="crispEdges"
       >
-        {bg.kelps.map((k, i) => <Kelp key={`bg-kelp-${i}`} {...k} baseY={180} />)}
+        {bg.kelps.map((k, i) => <Kelp key={`bg-kelp-${i}`} {...k} baseY={240} />)}
       </svg>
     </div>
   )
@@ -1989,7 +1901,7 @@ export const DecorationForeground = memo(({ width, theme = 'ocean' }: { width: n
         preserveAspectRatio="xMidYMax meet"
         shapeRendering="crispEdges"
       >
-        {fg.kelps.map((k, i) => <Kelp key={`fg-kelp-${i}`} {...k} baseY={300} />)}
+        {fg.kelps.map((k, i) => <Kelp key={`fg-kelp-${i}`} {...k} baseY={305} />)}
         {fg.rocks.map((r, i) => <Rock key={`fg-rock-${i}`} {...r} />)}
         {fg.corals.map((c, i) => <Coral key={`fg-coral-${i}`} {...c} />)}
       </svg>
