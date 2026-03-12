@@ -2,14 +2,15 @@
 
 import { memo, useMemo, type ReactNode } from 'react'
 
-// Aquatic decorations for the fishbowl — split into background and foreground
-// layers so fish can swim between them for depth.
+// Aquatic decorations for the fishbowl — split into background, midground, and
+// foreground layers with z-axis depth perspective (top of sand = back of tank).
 //
-// Layer order (bottom to top):
-//   1. SandyBottom (flat, behind everything)
-//   2. Background layer (tall plants, far structures — z-index 1)
-//   3. Fish swim here (z-index 10-20)
-//   4. Foreground layer (small rocks, corals, short plants — z-index 25)
+// Layer order (back to front / top to bottom):
+//   1. SandyBottom (perspective slope: back of tank y≈96, front y≈280)
+//   2. Background layer (tall plants rooted at back sand, baseY=180 — z-index 1)
+//   3. Midground layer (structures sitting on back sand — z-index 12)
+//   4. Fish swim here (z-index 10-20)
+//   5. Foreground layer (small rocks, corals, short plants at front sand, baseY=300 — z-index 25)
 
 // ─── Sandy Bottom ────────────────────────────────────────────────────
 
@@ -18,46 +19,71 @@ export const SandyBottom = memo(({ color = '#C4A862', lighter = '#D4B872', detai
   lighter?: string
   detail?: string
 }) => (
-  <svg className="absolute bottom-0 left-0 w-full" height="140" preserveAspectRatio="none" viewBox="0 0 800 140" shapeRendering="crispEdges">
-    <rect x="0" y="30" width="800" height="110" fill={color} />
-    <rect x="0" y="22" width="800" height="14" fill={lighter} />
-    <rect x="0" y="18" width="60" height="6" fill={lighter} />
-    <rect x="50" y="12" width="80" height="8" fill={lighter} />
-    <rect x="120" y="14" width="40" height="8" fill={lighter} />
-    <rect x="180" y="8" width="100" height="14" fill={lighter} />
-    <rect x="300" y="14" width="60" height="8" fill={lighter} />
-    <rect x="380" y="6" width="90" height="16" fill={lighter} />
-    <rect x="500" y="10" width="70" height="12" fill={lighter} />
-    <rect x="580" y="16" width="50" height="6" fill={lighter} />
-    <rect x="650" y="8" width="80" height="14" fill={lighter} />
-    <rect x="740" y="14" width="60" height="8" fill={lighter} />
-    {/* Primary grain layer — dense scatter */}
-    {[18, 42, 68, 95, 118, 150, 178, 205, 232, 258, 285, 310, 340, 368, 395, 420, 448, 478, 505, 535, 560, 588, 615, 642, 670, 698, 725, 752, 775].map((x, i) => (
-      <rect key={`grain-${i}`} x={x} y={34 + (i % 5) * 8} width="3" height="3" fill={detail} opacity={0.35 + (i % 3) * 0.1} />
+  <svg className="absolute bottom-0 left-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 800 320" shapeRendering="crispEdges">
+    {/* Perspective sand bed — slopes from back of tank (y≈96) to front/glass (y=320) */}
+    {/* Main sand body */}
+    <polygon points="0,96 50,92 120,98 200,90 280,94 360,88 440,92 520,86 600,90 680,84 750,88 800,92 800,320 0,320" fill={color} />
+    {/* Back surface highlight strip (top of sand = back wall of tank) */}
+    <polygon points="0,96 50,92 120,98 200,90 280,94 360,88 440,92 520,86 600,90 680,84 750,88 800,92 800,106 750,102 680,98 600,104 520,100 440,106 360,102 280,108 200,104 120,112 50,106 0,110" fill={lighter} />
+    {/* Depth shading — darker toward back (distance), lighter toward front */}
+    <rect x="0" y="92" width="800" height="26" fill="#000" opacity="0.1" />
+    <rect x="0" y="118" width="800" height="18" fill="#000" opacity="0.06" />
+    <rect x="0" y="136" width="800" height="14" fill="#000" opacity="0.03" />
+    {/* Mid-depth sand transition */}
+    <rect x="0" y="200" width="800" height="3" fill={lighter} opacity="0.12" />
+    {/* Front sand edge highlight (closest to viewer/glass) */}
+    <polygon points="0,268 40,270 100,266 180,272 260,268 340,270 420,266 500,270 580,268 660,272 740,266 800,270 800,278 0,278" fill={lighter} opacity="0.35" />
+
+    {/* === Grain detail with depth-scaled perspective === */}
+    {/* Back grains — fine, sparse (further away) */}
+    {[30, 80, 140, 200, 260, 320, 380, 440, 500, 560, 620, 680, 740].map((gx, i) => (
+      <rect key={`bgr-${i}`} x={gx} y={106 + (i % 4) * 5} width="2" height="2" fill={detail} opacity={0.18 + (i % 3) * 0.04} />
     ))}
-    {/* Secondary grain layer — offset scatter */}
-    {[10, 35, 55, 82, 108, 135, 162, 190, 218, 245, 272, 298, 325, 355, 382, 410, 435, 462, 492, 518, 545, 572, 598, 628, 655, 682, 712, 738, 765, 790].map((x, i) => (
-      <rect key={`grain2-${i}`} x={x} y={44 + (i % 6) * 7} width="2" height="2" fill={detail} opacity={0.25 + (i % 4) * 0.08} />
+    {[55, 115, 175, 235, 295, 355, 415, 475, 535, 595, 655, 715].map((gx, i) => (
+      <rect key={`bgr2-${i}`} x={gx} y={110 + (i % 5) * 4} width="1" height="1" fill={detail} opacity={0.14 + (i % 3) * 0.03} />
     ))}
-    {/* Tertiary grain layer — fine particles */}
-    {[25, 58, 88, 122, 155, 188, 222, 255, 288, 320, 352, 385, 418, 452, 485, 518, 552, 585, 618, 652, 685, 718, 748, 780].map((x, i) => (
-      <rect key={`grain3-${i}`} x={x} y={52 + (i % 4) * 10} width="2" height="2" fill={detail} opacity={0.2 + (i % 3) * 0.07} />
+    {/* Mid grains — medium detail */}
+    {[18, 42, 68, 95, 118, 150, 178, 205, 232, 258, 285, 310, 340, 368, 395, 420, 448, 478, 505, 535, 560, 588, 615, 642, 670, 698, 725, 752, 775].map((gx, i) => (
+      <rect key={`mgr-${i}`} x={gx} y={150 + (i % 6) * 10} width="3" height="3" fill={detail} opacity={0.22 + (i % 3) * 0.06} />
     ))}
-    {/* Micro grain — finest detail */}
-    {[15, 38, 62, 90, 115, 142, 170, 198, 228, 260, 292, 318, 348, 378, 408, 438, 468, 498, 528, 558, 588, 618, 648, 678, 708, 740, 770, 795].map((x, i) => (
-      <rect key={`grain4-${i}`} x={x} y={62 + (i % 7) * 6} width="1" height="1" fill={detail} opacity={0.2 + (i % 3) * 0.05} />
+    {[10, 35, 55, 82, 108, 135, 162, 190, 218, 245, 272, 298, 325, 355, 382, 410, 435, 462, 492, 518, 545, 572, 598, 628, 655, 682, 712, 738, 765, 790].map((gx, i) => (
+      <rect key={`mgr2-${i}`} x={gx} y={160 + (i % 7) * 8} width="2" height="2" fill={detail} opacity={0.18 + (i % 4) * 0.05} />
     ))}
-    {/* Tiny shell/pebble highlights */}
-    <rect x="110" y="38" width="5" height="4" fill="#E8D5B0" rx="1" />
-    <rect x="450" y="34" width="6" height="4" fill="#F0E0C0" rx="1" />
-    <rect x="690" y="40" width="5" height="4" fill="#E8D5B0" rx="1" />
-    <rect x="260" y="44" width="4" height="3" fill="#F0E0C0" rx="1" />
-    <rect x="560" y="36" width="5" height="3" fill="#E8D5B0" rx="1" />
-    <rect x="175" y="50" width="3" height="3" fill="#E8D5B0" rx="1" />
-    <rect x="340" y="42" width="4" height="3" fill="#F0E0C0" rx="1" />
-    <rect x="620" y="48" width="3" height="3" fill="#E8D5B0" rx="1" />
-    <rect x="78" y="46" width="3" height="2" fill="#F0E0C0" rx="1" />
-    <rect x="730" y="38" width="4" height="3" fill="#E8D5B0" rx="1" />
+    {/* Front grains — larger, closer to viewer */}
+    {[15, 45, 75, 110, 145, 180, 215, 250, 285, 320, 355, 390, 425, 460, 495, 530, 565, 600, 635, 670, 705, 740, 775].map((gx, i) => (
+      <rect key={`fgr-${i}`} x={gx} y={240 + (i % 5) * 10} width="4" height="3" fill={detail} opacity={0.28 + (i % 3) * 0.07} />
+    ))}
+    {[25, 60, 100, 138, 170, 210, 248, 280, 315, 350, 388, 425, 460, 498, 535, 570, 608, 645, 680, 718, 755, 788].map((gx, i) => (
+      <rect key={`fgr2-${i}`} x={gx} y={250 + (i % 4) * 12} width="3" height="3" fill={detail} opacity={0.24 + (i % 3) * 0.06} />
+    ))}
+
+    {/* === Pebble and shell highlights at varying depths === */}
+    {/* Back pebbles (small — distance) */}
+    <rect x="110" y="110" width="3" height="2" fill="#E8D5B0" opacity="0.25" rx="1" />
+    <rect x="350" y="106" width="3" height="2" fill="#F0E0C0" opacity="0.22" rx="1" />
+    <rect x="560" y="112" width="3" height="2" fill="#E8D5B0" opacity="0.25" rx="1" />
+    <rect x="700" y="104" width="3" height="2" fill="#F0E0C0" opacity="0.22" rx="1" />
+    {/* Mid pebbles */}
+    <rect x="80" y="170" width="4" height="3" fill="#E8D5B0" opacity="0.32" rx="1" />
+    <rect x="260" y="178" width="5" height="3" fill="#F0E0C0" opacity="0.28" rx="1" />
+    <rect x="450" y="168" width="4" height="3" fill="#E8D5B0" opacity="0.32" rx="1" />
+    <rect x="620" y="176" width="5" height="3" fill="#F0E0C0" opacity="0.28" rx="1" />
+    <rect x="175" y="186" width="3" height="2" fill="#E8D5B0" opacity="0.26" rx="1" />
+    <rect x="520" y="182" width="4" height="3" fill="#F0E0C0" opacity="0.26" rx="1" />
+    {/* Front pebbles (larger — close to glass) */}
+    <rect x="60" y="262" width="6" height="4" fill="#E8D5B0" opacity="0.42" rx="1" />
+    <rect x="220" y="270" width="5" height="4" fill="#F0E0C0" opacity="0.38" rx="1" />
+    <rect x="400" y="266" width="6" height="4" fill="#E8D5B0" opacity="0.42" rx="1" />
+    <rect x="580" y="274" width="5" height="3" fill="#F0E0C0" opacity="0.38" rx="1" />
+    <rect x="720" y="264" width="6" height="4" fill="#E8D5B0" opacity="0.42" rx="1" />
+    <rect x="160" y="276" width="4" height="3" fill="#E8D5B0" opacity="0.35" rx="1" />
+    <rect x="490" y="280" width="5" height="3" fill="#F0E0C0" opacity="0.32" rx="1" />
+    <rect x="650" y="272" width="4" height="3" fill="#E8D5B0" opacity="0.35" rx="1" />
+
+    {/* Sand ripple lines showing perspective depth */}
+    <line x1="50" y1="132" x2="750" y2="132" stroke={lighter} strokeWidth="1" opacity="0.07" />
+    <line x1="30" y1="180" x2="770" y2="180" stroke={lighter} strokeWidth="1" opacity="0.06" />
+    <line x1="20" y1="235" x2="780" y2="235" stroke={lighter} strokeWidth="1.5" opacity="0.08" />
   </svg>
 ))
 SandyBottom.displayName = 'SandyBottom'
@@ -104,21 +130,21 @@ export const Rock = memo(({ x, y, variant = 'medium', color = '#6B7280' }: RockP
 })
 Rock.displayName = 'Rock'
 
-interface KelpProps { x: number; height?: number; variant?: 'thin' | 'wide' | 'bushy'; color?: string; delay?: number }
+interface KelpProps { x: number; height?: number; variant?: 'thin' | 'wide' | 'bushy'; color?: string; delay?: number; baseY?: number }
 
-export const Kelp = memo(({ x, height = 60, variant = 'thin', color = '#2E7D32', delay = 0 }: KelpProps) => {
+export const Kelp = memo(({ x, height = 60, variant = 'thin', color = '#2E7D32', delay = 0, baseY = 300 }: KelpProps) => {
   const lighter = '#4CAF50'
   const darker = '#1B5E20'
 
   return (
-    <g style={{ animation: `kelpSway 4s ease-in-out ${delay}s infinite`, transformOrigin: `${x + 4}px 100%` }}>
+    <g style={{ animation: `kelpSway 4s ease-in-out ${delay}s infinite`, transformOrigin: `${x + 4}px ${baseY}px` }}>
       {variant === 'thin' && (
         <>
           {Array.from({ length: Math.floor(height / 6) }, (_, i) => (
             <g key={i}>
-              <rect x={x + (i % 2 === 0 ? 0 : 2)} y={200 - (i + 1) * 6} width="4" height="6" fill={i % 3 === 0 ? lighter : color} />
+              <rect x={x + (i % 2 === 0 ? 0 : 2)} y={baseY -(i + 1) * 6} width="4" height="6" fill={i % 3 === 0 ? lighter : color} />
               {i % 2 === 0 && (
-                <rect x={x + (i % 4 === 0 ? -3 : 6)} y={200 - (i + 1) * 6 + 1} width="4" height="3" fill={lighter} opacity="0.7" />
+                <rect x={x + (i % 4 === 0 ? -3 : 6)} y={baseY -(i + 1) * 6 + 1} width="4" height="3" fill={lighter} opacity="0.7" />
               )}
             </g>
           ))}
@@ -128,11 +154,11 @@ export const Kelp = memo(({ x, height = 60, variant = 'thin', color = '#2E7D32',
         <>
           {Array.from({ length: Math.floor(height / 6) }, (_, i) => (
             <g key={i}>
-              <rect x={x + (i % 2 === 0 ? -1 : 1)} y={200 - (i + 1) * 6} width="8" height="6" fill={i % 3 === 0 ? lighter : color} />
+              <rect x={x + (i % 2 === 0 ? -1 : 1)} y={baseY -(i + 1) * 6} width="8" height="6" fill={i % 3 === 0 ? lighter : color} />
               {i % 3 === 0 && (
                 <>
-                  <rect x={x - 4 + (i % 2) * 2} y={200 - (i + 1) * 6} width="4" height="4" fill={lighter} opacity="0.6" />
-                  <rect x={x + 8 - (i % 2) * 2} y={200 - (i + 1) * 6 + 1} width="4" height="4" fill={color} opacity="0.7" />
+                  <rect x={x - 4 + (i % 2) * 2} y={baseY -(i + 1) * 6} width="4" height="4" fill={lighter} opacity="0.6" />
+                  <rect x={x + 8 - (i % 2) * 2} y={baseY -(i + 1) * 6 + 1} width="4" height="4" fill={color} opacity="0.7" />
                 </>
               )}
             </g>
@@ -145,9 +171,9 @@ export const Kelp = memo(({ x, height = 60, variant = 'thin', color = '#2E7D32',
             const spread = Math.min(i * 0.5, 4)
             return (
               <g key={i}>
-                <rect x={x - spread + (i % 2)} y={200 - (i + 1) * 5} width={6 + spread * 2} height="5" fill={i % 2 === 0 ? color : darker} />
+                <rect x={x - spread + (i % 2)} y={baseY -(i + 1) * 5} width={6 + spread * 2} height="5" fill={i % 2 === 0 ? color : darker} />
                 {i % 2 === 0 && (
-                  <rect x={x + 1} y={200 - (i + 1) * 5} width="3" height="3" fill={lighter} opacity="0.5" />
+                  <rect x={x + 1} y={baseY -(i + 1) * 5} width="3" height="3" fill={lighter} opacity="0.5" />
                 )}
               </g>
             )
@@ -1447,10 +1473,10 @@ AtlanteanObelisk.displayName = 'AtlanteanObelisk'
 
 // ═══════════════════════════════════════════════════════════════════════
 // THEMED LAYOUT CONFIGS
-// Three-layer depth system for realistic tank perspective:
-//   background (z-1):  tall plants against the back wall
-//   midground  (z-12): structures sitting on the sand between back & front
-//   foreground (z-25): rocks, corals, tiny grass-like plants at the glass
+// Three-layer depth system with z-axis perspective (top = back of tank):
+//   background (z-1):  tall plants rooted at back sand surface (baseY=180)
+//   midground  (z-12): structures sitting on back sand, moved UP/BACK from bottom
+//   foreground (z-25): rocks, corals, tiny grass-like plants at front glass (baseY=300)
 // ═══════════════════════════════════════════════════════════════════════
 
 interface LayeredDecoConfig {
@@ -1482,20 +1508,20 @@ const OCEAN_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'coral-arch', x: 180, y: 78 },
-      { type: 'sunken-temple', x: 500, y: 82 },
+      { type: 'coral-arch', x: 180, y: 30 },
+      { type: 'sunken-temple', x: 500, y: 34 },
     ],
   },
   foreground: {
     rocks: [
-      { x: 50, y: 172, variant: 'medium', color: '#78716C' },
-      { x: 380, y: 176, variant: 'small', color: '#6B7280' },
-      { x: 680, y: 172, variant: 'small', color: '#78716C' },
+      { x: 50, y: 252, variant: 'medium', color: '#78716C' },
+      { x: 380, y: 256, variant: 'small', color: '#6B7280' },
+      { x: 680, y: 252, variant: 'small', color: '#78716C' },
     ],
     corals: [
-      { x: 130, y: 158, variant: 'branch', color: '#E91E63' },
-      { x: 420, y: 162, variant: 'fan', color: '#FF5722' },
-      { x: 650, y: 156, variant: 'brain', color: '#E91E63' },
+      { x: 130, y: 244, variant: 'branch', color: '#E91E63' },
+      { x: 420, y: 248, variant: 'fan', color: '#FF5722' },
+      { x: 650, y: 242, variant: 'brain', color: '#E91E63' },
     ],
     kelps: [
       { x: 40, height: 12, variant: 'thin', color: '#388E3C', delay: 0.2 },
@@ -1523,20 +1549,20 @@ const TROPICAL_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'volcano', x: 160, y: 82 },
-      { type: 'dragon-stone', x: 480, y: 78 },
+      { type: 'volcano', x: 160, y: 34 },
+      { type: 'dragon-stone', x: 480, y: 30 },
     ],
   },
   foreground: {
     rocks: [
-      { x: 80, y: 172, variant: 'small', color: '#A8A29E' },
-      { x: 350, y: 176, variant: 'small', color: '#78716C' },
-      { x: 600, y: 172, variant: 'medium', color: '#78716C' },
+      { x: 80, y: 252, variant: 'small', color: '#A8A29E' },
+      { x: 350, y: 256, variant: 'small', color: '#78716C' },
+      { x: 600, y: 252, variant: 'medium', color: '#78716C' },
     ],
     corals: [
-      { x: 120, y: 156, variant: 'branch', color: '#FF6D00' },
-      { x: 310, y: 158, variant: 'fan', color: '#FF1744' },
-      { x: 700, y: 162, variant: 'brain', color: '#FF6D00' },
+      { x: 120, y: 242, variant: 'branch', color: '#FF6D00' },
+      { x: 310, y: 244, variant: 'fan', color: '#FF1744' },
+      { x: 700, y: 248, variant: 'brain', color: '#FF6D00' },
     ],
     kelps: [
       { x: 50, height: 14, variant: 'thin', color: '#69F0AE', delay: 0.2 },
@@ -1564,18 +1590,18 @@ const SHIPWRECK_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'shipwreck', x: 40, y: 60 },
-      { type: 'treasure', x: 640, y: 100 },
+      { type: 'shipwreck', x: 40, y: 16 },
+      { type: 'treasure', x: 640, y: 52 },
     ],
   },
   foreground: {
     rocks: [
-      { x: 30, y: 168, variant: 'large', color: '#57534E' },
-      { x: 380, y: 172, variant: 'medium', color: '#44403C' },
-      { x: 680, y: 170, variant: 'medium', color: '#57534E' },
+      { x: 30, y: 248, variant: 'large', color: '#57534E' },
+      { x: 380, y: 252, variant: 'medium', color: '#44403C' },
+      { x: 680, y: 250, variant: 'medium', color: '#57534E' },
     ],
     corals: [
-      { x: 440, y: 166, variant: 'brain', color: '#795548' },
+      { x: 440, y: 252, variant: 'brain', color: '#795548' },
     ],
     kelps: [
       { x: 70, height: 12, variant: 'thin', color: '#1B5E20', delay: 1 },
@@ -1602,18 +1628,18 @@ const SAILBOAT_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'sailboat', x: 300, y: 96 },
+      { type: 'sailboat', x: 300, y: 48 },
     ],
   },
   foreground: {
     rocks: [
-      { x: 80, y: 172, variant: 'medium', color: '#78716C' },
-      { x: 500, y: 176, variant: 'small', color: '#A8A29E' },
-      { x: 680, y: 170, variant: 'medium', color: '#57534E' },
+      { x: 80, y: 252, variant: 'medium', color: '#78716C' },
+      { x: 500, y: 256, variant: 'small', color: '#A8A29E' },
+      { x: 680, y: 250, variant: 'medium', color: '#57534E' },
     ],
     corals: [
-      { x: 180, y: 162, variant: 'branch', color: '#FF6D00' },
-      { x: 550, y: 166, variant: 'fan', color: '#FF1744' },
+      { x: 180, y: 248, variant: 'branch', color: '#FF6D00' },
+      { x: 550, y: 252, variant: 'fan', color: '#FF1744' },
     ],
     kelps: [
       { x: 30, height: 12, variant: 'thin', color: '#388E3C', delay: 0.6 },
@@ -1639,17 +1665,17 @@ const SUBMARINE_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'submarine', x: 260, y: 88 },
+      { type: 'submarine', x: 260, y: 40 },
     ],
   },
   foreground: {
     rocks: [
-      { x: 50, y: 170, variant: 'large', color: '#44403C' },
-      { x: 420, y: 174, variant: 'medium', color: '#57534E' },
-      { x: 700, y: 172, variant: 'medium', color: '#44403C' },
+      { x: 50, y: 250, variant: 'large', color: '#44403C' },
+      { x: 420, y: 254, variant: 'medium', color: '#57534E' },
+      { x: 700, y: 252, variant: 'medium', color: '#44403C' },
     ],
     corals: [
-      { x: 160, y: 164, variant: 'brain', color: '#795548' },
+      { x: 160, y: 250, variant: 'brain', color: '#795548' },
     ],
     kelps: [
       { x: 100, height: 12, variant: 'thin', color: '#1B5E20', delay: 0.4 },
@@ -1676,14 +1702,14 @@ const MINIMAL_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'cairn', x: 250, y: 82 },
-      { type: 'bamboo', x: 500, y: 78 },
+      { type: 'cairn', x: 250, y: 34 },
+      { type: 'bamboo', x: 500, y: 30 },
     ],
   },
   foreground: {
     rocks: [
-      { x: 170, y: 176, variant: 'small', color: '#78716C' },
-      { x: 400, y: 172, variant: 'small', color: '#6B7280' },
+      { x: 170, y: 256, variant: 'small', color: '#78716C' },
+      { x: 400, y: 252, variant: 'small', color: '#6B7280' },
     ],
     corals: [],
     kelps: [
@@ -1711,18 +1737,18 @@ const CASTLE_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'castle', x: 200, y: 56 },
-      { type: 'drawbridge', x: 560, y: 90 },
+      { type: 'castle', x: 200, y: 8 },
+      { type: 'drawbridge', x: 560, y: 42 },
     ],
   },
   foreground: {
     rocks: [
-      { x: 60, y: 170, variant: 'large', color: '#57534E' },
-      { x: 420, y: 174, variant: 'medium', color: '#44403C' },
-      { x: 700, y: 172, variant: 'medium', color: '#57534E' },
+      { x: 60, y: 250, variant: 'large', color: '#57534E' },
+      { x: 420, y: 254, variant: 'medium', color: '#44403C' },
+      { x: 700, y: 252, variant: 'medium', color: '#57534E' },
     ],
     corals: [
-      { x: 140, y: 164, variant: 'brain', color: '#795548' },
+      { x: 140, y: 250, variant: 'brain', color: '#795548' },
     ],
     kelps: [
       { x: 80, height: 12, variant: 'thin', color: '#1B5E20', delay: 0.4 },
@@ -1747,18 +1773,18 @@ const PYRAMID_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'pyramid', x: 80, y: 56 },
-      { type: 'sphinx', x: 520, y: 88 },
+      { type: 'pyramid', x: 80, y: 8 },
+      { type: 'sphinx', x: 520, y: 40 },
     ],
   },
   foreground: {
     rocks: [
-      { x: 40, y: 172, variant: 'medium', color: '#A08B6C' },
-      { x: 380, y: 176, variant: 'small', color: '#B89B52' },
-      { x: 660, y: 170, variant: 'large', color: '#8B7355' },
+      { x: 40, y: 252, variant: 'medium', color: '#A08B6C' },
+      { x: 380, y: 256, variant: 'small', color: '#B89B52' },
+      { x: 660, y: 250, variant: 'large', color: '#8B7355' },
     ],
     corals: [
-      { x: 450, y: 166, variant: 'fan', color: '#E91E63' },
+      { x: 450, y: 252, variant: 'fan', color: '#E91E63' },
     ],
     kelps: [
       { x: 70, height: 12, variant: 'thin', color: '#2E7D32', delay: 0.3 },
@@ -1784,19 +1810,19 @@ const TEMPLE_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'torii', x: 120, y: 82 },
-      { type: 'pagoda', x: 480, y: 72 },
+      { type: 'torii', x: 120, y: 34 },
+      { type: 'pagoda', x: 480, y: 24 },
     ],
   },
   foreground: {
     rocks: [
-      { x: 60, y: 174, variant: 'small', color: '#78716C' },
-      { x: 350, y: 170, variant: 'medium', color: '#6B7280' },
-      { x: 680, y: 174, variant: 'small', color: '#78716C' },
+      { x: 60, y: 254, variant: 'small', color: '#78716C' },
+      { x: 350, y: 250, variant: 'medium', color: '#6B7280' },
+      { x: 680, y: 254, variant: 'small', color: '#78716C' },
     ],
     corals: [
-      { x: 280, y: 162, variant: 'branch', color: '#E91E63' },
-      { x: 620, y: 166, variant: 'fan', color: '#FF5722' },
+      { x: 280, y: 248, variant: 'branch', color: '#E91E63' },
+      { x: 620, y: 252, variant: 'fan', color: '#FF5722' },
     ],
     kelps: [
       { x: 40, height: 12, variant: 'thin', color: '#388E3C', delay: 0.2 },
@@ -1822,19 +1848,19 @@ const ATLANTIS_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'atlantean-dome', x: 100, y: 56 },
-      { type: 'atlantean-obelisk', x: 560, y: 68 },
+      { type: 'atlantean-dome', x: 100, y: 8 },
+      { type: 'atlantean-obelisk', x: 560, y: 20 },
     ],
   },
   foreground: {
     rocks: [
-      { x: 50, y: 172, variant: 'medium', color: '#1F618D' },
-      { x: 400, y: 176, variant: 'small', color: '#2471A3' },
-      { x: 700, y: 170, variant: 'medium', color: '#1A5276' },
+      { x: 50, y: 252, variant: 'medium', color: '#1F618D' },
+      { x: 400, y: 256, variant: 'small', color: '#2471A3' },
+      { x: 700, y: 250, variant: 'medium', color: '#1A5276' },
     ],
     corals: [
-      { x: 300, y: 162, variant: 'fan', color: '#00BCD4' },
-      { x: 650, y: 166, variant: 'brain', color: '#0097A7' },
+      { x: 300, y: 248, variant: 'fan', color: '#00BCD4' },
+      { x: 650, y: 252, variant: 'brain', color: '#0097A7' },
     ],
     kelps: [
       { x: 40, height: 12, variant: 'thin', color: '#00897B', delay: 0.3 },
@@ -1887,7 +1913,20 @@ function renderStructure(s: { type: string; x: number; y: number }) {
   }
   return (
     <g key={`${s.type}-${s.x}`} transform={`translate(${s.x}, ${s.y}) scale(2)`}>
+      {/* Ground shadow beneath structure */}
+      <ellipse cx="40" cy="62" rx="42" ry="5" fill="#000" opacity="0.1" />
       {inner}
+      {/* Scattered pebbles and sand disturbance at base */}
+      <rect x="-8" y="58" width="4" height="3" fill="#78716C" opacity="0.3" />
+      <rect x="-4" y="62" width="3" height="2" fill="#6B7280" opacity="0.25" />
+      <rect x="-12" y="60" width="3" height="2" fill="#9CA3AF" opacity="0.2" />
+      <circle cx="-6" cy="64" r="1.5" fill="#9CA3AF" opacity="0.18" />
+      <circle cx="88" cy="63" r="1.2" fill="#78716C" opacity="0.2" />
+      <rect x="82" y="60" width="3" height="2" fill="#6B7280" opacity="0.22" />
+      <rect x="86" y="58" width="4" height="3" fill="#9CA3AF" opacity="0.18" />
+      {/* Small sand mound/disturbance around base */}
+      <rect x="-6" y="56" width="8" height="2" fill="#C4A862" opacity="0.15" />
+      <rect x="80" y="56" width="10" height="2" fill="#C4A862" opacity="0.12" />
     </g>
   )
 }
@@ -1900,15 +1939,15 @@ export const DecorationBackground = memo(({ width, theme = 'ocean' }: { width: n
   const bg = useMemo(() => layout.background, [layout])
 
   return (
-    <div className="absolute bottom-0 left-0 w-full z-[1]" style={{ height: '240px' }}>
+    <div className="absolute bottom-0 left-0 w-full z-[1]" style={{ height: '400px' }}>
       <SandyBottom color={sandColors.color} lighter={sandColors.lighter} detail={sandColors.detail} />
       <svg
         className="absolute bottom-0 left-0 w-full h-full"
-        viewBox="0 0 800 200"
+        viewBox="0 0 800 320"
         preserveAspectRatio="xMidYMax meet"
         shapeRendering="crispEdges"
       >
-        {bg.kelps.map((k, i) => <Kelp key={`bg-kelp-${i}`} {...k} />)}
+        {bg.kelps.map((k, i) => <Kelp key={`bg-kelp-${i}`} {...k} baseY={180} />)}
       </svg>
     </div>
   )
@@ -1922,10 +1961,10 @@ export const DecorationMidground = memo(({ width, theme = 'ocean' }: { width: nu
   const mg = useMemo(() => layout.midground, [layout])
 
   return (
-    <div className="absolute bottom-0 left-0 w-full z-[12]" style={{ height: '240px', pointerEvents: 'none' }}>
+    <div className="absolute bottom-0 left-0 w-full z-[12]" style={{ height: '400px', pointerEvents: 'none' }}>
       <svg
         className="absolute bottom-0 left-0 w-full h-full"
-        viewBox="0 0 800 200"
+        viewBox="0 0 800 320"
         preserveAspectRatio="xMidYMax meet"
         shapeRendering="crispEdges"
       >
@@ -1943,14 +1982,14 @@ export const DecorationForeground = memo(({ width, theme = 'ocean' }: { width: n
   const fg = useMemo(() => layout.foreground, [layout])
 
   return (
-    <div className="absolute bottom-0 left-0 w-full z-[25]" style={{ height: '240px', pointerEvents: 'none' }}>
+    <div className="absolute bottom-0 left-0 w-full z-[25]" style={{ height: '400px', pointerEvents: 'none' }}>
       <svg
         className="absolute bottom-0 left-0 w-full h-full"
-        viewBox="0 0 800 200"
+        viewBox="0 0 800 320"
         preserveAspectRatio="xMidYMax meet"
         shapeRendering="crispEdges"
       >
-        {fg.kelps.map((k, i) => <Kelp key={`fg-kelp-${i}`} {...k} />)}
+        {fg.kelps.map((k, i) => <Kelp key={`fg-kelp-${i}`} {...k} baseY={300} />)}
         {fg.rocks.map((r, i) => <Rock key={`fg-rock-${i}`} {...r} />)}
         {fg.corals.map((c, i) => <Coral key={`fg-coral-${i}`} {...c} />)}
       </svg>
