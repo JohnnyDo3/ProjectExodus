@@ -112,54 +112,154 @@ Rock.displayName = 'Rock'
 
 interface KelpProps { x: number; height?: number; variant?: 'thin' | 'wide' | 'bushy'; color?: string; delay?: number; baseY?: number }
 
+// Aquatic plant component — three variants inspired by real aquarium plants:
+//   thin:  Vallisneria (jungle val) — long ribbon-like grass blades
+//   wide:  Amazon Sword / Java Fern — broad pointed leaf blades from a rosette
+//   bushy: Rotala / Cabomba — dense feathery leaves along branching stems
+
 export const Kelp = memo(({ x, height = 60, variant = 'thin', color = '#2E7D32', delay = 0, baseY = 300 }: KelpProps) => {
   const lighter = '#4CAF50'
   const darker = '#1B5E20'
+  const topY = baseY - height
 
   return (
-    <g style={{ animation: `kelpSway 4s ease-in-out ${delay}s infinite`, transformOrigin: `${x + 4}px ${baseY}px` }}>
-      {variant === 'thin' && (
-        <>
-          {Array.from({ length: Math.floor(height / 6) }, (_, i) => (
-            <g key={i}>
-              <rect x={x + (i % 2 === 0 ? 0 : 2)} y={baseY -(i + 1) * 6} width="4" height="6" fill={i % 3 === 0 ? lighter : color} />
-              {i % 2 === 0 && (
-                <rect x={x + (i % 4 === 0 ? -3 : 6)} y={baseY -(i + 1) * 6 + 1} width="4" height="3" fill={lighter} opacity="0.7" />
-              )}
-            </g>
-          ))}
-        </>
-      )}
-      {variant === 'wide' && (
-        <>
-          {Array.from({ length: Math.floor(height / 6) }, (_, i) => (
-            <g key={i}>
-              <rect x={x + (i % 2 === 0 ? -1 : 1)} y={baseY -(i + 1) * 6} width="8" height="6" fill={i % 3 === 0 ? lighter : color} />
-              {i % 3 === 0 && (
-                <>
-                  <rect x={x - 4 + (i % 2) * 2} y={baseY -(i + 1) * 6} width="4" height="4" fill={lighter} opacity="0.6" />
-                  <rect x={x + 8 - (i % 2) * 2} y={baseY -(i + 1) * 6 + 1} width="4" height="4" fill={color} opacity="0.7" />
-                </>
-              )}
-            </g>
-          ))}
-        </>
-      )}
-      {variant === 'bushy' && (
-        <>
-          {Array.from({ length: Math.floor(height / 5) }, (_, i) => {
-            const spread = Math.min(i * 0.5, 4)
-            return (
-              <g key={i}>
-                <rect x={x - spread + (i % 2)} y={baseY -(i + 1) * 5} width={6 + spread * 2} height="5" fill={i % 2 === 0 ? color : darker} />
-                {i % 2 === 0 && (
-                  <rect x={x + 1} y={baseY -(i + 1) * 5} width="3" height="3" fill={lighter} opacity="0.5" />
-                )}
-              </g>
-            )
-          })}
-        </>
-      )}
+    <g style={{ animation: `kelpSway ${3.5 + (delay % 2)}s ease-in-out ${delay}s infinite`, transformOrigin: `${x}px ${baseY}px` }}>
+      {variant === 'thin' && (() => {
+        // Vallisneria — 3-5 long ribbon blades from a single root point
+        const bladeCount = 3 + Math.floor((height % 20) / 10)
+        return (
+          <>
+            {/* Root cluster at base */}
+            <ellipse cx={x} cy={baseY} rx="3" ry="1.5" fill={darker} opacity="0.5" />
+            {Array.from({ length: bladeCount }, (_, i) => {
+              const spread = (i - (bladeCount - 1) / 2) * 3
+              const bladeH = height * (0.7 + (i % 3) * 0.15)
+              const midX = x + spread + Math.sin(i * 1.8) * 4
+              const tipX = x + spread * 1.5 + Math.sin(i * 2.3) * 6
+              const tipY = baseY - bladeH
+              const midY = baseY - bladeH * 0.5
+              const bladeColor = i % 2 === 0 ? color : lighter
+              return (
+                <g key={i}>
+                  {/* Blade — curved ribbon path */}
+                  <path
+                    d={`M${x + spread - 1.5} ${baseY} Q${midX - 2} ${midY} ${tipX} ${tipY} L${tipX + 2} ${tipY + 2} Q${midX + 2} ${midY + 4} ${x + spread + 1.5} ${baseY}Z`}
+                    fill={bladeColor}
+                    opacity={0.85 - i * 0.05}
+                  />
+                  {/* Center vein */}
+                  <path
+                    d={`M${x + spread} ${baseY - 2} Q${midX} ${midY} ${tipX + 1} ${tipY + 1}`}
+                    stroke={lighter}
+                    strokeWidth="0.4"
+                    fill="none"
+                    opacity="0.3"
+                  />
+                </g>
+              )
+            })}
+          </>
+        )
+      })()}
+      {variant === 'wide' && (() => {
+        // Amazon Sword — rosette of broad, pointed leaves
+        const leafCount = 4 + Math.floor((height % 20) / 8)
+        return (
+          <>
+            {/* Root/stem base */}
+            <ellipse cx={x} cy={baseY} rx="4" ry="2" fill={darker} opacity="0.5" />
+            <rect x={x - 1} y={baseY - 6} width="2" height="6" fill={darker} rx="1" />
+            {Array.from({ length: leafCount }, (_, i) => {
+              const angle = ((i / leafCount) * 1.4 - 0.7) // spread angle
+              const leafH = height * (0.55 + (i % 3) * 0.2)
+              const baseOffX = Math.sin(angle) * 3
+              const tipX = x + Math.sin(angle) * leafH * 0.5
+              const tipY = baseY - leafH
+              const midY = baseY - leafH * 0.45
+              const leafWidth = 5 + (i % 2) * 2
+              const leafColor = i % 3 === 0 ? lighter : i % 3 === 1 ? color : darker
+              return (
+                <g key={i}>
+                  {/* Broad leaf blade */}
+                  <path
+                    d={`M${x + baseOffX} ${baseY - 6} Q${x + baseOffX - leafWidth} ${midY} ${tipX} ${tipY} Q${x + baseOffX + leafWidth} ${midY} ${x + baseOffX} ${baseY - 6}Z`}
+                    fill={leafColor}
+                    opacity={0.8 - i * 0.03}
+                  />
+                  {/* Leaf midrib vein */}
+                  <path
+                    d={`M${x + baseOffX} ${baseY - 8} Q${x + baseOffX} ${midY} ${tipX} ${tipY}`}
+                    stroke={lighter}
+                    strokeWidth="0.5"
+                    fill="none"
+                    opacity="0.25"
+                  />
+                  {/* Side veins */}
+                  {i % 2 === 0 && (
+                    <>
+                      <path d={`M${x + baseOffX} ${midY + 6} Q${x + baseOffX - 3} ${midY + 2} ${x + baseOffX - leafWidth * 0.6} ${midY + 4}`} stroke={lighter} strokeWidth="0.3" fill="none" opacity="0.15" />
+                      <path d={`M${x + baseOffX} ${midY + 6} Q${x + baseOffX + 3} ${midY + 2} ${x + baseOffX + leafWidth * 0.6} ${midY + 4}`} stroke={lighter} strokeWidth="0.3" fill="none" opacity="0.15" />
+                    </>
+                  )}
+                </g>
+              )
+            })}
+          </>
+        )
+      })()}
+      {variant === 'bushy' && (() => {
+        // Rotala/Cabomba — multiple branching stems with small leaf clusters
+        const stemCount = 2 + Math.floor((height % 15) / 8)
+        return (
+          <>
+            {/* Root mass */}
+            <ellipse cx={x} cy={baseY} rx="5" ry="2" fill={darker} opacity="0.45" />
+            {Array.from({ length: stemCount }, (_, si) => {
+              const stemSpread = (si - (stemCount - 1) / 2) * 5
+              const stemH = height * (0.75 + (si % 3) * 0.12)
+              const stemX = x + stemSpread
+              const curveMag = Math.sin(si * 2.1) * 6
+              const nodeCount = Math.floor(stemH / 8)
+              return (
+                <g key={si}>
+                  {/* Stem — curved line */}
+                  <path
+                    d={`M${stemX} ${baseY} Q${stemX + curveMag} ${baseY - stemH * 0.5} ${stemX + curveMag * 0.5} ${baseY - stemH}`}
+                    stroke={color}
+                    strokeWidth="1.5"
+                    fill="none"
+                    opacity="0.7"
+                  />
+                  {/* Leaf clusters along stem */}
+                  {Array.from({ length: nodeCount }, (_, ni) => {
+                    const t = (ni + 1) / (nodeCount + 1)
+                    const nx = stemX + curveMag * t * (1 - t) * 4
+                    const ny = baseY - stemH * t
+                    const leafSize = 2.5 + (ni % 3) * 0.8
+                    const lColor = ni % 2 === 0 ? color : lighter
+                    return (
+                      <g key={ni}>
+                        {/* Feathery leaf pair at each node */}
+                        <ellipse cx={nx - leafSize} cy={ny - 1} rx={leafSize} ry={1.2} fill={lColor} opacity={0.7} transform={`rotate(-30 ${nx - leafSize} ${ny - 1})`} />
+                        <ellipse cx={nx + leafSize} cy={ny - 1} rx={leafSize} ry={1.2} fill={lColor} opacity={0.7} transform={`rotate(30 ${nx + leafSize} ${ny - 1})`} />
+                        {/* Upper smaller pair */}
+                        {ni % 2 === 0 && (
+                          <>
+                            <ellipse cx={nx - leafSize * 0.6} cy={ny - 3} rx={leafSize * 0.7} ry={0.9} fill={lighter} opacity={0.5} transform={`rotate(-45 ${nx - leafSize * 0.6} ${ny - 3})`} />
+                            <ellipse cx={nx + leafSize * 0.6} cy={ny - 3} rx={leafSize * 0.7} ry={0.9} fill={lighter} opacity={0.5} transform={`rotate(45 ${nx + leafSize * 0.6} ${ny - 3})`} />
+                          </>
+                        )}
+                      </g>
+                    )
+                  })}
+                  {/* Growing tip at top */}
+                  <circle cx={stemX + curveMag * 0.5} cy={baseY - stemH} r="2" fill={lighter} opacity="0.5" />
+                </g>
+              )
+            })}
+          </>
+        )
+      })()}
     </g>
   )
 })
