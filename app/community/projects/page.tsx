@@ -1356,7 +1356,7 @@ export default function ProjectsPage() {
   // ─── Render ────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-[var(--background)] relative">
+    <div className="min-h-screen bg-[var(--background)] relative hero-fade-in">
       {/* Fractal wave keyframes — 4 variants with different self-similar motion patterns.
           Each variant layers primary motion with secondary micro-oscillations at different
           phases, creating complex interference when combined with varied animation durations. */}

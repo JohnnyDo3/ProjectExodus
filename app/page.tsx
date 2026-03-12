@@ -147,13 +147,12 @@ export default function Home() {
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-4 pointer-events-none">
           <div className="max-w-6xl mx-auto">
             {/* Massive Hero Title - Ultra Bold - Fits Above Fold */}
-            <h1 className="hero-fade-in text-center mb-4 md:mb-6" style={{
+            <h1 className="text-center mb-4 md:mb-6" style={{
               fontSize: 'clamp(1.75rem, 6vw, 5rem)',
               fontWeight: 900,
               lineHeight: 0.95,
-              letterSpacing: '-0.02em',
-              '--fade-delay': '0.1s',
-            } as React.CSSProperties}>
+              letterSpacing: '-0.02em'
+            }}>
               <div className="text-[var(--foreground)]" style={{ marginBottom: '0.2em' }}>
                 WELCOME TO
               </div>
@@ -170,12 +169,11 @@ export default function Home() {
             </h1>
 
             {/* Subtitle - Large & Bold */}
-            <p className="hero-fade-in text-center max-w-4xl mx-auto mb-6 md:mb-8 text-[var(--foreground)]" style={{
+            <p className="text-center max-w-4xl mx-auto mb-6 md:mb-8 text-[var(--foreground)]" style={{
               fontSize: 'clamp(0.9rem, 2vw, 1.5rem)',
               fontWeight: 600,
-              lineHeight: 1.3,
-              '--fade-delay': '0.4s',
-            } as React.CSSProperties}>
+              lineHeight: 1.3
+            }}>
               Building sustainable infrastructure for <span style={{
                 background: 'linear-gradient(135deg, #36763d, #357777)',
                 WebkitBackgroundClip: 'text',
