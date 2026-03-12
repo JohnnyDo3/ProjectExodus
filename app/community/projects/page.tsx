@@ -1257,7 +1257,7 @@ export default function ProjectsPage() {
 
   useEffect(() => {
     async function load() {
-      const minDelay = new Promise(resolve => setTimeout(resolve, 4000))
+      const minDelay = new Promise(resolve => setTimeout(resolve, 3000))
       try {
         const [res] = await Promise.all([
           fetch('/api/projects', { cache: 'no-store' }),

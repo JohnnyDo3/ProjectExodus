@@ -609,6 +609,24 @@ a:hover {
   animation: fade-in-up 0.4s ease-out forwards;
 }
 
+/* Hero fade-in animation for landing page */
+@keyframes hero-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-fade-in {
+  opacity: 0;
+  animation: hero-fade-in 0.8s ease-out forwards;
+  animation-delay: var(--fade-delay, 0s);
+}
+
 /* Theme-aware utility classes - these adapt to ALL time periods! */
 .bg-theme-primary {
   background-color: var(--primary);
