@@ -225,7 +225,7 @@ export default function FishbowlPage() {
 
   if (status === 'loading') {
     return (
-      <div className="flex items-center justify-center" style={{ height: '100dvh' }}>
+      <div className="h-screen flex items-center justify-center" style={{ height: '100dvh' }}>
         <div className="text-center space-y-4">
           <div className="w-16 h-16 border-4 border-theme-primary border-t-transparent rounded-full animate-spin mx-auto" />
           <p className="text-lg font-bold text-theme-muted">Loading...</p>

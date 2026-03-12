@@ -50,7 +50,7 @@ export function MainLayoutWrapper({
     return (
       <>
         {skyBackground}
-        <div className="relative z-10 flex flex-col" style={{ height: '100dvh' }}>
+        <div className="relative z-10 h-screen flex flex-col" style={{ height: '100dvh' }}>
           <Header />
           <div className="flex-1 overflow-hidden min-h-0">
             {children}
@@ -66,7 +66,7 @@ export function MainLayoutWrapper({
     return (
       <>
         {skyBackground}
-        <div className="relative z-10 flex flex-col" style={{ height: '100dvh' }}>
+        <div className="relative z-10 h-screen flex flex-col" style={{ height: '100dvh' }}>
           <Header />
           <div className="flex-1 overflow-hidden min-h-0">
             {children}
@@ -82,7 +82,7 @@ export function MainLayoutWrapper({
     return (
       <>
         {skyBackground}
-        <div className="relative z-10 flex flex-col overflow-hidden" style={{ height: '100dvh' }}>
+        <div className="relative z-10 h-screen flex flex-col overflow-hidden" style={{ height: '100dvh' }}>
           <Header />
           <div className="flex-1 overflow-y-auto min-h-0">
             {children}
@@ -98,7 +98,7 @@ export function MainLayoutWrapper({
     return (
       <>
         {skyBackground}
-        <div className="relative z-10 flex flex-col" style={{ height: '100dvh' }}>
+        <div className="relative z-10 h-screen flex flex-col" style={{ height: '100dvh' }}>
           <Header />
           <div className="flex-1 overflow-hidden min-h-0">
             {children}
