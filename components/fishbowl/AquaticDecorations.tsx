@@ -333,65 +333,166 @@ BubbleStream.displayName = 'BubbleStream'
 
 const CoralReefArch = memo(({ x, y }: { x: number; y: number }) => (
   <g transform={`translate(${x}, ${y})`}>
-    {/* Left pillar — layered coral mass */}
-    <rect x="0" y="24" width="20" height="36" fill="#C2185B" />
-    <rect x="2" y="18" width="18" height="10" fill="#D81B60" />
-    <rect x="4" y="12" width="14" height="8" fill="#E91E63" />
-    <rect x="6" y="8" width="12" height="6" fill="#F06292" />
-    {/* Left pillar texture: brain coral ridges */}
-    <rect x="2" y="22" width="16" height="1" fill="#F48FB1" opacity="0.4" />
-    <rect x="4" y="28" width="14" height="1" fill="#F48FB1" opacity="0.35" />
-    <rect x="2" y="34" width="16" height="1" fill="#F48FB1" opacity="0.3" />
-    <rect x="4" y="40" width="14" height="1" fill="#F48FB1" opacity="0.3" />
-    <rect x="6" y="46" width="10" height="1" fill="#F48FB1" opacity="0.25" />
-    {/* Left pillar: barnacles and detail */}
-    <rect x="0" y="36" width="3" height="3" fill="#9CA3AF" opacity="0.5" />
-    <rect x="16" y="42" width="3" height="2" fill="#9CA3AF" opacity="0.4" />
-    <rect x="2" y="50" width="4" height="2" fill="#2E7D32" opacity="0.5" />
+    {/* Left pillar — massive coral colony (brain + encrusting species) */}
+    <rect x="0" y="24" width="22" height="36" fill="#B71C1C" />
+    <rect x="2" y="18" width="20" height="10" fill="#C2185B" />
+    <rect x="4" y="12" width="16" height="8" fill="#D81B60" />
+    <rect x="6" y="8" width="14" height="6" fill="#E91E63" />
+    <rect x="8" y="4" width="10" height="6" fill="#F06292" />
+    {/* Left pillar: inner shadow depth */}
+    <rect x="0" y="24" width="3" height="36" fill="#880E4F" opacity="0.3" />
+    <rect x="19" y="24" width="3" height="36" fill="#880E4F" opacity="0.2" />
+    {/* Left pillar texture: brain coral meander ridges */}
+    <rect x="2" y="20" width="18" height="1" fill="#F48FB1" opacity="0.45" />
+    <rect x="4" y="24" width="14" height="1" fill="#FCE4EC" opacity="0.3" />
+    <rect x="2" y="28" width="18" height="1" fill="#F48FB1" opacity="0.4" />
+    <rect x="4" y="32" width="14" height="1" fill="#FCE4EC" opacity="0.25" />
+    <rect x="2" y="36" width="18" height="1" fill="#F48FB1" opacity="0.35" />
+    <rect x="4" y="40" width="14" height="1" fill="#FCE4EC" opacity="0.2" />
+    <rect x="2" y="44" width="18" height="1" fill="#F48FB1" opacity="0.3" />
+    <rect x="6" y="48" width="10" height="1" fill="#F48FB1" opacity="0.25" />
+    <rect x="4" y="52" width="14" height="1" fill="#FCE4EC" opacity="0.2" />
+    {/* Left pillar: polyp dots */}
+    <rect x="4" y="22" width="2" height="2" fill="#F8BBD0" opacity="0.5" />
+    <rect x="10" y="26" width="2" height="2" fill="#F8BBD0" opacity="0.45" />
+    <rect x="16" y="30" width="2" height="2" fill="#F8BBD0" opacity="0.4" />
+    <rect x="6" y="34" width="2" height="2" fill="#F8BBD0" opacity="0.4" />
+    <rect x="14" y="38" width="2" height="2" fill="#F8BBD0" opacity="0.35" />
+    <rect x="8" y="42" width="2" height="2" fill="#F8BBD0" opacity="0.35" />
+    <rect x="12" y="46" width="2" height="2" fill="#F8BBD0" opacity="0.3" />
+    {/* Left pillar: encrusting sponge patches */}
+    <rect x="0" y="30" width="4" height="4" fill="#FF6F00" opacity="0.35" />
+    <rect x="1" y="31" width="2" height="2" fill="#FFB300" opacity="0.25" />
+    <rect x="18" y="44" width="4" height="3" fill="#FF6F00" opacity="0.3" />
+    {/* Left pillar: barnacles */}
+    <rect x="0" y="38" width="3" height="3" fill="#9CA3AF" opacity="0.5" />
+    <rect x="1" y="39" width="1" height="1" fill="#B0BEC5" opacity="0.4" />
+    <rect x="18" y="50" width="3" height="3" fill="#9CA3AF" opacity="0.4" />
+    <rect x="0" y="54" width="4" height="2" fill="#78909C" opacity="0.35" />
+    {/* Left pillar: turf algae */}
+    <rect x="2" y="56" width="6" height="2" fill="#2E7D32" opacity="0.5" />
+    <rect x="0" y="58" width="3" height="2" fill="#388E3C" opacity="0.4" />
+    {/* Left pillar: coralline algae (pink crust) */}
+    <rect x="8" y="50" width="6" height="2" fill="#CE93D8" opacity="0.3" />
+    <rect x="16" y="36" width="4" height="2" fill="#E1BEE7" opacity="0.25" />
 
-    {/* Right pillar — different coral species */}
-    <rect x="70" y="20" width="22" height="40" fill="#FF5722" />
-    <rect x="72" y="14" width="18" height="10" fill="#FF7043" />
-    <rect x="74" y="8" width="16" height="8" fill="#FF8A65" />
-    <rect x="76" y="4" width="12" height="6" fill="#FFAB91" />
-    {/* Right pillar texture: staghorn branches */}
-    <rect x="88" y="16" width="8" height="3" fill="#FF8A65" opacity="0.8" />
-    <rect x="92" y="12" width="6" height="3" fill="#FFAB91" opacity="0.7" />
-    <rect x="90" y="8" width="4" height="3" fill="#FFCCBC" opacity="0.6" />
-    <rect x="70" y="22" width="4" height="6" fill="#BF360C" opacity="0.3" />
-    {/* Right pillar: sea fans attached */}
-    <rect x="66" y="24" width="6" height="8" fill="#AB47BC" opacity="0.5" />
-    <rect x="64" y="20" width="4" height="6" fill="#CE93D8" opacity="0.4" />
-    {/* Right pillar: barnacles */}
-    <rect x="86" y="38" width="3" height="3" fill="#9CA3AF" opacity="0.4" />
-    <rect x="72" y="50" width="4" height="2" fill="#2E7D32" opacity="0.4" />
+    {/* Right pillar — staghorn + fire coral colony */}
+    <rect x="70" y="20" width="24" height="40" fill="#E65100" />
+    <rect x="72" y="14" width="20" height="10" fill="#FF5722" />
+    <rect x="74" y="8" width="18" height="8" fill="#FF7043" />
+    <rect x="76" y="4" width="14" height="6" fill="#FF8A65" />
+    <rect x="78" y="0" width="10" height="6" fill="#FFAB91" />
+    {/* Right pillar inner shading */}
+    <rect x="70" y="20" width="3" height="40" fill="#BF360C" opacity="0.3" />
+    <rect x="91" y="20" width="3" height="40" fill="#BF360C" opacity="0.2" />
+    {/* Staghorn branch projections (pixel-block branching) */}
+    <rect x="90" y="16" width="6" height="3" fill="#FF8A65" opacity="0.8" />
+    <rect x="94" y="13" width="4" height="3" fill="#FFAB91" opacity="0.7" />
+    <rect x="96" y="10" width="3" height="3" fill="#FFCCBC" opacity="0.6" />
+    <rect x="92" y="8" width="4" height="3" fill="#FFAB91" opacity="0.5" />
+    <rect x="90" y="24" width="6" height="2" fill="#FF7043" opacity="0.6" />
+    <rect x="94" y="22" width="4" height="2" fill="#FF8A65" opacity="0.5" />
+    {/* Branch tips — growing polyps */}
+    <rect x="97" y="9" width="2" height="2" fill="#FFCCBC" opacity="0.7" />
+    <rect x="95" y="7" width="2" height="2" fill="#FFE0B2" opacity="0.5" />
+    {/* Fire coral warning stripes */}
+    <rect x="72" y="24" width="2" height="4" fill="#FFD600" opacity="0.3" />
+    <rect x="74" y="30" width="2" height="4" fill="#FFD600" opacity="0.25" />
+    <rect x="72" y="38" width="2" height="4" fill="#FFD600" opacity="0.2" />
+    {/* Right pillar: sea fan attached */}
+    <rect x="66" y="22" width="6" height="10" fill="#AB47BC" opacity="0.5" />
+    <rect x="64" y="18" width="4" height="8" fill="#CE93D8" opacity="0.4" />
+    <rect x="62" y="22" width="3" height="4" fill="#E1BEE7" opacity="0.3" />
+    {/* Sea fan veins */}
+    <rect x="67" y="24" width="1" height="6" fill="#9C27B0" opacity="0.3" />
+    <rect x="65" y="20" width="1" height="5" fill="#9C27B0" opacity="0.25" />
+    {/* Right pillar: tube worm cluster */}
+    <rect x="86" y="42" width="2" height="6" fill="#D50000" opacity="0.4" />
+    <rect x="88" y="40" width="2" height="8" fill="#FF1744" opacity="0.35" />
+    <rect x="90" y="44" width="2" height="5" fill="#D50000" opacity="0.3" />
+    {/* Tube worm feathery tops */}
+    <rect x="85" y="40" width="4" height="2" fill="#FF8A80" opacity="0.4" />
+    <rect x="87" y="38" width="4" height="2" fill="#FFCDD2" opacity="0.3" />
+    <rect x="89" y="42" width="4" height="2" fill="#FF8A80" opacity="0.35" />
+    {/* Right barnacles */}
+    <rect x="88" y="52" width="3" height="3" fill="#9CA3AF" opacity="0.4" />
+    <rect x="74" y="54" width="4" height="2" fill="#78909C" opacity="0.35" />
+    {/* Right algae */}
+    <rect x="72" y="56" width="6" height="2" fill="#1B5E20" opacity="0.4" />
 
-    {/* Arch bridge — connecting coral top */}
-    <rect x="10" y="4" width="72" height="8" fill="#E91E63" />
-    <rect x="16" y="0" width="60" height="6" fill="#F06292" />
-    <rect x="22" y="-2" width="48" height="4" fill="#F48FB1" opacity="0.8" />
-    {/* Arch texture */}
-    <rect x="20" y="6" width="52" height="1" fill="#AD1457" opacity="0.3" />
-    <rect x="26" y="2" width="40" height="1" fill="#F48FB1" opacity="0.3" />
-    {/* Hanging bits from arch */}
-    <rect x="30" y="10" width="3" height="4" fill="#E91E63" opacity="0.6" />
-    <rect x="50" y="10" width="3" height="6" fill="#F06292" opacity="0.5" />
-    <rect x="62" y="10" width="2" height="3" fill="#E91E63" opacity="0.5" />
+    {/* Arch bridge — connecting coral mass, varied species */}
+    <rect x="10" y="4" width="72" height="10" fill="#C2185B" />
+    <rect x="14" y="0" width="64" height="6" fill="#E91E63" />
+    <rect x="20" y="-2" width="52" height="4" fill="#F06292" />
+    <rect x="26" y="-4" width="40" height="3" fill="#F48FB1" opacity="0.7" />
+    {/* Arch underside shadow */}
+    <rect x="14" y="10" width="64" height="2" fill="#880E4F" opacity="0.25" />
+    {/* Arch texture — varied coral ridges */}
+    <rect x="18" y="6" width="56" height="1" fill="#AD1457" opacity="0.35" />
+    <rect x="24" y="2" width="44" height="1" fill="#F8BBD0" opacity="0.3" />
+    <rect x="20" y="-1" width="52" height="1" fill="#FCE4EC" opacity="0.2" />
+    {/* Polyp detail on arch surface */}
+    <rect x="22" y="4" width="2" height="2" fill="#F8BBD0" opacity="0.4" />
+    <rect x="32" y="2" width="2" height="2" fill="#F8BBD0" opacity="0.35" />
+    <rect x="44" y="4" width="2" height="2" fill="#F8BBD0" opacity="0.4" />
+    <rect x="56" y="2" width="2" height="2" fill="#F8BBD0" opacity="0.35" />
+    <rect x="66" y="4" width="2" height="2" fill="#F8BBD0" opacity="0.3" />
+    {/* Hanging stalactite-like coral growths from arch */}
+    <rect x="28" y="12" width="3" height="6" fill="#D81B60" opacity="0.6" />
+    <rect x="29" y="18" width="2" height="3" fill="#E91E63" opacity="0.45" />
+    <rect x="42" y="12" width="4" height="8" fill="#C2185B" opacity="0.55" />
+    <rect x="43" y="20" width="2" height="4" fill="#D81B60" opacity="0.4" />
+    <rect x="54" y="12" width="3" height="5" fill="#E91E63" opacity="0.5" />
+    <rect x="64" y="12" width="2" height="4" fill="#C2185B" opacity="0.45" />
+    <rect x="36" y="12" width="2" height="3" fill="#D81B60" opacity="0.4" />
 
-    {/* Small coral growing on arch */}
-    <rect x="36" y="-4" width="6" height="4" fill="#FFD600" opacity="0.6" />
-    <rect x="38" y="-8" width="4" height="4" fill="#FFEE58" opacity="0.5" />
-    <rect x="56" y="-3" width="4" height="3" fill="#00BCD4" opacity="0.5" />
+    {/* Diverse coral colonies growing on top of arch */}
+    {/* Yellow scroll coral */}
+    <rect x="34" y="-6" width="8" height="4" fill="#FFD600" opacity="0.6" />
+    <rect x="36" y="-10" width="6" height="4" fill="#FFEE58" opacity="0.5" />
+    <rect x="38" y="-12" width="4" height="3" fill="#FFF59D" opacity="0.4" />
+    <rect x="35" y="-5" width="2" height="2" fill="#FBC02D" opacity="0.4" />
+    {/* Blue coral cluster */}
+    <rect x="54" y="-4" width="6" height="3" fill="#0097A7" opacity="0.5" />
+    <rect x="56" y="-7" width="4" height="3" fill="#00BCD4" opacity="0.45" />
+    <rect x="57" y="-9" width="2" height="2" fill="#4DD0E1" opacity="0.35" />
+    {/* Green star polyps patch */}
+    <rect x="46" y="-3" width="4" height="2" fill="#4CAF50" opacity="0.4" />
+    <rect x="44" y="-5" width="3" height="2" fill="#81C784" opacity="0.3" />
 
-    {/* Anemone at base */}
-    <rect x="8" y="56" width="8" height="4" fill="#7B1FA2" opacity="0.6" />
-    <rect x="6" y="52" width="4" height="4" fill="#CE93D8" opacity="0.5" />
-    <rect x="14" y="54" width="4" height="4" fill="#BA68C8" opacity="0.5" />
+    {/* Anemone colony at left base — detailed tentacles */}
+    <rect x="6" y="54" width="12" height="6" fill="#6A1B9A" opacity="0.6" />
+    <rect x="8" y="52" width="8" height="3" fill="#8E24AA" opacity="0.5" />
+    {/* Tentacle tops */}
+    <rect x="6" y="50" width="2" height="3" fill="#CE93D8" opacity="0.5" />
+    <rect x="10" y="48" width="2" height="4" fill="#E1BEE7" opacity="0.45" />
+    <rect x="14" y="50" width="2" height="3" fill="#CE93D8" opacity="0.4" />
+    <rect x="8" y="48" width="2" height="2" fill="#F3E5F5" opacity="0.35" />
+    <rect x="12" y="49" width="2" height="2" fill="#F3E5F5" opacity="0.3" />
+    <rect x="16" y="51" width="2" height="2" fill="#BA68C8" opacity="0.4" />
+    {/* Clownfish hint (orange dot in anemone) */}
+    <rect x="10" y="54" width="3" height="2" fill="#FF6D00" opacity="0.4" />
+    <rect x="11" y="53" width="1" height="1" fill="#FFE0B2" opacity="0.35" />
 
-    {/* Occasional bubbles rising from arch crevices */}
-    <circle cx="42" cy="0" r="1.5" fill="rgba(255,255,255,0.3)" style={{ animation: 'bubbleRise 3.5s ease-in 0s infinite' }} />
+    {/* Small sea urchin near left base */}
+    <circle cx="24" cy="58" r="3" fill="#1A1A2E" opacity="0.5" />
+    <rect x="22" y="54" width="1" height="3" fill="#37474F" opacity="0.3" />
+    <rect x="25" y="54" width="1" height="3" fill="#37474F" opacity="0.3" />
+    <rect x="21" y="56" width="1" height="2" fill="#37474F" opacity="0.25" />
+    <rect x="27" y="56" width="1" height="2" fill="#37474F" opacity="0.25" />
+
+    {/* Christmas tree worms (spiral dots on right pillar) */}
+    <circle cx="80" cy="28" r="2" fill="#FFEB3B" opacity="0.5" />
+    <circle cx="80" cy="28" r="1" fill="#FFF59D" opacity="0.4" />
+    <circle cx="84" cy="36" r="2" fill="#2196F3" opacity="0.45" />
+    <circle cx="84" cy="36" r="1" fill="#90CAF9" opacity="0.35" />
+
+    {/* Bubbles — staggered from multiple crevices */}
+    <circle cx="42" cy="-2" r="1.5" fill="rgba(255,255,255,0.3)" style={{ animation: 'bubbleRise 3.5s ease-in 0s infinite' }} />
     <circle cx="38" cy="2" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4s ease-in 1s infinite' }} />
     <circle cx="46" cy="-1" r="1.2" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 3s ease-in 2s infinite' }} />
+    <circle cx="12" cy="48" r="0.8" fill="rgba(255,255,255,0.18)" style={{ animation: 'bubbleRise 4.5s ease-in 1.5s infinite' }} />
+    <circle cx="86" cy="38" r="0.7" fill="rgba(255,255,255,0.15)" style={{ animation: 'bubbleRise 5s ease-in 3s infinite' }} />
   </g>
 ))
 CoralReefArch.displayName = 'CoralReefArch'
@@ -400,67 +501,169 @@ CoralReefArch.displayName = 'CoralReefArch'
 
 const SunkenTemple = memo(({ x, y }: { x: number; y: number }) => (
   <g transform={`translate(${x}, ${y})`}>
-    {/* Base platform — mossy stone */}
-    <rect x="0" y="48" width="80" height="12" fill="#57534E" />
+    {/* Base platform — weathered stone with sediment */}
+    <rect x="-4" y="52" width="88" height="10" fill="#44403C" />
+    <rect x="0" y="48" width="80" height="6" fill="#57534E" />
     <rect x="2" y="44" width="76" height="6" fill="#6B7280" />
+    {/* Platform edge highlight */}
     <rect x="0" y="48" width="80" height="1" fill="#78909C" opacity="0.3" />
-    {/* Steps */}
+    <rect x="-4" y="52" width="88" height="1" fill="#57534E" opacity="0.25" />
+    {/* Stone block lines on platform */}
+    <rect x="0" y="50" width="80" height="1" fill="#4B5563" opacity="0.2" />
+    <rect x="20" y="48" width="1" height="6" fill="#4B5563" opacity="0.15" />
+    <rect x="40" y="48" width="1" height="6" fill="#4B5563" opacity="0.15" />
+    <rect x="60" y="48" width="1" height="6" fill="#4B5563" opacity="0.15" />
+    {/* Steps — worn and cracked */}
     <rect x="4" y="40" width="72" height="6" fill="#78716C" />
     <rect x="8" y="36" width="64" height="6" fill="#78716C" />
+    <rect x="12" y="32" width="56" height="5" fill="#8D8680" />
+    {/* Step edge highlights */}
+    <rect x="4" y="40" width="72" height="1" fill="#9E9E9E" opacity="0.25" />
+    <rect x="8" y="36" width="64" height="1" fill="#9E9E9E" opacity="0.2" />
+    <rect x="12" y="32" width="56" height="1" fill="#A8A8A8" opacity="0.2" />
+    {/* Cracked step */}
+    <rect x="30" y="40" width="1" height="5" fill="#4B5563" opacity="0.3" />
+    <rect x="31" y="42" width="1" height="3" fill="#4B5563" opacity="0.2" />
 
-    {/* Left column — intact */}
-    <rect x="10" y="4" width="8" height="34" fill="#9E9E9E" />
-    <rect x="8" y="0" width="12" height="6" fill="#BDBDBD" />
-    <rect x="8" y="34" width="12" height="4" fill="#BDBDBD" />
-    {/* Column fluting (vertical lines) */}
-    <rect x="12" y="6" width="1" height="28" fill="#BDBDBD" opacity="0.3" />
-    <rect x="15" y="6" width="1" height="28" fill="#757575" opacity="0.2" />
+    {/* Left column — intact Doric style */}
+    <rect x="10" y="4" width="8" height="30" fill="#9E9E9E" />
+    {/* Column capital (top decoration) */}
+    <rect x="7" y="0" width="14" height="5" fill="#BDBDBD" />
+    <rect x="6" y="-2" width="16" height="3" fill="#CFD8DC" />
+    {/* Column base */}
+    <rect x="7" y="34" width="14" height="4" fill="#BDBDBD" />
+    <rect x="6" y="38" width="16" height="2" fill="#CFD8DC" opacity="0.7" />
+    {/* Column fluting (6 vertical channels) */}
+    <rect x="11" y="5" width="1" height="29" fill="#BDBDBD" opacity="0.35" />
+    <rect x="13" y="5" width="1" height="29" fill="#757575" opacity="0.2" />
+    <rect x="15" y="5" width="1" height="29" fill="#BDBDBD" opacity="0.3" />
+    <rect x="17" y="5" width="1" height="29" fill="#757575" opacity="0.15" />
+    {/* Weathering cracks on left column */}
+    <rect x="12" y="14" width="1" height="4" fill="#616161" opacity="0.3" />
+    <rect x="13" y="16" width="1" height="2" fill="#616161" opacity="0.2" />
 
-    {/* Right column — broken at top */}
-    <rect x="62" y="14" width="8" height="24" fill="#9E9E9E" />
-    <rect x="60" y="34" width="12" height="4" fill="#BDBDBD" />
+    {/* Center column — partially standing */}
+    <rect x="36" y="16" width="7" height="22" fill="#9E9E9E" opacity="0.7" />
+    <rect x="34" y="36" width="11" height="3" fill="#BDBDBD" opacity="0.6" />
     {/* Broken top */}
-    <rect x="62" y="12" width="6" height="4" fill="#9E9E9E" />
-    <rect x="64" y="10" width="4" height="4" fill="#BDBDBD" />
+    <rect x="36" y="14" width="5" height="3" fill="#BDBDBD" opacity="0.5" />
+    <rect x="38" y="12" width="3" height="3" fill="#CFD8DC" opacity="0.4" />
+    {/* Center column fluting */}
+    <rect x="38" y="17" width="1" height="19" fill="#BDBDBD" opacity="0.2" />
+    <rect x="40" y="17" width="1" height="19" fill="#757575" opacity="0.15" />
+
+    {/* Right column — broken at top, dramatic collapse */}
+    <rect x="62" y="16" width="8" height="22" fill="#9E9E9E" />
+    <rect x="60" y="34" width="12" height="4" fill="#BDBDBD" />
+    <rect x="59" y="38" width="14" height="2" fill="#CFD8DC" opacity="0.7" />
+    {/* Broken jagged top */}
+    <rect x="62" y="14" width="6" height="3" fill="#9E9E9E" />
+    <rect x="64" y="11" width="4" height="4" fill="#BDBDBD" />
+    <rect x="66" y="9" width="2" height="3" fill="#CFD8DC" opacity="0.6" />
     {/* Column fluting */}
-    <rect x="64" y="16" width="1" height="18" fill="#BDBDBD" opacity="0.3" />
-    <rect x="67" y="16" width="1" height="18" fill="#757575" opacity="0.2" />
+    <rect x="64" y="17" width="1" height="17" fill="#BDBDBD" opacity="0.3" />
+    <rect x="67" y="17" width="1" height="17" fill="#757575" opacity="0.2" />
 
-    {/* Lintel (top beam) — cracked */}
-    <rect x="8" y="0" width="48" height="4" fill="#BDBDBD" />
-    <rect x="6" y="-2" width="52" height="4" fill="#E0E0E0" />
-    {/* Crack in lintel */}
-    <rect x="32" y="-2" width="1" height="6" fill="#616161" opacity="0.5" />
-    <rect x="33" y="0" width="1" height="3" fill="#616161" opacity="0.4" />
+    {/* Lintel (architrave + frieze) — cracked and listing */}
+    <rect x="6" y="-2" width="52" height="4" fill="#BDBDBD" />
+    <rect x="4" y="-6" width="56" height="5" fill="#CFD8DC" />
+    <rect x="6" y="-8" width="52" height="3" fill="#E0E0E0" />
+    {/* Frieze decorative band */}
+    <rect x="8" y="-6" width="48" height="1" fill="#90A4AE" opacity="0.3" />
+    {/* Triglyphs on frieze */}
+    <rect x="12" y="-8" width="3" height="3" fill="#B0BEC5" opacity="0.25" />
+    <rect x="22" y="-8" width="3" height="3" fill="#B0BEC5" opacity="0.25" />
+    <rect x="32" y="-8" width="3" height="3" fill="#B0BEC5" opacity="0.25" />
+    <rect x="42" y="-8" width="3" height="3" fill="#B0BEC5" opacity="0.25" />
+    {/* Major crack in lintel */}
+    <rect x="30" y="-6" width="1" height="8" fill="#4B5563" opacity="0.5" />
+    <rect x="31" y="-4" width="1" height="5" fill="#616161" opacity="0.4" />
+    <rect x="29" y="-3" width="1" height="3" fill="#616161" opacity="0.3" />
+    {/* Minor crack */}
+    <rect x="48" y="-4" width="1" height="4" fill="#616161" opacity="0.3" />
 
-    {/* Stone face carving (center) */}
-    <rect x="28" y="20" width="24" height="16" fill="#78716C" />
-    <rect x="30" y="18" width="20" height="4" fill="#8D8D8D" />
-    {/* Eyes */}
-    <rect x="32" y="24" width="4" height="3" fill="#1A1A2E" opacity="0.7" />
-    <rect x="42" y="24" width="4" height="3" fill="#1A1A2E" opacity="0.7" />
-    {/* Nose */}
-    <rect x="38" y="28" width="3" height="3" fill="#6B7280" />
-    {/* Mouth */}
-    <rect x="34" y="32" width="10" height="2" fill="#4B5563" opacity="0.5" />
+    {/* Stone face carving (center back wall) — more detailed */}
+    <rect x="26" y="18" width="28" height="18" fill="#6B7280" />
+    <rect x="28" y="16" width="24" height="4" fill="#78909C" />
+    {/* Face frame border */}
+    <rect x="26" y="18" width="28" height="1" fill="#546E7A" opacity="0.3" />
+    <rect x="26" y="35" width="28" height="1" fill="#546E7A" opacity="0.3" />
+    <rect x="26" y="18" width="1" height="18" fill="#546E7A" opacity="0.25" />
+    <rect x="53" y="18" width="1" height="18" fill="#546E7A" opacity="0.25" />
+    {/* Eyes — deep-set with brow ridge */}
+    <rect x="30" y="22" width="6" height="4" fill="#1A1A2E" opacity="0.75" />
+    <rect x="44" y="22" width="6" height="4" fill="#1A1A2E" opacity="0.75" />
+    {/* Brow ridge */}
+    <rect x="29" y="20" width="8" height="2" fill="#546E7A" opacity="0.4" />
+    <rect x="43" y="20" width="8" height="2" fill="#546E7A" opacity="0.4" />
+    {/* Eye glints */}
+    <rect x="31" y="23" width="2" height="1" fill="#37474F" opacity="0.5" />
+    <rect x="45" y="23" width="2" height="1" fill="#37474F" opacity="0.5" />
+    {/* Nose — eroded */}
+    <rect x="38" y="26" width="4" height="4" fill="#78716C" />
+    <rect x="39" y="25" width="2" height="2" fill="#8D8D8D" opacity="0.5" />
+    {/* Missing nose chip */}
+    <rect x="40" y="28" width="2" height="2" fill="#6B7280" opacity="0.4" />
+    {/* Mouth — stern expression */}
+    <rect x="34" y="32" width="12" height="2" fill="#4B5563" opacity="0.5" />
+    <rect x="36" y="31" width="8" height="1" fill="#546E7A" opacity="0.3" />
+    {/* Decorative glyphs flanking face */}
+    <rect x="28" y="28" width="2" height="4" fill="#90A4AE" opacity="0.2" />
+    <rect x="50" y="28" width="2" height="4" fill="#90A4AE" opacity="0.2" />
+    <rect x="28" y="34" width="3" height="2" fill="#90A4AE" opacity="0.15" />
+    <rect x="49" y="34" width="3" height="2" fill="#90A4AE" opacity="0.15" />
 
-    {/* Algae and moss growth */}
-    <rect x="10" y="28" width="6" height="3" fill="#2E7D32" opacity="0.5" />
-    <rect x="0" y="52" width="8" height="3" fill="#388E3C" opacity="0.4" />
-    <rect x="64" y="30" width="6" height="2" fill="#1B5E20" opacity="0.5" />
-    <rect x="40" y="44" width="10" height="2" fill="#2E7D32" opacity="0.3" />
-    {/* Barnacles on stone */}
+    {/* Algae and moss growth — extensive colonization */}
+    <rect x="10" y="26" width="6" height="4" fill="#2E7D32" opacity="0.5" />
+    <rect x="8" y="28" width="3" height="3" fill="#388E3C" opacity="0.4" />
+    <rect x="0" y="54" width="10" height="3" fill="#388E3C" opacity="0.4" />
+    <rect x="-4" y="56" width="6" height="2" fill="#4CAF50" opacity="0.3" />
+    <rect x="64" y="28" width="6" height="3" fill="#1B5E20" opacity="0.5" />
+    <rect x="68" y="26" width="4" height="3" fill="#2E7D32" opacity="0.4" />
+    <rect x="38" y="44" width="12" height="2" fill="#2E7D32" opacity="0.3" />
+    <rect x="52" y="42" width="6" height="2" fill="#388E3C" opacity="0.25" />
+    {/* Moss draping down columns */}
+    <rect x="10" y="30" width="3" height="6" fill="#2E7D32" opacity="0.3" />
+    <rect x="66" y="30" width="3" height="5" fill="#1B5E20" opacity="0.3" />
+    {/* Coralline algae */}
+    <rect x="16" y="38" width="6" height="2" fill="#CE93D8" opacity="0.2" />
+    <rect x="56" y="40" width="4" height="2" fill="#E1BEE7" opacity="0.18" />
+
+    {/* Barnacles on stone — varied clusters */}
     <rect x="18" y="22" width="2" height="2" fill="#9CA3AF" opacity="0.4" />
-    <rect x="60" y="26" width="3" height="2" fill="#9CA3AF" opacity="0.3" />
+    <rect x="20" y="24" width="2" height="2" fill="#B0BEC5" opacity="0.35" />
+    <rect x="60" y="24" width="3" height="2" fill="#9CA3AF" opacity="0.35" />
+    <rect x="4" y="48" width="3" height="3" fill="#78909C" opacity="0.3" />
+    <rect x="74" y="48" width="3" height="3" fill="#78909C" opacity="0.3" />
 
-    {/* Fallen rubble */}
-    <rect x="72" y="46" width="10" height="6" fill="#9E9E9E" opacity="0.6" />
-    <rect x="74" y="42" width="6" height="6" fill="#BDBDBD" opacity="0.5" />
-    <rect x="-4" y="50" width="8" height="4" fill="#9E9E9E" opacity="0.5" />
+    {/* Fallen rubble — scattered blocks */}
+    <rect x="72" y="44" width="10" height="6" fill="#9E9E9E" opacity="0.6" />
+    <rect x="74" y="40" width="6" height="6" fill="#BDBDBD" opacity="0.5" />
+    <rect x="80" y="48" width="4" height="4" fill="#78716C" opacity="0.4" />
+    <rect x="-6" y="52" width="8" height="4" fill="#9E9E9E" opacity="0.5" />
+    <rect x="-8" y="56" width="4" height="3" fill="#BDBDBD" opacity="0.4" />
+    {/* Column drum fragment on ground */}
+    <rect x="76" y="50" width="6" height="3" fill="#CFD8DC" opacity="0.35" />
+    <rect x="77" y="48" width="4" height="3" fill="#BDBDBD" opacity="0.3" />
+    {/* Scattered stone chips */}
+    <rect x="-2" y="58" width="3" height="2" fill="#78716C" opacity="0.3" />
+    <rect x="82" y="54" width="3" height="2" fill="#6B7280" opacity="0.25" />
 
-    {/* Occasional bubbles from temple crevices */}
-    <circle cx="40" cy="16" r="1.2" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4s ease-in 0.5s infinite' }} />
-    <circle cx="38" cy="18" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4.5s ease-in 2s infinite' }} />
+    {/* Small coral colony on base */}
+    <rect x="70" y="52" width="4" height="3" fill="#E91E63" opacity="0.25" />
+    <rect x="71" y="50" width="2" height="2" fill="#F48FB1" opacity="0.2" />
+
+    {/* Starfish on step */}
+    <rect x="20" y="38" width="3" height="3" fill="#FF5722" opacity="0.35" />
+    <rect x="19" y="39" width="1" height="1" fill="#FF7043" opacity="0.3" />
+    <rect x="23" y="39" width="1" height="1" fill="#FF7043" opacity="0.3" />
+    <rect x="21" y="37" width="1" height="1" fill="#FF7043" opacity="0.3" />
+    <rect x="21" y="41" width="1" height="1" fill="#FF7043" opacity="0.3" />
+
+    {/* Bubbles from temple crevices */}
+    <circle cx="40" cy="14" r="1.2" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4s ease-in 0.5s infinite' }} />
+    <circle cx="36" cy="16" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4.5s ease-in 2s infinite' }} />
+    <circle cx="44" cy="12" r="0.8" fill="rgba(255,255,255,0.15)" style={{ animation: 'bubbleRise 5s ease-in 3.5s infinite' }} />
   </g>
 ))
 SunkenTemple.displayName = 'SunkenTemple'
@@ -469,41 +672,101 @@ SunkenTemple.displayName = 'SunkenTemple'
 
 const VolcanoFormation = memo(({ x, y }: { x: number; y: number }) => (
   <g transform={`translate(${x}, ${y})`}>
-    {/* Base — wide lava rock */}
-    <rect x="0" y="40" width="70" height="20" fill="#37474F" />
-    <rect x="4" y="32" width="62" height="12" fill="#455A64" />
-    <rect x="10" y="24" width="50" height="12" fill="#546E7A" />
-    <rect x="16" y="16" width="38" height="12" fill="#607D8B" />
-    <rect x="22" y="8" width="26" height="12" fill="#78909C" />
-    <rect x="26" y="2" width="18" height="10" fill="#90A4AE" />
+    {/* Base — wide basalt lava rock formation */}
+    <rect x="-4" y="44" width="78" height="18" fill="#263238" />
+    <rect x="0" y="40" width="70" height="6" fill="#37474F" />
+    <rect x="4" y="32" width="62" height="10" fill="#455A64" />
+    <rect x="10" y="24" width="50" height="10" fill="#546E7A" />
+    <rect x="16" y="16" width="38" height="10" fill="#607D8B" />
+    <rect x="22" y="8" width="26" height="10" fill="#78909C" />
+    <rect x="26" y="2" width="18" height="8" fill="#90A4AE" />
+    {/* Irregular rocky edges */}
+    <rect x="-6" y="48" width="4" height="8" fill="#37474F" opacity="0.7" />
+    <rect x="72" y="46" width="6" height="10" fill="#37474F" opacity="0.6" />
+    <rect x="-2" y="40" width="4" height="6" fill="#455A64" opacity="0.5" />
+    <rect x="68" y="36" width="4" height="6" fill="#455A64" opacity="0.5" />
 
-    {/* Crater opening */}
-    <rect x="28" y="0" width="14" height="4" fill="#1A1A1A" />
-    <rect x="30" y="-2" width="10" height="4" fill="#BF360C" opacity="0.6" />
+    {/* Crater opening — deep vent with glow */}
+    <rect x="28" y="-2" width="14" height="6" fill="#0A0A0A" />
+    <rect x="30" y="-4" width="10" height="4" fill="#BF360C" opacity="0.7" />
+    <rect x="32" y="-6" width="6" height="3" fill="#DD2C00" opacity="0.5" />
+    {/* Crater rim detail */}
+    <rect x="26" y="0" width="4" height="2" fill="#78909C" opacity="0.6" />
+    <rect x="40" y="0" width="4" height="2" fill="#78909C" opacity="0.6" />
+    <rect x="28" y="-2" width="2" height="2" fill="#607D8B" opacity="0.5" />
+    <rect x="40" y="-2" width="2" height="2" fill="#607D8B" opacity="0.5" />
+    {/* Heat shimmer glow above crater */}
+    <rect x="30" y="-8" width="10" height="2" fill="#FF6D00" opacity="0.15" />
+    <rect x="32" y="-10" width="6" height="2" fill="#FF6D00" opacity="0.1" />
 
-    {/* Lava glow in cracks */}
-    <rect x="30" y="2" width="2" height="8" fill="#FF6D00" opacity="0.4" />
-    <rect x="38" y="4" width="2" height="6" fill="#FF6D00" opacity="0.3" />
-    <rect x="24" y="18" width="2" height="10" fill="#DD2C00" opacity="0.25" />
-    <rect x="44" y="20" width="2" height="8" fill="#DD2C00" opacity="0.2" />
+    {/* Lava glow in deep fissure cracks — zigzag patterns */}
+    <rect x="30" y="2" width="2" height="6" fill="#FF6D00" opacity="0.45" />
+    <rect x="31" y="8" width="2" height="4" fill="#FF8F00" opacity="0.35" />
+    <rect x="32" y="12" width="2" height="4" fill="#DD2C00" opacity="0.25" />
+    <rect x="38" y="4" width="2" height="5" fill="#FF6D00" opacity="0.35" />
+    <rect x="37" y="9" width="2" height="4" fill="#FF8F00" opacity="0.25" />
+    <rect x="24" y="16" width="2" height="6" fill="#DD2C00" opacity="0.3" />
+    <rect x="25" y="22" width="2" height="6" fill="#BF360C" opacity="0.2" />
+    <rect x="44" y="18" width="2" height="5" fill="#DD2C00" opacity="0.25" />
+    <rect x="45" y="23" width="2" height="6" fill="#BF360C" opacity="0.18" />
+    {/* Secondary hairline cracks */}
+    <rect x="18" y="28" width="1" height="8" fill="#DD2C00" opacity="0.15" />
+    <rect x="52" y="30" width="1" height="6" fill="#DD2C00" opacity="0.12" />
+    <rect x="36" y="26" width="1" height="10" fill="#BF360C" opacity="0.1" />
 
-    {/* Rock texture — porous lava rock */}
-    <rect x="8" y="36" width="3" height="3" fill="#263238" opacity="0.5" />
-    <rect x="20" y="28" width="4" height="3" fill="#263238" opacity="0.4" />
-    <rect x="42" y="30" width="3" height="4" fill="#263238" opacity="0.4" />
-    <rect x="54" y="38" width="4" height="3" fill="#263238" opacity="0.5" />
-    <rect x="14" y="44" width="4" height="3" fill="#263238" opacity="0.3" />
-    <rect x="50" y="46" width="3" height="3" fill="#263238" opacity="0.3" />
+    {/* Rock texture — porous vesicular basalt (many small holes) */}
+    <rect x="6" y="36" width="3" height="3" fill="#1A1A1A" opacity="0.5" />
+    <rect x="12" y="34" width="2" height="2" fill="#1A1A1A" opacity="0.4" />
+    <rect x="20" y="28" width="4" height="3" fill="#1A1A1A" opacity="0.45" />
+    <rect x="28" y="26" width="2" height="2" fill="#1A1A1A" opacity="0.35" />
+    <rect x="42" y="28" width="3" height="3" fill="#1A1A1A" opacity="0.4" />
+    <rect x="50" y="30" width="2" height="2" fill="#1A1A1A" opacity="0.35" />
+    <rect x="54" y="36" width="4" height="3" fill="#1A1A1A" opacity="0.45" />
+    <rect x="60" y="40" width="3" height="3" fill="#1A1A1A" opacity="0.4" />
+    <rect x="8" y="44" width="3" height="3" fill="#1A1A1A" opacity="0.35" />
+    <rect x="14" y="48" width="4" height="3" fill="#1A1A1A" opacity="0.3" />
+    <rect x="50" y="48" width="3" height="3" fill="#1A1A1A" opacity="0.3" />
+    <rect x="38" y="42" width="2" height="2" fill="#1A1A1A" opacity="0.25" />
+    {/* Rock surface highlights */}
+    <rect x="16" y="18" width="3" height="1" fill="#90A4AE" opacity="0.2" />
+    <rect x="46" y="20" width="4" height="1" fill="#90A4AE" opacity="0.18" />
+    <rect x="8" y="34" width="4" height="1" fill="#78909C" opacity="0.15" />
+    <rect x="56" y="38" width="5" height="1" fill="#78909C" opacity="0.15" />
+    {/* Columnar basalt effect on lower walls */}
+    <rect x="2" y="44" width="1" height="12" fill="#455A64" opacity="0.2" />
+    <rect x="6" y="42" width="1" height="14" fill="#455A64" opacity="0.18" />
+    <rect x="62" y="42" width="1" height="14" fill="#455A64" opacity="0.18" />
+    <rect x="66" y="44" width="1" height="12" fill="#455A64" opacity="0.15" />
 
-    {/* Warm moss near vents */}
-    <rect x="32" y="10" width="6" height="2" fill="#FF8F00" opacity="0.3" />
-    <rect x="18" y="22" width="4" height="2" fill="#558B2F" opacity="0.4" />
-    <rect x="48" y="24" width="6" height="2" fill="#558B2F" opacity="0.3" />
+    {/* Thermophilic algae near vents — heat-loving orange/yellow colonies */}
+    <rect x="30" y="10" width="4" height="2" fill="#FF8F00" opacity="0.35" />
+    <rect x="36" y="12" width="3" height="2" fill="#FFA000" opacity="0.3" />
+    <rect x="28" y="14" width="3" height="2" fill="#FFB300" opacity="0.25" />
+    {/* Regular green algae on cooler surfaces */}
+    <rect x="16" y="22" width="4" height="2" fill="#558B2F" opacity="0.4" />
+    <rect x="48" y="24" width="6" height="2" fill="#558B2F" opacity="0.35" />
+    <rect x="4" y="38" width="5" height="2" fill="#2E7D32" opacity="0.35" />
+    <rect x="58" y="42" width="6" height="2" fill="#388E3C" opacity="0.3" />
+    {/* Tube worms around vent */}
+    <rect x="26" y="6" width="2" height="5" fill="#D50000" opacity="0.3" />
+    <rect x="42" y="6" width="2" height="4" fill="#D50000" opacity="0.25" />
+    <rect x="26" y="4" width="3" height="2" fill="#FF8A80" opacity="0.25" />
+    <rect x="41" y="4" width="3" height="2" fill="#FF8A80" opacity="0.2" />
 
-    {/* Bubble stream from crater */}
-    <circle cx="35" cy="-4" r="1.5" fill="rgba(255,255,255,0.3)" style={{ animation: 'bubbleRise 3s ease-in 0s infinite' }} />
-    <circle cx="33" cy="-2" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4s ease-in 0.8s infinite' }} />
-    <circle cx="37" cy="-3" r="1.2" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 3.5s ease-in 1.5s infinite' }} />
+    {/* Mineral deposit staining — sulfur yellow */}
+    <rect x="28" y="0" width="4" height="2" fill="#FDD835" opacity="0.2" />
+    <rect x="38" y="0" width="4" height="2" fill="#FDD835" opacity="0.18" />
+
+    {/* Barnacles on cooler areas */}
+    <rect x="4" y="50" width="3" height="3" fill="#9CA3AF" opacity="0.35" />
+    <rect x="62" y="52" width="3" height="3" fill="#9CA3AF" opacity="0.3" />
+
+    {/* Bubble stream from crater — hydrothermal vent effect */}
+    <circle cx="35" cy="-6" r="1.8" fill="rgba(255,255,255,0.35)" style={{ animation: 'bubbleRise 2.5s ease-in 0s infinite' }} />
+    <circle cx="33" cy="-4" r="1.2" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 3s ease-in 0.6s infinite' }} />
+    <circle cx="37" cy="-5" r="1.4" fill="rgba(255,255,255,0.3)" style={{ animation: 'bubbleRise 3.5s ease-in 1.2s infinite' }} />
+    <circle cx="34" cy="-3" r="0.8" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4s ease-in 2s infinite' }} />
+    <circle cx="36" cy="-2" r="0.6" fill="rgba(255,255,255,0.15)" style={{ animation: 'bubbleRise 4.5s ease-in 3s infinite' }} />
   </g>
 ))
 VolcanoFormation.displayName = 'VolcanoFormation'
@@ -512,45 +775,119 @@ VolcanoFormation.displayName = 'VolcanoFormation'
 
 const DragonStoneArch = memo(({ x, y }: { x: number; y: number }) => (
   <g transform={`translate(${x}, ${y})`}>
-    {/* Left pillar — dragon stone with pitted texture */}
-    <rect x="0" y="16" width="18" height="44" fill="#8D6E63" />
-    <rect x="2" y="10" width="16" height="8" fill="#A1887F" />
-    <rect x="4" y="6" width="12" height="6" fill="#BCAAA4" />
-    {/* Pitting texture (dragon stone signature) */}
-    <rect x="4" y="20" width="3" height="3" fill="#5D4037" opacity="0.5" />
-    <rect x="10" y="26" width="4" height="2" fill="#5D4037" opacity="0.4" />
-    <rect x="2" y="34" width="3" height="4" fill="#5D4037" opacity="0.5" />
-    <rect x="12" y="38" width="3" height="3" fill="#5D4037" opacity="0.4" />
-    <rect x="6" y="46" width="4" height="3" fill="#5D4037" opacity="0.3" />
-    <rect x="8" y="16" width="2" height="3" fill="#4E342E" opacity="0.3" />
+    {/* Left pillar — Ohko dragon stone with dramatic pitted/cratered texture */}
+    <rect x="0" y="16" width="20" height="44" fill="#795548" />
+    <rect x="2" y="10" width="18" height="8" fill="#8D6E63" />
+    <rect x="4" y="6" width="14" height="6" fill="#A1887F" />
+    <rect x="6" y="2" width="10" height="6" fill="#BCAAA4" />
+    {/* Left pillar: shadow depth on sides */}
+    <rect x="0" y="16" width="2" height="44" fill="#5D4037" opacity="0.3" />
+    <rect x="18" y="16" width="2" height="44" fill="#5D4037" opacity="0.2" />
+    {/* Pitting texture — deep eroded cavities (dragon stone signature) */}
+    <rect x="4" y="18" width="4" height="4" fill="#4E342E" opacity="0.55" />
+    <rect x="5" y="19" width="2" height="2" fill="#3E2723" opacity="0.3" />
+    <rect x="12" y="22" width="3" height="3" fill="#4E342E" opacity="0.45" />
+    <rect x="2" y="28" width="4" height="5" fill="#5D4037" opacity="0.5" />
+    <rect x="3" y="29" width="2" height="3" fill="#3E2723" opacity="0.3" />
+    <rect x="10" y="32" width="5" height="3" fill="#4E342E" opacity="0.45" />
+    <rect x="4" y="38" width="3" height="4" fill="#5D4037" opacity="0.5" />
+    <rect x="14" y="40" width="4" height="3" fill="#4E342E" opacity="0.4" />
+    <rect x="6" y="46" width="5" height="4" fill="#5D4037" opacity="0.4" />
+    <rect x="7" y="47" width="3" height="2" fill="#3E2723" opacity="0.25" />
+    <rect x="12" y="50" width="3" height="3" fill="#4E342E" opacity="0.35" />
+    <rect x="8" y="14" width="3" height="3" fill="#4E342E" opacity="0.35" />
+    {/* Ridge/vein textures (iron oxide staining) */}
+    <rect x="0" y="24" width="18" height="1" fill="#BF360C" opacity="0.2" />
+    <rect x="2" y="36" width="16" height="1" fill="#E65100" opacity="0.15" />
+    <rect x="0" y="48" width="18" height="1" fill="#BF360C" opacity="0.12" />
+    {/* Surface highlights */}
+    <rect x="6" y="10" width="4" height="1" fill="#D7CCC8" opacity="0.3" />
+    <rect x="8" y="24" width="3" height="1" fill="#BCAAA4" opacity="0.25" />
 
-    {/* Right pillar */}
-    <rect x="58" y="14" width="18" height="46" fill="#8D6E63" />
-    <rect x="60" y="8" width="14" height="8" fill="#A1887F" />
-    <rect x="62" y="4" width="12" height="6" fill="#BCAAA4" />
-    {/* Right pitting */}
-    <rect x="62" y="18" width="4" height="3" fill="#5D4037" opacity="0.5" />
-    <rect x="68" y="28" width="3" height="4" fill="#5D4037" opacity="0.4" />
-    <rect x="60" y="36" width="3" height="3" fill="#5D4037" opacity="0.5" />
-    <rect x="70" y="42" width="4" height="3" fill="#5D4037" opacity="0.4" />
-    <rect x="64" y="50" width="3" height="2" fill="#5D4037" opacity="0.3" />
+    {/* Right pillar — taller, more weathered */}
+    <rect x="58" y="12" width="20" height="48" fill="#795548" />
+    <rect x="60" y="6" width="16" height="8" fill="#8D6E63" />
+    <rect x="62" y="2" width="14" height="6" fill="#A1887F" />
+    <rect x="64" y="-2" width="10" height="6" fill="#BCAAA4" />
+    {/* Right shadow depth */}
+    <rect x="58" y="12" width="2" height="48" fill="#5D4037" opacity="0.3" />
+    <rect x="76" y="12" width="2" height="48" fill="#5D4037" opacity="0.2" />
+    {/* Right pitting — varied sizes and depths */}
+    <rect x="62" y="16" width="5" height="4" fill="#4E342E" opacity="0.55" />
+    <rect x="63" y="17" width="3" height="2" fill="#3E2723" opacity="0.3" />
+    <rect x="70" y="22" width="4" height="5" fill="#5D4037" opacity="0.5" />
+    <rect x="71" y="23" width="2" height="3" fill="#3E2723" opacity="0.3" />
+    <rect x="60" y="30" width="3" height="4" fill="#4E342E" opacity="0.5" />
+    <rect x="68" y="36" width="5" height="3" fill="#5D4037" opacity="0.45" />
+    <rect x="62" y="42" width="4" height="4" fill="#4E342E" opacity="0.4" />
+    <rect x="72" y="46" width="3" height="3" fill="#5D4037" opacity="0.4" />
+    <rect x="64" y="52" width="5" height="3" fill="#4E342E" opacity="0.35" />
+    <rect x="74" y="38" width="3" height="3" fill="#4E342E" opacity="0.3" />
+    {/* Right iron oxide veins */}
+    <rect x="60" y="20" width="16" height="1" fill="#BF360C" opacity="0.18" />
+    <rect x="58" y="34" width="18" height="1" fill="#E65100" opacity="0.15" />
+    <rect x="60" y="48" width="16" height="1" fill="#BF360C" opacity="0.12" />
 
-    {/* Arch bridge */}
-    <rect x="8" y="2" width="62" height="6" fill="#A1887F" />
-    <rect x="14" y="-2" width="50" height="6" fill="#BCAAA4" />
-    <rect x="20" y="-4" width="38" height="4" fill="#D7CCC8" opacity="0.7" />
+    {/* Arch bridge — massive weathered stone span */}
+    <rect x="8" y="0" width="62" height="8" fill="#8D6E63" />
+    <rect x="12" y="-4" width="54" height="6" fill="#A1887F" />
+    <rect x="18" y="-6" width="42" height="4" fill="#BCAAA4" />
+    <rect x="24" y="-8" width="30" height="3" fill="#D7CCC8" opacity="0.6" />
+    {/* Arch underside shadow */}
+    <rect x="12" y="6" width="54" height="2" fill="#5D4037" opacity="0.25" />
     {/* Arch pitting */}
-    <rect x="24" y="0" width="3" height="2" fill="#5D4037" opacity="0.3" />
-    <rect x="40" y="-2" width="4" height="2" fill="#5D4037" opacity="0.3" />
-    <rect x="52" y="0" width="3" height="3" fill="#5D4037" opacity="0.25" />
+    <rect x="22" y="-2" width="4" height="3" fill="#5D4037" opacity="0.35" />
+    <rect x="32" y="-4" width="3" height="2" fill="#4E342E" opacity="0.3" />
+    <rect x="42" y="-2" width="5" height="3" fill="#5D4037" opacity="0.3" />
+    <rect x="52" y="0" width="4" height="3" fill="#4E342E" opacity="0.3" />
+    <rect x="36" y="2" width="3" height="2" fill="#5D4037" opacity="0.25" />
+    <rect x="48" y="2" width="3" height="3" fill="#4E342E" opacity="0.25" />
+    {/* Arch iron oxide veins */}
+    <rect x="16" y="0" width="46" height="1" fill="#BF360C" opacity="0.15" />
 
-    {/* Plants growing from crevices */}
-    <rect x="16" y="2" width="3" height="6" fill="#00C853" opacity="0.6" />
-    <rect x="15" y="-2" width="4" height="4" fill="#69F0AE" opacity="0.5" />
-    <rect x="56" y="0" width="3" height="5" fill="#00E676" opacity="0.5" />
-    {/* Moss patches */}
-    <rect x="0" y="52" width="6" height="2" fill="#2E7D32" opacity="0.4" />
-    <rect x="68" y="54" width="6" height="2" fill="#2E7D32" opacity="0.4" />
+    {/* Lush plants growing from crevices — varied species */}
+    {/* Fern from left pillar crack */}
+    <rect x="16" y="0" width="3" height="8" fill="#00C853" opacity="0.6" />
+    <rect x="14" y="-4" width="4" height="4" fill="#69F0AE" opacity="0.5" />
+    <rect x="13" y="-6" width="3" height="3" fill="#B9F6CA" opacity="0.4" />
+    <rect x="18" y="-2" width="2" height="3" fill="#00E676" opacity="0.45" />
+    {/* Right crevice growth */}
+    <rect x="56" y="-2" width="3" height="6" fill="#00E676" opacity="0.55" />
+    <rect x="54" y="-4" width="3" height="3" fill="#69F0AE" opacity="0.45" />
+    <rect x="58" y="-4" width="2" height="2" fill="#B9F6CA" opacity="0.35" />
+    {/* Creeping vine on arch top */}
+    <rect x="28" y="-8" width="3" height="2" fill="#00C853" opacity="0.4" />
+    <rect x="36" y="-7" width="4" height="2" fill="#00E676" opacity="0.35" />
+    <rect x="44" y="-8" width="3" height="2" fill="#69F0AE" opacity="0.3" />
+
+    {/* Java moss patches (soft green cushions) */}
+    <rect x="0" y="54" width="8" height="3" fill="#2E7D32" opacity="0.45" />
+    <rect x="2" y="52" width="4" height="2" fill="#4CAF50" opacity="0.35" />
+    <rect x="70" y="54" width="8" height="3" fill="#2E7D32" opacity="0.4" />
+    <rect x="72" y="52" width="4" height="2" fill="#388E3C" opacity="0.35" />
+    <rect x="10" y="58" width="6" height="2" fill="#388E3C" opacity="0.3" />
+    <rect x="60" y="58" width="8" height="2" fill="#2E7D32" opacity="0.3" />
+
+    {/* Anubias plant attached to left pillar */}
+    <rect x="-4" y="32" width="4" height="6" fill="#1B5E20" opacity="0.5" />
+    <rect x="-6" y="28" width="4" height="6" fill="#2E7D32" opacity="0.4" />
+    <rect x="-8" y="30" width="3" height="4" fill="#388E3C" opacity="0.35" />
+    {/* Leaf shapes */}
+    <rect x="-8" y="26" width="6" height="3" fill="#4CAF50" opacity="0.4" />
+    <rect x="-6" y="24" width="4" height="2" fill="#81C784" opacity="0.3" />
+
+    {/* Barnacle clusters */}
+    <rect x="14" y="56" width="3" height="3" fill="#9CA3AF" opacity="0.35" />
+    <rect x="62" y="56" width="3" height="3" fill="#9CA3AF" opacity="0.3" />
+    <rect x="30" y="6" width="2" height="2" fill="#78909C" opacity="0.25" />
+
+    {/* Small shrimp on stone (pixel detail) */}
+    <rect x="38" y="4" width="3" height="1" fill="#FF8A65" opacity="0.35" />
+    <rect x="37" y="3" width="1" height="1" fill="#FFAB91" opacity="0.3" />
+
+    {/* Bubbles */}
+    <circle cx="40" cy="-6" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4s ease-in 0.5s infinite' }} />
+    <circle cx="15" cy="-4" r="0.8" fill="rgba(255,255,255,0.18)" style={{ animation: 'bubbleRise 5s ease-in 2s infinite' }} />
   </g>
 ))
 DragonStoneArch.displayName = 'DragonStoneArch'
@@ -559,122 +896,215 @@ DragonStoneArch.displayName = 'DragonStoneArch'
 
 const SunkenSubmarine = memo(({ x, y }: { x: number; y: number }) => (
   <g transform={`translate(${x}, ${y})`}>
-    {/* Main hull — tilted slightly */}
+    {/* Shadow on seabed */}
+    <ellipse cx="50" cy="52" rx="60" ry="5" fill="#000" opacity="0.12" />
+
+    {/* Main hull — cylindrical pressure hull, slightly listed */}
     <rect x="10" y="16" width="80" height="28" fill="#37474F" />
     <rect x="6" y="20" width="8" height="20" fill="#455A64" />
-    <rect x="86" y="20" width="10" height="20" fill="#455A64" />
-    {/* Hull top curve */}
+    <rect x="86" y="20" width="12" height="20" fill="#455A64" />
+    {/* Hull curvature — top arc */}
     <rect x="14" y="12" width="76" height="6" fill="#546E7A" />
     <rect x="20" y="8" width="64" height="6" fill="#607D8B" />
-    {/* Hull bottom */}
+    <rect x="28" y="6" width="48" height="3" fill="#78909C" opacity="0.6" />
+    {/* Hull bottom keel */}
     <rect x="14" y="42" width="76" height="4" fill="#263238" />
+    <rect x="18" y="46" width="68" height="2" fill="#1A1A1A" opacity="0.3" />
+    {/* Hull highlight strip (light reflection) */}
+    <rect x="18" y="14" width="68" height="1" fill="#90A4AE" opacity="0.2" />
 
-    {/* Hull panel lines */}
-    <rect x="14" y="24" width="48" height="1" fill="#2C3E50" opacity="0.3" />
-    <rect x="14" y="32" width="48" height="1" fill="#2C3E50" opacity="0.25" />
-    {/* Rivets along hull */}
-    {[18, 26, 34, 42, 50, 58, 74, 82].map((rx, i) => (
+    {/* Hull panel lines — welded plate seams */}
+    <rect x="14" y="20" width="72" height="1" fill="#2C3E50" opacity="0.3" />
+    <rect x="14" y="28" width="48" height="1" fill="#2C3E50" opacity="0.25" />
+    <rect x="14" y="36" width="72" height="1" fill="#2C3E50" opacity="0.2" />
+    {/* Vertical seam lines */}
+    <rect x="30" y="12" width="1" height="34" fill="#2C3E50" opacity="0.15" />
+    <rect x="50" y="12" width="1" height="34" fill="#2C3E50" opacity="0.15" />
+    <rect x="70" y="12" width="1" height="34" fill="#2C3E50" opacity="0.12" />
+
+    {/* Rivets along hull — top and bottom rows */}
+    {[16, 22, 28, 34, 40, 46, 52, 58, 72, 78, 84].map((rx, i) => (
       <circle key={`rivet-t-${i}`} cx={rx} cy={13} r="0.8" fill="#78909C" opacity="0.4" />
     ))}
-    {[18, 26, 34, 42, 50, 58, 74, 82].map((rx, i) => (
+    {[16, 22, 28, 34, 40, 46, 52, 58, 72, 78, 84].map((rx, i) => (
       <circle key={`rivet-b-${i}`} cx={rx} cy={43} r="0.8" fill="#546E7A" opacity="0.35" />
     ))}
+    {/* Mid rivets at panel seam */}
+    {[16, 24, 32, 40, 48, 56].map((rx, i) => (
+      <circle key={`rivet-m-${i}`} cx={rx} cy={20} r="0.6" fill="#607D8B" opacity="0.3" />
+    ))}
 
-    {/* Torpedo tubes at bow */}
-    <rect x="88" y="24" width="10" height="3" fill="#455A64" />
-    <rect x="88" y="30" width="10" height="3" fill="#455A64" />
-    <circle cx="98" cy="25.5" r="1.5" fill="#263238" />
-    <circle cx="98" cy="31.5" r="1.5" fill="#263238" />
+    {/* Torpedo tubes at bow — 4 tubes */}
+    <rect x="90" y="22" width="10" height="3" fill="#455A64" />
+    <rect x="90" y="27" width="10" height="3" fill="#455A64" />
+    <rect x="90" y="32" width="10" height="3" fill="#455A64" />
+    <circle cx="100" cy="23.5" r="1.5" fill="#1A1A1A" />
+    <circle cx="100" cy="28.5" r="1.5" fill="#1A1A1A" />
+    <circle cx="100" cy="33.5" r="1.5" fill="#1A1A1A" />
+    {/* Torpedo tube rim highlights */}
+    <circle cx="100" cy="23.5" r="1.5" fill="none" stroke="#546E7A" strokeWidth="0.5" opacity="0.4" />
+    <circle cx="100" cy="28.5" r="1.5" fill="none" stroke="#546E7A" strokeWidth="0.5" opacity="0.35" />
 
-    {/* Hydroplanes (fins) */}
-    <rect x="4" y="18" width="6" height="2" fill="#607D8B" />
+    {/* Bow sonar dome */}
+    <rect x="96" y="26" width="6" height="6" fill="#546E7A" opacity="0.5" />
+    <rect x="98" y="24" width="4" height="10" fill="#455A64" opacity="0.4" />
+
+    {/* Hydroplanes (diving fins) — with detail */}
+    <rect x="4" y="18" width="8" height="2" fill="#607D8B" />
     <rect x="2" y="16" width="4" height="2" fill="#78909C" opacity="0.7" />
-    <rect x="4" y="34" width="6" height="2" fill="#607D8B" />
+    <rect x="0" y="17" width="2" height="1" fill="#90A4AE" opacity="0.5" />
+    <rect x="4" y="34" width="8" height="2" fill="#607D8B" />
     <rect x="2" y="36" width="4" height="2" fill="#78909C" opacity="0.7" />
+    <rect x="0" y="35" width="2" height="1" fill="#90A4AE" opacity="0.5" />
+    {/* Rudder fin at stern */}
+    <rect x="4" y="24" width="2" height="8" fill="#546E7A" opacity="0.5" />
 
-    {/* Conning tower (sail) */}
-    <rect x="38" y="0" width="20" height="12" fill="#546E7A" />
-    <rect x="40" y="-4" width="16" height="6" fill="#607D8B" />
-    {/* Periscope — bent */}
-    <rect x="46" y="-14" width="3" height="12" fill="#78909C" />
-    <rect x="44" y="-16" width="6" height="3" fill="#90A4AE" />
-    <rect x="48" y="-12" width="3" height="4" fill="#78909C" transform="rotate(15, 49, -10)" />
+    {/* Conning tower (sail) — more detailed */}
+    <rect x="36" y="0" width="24" height="14" fill="#455A64" />
+    <rect x="38" y="-4" width="20" height="6" fill="#546E7A" />
+    <rect x="40" y="-6" width="16" height="3" fill="#607D8B" />
+    {/* Sail panel lines */}
+    <rect x="38" y="4" width="20" height="1" fill="#37474F" opacity="0.3" />
+    <rect x="38" y="8" width="20" height="1" fill="#37474F" opacity="0.25" />
+    {/* Sail rivets */}
+    {[40, 44, 48, 52, 56].map((rx, i) => (
+      <circle key={`sr-${i}`} cx={rx} cy={-5} r="0.5" fill="#78909C" opacity="0.35" />
+    ))}
+    {/* Bridge windscreen / viewport */}
+    <rect x="42" y="-3" width="12" height="2" fill="#0D2137" opacity="0.6" />
+    <rect x="43" y="-3" width="10" height="1" fill="#1A5276" opacity="0.3" />
+
+    {/* Periscope — bent and encrusted */}
+    <rect x="46" y="-16" width="3" height="12" fill="#78909C" />
+    <rect x="44" y="-18" width="6" height="3" fill="#90A4AE" />
+    <rect x="48" y="-14" width="3" height="4" fill="#78909C" transform="rotate(12, 49, -12)" />
+    {/* Periscope optics */}
+    <rect x="44" y="-19" width="2" height="2" fill="#0D2137" opacity="0.6" />
+    {/* Periscope barnacle */}
+    <rect x="47" y="-10" width="2" height="2" fill="#9CA3AF" opacity="0.3" />
     {/* Radar mast */}
-    <rect x="52" y="-8" width="2" height="8" fill="#78909C" />
-    <rect x="50" y="-10" width="6" height="2" fill="#90A4AE" />
+    <rect x="54" y="-10" width="2" height="10" fill="#78909C" />
+    <rect x="52" y="-12" width="6" height="2" fill="#90A4AE" />
+    {/* Radar dish */}
+    <rect x="51" y="-14" width="8" height="2" fill="#B0BEC5" opacity="0.4" />
+    {/* Snorkel mast */}
+    <rect x="40" y="-8" width="2" height="8" fill="#607D8B" opacity="0.6" />
+    <rect x="39" y="-10" width="4" height="2" fill="#78909C" opacity="0.5" />
 
-    {/* Trailing kelp from conning tower */}
-    <rect x="40" y="-4" width="3" height="8" fill="#2E7D32" opacity="0.35" style={{ animation: 'kelpSway 5s ease-in-out 0s infinite', transformOrigin: '41px -4px' }} />
-    <rect x="54" y="-2" width="2" height="6" fill="#388E3C" opacity="0.3" style={{ animation: 'kelpSway 4s ease-in-out 1s infinite', transformOrigin: '55px -2px' }} />
+    {/* Trailing kelp from conning tower — multiple strands */}
+    <rect x="38" y="-4" width="3" height="10" fill="#2E7D32" opacity="0.35" style={{ animation: 'kelpSway 5s ease-in-out 0s infinite', transformOrigin: '39px -4px' }} />
+    <rect x="56" y="-2" width="2" height="8" fill="#388E3C" opacity="0.3" style={{ animation: 'kelpSway 4s ease-in-out 1s infinite', transformOrigin: '57px -2px' }} />
+    <rect x="42" y="-6" width="2" height="6" fill="#1B5E20" opacity="0.25" style={{ animation: 'kelpSway 4.5s ease-in-out 0.5s infinite', transformOrigin: '43px -6px' }} />
 
-    {/* Hull breach (fish swim-through hole) */}
-    <rect x="62" y="22" width="14" height="14" fill="#0A1628" opacity="0.8" />
-    <rect x="64" y="20" width="10" height="2" fill="#263238" />
-    <rect x="64" y="36" width="10" height="2" fill="#263238" />
-    {/* Torn metal around breach */}
-    <rect x="60" y="22" width="3" height="4" fill="#455A64" />
-    <rect x="75" y="26" width="3" height="4" fill="#455A64" />
-    <rect x="66" y="18" width="4" height="3" fill="#546E7A" />
-    {/* Bent metal shards */}
-    <rect x="61" y="34" width="2" height="3" fill="#546E7A" opacity="0.6" />
-    <rect x="74" y="22" width="2" height="3" fill="#546E7A" opacity="0.5" />
+    {/* Hull breach (fish swim-through hole) — more dramatic */}
+    <rect x="62" y="20" width="16" height="16" fill="#0A1628" opacity="0.85" />
+    {/* Inner hull structure visible (ribs/frames) */}
+    <rect x="63" y="20" width="1" height="16" fill="#455A64" opacity="0.4" />
+    <rect x="67" y="20" width="1" height="16" fill="#455A64" opacity="0.35" />
+    <rect x="71" y="20" width="1" height="16" fill="#455A64" opacity="0.3" />
+    <rect x="75" y="20" width="1" height="16" fill="#455A64" opacity="0.3" />
+    {/* Torn metal edges — jagged shards */}
+    <rect x="60" y="20" width="3" height="5" fill="#546E7A" />
+    <rect x="59" y="24" width="2" height="3" fill="#607D8B" opacity="0.7" />
+    <rect x="77" y="24" width="3" height="5" fill="#546E7A" />
+    <rect x="78" y="20" width="2" height="3" fill="#607D8B" opacity="0.6" />
+    <rect x="64" y="18" width="5" height="3" fill="#455A64" />
+    <rect x="72" y="17" width="4" height="3" fill="#546E7A" opacity="0.7" />
+    <rect x="64" y="36" width="4" height="2" fill="#455A64" />
+    <rect x="72" y="35" width="5" height="3" fill="#546E7A" opacity="0.6" />
+    {/* Bent metal shards pointing inward */}
+    <rect x="61" y="34" width="2" height="4" fill="#607D8B" opacity="0.5" />
+    <rect x="76" y="22" width="2" height="4" fill="#607D8B" opacity="0.45" />
+    <rect x="66" y="36" width="3" height="2" fill="#546E7A" opacity="0.4" />
 
-    {/* Portholes — 3 now */}
-    <circle cx="26" cy="28" r="4" fill="#0D2137" stroke="#78909C" strokeWidth="1.5" />
-    <circle cx="26" cy="28" r="2" fill="#1A5276" opacity="0.5" />
-    <circle cx="42" cy="28" r="4" fill="#0D2137" stroke="#78909C" strokeWidth="1.5" />
-    <circle cx="42" cy="28" r="2" fill="#1A5276" opacity="0.4" />
-    <circle cx="82" cy="28" r="4" fill="#0D2137" stroke="#78909C" strokeWidth="1.5" />
-    <circle cx="82" cy="28" r="2" fill="#1A5276" opacity="0.3" />
+    {/* Portholes — 3 with glass glint detail */}
+    <circle cx="22" cy="28" r="4.5" fill="#0D2137" stroke="#607D8B" strokeWidth="2" />
+    <circle cx="22" cy="28" r="2.5" fill="#1A5276" opacity="0.5" />
+    <rect x="20" y="26" width="2" height="1" fill="#4FC3F7" opacity="0.3" />
+    <circle cx="38" cy="28" r="4.5" fill="#0D2137" stroke="#607D8B" strokeWidth="2" />
+    <circle cx="38" cy="28" r="2.5" fill="#1A5276" opacity="0.4" />
+    <rect x="36" y="26" width="2" height="1" fill="#4FC3F7" opacity="0.25" />
+    <circle cx="84" cy="28" r="4.5" fill="#0D2137" stroke="#607D8B" strokeWidth="2" />
+    <circle cx="84" cy="28" r="2.5" fill="#1A5276" opacity="0.3" />
 
-    {/* Propeller at stern */}
+    {/* Hull number stencil remnant */}
+    <rect x="88" y="14" width="2" height="4" fill="#B0BEC5" opacity="0.15" />
+    <rect x="92" y="14" width="2" height="4" fill="#B0BEC5" opacity="0.12" />
+
+    {/* Propeller at stern — multi-blade */}
     <rect x="0" y="22" width="8" height="3" fill="#78909C" />
-    <rect x="-4" y="18" width="6" height="14" fill="#607D8B" opacity="0.7" />
-    <rect x="-2" y="16" width="2" height="4" fill="#90A4AE" opacity="0.6" />
-    <rect x="-2" y="30" width="2" height="4" fill="#90A4AE" opacity="0.6" />
-    {/* Extra prop blades */}
-    <rect x="-6" y="20" width="4" height="2" fill="#90A4AE" opacity="0.4" />
-    <rect x="-6" y="28" width="4" height="2" fill="#90A4AE" opacity="0.4" />
+    <circle cx="2" cy="25" r="8" fill="none" stroke="#607D8B" strokeWidth="0.5" opacity="0.3" />
+    <rect x="-4" y="17" width="6" height="16" fill="#607D8B" opacity="0.6" />
+    <rect x="-2" y="14" width="2" height="5" fill="#90A4AE" opacity="0.5" />
+    <rect x="-2" y="31" width="2" height="5" fill="#90A4AE" opacity="0.5" />
+    <rect x="-6" y="19" width="4" height="3" fill="#90A4AE" opacity="0.4" />
+    <rect x="-6" y="28" width="4" height="3" fill="#90A4AE" opacity="0.4" />
+    {/* Prop shaft */}
+    <rect x="4" y="24" width="6" height="2" fill="#546E7A" opacity="0.4" />
+    {/* Prop guard */}
+    <rect x="-2" y="14" width="1" height="22" fill="#455A64" opacity="0.3" />
 
-    {/* Rust patches — more extensive */}
-    <rect x="30" y="32" width="8" height="4" fill="#BF360C" opacity="0.3" />
-    <rect x="50" y="14" width="6" height="4" fill="#E65100" opacity="0.25" />
-    <rect x="18" y="38" width="10" height="3" fill="#BF360C" opacity="0.2" />
-    <rect x="80" y="30" width="6" height="4" fill="#E65100" opacity="0.2" />
-    <rect x="40" y="40" width="12" height="3" fill="#BF360C" opacity="0.15" />
-    <rect x="70" y="14" width="8" height="3" fill="#E65100" opacity="0.15" />
-    <rect x="22" y="20" width="6" height="4" fill="#8B4513" opacity="0.15" />
+    {/* Rust and corrosion — extensive weathering */}
+    <rect x="28" y="32" width="8" height="5" fill="#BF360C" opacity="0.3" />
+    <rect x="30" y="34" width="4" height="2" fill="#E65100" opacity="0.2" />
+    <rect x="48" y="12" width="8" height="4" fill="#E65100" opacity="0.25" />
+    <rect x="50" y="14" width="4" height="2" fill="#FF6D00" opacity="0.15" />
+    <rect x="16" y="38" width="12" height="4" fill="#BF360C" opacity="0.22" />
+    <rect x="80" y="30" width="8" height="4" fill="#E65100" opacity="0.2" />
+    <rect x="40" y="40" width="14" height="3" fill="#BF360C" opacity="0.18" />
+    <rect x="68" y="12" width="10" height="3" fill="#E65100" opacity="0.15" />
+    <rect x="20" y="18" width="8" height="4" fill="#8B4513" opacity="0.15" />
+    {/* Rust streaks running down hull */}
+    <rect x="30" y="36" width="2" height="8" fill="#BF360C" opacity="0.12" />
+    <rect x="50" y="16" width="2" height="10" fill="#E65100" opacity="0.1" />
+    <rect x="82" y="34" width="2" height="8" fill="#BF360C" opacity="0.1" />
 
-    {/* Barnacles — more clusters */}
-    <rect x="20" y="42" width="3" height="3" fill="#9CA3AF" opacity="0.4" />
-    <rect x="56" y="44" width="4" height="2" fill="#9CA3AF" opacity="0.35" />
-    <rect x="84" y="38" width="3" height="3" fill="#9CA3AF" opacity="0.4" />
-    <rect x="10" y="40" width="4" height="3" fill="#B0BEC5" opacity="0.3" />
-    <rect x="44" y="44" width="3" height="2" fill="#9CA3AF" opacity="0.3" />
-    <rect x="76" y="44" width="5" height="2" fill="#B0BEC5" opacity="0.3" />
+    {/* Barnacles — extensive coverage on lower hull */}
+    <rect x="18" y="42" width="4" height="3" fill="#9CA3AF" opacity="0.4" />
+    <rect x="20" y="44" width="2" height="2" fill="#B0BEC5" opacity="0.3" />
+    <rect x="34" y="44" width="3" height="3" fill="#9CA3AF" opacity="0.35" />
+    <rect x="56" y="44" width="5" height="2" fill="#9CA3AF" opacity="0.35" />
+    <rect x="84" y="38" width="4" height="3" fill="#9CA3AF" opacity="0.4" />
+    <rect x="10" y="40" width="5" height="3" fill="#B0BEC5" opacity="0.3" />
+    <rect x="44" y="44" width="4" height="2" fill="#9CA3AF" opacity="0.3" />
+    <rect x="76" y="44" width="6" height="2" fill="#B0BEC5" opacity="0.3" />
+    <rect x="90" y="34" width="4" height="3" fill="#9CA3AF" opacity="0.3" />
 
-    {/* Anemones growing on hull */}
-    <rect x="28" y="42" width="6" height="4" fill="#7B1FA2" opacity="0.5" />
-    <rect x="26" y="38" width="3" height="4" fill="#CE93D8" opacity="0.4" />
+    {/* Anemone colony on hull */}
+    <rect x="26" y="42" width="8" height="4" fill="#6A1B9A" opacity="0.5" />
+    <rect x="24" y="38" width="4" height="4" fill="#CE93D8" opacity="0.4" />
     <rect x="33" y="40" width="3" height="4" fill="#BA68C8" opacity="0.4" />
+    {/* Anemone tentacle tips */}
+    <rect x="24" y="36" width="2" height="2" fill="#E1BEE7" opacity="0.35" />
+    <rect x="28" y="37" width="2" height="2" fill="#F3E5F5" opacity="0.3" />
+    <rect x="32" y="38" width="2" height="2" fill="#E1BEE7" opacity="0.3" />
 
-    {/* Algae growth — more */}
-    <rect x="38" y="8" width="6" height="3" fill="#2E7D32" opacity="0.4" />
-    <rect x="14" y="18" width="4" height="2" fill="#388E3C" opacity="0.3" />
-    <rect x="72" y="42" width="8" height="2" fill="#1B5E20" opacity="0.4" />
-    <rect x="90" y="24" width="4" height="3" fill="#2E7D32" opacity="0.25" />
-    <rect x="8" y="28" width="3" height="2" fill="#388E3C" opacity="0.2" />
+    {/* Marine growth — algae, sponge, soft coral */}
+    <rect x="36" y="6" width="6" height="3" fill="#2E7D32" opacity="0.4" />
+    <rect x="14" y="16" width="4" height="3" fill="#388E3C" opacity="0.3" />
+    <rect x="72" y="42" width="10" height="2" fill="#1B5E20" opacity="0.4" />
+    <rect x="92" y="24" width="4" height="4" fill="#2E7D32" opacity="0.25" />
+    <rect x="6" y="28" width="4" height="2" fill="#388E3C" opacity="0.2" />
+    {/* Orange sponge */}
+    <rect x="46" y="44" width="4" height="3" fill="#FF6F00" opacity="0.2" />
+    <rect x="86" y="42" width="3" height="3" fill="#FFB300" opacity="0.15" />
 
     {/* Coral encrustation at base */}
     <rect x="14" y="44" width="8" height="4" fill="#E91E63" opacity="0.25" />
     <rect x="16" y="42" width="4" height="3" fill="#F48FB1" opacity="0.2" />
+    <rect x="60" y="44" width="6" height="3" fill="#C2185B" opacity="0.2" />
 
-    {/* Occasional bubbles from hull breach */}
-    <circle cx="68" cy="20" r="1.5" fill="rgba(255,255,255,0.3)" style={{ animation: 'bubbleRise 3s ease-in 0s infinite' }} />
-    <circle cx="72" cy="18" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 3.5s ease-in 0.8s infinite' }} />
-    <circle cx="70" cy="22" r="1.2" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4s ease-in 1.5s infinite' }} />
-    <circle cx="66" cy="19" r="0.8" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4.5s ease-in 2.5s infinite' }} />
-    <circle cx="69" cy="16" r="0.6" fill="rgba(255,255,255,0.15)" style={{ animation: 'bubbleRise 5s ease-in 3.5s infinite' }} />
+    {/* Debris on seabed near sub */}
+    <rect x="96" y="48" width="6" height="3" fill="#455A64" opacity="0.3" />
+    <rect x="-8" y="48" width="4" height="3" fill="#546E7A" opacity="0.25" />
+
+    {/* Bubbles from hull breach — active stream */}
+    <circle cx="68" cy="18" r="1.5" fill="rgba(255,255,255,0.3)" style={{ animation: 'bubbleRise 3s ease-in 0s infinite' }} />
+    <circle cx="72" cy="16" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 3.5s ease-in 0.8s infinite' }} />
+    <circle cx="70" cy="20" r="1.2" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4s ease-in 1.5s infinite' }} />
+    <circle cx="66" cy="17" r="0.8" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4.5s ease-in 2.5s infinite' }} />
+    <circle cx="74" cy="14" r="0.6" fill="rgba(255,255,255,0.15)" style={{ animation: 'bubbleRise 5s ease-in 3.5s infinite' }} />
+    <circle cx="48" cy="-6" r="0.7" fill="rgba(255,255,255,0.12)" style={{ animation: 'bubbleRise 5.5s ease-in 4s infinite' }} />
   </g>
 ))
 SunkenSubmarine.displayName = 'SunkenSubmarine'
@@ -683,77 +1113,169 @@ SunkenSubmarine.displayName = 'SunkenSubmarine'
 
 const TreasureCluster = memo(({ x, y }: { x: number; y: number }) => (
   <g transform={`translate(${x}, ${y})`}>
-    {/* Large treasure chest — open */}
-    <rect x="0" y="28" width="32" height="16" fill="#6B4C3A" />
-    <rect x="2" y="24" width="28" height="6" fill="#7A5B48" />
-    {/* Lid — open at angle */}
-    <rect x="-2" y="18" width="30" height="8" fill="#8B6C58" />
-    <rect x="0" y="16" width="26" height="4" fill="#9C7D68" />
-    {/* Metal bands */}
-    <rect x="0" y="32" width="32" height="2" fill="#D4A43A" opacity="0.6" />
-    <rect x="0" y="38" width="32" height="2" fill="#D4A43A" opacity="0.5" />
-    <rect x="-2" y="20" width="30" height="1" fill="#D4A43A" opacity="0.5" />
-    {/* Lock */}
-    <rect x="12" y="28" width="6" height="4" fill="#D4A43A" />
-    <rect x="13" y="29" width="4" height="2" fill="#B8862D" />
-    {/* Chest wood grain */}
-    <rect x="2" y="34" width="28" height="1" fill="#5D3A2A" opacity="0.2" />
-    <rect x="2" y="36" width="28" height="1" fill="#5D3A2A" opacity="0.15" />
+    {/* Large treasure chest — open, ornate pirate chest */}
+    <rect x="0" y="28" width="34" height="18" fill="#5D3A2A" />
+    <rect x="2" y="24" width="30" height="6" fill="#6B4C3A" />
+    {/* Chest body texture — wood plank lines */}
+    <rect x="2" y="30" width="30" height="1" fill="#4E2E1C" opacity="0.25" />
+    <rect x="2" y="34" width="30" height="1" fill="#4E2E1C" opacity="0.2" />
+    <rect x="2" y="38" width="30" height="1" fill="#4E2E1C" opacity="0.2" />
+    <rect x="2" y="42" width="30" height="1" fill="#4E2E1C" opacity="0.15" />
+    {/* Lid — open wide at angle */}
+    <rect x="-4" y="16" width="34" height="10" fill="#7A5B48" />
+    <rect x="-2" y="14" width="30" height="4" fill="#8B6C58" />
+    <rect x="0" y="12" width="26" height="3" fill="#9C7D68" />
+    {/* Lid wood grain */}
+    <rect x="-2" y="18" width="30" height="1" fill="#6B4C3A" opacity="0.25" />
+    <rect x="-2" y="22" width="30" height="1" fill="#6B4C3A" opacity="0.2" />
+    {/* Lid hinge */}
+    <rect x="28" y="24" width="4" height="3" fill="#78909C" opacity="0.5" />
+    <rect x="29" y="22" width="2" height="2" fill="#90A4AE" opacity="0.4" />
+    {/* Metal bands — ornate brass */}
+    <rect x="0" y="32" width="34" height="2" fill="#D4A43A" opacity="0.65" />
+    <rect x="0" y="40" width="34" height="2" fill="#D4A43A" opacity="0.55" />
+    <rect x="-4" y="20" width="34" height="1" fill="#D4A43A" opacity="0.5" />
+    {/* Corner reinforcements */}
+    <rect x="0" y="28" width="3" height="4" fill="#B8862D" opacity="0.4" />
+    <rect x="31" y="28" width="3" height="4" fill="#B8862D" opacity="0.35" />
+    <rect x="0" y="42" width="3" height="4" fill="#B8862D" opacity="0.3" />
+    <rect x="31" y="42" width="3" height="4" fill="#B8862D" opacity="0.3" />
+    {/* Lock plate — ornate keyhole */}
+    <rect x="12" y="28" width="8" height="6" fill="#D4A43A" />
+    <rect x="13" y="29" width="6" height="4" fill="#B8862D" />
+    <rect x="15" y="30" width="2" height="2" fill="#4E342E" opacity="0.7" />
+    <rect x="14" y="32" width="4" height="1" fill="#4E342E" opacity="0.5" />
 
-    {/* Gold and jewels spilling */}
-    <circle cx="34" cy="42" r="3" fill="#FFD700" opacity="0.85" />
-    <circle cx="38" cy="40" r="2" fill="#FFD700" opacity="0.7" />
-    <circle cx="36" cy="38" r="2.5" fill="#FFC107" opacity="0.6" />
-    <circle cx="-4" cy="44" r="2" fill="#FFD700" opacity="0.5" />
-    <circle cx="32" cy="36" r="1.5" fill="#E91E63" opacity="0.6" /> {/* Ruby */}
-    <circle cx="28" cy="26" r="1.5" fill="#2196F3" opacity="0.6" /> {/* Sapphire */}
-    <circle cx="8" cy="26" r="1" fill="#4CAF50" opacity="0.5" /> {/* Emerald */}
-    <rect x="4" y="24" width="8" height="3" fill="#FFD700" opacity="0.5" /> {/* Gold pile inside */}
-    <rect x="14" y="22" width="6" height="4" fill="#FFC107" opacity="0.4" />
+    {/* Gold and jewels spilling out — lavish overflow */}
+    {/* Gold coin pile spilling right */}
+    <circle cx="36" cy="42" r="3" fill="#FFD700" opacity="0.85" />
+    <circle cx="40" cy="40" r="2.5" fill="#FFD700" opacity="0.75" />
+    <circle cx="38" cy="38" r="2" fill="#FFC107" opacity="0.65" />
+    <circle cx="42" cy="44" r="2" fill="#FFD700" opacity="0.6" />
+    <circle cx="35" cy="38" r="1.5" fill="#FFB300" opacity="0.55" />
+    {/* Gold spilling left */}
+    <circle cx="-4" cy="44" r="2.5" fill="#FFD700" opacity="0.55" />
+    <circle cx="-6" cy="42" r="1.5" fill="#FFC107" opacity="0.45" />
+    {/* Gemstones — faceted jewels */}
+    <rect x="32" y="34" width="3" height="3" fill="#D50000" opacity="0.6" /> {/* Ruby */}
+    <rect x="33" y="35" width="1" height="1" fill="#FF8A80" opacity="0.4" />
+    <rect x="26" y="24" width="3" height="3" fill="#1565C0" opacity="0.6" /> {/* Sapphire */}
+    <rect x="27" y="25" width="1" height="1" fill="#64B5F6" opacity="0.4" />
+    <rect x="6" y="24" width="3" height="3" fill="#2E7D32" opacity="0.55" /> {/* Emerald */}
+    <rect x="7" y="25" width="1" height="1" fill="#81C784" opacity="0.35" />
+    <rect x="20" y="22" width="2" height="2" fill="#6A1B9A" opacity="0.5" /> {/* Amethyst */}
+    {/* Gold pile visible inside chest */}
+    <rect x="4" y="22" width="10" height="4" fill="#FFD700" opacity="0.55" />
+    <rect x="6" y="20" width="6" height="3" fill="#FFC107" opacity="0.45" />
+    <rect x="14" y="20" width="8" height="4" fill="#FFB300" opacity="0.4" />
+    <rect x="16" y="18" width="4" height="3" fill="#FFD700" opacity="0.35" />
+    {/* Gold bar visible */}
+    <rect x="10" y="24" width="8" height="2" fill="#FFD700" opacity="0.6" />
+    <rect x="11" y="24" width="6" height="1" fill="#FFF59D" opacity="0.3" />
 
-    {/* Crown / tiara among treasure */}
-    <rect x="6" y="20" width="10" height="3" fill="#FFD700" opacity="0.7" />
-    <rect x="7" y="18" width="2" height="3" fill="#FFD700" opacity="0.6" />
-    <rect x="11" y="17" width="2" height="4" fill="#FFD700" opacity="0.6" />
-    <rect x="15" y="18" width="2" height="3" fill="#FFD700" opacity="0.6" />
-    <circle cx="12" cy="18" r="1" fill="#E91E63" opacity="0.5" /> {/* Crown jewel */}
+    {/* Crown — detailed royal crown */}
+    <rect x="4" y="16" width="14" height="4" fill="#FFD700" opacity="0.7" />
+    <rect x="5" y="14" width="3" height="3" fill="#FFD700" opacity="0.65" />
+    <rect x="9" y="12" width="3" height="5" fill="#FFD700" opacity="0.65" />
+    <rect x="13" y="14" width="3" height="3" fill="#FFD700" opacity="0.65" />
+    <rect x="17" y="14" width="2" height="3" fill="#FFD700" opacity="0.6" />
+    {/* Crown jewels */}
+    <circle cx="10.5" cy="13" r="1.2" fill="#D50000" opacity="0.55" />
+    <circle cx="6.5" cy="15" r="0.8" fill="#1565C0" opacity="0.45" />
+    <circle cx="14.5" cy="15" r="0.8" fill="#2E7D32" opacity="0.45" />
+    {/* Crown velvet lining */}
+    <rect x="6" y="17" width="10" height="2" fill="#880E4F" opacity="0.3" />
 
-    {/* Pearl necklace draped over chest edge */}
-    {[0, 4, 8, 12, 16, 20].map((px, i) => (
-      <circle key={`pearl-${i}`} cx={-2 + px} cy={26 + (i % 2)} r="1" fill="#F5F5F5" opacity="0.5" />
+    {/* Pearl necklace draped over chest edge — longer strand */}
+    {[0, 3.5, 7, 10.5, 14, 17.5, 21, 24.5].map((px, i) => (
+      <circle key={`pearl-${i}`} cx={-3 + px} cy={25 + Math.sin(i * 0.8) * 1.5} r="1.2" fill="#F5F5F5" opacity={0.55 - i * 0.03} />
+    ))}
+    {/* Pearl luster highlights */}
+    {[0, 7, 14, 21].map((px, i) => (
+      <circle key={`pearl-h-${i}`} cx={-2.5 + px} cy={24.5 + Math.sin(i * 0.8) * 1.5} r="0.4" fill="#FFFFFF" opacity={0.3} />
     ))}
 
-    {/* Sword stuck in sand */}
-    <rect x="60" y="16" width="2" height="30" fill="#9E9E9E" />
-    <rect x="56" y="14" width="10" height="3" fill="#BDBDBD" />
-    <rect x="60" y="10" width="2" height="6" fill="#795548" />
-    <rect x="59" y="8" width="4" height="3" fill="#A1887F" />
-    <rect x="60" y="40" width="2" height="6" fill="#78909C" opacity="0.5" />
+    {/* Sword stuck in sand — detailed cutlass */}
+    <rect x="60" y="14" width="2" height="32" fill="#9E9E9E" />
+    <rect x="59" y="14" width="1" height="30" fill="#BDBDBD" opacity="0.3" />
+    {/* Blade fuller (groove) */}
+    <rect x="60.5" y="18" width="1" height="22" fill="#B0BEC5" opacity="0.25" />
+    {/* Cross guard */}
+    <rect x="55" y="12" width="12" height="3" fill="#B8862D" />
+    <rect x="56" y="11" width="10" height="1" fill="#D4A43A" opacity="0.5" />
+    {/* Grip — leather wrapped */}
+    <rect x="59" y="6" width="4" height="8" fill="#5D4037" />
+    <rect x="60" y="7" width="2" height="1" fill="#795548" opacity="0.4" />
+    <rect x="60" y="9" width="2" height="1" fill="#795548" opacity="0.4" />
+    <rect x="60" y="11" width="2" height="1" fill="#795548" opacity="0.4" />
+    {/* Pommel */}
+    <rect x="58" y="4" width="6" height="3" fill="#B8862D" />
+    <rect x="59" y="3" width="4" height="2" fill="#D4A43A" opacity="0.5" />
+    {/* Blade tip in sand */}
+    <rect x="60" y="42" width="2" height="6" fill="#78909C" opacity="0.4" />
 
-    {/* Small closed chest nearby */}
-    <rect x="64" y="38" width="16" height="8" fill="#5D3A2A" />
-    <rect x="66" y="36" width="12" height="4" fill="#6B4C3A" />
-    <rect x="64" y="42" width="16" height="1" fill="#D4A43A" opacity="0.4" />
-    <rect x="70" y="38" width="4" height="2" fill="#D4A43A" opacity="0.3" />
+    {/* Small closed chest nearby — barnacle encrusted */}
+    <rect x="64" y="36" width="18" height="10" fill="#4E2E1C" />
+    <rect x="66" y="34" width="14" height="4" fill="#5D3A2A" />
+    <rect x="64" y="40" width="18" height="1" fill="#B8862D" opacity="0.4" />
+    <rect x="64" y="44" width="18" height="1" fill="#B8862D" opacity="0.35" />
+    <rect x="71" y="36" width="4" height="2" fill="#D4A43A" opacity="0.3" />
+    {/* Barnacles on small chest */}
+    <rect x="78" y="38" width="3" height="3" fill="#9CA3AF" opacity="0.35" />
+    <rect x="64" y="42" width="3" height="2" fill="#9CA3AF" opacity="0.3" />
+    {/* Algae on small chest */}
+    <rect x="66" y="44" width="4" height="2" fill="#2E7D32" opacity="0.3" />
 
-    {/* Skeleton hand reaching from sand */}
-    <rect x="52" y="40" width="2" height="6" fill="#E0E0E0" opacity="0.4" />
-    <rect x="50" y="38" width="2" height="3" fill="#EEEEEE" opacity="0.35" />
-    <rect x="54" y="38" width="2" height="4" fill="#E0E0E0" opacity="0.3" />
-    <rect x="48" y="36" width="2" height="3" fill="#EEEEEE" opacity="0.3" />
+    {/* Skeleton hand reaching from sand — more detailed */}
+    <rect x="52" y="38" width="2" height="8" fill="#E0E0E0" opacity="0.4" />
+    <rect x="50" y="36" width="2" height="4" fill="#EEEEEE" opacity="0.35" />
+    <rect x="54" y="36" width="2" height="5" fill="#E0E0E0" opacity="0.35" />
+    <rect x="48" y="34" width="2" height="4" fill="#EEEEEE" opacity="0.3" />
+    <rect x="56" y="38" width="2" height="3" fill="#E0E0E0" opacity="0.25" />
+    {/* Finger bones */}
+    <rect x="48" y="33" width="1" height="2" fill="#F5F5F5" opacity="0.25" />
+    <rect x="50" y="34" width="1" height="2" fill="#F5F5F5" opacity="0.25" />
+    {/* Ring on finger */}
+    <circle cx="51" cy="37" r="1" fill="#FFD700" opacity="0.35" />
 
-    {/* Scattered coins */}
-    <circle cx="10" cy="46" r="1.5" fill="#FFD700" opacity="0.4" />
-    <circle cx="22" cy="44" r="1" fill="#FFC107" opacity="0.3" />
-    <circle cx="44" cy="44" r="1.5" fill="#FFD700" opacity="0.35" />
-    <circle cx="16" cy="48" r="1" fill="#FFD700" opacity="0.3" />
-    <circle cx="38" cy="46" r="1.2" fill="#FFC107" opacity="0.25" />
-    <circle cx="56" cy="46" r="1" fill="#FFD700" opacity="0.3" />
-    <circle cx="70" cy="46" r="1.2" fill="#FFD700" opacity="0.25" />
-    <circle cx="30" cy="48" r="0.8" fill="#FFC107" opacity="0.2" />
+    {/* Scattered coins — extensive field */}
+    <circle cx="8" cy="48" r="1.5" fill="#FFD700" opacity="0.45" />
+    <circle cx="20" cy="46" r="1.2" fill="#FFC107" opacity="0.35" />
+    <circle cx="44" cy="44" r="1.5" fill="#FFD700" opacity="0.4" />
+    <circle cx="14" cy="50" r="1" fill="#FFD700" opacity="0.3" />
+    <circle cx="36" cy="48" r="1.2" fill="#FFC107" opacity="0.3" />
+    <circle cx="56" cy="48" r="1" fill="#FFD700" opacity="0.35" />
+    <circle cx="72" cy="48" r="1.2" fill="#FFD700" opacity="0.25" />
+    <circle cx="28" cy="50" r="0.8" fill="#FFC107" opacity="0.2" />
+    <circle cx="46" cy="50" r="1" fill="#FFD700" opacity="0.25" />
+    <circle cx="62" cy="50" r="0.8" fill="#FFC107" opacity="0.2" />
+    {/* Coin edge detail — some showing faces */}
+    <circle cx="8" cy="48" r="1.5" fill="none" stroke="#B8862D" strokeWidth="0.3" opacity="0.3" />
+    <circle cx="44" cy="44" r="1.5" fill="none" stroke="#B8862D" strokeWidth="0.3" opacity="0.25" />
 
-    {/* Chain trailing in the sand */}
-    <path d="M34 44 Q40 42 46 44 Q50 46 54 44" stroke="#4B5563" strokeWidth="1.5" fill="none" opacity="0.35" />
+    {/* Goblet — tipped over */}
+    <rect x="42" y="38" width="4" height="6" fill="#D4A43A" opacity="0.5" />
+    <rect x="40" y="36" width="8" height="2" fill="#FFD700" opacity="0.4" />
+    <rect x="43" y="44" width="3" height="2" fill="#B8862D" opacity="0.35" />
+
+    {/* Chain trailing in sand — heavy iron */}
+    <path d="M34 46 Q38 44 42 46 Q46 48 50 46 Q54 44 58 46" stroke="#4B5563" strokeWidth="1.8" fill="none" opacity="0.35" />
+    {/* Individual chain link details */}
+    <circle cx="38" cy="45" r="1" fill="none" stroke="#546E7A" strokeWidth="0.5" opacity="0.25" />
+    <circle cx="46" cy="47" r="1" fill="none" stroke="#546E7A" strokeWidth="0.5" opacity="0.2" />
+
+    {/* Map scroll partially buried */}
+    <rect x="-8" y="38" width="10" height="4" fill="#D7CCC8" opacity="0.35" />
+    <rect x="-8" y="38" width="10" height="1" fill="#BCAAA4" opacity="0.25" />
+    <rect x="-8" y="41" width="10" height="1" fill="#A1887F" opacity="0.2" />
+
+    {/* Algae on chest */}
+    <rect x="0" y="44" width="4" height="2" fill="#2E7D32" opacity="0.3" />
+    <rect x="28" y="44" width="6" height="2" fill="#1B5E20" opacity="0.25" />
+
+    {/* Bubbles from disturbed treasure */}
+    <circle cx="16" cy="14" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4s ease-in 0.5s infinite' }} />
+    <circle cx="62" cy="10" r="0.8" fill="rgba(255,255,255,0.15)" style={{ animation: 'bubbleRise 5s ease-in 2s infinite' }} />
   </g>
 ))
 TreasureCluster.displayName = 'TreasureCluster'
@@ -762,33 +1284,95 @@ TreasureCluster.displayName = 'TreasureCluster'
 
 const SunkenAnchor = memo(({ x, y }: { x: number; y: number }) => (
   <g transform={`translate(${x}, ${y})`}>
-    {/* Anchor shank (vertical bar) */}
-    <rect x="18" y="-10" width="4" height="54" fill="#4B5563" rx="1" />
-    {/* Ring at top */}
-    <circle cx="20" cy="-6" r="7" fill="none" stroke="#4B5563" strokeWidth="3.5" />
-    {/* Stock (horizontal bar at top) */}
-    <rect x="6" y="-12" width="28" height="3.5" fill="#6B7280" rx="1" />
-    {/* Crown / arms (curved flukes) */}
-    <path d="M8 38 Q6 32 10 28 Q14 26 18 30 L18 40 Q14 42 8 38Z" fill="#6B7280" />
-    <path d="M32 38 Q34 32 30 28 Q26 26 22 30 L22 40 Q26 42 32 38Z" fill="#6B7280" />
-    {/* Fluke tips (pointed) */}
-    <path d="M8 38 L2 46 L12 42 Z" fill="#546E7A" />
-    <path d="M32 38 L38 46 L28 42 Z" fill="#546E7A" />
-    {/* Rust patches */}
-    <ellipse cx="20" cy="10" rx="3" ry="4" fill="#B45309" opacity="0.25" />
-    <ellipse cx="12" cy="36" rx="3" ry="2" fill="#B45309" opacity="0.2" />
-    <ellipse cx="20" cy="24" rx="2" ry="3" fill="#8B4513" opacity="0.18" />
-    {/* Rope coiled around shank */}
-    <path d="M14 16 Q20 14 26 16" stroke="#A08060" strokeWidth="1.5" fill="none" opacity="0.55" />
-    <path d="M13 20 Q20 18 27 20" stroke="#C4A862" strokeWidth="1.5" fill="none" opacity="0.45" />
-    <path d="M14 24 Q20 22 26 24" stroke="#A08060" strokeWidth="1.5" fill="none" opacity="0.4" />
-    {/* Chain draped from ring */}
-    <path d="M14 -8 Q8 -4 4 2 Q2 8 4 14" stroke="#4B5563" strokeWidth="2" fill="none" opacity="0.45" />
-    {/* Barnacles */}
-    <circle cx="24" cy="32" r="1.5" fill="#9CA3AF" opacity="0.35" />
-    <circle cx="16" cy="18" r="1" fill="#9CA3AF" opacity="0.3" />
-    {/* Seaweed on anchor */}
-    <path d="M26 28 Q30 24 28 18" stroke="#2E7D32" strokeWidth="1" fill="none" opacity="0.35" />
+    {/* Anchor shank (main vertical shaft) — forged iron, heavily weathered */}
+    <rect x="17" y="-10" width="6" height="54" fill="#4B5563" rx="1" />
+    <rect x="18" y="-10" width="4" height="54" fill="#546E7A" opacity="0.4" />
+    {/* Shank edge highlights */}
+    <rect x="17" y="-10" width="1" height="54" fill="#607D8B" opacity="0.2" />
+    {/* Ring at top — heavy forged iron ring */}
+    <circle cx="20" cy="-8" r="8" fill="none" stroke="#4B5563" strokeWidth="4" />
+    <circle cx="20" cy="-8" r="8" fill="none" stroke="#607D8B" strokeWidth="1" opacity="0.25" />
+    {/* Ring wear mark at top */}
+    <rect x="18" y="-17" width="4" height="2" fill="#78909C" opacity="0.3" />
+    {/* Stock (horizontal cross-bar at top) */}
+    <rect x="4" y="-14" width="32" height="4" fill="#6B7280" rx="1" />
+    <rect x="5" y="-14" width="30" height="1" fill="#78909C" opacity="0.3" />
+    {/* Stock ball ends */}
+    <rect x="2" y="-16" width="4" height="6" fill="#546E7A" rx="1" />
+    <rect x="34" y="-16" width="4" height="6" fill="#546E7A" rx="1" />
+
+    {/* Crown / arms (curved flukes) — detailed forging */}
+    <path d="M8 38 Q5 32 10 26 Q14 24 18 28 L18 42 Q14 44 8 38Z" fill="#6B7280" />
+    <path d="M32 38 Q35 32 30 26 Q26 24 22 28 L22 42 Q26 44 32 38Z" fill="#6B7280" />
+    {/* Arm inner shading */}
+    <path d="M10 36 Q8 32 12 28 Q14 26 18 30 L18 38 Q14 40 10 36Z" fill="#546E7A" opacity="0.3" />
+    <path d="M30 36 Q32 32 28 28 Q26 26 22 30 L22 38 Q26 40 30 36Z" fill="#546E7A" opacity="0.3" />
+    {/* Fluke tips (pointed spade-shaped) */}
+    <path d="M8 38 L0 48 L6 46 L14 42 Z" fill="#546E7A" />
+    <path d="M32 38 L40 48 L34 46 L26 42 Z" fill="#546E7A" />
+    {/* Fluke edge highlights */}
+    <path d="M2 46 L8 38" stroke="#78909C" strokeWidth="0.5" fill="none" opacity="0.3" />
+    <path d="M38 46 L32 38" stroke="#78909C" strokeWidth="0.5" fill="none" opacity="0.3" />
+    {/* Bill (pointed tip between flukes) */}
+    <rect x="18" y="42" width="4" height="4" fill="#4B5563" />
+    <rect x="19" y="46" width="2" height="2" fill="#546E7A" />
+
+    {/* Rust patches — extensive corrosion */}
+    <ellipse cx="20" cy="8" rx="4" ry="5" fill="#B45309" opacity="0.28" />
+    <ellipse cx="20" cy="10" rx="2" ry="2" fill="#E65100" opacity="0.18" />
+    <ellipse cx="12" cy="34" rx="3" ry="3" fill="#B45309" opacity="0.22" />
+    <ellipse cx="28" cy="34" rx="3" ry="3" fill="#BF360C" opacity="0.2" />
+    <ellipse cx="20" cy="24" rx="3" ry="4" fill="#8B4513" opacity="0.2" />
+    {/* Rust streaks running down */}
+    <rect x="19" y="12" width="2" height="8" fill="#B45309" opacity="0.12" />
+    <rect x="21" y="28" width="1" height="6" fill="#BF360C" opacity="0.1" />
+    {/* Flake corrosion on stock */}
+    <rect x="8" y="-14" width="4" height="2" fill="#E65100" opacity="0.18" />
+    <rect x="26" y="-13" width="6" height="2" fill="#B45309" opacity="0.15" />
+
+    {/* Rope coiled around shank — weathered hemp */}
+    <path d="M13 14 Q20 12 27 14" stroke="#8B7355" strokeWidth="2" fill="none" opacity="0.55" />
+    <path d="M12 18 Q20 16 28 18" stroke="#A08060" strokeWidth="2" fill="none" opacity="0.45" />
+    <path d="M13 22 Q20 20 27 22" stroke="#8B7355" strokeWidth="2" fill="none" opacity="0.4" />
+    <path d="M14 26 Q20 24 26 26" stroke="#A08060" strokeWidth="1.5" fill="none" opacity="0.35" />
+    {/* Frayed rope end dangling */}
+    <path d="M13 14 Q10 16 8 20" stroke="#C4A862" strokeWidth="1" fill="none" opacity="0.3" />
+    <path d="M27 14 Q30 18 28 22" stroke="#C4A862" strokeWidth="0.8" fill="none" opacity="0.25" />
+
+    {/* Chain draped from ring — heavy links */}
+    <path d="M14 -10 Q6 -6 2 2 Q0 10 2 18 Q4 24 2 30" stroke="#4B5563" strokeWidth="2.5" fill="none" opacity="0.45" />
+    {/* Chain link detail */}
+    <circle cx="8" cy="-4" r="1.5" fill="none" stroke="#546E7A" strokeWidth="0.5" opacity="0.3" />
+    <circle cx="4" cy="4" r="1.5" fill="none" stroke="#546E7A" strokeWidth="0.5" opacity="0.25" />
+    <circle cx="2" cy="14" r="1.5" fill="none" stroke="#546E7A" strokeWidth="0.5" opacity="0.2" />
+
+    {/* Barnacle clusters — extensive coverage */}
+    <circle cx="24" cy="30" r="2" fill="#9CA3AF" opacity="0.4" />
+    <circle cx="25" cy="32" r="1.2" fill="#B0BEC5" opacity="0.3" />
+    <circle cx="14" cy="16" r="1.5" fill="#9CA3AF" opacity="0.35" />
+    <rect x="6" y="-12" width="3" height="3" fill="#78909C" opacity="0.3" />
+    <rect x="4" cy="40" width="3" height="2" fill="#9CA3AF" opacity="0.3" x="4" y="40" />
+    <rect x="32" y="40" width="3" height="2" fill="#9CA3AF" opacity="0.25" />
+
+    {/* Seaweed draped on anchor — multiple strands */}
+    <path d="M26 26 Q32 22 30 14 Q28 10 30 6" stroke="#2E7D32" strokeWidth="1.2" fill="none" opacity="0.4" />
+    <path d="M24 28 Q28 24 26 18" stroke="#388E3C" strokeWidth="1" fill="none" opacity="0.3" />
+    <path d="M14 30 Q10 26 12 20" stroke="#1B5E20" strokeWidth="1" fill="none" opacity="0.3" />
+    {/* Kelp leaf shapes on seaweed */}
+    <rect x="30" y="8" width="4" height="2" fill="#4CAF50" opacity="0.3" />
+    <rect x="28" y="16" width="3" height="2" fill="#388E3C" opacity="0.25" />
+
+    {/* Starfish on anchor arm */}
+    <rect x="8" y="30" width="3" height="3" fill="#FF5722" opacity="0.3" />
+    <rect x="7" y="31" width="1" height="1" fill="#FF7043" opacity="0.25" />
+    <rect x="11" y="31" width="1" height="1" fill="#FF7043" opacity="0.25" />
+
+    {/* Sand mounding around base */}
+    <rect x="0" y="48" width="40" height="3" fill="#C4A862" opacity="0.2" />
+
+    {/* Bubbles */}
+    <circle cx="20" cy="-16" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4s ease-in 1s infinite' }} />
+    <circle cx="4" cy="24" r="0.8" fill="rgba(255,255,255,0.15)" style={{ animation: 'bubbleRise 5s ease-in 3s infinite' }} />
   </g>
 ))
 SunkenAnchor.displayName = 'SunkenAnchor'
@@ -1020,94 +1604,165 @@ SunkenShip.displayName = 'SunkenShip'
 
 const SunkenSailboat = memo(({ x, y }: { x: number; y: number }) => (
   <g transform={`translate(${x}, ${y})`}>
-    {/* Hull — small boat tilted */}
-    <rect x="0" y="30" width="80" height="20" fill="#6D4C41" />
-    <rect x="4" y="26" width="72" height="6" fill="#795548" />
-    <rect x="8" y="22" width="64" height="6" fill="#8D6E63" />
-    {/* Hull bottom / keel */}
-    <rect x="6" y="50" width="68" height="4" fill="#4E342E" />
-    <rect x="14" y="52" width="52" height="3" fill="#3E2723" />
+    {/* Shadow on seabed */}
+    <ellipse cx="40" cy="56" rx="50" ry="4" fill="#000" opacity="0.1" />
 
-    {/* Bow — pointed */}
-    <rect x="-4" y="34" width="8" height="12" fill="#795548" />
-    <rect x="-8" y="38" width="6" height="6" fill="#8D6E63" />
+    {/* Hull — small coastal sailing vessel, slightly listed to starboard */}
+    <rect x="0" y="30" width="80" height="20" fill="#5D4037" />
+    <rect x="4" y="26" width="72" height="6" fill="#6D4C41" />
+    <rect x="8" y="22" width="64" height="6" fill="#795548" />
+    <rect x="12" y="20" width="56" height="3" fill="#8D6E63" opacity="0.7" />
+    {/* Hull bottom / keel — heavy timber */}
+    <rect x="6" y="50" width="68" height="4" fill="#3E2723" />
+    <rect x="14" y="52" width="52" height="4" fill="#2E1B0E" />
+    {/* Hull planking detail — individual strakes */}
+    <rect x="2" y="32" width="76" height="1" fill="#795548" opacity="0.3" />
+    <rect x="4" y="36" width="72" height="1" fill="#8D6E63" opacity="0.25" />
+    <rect x="6" y="40" width="68" height="1" fill="#795548" opacity="0.25" />
+    <rect x="4" y="44" width="72" height="1" fill="#8D6E63" opacity="0.2" />
+    <rect x="6" y="48" width="68" height="1" fill="#795548" opacity="0.18" />
+    {/* Caulking lines between planks */}
+    <rect x="8" y="34" width="64" height="0.5" fill="#3E2723" opacity="0.15" />
+    <rect x="8" y="42" width="64" height="0.5" fill="#3E2723" opacity="0.12" />
 
-    {/* Stern */}
-    <rect x="76" y="26" width="8" height="24" fill="#6D4C41" />
-    <rect x="78" y="22" width="6" height="6" fill="#795548" />
-    {/* Rudder */}
-    <rect x="82" y="36" width="3" height="16" fill="#5D4037" />
-    <rect x="84" y="40" width="2" height="10" fill="#4E342E" />
+    {/* Bow — clinker-built pointed prow */}
+    <rect x="-4" y="32" width="8" height="14" fill="#6D4C41" />
+    <rect x="-8" y="36" width="6" height="8" fill="#795548" />
+    <rect x="-10" y="38" width="4" height="4" fill="#8D6E63" opacity="0.6" />
+    {/* Bow cutwater */}
+    <rect x="-10" y="34" width="2" height="12" fill="#5D4037" opacity="0.5" />
 
-    {/* Name plate on stern */}
-    <rect x="77" y="34" width="6" height="3" fill="#D4A43A" opacity="0.3" />
+    {/* Stern — transom with details */}
+    <rect x="76" y="24" width="10" height="28" fill="#5D4037" />
+    <rect x="78" y="22" width="8" height="4" fill="#6D4C41" />
+    <rect x="80" y="20" width="4" height="3" fill="#795548" opacity="0.7" />
+    {/* Stern window */}
+    <rect x="80" y="28" width="4" height="4" fill="#0A1628" opacity="0.5" />
+    <rect x="80" y="28" width="4" height="1" fill="#8D6E63" opacity="0.3" />
+    {/* Rudder — with pintles */}
+    <rect x="84" y="34" width="4" height="20" fill="#4E342E" />
+    <rect x="86" y="38" width="2" height="14" fill="#3E2723" />
+    <rect x="82" y="36" width="2" height="2" fill="#78909C" opacity="0.4" />
+    <rect x="82" y="44" width="2" height="2" fill="#78909C" opacity="0.35" />
+    {/* Tiller (steering arm) */}
+    <rect x="76" y="34" width="8" height="2" fill="#795548" opacity="0.5" />
 
-    {/* Mast — snapped halfway up */}
-    <rect x="32" y="-20" width="4" height="48" fill="#8D6E63" />
-    <rect x="30" y="-24" width="3" height="6" fill="#A1887F" />
-    {/* Jagged snap point */}
-    <rect x="34" y="-22" width="2" height="4" fill="#8D6E63" opacity="0.7" />
-    {/* Mast base plate */}
-    <rect x="30" y="26" width="8" height="2" fill="#6D4C41" />
+    {/* Name plate on stern — faded */}
+    <rect x="78" y="32" width="8" height="3" fill="#D4A43A" opacity="0.25" />
+    <rect x="79" y="33" width="6" height="1" fill="#B8862D" opacity="0.15" />
 
-    {/* Tattered sail remnants */}
-    <rect x="36" y="-16" width="18" height="24" fill="#D7CCC8" opacity="0.35" />
-    <rect x="38" y="-14" width="14" height="20" fill="#EFEBE9" opacity="0.25" />
-    {/* Sail tears (transparent gaps) */}
-    <rect x="42" y="-8" width="6" height="4" fill="#0A1628" opacity="0.15" />
-    <rect x="40" y="0" width="4" height="3" fill="#0A1628" opacity="0.1" />
-    {/* Sail edges (tattered) */}
-    <rect x="52" y="-12" width="3" height="4" fill="#BCAAA4" opacity="0.2" />
-    <rect x="50" y="-2" width="4" height="3" fill="#D7CCC8" opacity="0.2" />
-    <rect x="54" y="2" width="2" height="4" fill="#BCAAA4" opacity="0.15" />
+    {/* Mast — snapped halfway, jagged break */}
+    <rect x="32" y="-20" width="4" height="48" fill="#795548" />
+    <rect x="33" y="-20" width="2" height="48" fill="#8D6E63" opacity="0.3" />
+    {/* Jagged break at top */}
+    <rect x="30" y="-24" width="3" height="5" fill="#A1887F" />
+    <rect x="34" y="-23" width="2" height="4" fill="#8D6E63" opacity="0.7" />
+    <rect x="33" y="-26" width="2" height="3" fill="#A1887F" opacity="0.5" />
+    {/* Mast bands (iron hoops) */}
+    <rect x="31" y="0" width="6" height="1" fill="#4B5563" opacity="0.3" />
+    <rect x="31" y="12" width="6" height="1" fill="#4B5563" opacity="0.25" />
+    {/* Mast base plate / step */}
+    <rect x="28" y="26" width="12" height="2" fill="#5D4037" />
+    <rect x="29" y="25" width="10" height="1" fill="#6D4C41" opacity="0.5" />
 
-    {/* Boom (horizontal spar) — broken */}
-    <rect x="34" y="6" width="24" height="3" fill="#A1887F" />
-    <rect x="56" y="4" width="3" height="3" fill="#8D6E63" opacity="0.6" />
+    {/* Tattered sail — more detailed fabric with folds */}
+    <rect x="36" y="-18" width="20" height="28" fill="#D7CCC8" opacity="0.3" />
+    <rect x="38" y="-16" width="16" height="24" fill="#EFEBE9" opacity="0.22" />
+    {/* Sail seam lines */}
+    <rect x="42" y="-16" width="0.5" height="24" fill="#BCAAA4" opacity="0.15" />
+    <rect x="48" y="-16" width="0.5" height="24" fill="#BCAAA4" opacity="0.12" />
+    {/* Sail tears — realistic holes */}
+    <rect x="42" y="-10" width="7" height="5" fill="#0A1628" opacity="0.15" />
+    <rect x="40" y="-2" width="5" height="4" fill="#0A1628" opacity="0.12" />
+    <rect x="46" y="2" width="4" height="3" fill="#0A1628" opacity="0.1" />
+    {/* Tattered edges — hanging threads */}
+    <rect x="54" y="-14" width="3" height="5" fill="#BCAAA4" opacity="0.2" />
+    <rect x="52" y="-4" width="4" height="4" fill="#D7CCC8" opacity="0.18" />
+    <rect x="56" y="0" width="2" height="5" fill="#BCAAA4" opacity="0.15" />
+    <rect x="54" y="6" width="3" height="3" fill="#D7CCC8" opacity="0.12" />
+    {/* Sail billowing edge */}
+    <rect x="55" y="-10" width="2" height="8" fill="#EFEBE9" opacity="0.12" />
 
-    {/* Rigging ropes */}
-    <rect x="34" y="-18" width="1" height="22" fill="#A08060" opacity="0.4" />
-    <rect x="36" y="-16" width="1" height="20" fill="#C4A862" opacity="0.3" />
-    {/* Loose rope on deck */}
-    <rect x="12" y="28" width="16" height="1" fill="#A08060" opacity="0.4" />
-    <rect x="10" y="30" width="4" height="4" fill="#C4A862" opacity="0.3" />
+    {/* Boom (horizontal spar) — broken, dangling */}
+    <rect x="34" y="4" width="26" height="3" fill="#A1887F" />
+    <rect x="58" y="3" width="4" height="3" fill="#8D6E63" opacity="0.6" />
+    {/* Broken boom end — splintered */}
+    <rect x="60" y="2" width="2" height="2" fill="#A1887F" opacity="0.4" />
+    {/* Gaff (upper spar) remnant */}
+    <rect x="34" y="-16" width="16" height="2" fill="#A1887F" opacity="0.5" />
+    <rect x="48" y="-17" width="3" height="2" fill="#8D6E63" opacity="0.4" />
 
-    {/* Small bow anchor */}
-    <rect x="-6" y="28" width="2" height="12" fill="#4B5563" opacity="0.5" />
+    {/* Standing rigging */}
+    <rect x="34" y="-20" width="1" height="24" fill="#A08060" opacity="0.35" />
+    <rect x="36" y="-18" width="1" height="22" fill="#C4A862" opacity="0.25" />
+    {/* Shroud lines to hull sides */}
+    <path d="M32 -18 Q22 2 14 22" stroke="#A08060" strokeWidth="0.5" fill="none" opacity="0.2" />
+    <path d="M36 -18 Q48 2 58 22" stroke="#A08060" strokeWidth="0.5" fill="none" opacity="0.2" />
+    {/* Loose rope coil on deck */}
+    <rect x="10" y="26" width="8" height="2" fill="#A08060" opacity="0.35" />
+    <rect x="8" y="28" width="4" height="4" fill="#C4A862" opacity="0.25" />
+    <rect x="14" y="28" width="3" height="3" fill="#A08060" opacity="0.2" />
+
+    {/* Small bow anchor — detailed */}
+    <rect x="-6" y="26" width="2" height="14" fill="#4B5563" opacity="0.5" />
     <rect x="-10" y="38" width="10" height="2" fill="#4B5563" opacity="0.4" />
+    <rect x="-12" y="38" width="2" height="4" fill="#546E7A" opacity="0.3" />
+    <rect x="2" y="38" width="2" height="4" fill="#546E7A" opacity="0.3" />
 
-    {/* Lantern hanging from mast */}
-    <rect x="28" y="-14" width="4" height="5" fill="#FF8F00" opacity="0.3" />
-    <rect x="27" y="-15" width="6" height="2" fill="#4B5563" opacity="0.4" />
-    <rect x="29" y="-10" width="2" height="2" fill="#4B5563" opacity="0.3" />
+    {/* Lantern hanging from mast — corroded brass */}
+    <rect x="28" y="-14" width="4" height="6" fill="#FF8F00" opacity="0.25" />
+    <rect x="27" y="-16" width="6" height="2" fill="#4B5563" opacity="0.4" />
+    <rect x="29" y="-10" width="2" height="3" fill="#4B5563" opacity="0.3" />
+    {/* Lantern glass pane hint */}
+    <rect x="29" y="-13" width="2" height="3" fill="#FFB300" opacity="0.15" />
 
-    {/* Hull planking detail */}
-    <rect x="4" y="34" width="72" height="1" fill="#8D6E63" opacity="0.3" />
-    <rect x="6" y="40" width="68" height="1" fill="#8D6E63" opacity="0.25" />
-    <rect x="8" y="46" width="64" height="1" fill="#8D6E63" opacity="0.2" />
+    {/* Deck features */}
+    {/* Cleat */}
+    <rect x="20" y="24" width="4" height="2" fill="#5D4037" opacity="0.4" />
+    {/* Hatch */}
+    <rect x="56" y="24" width="8" height="4" fill="#4E342E" opacity="0.4" />
+    <rect x="57" y="25" width="6" height="2" fill="#0A1628" opacity="0.3" />
 
-    {/* Barnacles */}
-    <rect x="0" y="44" width="3" height="3" fill="#9CA3AF" opacity="0.4" />
-    <rect x="60" y="48" width="4" height="2" fill="#9CA3AF" opacity="0.35" />
-    <rect x="76" y="44" width="3" height="3" fill="#9CA3AF" opacity="0.3" />
+    {/* Barnacle clusters — extensive */}
+    <rect x="0" y="44" width="4" height="4" fill="#9CA3AF" opacity="0.4" />
+    <rect x="2" y="46" width="2" height="2" fill="#B0BEC5" opacity="0.3" />
+    <rect x="58" y="48" width="5" height="3" fill="#9CA3AF" opacity="0.35" />
+    <rect x="76" y="42" width="4" height="4" fill="#9CA3AF" opacity="0.35" />
+    <rect x="30" y="52" width="4" height="2" fill="#78909C" opacity="0.3" />
 
-    {/* Algae growth */}
-    <rect x="20" y="22" width="6" height="2" fill="#2E7D32" opacity="0.4" />
-    <rect x="50" y="50" width="8" height="2" fill="#388E3C" opacity="0.3" />
-    <rect x="32" y="-24" width="4" height="2" fill="#1B5E20" opacity="0.4" />
+    {/* Marine growth — algae and sponge */}
+    <rect x="18" y="22" width="8" height="2" fill="#2E7D32" opacity="0.4" />
+    <rect x="48" y="50" width="10" height="2" fill="#388E3C" opacity="0.3" />
+    <rect x="32" y="-26" width="4" height="2" fill="#1B5E20" opacity="0.4" />
+    <rect x="72" y="50" width="6" height="2" fill="#2E7D32" opacity="0.3" />
+    {/* Orange sponge */}
+    <rect x="2" y="48" width="3" height="3" fill="#FF6F00" opacity="0.2" />
 
-    {/* Seaweed growing through hull cracks */}
-    <rect x="46" y="18" width="3" height="10" fill="#2E7D32" opacity="0.3" />
-    <rect x="44" y="14" width="4" height="6" fill="#4CAF50" opacity="0.25" />
+    {/* Seaweed growing through hull crack */}
+    <rect x="46" y="16" width="3" height="12" fill="#2E7D32" opacity="0.3" />
+    <rect x="44" y="12" width="5" height="6" fill="#4CAF50" opacity="0.25" />
+    <rect x="43" y="10" width="3" height="3" fill="#81C784" opacity="0.2" />
 
-    {/* Small crab on hull */}
-    <rect x="64" y="28" width="4" height="2" fill="#E65100" opacity="0.5" />
-    <rect x="62" y="26" width="2" height="2" fill="#BF360C" opacity="0.4" />
-    <rect x="68" y="26" width="2" height="2" fill="#BF360C" opacity="0.4" />
+    {/* Small crab on hull — pixel detail */}
+    <rect x="64" y="28" width="5" height="3" fill="#E65100" opacity="0.5" />
+    <rect x="63" y="26" width="2" height="2" fill="#BF360C" opacity="0.4" />
+    <rect x="69" y="26" width="2" height="2" fill="#BF360C" opacity="0.4" />
+    {/* Crab eye dots */}
+    <rect x="64" y="27" width="1" height="1" fill="#1A1A1A" opacity="0.3" />
+    <rect x="67" y="27" width="1" height="1" fill="#1A1A1A" opacity="0.3" />
+
+    {/* Life ring on deck */}
+    <circle cx="68" cy="24" r="3" fill="none" stroke="#E0E0E0" strokeWidth="1.5" opacity="0.25" />
+    <rect x="66" y="22" width="2" height="1" fill="#D50000" opacity="0.2" />
+    <rect x="68" y="26" width="2" height="1" fill="#D50000" opacity="0.2" />
+
+    {/* Coral at waterline */}
+    <rect x="10" y="48" width="4" height="3" fill="#E91E63" opacity="0.2" />
 
     {/* Bubbles */}
-    <circle cx="40" cy="20" r="1" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4s ease-in 0.5s infinite' }} />
-    <circle cx="36" cy="22" r="0.8" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 5s ease-in 2s infinite' }} />
+    <circle cx="40" cy="18" r="1" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4s ease-in 0.5s infinite' }} />
+    <circle cx="36" cy="20" r="0.8" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 5s ease-in 2s infinite' }} />
+    <circle cx="48" cy="12" r="0.6" fill="rgba(255,255,255,0.15)" style={{ animation: 'bubbleRise 5.5s ease-in 3.5s infinite' }} />
   </g>
 ))
 SunkenSailboat.displayName = 'SunkenSailboat'
@@ -1208,91 +1863,165 @@ BambooGrove.displayName = 'BambooGrove'
 
 const SunkenCastle = memo(({ x, y }: { x: number; y: number }) => (
   <g transform={`translate(${x}, ${y})`}>
-    {/* Main keep — tall central tower */}
-    <rect x="30" y="-20" width="40" height="80" fill="#6B6B6B" />
-    <rect x="28" y="-24" width="44" height="8" fill="#7A7A7A" />
-    {/* Battlements on main keep */}
-    <rect x="28" y="-30" width="8" height="8" fill="#7A7A7A" />
-    <rect x="40" y="-30" width="8" height="8" fill="#7A7A7A" />
-    <rect x="52" y="-30" width="8" height="8" fill="#7A7A7A" />
-    <rect x="64" y="-30" width="8" height="8" fill="#7A7A7A" />
-    {/* Keep windows */}
-    <rect x="38" y="-14" width="6" height="8" fill="#1A1A2E" opacity="0.8" />
-    <rect x="38" y="-16" width="6" height="3" fill="#2A2A3E" opacity="0.6" />
-    <rect x="50" y="-14" width="6" height="8" fill="#1A1A2E" opacity="0.8" />
-    <rect x="50" y="-16" width="6" height="3" fill="#2A2A3E" opacity="0.6" />
-    <rect x="44" y="6" width="10" height="14" fill="#1A1A2E" opacity="0.7" />
-    {/* Keep stone texture */}
-    <rect x="32" y="-10" width="36" height="1" fill="#8A8A8A" opacity="0.3" />
-    <rect x="32" y="0" width="36" height="1" fill="#5A5A5A" opacity="0.3" />
-    <rect x="32" y="10" width="36" height="1" fill="#8A8A8A" opacity="0.25" />
-    <rect x="32" y="20" width="36" height="1" fill="#5A5A5A" opacity="0.25" />
-    <rect x="32" y="30" width="36" height="1" fill="#8A8A8A" opacity="0.2" />
-    <rect x="32" y="40" width="36" height="1" fill="#5A5A5A" opacity="0.2" />
+    {/* Main keep — tall central donjon */}
+    <rect x="28" y="-22" width="44" height="82" fill="#5E5E5E" />
+    <rect x="30" y="-22" width="40" height="82" fill="#6B6B6B" />
+    <rect x="28" y="-26" width="44" height="6" fill="#7A7A7A" />
+    {/* Keep stone block pattern */}
+    {[−18, −8, 2, 12, 22, 32, 42].map((sy, i) => (
+      <g key={`keep-row-${i}`}>
+        <rect x="30" y={sy} width="40" height="1" fill={i % 2 ? '#5A5A5A' : '#8A8A8A'} opacity={0.25 - i * 0.01} />
+        <rect x={32 + (i % 3) * 12} y={sy - 4} width="1" height="8" fill="#5A5A5A" opacity={0.15} />
+        <rect x={44 + (i % 2) * 10} y={sy - 4} width="1" height="8" fill="#5A5A5A" opacity={0.12} />
+      </g>
+    ))}
+    {/* Battlements on main keep — crenellations */}
+    <rect x="28" y="-32" width="8" height="8" fill="#7A7A7A" />
+    <rect x="40" y="-32" width="8" height="8" fill="#7A7A7A" />
+    <rect x="52" y="-32" width="8" height="8" fill="#7A7A7A" />
+    <rect x="64" y="-32" width="8" height="8" fill="#7A7A7A" />
+    {/* Merlon caps */}
+    <rect x="28" y="-34" width="8" height="2" fill="#8A8A8A" opacity="0.4" />
+    <rect x="40" y="-34" width="8" height="2" fill="#8A8A8A" opacity="0.4" />
+    <rect x="52" y="-34" width="8" height="2" fill="#8A8A8A" opacity="0.4" />
+    <rect x="64" y="-34" width="8" height="2" fill="#8A8A8A" opacity="0.4" />
+    {/* Keep windows — arched Gothic style */}
+    <rect x="38" y="-16" width="6" height="10" fill="#0A0A1E" opacity="0.8" />
+    <rect x="38" y="-18" width="6" height="3" fill="#2A2A3E" opacity="0.6" />
+    <rect x="40" y="-19" width="2" height="1" fill="#3A3A4E" opacity="0.4" />
+    <rect x="50" y="-16" width="6" height="10" fill="#0A0A1E" opacity="0.8" />
+    <rect x="50" y="-18" width="6" height="3" fill="#2A2A3E" opacity="0.6" />
+    <rect x="52" y="-19" width="2" height="1" fill="#3A3A4E" opacity="0.4" />
+    {/* Main entrance */}
+    <rect x="42" y="4" width="14" height="18" fill="#0A0A1E" opacity="0.75" />
+    <rect x="44" y="2" width="10" height="3" fill="#5A5A5A" />
+    <rect x="46" y="0" width="6" height="2" fill="#6B6B6B" opacity="0.6" />
+    {/* Keep banner bracket */}
+    <rect x="60" y="-14" width="6" height="2" fill="#4B5563" opacity="0.3" />
+    <rect x="64" y="-16" width="2" height="4" fill="#4B5563" opacity="0.25" />
 
-    {/* Left tower — shorter, round-style */}
-    <rect x="4" y="-6" width="28" height="66" fill="#5E5E5E" />
-    <rect x="2" y="-10" width="32" height="6" fill="#6E6E6E" />
+    {/* Left tower — round drum tower */}
+    <rect x="2" y="-8" width="28" height="68" fill="#555555" />
+    <rect x="4" y="-8" width="24" height="68" fill="#5E5E5E" />
+    <rect x="0" y="-12" width="32" height="6" fill="#6E6E6E" />
     {/* Left tower battlements */}
-    <rect x="2" y="-16" width="6" height="8" fill="#6E6E6E" />
-    <rect x="12" y="-16" width="6" height="8" fill="#6E6E6E" />
-    <rect x="22" y="-16" width="6" height="8" fill="#6E6E6E" />
-    {/* Left tower windows */}
-    <rect x="12" y="0" width="5" height="6" fill="#1A1A2E" opacity="0.7" />
-    <rect x="12" y="-2" width="5" height="3" fill="#2A2A3E" opacity="0.5" />
-    <rect x="12" y="20" width="5" height="6" fill="#1A1A2E" opacity="0.6" />
+    <rect x="0" y="-18" width="6" height="8" fill="#6E6E6E" />
+    <rect x="10" y="-18" width="6" height="8" fill="#6E6E6E" />
+    <rect x="20" y="-18" width="6" height="8" fill="#6E6E6E" />
+    <rect x="0" y="-20" width="6" height="2" fill="#7A7A7A" opacity="0.35" />
+    <rect x="10" y="-20" width="6" height="2" fill="#7A7A7A" opacity="0.35" />
+    <rect x="20" y="-20" width="6" height="2" fill="#7A7A7A" opacity="0.35" />
+    {/* Left tower arrow slits */}
+    <rect x="12" y="-2" width="3" height="8" fill="#0A0A1E" opacity="0.7" />
+    <rect x="13" y="-4" width="1" height="2" fill="#1A1A2E" opacity="0.5" />
+    <rect x="12" y="18" width="3" height="8" fill="#0A0A1E" opacity="0.6" />
+    <rect x="13" y="16" width="1" height="2" fill="#1A1A2E" opacity="0.4" />
+    <rect x="12" y="36" width="3" height="6" fill="#0A0A1E" opacity="0.5" />
+    {/* Left tower stone texture */}
+    <rect x="4" y="4" width="24" height="1" fill="#7A7A7A" opacity="0.2" />
+    <rect x="4" y="14" width="24" height="1" fill="#505050" opacity="0.2" />
+    <rect x="4" y="24" width="24" height="1" fill="#7A7A7A" opacity="0.18" />
+    <rect x="4" y="34" width="24" height="1" fill="#505050" opacity="0.15" />
 
     {/* Right tower — tallest, partially collapsed */}
-    <rect x="68" y="-12" width="26" height="72" fill="#5E5E5E" />
-    <rect x="66" y="-16" width="30" height="6" fill="#6E6E6E" />
-    {/* Right tower battlements (some broken) */}
-    <rect x="66" y="-22" width="6" height="8" fill="#6E6E6E" />
-    <rect x="76" y="-22" width="6" height="8" fill="#6E6E6E" />
-    <rect x="86" y="-20" width="6" height="6" fill="#6E6E6E" opacity="0.6" />
-    {/* Collapsed corner */}
-    <rect x="88" y="20" width="8" height="14" fill="#7A7A7A" opacity="0.5" />
-    <rect x="90" y="34" width="6" height="8" fill="#6B6B6B" opacity="0.4" />
+    <rect x="68" y="-14" width="26" height="74" fill="#555555" />
+    <rect x="70" y="-14" width="22" height="74" fill="#5E5E5E" />
+    <rect x="66" y="-18" width="30" height="6" fill="#6E6E6E" />
+    {/* Right tower battlements (some broken/missing) */}
+    <rect x="66" y="-24" width="6" height="8" fill="#6E6E6E" />
+    <rect x="76" y="-24" width="6" height="8" fill="#6E6E6E" />
+    {/* Broken merlon — jagged */}
+    <rect x="86" y="-22" width="6" height="5" fill="#6E6E6E" opacity="0.5" />
+    <rect x="88" y="-22" width="2" height="3" fill="#7A7A7A" opacity="0.35" />
+    {/* Collapsed upper corner — dramatic rubble cascade */}
+    <rect x="90" y="16" width="8" height="16" fill="#7A7A7A" opacity="0.45" />
+    <rect x="92" y="32" width="6" height="10" fill="#6B6B6B" opacity="0.35" />
+    <rect x="96" y="24" width="4" height="8" fill="#8A8A8A" opacity="0.3" />
+    {/* Crack running down from collapse */}
+    <rect x="90" y="-4" width="1" height="20" fill="#3A3A3A" opacity="0.4" />
+    <rect x="91" y="4" width="1" height="12" fill="#3A3A3A" opacity="0.3" />
     {/* Right tower window */}
-    <rect x="76" y="-4" width="5" height="6" fill="#1A1A2E" opacity="0.7" />
-    <rect x="76" y="-6" width="5" height="3" fill="#2A2A3E" opacity="0.5" />
+    <rect x="76" y="-6" width="5" height="8" fill="#0A0A1E" opacity="0.7" />
+    <rect x="76" y="-8" width="5" height="3" fill="#2A2A3E" opacity="0.5" />
+    <rect x="76" y="14" width="5" height="6" fill="#0A0A1E" opacity="0.6" />
 
-    {/* Castle wall connecting towers at base */}
-    <rect x="0" y="46" width="100" height="14" fill="#5A5A5A" />
-    <rect x="2" y="40" width="96" height="8" fill="#686868" />
-    {/* Wall gate (portcullis) */}
-    <rect x="40" y="30" width="18" height="22" fill="#1A1A2E" opacity="0.8" />
-    <rect x="42" y="28" width="14" height="4" fill="#4A4A4A" />
-    {/* Portcullis bars */}
-    <rect x="43" y="32" width="1" height="18" fill="#4A4A4A" opacity="0.5" />
-    <rect x="47" y="32" width="1" height="18" fill="#4A4A4A" opacity="0.5" />
-    <rect x="51" y="32" width="1" height="18" fill="#4A4A4A" opacity="0.5" />
-    <rect x="55" y="32" width="1" height="18" fill="#4A4A4A" opacity="0.5" />
+    {/* Curtain wall connecting towers */}
+    <rect x="-2" y="44" width="104" height="16" fill="#4E4E4E" />
+    <rect x="0" y="38" width="100" height="8" fill="#5A5A5A" />
+    <rect x="2" y="34" width="96" height="6" fill="#646464" />
+    {/* Wall walk (rampart) */}
+    <rect x="2" y="32" width="96" height="3" fill="#6E6E6E" opacity="0.5" />
+    {/* Wall stone block texture */}
+    <rect x="4" y="40" width="92" height="1" fill="#7A7A7A" opacity="0.2" />
+    <rect x="2" y="48" width="96" height="1" fill="#7A7A7A" opacity="0.15" />
+    {/* Wall arrow slits */}
+    <rect x="16" y="38" width="2" height="5" fill="#0A0A1E" opacity="0.4" />
+    <rect x="78" y="38" width="2" height="5" fill="#0A0A1E" opacity="0.4" />
 
-    {/* Moss and algae on walls */}
-    <rect x="6" y="38" width="8" height="3" fill="#2E7D32" opacity="0.4" />
-    <rect x="70" y="42" width="10" height="2" fill="#388E3C" opacity="0.35" />
-    <rect x="30" y="-18" width="6" height="3" fill="#1B5E20" opacity="0.4" />
-    <rect x="80" y="-14" width="8" height="2" fill="#2E7D32" opacity="0.3" />
-    <rect x="10" y="52" width="12" height="2" fill="#2E7D32" opacity="0.3" />
+    {/* Gate (portcullis) — main entrance */}
+    <rect x="38" y="28" width="22" height="26" fill="#0A0A1E" opacity="0.85" />
+    <rect x="40" y="26" width="18" height="4" fill="#4A4A4A" />
+    <rect x="42" y="24" width="14" height="3" fill="#5A5A5A" opacity="0.7" />
+    <rect x="46" y="22" width="6" height="2" fill="#6E6E6E" opacity="0.5" />
+    {/* Portcullis iron grate */}
+    <rect x="41" y="30" width="1" height="22" fill="#4A4A4A" opacity="0.55" />
+    <rect x="45" y="30" width="1" height="22" fill="#4A4A4A" opacity="0.55" />
+    <rect x="49" y="30" width="1" height="22" fill="#4A4A4A" opacity="0.55" />
+    <rect x="53" y="30" width="1" height="22" fill="#4A4A4A" opacity="0.55" />
+    <rect x="57" y="30" width="1" height="22" fill="#4A4A4A" opacity="0.55" />
+    {/* Horizontal bars */}
+    <rect x="40" y="36" width="18" height="1" fill="#4A4A4A" opacity="0.4" />
+    <rect x="40" y="42" width="18" height="1" fill="#4A4A4A" opacity="0.35" />
+    <rect x="40" y="48" width="18" height="1" fill="#4A4A4A" opacity="0.3" />
 
-    {/* Barnacles */}
-    <rect x="2" y="48" width="3" height="3" fill="#9CA3AF" opacity="0.4" />
-    <rect x="90" y="50" width="4" height="3" fill="#9CA3AF" opacity="0.35" />
-    <rect x="36" y="46" width="3" height="2" fill="#9CA3AF" opacity="0.3" />
+    {/* Moss and algae — extensive underwater colonization */}
+    <rect x="4" y="36" width="10" height="3" fill="#2E7D32" opacity="0.4" />
+    <rect x="2" y="38" width="4" height="2" fill="#4CAF50" opacity="0.3" />
+    <rect x="72" y="40" width="12" height="3" fill="#388E3C" opacity="0.35" />
+    <rect x="30" y="-20" width="8" height="3" fill="#1B5E20" opacity="0.4" />
+    <rect x="80" y="-16" width="10" height="3" fill="#2E7D32" opacity="0.3" />
+    <rect x="8" y="52" width="14" height="3" fill="#2E7D32" opacity="0.3" />
+    <rect x="56" y="52" width="10" height="2" fill="#388E3C" opacity="0.25" />
+    {/* Moss dripping down walls */}
+    <rect x="6" y="38" width="3" height="8" fill="#1B5E20" opacity="0.25" />
+    <rect x="84" y="40" width="3" height="6" fill="#2E7D32" opacity="0.2" />
 
-    {/* Coral growth on tower */}
-    <rect x="0" y="30" width="5" height="6" fill="#C2185B" opacity="0.3" />
-    <rect x="92" y="10" width="4" height="5" fill="#FF5722" opacity="0.3" />
+    {/* Barnacle colonies */}
+    <rect x="0" y="48" width="4" height="4" fill="#9CA3AF" opacity="0.4" />
+    <rect x="2" y="50" width="2" height="2" fill="#B0BEC5" opacity="0.3" />
+    <rect x="92" y="50" width="5" height="4" fill="#9CA3AF" opacity="0.35" />
+    <rect x="34" y="46" width="4" height="3" fill="#78909C" opacity="0.3" />
+    <rect x="62" y="48" width="3" height="3" fill="#9CA3AF" opacity="0.3" />
 
-    {/* Fallen stones / rubble */}
-    <rect x="-6" y="54" width="8" height="4" fill="#7A7A7A" opacity="0.5" />
-    <rect x="98" y="48" width="6" height="6" fill="#6B6B6B" opacity="0.5" />
-    <rect x="94" y="54" width="10" height="4" fill="#7A7A7A" opacity="0.4" />
+    {/* Coral growth on tower bases */}
+    <rect x="-2" y="28" width="6" height="8" fill="#C2185B" opacity="0.3" />
+    <rect x="0" y="26" width="3" height="3" fill="#F48FB1" opacity="0.2" />
+    <rect x="94" y="8" width="5" height="6" fill="#FF5722" opacity="0.25" />
+    <rect x="96" y="6" width="3" height="3" fill="#FF8A65" opacity="0.2" />
 
-    {/* Bubbles from interior */}
-    <circle cx="48" cy="-28" r="1.5" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4s ease-in 0s infinite' }} />
-    <circle cx="78" cy="-20" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 5s ease-in 1.5s infinite' }} />
-    <circle cx="14" cy="-14" r="1.2" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4.5s ease-in 3s infinite' }} />
+    {/* Fallen masonry / rubble field */}
+    <rect x="-8" y="54" width="10" height="5" fill="#7A7A7A" opacity="0.5" />
+    <rect x="-6" y="52" width="6" height="3" fill="#8A8A8A" opacity="0.4" />
+    <rect x="100" y="46" width="8" height="8" fill="#6B6B6B" opacity="0.45" />
+    <rect x="96" y="54" width="12" height="5" fill="#7A7A7A" opacity="0.4" />
+    <rect x="104" y="50" width="4" height="4" fill="#8A8A8A" opacity="0.35" />
+    {/* Scattered stones */}
+    <rect x="-10" y="58" width="4" height="3" fill="#6B6B6B" opacity="0.3" />
+    <rect x="108" y="54" width="3" height="3" fill="#7A7A7A" opacity="0.25" />
+
+    {/* Flag pole stub on main keep */}
+    <rect x="48" y="-38" width="2" height="8" fill="#4B5563" opacity="0.4" />
+    <rect x="48" y="-40" width="6" height="3" fill="#546E7A" opacity="0.3" />
+
+    {/* Torch bracket on wall */}
+    <rect x="22" y="36" width="4" height="2" fill="#5D4037" opacity="0.3" />
+    <rect x="24" y="32" width="2" height="4" fill="#5D4037" opacity="0.25" />
+
+    {/* Bubbles from interior — through gate and windows */}
+    <circle cx="48" cy="-32" r="1.5" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4s ease-in 0s infinite' }} />
+    <circle cx="78" cy="-22" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 5s ease-in 1.5s infinite' }} />
+    <circle cx="14" cy="-16" r="1.2" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4.5s ease-in 3s infinite' }} />
+    <circle cx="49" cy="26" r="0.8" fill="rgba(255,255,255,0.15)" style={{ animation: 'bubbleRise 5.5s ease-in 4s infinite' }} />
   </g>
 ))
 SunkenCastle.displayName = 'SunkenCastle'
@@ -1301,44 +2030,106 @@ SunkenCastle.displayName = 'SunkenCastle'
 
 const CastleDrawbridge = memo(({ x, y }: { x: number; y: number }) => (
   <g transform={`translate(${x}, ${y})`}>
-    {/* Left gate pillar */}
-    <rect x="0" y="10" width="14" height="50" fill="#6B6B6B" />
-    <rect x="-2" y="6" width="18" height="6" fill="#7A7A7A" />
-    <rect x="-2" y="0" width="6" height="8" fill="#7A7A7A" />
-    <rect x="10" y="0" width="6" height="8" fill="#7A7A7A" />
-    {/* Torch bracket */}
-    <rect x="12" y="16" width="4" height="2" fill="#5D4037" />
-    <rect x="14" y="12" width="2" height="4" fill="#5D4037" />
-    <rect x="13" y="10" width="4" height="3" fill="#FF8F00" opacity="0.4" />
+    {/* Left gate tower */}
+    <rect x="-2" y="8" width="18" height="52" fill="#5E5E5E" />
+    <rect x="0" y="8" width="14" height="52" fill="#6B6B6B" />
+    <rect x="-4" y="4" width="22" height="6" fill="#7A7A7A" />
+    {/* Left tower battlements */}
+    <rect x="-4" y="-2" width="6" height="8" fill="#7A7A7A" />
+    <rect x="6" y="-2" width="6" height="8" fill="#7A7A7A" />
+    <rect x="-4" y="-4" width="6" height="2" fill="#8A8A8A" opacity="0.35" />
+    <rect x="6" y="-4" width="6" height="2" fill="#8A8A8A" opacity="0.35" />
+    {/* Left tower arrow slit */}
+    <rect x="5" y="18" width="2" height="6" fill="#0A0A1E" opacity="0.6" />
+    <rect x="5" y="32" width="2" height="6" fill="#0A0A1E" opacity="0.5" />
+    {/* Stone texture */}
+    <rect x="0" y="16" width="14" height="1" fill="#7A7A7A" opacity="0.2" />
+    <rect x="0" y="28" width="14" height="1" fill="#5A5A5A" opacity="0.2" />
+    <rect x="0" y="40" width="14" height="1" fill="#7A7A7A" opacity="0.18" />
+    {/* Torch bracket with faded glow */}
+    <rect x="12" y="14" width="6" height="2" fill="#5D4037" opacity="0.4" />
+    <rect x="16" y="10" width="2" height="6" fill="#5D4037" opacity="0.35" />
+    <rect x="15" y="8" width="4" height="3" fill="#FF8F00" opacity="0.2" />
 
-    {/* Right gate pillar */}
-    <rect x="56" y="10" width="14" height="50" fill="#6B6B6B" />
-    <rect x="54" y="6" width="18" height="6" fill="#7A7A7A" />
-    <rect x="54" y="0" width="6" height="8" fill="#7A7A7A" />
-    <rect x="66" y="0" width="6" height="8" fill="#7A7A7A" />
+    {/* Right gate tower */}
+    <rect x="54" y="8" width="18" height="52" fill="#5E5E5E" />
+    <rect x="56" y="8" width="14" height="52" fill="#6B6B6B" />
+    <rect x="52" y="4" width="22" height="6" fill="#7A7A7A" />
+    {/* Right tower battlements */}
+    <rect x="58" y="-2" width="6" height="8" fill="#7A7A7A" />
+    <rect x="68" y="-2" width="6" height="8" fill="#7A7A7A" />
+    <rect x="58" y="-4" width="6" height="2" fill="#8A8A8A" opacity="0.35" />
+    <rect x="68" y="-4" width="6" height="2" fill="#8A8A8A" opacity="0.35" />
+    {/* Right tower arrow slit */}
+    <rect x="63" y="18" width="2" height="6" fill="#0A0A1E" opacity="0.6" />
+    {/* Right stone texture */}
+    <rect x="56" y="16" width="14" height="1" fill="#7A7A7A" opacity="0.2" />
+    <rect x="56" y="28" width="14" height="1" fill="#5A5A5A" opacity="0.2" />
+    <rect x="56" y="40" width="14" height="1" fill="#7A7A7A" opacity="0.18" />
 
-    {/* Fallen drawbridge (wooden planks at angle) */}
-    <rect x="10" y="36" width="52" height="6" fill="#5D4037" />
-    <rect x="12" y="34" width="48" height="4" fill="#795548" />
-    <rect x="14" y="32" width="44" height="3" fill="#8D6E63" opacity="0.8" />
-    {/* Plank lines */}
-    <rect x="18" y="34" width="1" height="6" fill="#4E342E" opacity="0.4" />
-    <rect x="26" y="34" width="1" height="6" fill="#4E342E" opacity="0.4" />
-    <rect x="34" y="34" width="1" height="6" fill="#4E342E" opacity="0.4" />
-    <rect x="42" y="34" width="1" height="6" fill="#4E342E" opacity="0.4" />
-    <rect x="50" y="34" width="1" height="6" fill="#4E342E" opacity="0.4" />
-    {/* Chain links */}
-    <rect x="12" y="28" width="3" height="6" fill="#78909C" opacity="0.6" />
-    <rect x="14" y="26" width="2" height="3" fill="#90A4AE" opacity="0.5" />
-    <rect x="56" y="28" width="3" height="6" fill="#78909C" opacity="0.6" />
+    {/* Gate arch between towers */}
+    <rect x="12" y="4" width="46" height="6" fill="#5A5A5A" />
+    <rect x="14" y="2" width="42" height="3" fill="#6B6B6B" opacity="0.6" />
+    {/* Arch stones (voussoirs) */}
+    <rect x="20" y="2" width="1" height="5" fill="#505050" opacity="0.2" />
+    <rect x="30" y="2" width="1" height="5" fill="#505050" opacity="0.2" />
+    <rect x="40" y="2" width="1" height="5" fill="#505050" opacity="0.2" />
+    <rect x="50" y="2" width="1" height="5" fill="#505050" opacity="0.2" />
 
-    {/* Moss */}
-    <rect x="0" y="54" width="6" height="2" fill="#2E7D32" opacity="0.4" />
-    <rect x="60" y="56" width="8" height="2" fill="#388E3C" opacity="0.35" />
-    <rect x="24" y="40" width="4" height="2" fill="#1B5E20" opacity="0.3" />
+    {/* Fallen drawbridge — massive oak planks */}
+    <rect x="8" y="34" width="54" height="8" fill="#4E342E" />
+    <rect x="10" y="32" width="50" height="4" fill="#5D4037" />
+    <rect x="12" y="30" width="46" height="3" fill="#6D4C41" opacity="0.8" />
+    {/* Plank grain lines */}
+    <rect x="16" y="32" width="1" height="8" fill="#3E2723" opacity="0.35" />
+    <rect x="22" y="32" width="1" height="8" fill="#3E2723" opacity="0.35" />
+    <rect x="28" y="32" width="1" height="8" fill="#3E2723" opacity="0.35" />
+    <rect x="34" y="32" width="1" height="8" fill="#3E2723" opacity="0.35" />
+    <rect x="40" y="32" width="1" height="8" fill="#3E2723" opacity="0.35" />
+    <rect x="46" y="32" width="1" height="8" fill="#3E2723" opacity="0.35" />
+    <rect x="52" y="32" width="1" height="8" fill="#3E2723" opacity="0.35" />
+    {/* Iron studs on drawbridge */}
+    <circle cx="19" cy="36" r="0.8" fill="#4B5563" opacity="0.35" />
+    <circle cx="31" cy="36" r="0.8" fill="#4B5563" opacity="0.35" />
+    <circle cx="43" cy="36" r="0.8" fill="#4B5563" opacity="0.35" />
+    {/* Iron edge band */}
+    <rect x="8" y="34" width="54" height="1" fill="#4B5563" opacity="0.3" />
+    <rect x="8" y="41" width="54" height="1" fill="#4B5563" opacity="0.25" />
+
+    {/* Chains — heavy forged links */}
+    <rect x="10" y="24" width="4" height="8" fill="#607D8B" opacity="0.6" />
+    <rect x="12" y="22" width="2" height="4" fill="#78909C" opacity="0.5" />
+    <rect x="11" y="20" width="3" height="2" fill="#90A4AE" opacity="0.4" />
+    <rect x="56" y="24" width="4" height="8" fill="#607D8B" opacity="0.55" />
+    <rect x="58" y="22" width="2" height="4" fill="#78909C" opacity="0.45" />
+    {/* Chain link detail */}
+    <circle cx="12" cy="26" r="1.5" fill="none" stroke="#546E7A" strokeWidth="0.5" opacity="0.3" />
+    <circle cx="58" cy="28" r="1.5" fill="none" stroke="#546E7A" strokeWidth="0.5" opacity="0.25" />
+
+    {/* Moss and algae — heavy growth */}
+    <rect x="-2" y="54" width="8" height="3" fill="#2E7D32" opacity="0.4" />
+    <rect x="-4" y="56" width="4" height="2" fill="#388E3C" opacity="0.3" />
+    <rect x="62" y="54" width="10" height="3" fill="#388E3C" opacity="0.35" />
+    <rect x="22" y="40" width="6" height="2" fill="#1B5E20" opacity="0.3" />
+    <rect x="42" y="40" width="4" height="2" fill="#2E7D32" opacity="0.25" />
+    {/* Moss draping */}
+    <rect x="0" y="48" width="3" height="6" fill="#1B5E20" opacity="0.2" />
+
+    {/* Barnacles */}
+    <rect x="0" y="50" width="4" height="4" fill="#9CA3AF" opacity="0.35" />
+    <rect x="66" y="52" width="3" height="3" fill="#9CA3AF" opacity="0.3" />
+    <rect x="30" y="42" width="3" height="2" fill="#78909C" opacity="0.25" />
+
+    {/* Fallen stone blocks */}
+    <rect x="-6" y="58" width="6" height="3" fill="#7A7A7A" opacity="0.35" />
+    <rect x="72" y="56" width="4" height="4" fill="#6B6B6B" opacity="0.3" />
+
+    {/* Coral at base */}
+    <rect x="68" y="48" width="4" height="4" fill="#E91E63" opacity="0.2" />
 
     {/* Bubbles */}
-    <circle cx="35" cy="30" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4s ease-in 1s infinite' }} />
+    <circle cx="35" cy="28" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4s ease-in 1s infinite' }} />
+    <circle cx="38" cy="26" r="0.7" fill="rgba(255,255,255,0.15)" style={{ animation: 'bubbleRise 5s ease-in 2.5s infinite' }} />
   </g>
 ))
 CastleDrawbridge.displayName = 'CastleDrawbridge'
@@ -1347,8 +2138,9 @@ CastleDrawbridge.displayName = 'CastleDrawbridge'
 
 const SunkenPyramid = memo(({ x, y }: { x: number; y: number }) => (
   <g transform={`translate(${x}, ${y})`}>
-    {/* Pyramid body — stepped layers */}
-    <rect x="0" y="48" width="120" height="12" fill="#B8860B" />
+    {/* Pyramid body — stepped mastaba layers with individual block feel */}
+    <rect x="0" y="48" width="120" height="12" fill="#A67B0A" />
+    <rect x="2" y="48" width="116" height="12" fill="#B8860B" />
     <rect x="8" y="38" width="104" height="12" fill="#C49A1A" />
     <rect x="16" y="28" width="88" height="12" fill="#D4A82A" />
     <rect x="24" y="18" width="72" height="12" fill="#D4B03A" />
@@ -1356,49 +2148,103 @@ const SunkenPyramid = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="40" y="0" width="40" height="10" fill="#E8C45A" />
     <rect x="48" y="-6" width="24" height="8" fill="#F0D070" />
     <rect x="54" y="-12" width="12" height="8" fill="#F8D880" />
-    {/* Capstone */}
-    <rect x="56" y="-16" width="8" height="6" fill="#FFE082" />
-    <rect x="58" y="-18" width="4" height="4" fill="#FFF59D" opacity="0.8" />
+    {/* Step shadows (each tier casts shadow on tier below) */}
+    <rect x="0" y="48" width="120" height="2" fill="#8B7355" opacity="0.25" />
+    <rect x="8" y="38" width="104" height="2" fill="#8B7355" opacity="0.22" />
+    <rect x="16" y="28" width="88" height="2" fill="#8B7355" opacity="0.2" />
+    <rect x="24" y="18" width="72" height="2" fill="#8B7355" opacity="0.18" />
+    <rect x="32" y="8" width="56" height="2" fill="#8B7355" opacity="0.15" />
+    <rect x="40" y="0" width="40" height="2" fill="#8B7355" opacity="0.12" />
+    {/* Step edge highlights */}
+    <rect x="8" y="38" width="104" height="1" fill="#E8C45A" opacity="0.2" />
+    <rect x="16" y="28" width="88" height="1" fill="#E8C45A" opacity="0.18" />
+    <rect x="24" y="18" width="72" height="1" fill="#E8C45A" opacity="0.15" />
+    <rect x="32" y="8" width="56" height="1" fill="#E8C45A" opacity="0.12" />
 
-    {/* Stone block lines */}
-    {[48, 38, 28, 18, 8, 0].map((ty, i) => (
-      <g key={`row-${i}`}>
-        {Array.from({ length: 8 - i }, (_, j) => (
-          <rect key={`block-${i}-${j}`} x={i * 8 + j * (120 - i * 16) / (8 - i)} y={ty + 4} width="1" height={i < 3 ? 8 : 6} fill="#8B7355" opacity={0.2 + i * 0.02} />
-        ))}
-      </g>
-    ))}
+    {/* Capstone (pyramidion) — golden */}
+    <rect x="56" y="-16" width="8" height="6" fill="#FFD54F" />
+    <rect x="57" y="-18" width="6" height="4" fill="#FFE082" />
+    <rect x="58" y="-20" width="4" height="3" fill="#FFF59D" opacity="0.8" />
+    {/* Sun gleam on capstone */}
+    <rect x="59" y="-19" width="2" height="1" fill="#FFFFFF" opacity="0.3" />
 
-    {/* Entrance — dark doorway */}
-    <rect x="50" y="34" width="18" height="24" fill="#1A1A2E" opacity="0.85" />
-    <rect x="48" y="30" width="22" height="6" fill="#B8860B" />
-    {/* Entrance lintel with hieroglyphic detail */}
-    <rect x="50" y="31" width="3" height="3" fill="#FFD54F" opacity="0.5" />
-    <rect x="55" y="31" width="3" height="3" fill="#FFD54F" opacity="0.5" />
-    <rect x="60" y="31" width="3" height="3" fill="#FFD54F" opacity="0.5" />
-    <rect x="65" y="31" width="3" height="3" fill="#FFD54F" opacity="0.5" />
+    {/* Stone block grid — vertical mortar lines */}
+    {[48, 38, 28, 18, 8, 0, -6].map((ty, i) => {
+      const blockWidth = Math.max(6, 14 - i * 1.5)
+      const startX = i * 8
+      const rowWidth = 120 - i * 16
+      const count = Math.max(2, Math.floor(rowWidth / blockWidth))
+      return (
+        <g key={`row-${i}`}>
+          {Array.from({ length: count }, (_, j) => (
+            <rect key={`block-${i}-${j}`} x={startX + j * (rowWidth / count)} y={ty + 3} width="1" height={i < 4 ? 8 : 6} fill="#8B7355" opacity={0.18 + i * 0.02} />
+          ))}
+        </g>
+      )
+    })}
 
-    {/* Sand drift against base */}
-    <rect x="-4" y="56" width="30" height="6" fill="#C4A862" opacity="0.5" />
-    <rect x="96" y="56" width="28" height="4" fill="#C4A862" opacity="0.4" />
+    {/* Entrance — dramatic dark corridor */}
+    <rect x="48" y="32" width="22" height="28" fill="#0A0A1E" opacity="0.9" />
+    {/* Entrance lintel — massive stone beam */}
+    <rect x="46" y="28" width="26" height="6" fill="#B8860B" />
+    <rect x="48" y="26" width="22" height="3" fill="#C49A1A" />
+    {/* Lintel hieroglyphs — Eye of Horus, ankh, scarab motifs */}
+    <rect x="49" y="29" width="2" height="2" fill="#FFD54F" opacity="0.5" />
+    <rect x="53" y="29" width="3" height="2" fill="#FFD54F" opacity="0.5" />
+    <rect x="58" y="29" width="2" height="2" fill="#FFD54F" opacity="0.5" />
+    <rect x="62" y="29" width="3" height="2" fill="#FFD54F" opacity="0.5" />
+    <rect x="67" y="29" width="2" height="2" fill="#FFD54F" opacity="0.5" />
+    {/* Entrance frame columns */}
+    <rect x="48" y="32" width="3" height="26" fill="#C49A1A" opacity="0.5" />
+    <rect x="67" y="32" width="3" height="26" fill="#C49A1A" opacity="0.5" />
+    {/* Hieroglyph column on entrance pillars */}
+    <rect x="49" y="36" width="1" height="3" fill="#FFD54F" opacity="0.3" />
+    <rect x="49" y="42" width="1" height="3" fill="#FFD54F" opacity="0.25" />
+    <rect x="49" y="48" width="1" height="3" fill="#FFD54F" opacity="0.2" />
+    <rect x="68" y="36" width="1" height="3" fill="#FFD54F" opacity="0.3" />
+    <rect x="68" y="42" width="1" height="3" fill="#FFD54F" opacity="0.25" />
 
-    {/* Erosion and weathering */}
-    <rect x="20" y="42" width="6" height="4" fill="#A07820" opacity="0.4" />
-    <rect x="90" y="34" width="8" height="4" fill="#A07820" opacity="0.3" />
-    <rect x="14" y="50" width="4" height="3" fill="#8B7355" opacity="0.4" />
+    {/* Sand drift against base — windswept accumulation */}
+    <rect x="-6" y="56" width="34" height="6" fill="#C4A862" opacity="0.5" />
+    <rect x="-4" y="58" width="20" height="4" fill="#D4B872" opacity="0.35" />
+    <rect x="94" y="56" width="30" height="5" fill="#C4A862" opacity="0.4" />
+    <rect x="100" y="58" width="16" height="3" fill="#D4B872" opacity="0.3" />
 
-    {/* Algae growth */}
-    <rect x="4" y="52" width="8" height="2" fill="#2E7D32" opacity="0.3" />
-    <rect x="100" y="48" width="10" height="2" fill="#388E3C" opacity="0.25" />
-    <rect x="46" y="52" width="6" height="2" fill="#1B5E20" opacity="0.3" />
+    {/* Erosion and weathering — centuries of decay */}
+    <rect x="18" y="42" width="8" height="5" fill="#A07820" opacity="0.35" />
+    <rect x="20" y="44" width="4" height="2" fill="#8B7355" opacity="0.25" />
+    <rect x="88" y="32" width="10" height="5" fill="#A07820" opacity="0.3" />
+    <rect x="12" y="50" width="6" height="4" fill="#8B7355" opacity="0.35" />
+    <rect x="100" y="42" width="6" height="4" fill="#A07820" opacity="0.25" />
+    {/* Missing blocks — dark gaps */}
+    <rect x="28" y="44" width="4" height="3" fill="#6B5B35" opacity="0.3" />
+    <rect x="82" y="34" width="3" height="4" fill="#6B5B35" opacity="0.25" />
+
+    {/* Algae growth — aquatic colonization */}
+    <rect x="2" y="52" width="10" height="3" fill="#2E7D32" opacity="0.35" />
+    <rect x="4" y="54" width="4" height="2" fill="#4CAF50" opacity="0.25" />
+    <rect x="98" y="48" width="12" height="3" fill="#388E3C" opacity="0.3" />
+    <rect x="44" y="54" width="8" height="2" fill="#1B5E20" opacity="0.3" />
+    <rect x="72" y="52" width="6" height="2" fill="#2E7D32" opacity="0.25" />
 
     {/* Coral encrustation at base */}
-    <rect x="110" y="46" width="8" height="6" fill="#E91E63" opacity="0.3" />
-    <rect x="-4" y="48" width="6" height="5" fill="#FF5722" opacity="0.25" />
+    <rect x="108" y="44" width="10" height="8" fill="#E91E63" opacity="0.25" />
+    <rect x="110" y="42" width="4" height="3" fill="#F48FB1" opacity="0.2" />
+    <rect x="-4" y="48" width="8" height="6" fill="#FF5722" opacity="0.22" />
+    <rect x="-2" y="46" width="4" height="3" fill="#FF8A65" opacity="0.18" />
 
-    {/* Bubbles from entrance */}
-    <circle cx="58" cy="28" r="1.5" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4s ease-in 0s infinite' }} />
-    <circle cx="62" cy="30" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 5s ease-in 2s infinite' }} />
+    {/* Fallen stone block on sand */}
+    <rect x="-8" y="54" width="8" height="5" fill="#C49A1A" opacity="0.35" />
+    <rect x="118" y="52" width="6" height="4" fill="#B8860B" opacity="0.3" />
+
+    {/* Barnacles */}
+    <rect x="6" y="56" width="4" height="3" fill="#9CA3AF" opacity="0.3" />
+    <rect x="110" y="52" width="3" height="3" fill="#9CA3AF" opacity="0.25" />
+
+    {/* Bubbles from entrance — mysterious */}
+    <circle cx="58" cy="26" r="1.5" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4s ease-in 0s infinite' }} />
+    <circle cx="62" cy="28" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 5s ease-in 2s infinite' }} />
+    <circle cx="56" cy="30" r="0.8" fill="rgba(255,255,255,0.15)" style={{ animation: 'bubbleRise 5.5s ease-in 3.5s infinite' }} />
   </g>
 ))
 SunkenPyramid.displayName = 'SunkenPyramid'
@@ -1407,48 +2253,108 @@ SunkenPyramid.displayName = 'SunkenPyramid'
 
 const SunkenSphinx = memo(({ x, y }: { x: number; y: number }) => (
   <g transform={`translate(${x}, ${y})`}>
-    {/* Body — recumbent lion shape */}
-    <rect x="10" y="24" width="60" height="20" fill="#C49A1A" />
-    <rect x="8" y="20" width="64" height="8" fill="#D4A82A" />
-    <rect x="14" y="16" width="56" height="6" fill="#D4B03A" />
-    {/* Back slope */}
-    <rect x="50" y="12" width="20" height="6" fill="#C49A1A" opacity="0.6" />
+    {/* Body — massive recumbent lion shape with layered depth */}
+    <rect x="8" y="24" width="66" height="22" fill="#B8860B" />
+    <rect x="10" y="24" width="62" height="20" fill="#C49A1A" />
+    <rect x="8" y="18" width="66" height="8" fill="#D4A82A" />
+    <rect x="12" y="14" width="58" height="6" fill="#D4B03A" />
+    {/* Back haunches */}
+    <rect x="52" y="10" width="22" height="8" fill="#C49A1A" opacity="0.65" />
+    <rect x="56" y="8" width="14" height="4" fill="#D4A82A" opacity="0.5" />
+    {/* Tail curling along back */}
+    <rect x="68" y="12" width="8" height="3" fill="#C49A1A" opacity="0.4" />
+    <rect x="74" y="10" width="4" height="3" fill="#D4A82A" opacity="0.3" />
+    {/* Body stone block lines */}
+    <rect x="12" y="22" width="58" height="1" fill="#A07820" opacity="0.2" />
+    <rect x="10" y="30" width="62" height="1" fill="#A07820" opacity="0.18" />
+    <rect x="10" y="38" width="62" height="1" fill="#A07820" opacity="0.15" />
 
-    {/* Front paws — extended */}
-    <rect x="0" y="34" width="16" height="10" fill="#DEB84A" />
-    <rect x="-4" y="38" width="8" height="6" fill="#D4A82A" />
-    <rect x="60" y="34" width="14" height="10" fill="#DEB84A" />
-    <rect x="68" y="38" width="8" height="6" fill="#D4A82A" />
+    {/* Front paws — extended, with toes carved */}
+    <rect x="-2" y="34" width="18" height="12" fill="#DEB84A" />
+    <rect x="-6" y="38" width="10" height="8" fill="#D4A82A" />
+    {/* Left paw toes */}
+    <rect x="-6" y="44" width="3" height="2" fill="#C49A1A" opacity="0.5" />
+    <rect x="-2" y="44" width="3" height="2" fill="#C49A1A" opacity="0.5" />
+    <rect x="2" y="44" width="3" height="2" fill="#C49A1A" opacity="0.5" />
+    {/* Right paw */}
+    <rect x="58" y="34" width="18" height="12" fill="#DEB84A" />
+    <rect x="70" y="38" width="10" height="8" fill="#D4A82A" />
+    {/* Right paw toes */}
+    <rect x="70" y="44" width="3" height="2" fill="#C49A1A" opacity="0.5" />
+    <rect x="74" y="44" width="3" height="2" fill="#C49A1A" opacity="0.5" />
+    <rect x="78" y="44" width="3" height="2" fill="#C49A1A" opacity="0.5" />
 
-    {/* Head — human face */}
-    <rect x="0" y="4" width="20" height="20" fill="#D4B03A" />
-    <rect x="-2" y="0" width="24" height="6" fill="#E8C45A" />
-    {/* Headdress (nemes) */}
-    <rect x="-4" y="-4" width="28" height="6" fill="#1565C0" opacity="0.5" />
-    <rect x="-6" y="-2" width="4" height="18" fill="#1565C0" opacity="0.4" />
-    <rect x="22" y="-2" width="4" height="18" fill="#1565C0" opacity="0.4" />
-    {/* Eyes */}
-    <rect x="4" y="8" width="4" height="3" fill="#1A1A2E" opacity="0.7" />
-    <rect x="12" y="8" width="4" height="3" fill="#1A1A2E" opacity="0.7" />
-    {/* Nose (partially broken) */}
-    <rect x="8" y="12" width="4" height="4" fill="#C49A1A" />
-    {/* Mouth */}
-    <rect x="6" y="18" width="8" height="2" fill="#B8860B" opacity="0.5" />
+    {/* Head — human face, detailed pharaonic sculpture */}
+    <rect x="-2" y="2" width="22" height="22" fill="#D4B03A" />
+    <rect x="0" y="2" width="18" height="20" fill="#DEB84A" />
+    <rect x="-4" y="-2" width="26" height="6" fill="#E8C45A" />
+    {/* Headdress (nemes) — striped */}
+    <rect x="-6" y="-6" width="30" height="6" fill="#1565C0" opacity="0.5" />
+    <rect x="-4" y="-6" width="26" height="1" fill="#FFD54F" opacity="0.3" />
+    <rect x="-4" y="-4" width="26" height="1" fill="#FFD54F" opacity="0.25" />
+    {/* Nemes side flaps */}
+    <rect x="-8" y="-4" width="4" height="20" fill="#1565C0" opacity="0.4" />
+    <rect x="-8" y="0" width="4" height="1" fill="#FFD54F" opacity="0.2" />
+    <rect x="-8" y="4" width="4" height="1" fill="#FFD54F" opacity="0.18" />
+    <rect x="-8" y="8" width="4" height="1" fill="#FFD54F" opacity="0.15" />
+    <rect x="22" y="-4" width="4" height="20" fill="#1565C0" opacity="0.4" />
+    <rect x="22" y="0" width="4" height="1" fill="#FFD54F" opacity="0.2" />
+    <rect x="22" y="4" width="4" height="1" fill="#FFD54F" opacity="0.18" />
+    <rect x="22" y="8" width="4" height="1" fill="#FFD54F" opacity="0.15" />
+    {/* Uraeus (cobra) on forehead */}
+    <rect x="7" y="-8" width="4" height="4" fill="#FFD54F" opacity="0.5" />
+    <rect x="8" y="-10" width="2" height="3" fill="#FFD54F" opacity="0.4" />
 
-    {/* Weathering and erosion */}
-    <rect x="30" y="22" width="8" height="4" fill="#B8860B" opacity="0.3" />
-    <rect x="48" y="26" width="6" height="3" fill="#A07820" opacity="0.3" />
+    {/* Eyes — deep-set with eyeliner */}
+    <rect x="3" y="6" width="5" height="4" fill="#1A1A2E" opacity="0.75" />
+    <rect x="11" y="6" width="5" height="4" fill="#1A1A2E" opacity="0.75" />
+    {/* Eyeliner marks */}
+    <rect x="2" y="8" width="1" height="1" fill="#1A1A2E" opacity="0.4" />
+    <rect x="8" y="8" width="1" height="1" fill="#1A1A2E" opacity="0.4" />
+    <rect x="16" y="8" width="1" height="1" fill="#1A1A2E" opacity="0.4" />
+    {/* Nose — famously broken */}
+    <rect x="8" y="12" width="3" height="3" fill="#C49A1A" />
+    <rect x="9" y="11" width="2" height="1" fill="#D4A82A" opacity="0.4" />
+    {/* Missing chunk of nose */}
+    <rect x="10" y="13" width="2" height="2" fill="#B8860B" opacity="0.3" />
+    {/* Mouth — serene expression */}
+    <rect x="5" y="18" width="10" height="2" fill="#B8860B" opacity="0.5" />
+    <rect x="6" y="17" width="8" height="1" fill="#D4A82A" opacity="0.3" />
+    {/* Chin/beard bracket */}
+    <rect x="7" y="20" width="4" height="4" fill="#C49A1A" opacity="0.4" />
+    <rect x="8" y="24" width="2" height="2" fill="#B8860B" opacity="0.3" />
 
-    {/* Sand buildup */}
-    <rect x="-8" y="40" width="20" height="6" fill="#C4A862" opacity="0.4" />
-    <rect x="60" y="42" width="18" height="4" fill="#C4A862" opacity="0.35" />
+    {/* Weathering and erosion — centuries of sandblasting */}
+    <rect x="28" y="20" width="10" height="5" fill="#A07820" opacity="0.3" />
+    <rect x="30" y="22" width="6" height="2" fill="#8B7355" opacity="0.2" />
+    <rect x="46" y="26" width="8" height="4" fill="#A07820" opacity="0.25" />
+    <rect x="18" y="36" width="6" height="3" fill="#B8860B" opacity="0.2" />
+    {/* Erosion channels */}
+    <rect x="20" y="14" width="1" height="8" fill="#A07820" opacity="0.15" />
+    <rect x="50" y="16" width="1" height="10" fill="#A07820" opacity="0.12" />
 
-    {/* Algae */}
-    <rect x="20" y="38" width="6" height="2" fill="#2E7D32" opacity="0.3" />
-    <rect x="54" y="30" width="4" height="2" fill="#388E3C" opacity="0.25" />
+    {/* Sand buildup — partially buried */}
+    <rect x="-10" y="42" width="24" height="6" fill="#C4A862" opacity="0.45" />
+    <rect x="-8" y="44" width="16" height="4" fill="#D4B872" opacity="0.3" />
+    <rect x="62" y="44" width="22" height="4" fill="#C4A862" opacity="0.4" />
+    <rect x="66" y="46" width="14" height="3" fill="#D4B872" opacity="0.25" />
+
+    {/* Algae colonization */}
+    <rect x="18" y="38" width="8" height="3" fill="#2E7D32" opacity="0.3" />
+    <rect x="20" y="36" width="4" height="2" fill="#4CAF50" opacity="0.2" />
+    <rect x="52" y="30" width="6" height="3" fill="#388E3C" opacity="0.25" />
+    <rect x="38" y="42" width="6" height="2" fill="#1B5E20" opacity="0.25" />
+
+    {/* Barnacles */}
+    <rect x="0" y="40" width="3" height="3" fill="#9CA3AF" opacity="0.3" />
+    <rect x="72" y="40" width="3" height="3" fill="#9CA3AF" opacity="0.25" />
+
+    {/* Small coral */}
+    <rect x="74" y="36" width="4" height="4" fill="#E91E63" opacity="0.2" />
 
     {/* Bubbles */}
-    <circle cx="10" cy="0" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4.5s ease-in 0.5s infinite' }} />
+    <circle cx="10" cy="-6" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4.5s ease-in 0.5s infinite' }} />
+    <circle cx="40" cy="12" r="0.8" fill="rgba(255,255,255,0.15)" style={{ animation: 'bubbleRise 5.5s ease-in 3s infinite' }} />
   </g>
 ))
 SunkenSphinx.displayName = 'SunkenSphinx'
@@ -1457,18 +2363,36 @@ SunkenSphinx.displayName = 'SunkenSphinx'
 
 const SunkenTorii = memo(({ x, y }: { x: number; y: number }) => (
   <g transform={`translate(${x}, ${y})`}>
-    {/* Left pillar */}
-    <rect x="4" y="4" width="10" height="56" fill="#B71C1C" />
-    <rect x="2" y="0" width="14" height="6" fill="#C62828" />
-    {/* Pillar ring detail */}
-    <rect x="2" y="14" width="14" height="2" fill="#D32F2F" opacity="0.5" />
-    <rect x="2" y="44" width="14" height="2" fill="#D32F2F" opacity="0.5" />
+    {/* Left pillar (hashira) — tapered vermillion lacquer */}
+    <rect x="4" y="2" width="12" height="58" fill="#B71C1C" />
+    <rect x="5" y="2" width="10" height="58" fill="#C62828" />
+    <rect x="2" y="50" width="16" height="10" fill="#AD1457" opacity="0.3" />
+    {/* Left base stone */}
+    <rect x="0" y="56" width="18" height="6" fill="#78716C" opacity="0.6" />
+    <rect x="2" y="54" width="14" height="3" fill="#8D8680" opacity="0.5" />
+    <rect x="2" y="0" width="16" height="4" fill="#D32F2F" />
+    {/* Left ring bands */}
+    <rect x="2" y="14" width="16" height="2" fill="#D32F2F" opacity="0.45" />
+    <rect x="2" y="42" width="16" height="2" fill="#D32F2F" opacity="0.4" />
+    {/* Left grain texture */}
+    <rect x="6" y="8" width="1" height="48" fill="#8B0000" opacity="0.15" />
+    <rect x="10" y="6" width="1" height="50" fill="#FF1744" opacity="0.1" />
+    <rect x="14" y="8" width="1" height="46" fill="#8B0000" opacity="0.12" />
+    {/* Left lacquer wear */}
+    <rect x="4" y="30" width="3" height="4" fill="#A1887F" opacity="0.2" />
 
     {/* Right pillar */}
-    <rect x="66" y="4" width="10" height="56" fill="#B71C1C" />
-    <rect x="64" y="0" width="14" height="6" fill="#C62828" />
-    <rect x="64" y="14" width="14" height="2" fill="#D32F2F" opacity="0.5" />
-    <rect x="64" y="44" width="14" height="2" fill="#D32F2F" opacity="0.5" />
+    <rect x="64" y="2" width="12" height="58" fill="#B71C1C" />
+    <rect x="65" y="2" width="10" height="58" fill="#C62828" />
+    <rect x="62" y="50" width="16" height="10" fill="#AD1457" opacity="0.3" />
+    <rect x="60" y="56" width="18" height="6" fill="#78716C" opacity="0.6" />
+    <rect x="62" y="54" width="14" height="3" fill="#8D8680" opacity="0.5" />
+    <rect x="62" y="0" width="16" height="4" fill="#D32F2F" />
+    <rect x="62" y="14" width="16" height="2" fill="#D32F2F" opacity="0.45" />
+    <rect x="62" y="42" width="16" height="2" fill="#D32F2F" opacity="0.4" />
+    <rect x="66" y="6" width="1" height="50" fill="#8B0000" opacity="0.15" />
+    <rect x="70" y="8" width="1" height="48" fill="#FF1744" opacity="0.1" />
+    <rect x="72" y="24" width="3" height="4" fill="#A1887F" opacity="0.18" />
 
     {/* Top beam (kasagi) — curved ends */}
     <rect x="-4" y="-8" width="88" height="6" fill="#C62828" />
