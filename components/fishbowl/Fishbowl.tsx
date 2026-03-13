@@ -212,8 +212,10 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomi
         />
       ))}
 
-      {/* Clown pleco pair (bottom feeders, mates for life) */}
-      {dimensions.width > 0 && <PlecoPair containerWidth={dimensions.width} />}
+      {/* Clown pleco pair — structure feeders, circle and clean decorations */}
+      {dimensions.width > 0 && dimensions.height > 0 && (
+        <PlecoPair containerWidth={dimensions.width} containerHeight={dimensions.height} theme={theme} />
+      )}
 
       {/* Algae buildup on glass (cleaned by snails over 72h) */}
       <AlgaeOverlay width={dimensions.width} height={dimensions.height} />

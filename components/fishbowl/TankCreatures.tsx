@@ -1,6 +1,6 @@
 'use client'
 
-import { memo, useEffect, useState, useRef, useCallback } from 'react'
+import { memo, useEffect, useState, useRef, useCallback, useMemo } from 'react'
 
 // ─── Clown Pleco (Bottom Feeder) ────────────────────────────────────
 // Two plecos that stay near the bottom, always near each other (mates for life)
@@ -59,172 +59,293 @@ const ClownPlecoSVG = memo(({ id, facingRight, size = 40 }: { id: string; facing
 })
 ClownPlecoSVG.displayName = 'ClownPlecoSVG'
 
-// ─── Pleco Social Behavior ──────────────────────────────────────────
-// Mates for life: plecos alternate between wandering apart and journeying
-// together along the bottom of the tank.
-//   'apart'      — wander independently for 1, 4, 7, or 10 minutes
-//   'converging' — swim toward each other (~15 seconds)
-//   'together'   — travel side-by-side for half the apart duration
+// ─── Structure-Based Pleco Movement ─────────────────────────────────
+// Plecos navigate to tank structures, circle around them, latch on,
+// and clean — like a woodpecker methodically working a tree trunk,
+// but underwater. A clown pleco feeding on structure surfaces.
 
-type PlecoPhase = 'apart' | 'converging' | 'together'
-const PLECO_MEETING_INTERVALS_MS = [1, 4, 7, 10].map(m => m * 60 * 1000)
+interface FeedingZone {
+  cx: number; cy: number
+  spots: Array<{ x: number; y: number }>
+}
 
-export const PlecoPair = memo(({ containerWidth }: { containerWidth: number }) => {
-  const [phase, setPhase] = useState<PlecoPhase>('together')
-  const phaseTimersRef = useRef<ReturnType<typeof setTimeout>[]>([])
+function createFeedingZone(sx: number, sy: number): FeedingZone {
+  const cx = sx + 80, cy = sy + 60
+  const spots: Array<{ x: number; y: number }> = []
+  for (let i = 0; i < 12; i++) {
+    const angle = (i / 12) * Math.PI * 2
+    const r = i % 2 === 0 ? 32 : 48
+    spots.push({
+      x: cx + Math.cos(angle) * r * 1.4,
+      y: cy + Math.sin(angle) * r * 0.95,
+    })
+  }
+  return { cx, cy, spots }
+}
 
-  // Pleco 1 position (leader when together)
-  const [p1, setP1] = useState({ x: containerWidth * 0.3, facingRight: true })
-  // Pleco 2 position (mate)
-  const [p2, setP2] = useState({ x: containerWidth * 0.35, facingRight: true })
+const THEME_FEEDING_ZONES: Record<string, FeedingZone[]> = {
+  ocean:     [createFeedingZone(180, 126), createFeedingZone(500, 130)],
+  tropical:  [createFeedingZone(160, 136), createFeedingZone(480, 126)],
+  shipwreck: [createFeedingZone(40, 112),  createFeedingZone(640, 146)],
+  sailboat:  [createFeedingZone(300, 142), createFeedingZone(600, 140)],
+  submarine: [createFeedingZone(260, 154)],
+  minimal:   [],
+  castle:    [createFeedingZone(200, 132), createFeedingZone(560, 148)],
+  pyramid:   [createFeedingZone(80, 134),  createFeedingZone(520, 152)],
+  temple:    [createFeedingZone(120, 130), createFeedingZone(480, 124)],
+  atlantis:  [createFeedingZone(100, 132), createFeedingZone(560, 130)],
+  stagnant:  [createFeedingZone(300, 120)],
+}
 
-  // Refs for movement
-  const p1Ref = useRef({ x: containerWidth * 0.3, targetX: containerWidth * 0.5, speed: 0.4 })
-  const p2Ref = useRef({ x: containerWidth * 0.35, targetX: containerWidth * 0.6, speed: 0.35 })
+// Convert SVG viewBox coords (800×320, xMidYMax meet) to container pixels
+function svgToPixel(
+  svgX: number, svgY: number, cw: number, ch: number,
+): { x: number; y: number } {
+  const containerAspect = cw / ch
+  const svgAspect = 800 / 320
+  let scale: number, ox: number, oy: number
+  if (containerAspect > svgAspect) {
+    scale = ch / 320; ox = (cw - 800 * scale) / 2; oy = 0
+  } else {
+    scale = cw / 800; ox = 0; oy = ch - 320 * scale
+  }
+  return { x: ox + svgX * scale, y: oy + svgY * scale }
+}
 
-  // ─── Social cycle ───────────────────────────────────────
-  const startCycle = useCallback(() => {
-    phaseTimersRef.current.forEach(t => clearTimeout(t))
-    phaseTimersRef.current = []
+type PlecoPhase = 'transit' | 'orbit' | 'latch' | 'clean'
 
-    // Pick random apart duration
-    const apartMs = PLECO_MEETING_INTERVALS_MS[Math.floor(Math.random() * PLECO_MEETING_INTERVALS_MS.length)]
+interface PlecoMotion {
+  x: number; y: number
+  phase: PlecoPhase
+  targetX: number; targetY: number
+  zoneIdx: number
+  orbitAngle: number
+  orbitTarget: number
+  cleanTicks: number
+  spotsLeft: number
+  speed: number
+  facingRight: boolean
+}
 
-    // Start apart: give each pleco a random target on opposite sides
-    setPhase('apart')
-    p1Ref.current.targetX = containerWidth * (0.05 + Math.random() * 0.35) // left half
-    p2Ref.current.targetX = containerWidth * (0.55 + Math.random() * 0.35) // right half
+function createPlecoMotion(
+  zoneIdx: number, startX: number, startY: number,
+): PlecoMotion {
+  return {
+    x: startX, y: startY,
+    phase: 'transit',
+    targetX: 0, targetY: 0,
+    zoneIdx,
+    orbitAngle: 0,
+    orbitTarget: 0,
+    cleanTicks: 0,
+    spotsLeft: 3 + Math.floor(Math.random() * 4),
+    speed: 0.7 + Math.random() * 0.4,
+    facingRight: true,
+  }
+}
 
-    // After apart time → converge
-    const t1 = setTimeout(() => {
-      setPhase('converging')
-      // Meet in the middle-ish
-      const meetX = containerWidth * (0.25 + Math.random() * 0.45)
-      p1Ref.current.targetX = meetX
-      p2Ref.current.targetX = meetX + 50
+function tickPleco(
+  p: PlecoMotion, zones: FeedingZone[], cw: number, ch: number,
+): void {
+  if (zones.length === 0) return
+  const zone = zones[p.zoneIdx]
+  const scale = cw / 800
 
-      // After convergence → together
-      const t2 = setTimeout(() => {
-        setPhase('together')
+  switch (p.phase) {
+    case 'transit': {
+      const center = svgToPixel(zone.cx, zone.cy, cw, ch)
+      const dx = center.x - p.x
+      const dy = center.y - p.y
+      const dist = Math.sqrt(dx * dx + dy * dy)
 
-        // Together for half the apart time, then restart
-        const t3 = setTimeout(() => {
-          startCycle()
-        }, apartMs / 2)
-        phaseTimersRef.current.push(t3)
-      }, 15000) // 15 seconds to converge
-      phaseTimersRef.current.push(t2)
-    }, apartMs)
-    phaseTimersRef.current.push(t1)
-  }, [containerWidth])
+      if (dist < 12) {
+        // Arrived at structure — begin orbiting
+        p.phase = 'orbit'
+        p.orbitAngle = Math.atan2(p.y - center.y, p.x - center.x)
+        p.orbitTarget = p.orbitAngle + (2 + Math.random()) * Math.PI * 2
+        break
+      }
 
-  useEffect(() => {
-    if (containerWidth === 0) return
-    // Start with a short together period before first cycle
-    const initialTimer = setTimeout(() => startCycle(), 8000)
-    return () => {
-      clearTimeout(initialTimer)
-      phaseTimersRef.current.forEach(t => clearTimeout(t))
+      const angle = Math.atan2(dy, dx)
+      // Sine-wave undulation for natural swim
+      const wave = Math.sin(Date.now() * 0.002 + p.x * 0.1) * 0.35
+      p.x += Math.cos(angle) * p.speed + Math.cos(angle + Math.PI / 2) * wave
+      p.y += Math.sin(angle) * p.speed + Math.sin(angle + Math.PI / 2) * wave
+      p.facingRight = dx > 0
+      break
     }
-  }, [containerWidth, startCycle])
 
-  // ─── Movement loop ──────────────────────────────────────
+    case 'orbit': {
+      // Smoothly circle the structure
+      p.orbitAngle += 0.045
+      const center = svgToPixel(zone.cx, zone.cy, cw, ch)
+      const rx = 55 * scale
+      const ry = 40 * scale
+      const tx = center.x + Math.cos(p.orbitAngle) * rx
+      const ty = center.y + Math.sin(p.orbitAngle) * ry
+
+      // Interpolate toward orbit path for smooth circling
+      p.x += (tx - p.x) * 0.12
+      p.y += (ty - p.y) * 0.12
+      p.facingRight = -Math.sin(p.orbitAngle) > 0
+
+      if (p.orbitAngle >= p.orbitTarget) {
+        // Done circling — dart to a latch point on the structure
+        p.phase = 'latch'
+        const spot = zone.spots[Math.floor(Math.random() * zone.spots.length)]
+        const pos = svgToPixel(spot.x, spot.y, cw, ch)
+        p.targetX = pos.x
+        p.targetY = pos.y
+      }
+      break
+    }
+
+    case 'latch': {
+      // Quick dart to the latch point
+      const dx = p.targetX - p.x
+      const dy = p.targetY - p.y
+      const dist = Math.sqrt(dx * dx + dy * dy)
+
+      if (dist < 4) {
+        // Latched on — start cleaning
+        p.phase = 'clean'
+        p.cleanTicks = 40 + Math.floor(Math.random() * 60) // 4–10 seconds
+        break
+      }
+
+      const angle = Math.atan2(dy, dx)
+      p.x += Math.cos(angle) * p.speed * 1.6
+      p.y += Math.sin(angle) * p.speed * 1.6
+      p.facingRight = dx > 0
+      break
+    }
+
+    case 'clean': {
+      // Woodpecker-style vibrating cleaning: small scraping movements
+      p.x += (Math.random() - 0.5) * 1.6
+      p.y += (Math.random() - 0.5) * 1.0
+
+      p.cleanTicks--
+      if (p.cleanTicks <= 0) {
+        p.spotsLeft--
+
+        if (p.spotsLeft > 0) {
+          // Hop to another spot on the same structure
+          p.phase = 'latch'
+          const spot = zone.spots[Math.floor(Math.random() * zone.spots.length)]
+          const pos = svgToPixel(spot.x, spot.y, cw, ch)
+          p.targetX = pos.x
+          p.targetY = pos.y
+        } else {
+          // All spots cleaned — depart to a different structure
+          let newIdx = p.zoneIdx
+          if (zones.length > 1) {
+            while (newIdx === p.zoneIdx) {
+              newIdx = Math.floor(Math.random() * zones.length)
+            }
+          }
+          p.zoneIdx = newIdx
+          p.spotsLeft = 3 + Math.floor(Math.random() * 4)
+          p.phase = 'transit'
+          p.facingRight = svgToPixel(zones[newIdx].cx, zones[newIdx].cy, cw, ch).x > p.x
+        }
+      }
+      break
+    }
+  }
+
+  // Clamp to tank bounds
+  p.x = Math.max(10, Math.min(cw - 50, p.x))
+  p.y = Math.max(20, Math.min(ch - 15, p.y))
+}
+
+export const PlecoPair = memo(({ containerWidth, containerHeight, theme = 'ocean' }: {
+  containerWidth: number
+  containerHeight: number
+  theme?: string
+}) => {
+  const zones = useMemo(
+    () => THEME_FEEDING_ZONES[theme] || THEME_FEEDING_ZONES.ocean,
+    [theme],
+  )
+
+  const [p1Pos, setP1Pos] = useState({ x: 0, y: 0, facingRight: true })
+  const [p2Pos, setP2Pos] = useState({ x: 0, y: 0, facingRight: true })
+
+  const p1Ref = useRef<PlecoMotion | null>(null)
+  const p2Ref = useRef<PlecoMotion | null>(null)
+
+  // Initialize plecos (once, when dimensions are available)
   useEffect(() => {
-    if (containerWidth === 0) return
+    if (containerWidth === 0 || containerHeight === 0 || zones.length === 0) return
+    if (!p1Ref.current) {
+      p1Ref.current = createPlecoMotion(0, containerWidth * 0.25, containerHeight * 0.8)
+    }
+    if (!p2Ref.current) {
+      const idx2 = zones.length > 1 ? 1 : 0
+      p2Ref.current = createPlecoMotion(idx2, containerWidth * 0.7, containerHeight * 0.85)
+      p2Ref.current.speed *= 0.9
+    }
+  }, [containerWidth, containerHeight, zones])
+
+  // Movement loop — 10 fps, CSS transitions smooth the visual
+  useEffect(() => {
+    if (containerWidth === 0 || containerHeight === 0 || zones.length === 0) return
 
     const interval = setInterval(() => {
-      const currentPhase = phase
-
-      // Update pleco 1
-      const s1 = p1Ref.current
-      if (currentPhase === 'together') {
-        // Slow wandering (original sine-based movement)
-        s1.x += Math.sin(Date.now() * 0.0003) * 0.6
-        // Gently drift across the tank
-        s1.targetX = containerWidth * 0.15 + Math.sin(Date.now() * 0.00015) * (containerWidth * 0.35)
-        const dx1 = s1.targetX - s1.x
-        if (Math.abs(dx1) > 2) s1.x += Math.sign(dx1) * 0.3
-      } else {
-        // Move toward target
-        const dx1 = s1.targetX - s1.x
-        if (Math.abs(dx1) > 3) {
-          s1.x += Math.sign(dx1) * s1.speed * (currentPhase === 'converging' ? 1.5 : 1)
-        } else if (currentPhase === 'apart') {
-          // Pick new random target on their side
-          s1.targetX = containerWidth * (0.05 + Math.random() * 0.40)
-        }
+      if (p1Ref.current) {
+        tickPleco(p1Ref.current, zones, containerWidth, containerHeight)
+        setP1Pos({ x: p1Ref.current.x, y: p1Ref.current.y, facingRight: p1Ref.current.facingRight })
       }
-      s1.x = Math.max(10, Math.min(containerWidth - 60, s1.x))
-
-      // Update pleco 2
-      const s2 = p2Ref.current
-      if (currentPhase === 'together') {
-        // Follow pleco 1 closely
-        const followX = s1.x + (s1.x > s2.x ? -50 : 50)
-        const dx2 = followX - s2.x
-        s2.x += dx2 * 0.05
-      } else {
-        const dx2 = s2.targetX - s2.x
-        if (Math.abs(dx2) > 3) {
-          s2.x += Math.sign(dx2) * s2.speed * (currentPhase === 'converging' ? 1.5 : 1)
-        } else if (currentPhase === 'apart') {
-          s2.targetX = containerWidth * (0.55 + Math.random() * 0.35)
-        }
+      if (p2Ref.current) {
+        tickPleco(p2Ref.current, zones, containerWidth, containerHeight)
+        setP2Pos({ x: p2Ref.current.x, y: p2Ref.current.y, facingRight: p2Ref.current.facingRight })
       }
-      s2.x = Math.max(10, Math.min(containerWidth - 60, s2.x))
-
-      // Determine facing direction
-      const p1Right = currentPhase === 'together'
-        ? Math.sin(Date.now() * 0.00015) > 0
-        : s1.targetX > s1.x
-      const p2Right = currentPhase === 'together'
-        ? p1Right
-        : s2.targetX > s2.x
-
-      setP1({ x: s1.x, facingRight: p1Right })
-      setP2({ x: s2.x, facingRight: p2Right })
     }, 100)
 
     return () => clearInterval(interval)
-  }, [containerWidth, phase])
+  }, [containerWidth, containerHeight, zones])
 
-  // Only show hearts when together or converging (close enough)
-  const showHearts = phase === 'together' || (phase === 'converging' && Math.abs(p1.x - p2.x) < 80)
+  // Don't render if no structures to feed on
+  if (zones.length === 0) return null
+
+  const showHearts = Math.abs(p1Pos.x - p2Pos.x) < 60 && Math.abs(p1Pos.y - p2Pos.y) < 40
 
   return (
-    <div className="absolute bottom-[18px] left-0 w-full z-20 pointer-events-none" style={{ height: '54px' }}>
+    <div className="absolute inset-0 z-20 pointer-events-none">
       {/* Pleco 1 */}
       <div
         className="absolute"
         style={{
-          left: `${p1.x}px`,
-          bottom: '0px',
-          transition: 'left 0.15s linear',
+          left: `${p1Pos.x}px`,
+          top: `${p1Pos.y}px`,
+          transition: 'left 0.15s linear, top 0.15s linear',
         }}
       >
-        <ClownPlecoSVG id="pleco-1" facingRight={p1.facingRight} size={54} />
+        <ClownPlecoSVG id="pleco-1" facingRight={p1Pos.facingRight} size={54} />
       </div>
       {/* Pleco 2 (mate) */}
       <div
         className="absolute"
         style={{
-          left: `${p2.x}px`,
-          bottom: '2px',
-          transition: 'left 0.15s linear',
+          left: `${p2Pos.x}px`,
+          top: `${p2Pos.y}px`,
+          transition: 'left 0.15s linear, top 0.15s linear',
         }}
       >
-        <ClownPlecoSVG id="pleco-2" facingRight={p2.facingRight} size={48} />
+        <ClownPlecoSVG id="pleco-2" facingRight={p2Pos.facingRight} size={48} />
       </div>
-      {/* Hearts when reunited */}
-      {showHearts && <PlecoHearts x1={p1.x} x2={p2.x} />}
+      {/* Hearts when mates meet at the same structure */}
+      {showHearts && <PlecoHearts x1={p1Pos.x} x2={p2Pos.x} y1={p1Pos.y} y2={p2Pos.y} />}
     </div>
   )
 })
 PlecoPair.displayName = 'PlecoPair'
 
-const PlecoHearts = memo(({ x1, x2 }: { x1: number; x2: number }) => {
+const PlecoHearts = memo(({ x1, x2, y1, y2 }: { x1: number; x2: number; y1: number; y2: number }) => {
   const [showHeart, setShowHeart] = useState(false)
   const midX = (x1 + x2) / 2
+  const midY = (y1 + y2) / 2
 
   useEffect(() => {
     const show = () => {
@@ -248,7 +369,7 @@ const PlecoHearts = memo(({ x1, x2 }: { x1: number; x2: number }) => {
       className="absolute pointer-events-none"
       style={{
         left: `${midX + 10}px`,
-        bottom: '38px',
+        top: `${midY - 20}px`,
         animation: 'heartFloat 2s ease-out forwards',
       }}
     >
@@ -633,20 +754,37 @@ export const SnailGroup = memo(({ count, containerWidth, containerHeight }: {
     const MARGIN = 14
     const TOP_MARGIN = containerHeight * 0.10
 
+    // Stagger snails across distinct quadrants so they start spread out
+    const quadrantX = [0.12, 0.88, 0.12, 0.88, 0.50, 0.50]
+    const quadrantY = [0.22, 0.22, 0.72, 0.72, 0.22, 0.72]
+
     snailsRef.current = Array.from({ length: count }, (_, i) => {
       const pattern = PATTERN_ORDER[i % PATTERN_ORDER.length]
       const waypoints = generateWaypoints(pattern, containerWidth, containerHeight, MARGIN, TOP_MARGIN)
-      // Stagger starting positions — each snail starts at a different waypoint
-      const startIdx = Math.floor((i / count) * waypoints.length) % waypoints.length
-      const start = waypoints[startIdx]
+
+      // Place each snail in a different quadrant with slight randomness
+      const qx = quadrantX[i % quadrantX.length] + (Math.random() - 0.5) * 0.12
+      const qy = quadrantY[i % quadrantY.length] + (Math.random() - 0.5) * 0.08
+      const startX = Math.max(MARGIN, Math.min(containerWidth - MARGIN,
+        containerWidth * qx))
+      const startY = Math.max(TOP_MARGIN, Math.min(containerHeight * 0.93,
+        TOP_MARGIN + (containerHeight * 0.83 - TOP_MARGIN) * qy))
+
+      // Find nearest waypoint to the staggered start position
+      let nearestIdx = 0
+      let nearestDist = Infinity
+      waypoints.forEach((wp, idx) => {
+        const d = (wp.x - startX) ** 2 + (wp.y - startY) ** 2
+        if (d < nearestDist) { nearestDist = d; nearestIdx = idx }
+      })
 
       return {
-        x: start.x,
-        y: start.y,
+        x: startX,
+        y: startY,
         pattern,
         waypoints,
-        waypointIdx: startIdx,
-        heading: 0,
+        waypointIdx: nearestIdx,
+        heading: Math.random() * Math.PI * 2,
         speed: 0.25 + (i % 3) * 0.04, // slight speed variation
         pedalPhase: i * 1.3,
         pauseUntil: 0,

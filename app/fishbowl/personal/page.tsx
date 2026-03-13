@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { Fish, Users, Info, Sparkles, Palette, Shell, Anchor, TreePalm, Castle, Pyramid, Landmark, Waves, Sailboat, Ship, UserPlus, Plus, Minus } from 'lucide-react'
+import { Fish, Users, Info, Sparkles, Palette, Shell, Anchor, TreePalm, Castle, Pyramid, Landmark, Waves, Sailboat, Ship, UserPlus, Plus, Minus, Skull } from 'lucide-react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
@@ -42,6 +42,7 @@ const DECOR_THEMES = [
   { id: 'temple', name: 'Temple', icon: Landmark, description: 'Japanese torii and pagoda' },
   { id: 'atlantis', name: 'Atlantis', icon: Waves, description: 'Lost city of Atlantis' },
   { id: 'minimal', name: 'Minimal', icon: Fish, description: 'Clean, simple look' },
+  { id: 'stagnant', name: 'Stagnant', icon: Skull, description: 'Deer skull with willow vines' },
 ] as const
 
 export default function PersonalFishbowlPage() {
