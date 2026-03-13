@@ -932,206 +932,206 @@ DragonStoneArch.displayName = 'DragonStoneArch'
 const SunkenSubmarine = memo(({ x, y }: { x: number; y: number }) => (
   <g transform={`translate(${x}, ${y})`}>
     {/* Shadow on seabed */}
-    <ellipse cx="50" cy="52" rx="60" ry="5" fill="#000" opacity="0.12" />
+    <ellipse cx="100" cy="104" rx="120" ry="10" fill="#000" opacity="0.12" />
 
     {/* Main hull — cylindrical pressure hull, slightly listed */}
-    <rect x="10" y="16" width="80" height="28" fill="#37474F" />
-    <rect x="6" y="20" width="8" height="20" fill="#455A64" />
-    <rect x="86" y="20" width="12" height="20" fill="#455A64" />
+    <rect x="20" y="32" width="160" height="56" fill="#37474F" />
+    <rect x="12" y="40" width="16" height="40" fill="#455A64" />
+    <rect x="172" y="40" width="24" height="40" fill="#455A64" />
     {/* Hull curvature — top arc */}
-    <rect x="14" y="12" width="76" height="6" fill="#546E7A" />
-    <rect x="20" y="8" width="64" height="6" fill="#607D8B" />
-    <rect x="28" y="6" width="48" height="3" fill="#78909C" opacity="0.6" />
+    <rect x="28" y="24" width="152" height="12" fill="#546E7A" />
+    <rect x="40" y="16" width="128" height="12" fill="#607D8B" />
+    <rect x="56" y="12" width="96" height="6" fill="#78909C" opacity="0.6" />
     {/* Hull bottom keel */}
-    <rect x="14" y="42" width="76" height="4" fill="#263238" />
-    <rect x="18" y="46" width="68" height="2" fill="#1A1A1A" opacity="0.3" />
+    <rect x="28" y="84" width="152" height="8" fill="#263238" />
+    <rect x="36" y="92" width="136" height="4" fill="#1A1A1A" opacity="0.3" />
     {/* Hull highlight strip (light reflection) */}
-    <rect x="18" y="14" width="68" height="1" fill="#90A4AE" opacity="0.2" />
+    <rect x="36" y="28" width="136" height="2" fill="#90A4AE" opacity="0.2" />
 
     {/* Hull panel lines — welded plate seams */}
-    <rect x="14" y="20" width="72" height="1" fill="#2C3E50" opacity="0.3" />
-    <rect x="14" y="28" width="48" height="1" fill="#2C3E50" opacity="0.25" />
-    <rect x="14" y="36" width="72" height="1" fill="#2C3E50" opacity="0.2" />
+    <rect x="28" y="40" width="144" height="2" fill="#2C3E50" opacity="0.3" />
+    <rect x="28" y="56" width="96" height="2" fill="#2C3E50" opacity="0.25" />
+    <rect x="28" y="72" width="144" height="2" fill="#2C3E50" opacity="0.2" />
     {/* Vertical seam lines */}
-    <rect x="30" y="12" width="1" height="34" fill="#2C3E50" opacity="0.15" />
-    <rect x="50" y="12" width="1" height="34" fill="#2C3E50" opacity="0.15" />
-    <rect x="70" y="12" width="1" height="34" fill="#2C3E50" opacity="0.12" />
+    <rect x="60" y="24" width="2" height="68" fill="#2C3E50" opacity="0.15" />
+    <rect x="100" y="24" width="2" height="68" fill="#2C3E50" opacity="0.15" />
+    <rect x="140" y="24" width="2" height="68" fill="#2C3E50" opacity="0.12" />
 
     {/* Rivets along hull — top and bottom rows */}
-    {[16, 22, 28, 34, 40, 46, 52, 58, 72, 78, 84].map((rx, i) => (
-      <circle key={`rivet-t-${i}`} cx={rx} cy={13} r="0.8" fill="#78909C" opacity="0.4" />
+    {[32, 44, 56, 68, 80, 92, 104, 116, 144, 156, 168].map((rx, i) => (
+      <circle key={`rivet-t-${i}`} cx={rx} cy={26} r="1.6" fill="#78909C" opacity="0.4" />
     ))}
-    {[16, 22, 28, 34, 40, 46, 52, 58, 72, 78, 84].map((rx, i) => (
-      <circle key={`rivet-b-${i}`} cx={rx} cy={43} r="0.8" fill="#546E7A" opacity="0.35" />
+    {[32, 44, 56, 68, 80, 92, 104, 116, 144, 156, 168].map((rx, i) => (
+      <circle key={`rivet-b-${i}`} cx={rx} cy={86} r="1.6" fill="#546E7A" opacity="0.35" />
     ))}
     {/* Mid rivets at panel seam */}
-    {[16, 24, 32, 40, 48, 56].map((rx, i) => (
-      <circle key={`rivet-m-${i}`} cx={rx} cy={20} r="0.6" fill="#607D8B" opacity="0.3" />
+    {[32, 48, 64, 80, 96, 112].map((rx, i) => (
+      <circle key={`rivet-m-${i}`} cx={rx} cy={40} r="1.2" fill="#607D8B" opacity="0.3" />
     ))}
 
     {/* Torpedo tubes at bow — 4 tubes */}
-    <rect x="90" y="22" width="10" height="3" fill="#455A64" />
-    <rect x="90" y="27" width="10" height="3" fill="#455A64" />
-    <rect x="90" y="32" width="10" height="3" fill="#455A64" />
-    <circle cx="100" cy="23.5" r="1.5" fill="#1A1A1A" />
-    <circle cx="100" cy="28.5" r="1.5" fill="#1A1A1A" />
-    <circle cx="100" cy="33.5" r="1.5" fill="#1A1A1A" />
+    <rect x="180" y="44" width="20" height="6" fill="#455A64" />
+    <rect x="180" y="54" width="20" height="6" fill="#455A64" />
+    <rect x="180" y="64" width="20" height="6" fill="#455A64" />
+    <circle cx="200" cy="47" r="3" fill="#1A1A1A" />
+    <circle cx="200" cy="57" r="3" fill="#1A1A1A" />
+    <circle cx="200" cy="67" r="3" fill="#1A1A1A" />
     {/* Torpedo tube rim highlights */}
-    <circle cx="100" cy="23.5" r="1.5" fill="none" stroke="#546E7A" strokeWidth="0.5" opacity="0.4" />
-    <circle cx="100" cy="28.5" r="1.5" fill="none" stroke="#546E7A" strokeWidth="0.5" opacity="0.35" />
+    <circle cx="200" cy="47" r="3" fill="none" stroke="#546E7A" strokeWidth="1" opacity="0.4" />
+    <circle cx="200" cy="57" r="3" fill="none" stroke="#546E7A" strokeWidth="1" opacity="0.35" />
 
     {/* Bow sonar dome */}
-    <rect x="96" y="26" width="6" height="6" fill="#546E7A" opacity="0.5" />
-    <rect x="98" y="24" width="4" height="10" fill="#455A64" opacity="0.4" />
+    <rect x="192" y="52" width="12" height="12" fill="#546E7A" opacity="0.5" />
+    <rect x="196" y="48" width="8" height="20" fill="#455A64" opacity="0.4" />
 
     {/* Hydroplanes (diving fins) — with detail */}
-    <rect x="4" y="18" width="8" height="2" fill="#607D8B" />
-    <rect x="2" y="16" width="4" height="2" fill="#78909C" opacity="0.7" />
-    <rect x="0" y="17" width="2" height="1" fill="#90A4AE" opacity="0.5" />
-    <rect x="4" y="34" width="8" height="2" fill="#607D8B" />
-    <rect x="2" y="36" width="4" height="2" fill="#78909C" opacity="0.7" />
-    <rect x="0" y="35" width="2" height="1" fill="#90A4AE" opacity="0.5" />
+    <rect x="8" y="36" width="16" height="4" fill="#607D8B" />
+    <rect x="4" y="32" width="8" height="4" fill="#78909C" opacity="0.7" />
+    <rect x="0" y="34" width="4" height="2" fill="#90A4AE" opacity="0.5" />
+    <rect x="8" y="68" width="16" height="4" fill="#607D8B" />
+    <rect x="4" y="72" width="8" height="4" fill="#78909C" opacity="0.7" />
+    <rect x="0" y="70" width="4" height="2" fill="#90A4AE" opacity="0.5" />
     {/* Rudder fin at stern */}
-    <rect x="4" y="24" width="2" height="8" fill="#546E7A" opacity="0.5" />
+    <rect x="8" y="48" width="4" height="16" fill="#546E7A" opacity="0.5" />
 
     {/* Conning tower (sail) — more detailed */}
-    <rect x="36" y="0" width="24" height="14" fill="#455A64" />
-    <rect x="38" y="-4" width="20" height="6" fill="#546E7A" />
-    <rect x="40" y="-6" width="16" height="3" fill="#607D8B" />
+    <rect x="72" y="0" width="48" height="28" fill="#455A64" />
+    <rect x="76" y="-8" width="40" height="12" fill="#546E7A" />
+    <rect x="80" y="-12" width="32" height="6" fill="#607D8B" />
     {/* Sail panel lines */}
-    <rect x="38" y="4" width="20" height="1" fill="#37474F" opacity="0.3" />
-    <rect x="38" y="8" width="20" height="1" fill="#37474F" opacity="0.25" />
+    <rect x="76" y="8" width="40" height="2" fill="#37474F" opacity="0.3" />
+    <rect x="76" y="16" width="40" height="2" fill="#37474F" opacity="0.25" />
     {/* Sail rivets */}
-    {[40, 44, 48, 52, 56].map((rx, i) => (
-      <circle key={`sr-${i}`} cx={rx} cy={-5} r="0.5" fill="#78909C" opacity="0.35" />
+    {[80, 88, 96, 104, 112].map((rx, i) => (
+      <circle key={`sr-${i}`} cx={rx} cy={-10} r="1" fill="#78909C" opacity="0.35" />
     ))}
     {/* Bridge windscreen / viewport */}
-    <rect x="42" y="-3" width="12" height="2" fill="#0D2137" opacity="0.6" />
-    <rect x="43" y="-3" width="10" height="1" fill="#1A5276" opacity="0.3" />
+    <rect x="84" y="-6" width="24" height="4" fill="#0D2137" opacity="0.6" />
+    <rect x="86" y="-6" width="20" height="2" fill="#1A5276" opacity="0.3" />
 
     {/* Periscope — bent and encrusted */}
-    <rect x="46" y="-16" width="3" height="12" fill="#78909C" />
-    <rect x="44" y="-18" width="6" height="3" fill="#90A4AE" />
-    <rect x="48" y="-14" width="3" height="4" fill="#78909C" transform="rotate(12, 49, -12)" />
+    <rect x="92" y="-32" width="6" height="24" fill="#78909C" />
+    <rect x="88" y="-36" width="12" height="6" fill="#90A4AE" />
+    <rect x="96" y="-28" width="6" height="8" fill="#78909C" transform="rotate(12, 98, -24)" />
     {/* Periscope optics */}
-    <rect x="44" y="-19" width="2" height="2" fill="#0D2137" opacity="0.6" />
+    <rect x="88" y="-38" width="4" height="4" fill="#0D2137" opacity="0.6" />
     {/* Periscope barnacle */}
-    <rect x="47" y="-10" width="2" height="2" fill="#9CA3AF" opacity="0.3" />
+    <rect x="94" y="-20" width="4" height="4" fill="#9CA3AF" opacity="0.3" />
     {/* Radar mast */}
-    <rect x="54" y="-10" width="2" height="10" fill="#78909C" />
-    <rect x="52" y="-12" width="6" height="2" fill="#90A4AE" />
+    <rect x="108" y="-20" width="4" height="20" fill="#78909C" />
+    <rect x="104" y="-24" width="12" height="4" fill="#90A4AE" />
     {/* Radar dish */}
-    <rect x="51" y="-14" width="8" height="2" fill="#B0BEC5" opacity="0.4" />
+    <rect x="102" y="-28" width="16" height="4" fill="#B0BEC5" opacity="0.4" />
     {/* Snorkel mast */}
-    <rect x="40" y="-8" width="2" height="8" fill="#607D8B" opacity="0.6" />
-    <rect x="39" y="-10" width="4" height="2" fill="#78909C" opacity="0.5" />
+    <rect x="80" y="-16" width="4" height="16" fill="#607D8B" opacity="0.6" />
+    <rect x="78" y="-20" width="8" height="4" fill="#78909C" opacity="0.5" />
 
     {/* Trailing kelp from conning tower — multiple strands */}
-    <rect x="38" y="-4" width="3" height="10" fill="#2E7D32" opacity="0.35" style={{ animation: 'kelpSway 5s ease-in-out 0s infinite', transformOrigin: '39px -4px' }} />
-    <rect x="56" y="-2" width="2" height="8" fill="#388E3C" opacity="0.3" style={{ animation: 'kelpSway 4s ease-in-out 1s infinite', transformOrigin: '57px -2px' }} />
-    <rect x="42" y="-6" width="2" height="6" fill="#1B5E20" opacity="0.25" style={{ animation: 'kelpSway 4.5s ease-in-out 0.5s infinite', transformOrigin: '43px -6px' }} />
+    <rect x="76" y="-8" width="6" height="20" fill="#2E7D32" opacity="0.35" style={{ animation: 'kelpSway 5s ease-in-out 0s infinite', transformOrigin: '78px -8px' }} />
+    <rect x="112" y="-4" width="4" height="16" fill="#388E3C" opacity="0.3" style={{ animation: 'kelpSway 4s ease-in-out 1s infinite', transformOrigin: '114px -4px' }} />
+    <rect x="84" y="-12" width="4" height="12" fill="#1B5E20" opacity="0.25" style={{ animation: 'kelpSway 4.5s ease-in-out 0.5s infinite', transformOrigin: '86px -12px' }} />
 
     {/* Hull breach (fish swim-through hole) — more dramatic */}
-    <rect x="62" y="20" width="16" height="16" fill="#0A1628" opacity="0.85" />
+    <rect x="124" y="40" width="32" height="32" fill="#0A1628" opacity="0.85" />
     {/* Inner hull structure visible (ribs/frames) */}
-    <rect x="63" y="20" width="1" height="16" fill="#455A64" opacity="0.4" />
-    <rect x="67" y="20" width="1" height="16" fill="#455A64" opacity="0.35" />
-    <rect x="71" y="20" width="1" height="16" fill="#455A64" opacity="0.3" />
-    <rect x="75" y="20" width="1" height="16" fill="#455A64" opacity="0.3" />
+    <rect x="126" y="40" width="2" height="32" fill="#455A64" opacity="0.4" />
+    <rect x="134" y="40" width="2" height="32" fill="#455A64" opacity="0.35" />
+    <rect x="142" y="40" width="2" height="32" fill="#455A64" opacity="0.3" />
+    <rect x="150" y="40" width="2" height="32" fill="#455A64" opacity="0.3" />
     {/* Torn metal edges — jagged shards */}
-    <rect x="60" y="20" width="3" height="5" fill="#546E7A" />
-    <rect x="59" y="24" width="2" height="3" fill="#607D8B" opacity="0.7" />
-    <rect x="77" y="24" width="3" height="5" fill="#546E7A" />
-    <rect x="78" y="20" width="2" height="3" fill="#607D8B" opacity="0.6" />
-    <rect x="64" y="18" width="5" height="3" fill="#455A64" />
-    <rect x="72" y="17" width="4" height="3" fill="#546E7A" opacity="0.7" />
-    <rect x="64" y="36" width="4" height="2" fill="#455A64" />
-    <rect x="72" y="35" width="5" height="3" fill="#546E7A" opacity="0.6" />
+    <rect x="120" y="40" width="6" height="10" fill="#546E7A" />
+    <rect x="118" y="48" width="4" height="6" fill="#607D8B" opacity="0.7" />
+    <rect x="154" y="48" width="6" height="10" fill="#546E7A" />
+    <rect x="156" y="40" width="4" height="6" fill="#607D8B" opacity="0.6" />
+    <rect x="128" y="36" width="10" height="6" fill="#455A64" />
+    <rect x="144" y="34" width="8" height="6" fill="#546E7A" opacity="0.7" />
+    <rect x="128" y="72" width="8" height="4" fill="#455A64" />
+    <rect x="144" y="70" width="10" height="6" fill="#546E7A" opacity="0.6" />
     {/* Bent metal shards pointing inward */}
-    <rect x="61" y="34" width="2" height="4" fill="#607D8B" opacity="0.5" />
-    <rect x="76" y="22" width="2" height="4" fill="#607D8B" opacity="0.45" />
-    <rect x="66" y="36" width="3" height="2" fill="#546E7A" opacity="0.4" />
+    <rect x="122" y="68" width="4" height="8" fill="#607D8B" opacity="0.5" />
+    <rect x="152" y="44" width="4" height="8" fill="#607D8B" opacity="0.45" />
+    <rect x="132" y="72" width="6" height="4" fill="#546E7A" opacity="0.4" />
 
     {/* Portholes — 3 with glass glint detail */}
-    <circle cx="22" cy="28" r="4.5" fill="#0D2137" stroke="#607D8B" strokeWidth="2" />
-    <circle cx="22" cy="28" r="2.5" fill="#1A5276" opacity="0.5" />
-    <rect x="20" y="26" width="2" height="1" fill="#4FC3F7" opacity="0.3" />
-    <circle cx="38" cy="28" r="4.5" fill="#0D2137" stroke="#607D8B" strokeWidth="2" />
-    <circle cx="38" cy="28" r="2.5" fill="#1A5276" opacity="0.4" />
-    <rect x="36" y="26" width="2" height="1" fill="#4FC3F7" opacity="0.25" />
-    <circle cx="84" cy="28" r="4.5" fill="#0D2137" stroke="#607D8B" strokeWidth="2" />
-    <circle cx="84" cy="28" r="2.5" fill="#1A5276" opacity="0.3" />
+    <circle cx="44" cy="56" r="9" fill="#0D2137" stroke="#607D8B" strokeWidth="4" />
+    <circle cx="44" cy="56" r="5" fill="#1A5276" opacity="0.5" />
+    <rect x="40" y="52" width="4" height="2" fill="#4FC3F7" opacity="0.3" />
+    <circle cx="76" cy="56" r="9" fill="#0D2137" stroke="#607D8B" strokeWidth="4" />
+    <circle cx="76" cy="56" r="5" fill="#1A5276" opacity="0.4" />
+    <rect x="72" y="52" width="4" height="2" fill="#4FC3F7" opacity="0.25" />
+    <circle cx="168" cy="56" r="9" fill="#0D2137" stroke="#607D8B" strokeWidth="4" />
+    <circle cx="168" cy="56" r="5" fill="#1A5276" opacity="0.3" />
 
     {/* Hull number stencil remnant */}
-    <rect x="88" y="14" width="2" height="4" fill="#B0BEC5" opacity="0.15" />
-    <rect x="92" y="14" width="2" height="4" fill="#B0BEC5" opacity="0.12" />
+    <rect x="176" y="28" width="4" height="8" fill="#B0BEC5" opacity="0.15" />
+    <rect x="184" y="28" width="4" height="8" fill="#B0BEC5" opacity="0.12" />
 
     {/* Propeller at stern — multi-blade */}
-    <rect x="0" y="22" width="8" height="3" fill="#78909C" />
-    <circle cx="2" cy="25" r="8" fill="none" stroke="#607D8B" strokeWidth="0.5" opacity="0.3" />
-    <rect x="-4" y="17" width="6" height="16" fill="#607D8B" opacity="0.6" />
-    <rect x="-2" y="14" width="2" height="5" fill="#90A4AE" opacity="0.5" />
-    <rect x="-2" y="31" width="2" height="5" fill="#90A4AE" opacity="0.5" />
-    <rect x="-6" y="19" width="4" height="3" fill="#90A4AE" opacity="0.4" />
-    <rect x="-6" y="28" width="4" height="3" fill="#90A4AE" opacity="0.4" />
+    <rect x="0" y="44" width="16" height="6" fill="#78909C" />
+    <circle cx="4" cy="50" r="16" fill="none" stroke="#607D8B" strokeWidth="1" opacity="0.3" />
+    <rect x="-8" y="34" width="12" height="32" fill="#607D8B" opacity="0.6" />
+    <rect x="-4" y="28" width="4" height="10" fill="#90A4AE" opacity="0.5" />
+    <rect x="-4" y="62" width="4" height="10" fill="#90A4AE" opacity="0.5" />
+    <rect x="-12" y="38" width="8" height="6" fill="#90A4AE" opacity="0.4" />
+    <rect x="-12" y="56" width="8" height="6" fill="#90A4AE" opacity="0.4" />
     {/* Prop shaft */}
-    <rect x="4" y="24" width="6" height="2" fill="#546E7A" opacity="0.4" />
+    <rect x="8" y="48" width="12" height="4" fill="#546E7A" opacity="0.4" />
     {/* Prop guard */}
-    <rect x="-2" y="14" width="1" height="22" fill="#455A64" opacity="0.3" />
+    <rect x="-4" y="28" width="2" height="44" fill="#455A64" opacity="0.3" />
 
     {/* Rust and corrosion — extensive weathering */}
-    <rect x="28" y="32" width="8" height="5" fill="#BF360C" opacity="0.3" />
-    <rect x="30" y="34" width="4" height="2" fill="#E65100" opacity="0.2" />
-    <rect x="48" y="12" width="8" height="4" fill="#E65100" opacity="0.25" />
-    <rect x="50" y="14" width="4" height="2" fill="#FF6D00" opacity="0.15" />
-    <rect x="16" y="38" width="12" height="4" fill="#BF360C" opacity="0.22" />
-    <rect x="80" y="30" width="8" height="4" fill="#E65100" opacity="0.2" />
-    <rect x="40" y="40" width="14" height="3" fill="#BF360C" opacity="0.18" />
-    <rect x="68" y="12" width="10" height="3" fill="#E65100" opacity="0.15" />
-    <rect x="20" y="18" width="8" height="4" fill="#8B4513" opacity="0.15" />
+    <rect x="56" y="64" width="16" height="10" fill="#BF360C" opacity="0.3" />
+    <rect x="60" y="68" width="8" height="4" fill="#E65100" opacity="0.2" />
+    <rect x="96" y="24" width="16" height="8" fill="#E65100" opacity="0.25" />
+    <rect x="100" y="28" width="8" height="4" fill="#FF6D00" opacity="0.15" />
+    <rect x="32" y="76" width="24" height="8" fill="#BF360C" opacity="0.22" />
+    <rect x="160" y="60" width="16" height="8" fill="#E65100" opacity="0.2" />
+    <rect x="80" y="80" width="28" height="6" fill="#BF360C" opacity="0.18" />
+    <rect x="136" y="24" width="20" height="6" fill="#E65100" opacity="0.15" />
+    <rect x="40" y="36" width="16" height="8" fill="#8B4513" opacity="0.15" />
     {/* Rust streaks running down hull */}
-    <rect x="30" y="36" width="2" height="8" fill="#BF360C" opacity="0.12" />
-    <rect x="50" y="16" width="2" height="10" fill="#E65100" opacity="0.1" />
-    <rect x="82" y="34" width="2" height="8" fill="#BF360C" opacity="0.1" />
+    <rect x="60" y="72" width="4" height="16" fill="#BF360C" opacity="0.12" />
+    <rect x="100" y="32" width="4" height="20" fill="#E65100" opacity="0.1" />
+    <rect x="164" y="68" width="4" height="16" fill="#BF360C" opacity="0.1" />
 
     {/* Barnacles — extensive coverage on lower hull */}
-    <rect x="18" y="42" width="4" height="3" fill="#9CA3AF" opacity="0.4" />
-    <rect x="20" y="44" width="2" height="2" fill="#B0BEC5" opacity="0.3" />
-    <rect x="34" y="44" width="3" height="3" fill="#9CA3AF" opacity="0.35" />
-    <rect x="56" y="44" width="5" height="2" fill="#9CA3AF" opacity="0.35" />
-    <rect x="84" y="38" width="4" height="3" fill="#9CA3AF" opacity="0.4" />
-    <rect x="10" y="40" width="5" height="3" fill="#B0BEC5" opacity="0.3" />
-    <rect x="44" y="44" width="4" height="2" fill="#9CA3AF" opacity="0.3" />
-    <rect x="76" y="44" width="6" height="2" fill="#B0BEC5" opacity="0.3" />
-    <rect x="90" y="34" width="4" height="3" fill="#9CA3AF" opacity="0.3" />
+    <rect x="36" y="84" width="8" height="6" fill="#9CA3AF" opacity="0.4" />
+    <rect x="40" y="88" width="4" height="4" fill="#B0BEC5" opacity="0.3" />
+    <rect x="68" y="88" width="6" height="6" fill="#9CA3AF" opacity="0.35" />
+    <rect x="112" y="88" width="10" height="4" fill="#9CA3AF" opacity="0.35" />
+    <rect x="168" y="76" width="8" height="6" fill="#9CA3AF" opacity="0.4" />
+    <rect x="20" y="80" width="10" height="6" fill="#B0BEC5" opacity="0.3" />
+    <rect x="88" y="88" width="8" height="4" fill="#9CA3AF" opacity="0.3" />
+    <rect x="152" y="88" width="12" height="4" fill="#B0BEC5" opacity="0.3" />
+    <rect x="180" y="68" width="8" height="6" fill="#9CA3AF" opacity="0.3" />
 
     {/* Anemone colony on hull */}
-    <rect x="26" y="42" width="8" height="4" fill="#6A1B9A" opacity="0.5" />
-    <rect x="24" y="38" width="4" height="4" fill="#CE93D8" opacity="0.4" />
-    <rect x="33" y="40" width="3" height="4" fill="#BA68C8" opacity="0.4" />
+    <rect x="52" y="84" width="16" height="8" fill="#6A1B9A" opacity="0.5" />
+    <rect x="48" y="76" width="8" height="8" fill="#CE93D8" opacity="0.4" />
+    <rect x="66" y="80" width="6" height="8" fill="#BA68C8" opacity="0.4" />
     {/* Anemone tentacle tips */}
-    <rect x="24" y="36" width="2" height="2" fill="#E1BEE7" opacity="0.35" />
-    <rect x="28" y="37" width="2" height="2" fill="#F3E5F5" opacity="0.3" />
-    <rect x="32" y="38" width="2" height="2" fill="#E1BEE7" opacity="0.3" />
+    <rect x="48" y="72" width="4" height="4" fill="#E1BEE7" opacity="0.35" />
+    <rect x="56" y="74" width="4" height="4" fill="#F3E5F5" opacity="0.3" />
+    <rect x="64" y="76" width="4" height="4" fill="#E1BEE7" opacity="0.3" />
 
     {/* Marine growth — algae, sponge, soft coral */}
-    <rect x="36" y="6" width="6" height="3" fill="#2E7D32" opacity="0.4" />
-    <rect x="14" y="16" width="4" height="3" fill="#388E3C" opacity="0.3" />
-    <rect x="72" y="42" width="10" height="2" fill="#1B5E20" opacity="0.4" />
-    <rect x="92" y="24" width="4" height="4" fill="#2E7D32" opacity="0.25" />
-    <rect x="6" y="28" width="4" height="2" fill="#388E3C" opacity="0.2" />
+    <rect x="72" y="12" width="12" height="6" fill="#2E7D32" opacity="0.4" />
+    <rect x="28" y="32" width="8" height="6" fill="#388E3C" opacity="0.3" />
+    <rect x="144" y="84" width="20" height="4" fill="#1B5E20" opacity="0.4" />
+    <rect x="184" y="48" width="8" height="8" fill="#2E7D32" opacity="0.25" />
+    <rect x="12" y="56" width="8" height="4" fill="#388E3C" opacity="0.2" />
     {/* Orange sponge */}
-    <rect x="46" y="44" width="4" height="3" fill="#FF6F00" opacity="0.2" />
-    <rect x="86" y="42" width="3" height="3" fill="#FFB300" opacity="0.15" />
+    <rect x="92" y="88" width="8" height="6" fill="#FF6F00" opacity="0.2" />
+    <rect x="172" y="84" width="6" height="6" fill="#FFB300" opacity="0.15" />
 
     {/* Coral encrustation at base */}
-    <rect x="14" y="44" width="8" height="4" fill="#E91E63" opacity="0.25" />
-    <rect x="16" y="42" width="4" height="3" fill="#F48FB1" opacity="0.2" />
-    <rect x="60" y="44" width="6" height="3" fill="#C2185B" opacity="0.2" />
+    <rect x="28" y="88" width="16" height="8" fill="#E91E63" opacity="0.25" />
+    <rect x="32" y="84" width="8" height="6" fill="#F48FB1" opacity="0.2" />
+    <rect x="120" y="88" width="12" height="6" fill="#C2185B" opacity="0.2" />
 
     {/* Debris on seabed near sub */}
-    <rect x="96" y="48" width="6" height="3" fill="#455A64" opacity="0.3" />
-    <rect x="-8" y="48" width="4" height="3" fill="#546E7A" opacity="0.25" />
+    <rect x="192" y="96" width="12" height="6" fill="#455A64" opacity="0.3" />
+    <rect x="-16" y="96" width="8" height="6" fill="#546E7A" opacity="0.25" />
 
     {/* Bubbles from hull breach — active stream */}
     <circle cx="68" cy="18" r="1.5" fill="rgba(255,255,255,0.3)" style={{ animation: 'bubbleRise 3s ease-in 0s infinite' }} />
@@ -3582,14 +3582,14 @@ const OCEAN_LAYOUT: LayeredDecoConfig = {
   },
   foreground: {
     rocks: [
-      { x: 50, y: 260, variant: 'medium', color: '#78716C' },
-      { x: 680, y: 268, variant: 'small', color: '#78716C' },
+      { x: 42, y: 254, variant: 'medium', color: '#78716C' },
+      { x: 692, y: 272, variant: 'small', color: '#78716C' },
     ],
     corals: [
-      { x: 80, y: 244, variant: 'branch', color: '#E91E63' },
-      { x: 320, y: 252, variant: 'brain', color: '#AB47BC' },
-      { x: 440, y: 246, variant: 'fan', color: '#FF5722' },
-      { x: 650, y: 244, variant: 'branch', color: '#F06292' },
+      { x: 73, y: 240, variant: 'branch', color: '#E91E63' },
+      { x: 328, y: 258, variant: 'brain', color: '#AB47BC' },
+      { x: 448, y: 242, variant: 'fan', color: '#FF5722' },
+      { x: 642, y: 250, variant: 'branch', color: '#F06292' },
     ],
     kelps: [
       // Left cluster — thin Vallisneria group near glass edge
@@ -3657,14 +3657,14 @@ const TROPICAL_LAYOUT: LayeredDecoConfig = {
   },
   foreground: {
     rocks: [
-      { x: 80, y: 268, variant: 'small', color: '#A8A29E' },
-      { x: 600, y: 260, variant: 'medium', color: '#78716C' },
+      { x: 88, y: 273, variant: 'small', color: '#A8A29E' },
+      { x: 590, y: 253, variant: 'medium', color: '#78716C' },
     ],
     corals: [
-      { x: 120, y: 244, variant: 'branch', color: '#FF6D00' },
-      { x: 230, y: 252, variant: 'brain', color: '#FF4081' },
-      { x: 310, y: 246, variant: 'fan', color: '#FF1744' },
-      { x: 560, y: 244, variant: 'branch', color: '#FF9100' },
+      { x: 112, y: 240, variant: 'branch', color: '#FF6D00' },
+      { x: 238, y: 258, variant: 'brain', color: '#FF4081' },
+      { x: 302, y: 242, variant: 'fan', color: '#FF1744' },
+      { x: 572, y: 249, variant: 'branch', color: '#FF9100' },
     ],
     kelps: [
       // Left cluster — bushy Rotala group
@@ -3736,13 +3736,13 @@ const SHIPWRECK_LAYOUT: LayeredDecoConfig = {
   },
   foreground: {
     rocks: [
-      { x: 30, y: 250, variant: 'large', color: '#57534E' },
-      { x: 680, y: 260, variant: 'medium', color: '#57534E' },
+      { x: 24, y: 244, variant: 'large', color: '#57534E' },
+      { x: 693, y: 266, variant: 'medium', color: '#57534E' },
     ],
     corals: [
-      { x: 300, y: 248, variant: 'branch', color: '#6D4C41' },
-      { x: 440, y: 254, variant: 'brain', color: '#795548' },
-      { x: 580, y: 246, variant: 'fan', color: '#8D6E63' },
+      { x: 308, y: 243, variant: 'branch', color: '#6D4C41' },
+      { x: 432, y: 260, variant: 'brain', color: '#795548' },
+      { x: 588, y: 241, variant: 'fan', color: '#8D6E63' },
     ],
     kelps: [
       // Near-wreck cluster — sparse thin grass (damaged area)
@@ -3809,13 +3809,13 @@ const SAILBOAT_LAYOUT: LayeredDecoConfig = {
   },
   foreground: {
     rocks: [
-      { x: 80, y: 260, variant: 'medium', color: '#78716C' },
-      { x: 680, y: 260, variant: 'medium', color: '#57534E' },
+      { x: 72, y: 255, variant: 'medium', color: '#78716C' },
+      { x: 695, y: 268, variant: 'medium', color: '#57534E' },
     ],
     corals: [
-      { x: 180, y: 246, variant: 'branch', color: '#FF6D00' },
-      { x: 420, y: 248, variant: 'fan', color: '#FF8A65' },
-      { x: 560, y: 248, variant: 'brain', color: '#FFAB91' },
+      { x: 192, y: 242, variant: 'branch', color: '#FF6D00' },
+      { x: 410, y: 256, variant: 'fan', color: '#FF8A65' },
+      { x: 575, y: 244, variant: 'brain', color: '#FFAB91' },
     ],
     kelps: [
       // Left edge — thin Vallisneria cluster
@@ -3879,13 +3879,13 @@ const SUBMARINE_LAYOUT: LayeredDecoConfig = {
   },
   foreground: {
     rocks: [
-      { x: 50, y: 250, variant: 'large', color: '#44403C' },
-      { x: 700, y: 260, variant: 'medium', color: '#44403C' },
+      { x: 58, y: 244, variant: 'large', color: '#44403C' },
+      { x: 688, y: 266, variant: 'medium', color: '#44403C' },
     ],
     corals: [
-      { x: 160, y: 252, variant: 'brain', color: '#795548' },
-      { x: 500, y: 246, variant: 'branch', color: '#6D4C41' },
-      { x: 620, y: 250, variant: 'fan', color: '#8D6E63' },
+      { x: 152, y: 258, variant: 'brain', color: '#795548' },
+      { x: 512, y: 241, variant: 'branch', color: '#6D4C41' },
+      { x: 608, y: 255, variant: 'fan', color: '#8D6E63' },
     ],
     kelps: [
       // Left edge — thin grass pair (sparse, industrial feel)
@@ -3992,15 +3992,15 @@ const MINIMAL_LAYOUT: LayeredDecoConfig = {
   },
   foreground: {
     rocks: [
-      { x: 170, y: 268, variant: 'small', color: '#78716C' },
-      { x: 400, y: 268, variant: 'small', color: '#6B7280' },
-      { x: 600, y: 268, variant: 'small', color: '#78716C' },
+      { x: 178, y: 274, variant: 'small', color: '#78716C' },
+      { x: 392, y: 262, variant: 'small', color: '#6B7280' },
+      { x: 612, y: 271, variant: 'small', color: '#78716C' },
     ],
     corals: [
-      { x: 100, y: 248, variant: 'branch', color: '#81C784' },
-      { x: 280, y: 248, variant: 'branch', color: '#81C784' },
-      { x: 450, y: 246, variant: 'fan', color: '#A5D6A7' },
-      { x: 650, y: 247, variant: 'fan', color: '#81C784' },
+      { x: 108, y: 243, variant: 'branch', color: '#81C784' },
+      { x: 272, y: 254, variant: 'branch', color: '#81C784' },
+      { x: 458, y: 240, variant: 'fan', color: '#A5D6A7' },
+      { x: 642, y: 252, variant: 'fan', color: '#81C784' },
     ],
     kelps: [
       // Dense planted foreground — species clustered in Dutch aquascaping rows
@@ -4093,13 +4093,13 @@ const CASTLE_LAYOUT: LayeredDecoConfig = {
   },
   foreground: {
     rocks: [
-      { x: 60, y: 250, variant: 'large', color: '#57534E' },
-      { x: 700, y: 260, variant: 'medium', color: '#57534E' },
+      { x: 52, y: 244, variant: 'large', color: '#57534E' },
+      { x: 712, y: 267, variant: 'medium', color: '#57534E' },
     ],
     corals: [
-      { x: 140, y: 252, variant: 'brain', color: '#795548' },
-      { x: 420, y: 246, variant: 'branch', color: '#6D4C41' },
-      { x: 600, y: 250, variant: 'fan', color: '#8D6E63' },
+      { x: 148, y: 258, variant: 'brain', color: '#795548' },
+      { x: 428, y: 241, variant: 'branch', color: '#6D4C41' },
+      { x: 588, y: 255, variant: 'fan', color: '#8D6E63' },
     ],
     kelps: [
       // Left — thin grass cluster near castle ruins
@@ -4175,13 +4175,13 @@ const PYRAMID_LAYOUT: LayeredDecoConfig = {
   },
   foreground: {
     rocks: [
-      { x: 40, y: 260, variant: 'medium', color: '#A08B6C' },
-      { x: 660, y: 250, variant: 'large', color: '#8B7355' },
+      { x: 48, y: 254, variant: 'medium', color: '#A08B6C' },
+      { x: 648, y: 244, variant: 'large', color: '#8B7355' },
     ],
     corals: [
-      { x: 300, y: 248, variant: 'branch', color: '#F06292' },
-      { x: 450, y: 250, variant: 'fan', color: '#E91E63' },
-      { x: 580, y: 252, variant: 'brain', color: '#EC407A' },
+      { x: 312, y: 243, variant: 'branch', color: '#F06292' },
+      { x: 442, y: 256, variant: 'fan', color: '#E91E63' },
+      { x: 572, y: 246, variant: 'brain', color: '#EC407A' },
     ],
     kelps: [
       // Left — thin grass near rock (Egyptian papyrus feel)
@@ -4245,13 +4245,13 @@ const TEMPLE_LAYOUT: LayeredDecoConfig = {
   },
   foreground: {
     rocks: [
-      { x: 60, y: 268, variant: 'small', color: '#78716C' },
-      { x: 350, y: 260, variant: 'medium', color: '#6B7280' },
+      { x: 68, y: 274, variant: 'small', color: '#78716C' },
+      { x: 342, y: 254, variant: 'medium', color: '#6B7280' },
     ],
     corals: [
-      { x: 250, y: 248, variant: 'branch', color: '#E64A19' },
-      { x: 440, y: 250, variant: 'brain', color: '#D84315' },
-      { x: 620, y: 250, variant: 'fan', color: '#FF5722' },
+      { x: 242, y: 243, variant: 'branch', color: '#E64A19' },
+      { x: 452, y: 256, variant: 'brain', color: '#D84315' },
+      { x: 612, y: 244, variant: 'fan', color: '#FF5722' },
     ],
     kelps: [
       // Left — thin grass cluster (zen garden feel)
@@ -4323,14 +4323,14 @@ const ATLANTIS_LAYOUT: LayeredDecoConfig = {
   },
   foreground: {
     rocks: [
-      { x: 50, y: 260, variant: 'medium', color: '#1F618D' },
-      { x: 700, y: 260, variant: 'medium', color: '#1A5276' },
+      { x: 58, y: 254, variant: 'medium', color: '#1F618D' },
+      { x: 688, y: 267, variant: 'medium', color: '#1A5276' },
     ],
     corals: [
-      { x: 200, y: 248, variant: 'branch', color: '#26C6DA' },
-      { x: 300, y: 246, variant: 'fan', color: '#00BCD4' },
-      { x: 450, y: 254, variant: 'brain', color: '#0097A7' },
-      { x: 620, y: 244, variant: 'branch', color: '#4DD0E1' },
+      { x: 208, y: 243, variant: 'branch', color: '#26C6DA' },
+      { x: 292, y: 252, variant: 'fan', color: '#00BCD4' },
+      { x: 442, y: 260, variant: 'brain', color: '#0097A7' },
+      { x: 632, y: 240, variant: 'branch', color: '#4DD0E1' },
     ],
     kelps: [
       // Left — thin teal grass cluster
@@ -4413,21 +4413,21 @@ const STAGNANT_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'deer-skull', x: 300, y: 120 },
+      { type: 'deer-skull', x: 230, y: 90 },
     ],
   },
   foreground: {
     rocks: [
-      { x: 50, y: 250, variant: 'large', color: '#4A3828' },
-      { x: 200, y: 268, variant: 'small', color: '#5C4A38' },
-      { x: 580, y: 260, variant: 'medium', color: '#4A3828' },
-      { x: 720, y: 250, variant: 'large', color: '#3A2A1E' },
+      { x: 42, y: 244, variant: 'large', color: '#4A3828' },
+      { x: 212, y: 273, variant: 'small', color: '#5C4A38' },
+      { x: 572, y: 254, variant: 'medium', color: '#4A3828' },
+      { x: 728, y: 246, variant: 'large', color: '#3A2A1E' },
     ],
     corals: [
-      { x: 120, y: 252, variant: 'brain', color: '#6D4C41' },
-      { x: 350, y: 246, variant: 'branch', color: '#5D4037' },
-      { x: 500, y: 250, variant: 'fan', color: '#795548' },
-      { x: 680, y: 252, variant: 'brain', color: '#4E342E' },
+      { x: 128, y: 258, variant: 'brain', color: '#6D4C41' },
+      { x: 342, y: 241, variant: 'branch', color: '#5D4037' },
+      { x: 512, y: 255, variant: 'fan', color: '#795548' },
+      { x: 672, y: 246, variant: 'brain', color: '#4E342E' },
     ],
     kelps: [
       // Dense overgrown foreground — stagnant pool, plants everywhere

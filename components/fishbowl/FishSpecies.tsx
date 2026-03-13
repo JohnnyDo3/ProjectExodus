@@ -2,9 +2,9 @@
 
 import { memo } from 'react'
 
-// Smooth SVG fish that evolve based on stock score tiers
-// Tier 0: 0-9 (Guppy), Tier 1: 10-24 (Tetra), Tier 2: 25-49 (Angelfish),
-// Tier 3: 50-99 (Clownfish), Tier 4: 100-199 (Tang), Tier 5: 200+ (Betta)
+// Smooth SVG fish that evolve based on stock score tiers - ALL GUPPY VARIANTS
+// Tier 0: 0-9 (Guppy), Tier 1: 10-24 (Swift Guppy), Tier 2: 25-49 (Fancy Guppy),
+// Tier 3: 50-99 (Delta Guppy), Tier 4: 100-199 (Veil Guppy), Tier 5: 200+ (Supreme Guppy)
 
 export type FishTier = 0 | 1 | 2 | 3 | 4 | 5
 
@@ -36,16 +36,16 @@ export function getTierFromScore(score: number): FishTier {
 export function getTierName(tier: FishTier): string {
   const names: Record<FishTier, string> = {
     0: 'Guppy',
-    1: 'Tetra',
-    2: 'Angelfish',
-    3: 'Clownfish',
-    4: 'Blue Tang',
-    5: 'Royal Betta',
+    1: 'Swift Guppy',
+    2: 'Fancy Guppy',
+    3: 'Delta Guppy',
+    4: 'Veil Guppy',
+    5: 'Supreme Guppy',
   }
   return names[tier]
 }
 
-// Guppy - small, rounded, cute
+// Tier 0 - Guppy: small, rounded, cute (base guppy, unchanged)
 const GuppyFish = memo(({ colors, size, id }: { colors: FishColors; size: number; id: string }) => (
   <svg width={size} height={size * 0.65} viewBox="0 0 60 39">
     <defs>
@@ -78,340 +78,355 @@ const GuppyFish = memo(({ colors, size, id }: { colors: FishColors; size: number
 ))
 GuppyFish.displayName = 'GuppyFish'
 
-// Tetra - sleek, neon stripe
-const TetraFish = memo(({ colors, size, id }: { colors: FishColors; size: number; id: string }) => (
-  <svg width={size} height={size * 0.55} viewBox="0 0 70 38">
+// Tier 1 - Swift Guppy: slightly larger, longer pointed tail, subtle shimmer
+const SwiftGuppy = memo(({ colors, size, id }: { colors: FishColors; size: number; id: string }) => (
+  <svg width={size} height={size * 0.65} viewBox="0 0 66 43">
     <defs>
-      <linearGradient id={`tb-${id}`} x1="0" y1="0" x2="1" y2="0.3">
-        <stop offset="0%" stopColor={colors.body} />
-        <stop offset="50%" stopColor={colors.accent} />
-        <stop offset="100%" stopColor={colors.body} />
-      </linearGradient>
-      <linearGradient id={`tf-${id}`} x1="0" y1="0" x2="0.5" y2="1">
-        <stop offset="0%" stopColor={colors.fin} />
-        <stop offset="100%" stopColor={colors.fin} stopOpacity="0.8" />
-      </linearGradient>
-    </defs>
-    {/* Tail */}
-    <path d="M52 12 Q60 3 66 7 Q62 16 66 25 Q62 20 52 26 Z" fill={`url(#tf-${id})`} />
-    {/* Body - torpedo shape */}
-    <path d="M10 19 Q10 8 28 6 Q46 4 52 19 Q46 34 28 32 Q10 30 10 19 Z" fill={`url(#tb-${id})`} />
-    {/* Neon stripe */}
-    <path d="M14 19 Q28 17 50 19" stroke={colors.accent} strokeWidth="2.5" fill="none" strokeLinecap="round" />
-    {/* Belly shimmer */}
-    <path d="M16 24 Q28 28 46 24" stroke="white" strokeWidth="1" fill="none" opacity="0.15" />
-    {/* Dorsal fin */}
-    <path d="M26 6 Q30 0 36 3 Q34 7 28 8 Z" fill={colors.fin} />
-    {/* Anal fin */}
-    <path d="M32 32 Q34 37 38 35 Q36 31 36 30 Z" fill={colors.fin} opacity="0.9" />
-    {/* Pectoral fin */}
-    <path d="M22 22 Q18 28 24 30 Q24 26 26 22 Z" fill={colors.fin} opacity="0.85" />
-    {/* Eye */}
-    <circle cx="16" cy="17" r="3.5" fill="white" />
-    <circle cx="15" cy="16.5" r="2.2" fill={colors.eye} />
-    <circle cx="14.3" cy="15.8" r="0.9" fill="white" opacity="0.8" />
-  </svg>
-))
-TetraFish.displayName = 'TetraFish'
-
-// Angelfish - tall, elegant diamond shape (Pterophyllum scalare)
-const AngelfishFish = memo(({ colors, size, id }: { colors: FishColors; size: number; id: string }) => (
-  <svg width={size} height={size * 1.1} viewBox="0 0 56 62">
-    <defs>
-      <radialGradient id={`ab-${id}`} cx="45%" cy="45%" r="55%">
-        <stop offset="0%" stopColor={colors.accent} stopOpacity="0.6" />
-        <stop offset="60%" stopColor={colors.body} />
-        <stop offset="100%" stopColor={colors.body} stopOpacity="0.95" />
-      </radialGradient>
-      <linearGradient id={`af-${id}`} x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor={colors.fin} stopOpacity="0.9" />
-        <stop offset="50%" stopColor={colors.fin} stopOpacity="0.6" />
-        <stop offset="100%" stopColor={colors.accent} stopOpacity="0.4" />
-      </linearGradient>
-      <linearGradient id={`at-${id}`} x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0%" stopColor={colors.fin} stopOpacity="0.8" />
-        <stop offset="100%" stopColor={colors.accent} stopOpacity="0.5" />
-      </linearGradient>
-      <radialGradient id={`ai-${id}`} cx="40%" cy="35%" r="50%">
-        <stop offset="0%" stopColor="white" stopOpacity="0.15" />
-        <stop offset="100%" stopColor="white" stopOpacity="0" />
-      </radialGradient>
-      {/* Scale pattern */}
-      <pattern id={`as-${id}`} x="0" y="0" width="5" height="4" patternUnits="userSpaceOnUse">
-        <path d="M0 2 Q2.5 0 5 2" stroke={colors.accent} strokeWidth="0.3" fill="none" opacity="0.18" />
-        <path d="M2.5 4 Q5 2 7.5 4" stroke={colors.accent} strokeWidth="0.3" fill="none" opacity="0.18" />
-      </pattern>
-      <clipPath id={`ac-${id}`}>
-        <path d="M8 30 Q8 13 24 8 Q40 4 46 30 Q40 56 24 52 Q8 47 8 30 Z" />
-      </clipPath>
-    </defs>
-
-    {/* Dorsal fin - tall, flowing with fin rays */}
-    <path d="M18 12 Q19 4 22 1 Q24 0 27 0 Q29 1 30 4 Q31 8 32 12 Q28 10 22 12 Z" fill={`url(#af-${id})`} opacity="0.9" />
-    <path d="M20 11 Q20.5 5 22 2" stroke={colors.fin} strokeWidth="0.4" fill="none" opacity="0.5" />
-    <path d="M23 10 Q23.5 4 24.5 1" stroke={colors.fin} strokeWidth="0.4" fill="none" opacity="0.5" />
-    <path d="M26 9.5 Q26.5 4 27 0.5" stroke={colors.fin} strokeWidth="0.4" fill="none" opacity="0.5" />
-    <path d="M28.5 10 Q29 5 29.5 2" stroke={colors.fin} strokeWidth="0.4" fill="none" opacity="0.45" />
-    <path d="M31 11 Q31 7 31.5 4" stroke={colors.fin} strokeWidth="0.3" fill="none" opacity="0.4" />
-    {/* Dorsal fin trailing edge detail */}
-    <path d="M18 12 Q22 9.5 32 12" stroke={colors.accent} strokeWidth="0.4" fill="none" opacity="0.3" />
-
-    {/* Ventral/anal fin - long, flowing with fin rays */}
-    <path d="M18 48 Q19 56 22 59 Q24 61 27 62 Q29 61 30 58 Q31 54 32 48 Q28 50 22 48 Z" fill={`url(#af-${id})`} opacity="0.9" />
-    <path d="M20 49 Q20.5 55 22 58" stroke={colors.fin} strokeWidth="0.4" fill="none" opacity="0.5" />
-    <path d="M23 50 Q23.5 56 24.5 59.5" stroke={colors.fin} strokeWidth="0.4" fill="none" opacity="0.5" />
-    <path d="M26 50.5 Q26.5 57 27 61" stroke={colors.fin} strokeWidth="0.4" fill="none" opacity="0.5" />
-    <path d="M28.5 50 Q29 56 29.5 59" stroke={colors.fin} strokeWidth="0.4" fill="none" opacity="0.45" />
-    <path d="M31 49 Q31 54 31.5 57" stroke={colors.fin} strokeWidth="0.3" fill="none" opacity="0.4" />
-    {/* Ventral fin trailing edge detail */}
-    <path d="M18 48 Q22 50.5 32 48" stroke={colors.accent} strokeWidth="0.4" fill="none" opacity="0.3" />
-
-    {/* Long trailing pelvic filaments - signature angelfish feature */}
-    <path d="M20 40 Q17 50 15 56 Q14.5 58 14 60" stroke={colors.fin} strokeWidth="0.7" fill="none" opacity="0.7" strokeLinecap="round" />
-    <path d="M20 40 Q18 49 17 54 Q16.5 56 16.5 58" stroke={colors.fin} strokeWidth="0.5" fill="none" opacity="0.5" strokeLinecap="round" />
-
-    {/* Tail - forked fan shape with fin rays */}
-    <path d="M42 24 Q48 16 54 14 Q52 22 50 28 Q48 30 50 34 Q52 40 54 48 Q48 44 42 36 Q44 30 42 24 Z" fill={`url(#at-${id})`} opacity="0.85" />
-    {/* Tail fin rays */}
-    <path d="M43 25 Q48 18 53 15" stroke={colors.fin} strokeWidth="0.35" fill="none" opacity="0.45" />
-    <path d="M43 28 Q48 22 52 19" stroke={colors.fin} strokeWidth="0.3" fill="none" opacity="0.4" />
-    <path d="M44 30 Q48 28 51 26" stroke={colors.fin} strokeWidth="0.3" fill="none" opacity="0.35" />
-    <path d="M44 32 Q48 34 51 36" stroke={colors.fin} strokeWidth="0.3" fill="none" opacity="0.35" />
-    <path d="M43 34 Q48 40 52 43" stroke={colors.fin} strokeWidth="0.3" fill="none" opacity="0.4" />
-    <path d="M43 36 Q48 44 53 47" stroke={colors.fin} strokeWidth="0.35" fill="none" opacity="0.45" />
-    {/* Tail fork center notch */}
-    <path d="M50 28 Q47 31 50 34" stroke={colors.accent} strokeWidth="0.4" fill="none" opacity="0.3" />
-
-    {/* Body - diamond/disc with better contour */}
-    <path d="M8 30 Q8 13 24 8 Q40 4 46 30 Q40 56 24 52 Q8 47 8 30 Z" fill={`url(#ab-${id})`} />
-    {/* Body outline for definition */}
-    <path d="M8 30 Q8 13 24 8 Q40 4 46 30 Q40 56 24 52 Q8 47 8 30 Z" stroke={colors.accent} strokeWidth="0.6" fill="none" opacity="0.25" />
-
-    {/* Scale pattern overlay */}
-    <rect x="0" y="0" width="56" height="62" fill={`url(#as-${id})`} clipPath={`url(#ac-${id})`} />
-
-    {/* Vertical bars - 4 prominent bars typical of angelfish */}
-    {/* Bar 1 - through eye */}
-    <path d="M15 16 Q14 30 15 44" stroke={colors.accent} strokeWidth="2.5" fill="none" opacity="0.55" strokeLinecap="round" />
-    <path d="M15 14 Q14 30 15 46" stroke={colors.accent} strokeWidth="1" fill="none" opacity="0.3" strokeLinecap="round" />
-    {/* Bar 2 - main body bar */}
-    <path d="M22 10 Q21 30 22 50" stroke={colors.accent} strokeWidth="3" fill="none" opacity="0.6" strokeLinecap="round" />
-    <path d="M22 9 Q21 30 22 51" stroke={colors.accent} strokeWidth="1.2" fill="none" opacity="0.3" strokeLinecap="round" />
-    {/* Bar 3 - mid body */}
-    <path d="M30 9 Q29 30 30 51" stroke={colors.accent} strokeWidth="2.8" fill="none" opacity="0.55" strokeLinecap="round" />
-    <path d="M30 8 Q29 30 30 52" stroke={colors.accent} strokeWidth="1" fill="none" opacity="0.28" strokeLinecap="round" />
-    {/* Bar 4 - rear body */}
-    <path d="M37 15 Q36 30 37 45" stroke={colors.accent} strokeWidth="2.2" fill="none" opacity="0.5" strokeLinecap="round" />
-    <path d="M37 14 Q36 30 37 46" stroke={colors.accent} strokeWidth="0.8" fill="none" opacity="0.25" strokeLinecap="round" />
-    {/* Thin accent stripes between main bars */}
-    <path d="M18.5 13 Q18 30 18.5 47" stroke={colors.accent} strokeWidth="0.6" fill="none" opacity="0.3" />
-    <path d="M26 9 Q25.5 30 26 51" stroke={colors.accent} strokeWidth="0.6" fill="none" opacity="0.3" />
-    <path d="M33.5 12 Q33 30 33.5 48" stroke={colors.accent} strokeWidth="0.5" fill="none" opacity="0.25" />
-    <path d="M40 20 Q39.5 30 40 40" stroke={colors.accent} strokeWidth="0.5" fill="none" opacity="0.2" />
-
-    {/* Body iridescence / shimmer highlights */}
-    <ellipse cx="24" cy="24" rx="8" ry="6" fill="white" opacity="0.07" />
-    <ellipse cx="30" cy="26" rx="5" ry="8" fill="white" opacity="0.05" />
-    <path d="M14 28 Q24 22 38 26" stroke="white" strokeWidth="0.8" fill="none" opacity="0.1" />
-    {/* Iridescence overlay */}
-    <rect x="0" y="0" width="56" height="62" fill={`url(#ai-${id})`} clipPath={`url(#ac-${id})`} />
-
-    {/* Gill plate / operculum */}
-    <path d="M17 20 Q16 30 17 40" stroke={colors.accent} strokeWidth="0.8" fill="none" opacity="0.35" />
-    <path d="M17 22 Q15.5 30 17 38" fill={colors.accent} opacity="0.06" />
-
-    {/* Lateral line */}
-    <path d="M13 30 Q28 28 44 30" stroke={colors.accent} strokeWidth="0.4" fill="none" opacity="0.2" strokeDasharray="1.5 1" />
-
-    {/* Pectoral fin - detailed with rays */}
-    <path d="M18 33 Q13 38 12 42 Q14 43 18 41 Q20 38 22 34 Z" fill={colors.fin} opacity="0.75" />
-    <path d="M18 34 Q14 38 13 41" stroke={colors.fin} strokeWidth="0.35" fill="none" opacity="0.5" />
-    <path d="M19 34 Q15.5 38 14.5 41" stroke={colors.fin} strokeWidth="0.3" fill="none" opacity="0.4" />
-    <path d="M20 34 Q17 38 16 40.5" stroke={colors.fin} strokeWidth="0.3" fill="none" opacity="0.35" />
-
-    {/* Eye - detailed with iris ring, pupil, highlight */}
-    <circle cx="14" cy="28" r="4.2" fill="white" />
-    <circle cx="14" cy="28" r="4.2" stroke={colors.accent} strokeWidth="0.5" fill="none" opacity="0.3" />
-    <circle cx="14" cy="28" r="3.2" fill={colors.eye} />
-    <circle cx="14" cy="28" r="3.2" stroke={colors.accent} strokeWidth="0.3" fill="none" opacity="0.4" />
-    {/* Iris ring detail */}
-    <circle cx="14" cy="28" r="2.4" stroke={colors.eye} strokeWidth="0.6" fill="none" opacity="0.5" />
-    {/* Pupil */}
-    <circle cx="13.6" cy="27.6" r="1.6" fill="#111" />
-    {/* Primary highlight */}
-    <circle cx="12.8" cy="26.8" r="1" fill="white" opacity="0.85" />
-    {/* Secondary highlight */}
-    <circle cx="15" cy="28.8" r="0.5" fill="white" opacity="0.4" />
-
-    {/* Mouth hint */}
-    <path d="M8 29.5 Q9 30.5 8.5 31" stroke={colors.accent} strokeWidth="0.5" fill="none" opacity="0.35" />
-    {/* Nostril */}
-    <circle cx="10" cy="27" r="0.4" fill={colors.accent} opacity="0.25" />
-  </svg>
-))
-AngelfishFish.displayName = 'AngelfishFish'
-
-// Clownfish - iconic orange with white bands
-const ClownfishFish = memo(({ colors, size, id }: { colors: FishColors; size: number; id: string }) => (
-  <svg width={size} height={size * 0.6} viewBox="0 0 76 46">
-    <defs>
-      <radialGradient id={`cb-${id}`} cx="35%" cy="45%" r="60%">
+      <radialGradient id={`sgb-${id}`} cx="40%" cy="40%" r="60%">
         <stop offset="0%" stopColor={colors.accent} />
         <stop offset="100%" stopColor={colors.body} />
       </radialGradient>
-      <linearGradient id={`cf-${id}`} x1="0" y1="0" x2="1" y2="0.5">
-        <stop offset="0%" stopColor={colors.fin} />
-        <stop offset="100%" stopColor={colors.body} />
-      </linearGradient>
-    </defs>
-    {/* Tail */}
-    <path d="M58 14 Q66 6 72 10 Q68 22 72 34 Q66 30 58 30 Z" fill={`url(#cf-${id})`} />
-    {/* Body - rounded */}
-    <path d="M12 23 Q12 8 30 5 Q50 2 60 23 Q50 44 30 41 Q12 38 12 23 Z" fill={`url(#cb-${id})`} />
-    {/* White bands with dark edges */}
-    <path d="M24 6 Q22 23 24 40" stroke="#1B1B1B" strokeWidth="2" fill="none" opacity="0.25" />
-    <path d="M24 6 Q22 23 24 40" stroke={colors.accent} strokeWidth="4" fill="none" />
-    <path d="M38 4 Q36 23 38 42" stroke="#1B1B1B" strokeWidth="2" fill="none" opacity="0.25" />
-    <path d="M38 4 Q36 23 38 42" stroke={colors.accent} strokeWidth="4" fill="none" />
-    <path d="M52 10 Q50 23 52 36" stroke="#1B1B1B" strokeWidth="1.5" fill="none" opacity="0.2" />
-    <path d="M52 10 Q50 23 52 36" stroke={colors.accent} strokeWidth="3" fill="none" opacity="0.9" />
-    {/* Dorsal fin */}
-    <path d="M28 5 Q34 -2 42 2 Q40 6 34 7 Z" fill={colors.fin} />
-    <path d="M34 4 Q38 0 42 3" stroke={colors.accent} strokeWidth="0.8" fill="none" opacity="0.5" />
-    {/* Pectoral fin */}
-    <path d="M22 28 Q16 36 24 39 Q24 34 26 28 Z" fill={colors.fin} opacity="0.9" />
-    {/* Anal fin */}
-    <path d="M40 41 Q42 46 46 44 Q44 40 44 38 Z" fill={colors.fin} opacity="0.9" />
-    {/* Eye */}
-    <circle cx="17" cy="20" r="4.5" fill="white" />
-    <circle cx="16" cy="19.5" r="2.8" fill={colors.eye} />
-    <circle cx="15" cy="18.5" r="1.1" fill="white" opacity="0.8" />
-    {/* Mouth */}
-    <path d="M11 24 Q9 23 11 22" stroke={colors.fin} strokeWidth="0.8" fill="none" opacity="0.5" />
-  </svg>
-))
-ClownfishFish.displayName = 'ClownfishFish'
-
-// Blue Tang - sleek, regal, Dory-like
-const TangFish = memo(({ colors, size, id }: { colors: FishColors; size: number; id: string }) => (
-  <svg width={size} height={size * 0.6} viewBox="0 0 82 50">
-    <defs>
-      <linearGradient id={`tgb-${id}`} x1="0" y1="0.3" x2="1" y2="0.7">
-        <stop offset="0%" stopColor={colors.body} />
-        <stop offset="40%" stopColor="#2196F3" />
-        <stop offset="100%" stopColor={colors.body} />
-      </linearGradient>
-      <linearGradient id={`tgf-${id}`} x1="0" y1="0" x2="1" y2="1">
+      <linearGradient id={`sgf-${id}`} x1="0" y1="0" x2="1" y2="1">
         <stop offset="0%" stopColor={colors.fin} />
         <stop offset="100%" stopColor={colors.accent} />
       </linearGradient>
     </defs>
-    {/* Tail */}
-    <path d="M62 16 Q72 6 78 12 Q72 24 78 36 Q72 32 62 32 Z" fill={`url(#tgf-${id})`} />
-    {/* Tail accent - yellow tips */}
-    <path d="M72 8 Q76 10 78 12" stroke={colors.accent} strokeWidth="2" fill="none" opacity="0.85" />
-    <path d="M72 40 Q76 38 78 36" stroke={colors.accent} strokeWidth="2" fill="none" opacity="0.85" />
-    {/* Body - oval, elongated */}
-    <path d="M12 25 Q12 8 32 4 Q54 0 64 25 Q54 50 32 46 Q12 42 12 25 Z" fill={`url(#tgb-${id})`} />
-    {/* Dark palette marking */}
-    <path d="M30 8 Q26 25 30 42 Q40 44 50 38 Q54 25 50 12 Q40 6 30 8 Z" fill="#0D47A1" opacity="0.35" />
-    {/* Yellow accent stripe on tail area */}
-    <path d="M54 14 Q56 25 54 36" stroke={colors.accent} strokeWidth="3.5" fill="none" strokeLinecap="round" />
-    {/* Dorsal fin - long, flowing */}
-    <path d="M24 4 Q30 -4 44 0 Q42 5 36 6 Q30 7 24 5 Z" fill={colors.fin} />
-    {/* Anal fin */}
-    <path d="M30 46 Q36 52 44 48 Q40 45 34 44 Z" fill={colors.fin} opacity="0.9" />
+    {/* Tail - slightly longer and more pointed */}
+    <path d="M46 15 Q55 3 62 8 Q57 17 62 24 Q56 22 46 27 Z" fill={`url(#sgf-${id})`} />
+    {/* Body */}
+    <ellipse cx="28" cy="21" rx="20" ry="13" fill={`url(#sgb-${id})`} />
+    {/* Belly highlight */}
+    <ellipse cx="26" cy="25" rx="13" ry="5.5" fill="white" opacity="0.1" />
+    {/* Body shimmer line */}
+    <path d="M14 18 Q28 16 42 18" stroke="white" strokeWidth="0.6" fill="none" opacity="0.15" />
+    {/* Dorsal fin - slightly bigger */}
+    <path d="M24 8 Q30 2 35 7 Q31 10 24 9 Z" fill={colors.fin} />
     {/* Pectoral fin */}
-    <path d="M22 28 Q16 36 24 40 Q24 34 26 28 Z" fill={colors.fin} opacity="0.85" />
-    {/* Body sheen */}
-    <ellipse cx="30" cy="20" rx="10" ry="8" fill="white" opacity="0.08" />
+    <path d="M22 24 Q19 31 26 33 Q24 28 26 24 Z" fill={colors.fin} opacity="0.9" />
+    {/* Anal fin - small */}
+    <path d="M34 34 Q36 38 38 36 Q37 33 36 32 Z" fill={colors.fin} opacity="0.8" />
     {/* Eye */}
-    <circle cx="18" cy="22" r="5" fill="white" />
-    <circle cx="17" cy="21.5" r="3" fill={colors.eye} />
-    <circle cx="16" cy="20.5" r="1.2" fill="white" opacity="0.8" />
-    {/* Eye ring - yellow */}
-    <circle cx="18" cy="22" r="5" fill="none" stroke={colors.accent} strokeWidth="0.8" opacity="0.6" />
+    <circle cx="16" cy="19" r="3.8" fill="white" />
+    <circle cx="15.2" cy="18.3" r="2.2" fill={colors.eye} />
+    <circle cx="14.4" cy="17.5" r="0.9" fill="white" opacity="0.8" />
+    {/* Mouth */}
+    <path d="M9 22 Q7 21.5 9 21" stroke={colors.fin} strokeWidth="0.6" fill="none" opacity="0.6" />
   </svg>
 ))
-TangFish.displayName = 'TangFish'
+SwiftGuppy.displayName = 'SwiftGuppy'
 
-// Royal Betta - magnificent flowing fins, the crown jewel
-const BettaFish = memo(({ colors, size, id }: { colors: FishColors; size: number; id: string }) => (
-  <svg width={size} height={size * 0.95} viewBox="0 0 90 86">
+// Tier 2 - Fancy Guppy: bigger, wider fan tail, prominent dorsal, scale hints
+const FancyGuppy = memo(({ colors, size, id }: { colors: FishColors; size: number; id: string }) => (
+  <svg width={size} height={size * 0.65} viewBox="0 0 72 47">
     <defs>
-      <radialGradient id={`bb-${id}`} cx="40%" cy="40%" r="55%">
+      <radialGradient id={`fgb-${id}`} cx="40%" cy="40%" r="60%">
         <stop offset="0%" stopColor={colors.accent} />
         <stop offset="100%" stopColor={colors.body} />
       </radialGradient>
-      <linearGradient id={`bf1-${id}`} x1="0" y1="0" x2="0.8" y2="1">
+      <linearGradient id={`fgf-${id}`} x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor={colors.fin} />
+        <stop offset="50%" stopColor={colors.accent} stopOpacity="0.8" />
+        <stop offset="100%" stopColor={colors.fin} />
+      </linearGradient>
+    </defs>
+    {/* Tail - wider fan shape with gradient */}
+    <path d="M48 14 Q56 2 64 6 Q60 16 64 24 Q62 28 64 34 Q56 30 48 32 Z" fill={`url(#fgf-${id})`} />
+    {/* Tail rays */}
+    <path d="M50 16 Q56 8 62 8" stroke={colors.fin} strokeWidth="0.4" fill="none" opacity="0.4" />
+    <path d="M50 22 Q56 18 62 16" stroke={colors.fin} strokeWidth="0.3" fill="none" opacity="0.35" />
+    <path d="M50 28 Q56 28 62 30" stroke={colors.fin} strokeWidth="0.3" fill="none" opacity="0.35" />
+    {/* Body */}
+    <ellipse cx="30" cy="23" rx="22" ry="14.5" fill={`url(#fgb-${id})`} />
+    {/* Belly highlight */}
+    <ellipse cx="28" cy="28" rx="14" ry="6" fill="white" opacity="0.1" />
+    {/* Scale pattern hints */}
+    <path d="M18 18 Q22 16 26 18" stroke="white" strokeWidth="0.4" fill="none" opacity="0.12" />
+    <path d="M22 22 Q26 20 30 22" stroke="white" strokeWidth="0.4" fill="none" opacity="0.12" />
+    <path d="M26 18 Q30 16 34 18" stroke="white" strokeWidth="0.4" fill="none" opacity="0.12" />
+    <path d="M30 22 Q34 20 38 22" stroke="white" strokeWidth="0.4" fill="none" opacity="0.12" />
+    <path d="M20 26 Q24 24 28 26" stroke="white" strokeWidth="0.4" fill="none" opacity="0.1" />
+    {/* Dorsal fin - more prominent */}
+    <path d="M24 9 Q30 1 37 4 Q36 9 30 11 Q26 11 24 10 Z" fill={colors.fin} />
+    <path d="M26 9 Q30 3 34 5" stroke={colors.accent} strokeWidth="0.4" fill="none" opacity="0.4" />
+    {/* Pectoral fin - slightly larger */}
+    <path d="M22 27 Q18 35 26 38 Q25 32 27 27 Z" fill={colors.fin} opacity="0.9" />
+    {/* Anal fin */}
+    <path d="M36 37 Q38 42 42 40 Q40 37 40 35 Z" fill={colors.fin} opacity="0.85" />
+    {/* Eye */}
+    <circle cx="16" cy="20" r="4" fill="white" />
+    <circle cx="15" cy="19.3" r="2.4" fill={colors.eye} />
+    <circle cx="14.2" cy="18.5" r="1" fill="white" opacity="0.8" />
+    {/* Mouth */}
+    <path d="M9 24 Q7 23.5 9 23" stroke={colors.fin} strokeWidth="0.6" fill="none" opacity="0.6" />
+  </svg>
+))
+FancyGuppy.displayName = 'FancyGuppy'
+
+// Tier 3 - Delta Guppy: bigger, large triangular delta tail, flowing dorsal, two-tone body
+const DeltaGuppy = memo(({ colors, size, id }: { colors: FishColors; size: number; id: string }) => (
+  <svg width={size} height={size * 0.65} viewBox="0 0 78 51">
+    <defs>
+      <radialGradient id={`dgb-${id}`} cx="40%" cy="40%" r="60%">
+        <stop offset="0%" stopColor={colors.accent} />
+        <stop offset="60%" stopColor={colors.body} />
+        <stop offset="100%" stopColor={colors.fin} stopOpacity="0.7" />
+      </radialGradient>
+      <linearGradient id={`dgf-${id}`} x1="0" y1="0" x2="1" y2="0.5">
+        <stop offset="0%" stopColor={colors.fin} />
+        <stop offset="40%" stopColor={colors.accent} stopOpacity="0.7" />
+        <stop offset="100%" stopColor={colors.fin} stopOpacity="0.8" />
+      </linearGradient>
+      <linearGradient id={`dgd-${id}`} x1="0" y1="0" x2="0.5" y2="1">
+        <stop offset="0%" stopColor={colors.fin} />
+        <stop offset="100%" stopColor={colors.accent} stopOpacity="0.6" />
+      </linearGradient>
+    </defs>
+    {/* Delta tail - large triangular spread */}
+    <path d="M52 16 Q60 2 70 4 Q66 14 70 25 Q68 30 70 38 Q66 42 70 46 Q60 42 52 34 Z" fill={`url(#dgf-${id})`} />
+    {/* Tail rays */}
+    <path d="M54 18 Q60 8 68 6" stroke={colors.fin} strokeWidth="0.4" fill="none" opacity="0.4" />
+    <path d="M54 22 Q60 14 68 12" stroke={colors.fin} strokeWidth="0.35" fill="none" opacity="0.35" />
+    <path d="M54 26 Q62 24 68 22" stroke={colors.fin} strokeWidth="0.3" fill="none" opacity="0.3" />
+    <path d="M54 30 Q62 30 68 32" stroke={colors.fin} strokeWidth="0.3" fill="none" opacity="0.3" />
+    <path d="M54 34 Q60 38 68 42" stroke={colors.fin} strokeWidth="0.35" fill="none" opacity="0.35" />
+    {/* Body - slightly deeper */}
+    <ellipse cx="32" cy="25" rx="24" ry="16" fill={`url(#dgb-${id})`} />
+    {/* Two-tone body gradient overlay */}
+    <ellipse cx="32" cy="30" rx="18" ry="8" fill={colors.fin} opacity="0.08" />
+    {/* Belly highlight */}
+    <ellipse cx="30" cy="30" rx="15" ry="6.5" fill="white" opacity="0.1" />
+    {/* Body shimmer */}
+    <path d="M16 22 Q32 19 48 22" stroke="white" strokeWidth="0.7" fill="none" opacity="0.12" />
+    <path d="M18 26 Q32 24 46 26" stroke="white" strokeWidth="0.5" fill="none" opacity="0.08" />
+    {/* Dorsal fin - flowing with rays */}
+    <path d="M26 9 Q32 0 40 2 Q42 5 40 9 Q36 11 30 11 Z" fill={`url(#dgd-${id})`} />
+    <path d="M28 9 Q32 3 36 3" stroke={colors.fin} strokeWidth="0.35" fill="none" opacity="0.45" />
+    <path d="M31 8 Q34 2 38 3" stroke={colors.fin} strokeWidth="0.3" fill="none" opacity="0.4" />
+    {/* Pectoral fin */}
+    <path d="M24 29 Q19 38 28 41 Q27 35 29 29 Z" fill={colors.fin} opacity="0.85" />
+    {/* Anal fin */}
+    <path d="M38 41 Q40 47 44 44 Q42 40 42 38 Z" fill={colors.fin} opacity="0.85" />
+    {/* Eye - more detailed */}
+    <circle cx="17" cy="22" r="4.5" fill="white" />
+    <circle cx="17" cy="22" r="4.5" stroke={colors.accent} strokeWidth="0.4" fill="none" opacity="0.3" />
+    <circle cx="16" cy="21.3" r="2.8" fill={colors.eye} />
+    <circle cx="15.8" cy="21" r="1.8" fill="#111" />
+    <circle cx="15" cy="20.2" r="1" fill="white" opacity="0.85" />
+    <circle cx="17" cy="22.5" r="0.4" fill="white" opacity="0.4" />
+    {/* Mouth */}
+    <path d="M9 26 Q7 25.5 9 25" stroke={colors.fin} strokeWidth="0.7" fill="none" opacity="0.5" />
+  </svg>
+))
+DeltaGuppy.displayName = 'DeltaGuppy'
+
+// Tier 4 - Veil Guppy: tall aspect, long flowing veil tail and fins, shimmer effects
+const VeilGuppy = memo(({ colors, size, id }: { colors: FishColors; size: number; id: string }) => (
+  <svg width={size} height={size * 0.75} viewBox="0 0 84 63">
+    <defs>
+      <radialGradient id={`vgb-${id}`} cx="40%" cy="40%" r="55%">
+        <stop offset="0%" stopColor={colors.accent} />
+        <stop offset="60%" stopColor={colors.body} />
+        <stop offset="100%" stopColor={colors.body} stopOpacity="0.95" />
+      </radialGradient>
+      <linearGradient id={`vgf-${id}`} x1="0" y1="0" x2="0.8" y2="1">
+        <stop offset="0%" stopColor={colors.fin} />
+        <stop offset="50%" stopColor={colors.accent} stopOpacity="0.7" />
+        <stop offset="100%" stopColor={colors.fin} stopOpacity="0.6" />
+      </linearGradient>
+      <linearGradient id={`vgd-${id}`} x1="0" y1="1" x2="0.5" y2="0">
+        <stop offset="0%" stopColor={colors.accent} stopOpacity="0.5" />
+        <stop offset="100%" stopColor={colors.fin} />
+      </linearGradient>
+      <radialGradient id={`vgi-${id}`} cx="40%" cy="35%" r="50%">
+        <stop offset="0%" stopColor="white" stopOpacity="0.12" />
+        <stop offset="100%" stopColor="white" stopOpacity="0" />
+      </radialGradient>
+    </defs>
+    {/* Veil tail - long, flowing downward */}
+    <path d="M54 20 Q62 8 70 10 Q68 18 72 26 Q70 32 72 40 Q68 48 64 52 Q58 50 54 38 Z" fill={`url(#vgf-${id})`} opacity="0.9" />
+    {/* Tail second layer */}
+    <path d="M56 22 Q64 14 72 16 Q70 24 72 32 Q68 38 66 44 Q60 42 56 34 Z" fill={colors.accent} opacity="0.4" />
+    {/* Tail rays */}
+    <path d="M56 22 Q62 12 69 12" stroke={colors.fin} strokeWidth="0.4" fill="none" opacity="0.4" />
+    <path d="M56 26 Q64 20 70 18" stroke={colors.fin} strokeWidth="0.35" fill="none" opacity="0.35" />
+    <path d="M56 30 Q64 28 70 26" stroke={colors.fin} strokeWidth="0.3" fill="none" opacity="0.3" />
+    <path d="M56 34 Q62 36 68 40" stroke={colors.fin} strokeWidth="0.3" fill="none" opacity="0.3" />
+    <path d="M56 36 Q60 42 66 48" stroke={colors.fin} strokeWidth="0.35" fill="none" opacity="0.35" />
+    {/* Body */}
+    <ellipse cx="34" cy="28" rx="26" ry="17" fill={`url(#vgb-${id})`} />
+    {/* Body shimmer effects */}
+    <path d="M16 24 Q34 20 50 24" stroke="white" strokeWidth="0.8" fill="none" opacity="0.12" />
+    <path d="M18 28 Q34 25 48 28" stroke="white" strokeWidth="0.5" fill="none" opacity="0.08" />
+    <ellipse cx="30" cy="24" rx="10" ry="6" fill="white" opacity="0.06" />
+    {/* Iridescence overlay */}
+    <ellipse cx="34" cy="28" rx="24" ry="15" fill={`url(#vgi-${id})`} />
+    {/* Belly highlight */}
+    <ellipse cx="32" cy="33" rx="16" ry="7" fill="white" opacity="0.08" />
+    {/* Tall flowing dorsal fin */}
+    <path d="M26 11 Q30 1 36 0 Q40 1 42 4 Q42 9 38 12 Q34 13 28 12 Z" fill={`url(#vgd-${id})`} opacity="0.9" />
+    <path d="M28 11 Q31 3 34 1" stroke={colors.fin} strokeWidth="0.4" fill="none" opacity="0.45" />
+    <path d="M32 10 Q34 2 37 1" stroke={colors.fin} strokeWidth="0.35" fill="none" opacity="0.4" />
+    <path d="M36 10 Q38 3 40 3" stroke={colors.fin} strokeWidth="0.3" fill="none" opacity="0.35" />
+    {/* Elaborate pectoral fin */}
+    <path d="M26 32 Q20 42 28 46 Q28 40 30 34 Z" fill={colors.fin} opacity="0.85" />
+    <path d="M27 34 Q22 40 26 44" stroke={colors.accent} strokeWidth="0.3" fill="none" opacity="0.3" />
+    {/* Ventral fin - flowing */}
+    <path d="M30 45 Q28 52 34 56 Q36 54 36 48 Q34 45 32 44 Z" fill={`url(#vgd-${id})`} opacity="0.75" />
+    {/* Anal fin */}
+    <path d="M40 45 Q42 52 46 49 Q44 44 44 42 Z" fill={colors.fin} opacity="0.85" />
+    {/* Eye - detailed with iris */}
+    <circle cx="18" cy="25" r="5" fill="white" />
+    <circle cx="18" cy="25" r="5" stroke={colors.accent} strokeWidth="0.5" fill="none" opacity="0.3" />
+    <circle cx="17" cy="24.3" r="3.2" fill={colors.eye} />
+    <circle cx="17" cy="24.3" r="2.4" stroke={colors.eye} strokeWidth="0.5" fill="none" opacity="0.5" />
+    <circle cx="16.6" cy="23.8" r="1.8" fill="#111" />
+    <circle cx="15.8" cy="23" r="1" fill="white" opacity="0.85" />
+    <circle cx="18" cy="25.5" r="0.45" fill="white" opacity="0.4" />
+    {/* Mouth */}
+    <path d="M9 29 Q7 28.5 9 28" stroke={colors.fin} strokeWidth="0.7" fill="none" opacity="0.5" />
+  </svg>
+))
+VeilGuppy.displayName = 'VeilGuppy'
+
+// Tier 5 - Supreme Guppy: largest, magnificent flowing fins, crown jewel, sparkle effects
+const SupremeGuppy = memo(({ colors, size, id }: { colors: FishColors; size: number; id: string }) => (
+  <svg width={size} height={size * 0.78} viewBox="0 0 92 72">
+    <defs>
+      <radialGradient id={`spb-${id}`} cx="40%" cy="40%" r="55%">
+        <stop offset="0%" stopColor={colors.accent} />
+        <stop offset="50%" stopColor={colors.body} />
+        <stop offset="100%" stopColor={colors.body} stopOpacity="0.95" />
+      </radialGradient>
+      <linearGradient id={`spf1-${id}`} x1="0" y1="0" x2="0.8" y2="1">
         <stop offset="0%" stopColor={colors.fin} />
         <stop offset="50%" stopColor={colors.accent} stopOpacity="0.85" />
         <stop offset="100%" stopColor={colors.fin} stopOpacity="0.7" />
       </linearGradient>
-      <linearGradient id={`bf2-${id}`} x1="0" y1="1" x2="0.5" y2="0">
+      <linearGradient id={`spf2-${id}`} x1="0" y1="1" x2="0.5" y2="0">
         <stop offset="0%" stopColor={colors.accent} />
         <stop offset="100%" stopColor={colors.fin} stopOpacity="0.7" />
       </linearGradient>
+      <radialGradient id={`spi-${id}`} cx="40%" cy="35%" r="50%">
+        <stop offset="0%" stopColor="white" stopOpacity="0.15" />
+        <stop offset="100%" stopColor="white" stopOpacity="0" />
+      </radialGradient>
+      <linearGradient id={`spg-${id}`} x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="white" stopOpacity="0.2" />
+        <stop offset="30%" stopColor="white" stopOpacity="0" />
+        <stop offset="60%" stopColor="white" stopOpacity="0.15" />
+        <stop offset="100%" stopColor="white" stopOpacity="0.05" />
+      </linearGradient>
+      <clipPath id={`spc-${id}`}>
+        <ellipse cx="36" cy="32" rx="28" ry="19" />
+      </clipPath>
     </defs>
-    {/* Elaborate dorsal fin - flowing, layered */}
-    <path d="M26 18 Q30 6 38 2 Q42 0 44 4 Q40 10 38 18" fill={`url(#bf1-${id})`} opacity="0.9" />
-    <path d="M30 16 Q34 4 40 2 Q46 2 46 8 Q42 12 38 16" fill={colors.accent} opacity="0.6" />
-    <path d="M34 14 Q36 6 42 4 Q44 6 42 14" fill={colors.fin} opacity="0.5" />
-    {/* Flowing tail - multi-layered cascade */}
-    <path d="M54 28 Q62 16 70 14 Q74 12 76 18 Q72 26 76 38 Q74 42 70 40 Q62 38 54 42 Z" fill={`url(#bf1-${id})`} />
-    <path d="M58 26 Q66 18 72 18 Q76 16 80 22 Q76 30 80 42 Q76 44 72 40 Q66 36 58 38 Z" fill={colors.accent} opacity="0.65" />
-    <path d="M62 28 Q70 22 76 24 Q80 26 80 34 Q76 38 70 36 Q66 34 62 36 Z" fill={colors.fin} opacity="0.5" />
+
+    {/* Enormous flowing tail - multiple layers */}
+    <path d="M58 22 Q66 6 78 8 Q74 16 78 28 Q76 36 78 44 Q74 52 78 60 Q66 54 58 42 Z" fill={`url(#spf1-${id})`} opacity="0.9" />
+    <path d="M60 24 Q68 12 76 14 Q74 22 76 32 Q74 38 76 48 Q72 52 68 50 Q62 44 60 38 Z" fill={colors.accent} opacity="0.45" />
+    <path d="M62 26 Q70 18 76 20 Q74 28 76 36 Q72 42 68 44 Q64 40 62 34 Z" fill={colors.fin} opacity="0.35" />
+    {/* Tail fin rays */}
+    <path d="M60 24 Q66 10 76 10" stroke={colors.fin} strokeWidth="0.4" fill="none" opacity="0.4" />
+    <path d="M60 28 Q68 18 76 16" stroke={colors.fin} strokeWidth="0.35" fill="none" opacity="0.35" />
+    <path d="M60 32 Q68 28 76 26" stroke={colors.fin} strokeWidth="0.3" fill="none" opacity="0.3" />
+    <path d="M60 36 Q68 36 76 38" stroke={colors.fin} strokeWidth="0.3" fill="none" opacity="0.3" />
+    <path d="M60 40 Q66 46 76 52" stroke={colors.fin} strokeWidth="0.35" fill="none" opacity="0.35" />
+    <path d="M60 42 Q66 52 76 58" stroke={colors.fin} strokeWidth="0.4" fill="none" opacity="0.4" />
+
+    {/* Grand dorsal fin with fin rays */}
+    <path d="M28 13 Q32 2 38 0 Q42 0 46 2 Q48 6 46 12 Q42 14 34 14 Q30 14 28 13 Z" fill={`url(#spf1-${id})`} opacity="0.9" />
+    <path d="M32 12 Q34 4 38 1" stroke={colors.fin} strokeWidth="0.4" fill="none" opacity="0.5" />
+    <path d="M36 11 Q38 2 40 1" stroke={colors.fin} strokeWidth="0.35" fill="none" opacity="0.45" />
+    <path d="M40 11 Q42 3 44 2" stroke={colors.fin} strokeWidth="0.3" fill="none" opacity="0.4" />
+    <path d="M44 12 Q46 5 47 4" stroke={colors.fin} strokeWidth="0.3" fill="none" opacity="0.35" />
+    {/* Dorsal fin edge detail */}
+    <path d="M28 13 Q36 11 46 12" stroke={colors.accent} strokeWidth="0.4" fill="none" opacity="0.3" />
+
+    {/* Flowing ventral fins */}
+    <path d="M28 51 Q26 60 32 66 Q36 68 38 62 Q34 56 36 51 Z" fill={`url(#spf2-${id})`} opacity="0.8" />
+    <path d="M34 53 Q32 62 38 68 Q42 70 42 64 Q40 58 40 53 Z" fill={colors.accent} opacity="0.5" />
+    <path d="M40 52 Q38 60 42 64 Q44 62 44 56 Q42 53 40 52 Z" fill={colors.fin} opacity="0.4" />
+    {/* Ventral fin rays */}
+    <path d="M30 53 Q28 60 32 65" stroke={colors.fin} strokeWidth="0.35" fill="none" opacity="0.4" />
+    <path d="M34 54 Q32 62 36 66" stroke={colors.fin} strokeWidth="0.3" fill="none" opacity="0.35" />
+
     {/* Body */}
-    <path d="M16 35 Q16 18 30 14 Q46 10 56 35 Q46 56 30 52 Q16 48 16 35 Z" fill={`url(#bb-${id})`} />
+    <ellipse cx="36" cy="32" rx="28" ry="19" fill={`url(#spb-${id})`} />
+    {/* Body outline for definition */}
+    <ellipse cx="36" cy="32" rx="28" ry="19" stroke={colors.accent} strokeWidth="0.4" fill="none" opacity="0.15" />
+
     {/* Body shimmer streaks */}
-    <path d="M24 22 Q26 35 24 46" stroke={colors.accent} strokeWidth="1" fill="none" opacity="0.25" />
-    <path d="M32 18 Q34 35 32 50" stroke={colors.accent} strokeWidth="0.8" fill="none" opacity="0.2" />
-    <path d="M40 20 Q42 35 40 48" stroke="white" strokeWidth="0.6" fill="none" opacity="0.12" />
-    {/* Body sheen */}
-    <ellipse cx="30" cy="30" rx="10" ry="8" fill="white" opacity="0.08" />
-    {/* Elaborate ventral fins - flowing downward */}
-    <path d="M24 52 Q22 64 28 72 Q32 74 34 68 Q30 60 32 52 Z" fill={`url(#bf2-${id})`} />
-    <path d="M30 54 Q28 66 34 74 Q38 76 38 70 Q36 62 36 54 Z" fill={colors.accent} opacity="0.65" />
-    <path d="M36 52 Q34 62 38 68 Q40 66 40 58 Q38 54 36 52 Z" fill={colors.fin} opacity="0.5" />
-    {/* Pectoral fin */}
-    <path d="M24 38 Q18 46 26 50 Q26 44 28 38 Z" fill={colors.fin} opacity="0.85" />
-    {/* Eye - larger, golden, royal */}
-    <circle cx="22" cy="32" r="5" fill="white" />
-    <circle cx="21" cy="31.5" r="3.2" fill={colors.eye} />
-    <circle cx="20" cy="30.5" r="1.3" fill="white" opacity="0.7" />
-    {/* Eye ring glow */}
-    <circle cx="22" cy="32" r="5.5" fill="none" stroke={colors.accent} strokeWidth="0.6" opacity="0.5" />
+    <path d="M16 28 Q36 24 54 28" stroke="white" strokeWidth="0.8" fill="none" opacity="0.12" />
+    <path d="M18 32 Q36 29 52 32" stroke="white" strokeWidth="0.6" fill="none" opacity="0.08" />
+    <path d="M20 36 Q36 34 50 36" stroke="white" strokeWidth="0.5" fill="none" opacity="0.06" />
+    {/* Iridescence overlay */}
+    <ellipse cx="36" cy="32" rx="26" ry="17" fill={`url(#spi-${id})`} />
+    {/* Sparkle/glow shimmer */}
+    <rect x="8" y="13" width="56" height="38" fill={`url(#spg-${id})`} clipPath={`url(#spc-${id})`} />
+
+    {/* Belly highlight */}
+    <ellipse cx="34" cy="38" rx="18" ry="8" fill="white" opacity="0.07" />
+
+    {/* Crown-like head scales detail */}
+    <path d="M18 18 Q20 15 22 18" stroke={colors.accent} strokeWidth="0.6" fill="none" opacity="0.45" />
+    <path d="M22 16 Q24 13 26 16" stroke={colors.accent} strokeWidth="0.6" fill="none" opacity="0.45" />
+    <path d="M26 15 Q28 12 30 15" stroke={colors.accent} strokeWidth="0.5" fill="none" opacity="0.4" />
+    <path d="M20 17 Q22 14.5 24 17" stroke={colors.accent} strokeWidth="0.4" fill="none" opacity="0.3" />
+
+    {/* Elaborate pectoral fin */}
+    <path d="M28 36 Q22 46 30 50 Q30 44 32 38 Z" fill={colors.fin} opacity="0.85" />
+    <path d="M29 38 Q24 44 28 48" stroke={colors.accent} strokeWidth="0.3" fill="none" opacity="0.35" />
+    <path d="M30 38 Q26 44 29 47" stroke={colors.accent} strokeWidth="0.25" fill="none" opacity="0.3" />
+
+    {/* Anal fin */}
+    <path d="M44 51 Q46 58 50 55 Q48 50 48 48 Z" fill={colors.fin} opacity="0.8" />
+
+    {/* Eye - golden ring, detailed */}
+    <circle cx="18" cy="28" r="5.5" fill="white" />
+    <circle cx="18" cy="28" r="5.5" stroke="#FFD700" strokeWidth="0.8" fill="none" opacity="0.6" />
+    <circle cx="18" cy="28" r="5.5" stroke={colors.accent} strokeWidth="0.4" fill="none" opacity="0.3" />
+    <circle cx="17" cy="27.3" r="3.5" fill={colors.eye} />
+    <circle cx="17" cy="27.3" r="2.6" stroke={colors.eye} strokeWidth="0.6" fill="none" opacity="0.5" />
+    <circle cx="16.6" cy="26.8" r="2" fill="#111" />
+    <circle cx="15.6" cy="25.8" r="1.1" fill="white" opacity="0.85" />
+    <circle cx="18.2" cy="28.5" r="0.5" fill="white" opacity="0.4" />
+
+    {/* Subtle sparkle effects */}
+    <circle cx="24" cy="22" r="0.6" fill="white" opacity="0.4" />
+    <circle cx="42" cy="26" r="0.5" fill="white" opacity="0.35" />
+    <circle cx="48" cy="34" r="0.4" fill="white" opacity="0.3" />
+    <circle cx="30" cy="40" r="0.5" fill="white" opacity="0.3" />
+
     {/* Mouth */}
-    <path d="M14 37 Q12 36 14 35" stroke={colors.fin} strokeWidth="0.7" fill="none" opacity="0.5" />
-    {/* Crown-like head scales */}
-    <path d="M20 18 Q22 16 24 18" stroke={colors.accent} strokeWidth="0.5" fill="none" opacity="0.4" />
-    <path d="M24 16 Q26 14 28 16" stroke={colors.accent} strokeWidth="0.5" fill="none" opacity="0.4" />
+    <path d="M9 33 Q7 32.5 9 32" stroke={colors.fin} strokeWidth="0.7" fill="none" opacity="0.5" />
+    {/* Nostril */}
+    <circle cx="12" cy="27" r="0.4" fill={colors.accent} opacity="0.25" />
   </svg>
 ))
-BettaFish.displayName = 'BettaFish'
+SupremeGuppy.displayName = 'SupremeGuppy'
 
 export type FishPattern = 'none' | 'scales' | 'fine-scales' | 'armored' | 'shimmer' | 'koi'
 
-export type FishSpecies = 'guppy' | 'tetra' | 'angelfish' | 'clownfish' | 'tang' | 'betta'
+export type FishSpecies = 'guppy' | 'swift-guppy' | 'fancy-guppy' | 'delta-guppy' | 'veil-guppy' | 'supreme-guppy'
 
 const SPECIES_TO_TIER: Record<FishSpecies, FishTier> = {
-  guppy: 0,
-  tetra: 1,
-  angelfish: 2,
-  clownfish: 3,
-  tang: 4,
-  betta: 5,
+  'guppy': 0,
+  'swift-guppy': 1,
+  'fancy-guppy': 2,
+  'delta-guppy': 3,
+  'veil-guppy': 4,
+  'supreme-guppy': 5,
 }
 
-// Body clip paths for each fish species — patterns are clipped to these shapes
+// Body clip paths for each guppy variant — patterns are clipped to these shapes
 // so they only appear on the fish body, not as a floating square
 const BODY_CLIPS: Record<FishTier, string> = {
   0: 'M8 19 Q8 7 26 7 Q44 7 44 19 Q44 31 26 31 Q8 31 8 19 Z',                           // Guppy ellipse
-  1: 'M10 19 Q10 8 28 6 Q46 4 52 19 Q46 34 28 32 Q10 30 10 19 Z',                        // Tetra torpedo
-  2: 'M10 30 Q10 14 24 10 Q38 6 44 30 Q38 54 24 50 Q10 46 10 30 Z',                      // Angelfish diamond
-  3: 'M12 23 Q12 8 30 5 Q50 2 60 23 Q50 44 30 41 Q12 38 12 23 Z',                        // Clownfish rounded
-  4: 'M12 25 Q12 8 32 4 Q54 0 64 25 Q54 50 32 46 Q12 42 12 25 Z',                        // Tang oval
-  5: 'M16 35 Q16 18 30 14 Q46 10 56 35 Q46 56 30 52 Q16 48 16 35 Z',                     // Betta body
+  1: 'M8 21 Q8 8 28 8 Q48 8 48 21 Q48 34 28 34 Q8 34 8 21 Z',                            // Swift Guppy ellipse
+  2: 'M8 23 Q8 8.5 30 8.5 Q52 8.5 52 23 Q52 37.5 30 37.5 Q8 37.5 8 23 Z',               // Fancy Guppy ellipse
+  3: 'M8 25 Q8 9 32 9 Q56 9 56 25 Q56 41 32 41 Q8 41 8 25 Z',                            // Delta Guppy ellipse
+  4: 'M8 28 Q8 11 34 11 Q60 11 60 28 Q60 45 34 45 Q8 45 8 28 Z',                         // Veil Guppy ellipse
+  5: 'M8 32 Q8 13 36 13 Q64 13 64 32 Q64 51 36 51 Q8 51 8 32 Z',                         // Supreme Guppy ellipse
 }
 
 // Scale pattern generator — produces columns of overlapping arc shapes
@@ -585,21 +600,21 @@ export const FishSVG = memo(({ tier, size = 48, customColors, customization, id 
   // Viewbox dimensions per species for pattern overlay
   const viewBoxes: Record<FishTier, string> = {
     0: '0 0 60 39',
-    1: '0 0 70 38',
-    2: '0 0 56 62',
-    3: '0 0 76 46',
-    4: '0 0 82 50',
-    5: '0 0 90 86',
+    1: '0 0 66 43',
+    2: '0 0 72 47',
+    3: '0 0 78 51',
+    4: '0 0 84 63',
+    5: '0 0 92 72',
   }
 
   const fishElement = (() => {
     switch (renderTier) {
       case 0: return <GuppyFish colors={colors} size={size} id={gradientId} />
-      case 1: return <TetraFish colors={colors} size={size} id={gradientId} />
-      case 2: return <AngelfishFish colors={colors} size={size} id={gradientId} />
-      case 3: return <ClownfishFish colors={colors} size={size} id={gradientId} />
-      case 4: return <TangFish colors={colors} size={size} id={gradientId} />
-      case 5: return <BettaFish colors={colors} size={size} id={gradientId} />
+      case 1: return <SwiftGuppy colors={colors} size={size} id={gradientId} />
+      case 2: return <FancyGuppy colors={colors} size={size} id={gradientId} />
+      case 3: return <DeltaGuppy colors={colors} size={size} id={gradientId} />
+      case 4: return <VeilGuppy colors={colors} size={size} id={gradientId} />
+      case 5: return <SupremeGuppy colors={colors} size={size} id={gradientId} />
     }
   })()
 
@@ -607,7 +622,7 @@ export const FishSVG = memo(({ tier, size = 48, customColors, customization, id 
 
   // Render pattern clipped to the fish body shape, overlaid on the fish
   const vb = viewBoxes[renderTier]
-  const aspect = renderTier === 2 ? 1.1 : renderTier === 5 ? 0.95 : renderTier === 1 ? 0.55 : renderTier === 3 || renderTier === 4 ? 0.6 : 0.65
+  const aspect = renderTier === 5 ? 0.78 : renderTier === 4 ? 0.75 : 0.65
 
   return (
     <div className="relative inline-block">

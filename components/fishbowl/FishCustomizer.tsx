@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import { X, Check, Lock, Sparkles, Palette, Fish } from 'lucide-react'
+import { X, Check, Sparkles, Palette, Fish } from 'lucide-react'
 import {
   FishSVG,
   getTierFromScore,
@@ -21,13 +21,13 @@ interface FishCustomizerProps {
   onClose: () => void
 }
 
-const ALL_SPECIES: { species: FishSpecies; tier: FishTier; name: string; unlockScore: number }[] = [
-  { species: 'guppy', tier: 0, name: 'Guppy', unlockScore: 0 },
-  { species: 'tetra', tier: 1, name: 'Tetra', unlockScore: 10 },
-  { species: 'angelfish', tier: 2, name: 'Angelfish', unlockScore: 25 },
-  { species: 'clownfish', tier: 3, name: 'Clownfish', unlockScore: 50 },
-  { species: 'tang', tier: 4, name: 'Blue Tang', unlockScore: 100 },
-  { species: 'betta', tier: 5, name: 'Royal Betta', unlockScore: 200 },
+const ALL_SPECIES: { species: FishSpecies; tier: FishTier; name: string; unlockScore: number; description: string }[] = [
+  { species: 'guppy', tier: 0, name: 'Guppy', unlockScore: 0, description: 'Your humble beginning' },
+  { species: 'swift-guppy', tier: 1, name: 'Swift Guppy', unlockScore: 0, description: 'Sleeker and faster' },
+  { species: 'fancy-guppy', tier: 2, name: 'Fancy Guppy', unlockScore: 0, description: 'Fan tail with flair' },
+  { species: 'delta-guppy', tier: 3, name: 'Delta Guppy', unlockScore: 0, description: 'Majestic delta tail' },
+  { species: 'veil-guppy', tier: 4, name: 'Veil Guppy', unlockScore: 0, description: 'Flowing veil fins' },
+  { species: 'supreme-guppy', tier: 5, name: 'Supreme Guppy', unlockScore: 0, description: 'The crown jewel' },
 ]
 
 const ALL_PATTERNS: { pattern: FishPattern; name: string; description: string }[] = [
@@ -178,43 +178,35 @@ export function FishCustomizer({ stockScore, currentCustomization, onSave, onClo
           {tab === 'species' && (
             <div className="space-y-2">
               <p className="text-[10px] text-cyan-500 font-medium mb-3">
-                Unlock new species as your STOCK score grows. Select any unlocked species for your fish.
+                Choose your guppy evolution. Each tier is a more magnificent guppy variant.
               </p>
               <div className="grid grid-cols-2 gap-2">
                 {ALL_SPECIES.map(sp => {
-                  const unlocked = stockScore >= sp.unlockScore
                   const isSelected = selectedSpecies === sp.species ||
                     (!selectedSpecies && sp.tier === userTier)
 
                   return (
                     <button
                       key={sp.species}
-                      onClick={() => unlocked && setSelectedSpecies(sp.species)}
-                      disabled={!unlocked}
+                      onClick={() => setSelectedSpecies(sp.species)}
                       className={`relative flex items-center gap-3 px-3 py-3 rounded-xl border transition-all ${
                         isSelected
                           ? 'border-cyan-400 bg-cyan-900/30 shadow-lg shadow-cyan-900/20'
-                          : unlocked
-                          ? 'border-cyan-800/40 bg-cyan-900/10 hover:border-cyan-600/50 hover:bg-cyan-900/20'
-                          : 'border-cyan-900/20 bg-cyan-950/30 opacity-50 cursor-not-allowed'
+                          : 'border-cyan-800/40 bg-cyan-900/10 hover:border-cyan-600/50 hover:bg-cyan-900/20'
                       }`}
                     >
                       <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center">
-                        {unlocked ? (
-                          <FishSVG tier={sp.tier} size={36} id={`species-${sp.species}`} />
-                        ) : (
-                          <Lock className="w-5 h-5 text-cyan-800" />
-                        )}
+                        <FishSVG tier={sp.tier} size={36} id={`species-${sp.species}`} />
                       </div>
                       <div className="text-left">
-                        <p className={`text-xs font-bold ${unlocked ? 'text-cyan-200' : 'text-cyan-700'}`}>
+                        <p className="text-xs font-bold text-cyan-200">
                           {sp.name}
                         </p>
                         <p className="text-[9px] text-cyan-600">
-                          {unlocked ? `Tier ${sp.tier + 1}` : `Unlock at ${sp.unlockScore} STOCK`}
+                          {sp.description}
                         </p>
                       </div>
-                      {isSelected && unlocked && (
+                      {isSelected && (
                         <Check className="absolute top-2 right-2 w-3.5 h-3.5 text-cyan-400" />
                       )}
                     </button>
