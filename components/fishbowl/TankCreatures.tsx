@@ -8,560 +8,151 @@ import { memo, useEffect, useState, useRef, useCallback, useMemo } from 'react'
 const ClownPlecoSVG = memo(({ id, facingRight, size = 40 }: { id: string; facingRight: boolean; size?: number }) => {
   const scaleX = facingRight ? -1 : 1
   return (
-    <svg width={size} height={size * 0.55} viewBox="0 0 100 55" fill="none">
-      <g transform={`translate(50, 27.5) scale(${scaleX}, 1) translate(-50, -27.5)`}>
+    <svg width={size} height={size * 0.5} viewBox="0 0 160 80" fill="none">
+      <g transform={`translate(80, 40) scale(${scaleX}, 1) translate(-80, -40)`}>
 
-        {/* === CAUDAL FIN (tail) — fan-shaped block arrangement === */}
-        <rect x="80" y="14" width="2" height="2" fill="#2E1E12" />
-        <rect x="82" y="12" width="2" height="2" fill="#2E1E12" />
-        <rect x="84" y="10" width="2" height="2" fill="#2E1E12" />
-        <rect x="86" y="10" width="2" height="2" fill="#1A0F08" />
-        <rect x="88" y="12" width="2" height="2" fill="#1A0F08" />
-        <rect x="82" y="14" width="2" height="2" fill="#2E1E12" />
-        <rect x="84" y="14" width="2" height="2" fill="#2A1C10" />
-        <rect x="86" y="14" width="2" height="2" fill="#1A0F08" />
-        <rect x="80" y="16" width="2" height="2" fill="#2E1E12" />
-        <rect x="82" y="16" width="2" height="2" fill="#2A1C10" />
-        <rect x="84" y="16" width="2" height="2" fill="#2A1C10" />
-        <rect x="86" y="16" width="2" height="2" fill="#1A0F08" />
-        <rect x="80" y="18" width="2" height="2" fill="#2E1E12" />
-        <rect x="82" y="18" width="2" height="2" fill="#2A1C10" />
-        <rect x="84" y="18" width="2" height="2" fill="#2A1C10" />
-        <rect x="86" y="18" width="2" height="2" fill="#1A0F08" />
-        <rect x="80" y="20" width="2" height="2" fill="#2E1E12" />
-        <rect x="82" y="20" width="2" height="2" fill="#2A1C10" />
-        <rect x="84" y="20" width="2" height="2" fill="#2A1C10" />
-        <rect x="86" y="20" width="2" height="2" fill="#1A0F08" />
-        <rect x="80" y="22" width="2" height="2" fill="#2E1E12" />
-        <rect x="82" y="22" width="2" height="2" fill="#2A1C10" />
-        <rect x="84" y="22" width="2" height="2" fill="#2A1C10" />
-        <rect x="86" y="22" width="2" height="2" fill="#1A0F08" />
-        <rect x="80" y="24" width="2" height="2" fill="#2E1E12" />
-        <rect x="82" y="24" width="2" height="2" fill="#2E1E12" />
-        <rect x="84" y="24" width="2" height="2" fill="#2A1C10" />
-        <rect x="86" y="24" width="2" height="2" fill="#1A0F08" />
-        <rect x="80" y="26" width="2" height="2" fill="#2E1E12" />
-        <rect x="82" y="26" width="2" height="2" fill="#2E1E12" />
-        <rect x="84" y="28" width="2" height="2" fill="#2E1E12" />
-        <rect x="86" y="28" width="2" height="2" fill="#1A0F08" />
-        <rect x="88" y="26" width="2" height="2" fill="#1A0F08" />
-        <rect x="84" y="30" width="2" height="2" fill="#1A0F08" />
-        <rect x="86" y="30" width="2" height="2" fill="#1A0F08" />
-        {/* Caudal fin stripe bands */}
-        <rect x="82" y="14" width="2" height="2" fill="#D49228" opacity="0.5" />
-        <rect x="84" y="16" width="2" height="2" fill="#D49228" opacity="0.45" />
-        <rect x="82" y="20" width="2" height="2" fill="#E8A832" opacity="0.45" />
-        <rect x="84" y="22" width="2" height="2" fill="#D49228" opacity="0.4" />
-        <rect x="82" y="26" width="2" height="2" fill="#D49228" opacity="0.45" />
-        <rect x="84" y="24" width="2" height="2" fill="#E8A832" opacity="0.4" />
+        {/* === CAUDAL FIN — smooth fan shape === */}
+        <path d="M128 30 Q140 18 150 12 Q152 16 148 24 Q146 28 144 32 L128 34 Z" fill="#2E1E12" />
+        <path d="M128 50 Q140 62 150 68 Q152 64 148 56 Q146 52 144 48 L128 46 Z" fill="#2E1E12" />
+        <path d="M128 34 L144 32 Q146 36 146 40 Q146 44 144 48 L128 46 Z" fill="#3D2B1A" />
+        {/* Caudal fin rays */}
+        <line x1="130" y1="32" x2="146" y2="20" stroke="#1A0F08" strokeWidth="0.6" opacity="0.4" />
+        <line x1="130" y1="36" x2="148" y2="28" stroke="#1A0F08" strokeWidth="0.5" opacity="0.3" />
+        <line x1="130" y1="44" x2="148" y2="52" stroke="#1A0F08" strokeWidth="0.5" opacity="0.3" />
+        <line x1="130" y1="48" x2="146" y2="60" stroke="#1A0F08" strokeWidth="0.6" opacity="0.4" />
+        {/* Caudal fin gold stripes */}
+        <path d="M132 30 Q138 24 142 20" stroke="#D49228" strokeWidth="2.5" fill="none" opacity="0.4" />
+        <path d="M132 38 Q138 38 144 38" stroke="#E8A832" strokeWidth="2" fill="none" opacity="0.35" />
+        <path d="M132 50 Q138 56 142 60" stroke="#D49228" strokeWidth="2.5" fill="none" opacity="0.4" />
 
-        {/* === DORSAL FIN — triangular block arrangement rising from back === */}
-        <rect x="32" y="10" width="2" height="2" fill="#2E1E12" />
-        <rect x="32" y="8" width="2" height="2" fill="#2E1E12" />
-        <rect x="32" y="6" width="2" height="2" fill="#2A1C10" />
-        <rect x="32" y="4" width="2" height="2" fill="#2A1C10" />
-        <rect x="34" y="2" width="2" height="2" fill="#1A0F08" />
-        <rect x="34" y="4" width="2" height="2" fill="#2A1C10" />
-        <rect x="34" y="6" width="2" height="2" fill="#2E1E12" />
-        <rect x="34" y="8" width="2" height="2" fill="#2E1E12" />
-        <rect x="34" y="10" width="2" height="2" fill="#2E1E12" />
-        <rect x="36" y="4" width="2" height="2" fill="#1A0F08" />
-        <rect x="36" y="6" width="2" height="2" fill="#2A1C10" />
-        <rect x="36" y="8" width="2" height="2" fill="#2E1E12" />
-        <rect x="36" y="10" width="2" height="2" fill="#2E1E12" />
-        <rect x="38" y="6" width="2" height="2" fill="#1A0F08" />
-        <rect x="38" y="8" width="2" height="2" fill="#2A1C10" />
-        <rect x="38" y="10" width="2" height="2" fill="#2E1E12" />
-        <rect x="40" y="8" width="2" height="2" fill="#1A0F08" />
-        <rect x="40" y="10" width="2" height="2" fill="#2A1C10" />
-        <rect x="42" y="10" width="2" height="2" fill="#1A0F08" />
-        <rect x="44" y="10" width="2" height="2" fill="#1A0F08" />
-        <rect x="46" y="12" width="2" height="2" fill="#1A0F08" />
-        {/* Dorsal fin stripe continuation */}
-        <rect x="34" y="4" width="2" height="2" fill="#D49228" opacity="0.45" />
-        <rect x="36" y="6" width="2" height="2" fill="#E8A832" opacity="0.4" />
-        <rect x="40" y="8" width="2" height="2" fill="#D49228" opacity="0.35" />
+        {/* === DORSAL FIN — tall triangular sail === */}
+        <path d="M48 24 Q50 8 56 4 Q62 6 68 14 Q74 18 80 24 Z" fill="#2E1E12" />
+        <path d="M52 22 Q54 12 56 6 Q60 10 66 16 Q72 20 76 24 Z" fill="#3D2B1A" opacity="0.6" />
+        {/* Dorsal fin rays */}
+        <line x1="54" y1="22" x2="56" y2="6" stroke="#1A0F08" strokeWidth="0.5" opacity="0.35" />
+        <line x1="60" y1="22" x2="58" y2="8" stroke="#1A0F08" strokeWidth="0.5" opacity="0.3" />
+        <line x1="66" y1="24" x2="62" y2="10" stroke="#1A0F08" strokeWidth="0.5" opacity="0.25" />
+        <line x1="72" y1="24" x2="66" y2="14" stroke="#1A0F08" strokeWidth="0.5" opacity="0.2" />
+        {/* Dorsal fin gold accent */}
+        <path d="M54 18 Q56 10 58 6" stroke="#D49228" strokeWidth="1.5" fill="none" opacity="0.4" />
 
-        {/* === PECTORAL FINS — angled block clusters === */}
-        <rect x="18" y="36" width="2" height="2" fill="#2E1E12" />
-        <rect x="16" y="38" width="2" height="2" fill="#2E1E12" />
-        <rect x="14" y="40" width="2" height="2" fill="#2A1C10" />
-        <rect x="12" y="42" width="2" height="2" fill="#2A1C10" />
-        <rect x="10" y="44" width="2" height="2" fill="#1A0F08" />
-        <rect x="20" y="38" width="2" height="2" fill="#2E1E12" />
-        <rect x="18" y="40" width="2" height="2" fill="#2A1C10" />
-        <rect x="16" y="42" width="2" height="2" fill="#2A1C10" />
-        <rect x="14" y="44" width="2" height="2" fill="#1A0F08" />
-        <rect x="22" y="38" width="2" height="2" fill="#2E1E12" />
-        <rect x="20" y="40" width="2" height="2" fill="#2A1C10" />
-        {/* Pectoral spine highlight */}
-        <rect x="18" y="36" width="2" height="2" fill="#3A2816" opacity="0.6" />
+        {/* === PECTORAL FINS — spread wide like wings === */}
+        <path d="M30 52 Q22 60 14 68 Q18 70 24 66 Q30 62 34 56 Z" fill="#2E1E12" />
+        <path d="M32 54 Q26 60 18 66" stroke="#3D2B1A" strokeWidth="1" fill="none" opacity="0.5" />
+        <path d="M36 52 Q30 58 22 64 Q26 66 32 62 Q36 58 38 54 Z" fill="#3D2B1A" opacity="0.5" />
+        {/* Pectoral fin spine */}
+        <line x1="30" y1="52" x2="16" y2="68" stroke="#4A3828" strokeWidth="1" opacity="0.4" />
 
-        {/* === PELVIC FIN — small block cluster === */}
-        <rect x="38" y="38" width="2" height="2" fill="#2E1E12" />
-        <rect x="36" y="40" width="2" height="2" fill="#2E1E12" />
-        <rect x="34" y="42" width="2" height="2" fill="#2A1C10" />
-        <rect x="32" y="44" width="2" height="2" fill="#1A0F08" />
-        <rect x="40" y="40" width="2" height="2" fill="#2E1E12" />
-        <rect x="38" y="42" width="2" height="2" fill="#2A1C10" />
-        <rect x="36" y="44" width="2" height="2" fill="#1A0F08" />
+        {/* === PELVIC FIN === */}
+        <path d="M58 58 Q52 66 48 72 Q54 70 60 64 Q62 60 60 58 Z" fill="#2E1E12" />
+        <line x1="58" y1="58" x2="50" y2="70" stroke="#3D2B1A" strokeWidth="0.6" opacity="0.4" />
 
-        {/* === ANAL FIN — small block cluster underneath near tail === */}
-        <rect x="56" y="38" width="2" height="2" fill="#2E1E12" />
-        <rect x="54" y="40" width="2" height="2" fill="#2E1E12" />
-        <rect x="52" y="42" width="2" height="2" fill="#2A1C10" />
-        <rect x="58" y="40" width="2" height="2" fill="#2E1E12" />
-        <rect x="56" y="42" width="2" height="2" fill="#1A0F08" />
-        <rect x="54" y="44" width="2" height="2" fill="#1A0F08" />
+        {/* === ANAL FIN === */}
+        <path d="M90 58 Q86 66 82 70 Q88 68 92 64 Q94 60 92 58 Z" fill="#2E1E12" />
+        <line x1="90" y1="58" x2="84" y2="68" stroke="#3D2B1A" strokeWidth="0.6" opacity="0.4" />
 
-        {/* === ADIPOSE FIN — small fin blocks on back between dorsal and caudal === */}
-        <rect x="62" y="16" width="2" height="2" fill="#2E1E12" />
-        <rect x="64" y="14" width="2" height="2" fill="#2A1C10" />
-        <rect x="64" y="16" width="2" height="2" fill="#2E1E12" />
-        <rect x="66" y="16" width="2" height="2" fill="#2A1C10" />
-        <rect x="66" y="18" width="2" height="2" fill="#2E1E12" />
+        {/* === ADIPOSE FIN — small fleshy bump === */}
+        <path d="M104 26 Q108 20 112 24 Q110 26 106 26 Z" fill="#3D2B1A" />
 
-        {/* === BODY — main torpedo shape built from dark brown pixel blocks === */}
-        {/* Top row of body */}
-        <rect x="14" y="14" width="2" height="2" fill="#3D2B1A" />
-        <rect x="16" y="12" width="3" height="2" fill="#3D2B1A" />
-        <rect x="19" y="12" width="3" height="2" fill="#2A1C10" />
-        <rect x="22" y="12" width="3" height="2" fill="#3D2B1A" />
-        <rect x="25" y="12" width="3" height="2" fill="#2A1C10" />
-        <rect x="28" y="12" width="3" height="2" fill="#3D2B1A" />
-        <rect x="31" y="12" width="3" height="2" fill="#2A1C10" />
-        <rect x="34" y="12" width="3" height="2" fill="#3D2B1A" />
-        <rect x="37" y="12" width="3" height="2" fill="#2A1C10" />
-        <rect x="40" y="12" width="3" height="2" fill="#3D2B1A" />
-        <rect x="43" y="12" width="3" height="2" fill="#2A1C10" />
-        <rect x="46" y="12" width="3" height="2" fill="#3D2B1A" />
-        <rect x="49" y="14" width="3" height="2" fill="#2A1C10" />
-        <rect x="52" y="14" width="3" height="2" fill="#3D2B1A" />
-        <rect x="55" y="14" width="3" height="2" fill="#2A1C10" />
-        <rect x="58" y="16" width="3" height="2" fill="#3D2B1A" />
-        <rect x="61" y="16" width="3" height="2" fill="#2A1C10" />
-        <rect x="64" y="18" width="3" height="2" fill="#3D2B1A" />
-        <rect x="67" y="18" width="3" height="2" fill="#2A1C10" />
-        <rect x="70" y="20" width="3" height="2" fill="#3D2B1A" />
-        <rect x="73" y="20" width="2" height="2" fill="#2A1C10" />
-        <rect x="75" y="22" width="2" height="2" fill="#2A1C10" />
-        <rect x="77" y="22" width="2" height="2" fill="#1A0F08" />
-        {/* Second row */}
-        <rect x="12" y="16" width="3" height="2" fill="#2A1C10" />
-        <rect x="15" y="16" width="3" height="2" fill="#3D2B1A" />
-        <rect x="18" y="14" width="3" height="2" fill="#2A1C10" />
-        <rect x="21" y="14" width="3" height="2" fill="#3D2B1A" />
-        <rect x="24" y="14" width="3" height="2" fill="#2A1C10" />
-        <rect x="27" y="14" width="3" height="2" fill="#3D2B1A" />
-        <rect x="30" y="14" width="3" height="2" fill="#2A1C10" />
-        <rect x="33" y="14" width="3" height="2" fill="#3D2B1A" />
-        <rect x="36" y="14" width="3" height="2" fill="#2A1C10" />
-        <rect x="39" y="14" width="3" height="2" fill="#3D2B1A" />
-        <rect x="42" y="14" width="3" height="2" fill="#2A1C10" />
-        <rect x="45" y="14" width="3" height="2" fill="#3D2B1A" />
-        <rect x="48" y="16" width="3" height="2" fill="#2A1C10" />
-        <rect x="51" y="16" width="3" height="2" fill="#3D2B1A" />
-        <rect x="54" y="16" width="3" height="2" fill="#2A1C10" />
-        <rect x="57" y="18" width="3" height="2" fill="#3D2B1A" />
-        <rect x="60" y="18" width="3" height="2" fill="#2A1C10" />
-        <rect x="63" y="20" width="3" height="2" fill="#3D2B1A" />
-        <rect x="66" y="20" width="3" height="2" fill="#2A1C10" />
-        <rect x="69" y="22" width="3" height="2" fill="#3D2B1A" />
-        <rect x="72" y="22" width="3" height="2" fill="#2A1C10" />
-        <rect x="75" y="24" width="2" height="2" fill="#2A1C10" />
-        <rect x="77" y="24" width="2" height="2" fill="#1A0F08" />
-        {/* Mid-body rows */}
-        <rect x="10" y="18" width="3" height="2" fill="#2A1C10" />
-        <rect x="13" y="18" width="3" height="2" fill="#3D2B1A" />
-        <rect x="16" y="18" width="3" height="2" fill="#2A1C10" />
-        <rect x="19" y="18" width="3" height="2" fill="#3D2B1A" />
-        <rect x="22" y="18" width="3" height="2" fill="#2A1C10" />
-        <rect x="25" y="18" width="3" height="2" fill="#3D2B1A" />
-        <rect x="28" y="18" width="3" height="2" fill="#2A1C10" />
-        <rect x="31" y="18" width="3" height="2" fill="#3D2B1A" />
-        <rect x="34" y="18" width="3" height="2" fill="#2A1C10" />
-        <rect x="37" y="18" width="3" height="2" fill="#3D2B1A" />
-        <rect x="40" y="18" width="3" height="2" fill="#2A1C10" />
-        <rect x="43" y="18" width="3" height="2" fill="#3D2B1A" />
-        <rect x="46" y="18" width="3" height="2" fill="#2A1C10" />
-        <rect x="49" y="18" width="3" height="2" fill="#3D2B1A" />
-        <rect x="52" y="18" width="3" height="2" fill="#2A1C10" />
-        <rect x="55" y="20" width="3" height="2" fill="#3D2B1A" />
-        <rect x="58" y="20" width="3" height="2" fill="#2A1C10" />
-        <rect x="61" y="22" width="3" height="2" fill="#3D2B1A" />
-        <rect x="64" y="22" width="3" height="2" fill="#2A1C10" />
-        <rect x="67" y="24" width="3" height="2" fill="#3D2B1A" />
-        <rect x="70" y="24" width="3" height="2" fill="#2A1C10" />
-        <rect x="73" y="24" width="2" height="2" fill="#1A0F08" />
-        {/* Row y=20-22 */}
-        <rect x="8" y="20" width="3" height="2" fill="#2A1C10" />
-        <rect x="11" y="20" width="3" height="2" fill="#3D2B1A" />
-        <rect x="14" y="20" width="3" height="2" fill="#2A1C10" />
-        <rect x="17" y="20" width="3" height="2" fill="#3D2B1A" />
-        <rect x="20" y="20" width="3" height="2" fill="#2A1C10" />
-        <rect x="23" y="20" width="3" height="2" fill="#3D2B1A" />
-        <rect x="26" y="20" width="3" height="2" fill="#2A1C10" />
-        <rect x="29" y="20" width="3" height="2" fill="#3D2B1A" />
-        <rect x="32" y="20" width="3" height="2" fill="#2A1C10" />
-        <rect x="35" y="20" width="3" height="2" fill="#3D2B1A" />
-        <rect x="38" y="20" width="3" height="2" fill="#2A1C10" />
-        <rect x="41" y="20" width="3" height="2" fill="#3D2B1A" />
-        <rect x="44" y="20" width="3" height="2" fill="#2A1C10" />
-        <rect x="47" y="20" width="3" height="2" fill="#3D2B1A" />
-        <rect x="50" y="20" width="3" height="2" fill="#2A1C10" />
-        <rect x="53" y="20" width="3" height="2" fill="#3D2B1A" />
-        <rect x="56" y="22" width="3" height="2" fill="#2A1C10" />
-        <rect x="59" y="22" width="3" height="2" fill="#3D2B1A" />
-        <rect x="62" y="24" width="3" height="2" fill="#2A1C10" />
-        <rect x="65" y="24" width="3" height="2" fill="#3D2B1A" />
-        <rect x="68" y="26" width="3" height="2" fill="#2A1C10" />
-        {/* Row y=22-24 */}
-        <rect x="8" y="22" width="3" height="2" fill="#2A1C10" />
-        <rect x="11" y="22" width="3" height="2" fill="#3D2B1A" />
-        <rect x="14" y="22" width="3" height="2" fill="#2A1C10" />
-        <rect x="17" y="22" width="3" height="2" fill="#3D2B1A" />
-        <rect x="20" y="22" width="3" height="2" fill="#2A1C10" />
-        <rect x="23" y="22" width="3" height="2" fill="#3D2B1A" />
-        <rect x="26" y="22" width="3" height="2" fill="#2A1C10" />
-        <rect x="29" y="22" width="3" height="2" fill="#3D2B1A" />
-        <rect x="32" y="22" width="3" height="2" fill="#2A1C10" />
-        <rect x="35" y="22" width="3" height="2" fill="#3D2B1A" />
-        <rect x="38" y="22" width="3" height="2" fill="#2A1C10" />
-        <rect x="41" y="22" width="3" height="2" fill="#3D2B1A" />
-        <rect x="44" y="22" width="3" height="2" fill="#2A1C10" />
-        <rect x="47" y="22" width="3" height="2" fill="#3D2B1A" />
-        <rect x="50" y="22" width="3" height="2" fill="#2A1C10" />
-        <rect x="53" y="22" width="3" height="2" fill="#3D2B1A" />
-        <rect x="56" y="24" width="3" height="2" fill="#2A1C10" />
-        <rect x="59" y="24" width="3" height="2" fill="#3D2B1A" />
-        <rect x="62" y="26" width="3" height="2" fill="#2A1C10" />
-        <rect x="65" y="26" width="3" height="2" fill="#3D2B1A" />
-        {/* Row y=24-26 */}
-        <rect x="8" y="24" width="3" height="2" fill="#2A1C10" />
-        <rect x="11" y="24" width="3" height="2" fill="#3D2B1A" />
-        <rect x="14" y="24" width="3" height="2" fill="#2A1C10" />
-        <rect x="17" y="24" width="3" height="2" fill="#3D2B1A" />
-        <rect x="20" y="24" width="3" height="2" fill="#2A1C10" />
-        <rect x="23" y="24" width="3" height="2" fill="#3D2B1A" />
-        <rect x="26" y="24" width="3" height="2" fill="#2A1C10" />
-        <rect x="29" y="24" width="3" height="2" fill="#3D2B1A" />
-        <rect x="32" y="24" width="3" height="2" fill="#2A1C10" />
-        <rect x="35" y="24" width="3" height="2" fill="#3D2B1A" />
-        <rect x="38" y="24" width="3" height="2" fill="#2A1C10" />
-        <rect x="41" y="24" width="3" height="2" fill="#3D2B1A" />
-        <rect x="44" y="24" width="3" height="2" fill="#2A1C10" />
-        <rect x="47" y="24" width="3" height="2" fill="#3D2B1A" />
-        <rect x="50" y="24" width="3" height="2" fill="#2A1C10" />
-        <rect x="53" y="24" width="3" height="2" fill="#3D2B1A" />
-        <rect x="56" y="26" width="3" height="2" fill="#2A1C10" />
-        <rect x="59" y="26" width="3" height="2" fill="#3D2B1A" />
-        {/* Row y=26-28 */}
-        <rect x="8" y="26" width="3" height="2" fill="#2A1C10" />
-        <rect x="11" y="26" width="3" height="2" fill="#3D2B1A" />
-        <rect x="14" y="26" width="3" height="2" fill="#2A1C10" />
-        <rect x="17" y="26" width="3" height="2" fill="#3D2B1A" />
-        <rect x="20" y="26" width="3" height="2" fill="#2A1C10" />
-        <rect x="23" y="26" width="3" height="2" fill="#3D2B1A" />
-        <rect x="26" y="26" width="3" height="2" fill="#2A1C10" />
-        <rect x="29" y="26" width="3" height="2" fill="#3D2B1A" />
-        <rect x="32" y="26" width="3" height="2" fill="#2A1C10" />
-        <rect x="35" y="26" width="3" height="2" fill="#3D2B1A" />
-        <rect x="38" y="26" width="3" height="2" fill="#2A1C10" />
-        <rect x="41" y="26" width="3" height="2" fill="#3D2B1A" />
-        <rect x="44" y="26" width="3" height="2" fill="#2A1C10" />
-        <rect x="47" y="26" width="3" height="2" fill="#3D2B1A" />
-        <rect x="50" y="26" width="3" height="2" fill="#2A1C10" />
-        <rect x="53" y="26" width="3" height="2" fill="#3D2B1A" />
-        <rect x="56" y="28" width="3" height="2" fill="#2A1C10" />
-        {/* Row y=28-30 */}
-        <rect x="10" y="28" width="3" height="2" fill="#2A1C10" />
-        <rect x="13" y="28" width="3" height="2" fill="#3D2B1A" />
-        <rect x="16" y="28" width="3" height="2" fill="#2A1C10" />
-        <rect x="19" y="28" width="3" height="2" fill="#3D2B1A" />
-        <rect x="22" y="28" width="3" height="2" fill="#2A1C10" />
-        <rect x="25" y="28" width="3" height="2" fill="#3D2B1A" />
-        <rect x="28" y="28" width="3" height="2" fill="#2A1C10" />
-        <rect x="31" y="28" width="3" height="2" fill="#3D2B1A" />
-        <rect x="34" y="28" width="3" height="2" fill="#2A1C10" />
-        <rect x="37" y="28" width="3" height="2" fill="#3D2B1A" />
-        <rect x="40" y="28" width="3" height="2" fill="#2A1C10" />
-        <rect x="43" y="28" width="3" height="2" fill="#3D2B1A" />
-        <rect x="46" y="28" width="3" height="2" fill="#2A1C10" />
-        <rect x="49" y="28" width="3" height="2" fill="#3D2B1A" />
-        <rect x="52" y="28" width="3" height="2" fill="#2A1C10" />
-        <rect x="55" y="28" width="3" height="2" fill="#3D2B1A" />
-        {/* Row y=30-32 */}
-        <rect x="10" y="30" width="3" height="2" fill="#2A1C10" />
-        <rect x="13" y="30" width="3" height="2" fill="#3D2B1A" />
-        <rect x="16" y="30" width="3" height="2" fill="#2A1C10" />
-        <rect x="19" y="30" width="3" height="2" fill="#3D2B1A" />
-        <rect x="22" y="30" width="3" height="2" fill="#2A1C10" />
-        <rect x="25" y="30" width="3" height="2" fill="#3D2B1A" />
-        <rect x="28" y="30" width="3" height="2" fill="#2A1C10" />
-        <rect x="31" y="30" width="3" height="2" fill="#3D2B1A" />
-        <rect x="34" y="30" width="3" height="2" fill="#2A1C10" />
-        <rect x="37" y="30" width="3" height="2" fill="#3D2B1A" />
-        <rect x="40" y="30" width="3" height="2" fill="#2A1C10" />
-        <rect x="43" y="30" width="3" height="2" fill="#3D2B1A" />
-        <rect x="46" y="30" width="3" height="2" fill="#2A1C10" />
-        <rect x="49" y="30" width="3" height="2" fill="#3D2B1A" />
-        <rect x="52" y="30" width="3" height="2" fill="#2A1C10" />
-        {/* Row y=32-34 — body narrowing */}
-        <rect x="12" y="32" width="3" height="2" fill="#2A1C10" />
-        <rect x="15" y="32" width="3" height="2" fill="#3D2B1A" />
-        <rect x="18" y="32" width="3" height="2" fill="#2A1C10" />
-        <rect x="21" y="32" width="3" height="2" fill="#3D2B1A" />
-        <rect x="24" y="32" width="3" height="2" fill="#2A1C10" />
-        <rect x="27" y="32" width="3" height="2" fill="#3D2B1A" />
-        <rect x="30" y="32" width="3" height="2" fill="#2A1C10" />
-        <rect x="33" y="32" width="3" height="2" fill="#3D2B1A" />
-        <rect x="36" y="32" width="3" height="2" fill="#2A1C10" />
-        <rect x="39" y="32" width="3" height="2" fill="#3D2B1A" />
-        <rect x="42" y="32" width="3" height="2" fill="#2A1C10" />
-        <rect x="45" y="32" width="3" height="2" fill="#3D2B1A" />
-        <rect x="48" y="32" width="3" height="2" fill="#2A1C10" />
-        <rect x="51" y="32" width="3" height="2" fill="#3D2B1A" />
-        {/* Row y=34-36 — lower body tapering */}
-        <rect x="14" y="34" width="3" height="2" fill="#2A1C10" />
-        <rect x="17" y="34" width="3" height="2" fill="#3D2B1A" />
-        <rect x="20" y="34" width="3" height="2" fill="#2A1C10" />
-        <rect x="23" y="34" width="3" height="2" fill="#3D2B1A" />
-        <rect x="26" y="34" width="3" height="2" fill="#2A1C10" />
-        <rect x="29" y="34" width="3" height="2" fill="#3D2B1A" />
-        <rect x="32" y="34" width="3" height="2" fill="#2A1C10" />
-        <rect x="35" y="34" width="3" height="2" fill="#3D2B1A" />
-        <rect x="38" y="34" width="3" height="2" fill="#2A1C10" />
-        <rect x="41" y="34" width="3" height="2" fill="#3D2B1A" />
-        <rect x="44" y="34" width="3" height="2" fill="#2A1C10" />
-        <rect x="47" y="34" width="3" height="2" fill="#3D2B1A" />
-        <rect x="50" y="34" width="3" height="2" fill="#2A1C10" />
-        {/* Row y=36-38 — bottom edge */}
-        <rect x="16" y="36" width="3" height="2" fill="#2A1C10" />
-        <rect x="19" y="36" width="3" height="2" fill="#3D2B1A" />
-        <rect x="22" y="36" width="3" height="2" fill="#2A1C10" />
-        <rect x="25" y="36" width="3" height="2" fill="#3D2B1A" />
-        <rect x="28" y="36" width="3" height="2" fill="#2A1C10" />
-        <rect x="31" y="36" width="3" height="2" fill="#3D2B1A" />
-        <rect x="34" y="36" width="3" height="2" fill="#2A1C10" />
-        <rect x="37" y="36" width="3" height="2" fill="#3D2B1A" />
-        <rect x="40" y="36" width="3" height="2" fill="#2A1C10" />
-        <rect x="43" y="36" width="3" height="2" fill="#3D2B1A" />
-        <rect x="46" y="36" width="3" height="2" fill="#2A1C10" />
-        <rect x="49" y="36" width="3" height="2" fill="#3D2B1A" />
+        {/* === MAIN BODY — smooth elongated torpedo shape === */}
+        <path d="M16 32 Q10 36 8 40 Q10 44 16 48 Q24 56 40 60 Q60 64 80 60 Q100 56 116 48 Q124 44 128 40 Q124 36 116 32 Q100 24 80 22 Q60 20 40 24 Q24 28 16 32 Z" fill="#3D2B1A" />
 
-        {/* === BELLY — lighter brown blocks along underside === */}
-        <rect x="14" y="34" width="3" height="2" fill="#4A3622" />
-        <rect x="17" y="36" width="3" height="2" fill="#4A3622" />
-        <rect x="20" y="36" width="3" height="2" fill="#3A2818" />
-        <rect x="23" y="36" width="3" height="2" fill="#4A3622" />
-        <rect x="26" y="36" width="3" height="2" fill="#3A2818" />
-        <rect x="29" y="36" width="3" height="2" fill="#4A3622" />
-        <rect x="32" y="36" width="3" height="2" fill="#3A2818" />
-        <rect x="35" y="36" width="3" height="2" fill="#4A3622" />
-        <rect x="38" y="36" width="3" height="2" fill="#3A2818" />
-        <rect x="41" y="36" width="3" height="2" fill="#4A3622" />
-        <rect x="44" y="36" width="3" height="2" fill="#3A2818" />
-        <rect x="47" y="36" width="3" height="2" fill="#4A3622" />
-        <rect x="50" y="34" width="3" height="2" fill="#3A2818" />
+        {/* Body shading — darker underside */}
+        <path d="M20 44 Q30 54 50 58 Q70 62 90 58 Q110 54 124 44 Q122 48 110 54 Q90 60 70 62 Q50 60 30 54 Q20 48 20 44 Z" fill="#2A1C10" opacity="0.6" />
 
-        {/* === SCUTE PLATES — slightly different shade blocks in rows === */}
-        {/* Upper scute row */}
-        <rect x="22" y="16" width="3" height="2" fill="#4A3828" opacity="0.4" />
-        <rect x="28" y="16" width="3" height="2" fill="#4A3828" opacity="0.35" />
-        <rect x="34" y="16" width="3" height="2" fill="#4A3828" opacity="0.4" />
-        <rect x="40" y="16" width="3" height="2" fill="#4A3828" opacity="0.35" />
-        <rect x="46" y="16" width="3" height="2" fill="#4A3828" opacity="0.4" />
-        <rect x="52" y="18" width="3" height="2" fill="#4A3828" opacity="0.35" />
-        <rect x="58" y="18" width="3" height="2" fill="#4A3828" opacity="0.3" />
-        <rect x="64" y="20" width="3" height="2" fill="#4A3828" opacity="0.3" />
-        {/* Mid scute row */}
-        <rect x="20" y="22" width="3" height="2" fill="#4A3828" opacity="0.3" />
-        <rect x="26" y="22" width="3" height="2" fill="#4A3828" opacity="0.25" />
-        <rect x="32" y="22" width="3" height="2" fill="#4A3828" opacity="0.3" />
-        <rect x="38" y="22" width="3" height="2" fill="#4A3828" opacity="0.25" />
-        <rect x="44" y="22" width="3" height="2" fill="#4A3828" opacity="0.3" />
-        <rect x="50" y="22" width="3" height="2" fill="#4A3828" opacity="0.25" />
-        <rect x="56" y="24" width="3" height="2" fill="#4A3828" opacity="0.25" />
-        <rect x="62" y="24" width="3" height="2" fill="#4A3828" opacity="0.2" />
-        {/* Lower scute row */}
-        <rect x="20" y="30" width="3" height="2" fill="#4A3828" opacity="0.25" />
-        <rect x="26" y="30" width="3" height="2" fill="#4A3828" opacity="0.2" />
-        <rect x="32" y="30" width="3" height="2" fill="#4A3828" opacity="0.25" />
-        <rect x="38" y="30" width="3" height="2" fill="#4A3828" opacity="0.2" />
-        <rect x="44" y="30" width="3" height="2" fill="#4A3828" opacity="0.25" />
-        <rect x="50" y="30" width="3" height="2" fill="#4A3828" opacity="0.2" />
+        {/* Body highlight — lighter top */}
+        <path d="M30 30 Q50 24 80 22 Q100 24 116 32 Q100 26 80 24 Q60 24 40 28 Q32 30 30 30 Z" fill="#4A3828" opacity="0.3" />
 
-        {/* === CLOWN STRIPES — 5 vertical bands of bright orange-gold blocks === */}
-        {/* Stripe 1 — behind head */}
-        <rect x="18" y="14" width="3" height="2" fill="#E8A832" opacity="0.85" />
-        <rect x="18" y="16" width="3" height="2" fill="#E8A832" opacity="0.85" />
-        <rect x="18" y="18" width="3" height="2" fill="#D49228" opacity="0.85" />
-        <rect x="18" y="20" width="3" height="2" fill="#E8A832" opacity="0.85" />
-        <rect x="18" y="22" width="3" height="2" fill="#D49228" opacity="0.85" />
-        <rect x="18" y="24" width="3" height="2" fill="#E8A832" opacity="0.85" />
-        <rect x="18" y="26" width="3" height="2" fill="#D49228" opacity="0.85" />
-        <rect x="18" y="28" width="3" height="2" fill="#E8A832" opacity="0.85" />
-        <rect x="18" y="30" width="3" height="2" fill="#D49228" opacity="0.8" />
-        <rect x="18" y="32" width="3" height="2" fill="#C07E20" opacity="0.75" />
-        <rect x="19" y="34" width="2" height="2" fill="#C07E20" opacity="0.7" />
+        {/* Belly — lighter underside */}
+        <path d="M24 52 Q40 60 60 62 Q80 62 100 58 Q112 52 120 46 Q112 54 100 60 Q80 64 60 64 Q40 62 24 52 Z" fill="#4A3622" opacity="0.5" />
+
+        {/* === SCUTE PLATES — armored scale rows === */}
+        {/* Upper scute line */}
+        <path d="M30 28 Q60 22 90 26 Q110 30 124 36" stroke="#4A3828" strokeWidth="0.8" fill="none" opacity="0.3" />
+        {/* Mid scute line */}
+        <path d="M18 38 Q50 32 80 34 Q110 36 126 40" stroke="#4A3828" strokeWidth="0.8" fill="none" opacity="0.25" />
+        {/* Lower scute line */}
+        <path d="M22 48 Q50 44 80 46 Q110 48 124 44" stroke="#4A3828" strokeWidth="0.7" fill="none" opacity="0.2" />
+        {/* Vertical scute divisions */}
+        {[34, 44, 54, 64, 74, 84, 94, 104, 114].map((sx, i) => (
+          <line key={`scute-${i}`} x1={sx} y1={24 + i * 0.5} x2={sx} y2={56 - i * 0.8} stroke="#4A3828" strokeWidth="0.5" opacity={0.15 - i * 0.01} />
+        ))}
+
+        {/* === CLOWN STRIPES — 5 organic curved bands of bright orange-gold === */}
+        {/* Stripe 1 — behind head, widest */}
+        <path d="M30 26 Q28 36 28 40 Q28 44 30 54" stroke="#E8A832" strokeWidth="5" fill="none" opacity="0.8" strokeLinecap="round" />
+        <path d="M30 26 Q28 36 28 40 Q28 44 30 54" stroke="#D49228" strokeWidth="3" fill="none" opacity="0.4" strokeLinecap="round" />
+
         {/* Stripe 2 — mid-anterior */}
-        <rect x="29" y="14" width="3" height="2" fill="#E8A832" opacity="0.8" />
-        <rect x="29" y="16" width="3" height="2" fill="#D49228" opacity="0.8" />
-        <rect x="29" y="18" width="3" height="2" fill="#E8A832" opacity="0.8" />
-        <rect x="29" y="20" width="3" height="2" fill="#D49228" opacity="0.8" />
-        <rect x="29" y="22" width="3" height="2" fill="#E8A832" opacity="0.8" />
-        <rect x="29" y="24" width="3" height="2" fill="#D49228" opacity="0.8" />
-        <rect x="29" y="26" width="3" height="2" fill="#E8A832" opacity="0.8" />
-        <rect x="29" y="28" width="3" height="2" fill="#D49228" opacity="0.8" />
-        <rect x="29" y="30" width="3" height="2" fill="#E8A832" opacity="0.75" />
-        <rect x="29" y="32" width="3" height="2" fill="#C07E20" opacity="0.7" />
-        <rect x="30" y="34" width="2" height="2" fill="#C07E20" opacity="0.65" />
+        <path d="M46 24 Q44 34 44 40 Q44 46 46 56" stroke="#E8A832" strokeWidth="4.5" fill="none" opacity="0.75" strokeLinecap="round" />
+        <path d="M46 24 Q44 34 44 40 Q44 46 46 56" stroke="#D49228" strokeWidth="2.5" fill="none" opacity="0.35" strokeLinecap="round" />
+
         {/* Stripe 3 — mid body */}
-        <rect x="41" y="14" width="3" height="2" fill="#E8A832" opacity="0.85" />
-        <rect x="41" y="16" width="3" height="2" fill="#E8A832" opacity="0.85" />
-        <rect x="41" y="18" width="3" height="2" fill="#D49228" opacity="0.85" />
-        <rect x="41" y="20" width="3" height="2" fill="#E8A832" opacity="0.85" />
-        <rect x="41" y="22" width="3" height="2" fill="#D49228" opacity="0.85" />
-        <rect x="41" y="24" width="3" height="2" fill="#E8A832" opacity="0.85" />
-        <rect x="41" y="26" width="3" height="2" fill="#D49228" opacity="0.85" />
-        <rect x="41" y="28" width="3" height="2" fill="#E8A832" opacity="0.8" />
-        <rect x="41" y="30" width="3" height="2" fill="#D49228" opacity="0.75" />
-        <rect x="41" y="32" width="3" height="2" fill="#C07E20" opacity="0.7" />
-        <rect x="42" y="34" width="2" height="2" fill="#C07E20" opacity="0.65" />
-        {/* Stripe 4 — posterior body, thinner */}
-        <rect x="53" y="16" width="3" height="2" fill="#E8A832" opacity="0.75" />
-        <rect x="53" y="18" width="3" height="2" fill="#D49228" opacity="0.75" />
-        <rect x="53" y="20" width="3" height="2" fill="#E8A832" opacity="0.75" />
-        <rect x="53" y="22" width="3" height="2" fill="#D49228" opacity="0.75" />
-        <rect x="53" y="24" width="3" height="2" fill="#E8A832" opacity="0.75" />
-        <rect x="53" y="26" width="3" height="2" fill="#D49228" opacity="0.75" />
-        <rect x="53" y="28" width="3" height="2" fill="#E8A832" opacity="0.7" />
-        <rect x="53" y="30" width="3" height="2" fill="#C07E20" opacity="0.65" />
-        <rect x="54" y="32" width="2" height="2" fill="#C07E20" opacity="0.6" />
-        {/* Stripe 5 — near caudal peduncle, narrow */}
-        <rect x="64" y="20" width="2" height="2" fill="#E8A832" opacity="0.7" />
-        <rect x="64" y="22" width="2" height="2" fill="#D49228" opacity="0.7" />
-        <rect x="64" y="24" width="2" height="2" fill="#E8A832" opacity="0.7" />
-        <rect x="64" y="26" width="2" height="2" fill="#D49228" opacity="0.7" />
-        <rect x="64" y="28" width="2" height="2" fill="#E8A832" opacity="0.65" />
-        <rect x="64" y="30" width="2" height="2" fill="#C07E20" opacity="0.6" />
+        <path d="M66 22 Q64 32 64 40 Q64 48 66 58" stroke="#E8A832" strokeWidth="5" fill="none" opacity="0.8" strokeLinecap="round" />
+        <path d="M66 22 Q64 32 64 40 Q64 48 66 58" stroke="#C07E20" strokeWidth="3" fill="none" opacity="0.3" strokeLinecap="round" />
 
-        {/* === HEAD — broader, darker blocks at the front === */}
-        <rect x="4" y="18" width="3" height="2" fill="#32220E" />
-        <rect x="4" y="20" width="3" height="2" fill="#32220E" />
-        <rect x="4" y="22" width="3" height="2" fill="#32220E" />
-        <rect x="4" y="24" width="3" height="2" fill="#32220E" />
-        <rect x="4" y="26" width="3" height="2" fill="#32220E" />
-        <rect x="4" y="28" width="3" height="2" fill="#32220E" />
-        <rect x="7" y="16" width="3" height="2" fill="#32220E" />
-        <rect x="7" y="18" width="3" height="2" fill="#3A2816" />
-        <rect x="7" y="20" width="3" height="2" fill="#32220E" />
-        <rect x="7" y="22" width="3" height="2" fill="#3A2816" />
-        <rect x="7" y="24" width="3" height="2" fill="#32220E" />
-        <rect x="7" y="26" width="3" height="2" fill="#3A2816" />
-        <rect x="7" y="28" width="3" height="2" fill="#32220E" />
-        <rect x="7" y="30" width="3" height="2" fill="#32220E" />
-        <rect x="10" y="14" width="3" height="2" fill="#3A2816" />
-        <rect x="10" y="16" width="3" height="2" fill="#32220E" />
-        <rect x="10" y="30" width="3" height="2" fill="#32220E" />
-        <rect x="10" y="32" width="3" height="2" fill="#32220E" />
-        {/* Head top highlight */}
-        <rect x="10" y="14" width="3" height="2" fill="#3A2816" opacity="0.7" />
-        <rect x="13" y="14" width="3" height="2" fill="#3A2816" opacity="0.6" />
-        {/* Interorbital ridge blocks */}
-        <rect x="12" y="14" width="2" height="1" fill="#4A3828" opacity="0.5" />
-        <rect x="14" y="13" width="2" height="1" fill="#4A3828" opacity="0.4" />
-        <rect x="16" y="14" width="2" height="1" fill="#4A3828" opacity="0.5" />
+        {/* Stripe 4 — posterior, thinner */}
+        <path d="M86 24 Q84 34 84 40 Q84 46 86 56" stroke="#D49228" strokeWidth="4" fill="none" opacity="0.7" strokeLinecap="round" />
+        <path d="M86 24 Q84 34 84 40 Q84 46 86 56" stroke="#E8A832" strokeWidth="2" fill="none" opacity="0.3" strokeLinecap="round" />
 
-        {/* === SUCKER MOUTH — dark cluster of blocks on underside of head === */}
-        <rect x="4" y="30" width="3" height="2" fill="#2A1A10" />
-        <rect x="7" y="32" width="3" height="2" fill="#2A1A10" />
-        <rect x="4" y="32" width="3" height="2" fill="#1A0E06" />
-        <rect x="4" y="34" width="3" height="2" fill="#2A1A10" />
-        <rect x="7" y="34" width="3" height="2" fill="#1A0E06" />
-        <rect x="10" y="34" width="3" height="2" fill="#2A1A10" />
-        <rect x="10" y="36" width="3" height="2" fill="#2A1A10" />
-        <rect x="7" y="36" width="3" height="2" fill="#1A0E06" />
-        <rect x="4" y="36" width="3" height="2" fill="#2A1A10" />
-        <rect x="13" y="34" width="2" height="2" fill="#2A1A10" />
-        {/* Inner mouth darker center */}
-        <rect x="6" y="33" width="2" height="2" fill="#1A0E06" />
-        <rect x="8" y="33" width="2" height="2" fill="#1A0E06" />
-        <rect x="10" y="33" width="2" height="2" fill="#1A0E06" />
-        {/* Lip fold blocks */}
-        <rect x="4" y="31" width="2" height="1" fill="#3A2A18" opacity="0.5" />
-        <rect x="12" y="31" width="2" height="1" fill="#3A2A18" opacity="0.5" />
-        <rect x="4" y="37" width="2" height="1" fill="#3A2A18" opacity="0.5" />
-        <rect x="12" y="37" width="2" height="1" fill="#3A2A18" opacity="0.5" />
-        {/* Maxillary barbel blocks */}
-        <rect x="14" y="36" width="2" height="2" fill="#4A3828" opacity="0.5" />
-        <rect x="16" y="38" width="2" height="2" fill="#4A3828" opacity="0.4" />
+        {/* Stripe 5 — near tail, narrowest */}
+        <path d="M104 28 Q102 36 102 40 Q102 44 104 52" stroke="#D49228" strokeWidth="3.5" fill="none" opacity="0.65" strokeLinecap="round" />
+        <path d="M104 28 Q102 36 102 40 Q102 44 104 52" stroke="#C07E20" strokeWidth="1.5" fill="none" opacity="0.25" strokeLinecap="round" />
 
-        {/* === EYE — small dark block cluster with gold iris and white highlight === */}
-        {/* Eye socket */}
-        <rect x="13" y="13" width="2" height="2" fill="#1A0E08" opacity="0.5" />
-        <rect x="15" y="13" width="2" height="2" fill="#1A0E08" opacity="0.5" />
-        <rect x="17" y="13" width="2" height="2" fill="#1A0E08" opacity="0.4" />
-        <rect x="13" y="15" width="2" height="2" fill="#1A0E08" opacity="0.4" />
-        <rect x="17" y="15" width="2" height="2" fill="#1A0E08" opacity="0.4" />
-        {/* Eye globe — dark blocks */}
-        <rect x="14" y="14" width="2" height="2" fill="#0E0808" />
-        <rect x="16" y="14" width="2" height="2" fill="#0E0808" />
-        <rect x="14" y="16" width="2" height="2" fill="#0E0808" />
-        <rect x="16" y="16" width="2" height="2" fill="#0E0808" />
-        {/* Iris — golden-brown blocks */}
-        <rect x="14" y="14" width="2" height="1" fill="#4A3020" />
-        <rect x="16" y="14" width="2" height="1" fill="#4A3020" />
-        <rect x="14" y="17" width="2" height="1" fill="#4A3020" />
-        <rect x="16" y="17" width="2" height="1" fill="#4A3020" />
-        <rect x="13" y="15" width="1" height="2" fill="#4A3020" />
-        <rect x="18" y="15" width="1" height="2" fill="#4A3020" />
-        {/* Omega iris flap blocks */}
-        <rect x="14" y="14" width="1" height="1" fill="#6B5030" />
-        <rect x="15" y="13" width="2" height="1" fill="#6B5030" />
-        <rect x="17" y="14" width="1" height="1" fill="#6B5030" />
-        {/* Pupil — center dark block */}
-        <rect x="15" y="15" width="2" height="2" fill="#0E0808" />
-        {/* Eye shine — white highlight block */}
-        <rect x="16" y="14" width="1" height="1" fill="white" opacity="0.75" />
-        <rect x="15" y="16" width="1" height="1" fill="white" opacity="0.3" />
+        {/* === HEAD — broader, darker front section === */}
+        <path d="M8 36 Q6 38 6 40 Q6 42 8 44 Q10 48 16 50 Q20 52 26 52 Q28 48 28 40 Q28 32 26 28 Q20 28 16 30 Q10 32 8 36 Z" fill="#32220E" />
+        {/* Head contour shading */}
+        <path d="M10 36 Q14 30 22 28 Q26 28 28 32" stroke="#3A2816" strokeWidth="1" fill="none" opacity="0.5" />
+        {/* Interorbital ridge */}
+        <path d="M22 26 Q26 24 30 24" stroke="#4A3828" strokeWidth="1.2" fill="none" opacity="0.4" />
 
-        {/* === CAUDAL PEDUNCLE — narrow blocks connecting body to tail === */}
-        <rect x="72" y="22" width="2" height="2" fill="#2A1C10" />
-        <rect x="74" y="22" width="2" height="2" fill="#2A1C10" />
-        <rect x="76" y="22" width="2" height="2" fill="#1A0F08" />
-        <rect x="72" y="24" width="2" height="2" fill="#2A1C10" />
-        <rect x="74" y="24" width="2" height="2" fill="#2A1C10" />
-        <rect x="76" y="24" width="2" height="2" fill="#1A0F08" />
-        <rect x="74" y="20" width="2" height="2" fill="#1A0F08" />
-        <rect x="74" y="26" width="2" height="2" fill="#1A0F08" />
-        <rect x="78" y="20" width="2" height="2" fill="#1A0F08" />
-        <rect x="78" y="26" width="2" height="2" fill="#1A0F08" />
+        {/* === SUCKER MOUTH — rounded disc on underside === */}
+        <ellipse cx="14" cy="52" rx="10" ry="6" fill="#2A1A10" />
+        <ellipse cx="14" cy="52" rx="7" ry="4" fill="#1A0E06" />
+        {/* Lip folds */}
+        <path d="M6 50 Q14 48 22 50" stroke="#3A2A18" strokeWidth="0.8" fill="none" opacity="0.4" />
+        <path d="M6 54 Q14 56 22 54" stroke="#3A2A18" strokeWidth="0.8" fill="none" opacity="0.4" />
+        {/* Inner mouth texture */}
+        <ellipse cx="14" cy="52" rx="4" ry="2.5" fill="#1A0E06" opacity="0.7" />
+        {/* Maxillary barbels */}
+        <path d="M22 50 Q28 54 32 58" stroke="#4A3828" strokeWidth="1" fill="none" opacity="0.4" strokeLinecap="round" />
+        <path d="M22 52 Q26 56 30 60" stroke="#4A3828" strokeWidth="0.8" fill="none" opacity="0.3" strokeLinecap="round" />
 
-        {/* === ODONTODE TEXTURE — tiny pixel blocks on body plates === */}
-        <rect x="24" y="20" width="1" height="1" fill="#5C4A3A" opacity="0.3" />
-        <rect x="32" y="18" width="1" height="1" fill="#5C4A3A" opacity="0.25" />
-        <rect x="40" y="18" width="1" height="1" fill="#5C4A3A" opacity="0.25" />
-        <rect x="48" y="19" width="1" height="1" fill="#5C4A3A" opacity="0.25" />
-        <rect x="56" y="20" width="1" height="1" fill="#5C4A3A" opacity="0.2" />
-        <rect x="64" y="22" width="1" height="1" fill="#5C4A3A" opacity="0.2" />
-        <rect x="27" y="28" width="1" height="1" fill="#5C4A3A" opacity="0.25" />
-        <rect x="35" y="30" width="1" height="1" fill="#5C4A3A" opacity="0.2" />
-        <rect x="43" y="30" width="1" height="1" fill="#5C4A3A" opacity="0.2" />
-        <rect x="51" y="29" width="1" height="1" fill="#5C4A3A" opacity="0.2" />
-        <rect x="59" y="28" width="1" height="1" fill="#5C4A3A" opacity="0.18" />
-        <rect x="25" y="24" width="1" height="1" fill="#5C4A3A" opacity="0.2" />
-        <rect x="37" y="24" width="1" height="1" fill="#5C4A3A" opacity="0.2" />
-        <rect x="49" y="24" width="1" height="1" fill="#5C4A3A" opacity="0.18" />
-        <rect x="61" y="26" width="1" height="1" fill="#5C4A3A" opacity="0.15" />
+        {/* === EYE — detailed with omega-iris and golden ring === */}
+        {/* Eye socket shadow */}
+        <circle cx="24" cy="30" r="5" fill="#1A0E08" opacity="0.5" />
+        {/* Eye globe */}
+        <circle cx="24" cy="30" r="4" fill="#0E0808" />
+        {/* Iris ring — golden-brown */}
+        <circle cx="24" cy="30" r="3.5" fill="none" stroke="#6B5030" strokeWidth="1.5" />
+        {/* Inner iris warm tone */}
+        <circle cx="24" cy="30" r="2.5" fill="#4A3020" />
+        {/* Omega iris flap — characteristic pleco feature */}
+        <path d="M21 28 Q24 26 27 28" fill="#6B5030" />
+        {/* Pupil */}
+        <circle cx="24" cy="30" r="1.8" fill="#0E0808" />
+        {/* Eye shine */}
+        <circle cx="25.5" cy="28.5" r="1" fill="white" opacity="0.7" />
+        <circle cx="23" cy="31.5" r="0.6" fill="white" opacity="0.25" />
 
-        {/* === BODY HIGHLIGHTS — subtle light blocks on armored surface === */}
-        <rect x="20" y="14" width="2" height="1" fill="white" opacity="0.08" />
-        <rect x="28" y="14" width="2" height="1" fill="white" opacity="0.07" />
-        <rect x="36" y="14" width="2" height="1" fill="white" opacity="0.06" />
-        <rect x="44" y="14" width="2" height="1" fill="white" opacity="0.06" />
-        <rect x="52" y="16" width="2" height="1" fill="white" opacity="0.05" />
-        <rect x="60" y="18" width="2" height="1" fill="white" opacity="0.05" />
+        {/* === CAUDAL PEDUNCLE — narrow section before tail === */}
+        <path d="M116 34 Q122 36 128 38 Q128 42 122 44 Q116 46 116 34 Z" fill="#2A1C10" opacity="0.5" />
+
+        {/* === ODONTODE TEXTURE — tiny thorn-like projections on body === */}
+        {[38, 50, 62, 74, 86, 98, 110].map((ox, i) => (
+          <g key={`odontode-${i}`} opacity={0.2 - i * 0.01}>
+            <circle cx={ox} cy={30 + i * 0.5} r="0.6" fill="#5C4A3A" />
+            <circle cx={ox + 3} cy={44 - i * 0.3} r="0.5" fill="#5C4A3A" />
+            <circle cx={ox - 2} cy={37} r="0.4" fill="#5C4A3A" />
+          </g>
+        ))}
+
+        {/* === BODY HIGHLIGHTS — subtle light reflections on armored surface === */}
+        <path d="M32 26 Q50 22 70 22 Q90 24 106 28" stroke="white" strokeWidth="1.2" fill="none" opacity="0.06" />
+        <path d="M36 28 Q55 24 75 24 Q95 26 110 30" stroke="white" strokeWidth="0.8" fill="none" opacity="0.04" />
+
+        {/* === LATERAL LINE — subtle sensory line along body === */}
+        <path d="M26 38 Q50 34 80 36 Q110 38 126 40" stroke="#4A3828" strokeWidth="0.6" fill="none" opacity="0.2" strokeDasharray="3 2" />
       </g>
     </svg>
   )
@@ -933,7 +524,7 @@ export const PlecoPair = memo(({ containerWidth, containerHeight, theme = 'ocean
           transition: 'left 0.15s linear, top 0.15s linear',
         }}
       >
-        <ClownPlecoSVG id="pleco-1" facingRight={p1Pos.facingRight} size={54} />
+        <ClownPlecoSVG id="pleco-1" facingRight={p1Pos.facingRight} size={72} />
       </div>
       {/* Pleco 2 (mate) */}
       <div
@@ -944,7 +535,7 @@ export const PlecoPair = memo(({ containerWidth, containerHeight, theme = 'ocean
           transition: 'left 0.15s linear, top 0.15s linear',
         }}
       >
-        <ClownPlecoSVG id="pleco-2" facingRight={p2Pos.facingRight} size={48} />
+        <ClownPlecoSVG id="pleco-2" facingRight={p2Pos.facingRight} size={64} />
       </div>
       {/* Hearts when mates meet at the same structure */}
       {showHearts && <PlecoHearts x1={p1Pos.x} x2={p2Pos.x} y1={p1Pos.y} y2={p2Pos.y} />}

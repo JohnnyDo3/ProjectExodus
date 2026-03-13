@@ -3740,6 +3740,45 @@ const DeerSkullWillow = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="84" y="80" width="2" height="2" fill="#A89C84" opacity="0.13" />
     <rect x="102" y="82" width="2" height="2" fill="#8B7D68" opacity="0.1" />
     <rect x="124" y="72" width="2" height="2" fill="#C4B8A0" opacity="0.12" />
+
+    {/* ═══ Deep bone cracks — long fracture lines across skull ═══ */}
+    <rect x="52" y="44" width="1" height="10" fill="#6B5D48" opacity="0.18" />
+    <rect x="53" y="52" width="1" height="6" fill="#6B5D48" opacity="0.15" />
+    <rect x="70" y="42" width="1" height="12" fill="#6B5D48" opacity="0.16" />
+    <rect x="71" y="52" width="1" height="8" fill="#6B5D48" opacity="0.13" />
+    <rect x="100" y="54" width="1" height="14" fill="#6B5D48" opacity="0.14" />
+    <rect x="114" y="62" width="1" height="10" fill="#6B5D48" opacity="0.12" />
+    <rect x="88" y="70" width="1" height="8" fill="#6B5D48" opacity="0.13" />
+    {/* Crack branching */}
+    <rect x="53" y="48" width="4" height="1" fill="#6B5D48" opacity="0.12" />
+    <rect x="71" y="46" width="3" height="1" fill="#6B5D48" opacity="0.11" />
+    <rect x="101" y="60" width="3" height="1" fill="#6B5D48" opacity="0.1" />
+
+    {/* ═══ Antler groove detail — longitudinal ridges ═══ */}
+    <rect x="62" y="22" width="1" height="8" fill="#A09480" opacity="0.25" />
+    <rect x="64" y="14" width="1" height="8" fill="#A09480" opacity="0.22" />
+    <rect x="70" y="6" width="1" height="8" fill="#A09480" opacity="0.2" />
+    <rect x="74" y="-2" width="1" height="8" fill="#A09480" opacity="0.18" />
+    <rect x="54" y="14" width="1" height="8" fill="#A09480" opacity="0.2" />
+    <rect x="50" y="6" width="1" height="8" fill="#A09480" opacity="0.18" />
+
+    {/* ═══ Barnacle clusters on skull ═══ */}
+    <rect x="42" y="56" width="4" height="3" fill="#9CA3AF" opacity="0.3" />
+    <rect x="44" y="58" width="2" height="2" fill="#B0BEC5" opacity="0.25" />
+    <rect x="108" y="68" width="3" height="3" fill="#9CA3AF" opacity="0.25" />
+    <rect x="78" y="82" width="4" height="3" fill="#9CA3AF" opacity="0.2" />
+    <rect x="62" y="38" width="3" height="3" fill="#B0BEC5" opacity="0.2" />
+
+    {/* ═══ Small coral growth on antler base ═══ */}
+    <rect x="58" y="34" width="4" height="3" fill="#E91E63" opacity="0.2" />
+    <rect x="56" y="32" width="3" height="3" fill="#F48FB1" opacity="0.15" />
+    <rect x="84" y="-8" width="3" height="3" fill="#C2185B" opacity="0.15" />
+
+    {/* ═══ Sand/debris at skull base ═══ */}
+    <rect x="36" y="86" width="100" height="4" fill="#C4A862" opacity="0.15" />
+    <rect x="40" y="88" width="20" height="3" fill="#D4B872" opacity="0.12" />
+    <rect x="100" y="88" width="24" height="3" fill="#D4B872" opacity="0.1" />
+    <rect x="70" y="90" width="16" height="2" fill="#B89B52" opacity="0.1" />
   </g>
 ))
 DeerSkullWillow.displayName = 'DeerSkullWillow'
@@ -3758,7 +3797,7 @@ interface LayeredDecoConfig {
     kelps: Array<{ x: number; height: number; variant: 'thin' | 'wide' | 'bushy'; color: string; delay: number }>
   }
   midground: {
-    structures: Array<{ type: string; x: number; y: number }>
+    structures: Array<{ type: string; x: number; y: number; scale?: number }>
   }
   foreground: {
     rocks: Array<{ x: number; y: number; variant: 'small' | 'medium' | 'large'; color: string }>
@@ -3823,7 +3862,7 @@ const OCEAN_LAYOUT: LayeredDecoConfig = {
       { x: 73, y: 240, variant: 'branch', color: '#E91E63' },
       { x: 328, y: 258, variant: 'brain', color: '#AB47BC' },
       { x: 448, y: 242, variant: 'fan', color: '#FF5722' },
-      { x: 642, y: 250, variant: 'branch', color: '#F06292' },
+      { x: 740, y: 250, variant: 'branch', color: '#F06292' },
     ],
     kelps: [
       // Left cluster — thin Vallisneria group near glass edge
@@ -3975,8 +4014,8 @@ const SHIPWRECK_LAYOUT: LayeredDecoConfig = {
     ],
     corals: [
       { x: 308, y: 243, variant: 'branch', color: '#6D4C41' },
-      { x: 432, y: 260, variant: 'brain', color: '#795548' },
-      { x: 588, y: 241, variant: 'fan', color: '#8D6E63' },
+      { x: 500, y: 260, variant: 'brain', color: '#795548' },
+      { x: 760, y: 241, variant: 'fan', color: '#8D6E63' },
     ],
     kelps: [
       // Near-wreck cluster — sparse thin grass (damaged area)
@@ -4037,7 +4076,7 @@ const SAILBOAT_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'sailboat', x: 300, y: 90 },
+      { type: 'sailboat', x: 334, y: 174, scale: 1.8 },
       { type: 'anchor', x: 600, y: 140 },
     ],
   },
@@ -4048,7 +4087,7 @@ const SAILBOAT_LAYOUT: LayeredDecoConfig = {
     ],
     corals: [
       { x: 192, y: 242, variant: 'branch', color: '#FF6D00' },
-      { x: 410, y: 256, variant: 'fan', color: '#FF8A65' },
+      { x: 700, y: 256, variant: 'fan', color: '#FF8A65' },
       { x: 575, y: 244, variant: 'brain', color: '#FFAB91' },
     ],
     kelps: [
@@ -4108,7 +4147,7 @@ const SUBMARINE_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'submarine', x: 260, y: 100 },
+      { type: 'submarine', x: 221, y: 77, scale: 1.9 },
     ],
   },
   foreground: {
@@ -4118,8 +4157,8 @@ const SUBMARINE_LAYOUT: LayeredDecoConfig = {
     ],
     corals: [
       { x: 152, y: 258, variant: 'brain', color: '#795548' },
-      { x: 512, y: 241, variant: 'branch', color: '#6D4C41' },
-      { x: 608, y: 255, variant: 'fan', color: '#8D6E63' },
+      { x: 660, y: 241, variant: 'branch', color: '#6D4C41' },
+      { x: 750, y: 255, variant: 'fan', color: '#8D6E63' },
     ],
     kelps: [
       // Left edge — thin grass pair (sparse, industrial feel)
@@ -4332,8 +4371,8 @@ const CASTLE_LAYOUT: LayeredDecoConfig = {
     ],
     corals: [
       { x: 148, y: 258, variant: 'brain', color: '#795548' },
-      { x: 428, y: 241, variant: 'branch', color: '#6D4C41' },
-      { x: 588, y: 255, variant: 'fan', color: '#8D6E63' },
+      { x: 490, y: 241, variant: 'branch', color: '#6D4C41' },
+      { x: 720, y: 255, variant: 'fan', color: '#8D6E63' },
     ],
     kelps: [
       // Left — thin grass cluster near castle ruins
@@ -4413,9 +4452,9 @@ const PYRAMID_LAYOUT: LayeredDecoConfig = {
       { x: 648, y: 244, variant: 'large', color: '#8B7355' },
     ],
     corals: [
-      { x: 312, y: 243, variant: 'branch', color: '#F06292' },
+      { x: 380, y: 243, variant: 'branch', color: '#F06292' },
       { x: 442, y: 256, variant: 'fan', color: '#E91E63' },
-      { x: 572, y: 246, variant: 'brain', color: '#EC407A' },
+      { x: 710, y: 246, variant: 'brain', color: '#EC407A' },
     ],
     kelps: [
       // Left — thin grass near rock (Egyptian papyrus feel)
@@ -4484,8 +4523,8 @@ const TEMPLE_LAYOUT: LayeredDecoConfig = {
     ],
     corals: [
       { x: 242, y: 243, variant: 'branch', color: '#E64A19' },
-      { x: 452, y: 256, variant: 'brain', color: '#D84315' },
-      { x: 612, y: 244, variant: 'fan', color: '#FF5722' },
+      { x: 380, y: 256, variant: 'brain', color: '#D84315' },
+      { x: 700, y: 244, variant: 'fan', color: '#FF5722' },
     ],
     kelps: [
       // Left — thin grass cluster (zen garden feel)
@@ -4561,10 +4600,10 @@ const ATLANTIS_LAYOUT: LayeredDecoConfig = {
       { x: 688, y: 267, variant: 'medium', color: '#1A5276' },
     ],
     corals: [
-      { x: 208, y: 243, variant: 'branch', color: '#26C6DA' },
-      { x: 292, y: 252, variant: 'fan', color: '#00BCD4' },
-      { x: 442, y: 260, variant: 'brain', color: '#0097A7' },
-      { x: 632, y: 240, variant: 'branch', color: '#4DD0E1' },
+      { x: 55, y: 243, variant: 'branch', color: '#26C6DA' },
+      { x: 420, y: 252, variant: 'fan', color: '#00BCD4' },
+      { x: 500, y: 260, variant: 'brain', color: '#0097A7' },
+      { x: 700, y: 240, variant: 'branch', color: '#4DD0E1' },
     ],
     kelps: [
       // Left — thin teal grass cluster
@@ -4647,7 +4686,7 @@ const STAGNANT_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'deer-skull', x: 230, y: 90 },
+      { type: 'deer-skull', x: 200, y: 55, scale: 2.5 },
     ],
   },
   foreground: {
@@ -4659,8 +4698,8 @@ const STAGNANT_LAYOUT: LayeredDecoConfig = {
     ],
     corals: [
       { x: 128, y: 258, variant: 'brain', color: '#6D4C41' },
-      { x: 342, y: 241, variant: 'branch', color: '#5D4037' },
-      { x: 512, y: 255, variant: 'fan', color: '#795548' },
+      { x: 235, y: 241, variant: 'branch', color: '#5D4037' },
+      { x: 600, y: 255, variant: 'fan', color: '#795548' },
       { x: 672, y: 246, variant: 'brain', color: '#4E342E' },
     ],
     kelps: [
@@ -4718,7 +4757,8 @@ const THEME_LAYOUTS: Record<string, LayeredDecoConfig> = {
 
 // ─── Structure renderer ──────────────────────────────────────────────
 
-function renderStructure(s: { type: string; x: number; y: number }) {
+function renderStructure(s: { type: string; x: number; y: number; scale?: number }) {
+  const structureScale = s.scale ?? 2
   let inner: ReactNode
   switch (s.type) {
     case 'coral-arch': inner = <CoralReefArch x={0} y={0} />; break
@@ -4745,7 +4785,7 @@ function renderStructure(s: { type: string; x: number; y: number }) {
   }
 
   return (
-    <g key={`${s.type}-${s.x}`} transform={`translate(${s.x}, ${s.y}) scale(2)`}>
+    <g key={`${s.type}-${s.x}`} transform={`translate(${s.x}, ${s.y}) scale(${structureScale})`}>
       {inner}
       {/* Scattered pebbles and sand disturbance at base */}
       <rect x="-8" y="58" width="4" height="3" fill="#78716C" opacity="0.3" />

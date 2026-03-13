@@ -178,7 +178,7 @@ export function FishCustomizer({ stockScore, currentCustomization, onSave, onClo
           {tab === 'species' && (
             <div className="space-y-2">
               <p className="text-[10px] text-cyan-500 font-medium mb-3">
-                Choose your guppy evolution. Each tier is a more magnificent guppy variant.
+                All species are unlocked! Tap any fish to select it.
               </p>
               <div className="grid grid-cols-2 gap-2">
                 {ALL_SPECIES.map(sp => {
@@ -198,13 +198,18 @@ export function FishCustomizer({ stockScore, currentCustomization, onSave, onClo
                       <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center">
                         <FishSVG tier={sp.tier} size={36} id={`species-${sp.species}`} />
                       </div>
-                      <div className="text-left">
+                      <div className="text-left min-w-0">
                         <p className="text-xs font-bold text-cyan-200">
                           {sp.name}
                         </p>
                         <p className="text-[9px] text-cyan-600">
                           {sp.description}
                         </p>
+                        {!isSelected && (
+                          <p className="text-[8px] text-emerald-500/70 font-medium mt-0.5">
+                            Unlocked
+                          </p>
+                        )}
                       </div>
                       {isSelected && (
                         <Check className="absolute top-2 right-2 w-3.5 h-3.5 text-cyan-400" />
