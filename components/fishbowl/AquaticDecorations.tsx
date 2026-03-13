@@ -3083,7 +3083,7 @@ AtlanteanObelisk.displayName = 'AtlanteanObelisk'
 // Minecraft technique for maximum detail.
 
 const DeerSkullWillow = memo(({ x, y }: { x: number; y: number }) => (
-  <g>
+  <g transform="rotate(45, 40, 30)">
     {/* ═══ LEFT ANTLER — pixel-block bone construction ═══ */}
     {/* Main beam: rises from skull top-left, curves outward */}
     <rect x="18" y="16" width="4" height="3" fill="#D4C8A8" />
