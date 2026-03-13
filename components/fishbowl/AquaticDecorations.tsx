@@ -77,34 +77,44 @@ export const Rock = memo(({ x, y, variant = 'medium', color = '#6B7280' }: RockP
   const lighter = color === '#6B7280' ? '#9CA3AF' : '#8B939F'
 
   if (variant === 'small') {
+    // ~25×18px bounding box (scaled up from 12×8)
     return (
       <g transform={`translate(${x}, ${y})`}>
-        <rect x="2" y="4" width="8" height="4" fill={color} />
-        <rect x="4" y="2" width="4" height="2" fill={lighter} />
-        <rect x="3" y="4" width="2" height="2" fill={lighter} opacity="0.5" />
+        <rect x="3" y="10" width="20" height="10" fill={color} />
+        <rect x="6" y="5" width="14" height="7" fill={color} />
+        <rect x="9" y="3" width="8" height="4" fill={lighter} />
+        <rect x="7" y="10" width="5" height="5" fill={lighter} opacity="0.5" />
+        <rect x="16" y="12" width="4" height="3" fill={darker} opacity="0.3" />
       </g>
     )
   }
   if (variant === 'large') {
+    // ~70×42px bounding box (scaled up from 32×16)
     return (
       <g transform={`translate(${x}, ${y})`}>
-        <rect x="4" y="8" width="24" height="8" fill={color} />
-        <rect x="6" y="4" width="20" height="6" fill={color} />
-        <rect x="10" y="2" width="12" height="4" fill={lighter} />
-        <rect x="8" y="6" width="4" height="4" fill={lighter} opacity="0.4" />
-        <rect x="18" y="8" width="6" height="4" fill={darker} opacity="0.3" />
-        <rect x="6" y="6" width="3" height="2" fill="#5D8A3C" opacity="0.6" />
-        <rect x="20" y="4" width="4" height="2" fill="#5D8A3C" opacity="0.4" />
+        <rect x="6" y="20" width="60" height="22" fill={color} />
+        <rect x="10" y="12" width="52" height="14" fill={color} />
+        <rect x="18" y="5" width="36" height="12" fill={lighter} />
+        <rect x="14" y="14" width="12" height="10" fill={lighter} opacity="0.4" />
+        <rect x="44" y="20" width="16" height="10" fill={darker} opacity="0.3" />
+        <rect x="10" y="16" width="8" height="5" fill="#5D8A3C" opacity="0.6" />
+        <rect x="50" y="10" width="10" height="5" fill="#5D8A3C" opacity="0.4" />
+        {/* Extra detail at this size — crevice lines */}
+        <rect x="22" y="18" width="1" height="8" fill={darker} opacity="0.15" />
+        <rect x="38" y="14" width="1" height="10" fill={darker} opacity="0.12" />
       </g>
     )
   }
+  // Medium: ~42×28px bounding box (scaled up from 20×12)
   return (
     <g transform={`translate(${x}, ${y})`}>
-      <rect x="2" y="6" width="16" height="6" fill={color} />
-      <rect x="4" y="4" width="12" height="4" fill={color} />
-      <rect x="6" y="2" width="8" height="4" fill={lighter} />
-      <rect x="5" y="5" width="3" height="3" fill={lighter} opacity="0.4" />
-      <rect x="12" y="6" width="4" height="3" fill={darker} opacity="0.3" />
+      <rect x="4" y="14" width="40" height="16" fill={color} />
+      <rect x="8" y="8" width="32" height="12" fill={color} />
+      <rect x="14" y="4" width="20" height="10" fill={lighter} />
+      <rect x="12" y="12" width="8" height="8" fill={lighter} opacity="0.4" />
+      <rect x="30" y="14" width="10" height="8" fill={darker} opacity="0.3" />
+      {/* Moss patch */}
+      <rect x="8" y="10" width="6" height="4" fill="#5D8A3C" opacity="0.45" />
     </g>
   )
 })
@@ -269,42 +279,67 @@ interface CoralProps { x: number; y: number; variant?: 'branch' | 'brain' | 'fan
 
 export const Coral = memo(({ x, y, variant = 'branch', color = '#E91E63' }: CoralProps) => {
   const lighter = '#F48FB1'
+  const darker = color === '#E91E63' ? '#C2185B' : '#8B4A52'
 
   if (variant === 'branch') {
+    // ~45×50px bounding box (scaled up from ~20×22)
     return (
       <g transform={`translate(${x}, ${y})`}>
-        <rect x="6" y="16" width="8" height="4" fill={color} />
-        <rect x="8" y="10" width="4" height="6" fill={color} />
-        <rect x="4" y="6" width="4" height="6" fill={color} />
-        <rect x="12" y="4" width="4" height="8" fill={color} />
-        <rect x="2" y="2" width="4" height="4" fill={lighter} />
-        <rect x="14" y="0" width="4" height="4" fill={lighter} />
-        <rect x="8" y="6" width="4" height="4" fill={lighter} opacity="0.5" />
-        <rect x="3" y="0" width="2" height="2" fill={lighter} opacity="0.7" />
-        <rect x="15" y="-2" width="2" height="2" fill={lighter} opacity="0.7" />
+        {/* Base */}
+        <rect x="12" y="38" width="22" height="12" fill={color} />
+        {/* Trunk */}
+        <rect x="16" y="24" width="12" height="16" fill={color} />
+        {/* Left branch */}
+        <rect x="6" y="14" width="12" height="16" fill={color} />
+        <rect x="3" y="6" width="10" height="10" fill={lighter} />
+        <rect x="5" y="2" width="6" height="6" fill={lighter} opacity="0.8" />
+        {/* Right branch */}
+        <rect x="28" y="10" width="12" height="20" fill={color} />
+        <rect x="30" y="2" width="10" height="10" fill={lighter} />
+        <rect x="33" y="-2" width="6" height="6" fill={lighter} opacity="0.8" />
+        {/* Middle highlight */}
+        <rect x="18" y="16" width="8" height="8" fill={lighter} opacity="0.5" />
+        {/* Polyp dots */}
+        <rect x="7" y="10" width="3" height="3" fill={lighter} opacity="0.6" />
+        <rect x="32" y="6" width="3" height="3" fill={lighter} opacity="0.6" />
+        <rect x="20" y="28" width="3" height="3" fill={darker} opacity="0.3" />
       </g>
     )
   }
   if (variant === 'brain') {
+    // ~50×40px bounding box (scaled up from ~24×16)
     return (
       <g transform={`translate(${x}, ${y})`}>
-        <rect x="4" y="8" width="16" height="8" fill={color} />
-        <rect x="6" y="4" width="12" height="6" fill={color} />
-        <rect x="8" y="2" width="8" height="4" fill={lighter} />
-        <rect x="8" y="6" width="8" height="1" fill={lighter} opacity="0.4" />
-        <rect x="6" y="10" width="12" height="1" fill={lighter} opacity="0.4" />
-        <rect x="8" y="14" width="8" height="1" fill={lighter} opacity="0.3" />
+        <rect x="6" y="20" width="42" height="20" fill={color} />
+        <rect x="10" y="10" width="34" height="16" fill={color} />
+        <rect x="16" y="4" width="22" height="10" fill={lighter} />
+        {/* Brain meander ridges */}
+        <rect x="16" y="14" width="22" height="2" fill={lighter} opacity="0.45" />
+        <rect x="10" y="22" width="34" height="2" fill={lighter} opacity="0.4" />
+        <rect x="14" y="30" width="26" height="2" fill={lighter} opacity="0.35" />
+        <rect x="16" y="38" width="22" height="2" fill={lighter} opacity="0.3" />
+        {/* Polyp highlights */}
+        <rect x="12" y="16" width="3" height="3" fill={lighter} opacity="0.35" />
+        <rect x="34" y="24" width="3" height="3" fill={lighter} opacity="0.3" />
       </g>
     )
   }
+  // Fan variant: ~45×50px bounding box (scaled up from ~20×20)
   return (
     <g transform={`translate(${x}, ${y})`}>
-      <rect x="8" y="14" width="4" height="6" fill={color} />
-      <rect x="2" y="6" width="16" height="8" fill={color} opacity="0.8" />
-      <rect x="4" y="2" width="12" height="6" fill={lighter} opacity="0.6" />
-      <rect x="6" y="0" width="8" height="4" fill={lighter} opacity="0.4" />
-      <rect x="6" y="8" width="2" height="2" fill="transparent" />
-      <rect x="12" y="6" width="2" height="2" fill="transparent" />
+      {/* Stem */}
+      <rect x="18" y="34" width="10" height="16" fill={color} />
+      {/* Fan body */}
+      <rect x="4" y="14" width="40" height="22" fill={color} opacity="0.8" />
+      <rect x="8" y="6" width="32" height="14" fill={lighter} opacity="0.6" />
+      <rect x="12" y="0" width="22" height="10" fill={lighter} opacity="0.4" />
+      {/* Fan holes (transparent polyp cups) */}
+      <rect x="14" y="20" width="4" height="4" fill="transparent" />
+      <rect x="28" y="16" width="4" height="4" fill="transparent" />
+      <rect x="20" y="10" width="4" height="4" fill="transparent" />
+      {/* Edge detail */}
+      <rect x="4" y="14" width="2" height="22" fill={darker} opacity="0.2" />
+      <rect x="42" y="14" width="2" height="22" fill={darker} opacity="0.15" />
     </g>
   )
 })
@@ -3398,7 +3433,7 @@ DeerSkullWillow.displayName = 'DeerSkullWillow'
 // THEMED LAYOUT CONFIGS
 // Two-layer depth system with z-axis perspective (top = back of tank):
 //   midground  (z-12): plants rooted at back sand (baseY=240) + structures (same SVG for correct layering)
-//   foreground (z-25): rocks, corals, tiny grass-like plants at front glass (baseY=305)
+//   foreground (z-25): rocks, corals, aquatic plants at front glass (baseY=305) — scaled ~2.5x for prominence
 // ═══════════════════════════════════════════════════════════════════════
 
 interface LayeredDecoConfig {
@@ -3465,28 +3500,35 @@ const OCEAN_LAYOUT: LayeredDecoConfig = {
   },
   foreground: {
     rocks: [
-      { x: 50, y: 278, variant: 'medium', color: '#78716C' },
-      { x: 680, y: 280, variant: 'small', color: '#78716C' },
+      { x: 50, y: 260, variant: 'medium', color: '#78716C' },
+      { x: 680, y: 268, variant: 'small', color: '#78716C' },
     ],
     corals: [
-      { x: 80, y: 274, variant: 'branch', color: '#E91E63' },
-      { x: 320, y: 278, variant: 'brain', color: '#AB47BC' },
-      { x: 440, y: 276, variant: 'fan', color: '#FF5722' },
-      { x: 650, y: 274, variant: 'branch', color: '#F06292' },
+      { x: 80, y: 244, variant: 'branch', color: '#E91E63' },
+      { x: 320, y: 252, variant: 'brain', color: '#AB47BC' },
+      { x: 440, y: 246, variant: 'fan', color: '#FF5722' },
+      { x: 650, y: 244, variant: 'branch', color: '#F06292' },
     ],
     kelps: [
-      { x: 10, height: 12, variant: 'thin', color: '#388E3C', delay: 0.2 },
-      { x: 40, height: 10, variant: 'thin', color: '#4CAF50', delay: 0.7 },
-      { x: 100, height: 14, variant: 'wide', color: '#2E7D32', delay: 1.3 },
-      { x: 200, height: 12, variant: 'thin', color: '#388E3C', delay: 1.0 },
-      { x: 280, height: 10, variant: 'thin', color: '#43A047', delay: 0.4 },
-      { x: 350, height: 14, variant: 'wide', color: '#1B5E20', delay: 1.8 },
-      { x: 460, height: 10, variant: 'thin', color: '#2E7D32', delay: 1.5 },
-      { x: 540, height: 12, variant: 'thin', color: '#4CAF50', delay: 0.9 },
-      { x: 620, height: 10, variant: 'wide', color: '#388E3C', delay: 0.3 },
-      { x: 690, height: 14, variant: 'thin', color: '#2E7D32', delay: 1.1 },
-      { x: 750, height: 10, variant: 'thin', color: '#43A047', delay: 0.7 },
-      { x: 780, height: 12, variant: 'thin', color: '#1B5E20', delay: 1.6 },
+      // Left cluster — thin Vallisneria group near glass edge
+      { x: 8, height: 36, variant: 'thin', color: '#388E3C', delay: 0.2 },
+      { x: 18, height: 30, variant: 'thin', color: '#4CAF50', delay: 0.7 },
+      { x: 28, height: 34, variant: 'thin', color: '#388E3C', delay: 0.4 },
+      // Left-center cluster — Amazon Sword rosettes
+      { x: 95, height: 36, variant: 'wide', color: '#2E7D32', delay: 1.3 },
+      { x: 108, height: 30, variant: 'wide', color: '#1B5E20', delay: 0.8 },
+      // --- open swim lane ---
+      // Center-left — thin grass accent
+      { x: 270, height: 26, variant: 'thin', color: '#43A047', delay: 0.4 },
+      { x: 280, height: 30, variant: 'thin', color: '#388E3C', delay: 1.0 },
+      // --- open swim lane ---
+      // Center-right — wide Amazon Swords
+      { x: 530, height: 36, variant: 'wide', color: '#388E3C', delay: 0.9 },
+      { x: 542, height: 30, variant: 'wide', color: '#2E7D32', delay: 0.3 },
+      // Right cluster — thin Vallisneria carpet
+      { x: 690, height: 36, variant: 'thin', color: '#2E7D32', delay: 1.1 },
+      { x: 700, height: 30, variant: 'thin', color: '#43A047', delay: 0.7 },
+      { x: 710, height: 34, variant: 'thin', color: '#1B5E20', delay: 1.6 },
     ],
   },
 }
@@ -3533,28 +3575,35 @@ const TROPICAL_LAYOUT: LayeredDecoConfig = {
   },
   foreground: {
     rocks: [
-      { x: 80, y: 280, variant: 'small', color: '#A8A29E' },
-      { x: 600, y: 278, variant: 'medium', color: '#78716C' },
+      { x: 80, y: 268, variant: 'small', color: '#A8A29E' },
+      { x: 600, y: 260, variant: 'medium', color: '#78716C' },
     ],
     corals: [
-      { x: 120, y: 274, variant: 'branch', color: '#FF6D00' },
-      { x: 230, y: 278, variant: 'brain', color: '#FF4081' },
-      { x: 310, y: 276, variant: 'fan', color: '#FF1744' },
-      { x: 560, y: 274, variant: 'branch', color: '#FF9100' },
+      { x: 120, y: 244, variant: 'branch', color: '#FF6D00' },
+      { x: 230, y: 252, variant: 'brain', color: '#FF4081' },
+      { x: 310, y: 246, variant: 'fan', color: '#FF1744' },
+      { x: 560, y: 244, variant: 'branch', color: '#FF9100' },
     ],
     kelps: [
-      { x: 10, height: 14, variant: 'thin', color: '#69F0AE', delay: 0.2 },
-      { x: 50, height: 12, variant: 'wide', color: '#00E676', delay: 0.6 },
-      { x: 100, height: 10, variant: 'thin', color: '#B9F6CA', delay: 1.3 },
-      { x: 180, height: 14, variant: 'thin', color: '#69F0AE', delay: 0.4 },
-      { x: 260, height: 10, variant: 'wide', color: '#76FF03', delay: 1.0 },
-      { x: 340, height: 12, variant: 'thin', color: '#00E676', delay: 1.7 },
-      { x: 420, height: 10, variant: 'thin', color: '#B9F6CA', delay: 0.8 },
-      { x: 520, height: 14, variant: 'wide', color: '#69F0AE', delay: 0.5 },
-      { x: 610, height: 10, variant: 'thin', color: '#76FF03', delay: 1.4 },
-      { x: 700, height: 12, variant: 'thin', color: '#00E676', delay: 0.3 },
-      { x: 750, height: 10, variant: 'wide', color: '#69F0AE', delay: 0.9 },
-      { x: 780, height: 14, variant: 'thin', color: '#B9F6CA', delay: 1.6 },
+      // Left cluster — bushy Rotala group
+      { x: 8, height: 36, variant: 'bushy', color: '#69F0AE', delay: 0.2 },
+      { x: 22, height: 30, variant: 'bushy', color: '#00E676', delay: 0.6 },
+      // Left-mid — wide sword pair
+      { x: 90, height: 30, variant: 'wide', color: '#00E676', delay: 1.3 },
+      { x: 104, height: 36, variant: 'wide', color: '#76FF03', delay: 0.4 },
+      // --- open swim lane ---
+      // Center-left — thin Vallisneria trio
+      { x: 250, height: 36, variant: 'thin', color: '#69F0AE', delay: 1.0 },
+      { x: 260, height: 30, variant: 'thin', color: '#00E676', delay: 1.7 },
+      { x: 270, height: 34, variant: 'thin', color: '#B9F6CA', delay: 0.8 },
+      // --- open swim lane ---
+      // Right-mid — wide swords near rock
+      { x: 510, height: 36, variant: 'wide', color: '#69F0AE', delay: 0.5 },
+      { x: 524, height: 30, variant: 'wide', color: '#76FF03', delay: 1.4 },
+      // Right cluster — thin grass carpet
+      { x: 700, height: 30, variant: 'thin', color: '#00E676', delay: 0.3 },
+      { x: 710, height: 36, variant: 'thin', color: '#69F0AE', delay: 0.9 },
+      { x: 720, height: 26, variant: 'thin', color: '#B9F6CA', delay: 1.6 },
     ],
   },
 }
@@ -3605,24 +3654,32 @@ const SHIPWRECK_LAYOUT: LayeredDecoConfig = {
   },
   foreground: {
     rocks: [
-      { x: 30, y: 276, variant: 'large', color: '#57534E' },
-      { x: 680, y: 278, variant: 'medium', color: '#57534E' },
+      { x: 30, y: 250, variant: 'large', color: '#57534E' },
+      { x: 680, y: 260, variant: 'medium', color: '#57534E' },
     ],
     corals: [
-      { x: 300, y: 278, variant: 'branch', color: '#6D4C41' },
-      { x: 440, y: 280, variant: 'brain', color: '#795548' },
-      { x: 580, y: 276, variant: 'fan', color: '#8D6E63' },
+      { x: 300, y: 248, variant: 'branch', color: '#6D4C41' },
+      { x: 440, y: 254, variant: 'brain', color: '#795548' },
+      { x: 580, y: 246, variant: 'fan', color: '#8D6E63' },
     ],
     kelps: [
-      { x: 80, height: 12, variant: 'thin', color: '#2E7D32', delay: 0.2 },
-      { x: 160, height: 10, variant: 'wide', color: '#33691E', delay: 0.9 },
-      { x: 200, height: 14, variant: 'thin', color: '#558B2F', delay: 0.5 },
-      { x: 320, height: 10, variant: 'thin', color: '#2E7D32', delay: 1.3 },
-      { x: 460, height: 12, variant: 'wide', color: '#1B5E20', delay: 0.7 },
-      { x: 520, height: 10, variant: 'thin', color: '#33691E', delay: 0.8 },
-      { x: 620, height: 14, variant: 'thin', color: '#2E7D32', delay: 1.5 },
-      { x: 700, height: 10, variant: 'wide', color: '#558B2F', delay: 0.4 },
-      { x: 750, height: 12, variant: 'thin', color: '#2E7D32', delay: 0.3 },
+      // Near-wreck cluster — sparse thin grass (damaged area)
+      { x: 155, height: 26, variant: 'thin', color: '#558B2F', delay: 0.9 },
+      { x: 165, height: 30, variant: 'thin', color: '#2E7D32', delay: 0.5 },
+      // Mid-left — wide swords cluster
+      { x: 310, height: 36, variant: 'wide', color: '#1B5E20', delay: 1.3 },
+      { x: 324, height: 30, variant: 'wide', color: '#33691E', delay: 0.7 },
+      // --- open swim lane ---
+      // Center — thin grass patch
+      { x: 455, height: 30, variant: 'thin', color: '#2E7D32', delay: 0.8 },
+      { x: 465, height: 36, variant: 'thin', color: '#33691E', delay: 1.5 },
+      { x: 475, height: 26, variant: 'thin', color: '#2E7D32', delay: 0.3 },
+      // --- open swim lane ---
+      // Right cluster — wide swords near treasure
+      { x: 695, height: 30, variant: 'wide', color: '#558B2F', delay: 0.4 },
+      { x: 708, height: 36, variant: 'wide', color: '#2E7D32', delay: 1.0 },
+      // Far right edge — thin accent
+      { x: 755, height: 30, variant: 'thin', color: '#2E7D32', delay: 0.3 },
     ],
   },
 }
@@ -3670,24 +3727,31 @@ const SAILBOAT_LAYOUT: LayeredDecoConfig = {
   },
   foreground: {
     rocks: [
-      { x: 80, y: 278, variant: 'medium', color: '#78716C' },
-      { x: 680, y: 276, variant: 'medium', color: '#57534E' },
+      { x: 80, y: 260, variant: 'medium', color: '#78716C' },
+      { x: 680, y: 260, variant: 'medium', color: '#57534E' },
     ],
     corals: [
-      { x: 180, y: 276, variant: 'branch', color: '#FF6D00' },
-      { x: 420, y: 278, variant: 'fan', color: '#FF8A65' },
-      { x: 560, y: 274, variant: 'brain', color: '#FFAB91' },
+      { x: 180, y: 246, variant: 'branch', color: '#FF6D00' },
+      { x: 420, y: 248, variant: 'fan', color: '#FF8A65' },
+      { x: 560, y: 248, variant: 'brain', color: '#FFAB91' },
     ],
     kelps: [
-      { x: 10, height: 12, variant: 'thin', color: '#388E3C', delay: 0.2 },
-      { x: 30, height: 10, variant: 'wide', color: '#43A047', delay: 0.6 },
-      { x: 160, height: 14, variant: 'thin', color: '#4CAF50', delay: 1.2 },
-      { x: 230, height: 10, variant: 'thin', color: '#388E3C', delay: 0.4 },
-      { x: 280, height: 12, variant: 'wide', color: '#2E7D32', delay: 1.0 },
-      { x: 380, height: 10, variant: 'thin', color: '#43A047', delay: 1.6 },
-      { x: 500, height: 14, variant: 'thin', color: '#388E3C', delay: 0.8 },
-      { x: 580, height: 10, variant: 'wide', color: '#4CAF50', delay: 0.3 },
-      { x: 650, height: 12, variant: 'thin', color: '#2E7D32', delay: 1.4 },
+      // Left edge — thin Vallisneria cluster
+      { x: 8, height: 30, variant: 'thin', color: '#388E3C', delay: 0.2 },
+      { x: 18, height: 36, variant: 'thin', color: '#4CAF50', delay: 0.6 },
+      { x: 28, height: 26, variant: 'thin', color: '#388E3C', delay: 1.2 },
+      // Left-center — wide Amazon Sword pair
+      { x: 155, height: 36, variant: 'wide', color: '#2E7D32', delay: 0.4 },
+      { x: 168, height: 30, variant: 'wide', color: '#43A047', delay: 1.0 },
+      // --- open swim lane ---
+      // Center — bushy Rotala accent
+      { x: 375, height: 36, variant: 'bushy', color: '#43A047', delay: 1.6 },
+      { x: 388, height: 30, variant: 'bushy', color: '#388E3C', delay: 0.8 },
+      // --- open swim lane ---
+      // Right — thin grass cluster
+      { x: 645, height: 30, variant: 'thin', color: '#2E7D32', delay: 1.4 },
+      { x: 655, height: 36, variant: 'thin', color: '#4CAF50', delay: 0.3 },
+      { x: 665, height: 26, variant: 'thin', color: '#388E3C', delay: 0.9 },
     ],
   },
 }
@@ -3733,25 +3797,32 @@ const SUBMARINE_LAYOUT: LayeredDecoConfig = {
   },
   foreground: {
     rocks: [
-      { x: 50, y: 276, variant: 'large', color: '#44403C' },
-      { x: 700, y: 278, variant: 'medium', color: '#44403C' },
+      { x: 50, y: 250, variant: 'large', color: '#44403C' },
+      { x: 700, y: 260, variant: 'medium', color: '#44403C' },
     ],
     corals: [
-      { x: 160, y: 278, variant: 'brain', color: '#795548' },
-      { x: 500, y: 276, variant: 'branch', color: '#6D4C41' },
-      { x: 620, y: 280, variant: 'fan', color: '#8D6E63' },
+      { x: 160, y: 252, variant: 'brain', color: '#795548' },
+      { x: 500, y: 246, variant: 'branch', color: '#6D4C41' },
+      { x: 620, y: 250, variant: 'fan', color: '#8D6E63' },
     ],
     kelps: [
-      { x: 20, height: 12, variant: 'thin', color: '#2E7D32', delay: 0.3 },
-      { x: 130, height: 10, variant: 'wide', color: '#1B5E20', delay: 0.7 },
-      { x: 200, height: 14, variant: 'thin', color: '#33691E', delay: 1.0 },
-      { x: 240, height: 10, variant: 'thin', color: '#2E7D32', delay: 1.4 },
-      { x: 380, height: 12, variant: 'wide', color: '#1B5E20', delay: 0.5 },
-      { x: 480, height: 10, variant: 'thin', color: '#2E7D32', delay: 1.8 },
-      { x: 560, height: 14, variant: 'thin', color: '#33691E', delay: 0.9 },
-      { x: 640, height: 10, variant: 'wide', color: '#2E7D32', delay: 0.2 },
-      { x: 680, height: 12, variant: 'thin', color: '#1B5E20', delay: 1.2 },
-      { x: 760, height: 10, variant: 'thin', color: '#2E7D32', delay: 1.6 },
+      // Left edge — thin grass pair (sparse, industrial feel)
+      { x: 15, height: 30, variant: 'thin', color: '#2E7D32', delay: 0.3 },
+      { x: 25, height: 26, variant: 'thin', color: '#33691E', delay: 0.7 },
+      // Near brain coral — wide swords
+      { x: 125, height: 36, variant: 'wide', color: '#1B5E20', delay: 1.0 },
+      { x: 138, height: 30, variant: 'wide', color: '#2E7D32', delay: 1.4 },
+      // --- open swim lane ---
+      // Mid — sparse thin cluster
+      { x: 370, height: 30, variant: 'thin', color: '#1B5E20', delay: 0.5 },
+      { x: 380, height: 36, variant: 'thin', color: '#2E7D32', delay: 1.8 },
+      { x: 390, height: 26, variant: 'thin', color: '#33691E', delay: 0.9 },
+      // --- open swim lane ---
+      // Right — wide pair near fan coral
+      { x: 635, height: 30, variant: 'wide', color: '#2E7D32', delay: 0.2 },
+      { x: 648, height: 36, variant: 'wide', color: '#1B5E20', delay: 1.2 },
+      // Far right — thin accent
+      { x: 760, height: 30, variant: 'thin', color: '#2E7D32', delay: 1.6 },
     ],
   },
 }
@@ -3839,39 +3910,57 @@ const MINIMAL_LAYOUT: LayeredDecoConfig = {
   },
   foreground: {
     rocks: [
-      { x: 170, y: 282, variant: 'small', color: '#78716C' },
-      { x: 400, y: 280, variant: 'small', color: '#6B7280' },
-      { x: 600, y: 281, variant: 'small', color: '#78716C' },
+      { x: 170, y: 268, variant: 'small', color: '#78716C' },
+      { x: 400, y: 268, variant: 'small', color: '#6B7280' },
+      { x: 600, y: 268, variant: 'small', color: '#78716C' },
     ],
     corals: [
-      { x: 100, y: 278, variant: 'branch', color: '#81C784' },
-      { x: 280, y: 278, variant: 'branch', color: '#81C784' },
-      { x: 450, y: 276, variant: 'fan', color: '#A5D6A7' },
-      { x: 650, y: 277, variant: 'fan', color: '#81C784' },
+      { x: 100, y: 248, variant: 'branch', color: '#81C784' },
+      { x: 280, y: 248, variant: 'branch', color: '#81C784' },
+      { x: 450, y: 246, variant: 'fan', color: '#A5D6A7' },
+      { x: 650, y: 247, variant: 'fan', color: '#81C784' },
     ],
     kelps: [
-      // Dense foreground fringe
-      { x: 10, height: 14, variant: 'thin', color: '#388E3C', delay: 0.3 },
-      { x: 40, height: 12, variant: 'wide', color: '#43A047', delay: 0.7 },
-      { x: 70, height: 16, variant: 'bushy', color: '#4CAF50', delay: 1.2 },
-      { x: 100, height: 12, variant: 'thin', color: '#388E3C', delay: 0.5 },
-      { x: 140, height: 14, variant: 'wide', color: '#2E7D32', delay: 0.9 },
-      { x: 180, height: 10, variant: 'thin', color: '#43A047', delay: 1.5 },
-      { x: 220, height: 14, variant: 'bushy', color: '#33691E', delay: 0.4 },
-      { x: 260, height: 12, variant: 'wide', color: '#388E3C', delay: 1.0 },
-      { x: 300, height: 16, variant: 'thin', color: '#4CAF50', delay: 0.6 },
-      { x: 340, height: 12, variant: 'bushy', color: '#2E7D32', delay: 1.3 },
-      { x: 380, height: 14, variant: 'wide', color: '#43A047', delay: 0.2 },
-      { x: 420, height: 10, variant: 'thin', color: '#388E3C', delay: 0.8 },
-      { x: 460, height: 14, variant: 'bushy', color: '#33691E', delay: 1.4 },
-      { x: 500, height: 12, variant: 'wide', color: '#4CAF50', delay: 0.3 },
-      { x: 540, height: 16, variant: 'thin', color: '#2E7D32', delay: 0.9 },
-      { x: 580, height: 12, variant: 'wide', color: '#388E3C', delay: 0.5 },
-      { x: 620, height: 14, variant: 'bushy', color: '#43A047', delay: 1.1 },
-      { x: 660, height: 10, variant: 'thin', color: '#4CAF50', delay: 0.6 },
-      { x: 700, height: 14, variant: 'wide', color: '#33691E', delay: 1.3 },
-      { x: 740, height: 16, variant: 'bushy', color: '#2E7D32', delay: 0.2 },
-      { x: 780, height: 12, variant: 'thin', color: '#388E3C', delay: 0.8 },
+      // Dense planted foreground — species clustered in Dutch aquascaping rows
+      // Left bushy Rotala cluster
+      { x: 8, height: 36, variant: 'bushy', color: '#4CAF50', delay: 0.3 },
+      { x: 22, height: 40, variant: 'bushy', color: '#33691E', delay: 0.7 },
+      { x: 36, height: 34, variant: 'bushy', color: '#2E7D32', delay: 1.2 },
+      // Wide Amazon Sword row
+      { x: 58, height: 36, variant: 'wide', color: '#43A047', delay: 0.5 },
+      { x: 72, height: 30, variant: 'wide', color: '#2E7D32', delay: 0.9 },
+      { x: 86, height: 34, variant: 'wide', color: '#388E3C', delay: 1.5 },
+      // Thin Vallisneria row
+      { x: 130, height: 40, variant: 'thin', color: '#388E3C', delay: 0.4 },
+      { x: 140, height: 36, variant: 'thin', color: '#4CAF50', delay: 1.0 },
+      { x: 150, height: 30, variant: 'thin', color: '#2E7D32', delay: 0.6 },
+      { x: 160, height: 34, variant: 'thin', color: '#43A047', delay: 1.3 },
+      // Mid bushy cluster
+      { x: 215, height: 36, variant: 'bushy', color: '#33691E', delay: 0.2 },
+      { x: 228, height: 40, variant: 'bushy', color: '#388E3C', delay: 0.8 },
+      { x: 242, height: 34, variant: 'bushy', color: '#2E7D32', delay: 1.4 },
+      // Mid wide swords
+      { x: 295, height: 36, variant: 'wide', color: '#4CAF50', delay: 0.3 },
+      { x: 308, height: 30, variant: 'wide', color: '#43A047', delay: 0.9 },
+      // Center thin grass band
+      { x: 360, height: 36, variant: 'thin', color: '#388E3C', delay: 0.5 },
+      { x: 370, height: 40, variant: 'thin', color: '#2E7D32', delay: 1.1 },
+      { x: 380, height: 30, variant: 'thin', color: '#4CAF50', delay: 0.2 },
+      // Right-center bushy
+      { x: 458, height: 36, variant: 'bushy', color: '#33691E', delay: 0.8 },
+      { x: 472, height: 40, variant: 'bushy', color: '#43A047', delay: 0.6 },
+      // Right wide cluster
+      { x: 535, height: 36, variant: 'wide', color: '#388E3C', delay: 0.9 },
+      { x: 548, height: 30, variant: 'wide', color: '#2E7D32', delay: 0.5 },
+      { x: 562, height: 34, variant: 'wide', color: '#43A047', delay: 1.1 },
+      // Right thin carpet
+      { x: 620, height: 36, variant: 'thin', color: '#4CAF50', delay: 0.6 },
+      { x: 630, height: 40, variant: 'thin', color: '#2E7D32', delay: 1.3 },
+      { x: 640, height: 30, variant: 'thin', color: '#388E3C', delay: 0.2 },
+      // Far right bushy
+      { x: 735, height: 40, variant: 'bushy', color: '#2E7D32', delay: 0.8 },
+      { x: 748, height: 36, variant: 'bushy', color: '#33691E', delay: 0.4 },
+      { x: 762, height: 30, variant: 'bushy', color: '#388E3C', delay: 1.0 },
     ],
   },
 }
@@ -3922,24 +4011,33 @@ const CASTLE_LAYOUT: LayeredDecoConfig = {
   },
   foreground: {
     rocks: [
-      { x: 60, y: 276, variant: 'large', color: '#57534E' },
-      { x: 700, y: 278, variant: 'medium', color: '#57534E' },
+      { x: 60, y: 250, variant: 'large', color: '#57534E' },
+      { x: 700, y: 260, variant: 'medium', color: '#57534E' },
     ],
     corals: [
-      { x: 140, y: 278, variant: 'brain', color: '#795548' },
-      { x: 420, y: 276, variant: 'branch', color: '#6D4C41' },
-      { x: 600, y: 280, variant: 'fan', color: '#8D6E63' },
+      { x: 140, y: 252, variant: 'brain', color: '#795548' },
+      { x: 420, y: 246, variant: 'branch', color: '#6D4C41' },
+      { x: 600, y: 250, variant: 'fan', color: '#8D6E63' },
     ],
     kelps: [
-      { x: 20, height: 12, variant: 'thin', color: '#2E7D32', delay: 0.3 },
-      { x: 100, height: 10, variant: 'wide', color: '#33691E', delay: 0.8 },
-      { x: 180, height: 14, variant: 'thin', color: '#1B5E20', delay: 1.2 },
-      { x: 250, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.5 },
-      { x: 380, height: 12, variant: 'wide', color: '#33691E', delay: 1.6 },
-      { x: 470, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.2 },
-      { x: 530, height: 14, variant: 'thin', color: '#1B5E20', delay: 0.9 },
-      { x: 650, height: 10, variant: 'wide', color: '#2E7D32', delay: 1.4 },
-      { x: 760, height: 12, variant: 'thin', color: '#33691E', delay: 0.7 },
+      // Left — thin grass cluster near castle ruins
+      { x: 15, height: 30, variant: 'thin', color: '#2E7D32', delay: 0.3 },
+      { x: 25, height: 36, variant: 'thin', color: '#1B5E20', delay: 0.8 },
+      { x: 35, height: 26, variant: 'thin', color: '#33691E', delay: 1.2 },
+      // Near brain coral — wide Amazon Swords
+      { x: 95, height: 36, variant: 'wide', color: '#33691E', delay: 0.5 },
+      { x: 108, height: 30, variant: 'wide', color: '#2E7D32', delay: 1.6 },
+      // --- open swim lane ---
+      // Mid — thin accent pair
+      { x: 370, height: 30, variant: 'thin', color: '#2E7D32', delay: 0.2 },
+      { x: 380, height: 36, variant: 'thin', color: '#1B5E20', delay: 0.9 },
+      // --- open swim lane ---
+      // Right — wide pair near fan coral
+      { x: 645, height: 36, variant: 'wide', color: '#2E7D32', delay: 1.4 },
+      { x: 658, height: 30, variant: 'wide', color: '#33691E', delay: 0.7 },
+      // Far right — thin grass
+      { x: 755, height: 30, variant: 'thin', color: '#33691E', delay: 0.4 },
+      { x: 765, height: 36, variant: 'thin', color: '#2E7D32', delay: 1.0 },
     ],
   },
 }
@@ -3995,24 +4093,32 @@ const PYRAMID_LAYOUT: LayeredDecoConfig = {
   },
   foreground: {
     rocks: [
-      { x: 40, y: 278, variant: 'medium', color: '#A08B6C' },
-      { x: 660, y: 276, variant: 'large', color: '#8B7355' },
+      { x: 40, y: 260, variant: 'medium', color: '#A08B6C' },
+      { x: 660, y: 250, variant: 'large', color: '#8B7355' },
     ],
     corals: [
-      { x: 300, y: 278, variant: 'branch', color: '#F06292' },
-      { x: 450, y: 280, variant: 'fan', color: '#E91E63' },
-      { x: 580, y: 276, variant: 'brain', color: '#EC407A' },
+      { x: 300, y: 248, variant: 'branch', color: '#F06292' },
+      { x: 450, y: 250, variant: 'fan', color: '#E91E63' },
+      { x: 580, y: 252, variant: 'brain', color: '#EC407A' },
     ],
     kelps: [
-      { x: 15, height: 12, variant: 'thin', color: '#388E3C', delay: 0.2 },
-      { x: 100, height: 10, variant: 'wide', color: '#558B2F', delay: 0.7 },
-      { x: 200, height: 14, variant: 'thin', color: '#388E3C', delay: 1.0 },
-      { x: 340, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.4 },
-      { x: 420, height: 12, variant: 'wide', color: '#558B2F', delay: 1.3 },
-      { x: 500, height: 10, variant: 'thin', color: '#388E3C', delay: 1.5 },
-      { x: 600, height: 14, variant: 'thin', color: '#2E7D32', delay: 0.6 },
-      { x: 710, height: 10, variant: 'wide', color: '#388E3C', delay: 0.9 },
-      { x: 780, height: 12, variant: 'thin', color: '#558B2F', delay: 1.7 },
+      // Left — thin grass near rock (Egyptian papyrus feel)
+      { x: 10, height: 36, variant: 'thin', color: '#388E3C', delay: 0.2 },
+      { x: 20, height: 30, variant: 'thin', color: '#558B2F', delay: 0.7 },
+      // Left-center — wide sword pair
+      { x: 95, height: 36, variant: 'wide', color: '#558B2F', delay: 1.0 },
+      { x: 108, height: 30, variant: 'wide', color: '#388E3C', delay: 0.4 },
+      // --- open swim lane ---
+      // Center cluster — thin grass trio
+      { x: 330, height: 26, variant: 'thin', color: '#2E7D32', delay: 1.3 },
+      { x: 340, height: 36, variant: 'thin', color: '#388E3C', delay: 1.5 },
+      { x: 350, height: 30, variant: 'thin', color: '#558B2F', delay: 0.6 },
+      // --- open swim lane ---
+      // Right — wide swords near large rock
+      { x: 705, height: 30, variant: 'wide', color: '#388E3C', delay: 0.9 },
+      { x: 718, height: 36, variant: 'wide', color: '#558B2F', delay: 1.7 },
+      // Far right — thin accent
+      { x: 775, height: 30, variant: 'thin', color: '#388E3C', delay: 0.3 },
     ],
   },
 }
@@ -4057,25 +4163,33 @@ const TEMPLE_LAYOUT: LayeredDecoConfig = {
   },
   foreground: {
     rocks: [
-      { x: 60, y: 280, variant: 'small', color: '#78716C' },
-      { x: 350, y: 278, variant: 'medium', color: '#6B7280' },
+      { x: 60, y: 268, variant: 'small', color: '#78716C' },
+      { x: 350, y: 260, variant: 'medium', color: '#6B7280' },
     ],
     corals: [
-      { x: 250, y: 278, variant: 'branch', color: '#E64A19' },
-      { x: 440, y: 276, variant: 'brain', color: '#D84315' },
-      { x: 620, y: 280, variant: 'fan', color: '#FF5722' },
+      { x: 250, y: 248, variant: 'branch', color: '#E64A19' },
+      { x: 440, y: 250, variant: 'brain', color: '#D84315' },
+      { x: 620, y: 250, variant: 'fan', color: '#FF5722' },
     ],
     kelps: [
-      { x: 15, height: 12, variant: 'thin', color: '#2E7D32', delay: 0.2 },
-      { x: 80, height: 10, variant: 'wide', color: '#388E3C', delay: 0.6 },
-      { x: 160, height: 14, variant: 'thin', color: '#43A047', delay: 0.8 },
-      { x: 280, height: 10, variant: 'thin', color: '#2E7D32', delay: 1.3 },
-      { x: 380, height: 12, variant: 'wide', color: '#1B5E20', delay: 0.4 },
-      { x: 480, height: 10, variant: 'thin', color: '#2E7D32', delay: 0.5 },
-      { x: 560, height: 14, variant: 'thin', color: '#388E3C', delay: 1.0 },
-      { x: 650, height: 10, variant: 'wide', color: '#43A047', delay: 1.5 },
-      { x: 740, height: 12, variant: 'thin', color: '#2E7D32', delay: 0.7 },
-      { x: 780, height: 10, variant: 'thin', color: '#1B5E20', delay: 1.8 },
+      // Left — thin grass cluster (zen garden feel)
+      { x: 10, height: 30, variant: 'thin', color: '#2E7D32', delay: 0.2 },
+      { x: 20, height: 36, variant: 'thin', color: '#43A047', delay: 0.6 },
+      { x: 30, height: 26, variant: 'thin', color: '#388E3C', delay: 0.8 },
+      // Near rock — wide Amazon Sword accent
+      { x: 75, height: 36, variant: 'wide', color: '#388E3C', delay: 1.3 },
+      { x: 88, height: 30, variant: 'wide', color: '#1B5E20', delay: 0.4 },
+      // --- open swim lane ---
+      // Center — bushy Rotala pair (asymmetric placement)
+      { x: 375, height: 36, variant: 'bushy', color: '#2E7D32', delay: 0.5 },
+      { x: 388, height: 30, variant: 'bushy', color: '#1B5E20', delay: 1.0 },
+      // --- open swim lane ---
+      // Right — thin grass trio near fan coral
+      { x: 555, height: 36, variant: 'thin', color: '#388E3C', delay: 1.5 },
+      { x: 565, height: 30, variant: 'thin', color: '#2E7D32', delay: 0.7 },
+      // Far right — wide pair
+      { x: 735, height: 36, variant: 'wide', color: '#43A047', delay: 1.8 },
+      { x: 748, height: 30, variant: 'wide', color: '#2E7D32', delay: 0.3 },
     ],
   },
 }
@@ -4127,27 +4241,36 @@ const ATLANTIS_LAYOUT: LayeredDecoConfig = {
   },
   foreground: {
     rocks: [
-      { x: 50, y: 278, variant: 'medium', color: '#1F618D' },
-      { x: 700, y: 276, variant: 'medium', color: '#1A5276' },
+      { x: 50, y: 260, variant: 'medium', color: '#1F618D' },
+      { x: 700, y: 260, variant: 'medium', color: '#1A5276' },
     ],
     corals: [
-      { x: 200, y: 278, variant: 'branch', color: '#26C6DA' },
-      { x: 300, y: 276, variant: 'fan', color: '#00BCD4' },
-      { x: 450, y: 280, variant: 'brain', color: '#0097A7' },
-      { x: 620, y: 274, variant: 'branch', color: '#4DD0E1' },
+      { x: 200, y: 248, variant: 'branch', color: '#26C6DA' },
+      { x: 300, y: 246, variant: 'fan', color: '#00BCD4' },
+      { x: 450, y: 254, variant: 'brain', color: '#0097A7' },
+      { x: 620, y: 244, variant: 'branch', color: '#4DD0E1' },
     ],
     kelps: [
-      { x: 15, height: 12, variant: 'thin', color: '#00695C', delay: 0.2 },
-      { x: 80, height: 10, variant: 'wide', color: '#00897B', delay: 0.6 },
-      { x: 140, height: 14, variant: 'thin', color: '#004D40', delay: 1.0 },
-      { x: 240, height: 10, variant: 'thin', color: '#00695C', delay: 0.4 },
-      { x: 340, height: 12, variant: 'wide', color: '#00897B', delay: 1.3 },
-      { x: 420, height: 10, variant: 'thin', color: '#004D40', delay: 0.8 },
-      { x: 480, height: 14, variant: 'thin', color: '#00695C', delay: 1.4 },
-      { x: 560, height: 10, variant: 'wide', color: '#00897B', delay: 0.5 },
-      { x: 660, height: 12, variant: 'thin', color: '#004D40', delay: 1.7 },
-      { x: 750, height: 10, variant: 'thin', color: '#00695C', delay: 0.2 },
-      { x: 790, height: 14, variant: 'wide', color: '#00897B', delay: 0.9 },
+      // Left — thin teal grass cluster
+      { x: 10, height: 30, variant: 'thin', color: '#00695C', delay: 0.2 },
+      { x: 20, height: 36, variant: 'thin', color: '#004D40', delay: 0.6 },
+      { x: 30, height: 26, variant: 'thin', color: '#00897B', delay: 1.0 },
+      // Left-mid — wide swords
+      { x: 75, height: 36, variant: 'wide', color: '#00897B', delay: 0.4 },
+      { x: 88, height: 30, variant: 'wide', color: '#004D40', delay: 1.3 },
+      // --- open swim lane ---
+      // Center — bushy cluster
+      { x: 335, height: 36, variant: 'bushy', color: '#00897B', delay: 0.8 },
+      { x: 348, height: 30, variant: 'bushy', color: '#00695C', delay: 1.4 },
+      { x: 362, height: 34, variant: 'bushy', color: '#004D40', delay: 0.5 },
+      // --- open swim lane ---
+      // Right-center — wide swords
+      { x: 555, height: 30, variant: 'wide', color: '#00897B', delay: 1.7 },
+      { x: 568, height: 36, variant: 'wide', color: '#00695C', delay: 0.2 },
+      // Right — thin grass
+      { x: 750, height: 36, variant: 'thin', color: '#00695C', delay: 0.9 },
+      { x: 760, height: 30, variant: 'thin', color: '#004D40', delay: 1.5 },
+      { x: 770, height: 26, variant: 'thin', color: '#00897B', delay: 0.4 },
     ],
   },
 }
@@ -4213,33 +4336,52 @@ const STAGNANT_LAYOUT: LayeredDecoConfig = {
   },
   foreground: {
     rocks: [
-      { x: 50, y: 276, variant: 'large', color: '#4A3828' },
-      { x: 200, y: 280, variant: 'small', color: '#5C4A38' },
-      { x: 580, y: 278, variant: 'medium', color: '#4A3828' },
-      { x: 720, y: 276, variant: 'large', color: '#3A2A1E' },
+      { x: 50, y: 250, variant: 'large', color: '#4A3828' },
+      { x: 200, y: 268, variant: 'small', color: '#5C4A38' },
+      { x: 580, y: 260, variant: 'medium', color: '#4A3828' },
+      { x: 720, y: 250, variant: 'large', color: '#3A2A1E' },
     ],
     corals: [
-      { x: 120, y: 278, variant: 'brain', color: '#6D4C41' },
-      { x: 350, y: 276, variant: 'branch', color: '#5D4037' },
-      { x: 500, y: 280, variant: 'fan', color: '#795548' },
-      { x: 680, y: 274, variant: 'brain', color: '#4E342E' },
+      { x: 120, y: 252, variant: 'brain', color: '#6D4C41' },
+      { x: 350, y: 246, variant: 'branch', color: '#5D4037' },
+      { x: 500, y: 250, variant: 'fan', color: '#795548' },
+      { x: 680, y: 252, variant: 'brain', color: '#4E342E' },
     ],
     kelps: [
-      // Dense foreground overgrowth
-      { x: 10, height: 16, variant: 'bushy', color: '#1B5E20', delay: 0.3 },
-      { x: 40, height: 14, variant: 'wide', color: '#2E7D32', delay: 0.7 },
-      { x: 80, height: 12, variant: 'thin', color: '#33691E', delay: 1.2 },
-      { x: 130, height: 16, variant: 'bushy', color: '#1B5E20', delay: 0.5 },
-      { x: 180, height: 12, variant: 'wide', color: '#2E7D32', delay: 0.9 },
-      { x: 250, height: 14, variant: 'thin', color: '#33691E', delay: 1.5 },
-      { x: 320, height: 12, variant: 'bushy', color: '#1B5E20', delay: 0.4 },
-      { x: 400, height: 16, variant: 'wide', color: '#2E7D32', delay: 1.0 },
-      { x: 460, height: 12, variant: 'thin', color: '#33691E', delay: 0.6 },
-      { x: 540, height: 14, variant: 'bushy', color: '#1B5E20', delay: 1.3 },
-      { x: 610, height: 12, variant: 'wide', color: '#2E7D32', delay: 0.8 },
-      { x: 670, height: 16, variant: 'thin', color: '#33691E', delay: 0.2 },
-      { x: 730, height: 12, variant: 'bushy', color: '#1B5E20', delay: 1.1 },
-      { x: 780, height: 14, variant: 'wide', color: '#2E7D32', delay: 0.5 },
+      // Dense overgrown foreground — stagnant pool, plants everywhere
+      // Left bushy Rotala mass
+      { x: 5, height: 40, variant: 'bushy', color: '#1B5E20', delay: 0.3 },
+      { x: 18, height: 36, variant: 'bushy', color: '#2E7D32', delay: 0.7 },
+      { x: 32, height: 38, variant: 'bushy', color: '#1B5E20', delay: 1.2 },
+      // Wide sword cluster
+      { x: 55, height: 36, variant: 'wide', color: '#2E7D32', delay: 0.5 },
+      { x: 68, height: 40, variant: 'wide', color: '#33691E', delay: 0.9 },
+      { x: 82, height: 34, variant: 'wide', color: '#1B5E20', delay: 1.5 },
+      // Thin overgrowth patch
+      { x: 140, height: 36, variant: 'thin', color: '#33691E', delay: 0.4 },
+      { x: 150, height: 40, variant: 'thin', color: '#1B5E20', delay: 1.0 },
+      { x: 160, height: 30, variant: 'thin', color: '#2E7D32', delay: 0.6 },
+      // Mid-left bushy
+      { x: 230, height: 40, variant: 'bushy', color: '#1B5E20', delay: 1.3 },
+      { x: 244, height: 36, variant: 'bushy', color: '#33691E', delay: 0.8 },
+      // Center wide mass
+      { x: 390, height: 40, variant: 'wide', color: '#2E7D32', delay: 1.0 },
+      { x: 404, height: 36, variant: 'wide', color: '#1B5E20', delay: 0.6 },
+      { x: 418, height: 38, variant: 'wide', color: '#33691E', delay: 1.4 },
+      // Center-right thin
+      { x: 455, height: 30, variant: 'thin', color: '#33691E', delay: 0.2 },
+      { x: 465, height: 36, variant: 'thin', color: '#1B5E20', delay: 1.1 },
+      // Right bushy cluster
+      { x: 535, height: 40, variant: 'bushy', color: '#1B5E20', delay: 0.8 },
+      { x: 548, height: 36, variant: 'bushy', color: '#2E7D32', delay: 0.3 },
+      { x: 562, height: 38, variant: 'bushy', color: '#33691E', delay: 1.5 },
+      // Right wide
+      { x: 608, height: 36, variant: 'wide', color: '#2E7D32', delay: 0.5 },
+      { x: 622, height: 40, variant: 'wide', color: '#1B5E20', delay: 1.2 },
+      // Far right thin carpet
+      { x: 760, height: 36, variant: 'thin', color: '#33691E', delay: 0.2 },
+      { x: 770, height: 40, variant: 'thin', color: '#1B5E20', delay: 0.9 },
+      { x: 780, height: 30, variant: 'thin', color: '#2E7D32', delay: 1.6 },
     ],
   },
 }
