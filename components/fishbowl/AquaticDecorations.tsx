@@ -1134,12 +1134,12 @@ const SunkenSubmarine = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="-16" y="96" width="8" height="6" fill="#546E7A" opacity="0.25" />
 
     {/* Bubbles from hull breach — active stream */}
-    <circle cx="68" cy="18" r="1.5" fill="rgba(255,255,255,0.3)" style={{ animation: 'bubbleRise 3s ease-in 0s infinite' }} />
-    <circle cx="72" cy="16" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 3.5s ease-in 0.8s infinite' }} />
-    <circle cx="70" cy="20" r="1.2" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4s ease-in 1.5s infinite' }} />
-    <circle cx="66" cy="17" r="0.8" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4.5s ease-in 2.5s infinite' }} />
-    <circle cx="74" cy="14" r="0.6" fill="rgba(255,255,255,0.15)" style={{ animation: 'bubbleRise 5s ease-in 3.5s infinite' }} />
-    <circle cx="48" cy="-6" r="0.7" fill="rgba(255,255,255,0.12)" style={{ animation: 'bubbleRise 5.5s ease-in 4s infinite' }} />
+    <circle cx="136" cy="36" r="3" fill="rgba(255,255,255,0.3)" style={{ animation: 'bubbleRise 3s ease-in 0s infinite' }} />
+    <circle cx="144" cy="32" r="2" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 3.5s ease-in 0.8s infinite' }} />
+    <circle cx="140" cy="40" r="2.4" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4s ease-in 1.5s infinite' }} />
+    <circle cx="132" cy="34" r="1.6" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4.5s ease-in 2.5s infinite' }} />
+    <circle cx="148" cy="28" r="1.2" fill="rgba(255,255,255,0.15)" style={{ animation: 'bubbleRise 5s ease-in 3.5s infinite' }} />
+    <circle cx="96" cy="-12" r="1.4" fill="rgba(255,255,255,0.12)" style={{ animation: 'bubbleRise 5.5s ease-in 4s infinite' }} />
   </g>
 ))
 SunkenSubmarine.displayName = 'SunkenSubmarine'
@@ -1640,164 +1640,164 @@ SunkenShip.displayName = 'SunkenShip'
 const SunkenSailboat = memo(({ x, y }: { x: number; y: number }) => (
   <g transform={`translate(${x}, ${y})`}>
     {/* Shadow on seabed */}
-    <ellipse cx="40" cy="56" rx="50" ry="4" fill="#000" opacity="0.1" />
+    <ellipse cx="40" cy="56" rx="90" ry="7" fill="#000" opacity="0.1" />
 
     {/* Hull — small coastal sailing vessel, slightly listed to starboard */}
-    <rect x="0" y="30" width="80" height="20" fill="#5D4037" />
-    <rect x="4" y="26" width="72" height="6" fill="#6D4C41" />
-    <rect x="8" y="22" width="64" height="6" fill="#795548" />
-    <rect x="12" y="20" width="56" height="3" fill="#8D6E63" opacity="0.7" />
+    <rect x="-32" y="9" width="144" height="36" fill="#5D4037" />
+    <rect x="-25" y="2" width="130" height="11" fill="#6D4C41" />
+    <rect x="-18" y="-5" width="115" height="11" fill="#795548" />
+    <rect x="-10" y="-9" width="101" height="5" fill="#8D6E63" opacity="0.7" />
     {/* Hull bottom / keel — heavy timber */}
-    <rect x="6" y="50" width="68" height="4" fill="#3E2723" />
-    <rect x="14" y="52" width="52" height="4" fill="#2E1B0E" />
+    <rect x="-21" y="45" width="122" height="7" fill="#3E2723" />
+    <rect x="-7" y="49" width="94" height="7" fill="#2E1B0E" />
     {/* Hull planking detail — individual strakes */}
-    <rect x="2" y="32" width="76" height="1" fill="#795548" opacity="0.3" />
-    <rect x="4" y="36" width="72" height="1" fill="#8D6E63" opacity="0.25" />
-    <rect x="6" y="40" width="68" height="1" fill="#795548" opacity="0.25" />
-    <rect x="4" y="44" width="72" height="1" fill="#8D6E63" opacity="0.2" />
-    <rect x="6" y="48" width="68" height="1" fill="#795548" opacity="0.18" />
+    <rect x="-28" y="13" width="137" height="2" fill="#795548" opacity="0.3" />
+    <rect x="-25" y="20" width="130" height="2" fill="#8D6E63" opacity="0.25" />
+    <rect x="-21" y="27" width="122" height="2" fill="#795548" opacity="0.25" />
+    <rect x="-25" y="34" width="130" height="2" fill="#8D6E63" opacity="0.2" />
+    <rect x="-21" y="42" width="122" height="2" fill="#795548" opacity="0.18" />
     {/* Caulking lines between planks */}
-    <rect x="8" y="34" width="64" height="0.5" fill="#3E2723" opacity="0.15" />
-    <rect x="8" y="42" width="64" height="0.5" fill="#3E2723" opacity="0.12" />
+    <rect x="-18" y="16" width="115" height="1" fill="#3E2723" opacity="0.15" />
+    <rect x="-18" y="31" width="115" height="1" fill="#3E2723" opacity="0.12" />
 
     {/* Bow — clinker-built pointed prow */}
-    <rect x="-4" y="32" width="8" height="14" fill="#6D4C41" />
-    <rect x="-8" y="36" width="6" height="8" fill="#795548" />
-    <rect x="-10" y="38" width="4" height="4" fill="#8D6E63" opacity="0.6" />
+    <rect x="-39" y="13" width="14" height="25" fill="#6D4C41" />
+    <rect x="-46" y="20" width="11" height="14" fill="#795548" />
+    <rect x="-50" y="24" width="7" height="7" fill="#8D6E63" opacity="0.6" />
     {/* Bow cutwater */}
-    <rect x="-10" y="34" width="2" height="12" fill="#5D4037" opacity="0.5" />
+    <rect x="-50" y="16" width="4" height="22" fill="#5D4037" opacity="0.5" />
 
     {/* Stern — transom with details */}
-    <rect x="76" y="24" width="10" height="28" fill="#5D4037" />
-    <rect x="78" y="22" width="8" height="4" fill="#6D4C41" />
-    <rect x="80" y="20" width="4" height="3" fill="#795548" opacity="0.7" />
+    <rect x="105" y="-2" width="18" height="50" fill="#5D4037" />
+    <rect x="108" y="-5" width="14" height="7" fill="#6D4C41" />
+    <rect x="112" y="-9" width="7" height="5" fill="#795548" opacity="0.7" />
     {/* Stern window */}
-    <rect x="80" y="28" width="4" height="4" fill="#0A1628" opacity="0.5" />
-    <rect x="80" y="28" width="4" height="1" fill="#8D6E63" opacity="0.3" />
+    <rect x="112" y="6" width="7" height="7" fill="#0A1628" opacity="0.5" />
+    <rect x="112" y="6" width="7" height="2" fill="#8D6E63" opacity="0.3" />
     {/* Rudder — with pintles */}
-    <rect x="84" y="34" width="4" height="20" fill="#4E342E" />
-    <rect x="86" y="38" width="2" height="14" fill="#3E2723" />
-    <rect x="82" y="36" width="2" height="2" fill="#78909C" opacity="0.4" />
-    <rect x="82" y="44" width="2" height="2" fill="#78909C" opacity="0.35" />
+    <rect x="119" y="16" width="7" height="36" fill="#4E342E" />
+    <rect x="123" y="24" width="4" height="25" fill="#3E2723" />
+    <rect x="116" y="20" width="4" height="4" fill="#78909C" opacity="0.4" />
+    <rect x="116" y="34" width="4" height="4" fill="#78909C" opacity="0.35" />
     {/* Tiller (steering arm) */}
-    <rect x="76" y="34" width="8" height="2" fill="#795548" opacity="0.5" />
+    <rect x="105" y="16" width="14" height="4" fill="#795548" opacity="0.5" />
 
     {/* Name plate on stern — faded */}
-    <rect x="78" y="32" width="8" height="3" fill="#D4A43A" opacity="0.25" />
-    <rect x="79" y="33" width="6" height="1" fill="#B8862D" opacity="0.15" />
+    <rect x="108" y="13" width="14" height="5" fill="#D4A43A" opacity="0.25" />
+    <rect x="110" y="15" width="11" height="2" fill="#B8862D" opacity="0.15" />
 
     {/* Mast — snapped halfway, jagged break */}
-    <rect x="32" y="-20" width="4" height="48" fill="#795548" />
-    <rect x="33" y="-20" width="2" height="48" fill="#8D6E63" opacity="0.3" />
+    <rect x="26" y="-81" width="7" height="86" fill="#795548" />
+    <rect x="28" y="-81" width="4" height="86" fill="#8D6E63" opacity="0.3" />
     {/* Jagged break at top */}
-    <rect x="30" y="-24" width="3" height="5" fill="#A1887F" />
-    <rect x="34" y="-23" width="2" height="4" fill="#8D6E63" opacity="0.7" />
-    <rect x="33" y="-26" width="2" height="3" fill="#A1887F" opacity="0.5" />
+    <rect x="22" y="-88" width="5" height="9" fill="#A1887F" />
+    <rect x="29" y="-86" width="4" height="7" fill="#8D6E63" opacity="0.7" />
+    <rect x="28" y="-92" width="4" height="5" fill="#A1887F" opacity="0.5" />
     {/* Mast bands (iron hoops) */}
-    <rect x="31" y="0" width="6" height="1" fill="#4B5563" opacity="0.3" />
-    <rect x="31" y="12" width="6" height="1" fill="#4B5563" opacity="0.25" />
+    <rect x="24" y="-45" width="11" height="2" fill="#4B5563" opacity="0.3" />
+    <rect x="24" y="-23" width="11" height="2" fill="#4B5563" opacity="0.25" />
     {/* Mast base plate / step */}
-    <rect x="28" y="26" width="12" height="2" fill="#5D4037" />
-    <rect x="29" y="25" width="10" height="1" fill="#6D4C41" opacity="0.5" />
+    <rect x="18" y="2" width="22" height="4" fill="#5D4037" />
+    <rect x="20" y="0" width="18" height="2" fill="#6D4C41" opacity="0.5" />
 
     {/* Tattered sail — more detailed fabric with folds */}
-    <rect x="36" y="-18" width="20" height="28" fill="#D7CCC8" opacity="0.3" />
-    <rect x="38" y="-16" width="16" height="24" fill="#EFEBE9" opacity="0.22" />
+    <rect x="33" y="-77" width="36" height="50" fill="#D7CCC8" opacity="0.3" />
+    <rect x="36" y="-73" width="29" height="43" fill="#EFEBE9" opacity="0.22" />
     {/* Sail seam lines */}
-    <rect x="42" y="-16" width="0.5" height="24" fill="#BCAAA4" opacity="0.15" />
-    <rect x="48" y="-16" width="0.5" height="24" fill="#BCAAA4" opacity="0.12" />
+    <rect x="44" y="-73" width="1" height="43" fill="#BCAAA4" opacity="0.15" />
+    <rect x="54" y="-73" width="1" height="43" fill="#BCAAA4" opacity="0.12" />
     {/* Sail tears — realistic holes */}
-    <rect x="42" y="-10" width="7" height="5" fill="#0A1628" opacity="0.15" />
-    <rect x="40" y="-2" width="5" height="4" fill="#0A1628" opacity="0.12" />
-    <rect x="46" y="2" width="4" height="3" fill="#0A1628" opacity="0.1" />
+    <rect x="44" y="-63" width="13" height="9" fill="#0A1628" opacity="0.15" />
+    <rect x="40" y="-48" width="9" height="7" fill="#0A1628" opacity="0.12" />
+    <rect x="51" y="-41" width="7" height="5" fill="#0A1628" opacity="0.1" />
     {/* Tattered edges — hanging threads */}
-    <rect x="54" y="-14" width="3" height="5" fill="#BCAAA4" opacity="0.2" />
-    <rect x="52" y="-4" width="4" height="4" fill="#D7CCC8" opacity="0.18" />
-    <rect x="56" y="0" width="2" height="5" fill="#BCAAA4" opacity="0.15" />
-    <rect x="54" y="6" width="3" height="3" fill="#D7CCC8" opacity="0.12" />
+    <rect x="65" y="-70" width="5" height="9" fill="#BCAAA4" opacity="0.2" />
+    <rect x="62" y="-52" width="7" height="7" fill="#D7CCC8" opacity="0.18" />
+    <rect x="69" y="-45" width="4" height="9" fill="#BCAAA4" opacity="0.15" />
+    <rect x="65" y="-34" width="5" height="5" fill="#D7CCC8" opacity="0.12" />
     {/* Sail billowing edge */}
-    <rect x="55" y="-10" width="2" height="8" fill="#EFEBE9" opacity="0.12" />
+    <rect x="67" y="-63" width="4" height="14" fill="#EFEBE9" opacity="0.12" />
 
     {/* Boom (horizontal spar) — broken, dangling */}
-    <rect x="34" y="4" width="26" height="3" fill="#A1887F" />
-    <rect x="58" y="3" width="4" height="3" fill="#8D6E63" opacity="0.6" />
+    <rect x="29" y="-38" width="47" height="5" fill="#A1887F" />
+    <rect x="72" y="-39" width="7" height="5" fill="#8D6E63" opacity="0.6" />
     {/* Broken boom end — splintered */}
-    <rect x="60" y="2" width="2" height="2" fill="#A1887F" opacity="0.4" />
+    <rect x="76" y="-41" width="4" height="4" fill="#A1887F" opacity="0.4" />
     {/* Gaff (upper spar) remnant */}
-    <rect x="34" y="-16" width="16" height="2" fill="#A1887F" opacity="0.5" />
-    <rect x="48" y="-17" width="3" height="2" fill="#8D6E63" opacity="0.4" />
+    <rect x="29" y="-73" width="29" height="4" fill="#A1887F" opacity="0.5" />
+    <rect x="54" y="-75" width="5" height="4" fill="#8D6E63" opacity="0.4" />
 
     {/* Standing rigging */}
-    <rect x="34" y="-20" width="1" height="24" fill="#A08060" opacity="0.35" />
-    <rect x="36" y="-18" width="1" height="22" fill="#C4A862" opacity="0.25" />
+    <rect x="29" y="-81" width="2" height="43" fill="#A08060" opacity="0.35" />
+    <rect x="33" y="-77" width="2" height="40" fill="#C4A862" opacity="0.25" />
     {/* Shroud lines to hull sides */}
-    <path d="M32 -18 Q22 2 14 22" stroke="#A08060" strokeWidth="0.5" fill="none" opacity="0.2" />
-    <path d="M36 -18 Q48 2 58 22" stroke="#A08060" strokeWidth="0.5" fill="none" opacity="0.2" />
+    <path d="M26 -77 Q8 -20 -7 -5" stroke="#A08060" strokeWidth="0.9" fill="none" opacity="0.2" />
+    <path d="M33 -77 Q54 -20 72 -5" stroke="#A08060" strokeWidth="0.9" fill="none" opacity="0.2" />
     {/* Loose rope coil on deck */}
-    <rect x="10" y="26" width="8" height="2" fill="#A08060" opacity="0.35" />
-    <rect x="8" y="28" width="4" height="4" fill="#C4A862" opacity="0.25" />
-    <rect x="14" y="28" width="3" height="3" fill="#A08060" opacity="0.2" />
+    <rect x="-14" y="2" width="14" height="4" fill="#A08060" opacity="0.35" />
+    <rect x="-18" y="6" width="7" height="7" fill="#C4A862" opacity="0.25" />
+    <rect x="-7" y="6" width="5" height="5" fill="#A08060" opacity="0.2" />
 
     {/* Small bow anchor — detailed */}
-    <rect x="-6" y="26" width="2" height="14" fill="#4B5563" opacity="0.5" />
-    <rect x="-10" y="38" width="10" height="2" fill="#4B5563" opacity="0.4" />
-    <rect x="-12" y="38" width="2" height="4" fill="#546E7A" opacity="0.3" />
-    <rect x="2" y="38" width="2" height="4" fill="#546E7A" opacity="0.3" />
+    <rect x="-43" y="2" width="4" height="25" fill="#4B5563" opacity="0.5" />
+    <rect x="-50" y="24" width="18" height="4" fill="#4B5563" opacity="0.4" />
+    <rect x="-54" y="24" width="4" height="7" fill="#546E7A" opacity="0.3" />
+    <rect x="-33" y="24" width="4" height="7" fill="#546E7A" opacity="0.3" />
 
     {/* Lantern hanging from mast — corroded brass */}
-    <rect x="28" y="-14" width="4" height="6" fill="#FF8F00" opacity="0.25" />
-    <rect x="27" y="-16" width="6" height="2" fill="#4B5563" opacity="0.4" />
-    <rect x="29" y="-10" width="2" height="3" fill="#4B5563" opacity="0.3" />
+    <rect x="18" y="-70" width="7" height="11" fill="#FF8F00" opacity="0.25" />
+    <rect x="17" y="-73" width="11" height="4" fill="#4B5563" opacity="0.4" />
+    <rect x="20" y="-63" width="4" height="5" fill="#4B5563" opacity="0.3" />
     {/* Lantern glass pane hint */}
-    <rect x="29" y="-13" width="2" height="3" fill="#FFB300" opacity="0.15" />
+    <rect x="20" y="-68" width="4" height="5" fill="#FFB300" opacity="0.15" />
 
     {/* Deck features */}
     {/* Cleat */}
-    <rect x="20" y="24" width="4" height="2" fill="#5D4037" opacity="0.4" />
+    <rect x="4" y="-2" width="7" height="4" fill="#5D4037" opacity="0.4" />
     {/* Hatch */}
-    <rect x="56" y="24" width="8" height="4" fill="#4E342E" opacity="0.4" />
-    <rect x="57" y="25" width="6" height="2" fill="#0A1628" opacity="0.3" />
+    <rect x="69" y="-2" width="14" height="7" fill="#4E342E" opacity="0.4" />
+    <rect x="71" y="0" width="11" height="4" fill="#0A1628" opacity="0.3" />
 
     {/* Barnacle clusters — extensive */}
-    <rect x="0" y="44" width="4" height="4" fill="#9CA3AF" opacity="0.4" />
-    <rect x="2" y="46" width="2" height="2" fill="#B0BEC5" opacity="0.3" />
-    <rect x="58" y="48" width="5" height="3" fill="#9CA3AF" opacity="0.35" />
-    <rect x="76" y="42" width="4" height="4" fill="#9CA3AF" opacity="0.35" />
-    <rect x="30" y="52" width="4" height="2" fill="#78909C" opacity="0.3" />
+    <rect x="-32" y="34" width="7" height="7" fill="#9CA3AF" opacity="0.4" />
+    <rect x="-28" y="38" width="4" height="4" fill="#B0BEC5" opacity="0.3" />
+    <rect x="72" y="42" width="9" height="5" fill="#9CA3AF" opacity="0.35" />
+    <rect x="105" y="31" width="7" height="7" fill="#9CA3AF" opacity="0.35" />
+    <rect x="22" y="49" width="7" height="4" fill="#78909C" opacity="0.3" />
 
     {/* Marine growth — algae and sponge */}
-    <rect x="18" y="22" width="8" height="2" fill="#2E7D32" opacity="0.4" />
-    <rect x="48" y="50" width="10" height="2" fill="#388E3C" opacity="0.3" />
-    <rect x="32" y="-26" width="4" height="2" fill="#1B5E20" opacity="0.4" />
-    <rect x="72" y="50" width="6" height="2" fill="#2E7D32" opacity="0.3" />
+    <rect x="0" y="-5" width="14" height="4" fill="#2E7D32" opacity="0.4" />
+    <rect x="54" y="45" width="18" height="4" fill="#388E3C" opacity="0.3" />
+    <rect x="26" y="-92" width="7" height="4" fill="#1B5E20" opacity="0.4" />
+    <rect x="98" y="45" width="11" height="4" fill="#2E7D32" opacity="0.3" />
     {/* Orange sponge */}
-    <rect x="2" y="48" width="3" height="3" fill="#FF6F00" opacity="0.2" />
+    <rect x="-28" y="42" width="5" height="5" fill="#FF6F00" opacity="0.2" />
 
     {/* Seaweed growing through hull crack */}
-    <rect x="46" y="16" width="3" height="12" fill="#2E7D32" opacity="0.3" />
-    <rect x="44" y="12" width="5" height="6" fill="#4CAF50" opacity="0.25" />
-    <rect x="43" y="10" width="3" height="3" fill="#81C784" opacity="0.2" />
+    <rect x="51" y="-16" width="5" height="22" fill="#2E7D32" opacity="0.3" />
+    <rect x="47" y="-23" width="9" height="11" fill="#4CAF50" opacity="0.25" />
+    <rect x="45" y="-27" width="5" height="5" fill="#81C784" opacity="0.2" />
 
     {/* Small crab on hull — pixel detail */}
-    <rect x="64" y="28" width="5" height="3" fill="#E65100" opacity="0.5" />
-    <rect x="63" y="26" width="2" height="2" fill="#BF360C" opacity="0.4" />
-    <rect x="69" y="26" width="2" height="2" fill="#BF360C" opacity="0.4" />
+    <rect x="83" y="6" width="9" height="5" fill="#E65100" opacity="0.5" />
+    <rect x="81" y="2" width="4" height="4" fill="#BF360C" opacity="0.4" />
+    <rect x="92" y="2" width="4" height="4" fill="#BF360C" opacity="0.4" />
     {/* Crab eye dots */}
-    <rect x="64" y="27" width="1" height="1" fill="#1A1A1A" opacity="0.3" />
-    <rect x="67" y="27" width="1" height="1" fill="#1A1A1A" opacity="0.3" />
+    <rect x="83" y="3" width="2" height="2" fill="#1A1A1A" opacity="0.3" />
+    <rect x="89" y="3" width="2" height="2" fill="#1A1A1A" opacity="0.3" />
 
     {/* Life ring on deck */}
-    <circle cx="68" cy="24" r="3" fill="none" stroke="#E0E0E0" strokeWidth="1.5" opacity="0.25" />
-    <rect x="66" y="22" width="2" height="1" fill="#D50000" opacity="0.2" />
-    <rect x="68" y="26" width="2" height="1" fill="#D50000" opacity="0.2" />
+    <circle cx="90" cy="-2" r="5" fill="none" stroke="#E0E0E0" strokeWidth="2.7" opacity="0.25" />
+    <rect x="87" y="-5" width="4" height="2" fill="#D50000" opacity="0.2" />
+    <rect x="90" y="2" width="4" height="2" fill="#D50000" opacity="0.2" />
 
     {/* Coral at waterline */}
-    <rect x="10" y="48" width="4" height="3" fill="#E91E63" opacity="0.2" />
+    <rect x="-14" y="42" width="7" height="5" fill="#E91E63" opacity="0.2" />
 
     {/* Bubbles */}
-    <circle cx="40" cy="18" r="1" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4s ease-in 0.5s infinite' }} />
-    <circle cx="36" cy="20" r="0.8" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 5s ease-in 2s infinite' }} />
-    <circle cx="48" cy="12" r="0.6" fill="rgba(255,255,255,0.15)" style={{ animation: 'bubbleRise 5.5s ease-in 3.5s infinite' }} />
+    <circle cx="40" cy="-12" r="1.8" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4s ease-in 0.5s infinite' }} />
+    <circle cx="33" cy="-9" r="1.4" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 5s ease-in 2s infinite' }} />
+    <circle cx="54" cy="-23" r="1.1" fill="rgba(255,255,255,0.15)" style={{ animation: 'bubbleRise 5.5s ease-in 3.5s infinite' }} />
   </g>
 ))
 SunkenSailboat.displayName = 'SunkenSailboat'
@@ -3803,7 +3803,7 @@ const SAILBOAT_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'sailboat', x: 300, y: 142 },
+      { type: 'sailboat', x: 300, y: 90 },
       { type: 'anchor', x: 600, y: 140 },
     ],
   },
@@ -3874,7 +3874,7 @@ const SUBMARINE_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'submarine', x: 260, y: 154 },
+      { type: 'submarine', x: 260, y: 100 },
     ],
   },
   foreground: {
