@@ -3118,312 +3118,249 @@ AtlanteanObelisk.displayName = 'AtlanteanObelisk'
 // Minecraft technique for maximum detail.
 
 const DeerSkullWillow = memo(({ x, y }: { x: number; y: number }) => (
-  <g transform="rotate(45, 40, 30)">
-    {/* ═══ LEFT ANTLER — pixel-block bone construction ═══ */}
-    {/* Main beam: rises from skull top-left, curves outward */}
-    <rect x="18" y="16" width="4" height="3" fill="#D4C8A8" />
-    <rect x="15" y="13" width="4" height="3" fill="#D4C8A8" />
-    <rect x="12" y="10" width="4" height="3" fill="#D4C8A8" />
-    <rect x="9" y="7" width="4" height="3" fill="#D4C8A8" />
-    <rect x="6" y="4" width="4" height="3" fill="#D4C8A8" />
-    <rect x="3" y="1" width="4" height="3" fill="#B8A888" />
-    <rect x="0" y="-2" width="3" height="3" fill="#A09480" />
+  <g>
+    {/* ═══ SIDE PROFILE DEER SKULL — lateral view, facing right ═══ */}
+    {/* Dolichocephalic (long, narrow) skull shape characteristic of Cervidae */}
+
+    {/* ═══ ANTLER — single visible antler from side profile, branching upward ═══ */}
+    {/* Main beam — rises from pedicle on top of cranium, curves backward then up */}
+    <rect x="28" y="18" width="3" height="3" fill="#D4C8A8" />
+    <rect x="30" y="14" width="3" height="4" fill="#D4C8A8" />
+    <rect x="32" y="10" width="3" height="4" fill="#D4C8A8" />
+    <rect x="34" y="6" width="3" height="4" fill="#D4C8A8" />
+    <rect x="36" y="2" width="3" height="4" fill="#B8A888" />
+    <rect x="38" y="-2" width="3" height="4" fill="#B8A888" />
+    <rect x="41" y="-5" width="2" height="3" fill="#A09480" />
     {/* Beam highlight pixels */}
-    <rect x="16" y="14" width="2" height="2" fill="#E0D4B8" opacity="0.5" />
-    <rect x="10" y="8" width="2" height="2" fill="#E0D4B8" opacity="0.4" />
-    <rect x="4" y="2" width="2" height="2" fill="#E0D4B8" opacity="0.35" />
-    {/* Brow tine (first fork, near base) — points forward/up */}
-    <rect x="14" y="11" width="3" height="2" fill="#D4C8A8" />
-    <rect x="11" y="8" width="3" height="2" fill="#D4C8A8" />
-    <rect x="8" y="5" width="3" height="2" fill="#B8A888" />
-    <rect x="5" y="2" width="2" height="2" fill="#B8A888" />
-    <rect x="2" y="-1" width="2" height="2" fill="#A09480" />
-    {/* Bez tine (second fork) — branches left */}
-    <rect x="10" y="7" width="2" height="3" fill="#D4C8A8" />
-    <rect x="7" y="5" width="2" height="3" fill="#D4C8A8" />
-    <rect x="4" y="4" width="2" height="3" fill="#B8A888" />
-    <rect x="1" y="3" width="2" height="2" fill="#A09480" />
-    <rect x="-2" y="2" width="2" height="2" fill="#A09480" />
-    {/* Trez tine (third fork) — upper branch */}
-    <rect x="7" y="3" width="2" height="3" fill="#D4C8A8" />
-    <rect x="4" y="0" width="2" height="3" fill="#B8A888" />
-    <rect x="1" y="-3" width="2" height="3" fill="#A09480" />
-    <rect x="-1" y="-5" width="2" height="2" fill="#A09480" />
-    {/* Crown tine — topmost point */}
-    <rect x="2" y="-3" width="2" height="2" fill="#B8A888" />
-    <rect x="-1" y="-6" width="2" height="3" fill="#A09480" />
+    <rect x="31" y="12" width="2" height="2" fill="#E0D4B8" opacity="0.5" />
+    <rect x="35" y="4" width="2" height="2" fill="#E0D4B8" opacity="0.4" />
+    <rect x="39" y="-1" width="2" height="2" fill="#E0D4B8" opacity="0.35" />
+
+    {/* Brow tine — first fork near base, points forward/up */}
+    <rect x="30" y="14" width="2" height="3" fill="#D4C8A8" />
+    <rect x="28" y="10" width="2" height="4" fill="#D4C8A8" />
+    <rect x="26" y="6" width="2" height="4" fill="#B8A888" />
+    <rect x="24" y="2" width="2" height="4" fill="#B8A888" />
+    <rect x="22" y="-1" width="2" height="3" fill="#A09480" />
+    {/* Brow tine highlight */}
+    <rect x="27" y="8" width="1" height="2" fill="#E0D4B8" opacity="0.4" />
+
+    {/* Bez tine — second fork, branches forward */}
+    <rect x="33" y="8" width="2" height="3" fill="#D4C8A8" />
+    <rect x="30" y="4" width="3" height="4" fill="#D4C8A8" />
+    <rect x="28" y="0" width="2" height="4" fill="#B8A888" />
+    <rect x="26" y="-3" width="2" height="3" fill="#A09480" />
+
+    {/* Trez tine — third fork, upper branch */}
+    <rect x="36" y="2" width="2" height="3" fill="#D4C8A8" />
+    <rect x="34" y="-2" width="2" height="4" fill="#B8A888" />
+    <rect x="32" y="-5" width="2" height="3" fill="#A09480" />
+    <rect x="30" y="-7" width="2" height="2" fill="#A09480" />
+
+    {/* Crown tine — topmost points */}
+    <rect x="40" y="-4" width="2" height="3" fill="#B8A888" />
+    <rect x="42" y="-7" width="2" height="3" fill="#A09480" />
+    <rect x="44" y="-9" width="2" height="2" fill="#A09480" />
+    {/* Second crown point */}
+    <rect x="38" y="-6" width="2" height="2" fill="#A09480" />
+
     {/* Antler texture — shadow blocks */}
-    <rect x="13" y="12" width="2" height="2" fill="#A89C84" opacity="0.3" />
-    <rect x="7" y="6" width="2" height="2" fill="#A89C84" opacity="0.25" />
-    <rect x="3" y="3" width="2" height="2" fill="#8B7D68" opacity="0.2" />
+    <rect x="32" y="12" width="2" height="2" fill="#A89C84" opacity="0.3" />
+    <rect x="36" y="4" width="2" height="2" fill="#A89C84" opacity="0.25" />
+    <rect x="40" y="-2" width="2" height="2" fill="#8B7D68" opacity="0.2" />
 
-    {/* ═══ RIGHT ANTLER — mirrored pixel-block construction ═══ */}
-    {/* Main beam: rises from skull top-right */}
-    <rect x="58" y="16" width="4" height="3" fill="#D4C8A8" />
-    <rect x="61" y="13" width="4" height="3" fill="#D4C8A8" />
-    <rect x="64" y="10" width="4" height="3" fill="#D4C8A8" />
-    <rect x="67" y="7" width="4" height="3" fill="#D4C8A8" />
-    <rect x="70" y="4" width="4" height="3" fill="#D4C8A8" />
-    <rect x="73" y="1" width="4" height="3" fill="#B8A888" />
-    <rect x="77" y="-2" width="3" height="3" fill="#A09480" />
-    {/* Beam highlight pixels */}
-    <rect x="62" y="14" width="2" height="2" fill="#E0D4B8" opacity="0.5" />
-    <rect x="68" y="8" width="2" height="2" fill="#E0D4B8" opacity="0.4" />
-    <rect x="74" y="2" width="2" height="2" fill="#E0D4B8" opacity="0.35" />
-    {/* Brow tine */}
-    <rect x="63" y="11" width="3" height="2" fill="#D4C8A8" />
-    <rect x="66" y="8" width="3" height="2" fill="#D4C8A8" />
-    <rect x="69" y="5" width="3" height="2" fill="#B8A888" />
-    <rect x="73" y="2" width="2" height="2" fill="#B8A888" />
-    <rect x="76" y="-1" width="2" height="2" fill="#A09480" />
-    {/* Bez tine */}
-    <rect x="68" y="7" width="2" height="3" fill="#D4C8A8" />
-    <rect x="71" y="5" width="2" height="3" fill="#D4C8A8" />
-    <rect x="74" y="4" width="2" height="3" fill="#B8A888" />
-    <rect x="77" y="3" width="2" height="2" fill="#A09480" />
-    <rect x="80" y="2" width="2" height="2" fill="#A09480" />
-    {/* Trez tine */}
-    <rect x="71" y="3" width="2" height="3" fill="#D4C8A8" />
-    <rect x="74" y="0" width="2" height="3" fill="#B8A888" />
-    <rect x="77" y="-3" width="2" height="3" fill="#A09480" />
-    <rect x="79" y="-5" width="2" height="2" fill="#A09480" />
-    {/* Crown tine */}
-    <rect x="76" y="-3" width="2" height="2" fill="#B8A888" />
-    <rect x="79" y="-6" width="2" height="3" fill="#A09480" />
-    {/* Antler texture */}
-    <rect x="65" y="12" width="2" height="2" fill="#A89C84" opacity="0.3" />
-    <rect x="71" y="6" width="2" height="2" fill="#A89C84" opacity="0.25" />
-    <rect x="75" y="3" width="2" height="2" fill="#8B7D68" opacity="0.2" />
+    {/* ═══ CRANIUM — rounded braincase, viewed from side ═══ */}
+    {/* Cranium is roughly oval from the side, sits behind the eye */}
+    <rect x="22" y="20" width="20" height="2" fill="#E8DCC8" />
+    <rect x="20" y="22" width="24" height="2" fill="#E8DCC8" />
+    <rect x="18" y="24" width="26" height="2" fill="#E8DCC8" />
+    <rect x="18" y="26" width="26" height="2" fill="#E8DCC8" />
+    <rect x="20" y="28" width="22" height="2" fill="#E8DCC8" />
+    <rect x="22" y="30" width="18" height="2" fill="#E8DCC8" />
+    {/* Cranium top highlight */}
+    <rect x="26" y="20" width="2" height="2" fill="#F0E6D2" opacity="0.5" />
+    <rect x="32" y="20" width="2" height="2" fill="#F0E6D2" opacity="0.45" />
+    <rect x="24" y="22" width="2" height="2" fill="#F0E6D2" opacity="0.4" />
+    <rect x="30" y="22" width="2" height="2" fill="#F0E6D2" opacity="0.4" />
+    {/* Nuchal crest — pronounced ridge at back of skull */}
+    <rect x="18" y="24" width="2" height="4" fill="#C4B8A0" opacity="0.5" />
+    <rect x="19" y="23" width="2" height="2" fill="#C4B8A0" opacity="0.4" />
+    {/* Suture lines — jagged cracks on cranium (deer skulls have very jagged sutures) */}
+    <rect x="28" y="22" width="1" height="3" fill="#8B7D68" opacity="0.2" />
+    <rect x="29" y="24" width="1" height="2" fill="#8B7D68" opacity="0.18" />
+    <rect x="34" y="23" width="1" height="3" fill="#8B7D68" opacity="0.15" />
+    <rect x="26" y="26" width="1" height="2" fill="#8B7D68" opacity="0.15" />
 
-    {/* ═══ CRANIUM — broad rounded skull top, pixel-block ═══ */}
-    {/* Top row */}
-    <rect x="28" y="14" width="24" height="2" fill="#E8DCC8" />
-    {/* Second row — wider */}
-    <rect x="24" y="16" width="32" height="2" fill="#E8DCC8" />
-    {/* Third row */}
-    <rect x="22" y="18" width="36" height="2" fill="#E8DCC8" />
-    {/* Fourth row */}
-    <rect x="22" y="20" width="36" height="2" fill="#E8DCC8" />
-    {/* Cranium highlight blocks */}
-    <rect x="30" y="14" width="2" height="2" fill="#F0E6D2" opacity="0.5" />
-    <rect x="36" y="14" width="2" height="2" fill="#F0E6D2" opacity="0.6" />
-    <rect x="42" y="14" width="2" height="2" fill="#F0E6D2" opacity="0.5" />
-    <rect x="28" y="16" width="2" height="2" fill="#F0E6D2" opacity="0.4" />
-    <rect x="34" y="16" width="2" height="2" fill="#F0E6D2" opacity="0.45" />
-    <rect x="40" y="16" width="2" height="2" fill="#F0E6D2" opacity="0.4" />
-    <rect x="46" y="16" width="2" height="2" fill="#F0E6D2" opacity="0.35" />
-    {/* Shadow blocks under cranium */}
-    <rect x="24" y="20" width="2" height="2" fill="#C4B8A0" opacity="0.35" />
-    <rect x="52" y="20" width="2" height="2" fill="#C4B8A0" opacity="0.35" />
-    {/* Suture lines (crack detail) */}
-    <rect x="38" y="15" width="1" height="4" fill="#8B7D68" opacity="0.2" />
-    <rect x="40" y="16" width="1" height="3" fill="#8B7D68" opacity="0.15" />
-    <rect x="33" y="17" width="1" height="3" fill="#8B7D68" opacity="0.18" />
-    <rect x="46" y="17" width="1" height="3" fill="#8B7D68" opacity="0.18" />
+    {/* ═══ ZYGOMATIC ARCH — thin bone bridge below eye (characteristic thin in deer) ═══ */}
+    <rect x="30" y="32" width="14" height="2" fill="#E8DCC8" />
+    <rect x="32" y="34" width="10" height="1" fill="#D4C8B0" />
+    {/* Arch shadow */}
+    <rect x="34" y="33" width="2" height="1" fill="#C4B8A0" opacity="0.3" />
 
-    {/* ═══ FACE — orbital ridges and bridge ═══ */}
-    {/* Face rows connecting cranium to jaw */}
-    <rect x="24" y="22" width="32" height="2" fill="#E8DCC8" />
-    <rect x="24" y="24" width="32" height="2" fill="#E8DCC8" />
-    <rect x="24" y="26" width="32" height="2" fill="#E8DCC8" />
-    <rect x="26" y="28" width="28" height="2" fill="#E8DCC8" />
-    {/* Orbital ridge highlights */}
-    <rect x="26" y="22" width="2" height="2" fill="#F0E6D2" opacity="0.3" />
-    <rect x="50" y="22" width="2" height="2" fill="#F0E6D2" opacity="0.3" />
+    {/* ═══ EYE SOCKET — large orbital from side view ═══ */}
+    {/* Side-profile eye socket is roughly circular, positioned mid-skull */}
+    <rect x="36" y="24" width="10" height="2" fill="#1A0E08" />
+    <rect x="34" y="26" width="14" height="2" fill="#1A0E08" />
+    <rect x="34" y="28" width="14" height="2" fill="#1A0E08" />
+    <rect x="36" y="30" width="10" height="2" fill="#1A0E08" />
+    {/* Socket rim — smooth edge (deer have smoother orbital rims than sheep) */}
+    <rect x="35" y="23" width="2" height="2" fill="#3A2A1E" opacity="0.5" />
+    <rect x="39" y="23" width="2" height="2" fill="#3A2A1E" opacity="0.5" />
+    <rect x="43" y="23" width="2" height="2" fill="#3A2A1E" opacity="0.5" />
+    <rect x="47" y="25" width="2" height="2" fill="#3A2A1E" opacity="0.5" />
+    <rect x="47" y="29" width="2" height="2" fill="#3A2A1E" opacity="0.5" />
+    <rect x="35" y="31" width="2" height="2" fill="#3A2A1E" opacity="0.5" />
+    <rect x="43" y="31" width="2" height="2" fill="#3A2A1E" opacity="0.5" />
+    <rect x="33" y="27" width="2" height="2" fill="#3A2A1E" opacity="0.45" />
+    {/* Socket depth */}
+    <rect x="38" y="26" width="2" height="2" fill="#0E0708" opacity="0.7" />
+    <rect x="40" y="28" width="2" height="2" fill="#0E0708" opacity="0.6" />
+    <rect x="36" y="28" width="2" height="2" fill="#0E0708" opacity="0.6" />
 
-    {/* ═══ LEFT EYE SOCKET — deep void with pixel-block rim ═══ */}
-    {/* Socket void (dark) */}
-    <rect x="26" y="24" width="8" height="6" fill="#1A0E08" rx="1" />
-    {/* Socket rim blocks */}
-    <rect x="25" y="23" width="2" height="2" fill="#3A2A1E" opacity="0.6" />
-    <rect x="27" y="23" width="2" height="2" fill="#3A2A1E" opacity="0.5" />
-    <rect x="29" y="23" width="2" height="2" fill="#3A2A1E" opacity="0.5" />
-    <rect x="33" y="23" width="2" height="2" fill="#3A2A1E" opacity="0.6" />
-    <rect x="25" y="29" width="2" height="2" fill="#3A2A1E" opacity="0.5" />
-    <rect x="33" y="29" width="2" height="2" fill="#3A2A1E" opacity="0.5" />
-    {/* Socket depth shading */}
-    <rect x="27" y="25" width="2" height="2" fill="#0E0708" opacity="0.7" />
-    <rect x="31" y="25" width="2" height="2" fill="#0E0708" opacity="0.7" />
-    <rect x="29" y="27" width="2" height="2" fill="#0E0708" opacity="0.6" />
+    {/* ═══ NASAL BONES & BRIDGE — long tapering snout (key deer feature) ═══ */}
+    {/* Upper nasal — forms the long nose bridge */}
+    <rect x="42" y="22" width="10" height="2" fill="#E8DCC8" />
+    <rect x="46" y="24" width="10" height="2" fill="#E8DCC8" />
+    <rect x="48" y="26" width="10" height="2" fill="#E8DCC8" />
+    <rect x="50" y="28" width="10" height="2" fill="#E8DCC8" />
+    <rect x="52" y="30" width="10" height="2" fill="#E8DCC8" />
+    <rect x="54" y="32" width="10" height="2" fill="#E8DCC8" />
+    <rect x="56" y="34" width="10" height="2" fill="#E8DCC8" />
+    <rect x="58" y="36" width="8" height="2" fill="#E8DCC8" />
+    {/* Nasal bridge highlight */}
+    <rect x="50" y="26" width="2" height="2" fill="#F0E6D2" opacity="0.4" />
+    <rect x="56" y="30" width="2" height="2" fill="#F0E6D2" opacity="0.35" />
+    {/* Nasal bone edge — ridge detail */}
+    <rect x="48" y="24" width="1" height="6" fill="#C4B8A0" opacity="0.3" />
 
-    {/* ═══ RIGHT EYE SOCKET ═══ */}
-    <rect x="46" y="24" width="8" height="6" fill="#1A0E08" rx="1" />
-    <rect x="45" y="23" width="2" height="2" fill="#3A2A1E" opacity="0.6" />
-    <rect x="47" y="23" width="2" height="2" fill="#3A2A1E" opacity="0.5" />
-    <rect x="49" y="23" width="2" height="2" fill="#3A2A1E" opacity="0.5" />
-    <rect x="53" y="23" width="2" height="2" fill="#3A2A1E" opacity="0.6" />
-    <rect x="45" y="29" width="2" height="2" fill="#3A2A1E" opacity="0.5" />
-    <rect x="53" y="29" width="2" height="2" fill="#3A2A1E" opacity="0.5" />
-    <rect x="47" y="25" width="2" height="2" fill="#0E0708" opacity="0.7" />
-    <rect x="51" y="25" width="2" height="2" fill="#0E0708" opacity="0.7" />
-    <rect x="49" y="27" width="2" height="2" fill="#0E0708" opacity="0.6" />
+    {/* ═══ NASAL CAVITY — opening at tip of snout ═══ */}
+    <rect x="64" y="34" width="4" height="3" fill="#1A0E08" rx="0.5" />
+    <rect x="66" y="33" width="2" height="2" fill="#1A0E08" />
+    {/* Nasal rim */}
+    <rect x="63" y="33" width="2" height="2" fill="#3A2A1E" opacity="0.4" />
+    <rect x="67" y="33" width="2" height="2" fill="#3A2A1E" opacity="0.4" />
+    <rect x="64" y="37" width="2" height="1" fill="#3A2A1E" opacity="0.3" />
 
-    {/* ═══ NASAL BRIDGE — tapers between eyes ═══ */}
-    <rect x="36" y="24" width="8" height="2" fill="#E8DCC8" />
-    <rect x="37" y="26" width="6" height="2" fill="#E8DCC8" />
-    <rect x="38" y="28" width="4" height="2" fill="#E8DCC8" />
-    {/* Bridge highlight */}
-    <rect x="38" y="24" width="2" height="2" fill="#F0E6D2" opacity="0.4" />
+    {/* ═══ MAXILLA & PREMAXILLA — upper jaw from side ═══ */}
+    {/* Upper jaw extends forward under nose */}
+    <rect x="44" y="34" width="12" height="2" fill="#E8DCC8" />
+    <rect x="46" y="36" width="14" height="2" fill="#E8DCC8" />
+    <rect x="48" y="38" width="14" height="2" fill="#E8DCC8" />
+    <rect x="50" y="40" width="14" height="2" fill="#C4B8A0" />
+    {/* Hard palate (deer lack upper incisors — unique feature) */}
+    <rect x="60" y="40" width="6" height="2" fill="#D4C0A8" opacity="0.5" />
+    {/* Diastema gap — space between front pad and cheek teeth */}
+    <rect x="54" y="40" width="4" height="2" fill="#C4B8A0" opacity="0.3" />
 
-    {/* ═══ NASAL CAVITY — heart-shaped void ═══ */}
-    <rect x="36" y="30" width="8" height="2" fill="#E8DCC8" />
-    {/* Nasal opening */}
-    <rect x="36" y="32" width="3" height="4" fill="#1A0E08" rx="0.5" />
-    <rect x="41" y="32" width="3" height="4" fill="#1A0E08" rx="0.5" />
-    {/* Nasal septum (thin bone divider) */}
-    <rect x="39" y="33" width="2" height="3" fill="#C4B8A0" />
-    <rect x="39" y="33" width="2" height="1" fill="#E8DCC8" />
-    {/* Nasal rim blocks */}
-    <rect x="35" y="31" width="2" height="2" fill="#3A2A1E" opacity="0.4" />
-    <rect x="43" y="31" width="2" height="2" fill="#3A2A1E" opacity="0.4" />
-    <rect x="36" y="35" width="2" height="2" fill="#3A2A1E" opacity="0.3" />
-    <rect x="42" y="35" width="2" height="2" fill="#3A2A1E" opacity="0.3" />
+    {/* ═══ LOWER JAW (mandible) — visible from side ═══ */}
+    <rect x="24" y="32" width="8" height="2" fill="#E8DCC8" />
+    <rect x="26" y="34" width="14" height="2" fill="#E8DCC8" />
+    <rect x="30" y="36" width="16" height="2" fill="#E8DCC8" />
+    <rect x="36" y="38" width="16" height="2" fill="#E8DCC8" />
+    <rect x="42" y="40" width="14" height="2" fill="#E8DCC8" />
+    <rect x="50" y="42" width="14" height="2" fill="#C4B8A0" />
+    {/* Mandible ramus — ascending branch toward ear */}
+    <rect x="22" y="30" width="4" height="4" fill="#D4C8B0" />
+    <rect x="20" y="28" width="4" height="4" fill="#D4C8B0" />
+    {/* Jaw joint (condyle) */}
+    <rect x="20" y="28" width="3" height="2" fill="#C4B8A0" opacity="0.6" />
+    {/* Jaw shadow */}
+    <rect x="34" y="38" width="2" height="2" fill="#C4B8A0" opacity="0.3" />
+    <rect x="48" y="42" width="2" height="2" fill="#C4B8A0" opacity="0.3" />
 
-    {/* ═══ MAXILLA / UPPER JAW — tapering to teeth ═══ */}
-    <rect x="28" y="30" width="6" height="2" fill="#E8DCC8" />
-    <rect x="46" y="30" width="6" height="2" fill="#E8DCC8" />
-    <rect x="26" y="32" width="8" height="2" fill="#E8DCC8" />
-    <rect x="46" y="32" width="8" height="2" fill="#E8DCC8" />
-    <rect x="26" y="34" width="8" height="2" fill="#E8DCC8" />
-    <rect x="46" y="34" width="8" height="2" fill="#E8DCC8" />
-    <rect x="26" y="36" width="28" height="2" fill="#E8DCC8" />
-    <rect x="28" y="38" width="24" height="2" fill="#E8DCC8" />
-    <rect x="28" y="40" width="24" height="2" fill="#C4B8A0" />
-    {/* Jaw shadow blocks */}
-    <rect x="26" y="36" width="2" height="2" fill="#C4B8A0" opacity="0.4" />
-    <rect x="52" y="36" width="2" height="2" fill="#C4B8A0" opacity="0.4" />
-    {/* Pixel-block teeth row */}
-    <rect x="28" y="42" width="2" height="3" fill="#F0E6D2" opacity="0.75" />
-    <rect x="31" y="42" width="2" height="3" fill="#F0E6D2" opacity="0.7" />
-    <rect x="34" y="42" width="2" height="2" fill="#F0E6D2" opacity="0.65" />
-    <rect x="37" y="42" width="2" height="2" fill="#F0E6D2" opacity="0.6" />
-    <rect x="41" y="42" width="2" height="2" fill="#F0E6D2" opacity="0.6" />
-    <rect x="44" y="42" width="2" height="2" fill="#F0E6D2" opacity="0.65" />
-    <rect x="47" y="42" width="2" height="3" fill="#F0E6D2" opacity="0.7" />
-    <rect x="50" y="42" width="2" height="3" fill="#F0E6D2" opacity="0.75" />
+    {/* ═══ CHEEK TEETH — molar/premolar row visible from side ═══ */}
+    {/* Deer have 6 cheek teeth per side (3 premolars + 3 molars) */}
+    <rect x="38" y="42" width="2" height="2" fill="#F0E6D2" opacity="0.7" />
+    <rect x="41" y="42" width="2" height="2" fill="#F0E6D2" opacity="0.65" />
+    <rect x="44" y="42" width="2" height="2" fill="#F0E6D2" opacity="0.7" />
+    <rect x="47" y="42" width="2" height="2" fill="#F0E6D2" opacity="0.65" />
+    <rect x="50" y="42" width="2" height="2" fill="#F0E6D2" opacity="0.6" />
+    <rect x="53" y="42" width="2" height="2" fill="#F0E6D2" opacity="0.55" />
 
-    {/* ═══ WILLOW VINE PLANTS — underwater weeping willow cascading from skull ═══ */}
-    {/* Vines grow from eye sockets and twist around antlers, draping down */}
+    {/* ═══ EAR BONE OPENING — auditory bulla near back of skull ═══ */}
+    <rect x="20" y="26" width="3" height="3" fill="#2A1A10" opacity="0.5" />
+    <rect x="19" y="25" width="2" height="2" fill="#3A2A1E" opacity="0.3" />
 
-    {/* Left eye socket vine cluster — main cascading strands */}
-    <g style={{ transformOrigin: '30px 26px', animation: 'kelpSway 4s ease-in-out infinite' }}>
-      <path d="M30 25 Q24 14 18 4 Q14 -4 10 -12" stroke="#2E7D32" strokeWidth="1.6" fill="none" opacity="0.8" strokeLinecap="round" />
-      <path d="M30 25 Q22 16 16 6 Q12 -2 6 -10" stroke="#1B5E20" strokeWidth="1.3" fill="none" opacity="0.7" strokeLinecap="round" />
-      <path d="M29 26 Q20 18 12 10 Q6 4 0 -2" stroke="#388E3C" strokeWidth="1" fill="none" opacity="0.6" strokeLinecap="round" />
-      {/* Leaf pixel blocks along vines */}
-      <rect x="22" y="12" width="3" height="2" fill="#43A047" opacity="0.7" />
-      <rect x="16" y="2" width="3" height="2" fill="#2E7D32" opacity="0.6" />
-      <rect x="12" y="-4" width="2" height="2" fill="#00C853" opacity="0.55" />
-      <rect x="8" y="-10" width="3" height="2" fill="#388E3C" opacity="0.5" />
-      <rect x="18" y="8" width="2" height="3" fill="#00E676" opacity="0.45" />
-      <rect x="10" y="-2" width="2" height="3" fill="#43A047" opacity="0.4" />
+    {/* ═══ WILLOW VINE PLANTS — underwater weeping willow from skull ═══ */}
+
+    {/* Eye socket vine cluster — main cascading strands */}
+    <g style={{ transformOrigin: '40px 28px', animation: 'kelpSway 4s ease-in-out infinite' }}>
+      <path d="M40 28 Q36 18 30 8 Q26 0 22 -8" stroke="#2E7D32" strokeWidth="1.6" fill="none" opacity="0.8" strokeLinecap="round" />
+      <path d="M38 27 Q34 18 28 8 Q24 0 18 -6" stroke="#1B5E20" strokeWidth="1.3" fill="none" opacity="0.7" strokeLinecap="round" />
+      <path d="M42 28 Q38 20 34 10 Q30 2 26 -4" stroke="#388E3C" strokeWidth="1" fill="none" opacity="0.6" strokeLinecap="round" />
+      {/* Leaf pixel blocks */}
+      <rect x="34" y="14" width="3" height="2" fill="#43A047" opacity="0.7" />
+      <rect x="28" y="4" width="3" height="2" fill="#2E7D32" opacity="0.6" />
+      <rect x="24" y="-4" width="2" height="2" fill="#00C853" opacity="0.55" />
+      <rect x="20" y="-6" width="3" height="2" fill="#388E3C" opacity="0.5" />
+      <rect x="30" y="10" width="2" height="3" fill="#00E676" opacity="0.45" />
     </g>
 
-    {/* Right eye socket vine cluster */}
-    <g style={{ transformOrigin: '50px 26px', animation: 'kelpSway 4.5s ease-in-out infinite 0.6s' }}>
-      <path d="M50 25 Q56 14 62 4 Q66 -4 70 -12" stroke="#2E7D32" strokeWidth="1.6" fill="none" opacity="0.8" strokeLinecap="round" />
-      <path d="M50 25 Q58 16 64 6 Q68 -2 74 -10" stroke="#1B5E20" strokeWidth="1.3" fill="none" opacity="0.7" strokeLinecap="round" />
-      <path d="M51 26 Q60 18 68 10 Q74 4 80 -2" stroke="#388E3C" strokeWidth="1" fill="none" opacity="0.6" strokeLinecap="round" />
-      <rect x="56" y="12" width="3" height="2" fill="#43A047" opacity="0.7" />
-      <rect x="62" y="2" width="3" height="2" fill="#2E7D32" opacity="0.6" />
-      <rect x="66" y="-4" width="2" height="2" fill="#00C853" opacity="0.55" />
-      <rect x="70" y="-10" width="3" height="2" fill="#388E3C" opacity="0.5" />
-      <rect x="60" y="8" width="2" height="3" fill="#00E676" opacity="0.45" />
-      <rect x="68" y="-2" width="2" height="3" fill="#43A047" opacity="0.4" />
+    {/* Antler tip vines — long cascading strands draping down */}
+    <g style={{ transformOrigin: '43px -7px', animation: 'kelpSway 5s ease-in-out infinite 1s' }}>
+      <path d="M43 -7 Q48 4 52 20 Q54 34 50 46 Q46 54 42 58" stroke="#2E7D32" strokeWidth="1.3" fill="none" opacity="0.7" strokeLinecap="round" />
+      <path d="M44 -5 Q50 6 54 22 Q56 36 52 48 Q48 56 44 60" stroke="#1B5E20" strokeWidth="1.1" fill="none" opacity="0.6" strokeLinecap="round" />
+      <path d="M42 -4 Q46 8 50 24 Q52 38 48 50" stroke="#388E3C" strokeWidth="0.9" fill="none" opacity="0.5" strokeLinecap="round" />
+      <rect x="50" y="16" width="2" height="2" fill="#43A047" opacity="0.5" />
+      <rect x="54" y="28" width="3" height="2" fill="#2E7D32" opacity="0.45" />
+      <rect x="52" y="40" width="2" height="2" fill="#00C853" opacity="0.4" />
+      <rect x="48" y="50" width="2" height="2" fill="#388E3C" opacity="0.4" />
     </g>
 
-    {/* Left antler tip — long cascading willow strands draping down */}
-    <g style={{ transformOrigin: '0px -2px', animation: 'kelpSway 5s ease-in-out infinite 1s' }}>
-      <path d="M0 -2 Q-6 10 -10 26 Q-12 40 -8 52 Q-4 60 0 64" stroke="#2E7D32" strokeWidth="1.3" fill="none" opacity="0.7" strokeLinecap="round" />
-      <path d="M2 0 Q-4 14 -8 30 Q-10 44 -6 56 Q-2 62 2 66" stroke="#1B5E20" strokeWidth="1.1" fill="none" opacity="0.6" strokeLinecap="round" />
-      <path d="M4 2 Q-2 16 -6 32 Q-8 46 -4 58" stroke="#388E3C" strokeWidth="0.9" fill="none" opacity="0.5" strokeLinecap="round" />
-      {/* Draping leaf blocks */}
-      <rect x="-10" y="22" width="2" height="2" fill="#43A047" opacity="0.5" />
-      <rect x="-12" y="34" width="3" height="2" fill="#2E7D32" opacity="0.45" />
-      <rect x="-10" y="46" width="2" height="2" fill="#00C853" opacity="0.4" />
-      <rect x="-6" y="56" width="2" height="2" fill="#388E3C" opacity="0.4" />
-      <rect x="-8" y="14" width="2" height="3" fill="#00E676" opacity="0.35" />
+    {/* Crown tine vine */}
+    <g style={{ transformOrigin: '44px -9px', animation: 'kelpSway 5.2s ease-in-out infinite 1.5s' }}>
+      <path d="M44 -9 Q50 2 54 16 Q56 28 52 40 Q48 48 44 52" stroke="#2E7D32" strokeWidth="1.1" fill="none" opacity="0.6" strokeLinecap="round" />
+      <path d="M45 -7 Q52 4 56 18 Q58 30 54 42" stroke="#43A047" strokeWidth="0.8" fill="none" opacity="0.5" strokeLinecap="round" />
+      <rect x="52" y="10" width="2" height="2" fill="#00C853" opacity="0.4" />
+      <rect x="56" y="22" width="2" height="2" fill="#388E3C" opacity="0.35" />
+      <rect x="52" y="34" width="2" height="2" fill="#2E7D32" opacity="0.3" />
     </g>
 
-    {/* Left brow tine vine — twists around fork */}
-    <g style={{ transformOrigin: '2px -1px', animation: 'kelpSway 4.2s ease-in-out infinite 0.3s' }}>
-      <path d="M2 -1 Q-4 12 -8 28 Q-10 42 -6 54 Q-2 60 2 62" stroke="#2E7D32" strokeWidth="1.1" fill="none" opacity="0.6" strokeLinecap="round" />
-      <path d="M4 2 Q-2 16 -6 32 Q-8 46 -4 56" stroke="#43A047" strokeWidth="0.8" fill="none" opacity="0.5" strokeLinecap="round" />
-      <rect x="-8" y="22" width="2" height="2" fill="#00C853" opacity="0.4" />
-      <rect x="-10" y="36" width="2" height="2" fill="#388E3C" opacity="0.35" />
-      <rect x="-6" y="48" width="2" height="2" fill="#2E7D32" opacity="0.3" />
+    {/* Brow tine vine — twists around forward fork */}
+    <g style={{ transformOrigin: '22px -1px', animation: 'kelpSway 4.2s ease-in-out infinite 0.3s' }}>
+      <path d="M22 -1 Q18 10 14 24 Q12 36 16 48 Q20 54 24 56" stroke="#2E7D32" strokeWidth="1.1" fill="none" opacity="0.6" strokeLinecap="round" />
+      <path d="M24 2 Q20 14 16 28 Q14 40 18 50" stroke="#43A047" strokeWidth="0.8" fill="none" opacity="0.5" strokeLinecap="round" />
+      <rect x="16" y="18" width="2" height="2" fill="#00C853" opacity="0.4" />
+      <rect x="14" y="32" width="2" height="2" fill="#388E3C" opacity="0.35" />
+      <rect x="18" y="44" width="2" height="2" fill="#2E7D32" opacity="0.3" />
     </g>
 
-    {/* Left trez tine vine */}
-    <g style={{ transformOrigin: '-1px -5px', animation: 'kelpSway 4.8s ease-in-out infinite 1.8s' }}>
-      <path d="M-1 -5 Q-6 6 -10 20 Q-12 34 -8 46 Q-4 54 0 58" stroke="#1B5E20" strokeWidth="1" fill="none" opacity="0.55" strokeLinecap="round" />
-      <rect x="-10" y="14" width="2" height="2" fill="#43A047" opacity="0.4" />
-      <rect x="-12" y="28" width="2" height="2" fill="#00C853" opacity="0.35" />
-      <rect x="-8" y="40" width="2" height="2" fill="#388E3C" opacity="0.3" />
+    {/* Trez tine vine */}
+    <g style={{ transformOrigin: '30px -7px', animation: 'kelpSway 4.8s ease-in-out infinite 1.8s' }}>
+      <path d="M30 -7 Q26 4 22 18 Q20 30 24 42 Q28 50 32 54" stroke="#1B5E20" strokeWidth="1" fill="none" opacity="0.55" strokeLinecap="round" />
+      <rect x="24" y="12" width="2" height="2" fill="#43A047" opacity="0.4" />
+      <rect x="22" y="24" width="2" height="2" fill="#00C853" opacity="0.35" />
+      <rect x="24" y="36" width="2" height="2" fill="#388E3C" opacity="0.3" />
     </g>
 
-    {/* Right antler tip — long cascading willow strands */}
-    <g style={{ transformOrigin: '80px -2px', animation: 'kelpSway 5.2s ease-in-out infinite 1.5s' }}>
-      <path d="M80 -2 Q86 10 90 26 Q92 40 88 52 Q84 60 80 64" stroke="#2E7D32" strokeWidth="1.3" fill="none" opacity="0.7" strokeLinecap="round" />
-      <path d="M78 0 Q84 14 88 30 Q90 44 86 56 Q82 62 78 66" stroke="#1B5E20" strokeWidth="1.1" fill="none" opacity="0.6" strokeLinecap="round" />
-      <path d="M76 2 Q82 16 86 32 Q88 46 84 58" stroke="#388E3C" strokeWidth="0.9" fill="none" opacity="0.5" strokeLinecap="round" />
-      <rect x="88" y="22" width="2" height="2" fill="#43A047" opacity="0.5" />
-      <rect x="90" y="34" width="3" height="2" fill="#2E7D32" opacity="0.45" />
-      <rect x="88" y="46" width="2" height="2" fill="#00C853" opacity="0.4" />
-      <rect x="84" y="56" width="2" height="2" fill="#388E3C" opacity="0.4" />
-      <rect x="86" y="14" width="2" height="3" fill="#00E676" opacity="0.35" />
+    {/* Nasal cavity vine — small growth from nose tip */}
+    <g style={{ transformOrigin: '66px 36px', animation: 'kelpSway 3.5s ease-in-out infinite 0.2s' }}>
+      <path d="M66 36 Q68 42 70 50 Q71 56 69 60" stroke="#1B5E20" strokeWidth="1.2" fill="none" opacity="0.6" strokeLinecap="round" />
+      <path d="M64 37 Q62 44 60 52 Q59 56 61 60" stroke="#2E7D32" strokeWidth="1" fill="none" opacity="0.5" strokeLinecap="round" />
+      <rect x="68" y="48" width="2" height="2" fill="#43A047" opacity="0.4" />
+      <rect x="60" y="50" width="2" height="2" fill="#388E3C" opacity="0.35" />
     </g>
 
-    {/* Right brow tine vine */}
-    <g style={{ transformOrigin: '78px -1px', animation: 'kelpSway 4.4s ease-in-out infinite 0.8s' }}>
-      <path d="M78 -1 Q84 12 88 28 Q90 42 86 54 Q82 60 78 62" stroke="#2E7D32" strokeWidth="1.1" fill="none" opacity="0.6" strokeLinecap="round" />
-      <path d="M76 2 Q82 16 86 32 Q88 46 84 56" stroke="#43A047" strokeWidth="0.8" fill="none" opacity="0.5" strokeLinecap="round" />
-      <rect x="86" y="22" width="2" height="2" fill="#00C853" opacity="0.4" />
-      <rect x="88" y="36" width="2" height="2" fill="#388E3C" opacity="0.35" />
-      <rect x="84" y="48" width="2" height="2" fill="#2E7D32" opacity="0.3" />
-    </g>
+    {/* ═══ MOSS & ALGAE patches — pixel-block overgrowth ═══ */}
+    <rect x="24" y="22" width="3" height="2" fill="#2E7D32" opacity="0.35" />
+    <rect x="26" y="24" width="2" height="2" fill="#388E3C" opacity="0.3" />
+    <rect x="36" y="22" width="3" height="2" fill="#2E7D32" opacity="0.3" />
+    <rect x="54" y="32" width="2" height="2" fill="#388E3C" opacity="0.25" />
+    <rect x="46" y="36" width="2" height="2" fill="#1B5E20" opacity="0.3" />
+    <rect x="20" y="26" width="2" height="2" fill="#43A047" opacity="0.25" />
+    <rect x="40" y="20" width="2" height="2" fill="#2E7D32" opacity="0.2" />
+    {/* Lichen spots */}
+    <rect x="30" y="22" width="2" height="2" fill="#A5D6A7" opacity="0.2" />
+    <rect x="50" y="28" width="2" height="2" fill="#A5D6A7" opacity="0.18" />
+    <rect x="42" y="36" width="2" height="2" fill="#81C784" opacity="0.15" />
 
-    {/* Right trez tine vine */}
-    <g style={{ transformOrigin: '81px -5px', animation: 'kelpSway 4.6s ease-in-out infinite 2s' }}>
-      <path d="M81 -5 Q86 6 90 20 Q92 34 88 46 Q84 54 80 58" stroke="#1B5E20" strokeWidth="1" fill="none" opacity="0.55" strokeLinecap="round" />
-      <rect x="88" y="14" width="2" height="2" fill="#43A047" opacity="0.4" />
-      <rect x="90" y="28" width="2" height="2" fill="#00C853" opacity="0.35" />
-      <rect x="88" y="40" width="2" height="2" fill="#388E3C" opacity="0.3" />
-    </g>
-
-    {/* Nasal cavity vine — small growth from nose */}
-    <g style={{ transformOrigin: '40px 36px', animation: 'kelpSway 3.5s ease-in-out infinite 0.2s' }}>
-      <path d="M38 36 Q36 42 34 50 Q33 56 35 60" stroke="#1B5E20" strokeWidth="1.2" fill="none" opacity="0.6" strokeLinecap="round" />
-      <path d="M42 36 Q44 42 46 50 Q47 56 45 60" stroke="#2E7D32" strokeWidth="1" fill="none" opacity="0.5" strokeLinecap="round" />
-      <rect x="34" y="48" width="2" height="2" fill="#43A047" opacity="0.4" />
-      <rect x="44" y="48" width="2" height="2" fill="#388E3C" opacity="0.35" />
-    </g>
-
-    {/* ═══ MOSS & ALGAE patches on skull — pixel-block overgrowth ═══ */}
-    <rect x="24" y="18" width="3" height="2" fill="#2E7D32" opacity="0.35" />
-    <rect x="26" y="20" width="2" height="2" fill="#388E3C" opacity="0.3" />
-    <rect x="52" y="18" width="3" height="2" fill="#2E7D32" opacity="0.35" />
-    <rect x="50" y="20" width="2" height="2" fill="#388E3C" opacity="0.3" />
-    <rect x="36" y="38" width="2" height="2" fill="#1B5E20" opacity="0.3" />
-    <rect x="42" y="38" width="2" height="2" fill="#1B5E20" opacity="0.25" />
-    <rect x="22" y="22" width="2" height="2" fill="#43A047" opacity="0.25" />
-    <rect x="56" y="22" width="2" height="2" fill="#43A047" opacity="0.25" />
-    <rect x="30" y="40" width="2" height="2" fill="#2E7D32" opacity="0.2" />
-    <rect x="48" y="40" width="2" height="2" fill="#2E7D32" opacity="0.2" />
-    {/* Lichen spots (lighter green pixel blocks) */}
-    <rect x="32" y="16" width="2" height="2" fill="#A5D6A7" opacity="0.2" />
-    <rect x="44" y="16" width="2" height="2" fill="#A5D6A7" opacity="0.18" />
-    <rect x="28" y="34" width="2" height="2" fill="#81C784" opacity="0.15" />
-    <rect x="50" y="34" width="2" height="2" fill="#81C784" opacity="0.15" />
-
-    {/* ═══ Additional bone surface detail — pixel-block weathering ═══ */}
-    <rect x="32" y="20" width="2" height="2" fill="#A89C84" opacity="0.2" />
-    <rect x="44" y="20" width="2" height="2" fill="#A89C84" opacity="0.2" />
-    <rect x="38" y="18" width="2" height="2" fill="#C4B8A0" opacity="0.15" />
-    <rect x="34" y="30" width="2" height="2" fill="#C4B8A0" opacity="0.2" />
-    <rect x="44" y="30" width="2" height="2" fill="#C4B8A0" opacity="0.2" />
-    <rect x="30" y="38" width="2" height="2" fill="#A89C84" opacity="0.15" />
-    <rect x="48" y="38" width="2" height="2" fill="#A89C84" opacity="0.15" />
+    {/* ═══ Bone surface detail — weathering & texture ═══ */}
+    <rect x="28" y="24" width="2" height="2" fill="#A89C84" opacity="0.2" />
+    <rect x="32" y="26" width="2" height="2" fill="#A89C84" opacity="0.2" />
+    <rect x="52" y="30" width="2" height="2" fill="#C4B8A0" opacity="0.15" />
+    <rect x="44" y="38" width="2" height="2" fill="#C4B8A0" opacity="0.2" />
+    <rect x="56" y="36" width="2" height="2" fill="#A89C84" opacity="0.15" />
+    <rect x="38" y="40" width="2" height="2" fill="#A89C84" opacity="0.15" />
   </g>
 ))
 DeerSkullWillow.displayName = 'DeerSkullWillow'

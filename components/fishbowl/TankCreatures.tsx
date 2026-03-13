@@ -8,51 +8,194 @@ import { memo, useEffect, useState, useRef, useCallback, useMemo } from 'react'
 const ClownPlecoSVG = memo(({ id, facingRight, size = 40 }: { id: string; facingRight: boolean; size?: number }) => {
   const scaleX = facingRight ? -1 : 1
   return (
-    <svg width={size} height={size * 0.5} viewBox="0 0 80 40" fill="none">
+    <svg width={size} height={size * 0.55} viewBox="0 0 100 55" fill="none">
       <defs>
-        <radialGradient id={`pleco-body-${id}`} cx="0.4" cy="0.4" r="0.6">
-          <stop offset="0%" stopColor="#5C4A3A" />
-          <stop offset="100%" stopColor="#2E1F14" />
-        </radialGradient>
-        <linearGradient id={`pleco-stripe-${id}`} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#D4A54A" />
-          <stop offset="100%" stopColor="#B8862D" />
+        {/* Dark brown-black base gradient for body */}
+        <linearGradient id={`pleco-body-${id}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#3D2B1A" />
+          <stop offset="40%" stopColor="#2A1C10" />
+          <stop offset="100%" stopColor="#1A0F08" />
+        </linearGradient>
+        {/* Bright orange-gold stripe color */}
+        <linearGradient id={`pleco-stripe-${id}`} x1="0" y1="0" x2="0.3" y2="1">
+          <stop offset="0%" stopColor="#E8A832" />
+          <stop offset="50%" stopColor="#D49228" />
+          <stop offset="100%" stopColor="#C07E20" />
+        </linearGradient>
+        {/* Belly gradient - lighter underside */}
+        <linearGradient id={`pleco-belly-${id}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#3A2818" />
+          <stop offset="100%" stopColor="#4A3622" />
+        </linearGradient>
+        {/* Fin membrane gradient */}
+        <linearGradient id={`pleco-fin-${id}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#2E1E12" />
+          <stop offset="100%" stopColor="#1A0F08" stopOpacity="0.7" />
         </linearGradient>
       </defs>
-      <g transform={`translate(40, 20) scale(${scaleX}, 1) translate(-40, -20)`}>
-        {/* Body - flat elongated bottom feeder shape */}
-        <ellipse cx="38" cy="22" rx="28" ry="10" fill={`url(#pleco-body-${id})`} />
-        {/* Flat belly */}
-        <ellipse cx="38" cy="27" rx="24" ry="5" fill="#3A2A1E" opacity="0.6" />
-        {/* Clown stripes - golden/orange bands */}
-        <path d="M18 16 Q20 12 24 14 L24 28 Q20 30 18 26 Z" fill={`url(#pleco-stripe-${id})`} opacity="0.8" />
-        <path d="M30 13 Q33 10 36 12 L36 30 Q33 32 30 29 Z" fill={`url(#pleco-stripe-${id})`} opacity="0.7" />
-        <path d="M42 12 Q45 10 48 13 L48 29 Q45 31 42 28 Z" fill={`url(#pleco-stripe-${id})`} opacity="0.8" />
-        <path d="M54 14 Q56 12 58 15 L58 27 Q56 29 54 26 Z" fill={`url(#pleco-stripe-${id})`} opacity="0.7" />
-        {/* Head - broad flat snout */}
-        <ellipse cx="14" cy="22" rx="10" ry="8" fill="#3E2E20" />
-        <ellipse cx="12" cy="24" rx="8" ry="5" fill="#4A3828" />
-        {/* Sucker mouth (bottom feeder!) */}
-        <ellipse cx="8" cy="25" rx="4" ry="3" fill="#2A1A10" stroke="#5C4A3A" strokeWidth="0.5" />
-        <ellipse cx="8" cy="25" rx="2.5" ry="1.8" fill="#1A0E08" />
-        {/* Eyes - small, set high on head */}
-        <circle cx="16" cy="17" r="2.5" fill="#1A0E08" />
-        <circle cx="16" cy="16.5" r="1.2" fill="#4A3020" />
-        <circle cx="16.5" cy="16" r="0.5" fill="#D4A54A" />
-        {/* Dorsal fin - tall sail-like */}
-        <path d="M28 14 Q32 4 38 6 Q42 8 44 14" fill="#3E2E20" opacity="0.9" />
-        <path d="M30 12 Q34 6 38 7" stroke="#D4A54A" strokeWidth="0.8" fill="none" opacity="0.5" />
-        {/* Pectoral fins - wide, flat */}
-        <path d="M22 26 Q16 34 12 32 Q14 28 20 26" fill="#3E2E20" opacity="0.7" />
-        <path d="M32 26 Q28 34 24 32 Q26 28 30 26" fill="#3E2E20" opacity="0.7" />
-        {/* Tail fin - fan shaped */}
-        <path d="M62 18 Q72 10 74 16 Q76 22 74 26 Q72 32 62 24" fill="#3E2E20" opacity="0.85" />
-        <path d="M64 18 Q70 14 72 20" stroke="#D4A54A" strokeWidth="0.6" fill="none" opacity="0.5" />
-        <path d="M64 24 Q70 28 72 22" stroke="#D4A54A" strokeWidth="0.6" fill="none" opacity="0.5" />
-        {/* Armor plates texture */}
-        <path d="M20 18 L24 17 L28 18" stroke="#5C4A3A" strokeWidth="0.4" fill="none" opacity="0.4" />
-        <path d="M34 17 L38 16 L42 17" stroke="#5C4A3A" strokeWidth="0.4" fill="none" opacity="0.4" />
-        <path d="M46 18 L50 17 L54 18" stroke="#5C4A3A" strokeWidth="0.4" fill="none" opacity="0.4" />
+      <g transform={`translate(50, 27.5) scale(${scaleX}, 1) translate(-50, -27.5)`}>
+
+        {/* === BODY — elongated, widest at head, tapering to caudal peduncle === */}
+        {/* Main body shape — torpedo-like with flat belly, characteristic pleco profile */}
+        <path d="M10 28 Q8 22 12 18 Q18 12 30 12 Q42 11 52 13 Q62 15 72 18 Q78 20 80 24 Q82 28 80 32 Q78 36 72 38 Q62 40 52 40 Q42 41 30 40 Q18 39 12 36 Q8 33 10 28 Z"
+          fill={`url(#pleco-body-${id})`} />
+        {/* Flat ventral surface — key pleco feature */}
+        <path d="M14 34 Q30 42 52 42 Q70 40 80 34 Q78 38 72 40 Q52 43 30 42 Q18 41 14 34 Z"
+          fill={`url(#pleco-belly-${id})`} opacity="0.8" />
+
+        {/* === BONY SCUTE PLATES — rows of armored plates visible on sides === */}
+        {/* Upper lateral scute row */}
+        <path d="M22 16 L28 15 L34 15 L40 14 L46 15 L52 15 L58 16 L64 18 L70 20"
+          stroke="#4A3828" strokeWidth="0.6" fill="none" opacity="0.5" />
+        {/* Mid-lateral scute row */}
+        <path d="M18 22 L26 21 L34 20 L42 20 L50 20 L58 21 L66 23 L72 25"
+          stroke="#4A3828" strokeWidth="0.6" fill="none" opacity="0.45" />
+        {/* Lower lateral scute row */}
+        <path d="M18 30 L26 31 L34 32 L42 32 L50 32 L58 31 L66 30 L72 28"
+          stroke="#4A3828" strokeWidth="0.5" fill="none" opacity="0.35" />
+        {/* Individual scute plate detail blocks */}
+        <rect x="24" y="16" width="5" height="3" fill="#3D2B1A" opacity="0.3" rx="0.5" />
+        <rect x="31" y="15" width="5" height="3" fill="#3D2B1A" opacity="0.25" rx="0.5" />
+        <rect x="38" y="15" width="5" height="3" fill="#3D2B1A" opacity="0.3" rx="0.5" />
+        <rect x="45" y="15" width="5" height="3" fill="#3D2B1A" opacity="0.25" rx="0.5" />
+        <rect x="52" y="16" width="5" height="3" fill="#3D2B1A" opacity="0.3" rx="0.5" />
+        <rect x="59" y="18" width="5" height="3" fill="#3D2B1A" opacity="0.25" rx="0.5" />
+        {/* Scute texture highlights */}
+        <rect x="26" y="17" width="2" height="1" fill="#5C4A3A" opacity="0.2" />
+        <rect x="40" y="16" width="2" height="1" fill="#5C4A3A" opacity="0.18" />
+        <rect x="54" y="17" width="2" height="1" fill="#5C4A3A" opacity="0.15" />
+
+        {/* === CLOWN STRIPES — bright orange/gold wavy bands, characteristic of P. maccus === */}
+        {/* Stripe 1 — behind head */}
+        <path d="M20 14 Q22 12 24 14 Q25 20 25 26 Q24 32 22 36 Q20 38 18 36 Q17 30 17 24 Q17 18 20 14 Z"
+          fill={`url(#pleco-stripe-${id})`} opacity="0.85" />
+        {/* Stripe 2 — mid-anterior body, slightly wavy */}
+        <path d="M30 13 Q33 10 35 13 Q36 18 37 24 Q36 30 35 36 Q33 40 30 38 Q29 32 28 24 Q29 18 30 13 Z"
+          fill={`url(#pleco-stripe-${id})`} opacity="0.8" />
+        {/* Stripe 3 — mid body */}
+        <path d="M42 13 Q44 10 47 12 Q48 17 49 24 Q48 31 47 37 Q44 40 42 38 Q41 32 40 25 Q41 18 42 13 Z"
+          fill={`url(#pleco-stripe-${id})`} opacity="0.85" />
+        {/* Stripe 4 — posterior body, thinner as body tapers */}
+        <path d="M54 15 Q56 13 58 15 Q59 20 59 26 Q59 32 57 36 Q55 38 54 36 Q53 30 53 24 Q53 18 54 15 Z"
+          fill={`url(#pleco-stripe-${id})`} opacity="0.75" />
+        {/* Stripe 5 — near caudal peduncle, narrow */}
+        <path d="M64 18 Q66 16 67 19 Q68 24 67 28 Q66 32 64 30 Q63 26 63 22 Q63 19 64 18 Z"
+          fill={`url(#pleco-stripe-${id})`} opacity="0.7" />
+        {/* Stripe edge detail — subtle breaks/waves in pattern */}
+        <rect x="21" y="20" width="1" height="2" fill="#E8A832" opacity="0.3" />
+        <rect x="34" y="22" width="1" height="2" fill="#E8A832" opacity="0.25" />
+        <rect x="46" y="18" width="1" height="2" fill="#E8A832" opacity="0.2" />
+
+        {/* === HEAD — broad, flattened, depressed (classic loricariid) === */}
+        {/* Head shape — wider than body, very flat on top */}
+        <path d="M10 28 Q6 22 8 18 Q10 14 16 13 Q20 12 22 14 Q18 14 14 16 Q10 20 10 28 Z"
+          fill="#32220E" />
+        {/* Head top surface */}
+        <path d="M8 18 Q12 12 20 12 Q24 12 26 14 L26 18 Q20 14 14 15 Q10 17 8 18 Z"
+          fill="#3A2816" opacity="0.7" />
+        {/* Interorbital ridge — raised bone between eyes */}
+        <path d="M14 14 Q17 12 20 14" stroke="#4A3828" strokeWidth="0.8" fill="none" opacity="0.4" />
+
+        {/* === SUCKER MOUTH — round disc-shaped, characteristic of Loricariidae === */}
+        {/* Mouth disc — visible from side as a round pad on underside of head */}
+        <ellipse cx="10" cy="34" rx="6" ry="4" fill="#2A1A10" stroke="#4A3828" strokeWidth="0.6" />
+        {/* Inner mouth — darker center */}
+        <ellipse cx="10" cy="34" rx="4" ry="2.5" fill="#1A0E06" />
+        {/* Lip folds — fleshy ridges around sucker */}
+        <path d="M5 32 Q10 30 15 32" stroke="#3A2A18" strokeWidth="0.5" fill="none" opacity="0.5" />
+        <path d="M5 36 Q10 38 15 36" stroke="#3A2A18" strokeWidth="0.5" fill="none" opacity="0.5" />
+        {/* Maxillary barbel — short whisker on corner of mouth */}
+        <path d="M15 34 Q18 36 20 38" stroke="#4A3828" strokeWidth="0.6" fill="none" opacity="0.5" />
+        <circle cx="20" cy="38" r="0.5" fill="#4A3828" opacity="0.4" />
+
+        {/* === EYES — small, set high on head, omega-shaped iris (Panaqolus feature) === */}
+        {/* Eye socket depression */}
+        <circle cx="16" cy="15" r="3" fill="#1A0E08" opacity="0.4" />
+        {/* Eye globe */}
+        <circle cx="16" cy="15" r="2.5" fill="#0E0808" />
+        {/* Iris — golden-brown ring (typical of clown plecos) */}
+        <circle cx="16" cy="15" r="1.8" fill="#4A3020" />
+        {/* Omega-shaped iris flap (Panaqolus genus feature) */}
+        <path d="M14.5 14.5 Q16 13.5 17.5 14.5" stroke="#6B5030" strokeWidth="0.6" fill="none" />
+        {/* Pupil */}
+        <circle cx="16" cy="15" r="1" fill="#0E0808" />
+        {/* Eye shine */}
+        <circle cx="16.8" cy="14.2" r="0.6" fill="white" opacity="0.7" />
+        <circle cx="15.4" cy="15.5" r="0.3" fill="white" opacity="0.3" />
+
+        {/* === DORSAL FIN — tall, sail-like, first ray very long (genus Panaqolus) === */}
+        {/* Large triangular dorsal with prominent first spine */}
+        <path d="M32 13 Q30 2 34 0 Q36 -1 38 2 Q42 6 48 10 Q50 12 50 14"
+          fill={`url(#pleco-fin-${id})`} opacity="0.9" />
+        {/* Fin ray lines — visible bone spines through membrane */}
+        <path d="M33 12 Q32 4 34 1" stroke="#4A3828" strokeWidth="0.5" fill="none" opacity="0.5" />
+        <path d="M36 11 Q35 5 36 2" stroke="#4A3828" strokeWidth="0.4" fill="none" opacity="0.4" />
+        <path d="M40 11 Q39 6 40 4" stroke="#4A3828" strokeWidth="0.4" fill="none" opacity="0.35" />
+        <path d="M44 12 Q43 8 44 6" stroke="#4A3828" strokeWidth="0.3" fill="none" opacity="0.3" />
+        <path d="M48 13 Q47 10 48 9" stroke="#4A3828" strokeWidth="0.3" fill="none" opacity="0.25" />
+        {/* Dorsal fin stripe continuation */}
+        <path d="M35 10 Q36 6 37 3" stroke="#D49228" strokeWidth="0.7" fill="none" opacity="0.4" />
+        <path d="M42 10 Q43 7 44 5" stroke="#D49228" strokeWidth="0.6" fill="none" opacity="0.35" />
+
+        {/* === PECTORAL FINS — large, fan-shaped, laid back when resting === */}
+        {/* Left pectoral (visible from side — splayed out behind/below) */}
+        <path d="M22 34 Q16 40 10 46 Q8 48 10 48 Q14 46 20 42 Q24 40 26 36"
+          fill={`url(#pleco-fin-${id})`} opacity="0.7" />
+        {/* Pectoral fin rays */}
+        <path d="M22 34 Q16 42 12 46" stroke="#4A3828" strokeWidth="0.4" fill="none" opacity="0.35" />
+        <path d="M24 36 Q18 42 14 46" stroke="#4A3828" strokeWidth="0.3" fill="none" opacity="0.3" />
+        <path d="M24 36 Q20 42 18 46" stroke="#4A3828" strokeWidth="0.3" fill="none" opacity="0.25" />
+        {/* Pectoral spine — thick leading edge (odontode-bearing) */}
+        <path d="M22 34 Q14 42 10 46" stroke="#3A2816" strokeWidth="0.8" fill="none" opacity="0.5" />
+
+        {/* === PELVIC FIN === */}
+        <path d="M40 38 Q36 44 32 48 Q34 48 38 44 Q42 40 42 38"
+          fill={`url(#pleco-fin-${id})`} opacity="0.6" />
+        <path d="M40 38 Q36 44 34 46" stroke="#4A3828" strokeWidth="0.3" fill="none" opacity="0.3" />
+
+        {/* === ADIPOSE FIN — small fin on back between dorsal and caudal === */}
+        <path d="M62 18 Q64 14 66 16 Q67 18 66 20" fill="#2E1E12" opacity="0.6" />
+
+        {/* === CAUDAL FIN (tail) — fan-shaped, about same area as dorsal === */}
+        <path d="M76 22 Q84 14 88 12 Q90 12 90 16 Q88 20 84 24 Q88 28 90 32 Q90 36 88 36 Q84 34 76 26 Z"
+          fill={`url(#pleco-fin-${id})`} opacity="0.85" />
+        {/* Caudal fin rays */}
+        <path d="M78 22 Q84 16 88 13" stroke="#4A3828" strokeWidth="0.4" fill="none" opacity="0.4" />
+        <path d="M78 24 Q84 20 88 18" stroke="#4A3828" strokeWidth="0.3" fill="none" opacity="0.35" />
+        <path d="M78 26 Q84 28 88 30" stroke="#4A3828" strokeWidth="0.3" fill="none" opacity="0.35" />
+        <path d="M78 26 Q84 32 88 35" stroke="#4A3828" strokeWidth="0.4" fill="none" opacity="0.4" />
+        {/* Caudal stripe bands */}
+        <path d="M82 16 Q83 20 82 24" stroke="#D49228" strokeWidth="0.8" fill="none" opacity="0.4" />
+        <path d="M86 14 Q87 20 86 26" stroke="#D49228" strokeWidth="0.6" fill="none" opacity="0.35" />
+        <path d="M82 26 Q83 30 82 34" stroke="#D49228" strokeWidth="0.8" fill="none" opacity="0.4" />
+        <path d="M86 28 Q87 32 86 36" stroke="#D49228" strokeWidth="0.6" fill="none" opacity="0.35" />
+
+        {/* === CAUDAL PEDUNCLE — narrow connection between body and tail === */}
+        <path d="M72 20 Q76 22 78 24 Q76 26 72 28"
+          fill="#2A1C10" opacity="0.6" />
+
+        {/* === ANAL FIN — small, underneath near tail === */}
+        <path d="M58 38 Q56 44 54 46 Q56 46 58 42 Q60 40 60 38"
+          fill={`url(#pleco-fin-${id})`} opacity="0.55" />
+
+        {/* === ODONTODE TEXTURE — tiny thorn-like projections on body plates === */}
+        {/* These are the tiny "teeth" on the scutes that give plecos their rough texture */}
+        <circle cx="25" cy="20" r="0.4" fill="#5C4A3A" opacity="0.25" />
+        <circle cx="33" cy="18" r="0.4" fill="#5C4A3A" opacity="0.2" />
+        <circle cx="41" cy="18" r="0.4" fill="#5C4A3A" opacity="0.2" />
+        <circle cx="49" cy="19" r="0.4" fill="#5C4A3A" opacity="0.2" />
+        <circle cx="57" cy="20" r="0.4" fill="#5C4A3A" opacity="0.18" />
+        <circle cx="65" cy="22" r="0.4" fill="#5C4A3A" opacity="0.15" />
+        <circle cx="28" cy="28" r="0.4" fill="#5C4A3A" opacity="0.2" />
+        <circle cx="36" cy="30" r="0.4" fill="#5C4A3A" opacity="0.18" />
+        <circle cx="44" cy="30" r="0.4" fill="#5C4A3A" opacity="0.18" />
+        <circle cx="52" cy="29" r="0.4" fill="#5C4A3A" opacity="0.15" />
+        <circle cx="60" cy="28" r="0.4" fill="#5C4A3A" opacity="0.15" />
+
+        {/* === BODY HIGHLIGHTS — subtle light catching on armored surface === */}
+        <path d="M20 16 Q30 14 40 14 Q50 14 60 16" stroke="white" strokeWidth="0.3" fill="none" opacity="0.08" />
+        <rect x="28" y="18" width="3" height="1" fill="white" opacity="0.06" />
+        <rect x="44" y="17" width="3" height="1" fill="white" opacity="0.05" />
       </g>
     </svg>
   )
@@ -112,19 +255,33 @@ function svgToPixel(
   return { x: ox + svgX * scale, y: oy + svgY * scale }
 }
 
-type PlecoPhase = 'transit' | 'orbit' | 'latch' | 'clean'
+// Clown pleco phases:
+//   transit — slow scooting along the bottom toward a structure (short bursts + pauses)
+//   approach — cautiously nearing the structure, hugging surfaces
+//   latch — quick dart to a specific feeding spot on the structure
+//   rasp — sucker-mouth scraping: slow side-to-side rocking, mostly stationary
+//   rest — completely still, latched to surface (plecos spend most time resting)
+//   hop — short scoot to nearby spot on same structure
+
+type PlecoPhase = 'transit' | 'approach' | 'latch' | 'rasp' | 'rest' | 'hop'
 
 interface PlecoMotion {
   x: number; y: number
   phase: PlecoPhase
   targetX: number; targetY: number
   zoneIdx: number
-  orbitAngle: number
-  orbitTarget: number
-  cleanTicks: number
+  raspTicks: number
+  restTicks: number
   spotsLeft: number
   speed: number
   facingRight: boolean
+  // Scoot-and-pause behavior for transit
+  scootTicks: number      // ticks remaining in current scoot burst
+  pauseTicks: number      // ticks remaining in current pause
+  // Approach behavior
+  approachSpot: number    // which spot we're approaching from
+  // Rasping animation state
+  raspPhase: number       // oscillation phase for side-to-side rocking
 }
 
 function createPlecoMotion(
@@ -135,12 +292,15 @@ function createPlecoMotion(
     phase: 'transit',
     targetX: 0, targetY: 0,
     zoneIdx,
-    orbitAngle: 0,
-    orbitTarget: 0,
-    cleanTicks: 0,
-    spotsLeft: 3 + Math.floor(Math.random() * 4),
-    speed: 0.7 + Math.random() * 0.4,
+    raspTicks: 0,
+    restTicks: 0,
+    spotsLeft: 4 + Math.floor(Math.random() * 5),
+    speed: 0.5 + Math.random() * 0.3,
     facingRight: true,
+    scootTicks: 0,
+    pauseTicks: 0,
+    approachSpot: 0,
+    raspPhase: 0,
   }
 }
 
@@ -149,95 +309,158 @@ function tickPleco(
 ): void {
   if (zones.length === 0) return
   const zone = zones[p.zoneIdx]
-  const scale = cw / 800
+  const bottomBound = ch - 15  // plecos stay near the bottom
 
   switch (p.phase) {
     case 'transit': {
+      // Scoot-and-pause: short bursts of movement with rest pauses between
+      // Like a real pleco scooting along the bottom substrate
+
+      // Handle pause between scoots
+      if (p.pauseTicks > 0) {
+        p.pauseTicks--
+        // Completely still during pause — sucker holding position
+        break
+      }
+
       const center = svgToPixel(zone.cx, zone.cy, cw, ch)
       const dx = center.x - p.x
       const dy = center.y - p.y
       const dist = Math.sqrt(dx * dx + dy * dy)
 
-      if (dist < 12) {
-        // Arrived at structure — begin orbiting
-        p.phase = 'orbit'
-        p.orbitAngle = Math.atan2(p.y - center.y, p.x - center.x)
-        p.orbitTarget = p.orbitAngle + (2 + Math.random()) * Math.PI * 2
+      if (dist < 30) {
+        // Close enough to structure — start approaching cautiously
+        p.phase = 'approach'
+        p.approachSpot = Math.floor(Math.random() * zone.spots.length)
+        const spot = zone.spots[p.approachSpot]
+        const pos = svgToPixel(spot.x, spot.y, cw, ch)
+        p.targetX = pos.x
+        p.targetY = pos.y
         break
       }
 
+      // Start a new scoot burst if needed
+      if (p.scootTicks <= 0) {
+        p.scootTicks = 6 + Math.floor(Math.random() * 10) // 0.6–1.6 seconds of movement
+      }
+
+      // Move in a scoot burst — bottom-hugging, slightly irregular
       const angle = Math.atan2(dy, dx)
-      // Sine-wave undulation for natural swim
-      const wave = Math.sin(Date.now() * 0.002 + p.x * 0.1) * 0.35
-      p.x += Math.cos(angle) * p.speed + Math.cos(angle + Math.PI / 2) * wave
-      p.y += Math.sin(angle) * p.speed + Math.sin(angle + Math.PI / 2) * wave
+      // Plecos hug the bottom — bias Y toward bottom of tank
+      const bottomBias = (p.y < bottomBound - 30) ? 0.15 : 0
+      const moveSpeed = p.speed * (0.8 + Math.random() * 0.4) // slight speed variation
+      p.x += Math.cos(angle) * moveSpeed
+      p.y += Math.sin(angle) * moveSpeed + bottomBias
+      p.facingRight = dx > 0
+
+      p.scootTicks--
+      if (p.scootTicks <= 0) {
+        // Pause between scoots — 0.5 to 2.5 seconds of complete stillness
+        p.pauseTicks = 5 + Math.floor(Math.random() * 20)
+      }
+      break
+    }
+
+    case 'approach': {
+      // Cautiously approach the structure — slow, deliberate, hugging surfaces
+      const dx = p.targetX - p.x
+      const dy = p.targetY - p.y
+      const dist = Math.sqrt(dx * dx + dy * dy)
+
+      if (dist < 6) {
+        // Reached the spot — latch on
+        p.phase = 'rasp'
+        p.raspTicks = 60 + Math.floor(Math.random() * 100) // 6–16 seconds of rasping
+        p.raspPhase = 0
+        break
+      }
+
+      // Slow, deliberate movement toward spot
+      const angle = Math.atan2(dy, dx)
+      const approachSpeed = p.speed * 0.6
+      p.x += Math.cos(angle) * approachSpeed
+      p.y += Math.sin(angle) * approachSpeed
       p.facingRight = dx > 0
       break
     }
 
-    case 'orbit': {
-      // Smoothly circle the structure
-      p.orbitAngle += 0.045
-      const center = svgToPixel(zone.cx, zone.cy, cw, ch)
-      const rx = 55 * scale
-      const ry = 40 * scale
-      const tx = center.x + Math.cos(p.orbitAngle) * rx
-      const ty = center.y + Math.sin(p.orbitAngle) * ry
-
-      // Interpolate toward orbit path for smooth circling
-      p.x += (tx - p.x) * 0.12
-      p.y += (ty - p.y) * 0.12
-      p.facingRight = -Math.sin(p.orbitAngle) > 0
-
-      if (p.orbitAngle >= p.orbitTarget) {
-        // Done circling — dart to a latch point on the structure
-        p.phase = 'latch'
-        const spot = zone.spots[Math.floor(Math.random() * zone.spots.length)]
-        const pos = svgToPixel(spot.x, spot.y, cw, ch)
-        p.targetX = pos.x
-        p.targetY = pos.y
-      }
-      break
-    }
-
     case 'latch': {
-      // Quick dart to the latch point
+      // Quick short dart to a nearby spot on the structure
       const dx = p.targetX - p.x
       const dy = p.targetY - p.y
       const dist = Math.sqrt(dx * dx + dy * dy)
 
       if (dist < 4) {
-        // Latched on — start cleaning
-        p.phase = 'clean'
-        p.cleanTicks = 40 + Math.floor(Math.random() * 60) // 4–10 seconds
+        // Decide: rasp or rest (plecos alternate between eating and resting)
+        if (Math.random() < 0.35) {
+          // Rest — just sit still, latched to surface
+          p.phase = 'rest'
+          p.restTicks = 30 + Math.floor(Math.random() * 80) // 3–11 seconds
+        } else {
+          // Rasp — start feeding
+          p.phase = 'rasp'
+          p.raspTicks = 50 + Math.floor(Math.random() * 80) // 5–13 seconds
+          p.raspPhase = 0
+        }
         break
       }
 
       const angle = Math.atan2(dy, dx)
-      p.x += Math.cos(angle) * p.speed * 1.6
-      p.y += Math.sin(angle) * p.speed * 1.6
+      // Short quick scoot to new position
+      p.x += Math.cos(angle) * p.speed * 1.2
+      p.y += Math.sin(angle) * p.speed * 1.2
       p.facingRight = dx > 0
       break
     }
 
-    case 'clean': {
-      // Woodpecker-style vibrating cleaning: small scraping movements
-      p.x += (Math.random() - 0.5) * 1.6
-      p.y += (Math.random() - 0.5) * 1.0
+    case 'rasp': {
+      // Sucker-mouth rasping: slow side-to-side rocking motion
+      // Like watching a real pleco work its way across driftwood
+      p.raspPhase += 0.15
+      // Very small, rhythmic rocking — not random vibration
+      p.x += Math.sin(p.raspPhase) * 0.4
+      p.y += Math.sin(p.raspPhase * 0.7) * 0.15
 
-      p.cleanTicks--
-      if (p.cleanTicks <= 0) {
+      p.raspTicks--
+      if (p.raspTicks <= 0) {
         p.spotsLeft--
 
         if (p.spotsLeft > 0) {
-          // Hop to another spot on the same structure
+          // Sometimes rest between feeding spots
+          if (Math.random() < 0.4) {
+            p.phase = 'rest'
+            p.restTicks = 20 + Math.floor(Math.random() * 50) // 2–7 seconds
+          } else {
+            // Hop to another nearby spot
+            p.phase = 'latch'
+            const spot = zone.spots[Math.floor(Math.random() * zone.spots.length)]
+            const pos = svgToPixel(spot.x, spot.y, cw, ch)
+            p.targetX = pos.x
+            p.targetY = pos.y
+          }
+        } else {
+          // All spots done — rest before moving to next structure
+          p.phase = 'rest'
+          p.restTicks = 40 + Math.floor(Math.random() * 60) // 4–10 seconds rest before transit
+        }
+      }
+      break
+    }
+
+    case 'rest': {
+      // Completely stationary — sucker mouth holding position
+      // This is how plecos spend most of their time
+      p.restTicks--
+      if (p.restTicks <= 0) {
+        if (p.spotsLeft > 0) {
+          // Still have spots to clean on this structure — hop to next
           p.phase = 'latch'
           const spot = zone.spots[Math.floor(Math.random() * zone.spots.length)]
           const pos = svgToPixel(spot.x, spot.y, cw, ch)
           p.targetX = pos.x
           p.targetY = pos.y
         } else {
-          // All spots cleaned — depart to a different structure
+          // Done with this structure — move to a different one
           let newIdx = p.zoneIdx
           if (zones.length > 1) {
             while (newIdx === p.zoneIdx) {
@@ -245,18 +468,40 @@ function tickPleco(
             }
           }
           p.zoneIdx = newIdx
-          p.spotsLeft = 3 + Math.floor(Math.random() * 4)
+          p.spotsLeft = 4 + Math.floor(Math.random() * 5)
           p.phase = 'transit'
+          p.scootTicks = 0
+          p.pauseTicks = 0
           p.facingRight = svgToPixel(zones[newIdx].cx, zones[newIdx].cy, cw, ch).x > p.x
         }
       }
       break
     }
+
+    case 'hop': {
+      // Short scoot to nearby position — very quick movement
+      const dx = p.targetX - p.x
+      const dy = p.targetY - p.y
+      const dist = Math.sqrt(dx * dx + dy * dy)
+
+      if (dist < 4) {
+        p.phase = 'rasp'
+        p.raspTicks = 40 + Math.floor(Math.random() * 60)
+        p.raspPhase = 0
+        break
+      }
+
+      const angle = Math.atan2(dy, dx)
+      p.x += Math.cos(angle) * p.speed * 1.4
+      p.y += Math.sin(angle) * p.speed * 1.4
+      p.facingRight = dx > 0
+      break
+    }
   }
 
-  // Clamp to tank bounds
+  // Clamp to tank bounds — plecos stay near the bottom
   p.x = Math.max(10, Math.min(cw - 50, p.x))
-  p.y = Math.max(20, Math.min(ch - 15, p.y))
+  p.y = Math.max(ch * 0.45, Math.min(bottomBound, p.y))
 }
 
 export const PlecoPair = memo(({ containerWidth, containerHeight, theme = 'ocean' }: {
