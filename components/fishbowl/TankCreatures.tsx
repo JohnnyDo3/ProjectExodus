@@ -263,28 +263,32 @@ PlecoHearts.displayName = 'PlecoHearts'
 
 // ─── Glass Snail System ────────────────────────────────────────────
 // Snails that crawl on the glass with belly facing the viewer.
-// They wander independently, cleaning algae that builds up on the glass.
+// Each snail follows a distinct Zamboni-style cleaning pattern,
+// systematically covering the glass surface like ice resurfacers.
 
 interface SnailColor {
   shell: string
   shellLight: string
   shellDark: string
   body: string
+  bodyDark: string
+  bodyHighlight: string
 }
 
-// 6 color variants for up to 6 snails (3 personal, 6 community)
+// 6 color variants — enhanced with more depth for pixel detail
 const SNAIL_COLOR_LIST: SnailColor[] = [
-  { shell: '#E8789A', shellLight: '#F5A0B8', shellDark: '#C45678', body: '#F0C8D4' },  // pink
-  { shell: '#5B8EC9', shellLight: '#85B0E0', shellDark: '#3A6CA0', body: '#B8D4F0' },  // blue
-  { shell: '#D4A43A', shellLight: '#E8C468', shellDark: '#B8862D', body: '#F0DCA8' },  // gold
-  { shell: '#9B6BB5', shellLight: '#BB92D0', shellDark: '#7A4E96', body: '#D8C4E8' },  // lavender
-  { shell: '#5BAF6E', shellLight: '#82CC92', shellDark: '#3E8A4F', body: '#B8E0C0' },  // jade
-  { shell: '#E07850', shellLight: '#F0A080', shellDark: '#C05830', body: '#F0D0B8' },  // coral
+  { shell: '#E8789A', shellLight: '#F5A0B8', shellDark: '#C45678', body: '#F0C8D4', bodyDark: '#D4A0B0', bodyHighlight: '#FDE8EF' },  // pink
+  { shell: '#5B8EC9', shellLight: '#85B0E0', shellDark: '#3A6CA0', body: '#B8D4F0', bodyDark: '#8AAED0', bodyHighlight: '#D8ECFF' },  // blue
+  { shell: '#D4A43A', shellLight: '#E8C468', shellDark: '#B8862D', body: '#F0DCA8', bodyDark: '#D4C080', bodyHighlight: '#FFF0CC' },  // gold
+  { shell: '#9B6BB5', shellLight: '#BB92D0', shellDark: '#7A4E96', body: '#D8C4E8', bodyDark: '#B8A0CC', bodyHighlight: '#F0E4FF' },  // lavender
+  { shell: '#5BAF6E', shellLight: '#82CC92', shellDark: '#3E8A4F', body: '#B8E0C0', bodyDark: '#90C4A0', bodyHighlight: '#D8F4E0' },  // jade
+  { shell: '#E07850', shellLight: '#F0A080', shellDark: '#C05830', body: '#F0D0B8', bodyDark: '#D4B098', bodyHighlight: '#FFF0E4' },  // coral
 ]
 
-// ─── Belly-Facing Snail SVG ─────────────────────────────────────────
-// Viewed from below through the glass. Belly/foot is closest to viewer,
-// shell sits on back (behind body), antlers extend from head.
+// ─── Ultra-Detailed Belly-Facing Snail SVG ──────────────────────────
+// Minecraft pixel-block technique: every element built from small rect/circle
+// "pixels" for maximum fidelity. Viewed from below through glass.
+// Shell on back, belly/foot pressed against glass, antlers from head.
 // Default orientation: head points RIGHT.
 
 const SnailSVG = memo(({ id, color, facingRight = true, size = 22 }: {
@@ -295,80 +299,172 @@ const SnailSVG = memo(({ id, color, facingRight = true, size = 22 }: {
 }) => {
   const scaleX = facingRight ? 1 : -1
   return (
-    <svg width={size} height={size * 0.7} viewBox="0 0 64 44" fill="none">
+    <svg width={size} height={size * 0.7} viewBox="0 0 80 56" fill="none">
       <defs>
-        <radialGradient id={`ss-${id}`} cx="0.4" cy="0.35" r="0.55">
+        <radialGradient id={`ss-${id}`} cx="0.38" cy="0.32" r="0.58">
           <stop offset="0%" stopColor={color.shellLight} />
-          <stop offset="55%" stopColor={color.shell} />
-          <stop offset="100%" stopColor={color.shellDark} />
+          <stop offset="40%" stopColor={color.shell} />
+          <stop offset="85%" stopColor={color.shellDark} />
+          <stop offset="100%" stopColor={color.shellDark} stopOpacity="0.8" />
         </radialGradient>
-        <radialGradient id={`sf-${id}`} cx="0.5" cy="0.5" r="0.6">
-          <stop offset="0%" stopColor={color.body} />
-          <stop offset="100%" stopColor={color.body} />
+        <radialGradient id={`sf-${id}`} cx="0.45" cy="0.4" r="0.65">
+          <stop offset="0%" stopColor={color.bodyHighlight} />
+          <stop offset="50%" stopColor={color.body} />
+          <stop offset="100%" stopColor={color.bodyDark} />
         </radialGradient>
+        <radialGradient id={`se-${id}`} cx="0.35" cy="0.35" r="0.5">
+          <stop offset="0%" stopColor="#2A2A3E" />
+          <stop offset="100%" stopColor="#0E0E1A" />
+        </radialGradient>
+        {/* Mucus/slime shine */}
+        <linearGradient id={`sm-${id}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="white" stopOpacity="0.15" />
+          <stop offset="100%" stopColor="white" stopOpacity="0" />
+        </linearGradient>
       </defs>
-      <g transform={`translate(32, 22) scale(${scaleX}, 1) translate(-32, -22)`}>
-        {/* === SHELL (back layer, furthest from viewer) === */}
-        <ellipse cx="22" cy="16" rx="14" ry="12" fill={`url(#ss-${id})`} />
-        {/* Shell rim/lip — raised edge visible from below */}
-        <ellipse cx="22" cy="16" rx="14" ry="12" fill="none" stroke={color.shellDark} strokeWidth="1.2" opacity="0.5" />
-        {/* Shell spiral grooves — outermost whorl */}
-        <path
-          d="M22 16 Q16 10 22 5 Q30 2 35 9 Q38 16 32 22 Q26 27 20 22"
-          stroke={color.shellDark} strokeWidth="1.0" fill="none" opacity="0.55"
-        />
+      <g transform={`translate(40, 28) scale(${scaleX}, 1) translate(-40, -28)`}>
+
+        {/* === SHELL (back layer — built pixel-by-pixel for Minecraft detail) === */}
+        {/* Shell base — concentric pixel rings for spiral effect */}
+        <ellipse cx="26" cy="18" rx="17" ry="15" fill={`url(#ss-${id})`} />
+
+        {/* Shell pixel-block texture — outer ring */}
+        <rect x="10" y="14" width="2" height="2" fill={color.shellDark} opacity="0.45" />
+        <rect x="12" y="10" width="2" height="2" fill={color.shellDark} opacity="0.4" />
+        <rect x="16" y="6" width="2" height="2" fill={color.shell} opacity="0.5" />
+        <rect x="20" y="4" width="2" height="2" fill={color.shellLight} opacity="0.55" />
+        <rect x="24" y="3" width="2" height="2" fill={color.shellLight} opacity="0.6" />
+        <rect x="28" y="4" width="2" height="2" fill={color.shell} opacity="0.5" />
+        <rect x="32" y="6" width="2" height="2" fill={color.shell} opacity="0.45" />
+        <rect x="36" y="10" width="2" height="2" fill={color.shellDark} opacity="0.4" />
+        <rect x="38" y="14" width="2" height="2" fill={color.shellDark} opacity="0.35" />
+        <rect x="40" y="18" width="2" height="2" fill={color.shellDark} opacity="0.3" />
+        <rect x="38" y="22" width="2" height="2" fill={color.shellDark} opacity="0.35" />
+        <rect x="36" y="26" width="2" height="2" fill={color.shellDark} opacity="0.4" />
+        <rect x="32" y="28" width="2" height="2" fill={color.shell} opacity="0.35" />
+        <rect x="28" y="30" width="2" height="2" fill={color.shell} opacity="0.3" />
+        <rect x="22" y="30" width="2" height="2" fill={color.shellDark} opacity="0.35" />
+        <rect x="16" y="28" width="2" height="2" fill={color.shellDark} opacity="0.4" />
+        <rect x="12" y="24" width="2" height="2" fill={color.shellDark} opacity="0.45" />
+        <rect x="10" y="20" width="2" height="2" fill={color.shellDark} opacity="0.45" />
+
+        {/* Shell spiral groove — outermost whorl (pixel path) */}
+        <path d="M26 18 Q18 10 26 5 Q36 2 42 11 Q46 18 38 26 Q30 32 22 26"
+          stroke={color.shellDark} strokeWidth="1.2" fill="none" opacity="0.5" />
         {/* Middle whorl */}
-        <path
-          d="M22 16 Q19 12 22 9 Q27 7 30 12 Q32 16 28 20"
-          stroke={color.shellDark} strokeWidth="0.8" fill="none" opacity="0.4"
-        />
-        {/* Inner whorl (tight spiral near apex) */}
-        <path
-          d="M22 16 Q20.5 14 22 12.5 Q24 12 25 14 Q25.5 16 24 17"
-          stroke={color.shellDark} strokeWidth="0.6" fill="none" opacity="0.35"
-        />
-        {/* Shell center dot (apex) — larger and more visible */}
-        <circle cx="22" cy="16" r="2.2" fill={color.shellDark} opacity="0.5" />
-        <circle cx="22" cy="16" r="1" fill={color.shellLight} opacity="0.4" />
-        {/* Shell highlight/shine */}
-        <ellipse cx="17" cy="11" rx="5" ry="4" fill="white" opacity="0.22" />
+        <path d="M26 18 Q22 13 26 9 Q32 7 36 13 Q38 18 34 22 Q30 25 26 22"
+          stroke={color.shellDark} strokeWidth="0.9" fill="none" opacity="0.4" />
+        {/* Inner whorl */}
+        <path d="M26 18 Q24 15 26 13 Q29 12 31 15 Q32 18 30 20 Q28 21 26 20"
+          stroke={color.shellDark} strokeWidth="0.7" fill="none" opacity="0.35" />
+        {/* Apex center with growth rings */}
+        <circle cx="26" cy="18" r="2.8" fill={color.shellDark} opacity="0.5" />
+        <circle cx="26" cy="18" r="1.8" fill={color.shell} opacity="0.4" />
+        <circle cx="26" cy="18" r="0.8" fill={color.shellLight} opacity="0.5" />
 
-        {/* === BODY/FOOT (belly pressed against glass, closest to viewer) === */}
-        <ellipse cx="32" cy="24" rx="22" ry="9" fill={`url(#sf-${id})`} />
-        {/* Belly muscle ripple texture (muscular foot — pedal waves) */}
-        <path d="M14 21 Q32 19 50 21" stroke="white" strokeWidth="0.5" opacity="0.18" />
-        <path d="M12 24 Q32 22 52 24" stroke="white" strokeWidth="0.6" opacity="0.15" />
-        <path d="M14 27 Q32 25 50 27" stroke="white" strokeWidth="0.5" opacity="0.18" />
-        {/* Belly center line (muscular midline) */}
-        <path d="M16 24 Q32 23 48 24" stroke={color.shellDark} strokeWidth="0.3" opacity="0.12" />
-        {/* Belly edge (foot sole rim) */}
-        <ellipse cx="32" cy="24" rx="22" ry="9" fill="none" stroke={color.body} strokeWidth="0.7" opacity="0.35" />
+        {/* Shell rim — raised lip visible from below */}
+        <ellipse cx="26" cy="18" rx="17" ry="15" fill="none" stroke={color.shellDark} strokeWidth="1.5" opacity="0.4" />
+        {/* Outer rim highlight (light catching edge) */}
+        <path d="M12 12 Q18 4 26 3 Q34 4 40 12" stroke="white" strokeWidth="0.6" fill="none" opacity="0.18" />
 
-        {/* === HEAD (extending from body toward direction of travel) === */}
-        <ellipse cx="50" cy="24" rx="7" ry="6" fill={color.body} />
+        {/* Shell surface pixel highlights (nacre shimmer) */}
+        <rect x="18" y="8" width="3" height="2" fill="white" opacity="0.18" />
+        <rect x="14" y="12" width="2" height="3" fill="white" opacity="0.15" />
+        <rect x="20" y="6" width="2" height="2" fill="white" opacity="0.2" />
+        <rect x="30" y="8" width="2" height="2" fill={color.shellLight} opacity="0.25" />
+        {/* Shell growth line details */}
+        <rect x="16" y="16" width="1" height="1" fill={color.shellLight} opacity="0.2" />
+        <rect x="34" y="14" width="1" height="1" fill={color.shellLight} opacity="0.18" />
+        <rect x="20" y="24" width="1" height="1" fill={color.shellLight} opacity="0.15" />
 
-        {/* === UPPER ANTLERS (long tentacles with eyes — the "horns") === */}
-        <path d="M53 20 Q57 13 60 7" stroke={color.body} strokeWidth="1.6" strokeLinecap="round" fill="none" />
-        <path d="M55 19 Q59 12 63 5" stroke={color.body} strokeWidth="1.6" strokeLinecap="round" fill="none" />
-        {/* Eye bulbs at tips of upper antlers — larger, more prominent */}
-        <circle cx="60" cy="7" r="2.5" fill="#1A1A2E" />
-        <circle cx="60.6" cy="6" r="1.0" fill="white" opacity="0.9" />
-        <circle cx="63" cy="5" r="2.5" fill="#1A1A2E" />
-        <circle cx="63.6" cy="4" r="1.0" fill="white" opacity="0.9" />
+        {/* === BODY/FOOT (belly pressed against glass — closest to viewer) === */}
+        <ellipse cx="40" cy="30" rx="26" ry="11" fill={`url(#sf-${id})`} />
 
-        {/* === LOWER ANTLERS (shorter sensory feelers) === */}
-        <path d="M54 27 Q58 31 60 35" stroke={color.body} strokeWidth="1.3" strokeLinecap="round" fill="none" />
-        <path d="M55 29 Q58 33 59 38" stroke={color.body} strokeWidth="1.3" strokeLinecap="round" fill="none" />
-        {/* Feeler tips — visible nubs */}
-        <circle cx="60" cy="35" r="1.2" fill={color.body} />
-        <circle cx="59" cy="38" r="1.2" fill={color.body} />
+        {/* Pedal wave muscle ripples — pixel-block textured */}
+        <rect x="18" y="25" width="42" height="1" fill="white" opacity="0.12" />
+        <rect x="16" y="28" width="46" height="1" fill="white" opacity="0.10" />
+        <rect x="18" y="31" width="42" height="1" fill="white" opacity="0.12" />
+        <rect x="16" y="34" width="46" height="1" fill="white" opacity="0.08" />
+        {/* Pedal wave crests — animated-looking texture blocks */}
+        <rect x="22" y="26" width="3" height="1" fill="white" opacity="0.15" />
+        <rect x="32" y="26" width="3" height="1" fill="white" opacity="0.13" />
+        <rect x="42" y="26" width="3" height="1" fill="white" opacity="0.11" />
+        <rect x="52" y="26" width="3" height="1" fill="white" opacity="0.09" />
+        <rect x="26" y="29" width="3" height="1" fill="white" opacity="0.12" />
+        <rect x="36" y="29" width="3" height="1" fill="white" opacity="0.10" />
+        <rect x="46" y="29" width="3" height="1" fill="white" opacity="0.08" />
+        <rect x="20" y="32" width="3" height="1" fill="white" opacity="0.14" />
+        <rect x="30" y="32" width="3" height="1" fill="white" opacity="0.12" />
+        <rect x="40" y="32" width="3" height="1" fill="white" opacity="0.10" />
+        <rect x="50" y="32" width="3" height="1" fill="white" opacity="0.08" />
 
-        {/* === GLASS REFLECTION (subtle shine on belly) === */}
-        <ellipse cx="30" cy="22" rx="13" ry="5" fill="white" opacity="0.07" />
+        {/* Belly muscular midline */}
+        <path d="M18 30 Q40 28 60 30" stroke={color.bodyDark} strokeWidth="0.4" opacity="0.15" />
+        {/* Foot sole rim */}
+        <ellipse cx="40" cy="30" rx="26" ry="11" fill="none" stroke={color.bodyDark} strokeWidth="0.8" opacity="0.3" />
 
-        {/* === SLIME TRAIL behind === */}
-        <ellipse cx="8" cy="25" rx="5" ry="1.5" fill={color.body} opacity="0.14" />
-        <ellipse cx="3" cy="25" rx="3" ry="1" fill={color.body} opacity="0.08" />
+        {/* Mucus film on glass (subtle wet shine) */}
+        <ellipse cx="38" cy="28" rx="18" ry="7" fill={`url(#sm-${id})`} />
+
+        {/* === HEAD (extending forward) === */}
+        <ellipse cx="62" cy="30" rx="8" ry="7" fill={color.body} />
+        {/* Head detail — pixel texture for fleshy appearance */}
+        <rect x="58" y="27" width="2" height="2" fill={color.bodyHighlight} opacity="0.2" />
+        <rect x="62" y="26" width="2" height="2" fill={color.bodyHighlight} opacity="0.15" />
+        <rect x="60" y="32" width="2" height="2" fill={color.bodyDark} opacity="0.15" />
+        {/* Mouth area (radula — scraping organ) */}
+        <ellipse cx="68" cy="31" rx="2" ry="1.5" fill={color.bodyDark} opacity="0.3" />
+        <rect x="67" y="31" width="2" height="1" fill={color.bodyDark} opacity="0.2" />
+
+        {/* === UPPER TENTACLES (ommatophores — eye stalks) === */}
+        {/* Left eye stalk */}
+        <path d="M65 25 Q69 16 73 8" stroke={color.body} strokeWidth="1.8" strokeLinecap="round" fill="none" />
+        {/* Right eye stalk */}
+        <path d="M67 24 Q72 14 76 6" stroke={color.body} strokeWidth="1.8" strokeLinecap="round" fill="none" />
+        {/* Eye stalk pixel detail (segmented look) */}
+        <rect x="68" y="16" width="1" height="1" fill={color.bodyHighlight} opacity="0.2" />
+        <rect x="71" y="12" width="1" height="1" fill={color.bodyHighlight} opacity="0.18" />
+        <rect x="73" y="8" width="1" height="1" fill={color.bodyHighlight} opacity="0.15" />
+
+        {/* Eye bulbs — detailed with cornea, iris, pupil */}
+        {/* Left eye */}
+        <circle cx="73" cy="8" r="3" fill={`url(#se-${id})`} />
+        <circle cx="73" cy="8" r="2.2" fill="#1E1E32" />
+        <circle cx="73" cy="7.5" r="1.4" fill="#2A2A40" />
+        <circle cx="73.5" cy="7" r="0.8" fill="white" opacity="0.85" />
+        <circle cx="72" cy="8.5" r="0.4" fill="white" opacity="0.4" />
+        {/* Right eye */}
+        <circle cx="76" cy="6" r="3" fill={`url(#se-${id})`} />
+        <circle cx="76" cy="6" r="2.2" fill="#1E1E32" />
+        <circle cx="76" cy="5.5" r="1.4" fill="#2A2A40" />
+        <circle cx="76.5" cy="5" r="0.8" fill="white" opacity="0.85" />
+        <circle cx="75" cy="6.5" r="0.4" fill="white" opacity="0.4" />
+
+        {/* === LOWER TENTACLES (sensory feelers — shorter) === */}
+        <path d="M66 34 Q70 40 73 46" stroke={color.body} strokeWidth="1.4" strokeLinecap="round" fill="none" />
+        <path d="M68 36 Q71 42 72 49" stroke={color.body} strokeWidth="1.4" strokeLinecap="round" fill="none" />
+        {/* Feeler tip nubs */}
+        <circle cx="73" cy="46" r="1.4" fill={color.body} />
+        <circle cx="72" cy="49" r="1.4" fill={color.body} />
+        {/* Feeler pixel detail */}
+        <rect x="69" y="40" width="1" height="1" fill={color.bodyHighlight} opacity="0.15" />
+        <rect x="71" y="44" width="1" height="1" fill={color.bodyHighlight} opacity="0.12" />
+
+        {/* === MANTLE EDGE (where body meets shell) === */}
+        <path d="M18 24 Q26 20 36 22 Q42 24 44 26" stroke={color.bodyDark} strokeWidth="0.6" fill="none" opacity="0.2" />
+        {/* Mantle breathing pore (pneumostome) */}
+        <ellipse cx="42" cy="22" rx="1.5" ry="1" fill={color.bodyDark} opacity="0.25" />
+
+        {/* === GLASS INTERACTION — wet contact patch === */}
+        <ellipse cx="38" cy="28" rx="16" ry="6" fill="white" opacity="0.05" />
+        {/* Moisture ring around foot */}
+        <ellipse cx="40" cy="30" rx="28" ry="12" fill="none" stroke="white" strokeWidth="0.3" opacity="0.06" />
+
+        {/* === SLIME TRAIL behind (more detailed) === */}
+        <ellipse cx="8" cy="31" rx="6" ry="2" fill={color.body} opacity="0.12" />
+        <ellipse cx="3" cy="31" rx="3.5" ry="1.3" fill={color.body} opacity="0.07" />
+        <rect x="5" y="30" width="4" height="1" fill="white" opacity="0.04" />
+        <rect x="1" y="30" width="2" height="1" fill="white" opacity="0.03" />
       </g>
     </svg>
   )
@@ -376,41 +472,150 @@ const SnailSVG = memo(({ id, color, facingRight = true, size = 22 }: {
 SnailSVG.displayName = 'SnailSVG'
 
 
-// ─── Snail Movement ─────────────────────────────────────────────────
-// Realistic snail locomotion on aquarium glass. Based on gastropod research:
-//   - Forward-only movement (snails cannot reverse their pedal wave)
-//   - Sinuous, meandering paths with gradual heading drift (Brownian-like foraging)
-//   - Rarely turn sharply; heading changes are smooth and gradual
-//   - Full 360-degree heading (like a queen in chess, but only forward)
-//   - Frequent pauses of varying duration (resting/feeding stops)
-//   - Wall avoidance via gentle curving, not abrupt flips
+// ─── Zamboni Cleaning Patterns ──────────────────────────────────────
+// Each snail follows a distinct systematic route across the glass,
+// like an ice resurfacer (Zamboni) cleaning an ice rink.
+// The patterns ensure full glass coverage with visually distinct motion.
 //
-// Movement constraints:
-//   Front glass (center):  bottom 90% → y >= 0.10
-//   Near side walls:       bottom 77% → y >= 0.23
+// Pattern types:
+//   0: Horizontal L→R sweeps, moving down each pass (classic Zamboni)
+//   1: Horizontal R→L sweeps, moving up each pass (reverse Zamboni)
+//   2: Diagonal ↘ sweeps (top-left to bottom-right raster)
+//   3: Vertical top→bottom sweeps, moving right each pass (community only)
+//   4: Diagonal ↗ sweeps (bottom-left to top-right) (community only)
+//   5: Spiral from outside edges inward (community only)
 
-interface SnailState {
+type ZamboniPattern = 'horiz-lr' | 'horiz-rl' | 'diag-down' | 'vert-tb' | 'diag-up' | 'spiral'
+
+const PATTERN_ORDER: ZamboniPattern[] = [
+  'horiz-lr', 'horiz-rl', 'diag-down', 'vert-tb', 'diag-up', 'spiral',
+]
+
+interface ZamboniState {
   x: number
   y: number
-  heading: number         // radians, current direction of travel
-  headingDrift: number    // gentle per-tick drift (sinuous wandering)
+  pattern: ZamboniPattern
+  // Waypoint navigation
+  waypoints: { x: number; y: number }[]
+  waypointIdx: number
+  // Movement smoothing
+  heading: number         // visual heading in radians
   speed: number           // base movement speed
-  currentSpeed: number    // actual speed this tick (pedal wave modulation)
-  pauseUntil: number      // timestamp: paused until this time
-  driftPhase: number      // phase offset for organic heading oscillation
-  nextTurnTime: number    // timestamp: when to pick a new drift bias
-  pedalPhase: number      // phase for pedal wave speed modulation
-  grazingUntil: number    // timestamp: extended grazing stop (slower than pause)
+  pedalPhase: number      // pedal wave phase for speed modulation
+  pauseUntil: number      // rest stop timestamp
+  grazingUntil: number    // slow grazing timestamp
+  passCount: number       // how many full passes completed
 }
 
-function getMinY(xRatio: number): number {
-  if (xRatio < 0.12 || xRatio > 0.88) return 0.23
-  return 0.10
+// Generate waypoints for each Zamboni pattern
+function generateWaypoints(
+  pattern: ZamboniPattern,
+  w: number,
+  h: number,
+  margin: number,
+  topMargin: number,
+): { x: number; y: number }[] {
+  const pts: { x: number; y: number }[] = []
+  const left = margin
+  const right = w - margin
+  const top = topMargin
+  const bot = h * 0.93
+  const rowH = (bot - top) / 8    // 8 rows for horizontal passes
+  const colW = (right - left) / 8  // 8 columns for vertical passes
+
+  switch (pattern) {
+    case 'horiz-lr': {
+      // Left-to-right, each row stepping downward
+      for (let row = 0; row <= 8; row++) {
+        const y = top + row * rowH
+        if (row % 2 === 0) {
+          pts.push({ x: left, y }, { x: right, y })
+        } else {
+          pts.push({ x: right, y }, { x: left, y })
+        }
+      }
+      break
+    }
+    case 'horiz-rl': {
+      // Right-to-left, each row stepping upward
+      for (let row = 8; row >= 0; row--) {
+        const y = top + row * rowH
+        if (row % 2 === 0) {
+          pts.push({ x: right, y }, { x: left, y })
+        } else {
+          pts.push({ x: left, y }, { x: right, y })
+        }
+      }
+      break
+    }
+    case 'diag-down': {
+      // Diagonal sweeps ↘ — zigzag from top-left corner
+      const steps = 10
+      for (let i = 0; i <= steps; i++) {
+        const t = i / steps
+        if (i % 2 === 0) {
+          pts.push({ x: left + t * (right - left) * 0.3, y: top })
+          pts.push({ x: right, y: top + t * (bot - top) * 0.7 + (bot - top) * 0.3 })
+        } else {
+          pts.push({ x: right - t * (right - left) * 0.3, y: bot })
+          pts.push({ x: left, y: bot - t * (bot - top) * 0.7 - (bot - top) * 0.1 })
+        }
+      }
+      break
+    }
+    case 'vert-tb': {
+      // Top-to-bottom vertical passes, stepping right
+      for (let col = 0; col <= 8; col++) {
+        const x = left + col * colW
+        if (col % 2 === 0) {
+          pts.push({ x, y: top }, { x, y: bot })
+        } else {
+          pts.push({ x, y: bot }, { x, y: top })
+        }
+      }
+      break
+    }
+    case 'diag-up': {
+      // Diagonal sweeps ↗ — zigzag from bottom-left
+      const steps2 = 10
+      for (let i = 0; i <= steps2; i++) {
+        const t = i / steps2
+        if (i % 2 === 0) {
+          pts.push({ x: left, y: bot - t * (bot - top) * 0.3 })
+          pts.push({ x: left + t * (right - left) * 0.7 + (right - left) * 0.3, y: top })
+        } else {
+          pts.push({ x: right, y: top + t * (bot - top) * 0.3 })
+          pts.push({ x: right - t * (right - left) * 0.7 - (right - left) * 0.1, y: bot })
+        }
+      }
+      break
+    }
+    case 'spiral': {
+      // Spiral inward from edges
+      const layers = 4
+      for (let layer = 0; layer < layers; layer++) {
+        const inset = layer * ((right - left) / (layers * 2.2))
+        const l = left + inset
+        const r2 = right - inset
+        const t2 = top + inset * 0.7
+        const b2 = bot - inset * 0.5
+        // Trace rectangle edges: top → right → bottom → left
+        pts.push({ x: l, y: t2 })
+        pts.push({ x: r2, y: t2 })
+        pts.push({ x: r2, y: b2 })
+        pts.push({ x: l, y: b2 })
+      }
+      // End at center
+      pts.push({ x: (left + right) / 2, y: (top + bot) / 2 })
+      break
+    }
+  }
+  return pts
 }
 
 
 // ─── Snail Group Component ──────────────────────────────────────────
-// Manages all snails in a tank. Each snail wanders independently.
+// Each snail follows a distinct Zamboni cleaning pattern.
 // count=3 for personal tank, count=6 for community bowl.
 
 export const SnailGroup = memo(({ count, containerWidth, containerHeight }: {
@@ -418,155 +623,111 @@ export const SnailGroup = memo(({ count, containerWidth, containerHeight }: {
   containerWidth: number
   containerHeight: number
 }) => {
-  const snailsRef = useRef<SnailState[]>([])
+  const snailsRef = useRef<ZamboniState[]>([])
   const [positions, setPositions] = useState<{ x: number; y: number; heading: number }[]>([])
 
-  // Initialize snail data
+  // Initialize snails with their assigned Zamboni patterns
   useEffect(() => {
     if (containerWidth === 0 || containerHeight === 0) return
-    const now = Date.now()
+
+    const MARGIN = 14
+    const TOP_MARGIN = containerHeight * 0.10
+
     snailsRef.current = Array.from({ length: count }, (_, i) => {
-      const startX = (containerWidth * (i + 1)) / (count + 1)
-      const startY = containerHeight * (0.15 + Math.random() * 0.70)
-      const baseSpeed = 0.15 + Math.random() * 0.10
+      const pattern = PATTERN_ORDER[i % PATTERN_ORDER.length]
+      const waypoints = generateWaypoints(pattern, containerWidth, containerHeight, MARGIN, TOP_MARGIN)
+      // Stagger starting positions — each snail starts at a different waypoint
+      const startIdx = Math.floor((i / count) * waypoints.length) % waypoints.length
+      const start = waypoints[startIdx]
+
       return {
-        x: startX,
-        y: startY,
-        heading: Math.random() * Math.PI * 2,
-        headingDrift: (Math.random() - 0.5) * 0.018,
-        speed: baseSpeed,
-        currentSpeed: baseSpeed,
+        x: start.x,
+        y: start.y,
+        pattern,
+        waypoints,
+        waypointIdx: startIdx,
+        heading: 0,
+        speed: 0.25 + (i % 3) * 0.04, // slight speed variation
+        pedalPhase: i * 1.3,
         pauseUntil: 0,
-        driftPhase: Math.random() * Math.PI * 2,
-        nextTurnTime: now + 3000 + Math.random() * 8000,
-        pedalPhase: Math.random() * Math.PI * 2,
         grazingUntil: 0,
+        passCount: 0,
       }
     })
+
     setPositions(snailsRef.current.map(s => ({ x: s.x, y: s.y, heading: s.heading })))
   }, [count, containerWidth, containerHeight])
 
-  // ─── Movement loop (10fps, CSS smooths visual) ───────────
+  // ─── Zamboni movement loop (10fps, CSS smooths visual) ─────
   useEffect(() => {
     if (containerWidth === 0 || containerHeight === 0) return
     if (snailsRef.current.length === 0) return
 
-    const MARGIN = 12
-    const maxX = containerWidth - MARGIN
-    const maxYRatio = 0.93
+    const MARGIN = 14
+    const TOP_MARGIN = containerHeight * 0.10
 
     const interval = setInterval(() => {
       const now = Date.now()
-      const allSnails = snailsRef.current
 
-      allSnails.forEach((snail, idx) => {
-        // ── Full pause check (resting) ──
+      snailsRef.current.forEach((snail) => {
+        // ── Rest/grazing pause ──
         if (now < snail.pauseUntil) return
-
-        // ── Grazing mode: move at 20% speed, stay mostly in place ──
         const isGrazing = now < snail.grazingUntil
-        const grazingFactor = isGrazing ? 0.2 : 1.0
+        const grazeFactor = isGrazing ? 0.25 : 1.0
 
-        // ── Pedal wave speed modulation (realistic gastropod locomotion) ──
-        // Snails move via rhythmic muscular waves along their foot
+        // ── Pedal wave speed modulation ──
         snail.pedalPhase += 0.06
         const pedalWave = 0.7 + 0.3 * Math.sin(snail.pedalPhase)
-        snail.currentSpeed = snail.speed * pedalWave * grazingFactor
+        const currentSpeed = snail.speed * pedalWave * grazeFactor
 
-        // ── Heading drift: sinuous wandering ──
-        snail.driftPhase += 0.08
-        const sinuousDrift = Math.sin(snail.driftPhase) * 0.010
-        snail.heading += snail.headingDrift + sinuousDrift
+        // ── Navigate toward current waypoint ──
+        const target = snail.waypoints[snail.waypointIdx]
+        const dx = target.x - snail.x
+        const dy = target.y - snail.y
+        const dist = Math.sqrt(dx * dx + dy * dy)
 
-        // ── Periodic drift bias change (new meander direction) ──
-        if (now > snail.nextTurnTime) {
-          if (Math.random() < 0.08) {
-            // Rare sharper turn (but still gradual, over many ticks)
-            snail.headingDrift = (Math.random() - 0.5) * 0.05
-          } else {
-            // Normal gentle meander shift
-            snail.headingDrift = (Math.random() - 0.5) * 0.022
+        if (dist < 3) {
+          // Reached waypoint — advance to next
+          snail.waypointIdx = (snail.waypointIdx + 1) % snail.waypoints.length
+
+          // When completing a full circuit, regenerate waypoints (slight variation)
+          if (snail.waypointIdx === 0) {
+            snail.passCount++
+            snail.waypoints = generateWaypoints(
+              snail.pattern, containerWidth, containerHeight, MARGIN, TOP_MARGIN,
+            )
           }
-          snail.nextTurnTime = now + 3000 + Math.random() * 10000
 
-          // Chance to stop: either a brief rest or an extended grazing period
-          const stopRoll = Math.random()
-          if (stopRoll < 0.15) {
-            // Extended grazing (algae feeding) — very slow movement for 4-12 seconds
-            snail.grazingUntil = now + 4000 + Math.random() * 8000
-          } else if (stopRoll < 0.35) {
-            // Brief rest pause
-            snail.pauseUntil = now + 2000 + Math.random() * 5000
+          // Random chance to pause at waypoint (rest stop or grazing)
+          const roll = Math.random()
+          if (roll < 0.08) {
+            snail.grazingUntil = now + 3000 + Math.random() * 6000
+          } else if (roll < 0.18) {
+            snail.pauseUntil = now + 1500 + Math.random() * 3000
             return
           }
         }
 
-        // ── Snail-to-snail awareness: gently steer away from nearby snails ──
-        let socialSteer = 0
-        for (let j = 0; j < allSnails.length; j++) {
-          if (j === idx) continue
-          const other = allSnails[j]
-          const dx = snail.x - other.x
-          const dy = snail.y - other.y
-          const dist = Math.sqrt(dx * dx + dy * dy)
-          if (dist < 40 && dist > 0) {
-            // Steer away — cross product gives turn direction
-            const awayAngle = Math.atan2(dy, dx)
-            const angleDiff = awayAngle - snail.heading
-            socialSteer += Math.sin(angleDiff) * 0.02 * (1 - dist / 40)
-          }
-        }
-        snail.heading += socialSteer
+        // ── Smooth heading toward target ──
+        const targetHeading = Math.atan2(dy, dx)
+        let headingDiff = targetHeading - snail.heading
+        // Normalize to [-π, π]
+        while (headingDiff > Math.PI) headingDiff -= Math.PI * 2
+        while (headingDiff < -Math.PI) headingDiff += Math.PI * 2
+        // Smooth turn (snails can't snap-turn)
+        snail.heading += headingDiff * 0.08
 
-        // ── Move forward along heading ──
-        const vx = Math.cos(snail.heading) * snail.currentSpeed
-        const vy = Math.sin(snail.heading) * snail.currentSpeed
+        // ── Move forward ──
+        const vx = Math.cos(snail.heading) * currentSpeed
+        const vy = Math.sin(snail.heading) * currentSpeed
         snail.x += vx
         snail.y += vy
 
-        // ── Wall avoidance: curve gently away from edges ──
-        const xRatio = snail.x / containerWidth
-        const minY = getMinY(xRatio) * containerHeight
-        const maxY = containerHeight * maxYRatio
+        // ── Clamp to tank bounds ──
+        snail.x = Math.max(MARGIN, Math.min(containerWidth - MARGIN, snail.x))
+        snail.y = Math.max(TOP_MARGIN, Math.min(containerHeight * 0.93, snail.y))
 
-        let wallSteer = 0
-
-        // Left wall
-        if (snail.x < MARGIN + 15) {
-          const urgency = 1 - (snail.x - MARGIN) / 15
-          const toRight = -Math.sin(snail.heading)
-          wallSteer += urgency * 0.04 * (toRight > 0 ? 1 : -1)
-          if (Math.abs(toRight) < 0.1) wallSteer += urgency * 0.03
-        }
-        // Right wall
-        if (snail.x > maxX - 15) {
-          const urgency = 1 - (maxX - snail.x) / 15
-          const toLeft = Math.sin(snail.heading)
-          wallSteer += urgency * 0.04 * (toLeft > 0 ? 1 : -1)
-          if (Math.abs(toLeft) < 0.1) wallSteer += urgency * 0.03
-        }
-        // Top boundary
-        if (snail.y < minY + 15) {
-          const urgency = 1 - (snail.y - minY) / 15
-          const toDown = -Math.cos(snail.heading)
-          wallSteer += urgency * 0.04 * (toDown > 0 ? 1 : -1)
-          if (Math.abs(toDown) < 0.1) wallSteer += urgency * 0.03
-        }
-        // Bottom boundary
-        if (snail.y > maxY - 15) {
-          const urgency = 1 - (maxY - snail.y) / 15
-          const toUp = Math.cos(snail.heading)
-          wallSteer += urgency * 0.04 * (toUp > 0 ? 1 : -1)
-          if (Math.abs(toUp) < 0.1) wallSteer += urgency * 0.03
-        }
-
-        snail.heading += wallSteer
-
-        // Hard clamp (safety net — snails shouldn't leave the glass)
-        snail.x = Math.max(MARGIN, Math.min(maxX, snail.x))
-        snail.y = Math.max(minY, Math.min(maxY, snail.y))
-
-        // Normalize heading to [0, 2π)
+        // Normalize heading
         snail.heading = ((snail.heading % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2)
       })
 
@@ -586,13 +747,9 @@ export const SnailGroup = memo(({ count, containerWidth, containerHeight }: {
   return (
     <>
       {positions.map((pos, i) => {
-        // Determine visual facing direction from heading
         const facingRight = Math.cos(pos.heading) > 0
-        // Rotation angle for the snail SVG (visual heading)
-        // The SVG default points right, so rotate by heading angle
-        // We use scaleX flip inside the SVG for left/right, so only apply
-        // vertical tilt here for a subtle organic effect
-        const tiltDeg = Math.sin(pos.heading) * 12
+        // Tilt the snail along its heading for organic feel
+        const tiltDeg = Math.sin(pos.heading) * 15
 
         return (
           <div
@@ -604,24 +761,24 @@ export const SnailGroup = memo(({ count, containerWidth, containerHeight }: {
               transform: `translate(-50%, -50%) rotate(${tiltDeg}deg)`,
               transition: 'left 0.15s linear, top 0.15s linear, transform 0.15s linear',
               opacity: 1,
-              filter: 'drop-shadow(0 0 2px rgba(100,200,255,0.10))',
+              filter: 'drop-shadow(0 0 3px rgba(100,200,255,0.12))',
             }}
           >
             <SnailSVG
               id={`snail-${i}`}
               color={SNAIL_COLOR_LIST[i % SNAIL_COLOR_LIST.length]}
               facingRight={facingRight}
-              size={22}
+              size={24}
             />
             {/* Slime trail dot */}
             <div
               className="absolute rounded-full pointer-events-none"
               style={{
-                width: '7px',
-                height: '4px',
-                background: `radial-gradient(ellipse, ${SNAIL_COLOR_LIST[i % SNAIL_COLOR_LIST.length].body}25 0%, transparent 70%)`,
-                left: facingRight ? '0%' : '85%',
-                top: '55%',
+                width: '8px',
+                height: '5px',
+                background: `radial-gradient(ellipse, ${SNAIL_COLOR_LIST[i % SNAIL_COLOR_LIST.length].body}30 0%, transparent 70%)`,
+                left: facingRight ? '-2%' : '82%',
+                top: '52%',
               }}
             />
           </div>
