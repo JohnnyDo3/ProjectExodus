@@ -13,21 +13,91 @@ export interface FishData {
   customization?: FishCustomization | null
 }
 
+// ── Behavioral state machine ────────────────────────────────────────
+type FishBehavior = 'cruise' | 'explore' | 'idle' | 'dart' | 'glide'
+
+interface BehaviorConfig {
+  minDuration: number // frames at 60fps
+  maxDuration: number
+  speedFactor: number // multiplier on base speed
+  turnRate: number // how fast the fish can change heading (radians/frame)
+  tailFreq: number // tail undulation frequency multiplier
+}
+
+const BEHAVIORS: Record<FishBehavior, BehaviorConfig> = {
+  cruise: { minDuration: 180, maxDuration: 420, speedFactor: 1.0, turnRate: 0.015, tailFreq: 1.0 },
+  explore: { minDuration: 120, maxDuration: 300, speedFactor: 0.7, turnRate: 0.04, tailFreq: 0.8 },
+  idle: { minDuration: 90, maxDuration: 240, speedFactor: 0.15, turnRate: 0.01, tailFreq: 0.3 },
+  dart: { minDuration: 30, maxDuration: 70, speedFactor: 2.2, turnRate: 0.06, tailFreq: 2.0 },
+  glide: { minDuration: 60, maxDuration: 180, speedFactor: 0.5, turnRate: 0.008, tailFreq: 0.4 },
+}
+
+// Weighted transitions — each behavior has probabilities for what comes next
+const BEHAVIOR_TRANSITIONS: Record<FishBehavior, { next: FishBehavior; weight: number }[]> = {
+  cruise: [
+    { next: 'cruise', weight: 35 },
+    { next: 'explore', weight: 30 },
+    { next: 'glide', weight: 20 },
+    { next: 'idle', weight: 10 },
+    { next: 'dart', weight: 5 },
+  ],
+  explore: [
+    { next: 'cruise', weight: 40 },
+    { next: 'explore', weight: 20 },
+    { next: 'idle', weight: 20 },
+    { next: 'glide', weight: 15 },
+    { next: 'dart', weight: 5 },
+  ],
+  idle: [
+    { next: 'cruise', weight: 40 },
+    { next: 'explore', weight: 30 },
+    { next: 'dart', weight: 15 },
+    { next: 'glide', weight: 10 },
+    { next: 'idle', weight: 5 },
+  ],
+  dart: [
+    { next: 'glide', weight: 50 },
+    { next: 'cruise', weight: 30 },
+    { next: 'idle', weight: 15 },
+    { next: 'explore', weight: 5 },
+    { next: 'dart', weight: 0 },
+  ],
+  glide: [
+    { next: 'cruise', weight: 45 },
+    { next: 'explore', weight: 25 },
+    { next: 'idle', weight: 15 },
+    { next: 'glide', weight: 10 },
+    { next: 'dart', weight: 5 },
+  ],
+}
+
+// ── Core fish state ─────────────────────────────────────────────────
 interface SwimmingFishState {
   x: number
   y: number
-  vx: number
-  vy: number
-  direction: 'left' | 'right'
-  phase: number // animation phase
+  heading: number // radians — THE primary movement direction
+  speed: number // current forward speed (px/frame)
+  baseSpeed: number // natural cruising speed for this fish
+  // Behavior FSM
+  behavior: FishBehavior
+  behaviorTimer: number // frames remaining in current behavior
+  targetHeading: number // heading the fish is turning toward
+  // Exploration waypoint
+  waypointX: number
+  waypointY: number
+  // Visual animation
+  tailPhase: number // undulation phase
+  smoothPitch: number // interpolated pitch for rendering
+  // Boids accumulators (computed each frame)
+  boidsSteerX: number
+  boidsSteerY: number
+  // Depth preference — each fish has a preferred depth band
+  preferredDepth: number // 0-1 normalized
+  // Entry/exit state
   entering: boolean
   exiting: boolean
-  // Enhanced swimming state
-  baseSpeed: number
-  speedMultiplier: number // varies over time for natural speed changes
-  speedPhase: number // phase for speed oscillation
-  schoolingAngle: number // slight angle when near other fish
-  smoothPitch: number // smoothly interpolated pitch for natural swimming
+  direction: 'left' | 'right'
+  phase: number
 }
 
 interface SwimmingFishProps {
@@ -42,96 +112,151 @@ interface SwimmingFishProps {
   allFishPositions?: React.MutableRefObject<Map<string, { x: number; y: number; vx: number; size: number }>>
 }
 
-const FISH_MARGIN = 120 // space for offscreen entry/exit
-const MIN_SPEED = 0.25
-const MAX_SPEED = 0.9
-const SWIM_ZONE_TOP = 0.1  // top 10% off limits
-const SWIM_ZONE_BOTTOM = 0.7 // bottom 30% is decoration zone
+// ── Constants ───────────────────────────────────────────────────────
+const FISH_MARGIN = 120
+const BASE_SPEED_MIN = 1.0
+const BASE_SPEED_MAX = 2.4
+const SWIM_ZONE_TOP = 0.08
+const SWIM_ZONE_BOTTOM = 0.68
 
-// Approximate structure zones (x ranges where structures sit, in viewBox 0-800 coords)
-// Structures are rendered at scale(2), so a structure at x=200 occupies roughly x=200..360 in viewBox
-// We'll define avoidance zones in percentage of container width
+// Boids parameters (tuned for aquarium aesthetics, not pure simulation)
+const BOIDS_SEPARATION_RANGE = 2.5 // fish-size multiplier
+const BOIDS_ALIGNMENT_RANGE = 5.0
+const BOIDS_COHESION_RANGE = 6.0
+const BOIDS_SEPARATION_FORCE = 0.06
+const BOIDS_ALIGNMENT_FORCE = 0.02
+const BOIDS_COHESION_FORCE = 0.004
+
+// Soft wall avoidance — fish start turning before hitting the edge
+const WALL_TURN_MARGIN = 0.12 // fraction of container dimension
+const WALL_TURN_FORCE = 0.05
+
+// Structure avoidance zones
 const STRUCTURE_ZONES = [
-  { left: 0.15, right: 0.35, top: 0.55, bottom: 0.85 }, // left structure area
-  { left: 0.55, right: 0.75, top: 0.55, bottom: 0.85 }, // right structure area
+  { left: 0.15, right: 0.35, top: 0.55, bottom: 0.85 },
+  { left: 0.55, right: 0.75, top: 0.55, bottom: 0.85 },
 ]
 
+// ── Helpers ─────────────────────────────────────────────────────────
 function randomBetween(a: number, b: number) {
   return a + Math.random() * (b - a)
 }
 
-// Shared registry for fish positions (self-awareness)
-const globalFishPositions = new Map<string, { x: number; y: number; vx: number; size: number }>()
+function normalizeAngle(a: number): number {
+  while (a > Math.PI) a -= Math.PI * 2
+  while (a < -Math.PI) a += Math.PI * 2
+  return a
+}
 
+function weightedRandom(options: { next: FishBehavior; weight: number }[]): FishBehavior {
+  const total = options.reduce((s, o) => s + o.weight, 0)
+  let r = Math.random() * total
+  for (const o of options) {
+    r -= o.weight
+    if (r <= 0) return o.next
+  }
+  return options[0].next
+}
+
+function pickWaypoint(
+  containerWidth: number,
+  containerHeight: number,
+  currentX: number,
+  currentY: number,
+  contained: boolean
+): { x: number; y: number } {
+  const minY = containerHeight * SWIM_ZONE_TOP
+  const maxY = containerHeight * SWIM_ZONE_BOTTOM
+  const padding = contained ? 40 : -FISH_MARGIN * 0.5
+
+  // Pick a point reasonably far from current position to encourage forward movement
+  let x: number, y: number
+  let attempts = 0
+  do {
+    x = randomBetween(padding, containerWidth - padding)
+    y = randomBetween(minY, maxY)
+    attempts++
+  } while (attempts < 5 && Math.abs(x - currentX) < containerWidth * 0.25)
+
+  return { x, y }
+}
+
+// ── Shared position registry ────────────────────────────────────────
+const globalFishPositions = new Map<string, { x: number; y: number; vx: number; size: number; heading: number; speed: number }>()
+
+// ── Component ───────────────────────────────────────────────────────
 export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHover, onLeave, onClick, index, contained = false, allFishPositions }: SwimmingFishProps) => {
   const ref = useRef<HTMLDivElement>(null)
   const stateRef = useRef<SwimmingFishState | null>(null)
   const animRef = useRef<number>(0)
-  const [pos, setPos] = useState<{ x: number; y: number; direction: 'left' | 'right'; phase: number; vy: number }>({ x: 0, y: 0, direction: 'right', phase: 0, vy: 0 })
+  const [pos, setPos] = useState<{
+    x: number; y: number; direction: 'left' | 'right'; phase: number; vy: number;
+    tailPhase: number; speed: number; behavior: FishBehavior; pitch: number
+  }>({ x: 0, y: 0, direction: 'right', phase: 0, vy: 0, tailPhase: 0, speed: 0, behavior: 'cruise', pitch: 0 })
   const isHovered = useRef(false)
 
-  const fishSize = 36 + fish.tier * 8 // bigger fish for higher tiers
+  const fishSize = 36 + fish.tier * 8
 
-  // Use the shared position registry
+  // Use the shared position registry (extend it to include heading & speed)
   const posRegistry = allFishPositions?.current || globalFishPositions
 
-  // Initialize fish position
+  // ── Initialize ──────────────────────────────────────────────────
   useEffect(() => {
     if (containerWidth === 0 || containerHeight === 0) return
 
     const enterFromLeft = Math.random() > 0.5
-    const y = randomBetween(
+    const heading = enterFromLeft ? 0 : Math.PI // 0 = right, PI = left
+    const baseSpeed = randomBetween(BASE_SPEED_MIN, BASE_SPEED_MAX)
+    const preferredDepth = randomBetween(0.2, 0.7)
+    const startY = randomBetween(
       containerHeight * SWIM_ZONE_TOP,
       containerHeight * SWIM_ZONE_BOTTOM
     )
-    const baseSpeed = randomBetween(MIN_SPEED, MAX_SPEED)
 
-    if (contained) {
-      const padding = fishSize + 10
-      stateRef.current = {
-        x: randomBetween(padding, containerWidth - padding),
-        y,
-        vx: enterFromLeft ? baseSpeed : -baseSpeed,
-        vy: randomBetween(-0.1, 0.1),
-        direction: enterFromLeft ? 'right' : 'left',
-        phase: Math.random() * Math.PI * 2,
-        entering: false,
-        exiting: false,
-        baseSpeed,
-        speedMultiplier: 1,
-        speedPhase: Math.random() * Math.PI * 2,
-        schoolingAngle: 0,
-        smoothPitch: 0,
-      }
-    } else {
-      stateRef.current = {
-        x: enterFromLeft ? -FISH_MARGIN : containerWidth + FISH_MARGIN,
-        y,
-        vx: enterFromLeft ? baseSpeed : -baseSpeed,
-        vy: randomBetween(-0.1, 0.1),
-        direction: enterFromLeft ? 'right' : 'left',
-        phase: Math.random() * Math.PI * 2,
-        entering: true,
-        exiting: false,
-        baseSpeed,
-        speedMultiplier: 1,
-        speedPhase: Math.random() * Math.PI * 2,
-        schoolingAngle: 0,
-        smoothPitch: 0,
-      }
+    const startX = contained
+      ? randomBetween(fishSize + 10, containerWidth - fishSize - 10)
+      : (enterFromLeft ? -FISH_MARGIN : containerWidth + FISH_MARGIN)
+
+    const wp = pickWaypoint(containerWidth, containerHeight, startX, startY, contained)
+
+    stateRef.current = {
+      x: startX,
+      y: startY,
+      heading,
+      speed: baseSpeed,
+      baseSpeed,
+      behavior: 'cruise',
+      behaviorTimer: randomBetween(180, 360),
+      targetHeading: Math.atan2(wp.y - startY, wp.x - startX),
+      waypointX: wp.x,
+      waypointY: wp.y,
+      tailPhase: Math.random() * Math.PI * 2,
+      smoothPitch: 0,
+      boidsSteerX: 0,
+      boidsSteerY: 0,
+      preferredDepth,
+      entering: !contained,
+      exiting: false,
+      direction: enterFromLeft ? 'right' : 'left',
+      phase: Math.random() * Math.PI * 2,
     }
 
-    setPos({ x: stateRef.current.x, y: stateRef.current.y, direction: stateRef.current.direction, phase: 0, vy: 0 })
+    setPos({
+      x: startX, y: startY,
+      direction: enterFromLeft ? 'right' : 'left',
+      phase: 0, vy: 0, tailPhase: 0, speed: baseSpeed, behavior: 'cruise', pitch: 0,
+    })
   }, [containerWidth, containerHeight, index, contained, fishSize])
 
-  // Animation loop with enhanced mechanics
+  // ── Animation loop ──────────────────────────────────────────────
   useEffect(() => {
     if (containerWidth === 0) return
 
     let lastTime = performance.now()
 
     const animate = (time: number) => {
-      const dt = Math.min((time - lastTime) / 16, 3)
+      const rawDt = (time - lastTime) / 16
+      const dt = Math.min(rawDt, 3) // clamp to avoid jumps
       lastTime = time
 
       const s = stateRef.current
@@ -140,123 +265,244 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
         return
       }
 
-      // Don't move if hovered
       if (!isHovered.current) {
-        // Update speed phase — creates natural speed variation over time
-        s.speedPhase += 0.008 * dt
-        s.speedMultiplier = 0.6 + 0.4 * Math.sin(s.speedPhase) + 0.15 * Math.sin(s.speedPhase * 2.3)
-        // Clamp multiplier so fish never fully stop
-        s.speedMultiplier = Math.max(0.3, Math.min(1.4, s.speedMultiplier))
+        const cfg = BEHAVIORS[s.behavior]
 
-        const currentSpeed = s.baseSpeed * s.speedMultiplier
-        const speedSign = s.vx > 0 ? 1 : -1
-        s.vx = speedSign * currentSpeed
+        // ─── 1. Behavior timer & transitions ──────────────────
+        s.behaviorTimer -= dt
+        if (s.behaviorTimer <= 0) {
+          const nextBehavior = weightedRandom(BEHAVIOR_TRANSITIONS[s.behavior])
+          s.behavior = nextBehavior
+          const nextCfg = BEHAVIORS[nextBehavior]
+          s.behaviorTimer = randomBetween(nextCfg.minDuration, nextCfg.maxDuration)
 
-        // Self-awareness: detect nearby fish and adjust course
-        let avoidDx = 0
-        let avoidDy = 0
-        const awarenessRadius = fishSize * 3
-        posRegistry.forEach((otherPos, otherId) => {
+          // Pick a new waypoint when changing behavior
+          if (nextBehavior === 'explore' || nextBehavior === 'cruise') {
+            const wp = pickWaypoint(containerWidth, containerHeight, s.x, s.y, contained)
+            s.waypointX = wp.x
+            s.waypointY = wp.y
+            s.targetHeading = Math.atan2(wp.y - s.y, wp.x - s.x)
+          }
+
+          // Dart: pick a random nearby direction
+          if (nextBehavior === 'dart') {
+            s.targetHeading = s.heading + randomBetween(-0.8, 0.8)
+          }
+        }
+
+        // ─── 2. Target speed ──────────────────────────────────
+        // Natural speed oscillation layered on behavior speed
+        const speedOsc = 0.85 + 0.15 * Math.sin(s.phase * 0.6) + 0.1 * Math.sin(s.phase * 1.7)
+        const targetSpeed = s.baseSpeed * cfg.speedFactor * speedOsc
+        // Smoothly approach target speed
+        s.speed += (targetSpeed - s.speed) * 0.04 * dt
+        s.speed = Math.max(0.1, s.speed)
+
+        // ─── 3. Waypoint steering (explore/cruise) ────────────
+        const dxWP = s.waypointX - s.x
+        const dyWP = s.waypointY - s.y
+        const distToWP = Math.sqrt(dxWP * dxWP + dyWP * dyWP)
+
+        if (distToWP < 50) {
+          // Reached waypoint — pick a new one
+          const wp = pickWaypoint(containerWidth, containerHeight, s.x, s.y, contained)
+          s.waypointX = wp.x
+          s.waypointY = wp.y
+        }
+        s.targetHeading = Math.atan2(s.waypointY - s.y, s.waypointX - s.x)
+
+        // ─── 4. Boids: separation, alignment, cohesion ────────
+        let sepX = 0, sepY = 0, sepCount = 0
+        let aliDx = 0, aliDy = 0, aliCount = 0
+        let cohX = 0, cohY = 0, cohCount = 0
+
+        const sepRange = fishSize * BOIDS_SEPARATION_RANGE
+        const aliRange = fishSize * BOIDS_ALIGNMENT_RANGE
+        const cohRange = fishSize * BOIDS_COHESION_RANGE
+
+        posRegistry.forEach((other, otherId) => {
           if (otherId === fish.id) return
-          const dx = s.x - otherPos.x
-          const dy = s.y - otherPos.y
+          const dx = s.x - other.x
+          const dy = s.y - other.y
           const dist = Math.sqrt(dx * dx + dy * dy)
-          if (dist < awarenessRadius && dist > 0) {
-            // Repulsion force inversely proportional to distance
-            const force = (awarenessRadius - dist) / awarenessRadius * 0.08
-            avoidDx += (dx / dist) * force
-            avoidDy += (dy / dist) * force
+
+          // Separation — steer away from too-close neighbors
+          if (dist < sepRange && dist > 0) {
+            const urgency = (sepRange - dist) / sepRange
+            sepX += (dx / dist) * urgency
+            sepY += (dy / dist) * urgency
+            sepCount++
+          }
+
+          // Alignment — match heading of nearby fish
+          if (dist < aliRange && dist > 0 && 'heading' in other) {
+            aliDx += Math.cos((other as any).heading || 0)
+            aliDy += Math.sin((other as any).heading || 0)
+            aliCount++
+          }
+
+          // Cohesion — steer toward center of nearby group
+          if (dist < cohRange) {
+            cohX += other.x
+            cohY += other.y
+            cohCount++
           }
         })
 
-        // Apply avoidance gently
-        s.vy += avoidDy * dt
-        // Don't override horizontal direction from avoidance, just nudge vertically
+        let steerX = 0, steerY = 0
 
-        // Structure awareness — if heading into a structure zone, nudge upward
+        if (sepCount > 0) {
+          steerX += (sepX / sepCount) * BOIDS_SEPARATION_FORCE
+          steerY += (sepY / sepCount) * BOIDS_SEPARATION_FORCE
+        }
+        if (aliCount > 0) {
+          const avgDx = aliDx / aliCount
+          const avgDy = aliDy / aliCount
+          const avgHeading = Math.atan2(avgDy, avgDx)
+          const diff = normalizeAngle(avgHeading - s.heading)
+          steerX += Math.cos(s.heading + diff) * BOIDS_ALIGNMENT_FORCE
+          steerY += Math.sin(s.heading + diff) * BOIDS_ALIGNMENT_FORCE
+        }
+        if (cohCount > 0) {
+          const centerX = cohX / cohCount
+          const centerY = cohY / cohCount
+          const toCenterX = centerX - s.x
+          const toCenterY = centerY - s.y
+          steerX += toCenterX * BOIDS_COHESION_FORCE
+          steerY += toCenterY * BOIDS_COHESION_FORCE
+        }
+
+        // ─── 5. Soft wall avoidance ───────────────────────────
+        const marginX = containerWidth * WALL_TURN_MARGIN
+        const marginY = containerHeight * WALL_TURN_MARGIN
+        const minY = containerHeight * SWIM_ZONE_TOP
+        const maxY = containerHeight * SWIM_ZONE_BOTTOM
+
+        if (contained) {
+          // Left wall
+          if (s.x < marginX) {
+            const urgency = 1 - s.x / marginX
+            steerX += WALL_TURN_FORCE * urgency * 3
+          }
+          // Right wall
+          if (s.x > containerWidth - marginX) {
+            const urgency = 1 - (containerWidth - s.x) / marginX
+            steerX -= WALL_TURN_FORCE * urgency * 3
+          }
+        }
+        // Top boundary
+        if (s.y < minY + marginY) {
+          const urgency = 1 - (s.y - minY) / marginY
+          steerY += WALL_TURN_FORCE * Math.max(0, urgency) * 2
+        }
+        // Bottom boundary
+        if (s.y > maxY - marginY) {
+          const urgency = 1 - (maxY - s.y) / marginY
+          steerY -= WALL_TURN_FORCE * Math.max(0, urgency) * 2
+        }
+
+        // Depth preference — gentle pull toward preferred depth
+        const currentDepthNorm = (s.y - minY) / (maxY - minY)
+        const depthError = s.preferredDepth - currentDepthNorm
+        steerY += depthError * 0.003
+
+        // ─── 6. Structure avoidance ───────────────────────────
         const normX = s.x / containerWidth
         const normY = s.y / containerHeight
         for (const zone of STRUCTURE_ZONES) {
-          if (normX > zone.left - 0.05 && normX < zone.right + 0.05 &&
-              normY > zone.top - 0.05 && normY < zone.bottom) {
-            // Fish is near or in a structure zone — nudge upward
-            const penetration = Math.min(
-              normX - zone.left, zone.right - normX,
-              normY - zone.top
-            )
-            if (penetration > 0) {
-              s.vy -= 0.04 * dt * Math.min(penetration * 20, 1)
-            }
+          const inX = normX > zone.left - 0.08 && normX < zone.right + 0.08
+          const inY = normY > zone.top - 0.08 && normY < zone.bottom + 0.02
+          if (inX && inY) {
+            // Push away from zone center
+            const zoneCX = (zone.left + zone.right) / 2
+            const zoneCY = (zone.top + zone.bottom) / 2
+            const awayX = normX - zoneCX
+            const awayY = normY - zoneCY
+            const dist = Math.sqrt(awayX * awayX + awayY * awayY) || 0.01
+            steerX += (awayX / dist) * 0.04
+            steerY += (awayY / dist) * 0.04
           }
         }
 
-        s.x += s.vx * dt
-        s.y += s.vy * dt
-        s.phase += 0.05 * dt
+        // ─── 7. Compute desired heading from all steering forces ─
+        // Blend waypoint heading with boids/avoidance steering
+        const desiredDx = Math.cos(s.targetHeading) * 0.5 + steerX
+        const desiredDy = Math.sin(s.targetHeading) * 0.5 + steerY
+        const desiredHeading = Math.atan2(desiredDy, desiredDx)
 
-        // Gentle vertical drift with sine wave
-        s.y += Math.sin(s.phase) * 0.15 * dt
+        // Smoothly turn toward desired heading (the core of realistic movement)
+        let headingDiff = normalizeAngle(desiredHeading - s.heading)
 
-        // Bounce off vertical bounds
-        const minY = containerHeight * SWIM_ZONE_TOP
-        const maxY = containerHeight * SWIM_ZONE_BOTTOM
-        if (s.y < minY) { s.y = minY; s.vy = Math.abs(s.vy) }
-        if (s.y > maxY) { s.y = maxY; s.vy = -Math.abs(s.vy) }
+        // Clamp turn rate based on behavior
+        const maxTurn = cfg.turnRate * dt
+        if (headingDiff > maxTurn) headingDiff = maxTurn
+        else if (headingDiff < -maxTurn) headingDiff = -maxTurn
 
-        // Random vertical velocity changes
-        if (Math.random() < 0.02) {
-          s.vy += randomBetween(-0.06, 0.06)
-          s.vy = Math.max(-0.35, Math.min(0.35, s.vy))
-        }
+        s.heading += headingDiff
+        s.heading = normalizeAngle(s.heading)
 
-        // Occasional base speed change for natural variation
-        if (Math.random() < 0.005) {
-          s.baseSpeed = randomBetween(MIN_SPEED, MAX_SPEED)
-        }
+        // ─── 8. Move forward along heading ────────────────────
+        const vx = Math.cos(s.heading) * s.speed * dt
+        const vy = Math.sin(s.heading) * s.speed * dt
+        s.x += vx
+        s.y += vy
+
+        // ─── 9. Hard boundary clamping (safety net) ───────────
+        if (s.y < minY) { s.y = minY + 2; s.heading = Math.abs(s.heading) < Math.PI / 2 ? 0.3 : Math.PI - 0.3 }
+        if (s.y > maxY) { s.y = maxY - 2; s.heading = Math.abs(s.heading) < Math.PI / 2 ? -0.3 : Math.PI + 0.3 }
 
         if (contained) {
-          const padding = fishSize / 2 + 8
-          if (s.x <= padding) {
-            s.x = padding
-            s.vx = randomBetween(MIN_SPEED, MAX_SPEED)
-            s.direction = 'right'
-            s.baseSpeed = Math.abs(s.vx)
-          } else if (s.x >= containerWidth - padding) {
-            s.x = containerWidth - padding
-            s.vx = -randomBetween(MIN_SPEED, MAX_SPEED)
-            s.direction = 'left'
-            s.baseSpeed = Math.abs(s.vx)
-          }
+          const pad = fishSize / 2 + 5
+          if (s.x < pad) { s.x = pad + 2; s.heading = randomBetween(-0.4, 0.4) }
+          if (s.x > containerWidth - pad) { s.x = containerWidth - pad - 2; s.heading = randomBetween(Math.PI - 0.4, Math.PI + 0.4) }
         } else {
+          // Wrap around for non-contained tanks
           if (s.x < -FISH_MARGIN - 20) {
             s.x = containerWidth + FISH_MARGIN
             s.y = randomBetween(minY, maxY)
-            s.vx = -randomBetween(MIN_SPEED, MAX_SPEED)
-            s.direction = 'left'
-            s.baseSpeed = Math.abs(s.vx)
+            s.heading = Math.PI + randomBetween(-0.3, 0.3) // heading left
             s.entering = true
           } else if (s.x > containerWidth + FISH_MARGIN + 20) {
             s.x = -FISH_MARGIN
             s.y = randomBetween(minY, maxY)
-            s.vx = randomBetween(MIN_SPEED, MAX_SPEED)
-            s.direction = 'right'
-            s.baseSpeed = Math.abs(s.vx)
+            s.heading = randomBetween(-0.3, 0.3) // heading right
             s.entering = true
           }
         }
 
-        s.direction = s.vx > 0 ? 'right' : 'left'
+        // ─── 10. Update animation phases ──────────────────────
+        s.tailPhase += 0.12 * cfg.tailFreq * dt * (s.speed / s.baseSpeed)
+        s.phase += 0.04 * dt
 
-        // Update shared position registry for self-awareness
-        posRegistry.set(fish.id, { x: s.x, y: s.y, vx: s.vx, size: fishSize })
+        // Direction for flipping the SVG
+        s.direction = Math.abs(s.heading) < Math.PI / 2 ? 'right' : 'left'
 
-        // Smoothly interpolate pitch toward actual movement direction
-        const targetPitch = Math.atan2(s.vy, Math.abs(s.vx)) * (180 / Math.PI)
-        s.smoothPitch += (targetPitch - s.smoothPitch) * 0.015 * dt
-        s.smoothPitch = Math.max(-12, Math.min(12, s.smoothPitch))
+        // Smooth pitch — based on vertical component of heading
+        const rawPitch = Math.sin(s.heading) * (180 / Math.PI) * 0.4
+        s.smoothPitch += (rawPitch - s.smoothPitch) * 0.06 * dt
+        s.smoothPitch = Math.max(-15, Math.min(15, s.smoothPitch))
+
+        // ─── 11. Update registry ──────────────────────────────
+        posRegistry.set(fish.id, {
+          x: s.x, y: s.y,
+          vx: Math.cos(s.heading) * s.speed,
+          size: fishSize,
+          heading: s.heading,
+          speed: s.speed,
+        } as any)
       }
 
-      setPos({ x: s.x, y: s.y, direction: s.direction, phase: s.phase, vy: s.vy })
+      setPos({
+        x: s.x, y: s.y,
+        direction: s.direction,
+        phase: s.phase,
+        vy: Math.sin(s.heading) * s.speed,
+        tailPhase: s.tailPhase,
+        speed: s.speed,
+        behavior: s.behavior,
+        pitch: s.smoothPitch,
+      })
+
       animRef.current = requestAnimationFrame(animate)
     }
 
@@ -265,13 +511,12 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
       cancelAnimationFrame(animRef.current)
       posRegistry.delete(fish.id)
     }
-  }, [containerWidth, containerHeight, fish.id, fishSize, posRegistry])
+  }, [containerWidth, containerHeight, fish.id, fishSize, posRegistry, contained])
 
+  // ── Event handlers ──────────────────────────────────────────────
   const handleMouseEnter = useCallback(() => {
     isHovered.current = true
-    if (ref.current) {
-      onHover(fish, ref.current.getBoundingClientRect())
-    }
+    if (ref.current) onHover(fish, ref.current.getBoundingClientRect())
   }, [fish, onHover])
 
   const handleMouseLeave = useCallback(() => {
@@ -280,18 +525,17 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
   }, [onLeave])
 
   const handleClick = useCallback(() => {
-    if (ref.current) {
-      onClick(fish, ref.current.getBoundingClientRect())
-    }
+    if (ref.current) onClick(fish, ref.current.getBoundingClientRect())
   }, [fish, onClick])
 
-  // Smooth, majestic swimming motion — gentle undulation and bob
-  // Very gentle vertical bob (slow period, small amplitude)
-  const bobAmount = Math.sin(pos.phase * 0.35) * 0.8
-  // Subtle body undulation — slow, graceful wave motion
-  const undulation = Math.sin(pos.phase * 0.5) * 1.0
-  // Use smoothly interpolated pitch from animation loop
-  const pitchDeg = stateRef.current?.smoothPitch ?? 0
+  // ── Render ──────────────────────────────────────────────────────
+  // Tail undulation — stronger when swimming faster, very subtle when idle
+  const speedRatio = pos.speed / (stateRef.current?.baseSpeed || 1.5)
+  const tailSwing = Math.sin(pos.tailPhase) * (1.2 + speedRatio * 1.5)
+  // Gentle vertical bob (very subtle, doesn't dominate)
+  const bobAmount = Math.sin(pos.phase * 0.4) * 0.5
+  // Pitch from movement direction
+  const pitchDeg = pos.pitch
   const flipSign = pos.direction === 'right' ? -1 : 1
 
   return (
@@ -301,7 +545,7 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
       style={{
         left: `${pos.x}px`,
         top: `${pos.y + bobAmount}px`,
-        transform: `scaleX(${pos.direction === 'left' ? 1 : -1}) rotate(${pitchDeg * flipSign + undulation}deg)`,
+        transform: `scaleX(${pos.direction === 'left' ? 1 : -1}) rotate(${pitchDeg * flipSign + tailSwing * 0.3}deg)`,
         zIndex: 10 + Math.floor(pos.y / 10),
         filter: isHovered.current
           ? `brightness(1.3) drop-shadow(0 0 12px rgba(34,211,238,0.6)) drop-shadow(0 0 4px rgba(255,255,255,0.3))`
