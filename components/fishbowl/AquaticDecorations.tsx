@@ -1416,6 +1416,8 @@ SunkenAnchor.displayName = 'SunkenAnchor'
 
 const SunkenShip = memo(({ x, y }: { x: number; y: number }) => (
   <g transform={`translate(${x}, ${y})`}>
+    {/* Mirror the entire ship horizontally (bow faces right, stern faces left) */}
+    <g transform="translate(120, 0) scale(-1, 1)">
 
     {/* ═══ SHADOW ON SEABED — wide rect at bottom ═══ */}
     <rect x="-20" y="70" width="170" height="6" fill="#000" opacity="0.12" />
@@ -1865,9 +1867,10 @@ const SunkenShip = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="57" y="27" width="2" height="2" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4s ease-in 1.2s infinite' }} />
     <rect x="51" y="33" width="3" height="3" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4.5s ease-in 2s infinite' }} />
     <rect x="55" y="25" width="2" height="2" fill="rgba(255,255,255,0.15)" style={{ animation: 'bubbleRise 5.5s ease-in 3.5s infinite' }} />
+    </g>
   </g>
 ))
-SunkenShip.displayName = 'SunkenShip' 
+SunkenShip.displayName = 'SunkenShip'
 
 // ─── SHIPWRECK: Sunken Sailboat ─────────────────────────────────────
 
