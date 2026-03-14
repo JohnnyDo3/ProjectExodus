@@ -22,12 +22,24 @@ interface FishCustomizerProps {
 }
 
 const ALL_SPECIES: { species: FishSpecies; tier: FishTier; name: string; unlockScore: number; description: string }[] = [
+  // Tier 0 — 0 STOCK
   { species: 'guppy', tier: 0, name: 'Guppy', unlockScore: 0, description: 'Your humble beginning' },
+  { species: 'endler', tier: 0, name: "Endler's Livebearer", unlockScore: 0, description: 'Tiny, brilliant micro-fish' },
+  // Tier 1 — 10 STOCK
   { species: 'swift-guppy', tier: 1, name: 'Swift Guppy', unlockScore: 10, description: 'Sleeker and faster' },
+  { species: 'neon-tetra', tier: 1, name: 'Neon Tetra', unlockScore: 10, description: 'Iconic iridescent stripe' },
+  // Tier 2 — 25 STOCK
   { species: 'fancy-guppy', tier: 2, name: 'Fancy Guppy', unlockScore: 25, description: 'Fan tail with flair' },
+  { species: 'betta', tier: 2, name: 'Betta', unlockScore: 25, description: 'Dramatic flowing veil fins' },
+  // Tier 3 — 50 STOCK
   { species: 'delta-guppy', tier: 3, name: 'Delta Guppy', unlockScore: 50, description: 'Majestic delta tail' },
+  { species: 'angelfish', tier: 3, name: 'Angelfish', unlockScore: 50, description: 'Tall diamond with trailing fins' },
+  // Tier 4 — 100 STOCK
   { species: 'veil-guppy', tier: 4, name: 'Veil Guppy', unlockScore: 100, description: 'Flowing veil fins' },
+  { species: 'discus', tier: 4, name: 'Discus', unlockScore: 100, description: 'Round disc with ornate patterns' },
+  // Tier 5 — 200 STOCK
   { species: 'supreme-guppy', tier: 5, name: 'Supreme Guppy', unlockScore: 200, description: 'The crown jewel' },
+  { species: 'arowana', tier: 5, name: 'Arowana', unlockScore: 200, description: 'Dragon fish, the apex predator' },
 ]
 
 const ALL_PATTERNS: { pattern: FishPattern; name: string; description: string }[] = [
@@ -176,57 +188,69 @@ export function FishCustomizer({ stockScore, currentCustomization, onSave, onClo
         {/* Tab Content */}
         <div className="p-4 max-h-[320px] overflow-y-auto">
           {tab === 'species' && (
-            <div className="space-y-2">
-              <p className="text-[10px] text-cyan-500 font-medium mb-3">
+            <div className="space-y-3">
+              <p className="text-[10px] text-cyan-500 font-medium mb-2">
                 Unlock higher-tier species by earning STOCK.
                 {stockScore > 0 && ` You have ${stockScore} STOCK.`}
               </p>
-              <div className="space-y-2">
-                {ALL_SPECIES.map(sp => {
-                  const isUnlocked = stockScore >= sp.unlockScore
-                  const isSelected = selectedSpecies === sp.species ||
-                    (!selectedSpecies && sp.tier === userTier)
+              {([0, 1, 2, 3, 4, 5] as const).map(tierLevel => {
+                const tierSpecies = ALL_SPECIES.filter(s => s.tier === tierLevel)
+                const tierUnlocked = stockScore >= tierSpecies[0].unlockScore
+                return (
+                  <div key={tierLevel}>
+                    <p className={`text-[9px] font-bold uppercase tracking-wider mb-1.5 ${tierUnlocked ? 'text-cyan-400' : 'text-cyan-700'}`}>
+                      Tier {tierLevel + 1} — {getTierName(tierLevel)}{tierSpecies[0].unlockScore > 0 ? ` · ${tierSpecies[0].unlockScore}+ STOCK` : ''}
+                    </p>
+                    <div className="grid grid-cols-2 gap-1.5">
+                      {tierSpecies.map(sp => {
+                        const isUnlocked = stockScore >= sp.unlockScore
+                        const isSelected = selectedSpecies === sp.species ||
+                          (!selectedSpecies && sp.tier === userTier && sp.species === ALL_SPECIES.find(s => s.tier === userTier)?.species)
 
-                  return (
-                    <button
-                      key={sp.species}
-                      onClick={() => isUnlocked && setSelectedSpecies(sp.species)}
-                      disabled={!isUnlocked}
-                      className={`relative w-full flex items-center gap-3 px-3 py-3 rounded-xl border transition-all ${
-                        !isUnlocked
-                          ? 'border-cyan-900/30 bg-cyan-950/20 opacity-50 cursor-not-allowed'
-                          : isSelected
-                            ? 'border-cyan-400 bg-cyan-900/30 shadow-lg shadow-cyan-900/20'
-                            : 'border-cyan-800/40 bg-cyan-900/10 hover:border-cyan-600/50 hover:bg-cyan-900/20'
-                      }`}
-                    >
-                      <div className="flex-shrink-0 w-14 h-10 flex items-center justify-center">
-                        <FishSVG tier={sp.tier} size={48} id={`species-${sp.species}`} />
-                      </div>
-                      <div className="text-left min-w-0 flex-1">
-                        <p className={`text-xs font-bold ${isUnlocked ? 'text-cyan-200' : 'text-cyan-600'}`}>
-                          {sp.name}
-                        </p>
-                        <p className="text-[9px] text-cyan-600">
-                          {sp.description}
-                        </p>
-                        {!isUnlocked ? (
-                          <p className="text-[8px] text-amber-500/80 font-bold mt-0.5">
-                            {sp.unlockScore}+ STOCK to unlock
-                          </p>
-                        ) : !isSelected ? (
-                          <p className="text-[8px] text-emerald-500/70 font-medium mt-0.5">
-                            Unlocked
-                          </p>
-                        ) : null}
-                      </div>
-                      {isSelected && isUnlocked && (
-                        <Check className="absolute top-2 right-2 w-3.5 h-3.5 text-cyan-400" />
-                      )}
-                    </button>
-                  )
-                })}
-              </div>
+                        return (
+                          <button
+                            key={sp.species}
+                            onClick={() => isUnlocked && setSelectedSpecies(sp.species)}
+                            disabled={!isUnlocked}
+                            className={`relative flex items-center gap-2 px-2.5 py-2.5 rounded-xl border transition-all ${
+                              !isUnlocked
+                                ? 'border-cyan-900/30 bg-cyan-950/20 opacity-50 cursor-not-allowed'
+                                : isSelected
+                                  ? 'border-cyan-400 bg-cyan-900/30 shadow-lg shadow-cyan-900/20'
+                                  : 'border-cyan-800/40 bg-cyan-900/10 hover:border-cyan-600/50 hover:bg-cyan-900/20'
+                            }`}
+                          >
+                            <div className="flex-shrink-0 w-12 h-10 flex items-center justify-center">
+                              <FishSVG
+                                tier={sp.tier}
+                                size={40}
+                                customization={{ species: sp.species }}
+                                id={`species-${sp.species}`}
+                              />
+                            </div>
+                            <div className="text-left min-w-0 flex-1">
+                              <p className={`text-[11px] font-bold leading-tight ${isUnlocked ? 'text-cyan-200' : 'text-cyan-600'}`}>
+                                {sp.name}
+                              </p>
+                              <p className="text-[8px] text-cyan-600 leading-tight">
+                                {sp.description}
+                              </p>
+                              {!isUnlocked && (
+                                <p className="text-[7px] text-amber-500/80 font-bold mt-0.5">
+                                  {sp.unlockScore}+ STOCK
+                                </p>
+                              )}
+                            </div>
+                            {isSelected && isUnlocked && (
+                              <Check className="absolute top-1.5 right-1.5 w-3 h-3 text-cyan-400" />
+                            )}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )
+              })}
             </div>
           )}
 

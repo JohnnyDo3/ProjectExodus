@@ -3,8 +3,11 @@ import { auth } from '@/auth'
 import { prisma } from '@/lib/db/prisma'
 import { incrementStockScore, STOCK_POINTS } from '@/lib/stockScore'
 
-// All guppy variants are available at every tier (auto-unlock)
-const ALL_SPECIES = ['guppy', 'swift-guppy', 'fancy-guppy', 'delta-guppy', 'veil-guppy', 'supreme-guppy']
+// All species — guppy variants + alternate species per tier
+const ALL_SPECIES = [
+  'guppy', 'swift-guppy', 'fancy-guppy', 'delta-guppy', 'veil-guppy', 'supreme-guppy',
+  'endler', 'neon-tetra', 'betta', 'angelfish', 'discus', 'arowana',
+]
 
 const VALID_PATTERNS = ['none', 'scales', 'fine-scales', 'armored', 'shimmer', 'koi']
 
