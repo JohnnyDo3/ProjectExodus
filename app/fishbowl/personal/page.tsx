@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { Fish, Users, Info, Sparkles, Palette, Shell, Anchor, TreePalm, Castle, Pyramid, Landmark, Waves, Sailboat, Ship, UserPlus, Plus, Minus, Skull } from 'lucide-react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
@@ -52,9 +52,17 @@ export default function PersonalFishbowlPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [showInfo, setShowInfo] = useState(false)
   const [showCustomizer, setShowCustomizer] = useState(false)
-  const [activeDecor, setActiveDecor] = useState<string>('ocean')
+  const [activeDecor, setActiveDecor] = useState<string>(() => {
+    if (typeof window === 'undefined') return 'ocean'
+    try {
+      return localStorage.getItem('personal-tank-theme') || 'ocean'
+    } catch { return 'ocean' }
+  })
   const [showDecorPanel, setShowDecorPanel] = useState(false)
   const [showFriendPanel, setShowFriendPanel] = useState(false)
+  const decorPanelRef = useRef<HTMLDivElement>(null)
+  const infoPanelRef = useRef<HTMLDivElement>(null)
+  const friendPanelRef = useRef<HTMLDivElement>(null)
   const [tankFriendIds, setTankFriendIds] = useState<Set<string>>(() => {
     if (typeof window === 'undefined') return new Set()
     try {
@@ -87,6 +95,24 @@ export default function PersonalFishbowlPage() {
     }
     fetchData()
   }, [status])
+
+  // Close overlay panels on click outside
+  useEffect(() => {
+    if (!showDecorPanel && !showInfo && !showFriendPanel) return
+    const handler = (e: MouseEvent) => {
+      if (showDecorPanel && decorPanelRef.current && !decorPanelRef.current.contains(e.target as Node)) {
+        setShowDecorPanel(false)
+      }
+      if (showInfo && infoPanelRef.current && !infoPanelRef.current.contains(e.target as Node)) {
+        setShowInfo(false)
+      }
+      if (showFriendPanel && friendPanelRef.current && !friendPanelRef.current.contains(e.target as Node)) {
+        setShowFriendPanel(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [showDecorPanel, showInfo, showFriendPanel])
 
   // Toggle a friend in/out of the tank
   const toggleFriendInTank = useCallback((friendId: string) => {
@@ -192,7 +218,7 @@ export default function PersonalFishbowlPage() {
               </button>
               {/* Decor toggle */}
               <button
-                onClick={() => setShowDecorPanel(!showDecorPanel)}
+                onClick={() => { setShowDecorPanel(!showDecorPanel); setShowInfo(false); setShowFriendPanel(false) }}
                 className={`p-2 rounded-lg border transition-colors ${
                   showDecorPanel
                     ? 'bg-cyan-600/30 border-cyan-500/50 text-cyan-300'
@@ -204,7 +230,7 @@ export default function PersonalFishbowlPage() {
               </button>
               {/* Info toggle */}
               <button
-                onClick={() => setShowInfo(!showInfo)}
+                onClick={() => { setShowInfo(!showInfo); setShowDecorPanel(false); setShowFriendPanel(false) }}
                 className="p-2 rounded-lg bg-cyan-900/30 border border-cyan-800/40 hover:border-cyan-600/60 transition-colors"
                 title="Fish species guide"
               >
@@ -212,7 +238,7 @@ export default function PersonalFishbowlPage() {
               </button>
               {/* Add friend fish toggle */}
               <button
-                onClick={() => setShowFriendPanel(!showFriendPanel)}
+                onClick={() => { setShowFriendPanel(!showFriendPanel); setShowDecorPanel(false); setShowInfo(false) }}
                 className={`p-2 rounded-lg border transition-colors ${
                   showFriendPanel
                     ? 'bg-teal-600/30 border-teal-500/50 text-teal-300'
@@ -241,15 +267,15 @@ export default function PersonalFishbowlPage() {
             </div>
           </div>
 
-          {/* Decor panel — absolute overlay so tank doesn't resize */}
+          {/* Overlay panels — rendered with click-outside-to-close via refs */}
           {showDecorPanel && (
-            <div className="absolute left-0 right-0 top-full mt-0 mx-4 p-3 rounded-xl bg-[#0A1628]/95 border border-cyan-800/30 animate-in slide-in-from-top duration-200 backdrop-blur-sm shadow-xl shadow-black/40">
+            <div ref={decorPanelRef} className="absolute left-0 right-0 top-full mt-0 mx-4 p-3 rounded-xl bg-[#0A1628]/95 border border-cyan-800/30 animate-in slide-in-from-top duration-200 backdrop-blur-sm shadow-xl shadow-black/40 z-40">
               <p className="text-[10px] text-cyan-500 font-bold uppercase mb-2">Tank Theme</p>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {DECOR_THEMES.map(theme => (
                   <button
                     key={theme.id}
-                    onClick={() => setActiveDecor(theme.id)}
+                    onClick={() => { setActiveDecor(theme.id); try { localStorage.setItem('personal-tank-theme', theme.id) } catch {} }}
                     className={`flex items-center gap-2 p-2.5 rounded-lg border transition-all ${
                       activeDecor === theme.id
                         ? 'border-cyan-400 bg-cyan-900/40 shadow-lg shadow-cyan-900/20'
@@ -269,9 +295,8 @@ export default function PersonalFishbowlPage() {
             </div>
           )}
 
-          {/* Info panel - Fish species guide — absolute overlay */}
           {showInfo && (
-            <div className="absolute left-0 right-0 top-full mt-0 mx-4 p-3 rounded-xl bg-[#0A1628]/95 border border-cyan-800/30 animate-in slide-in-from-top duration-200 backdrop-blur-sm shadow-xl shadow-black/40">
+            <div ref={infoPanelRef} className="absolute left-0 right-0 top-full mt-0 mx-4 p-3 rounded-xl bg-[#0A1628]/95 border border-cyan-800/30 animate-in slide-in-from-top duration-200 backdrop-blur-sm shadow-xl shadow-black/40 z-40">
               <p className="text-[10px] text-cyan-500 font-bold uppercase mb-2">Fish Species & Stock Levels</p>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
                 {availableSpecies.map(sp => {
@@ -308,9 +333,8 @@ export default function PersonalFishbowlPage() {
             </div>
           )}
 
-          {/* Friend fish panel — absolute overlay */}
           {showFriendPanel && (
-            <div className="absolute left-0 right-0 top-full mt-0 mx-4 p-3 rounded-xl bg-[#0A1628]/95 border border-teal-800/30 animate-in slide-in-from-top duration-200 backdrop-blur-sm shadow-xl shadow-black/40">
+            <div ref={friendPanelRef} className="absolute left-0 right-0 top-full mt-0 mx-4 p-3 rounded-xl bg-[#0A1628]/95 border border-teal-800/30 animate-in slide-in-from-top duration-200 backdrop-blur-sm shadow-xl shadow-black/40 z-40">
               <p className="text-[10px] text-teal-500 font-bold uppercase mb-2">
                 Add Friend&apos;s Fish to Tank
               </p>

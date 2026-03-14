@@ -1,10 +1,26 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Fish, Eye, EyeOff } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
+import { Fish, Eye, EyeOff, Palette, Shell, TreePalm, Anchor, Sailboat, Ship, Castle, Pyramid, Landmark, Waves, Skull } from 'lucide-react'
 import Link from 'next/link'
 import { Fishbowl } from './Fishbowl'
 import { FishSVG, getTierFromScore, getTierName, type FishCustomization } from './FishSpecies'
+
+const COMMUNITY_THEME_KEY = 'community-fishbowl-theme'
+
+const DECOR_THEMES = [
+  { id: 'ocean', name: 'Ocean Reef', icon: Shell, description: 'Coral reef with ocean plants' },
+  { id: 'tropical', name: 'Tropical', icon: TreePalm, description: 'Lush tropical vegetation' },
+  { id: 'shipwreck', name: 'Shipwreck', icon: Anchor, description: 'Sunken ship vibes' },
+  { id: 'sailboat', name: 'Sailboat', icon: Sailboat, description: 'Sunken sailboat wreck' },
+  { id: 'submarine', name: 'Submarine', icon: Ship, description: 'Sunken submarine base' },
+  { id: 'castle', name: 'Castle', icon: Castle, description: 'Sunken medieval fortress' },
+  { id: 'pyramid', name: 'Pyramid', icon: Pyramid, description: 'Ancient Egyptian ruins' },
+  { id: 'temple', name: 'Temple', icon: Landmark, description: 'Japanese torii and pagoda' },
+  { id: 'atlantis', name: 'Atlantis', icon: Waves, description: 'Lost city of Atlantis' },
+  { id: 'minimal', name: 'Minimal', icon: Fish, description: 'Clean, simple look' },
+  { id: 'stagnant', name: 'Stagnant', icon: Skull, description: 'Deer skull with willow vines' },
+] as const
 
 interface CommunityFishUser {
   id: string
@@ -18,6 +34,31 @@ export function CommunityFishbowl() {
   const [users, setUsers] = useState<CommunityFishUser[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [showFishbowl, setShowFishbowl] = useState(true)
+  const [activeTheme, setActiveTheme] = useState<string>(() => {
+    if (typeof window === 'undefined') return 'ocean'
+    try {
+      return localStorage.getItem(COMMUNITY_THEME_KEY) || 'ocean'
+    } catch { return 'ocean' }
+  })
+  const [showThemePanel, setShowThemePanel] = useState(false)
+  const themePanelRef = useRef<HTMLDivElement>(null)
+
+  const handleThemeChange = (themeId: string) => {
+    setActiveTheme(themeId)
+    try { localStorage.setItem(COMMUNITY_THEME_KEY, themeId) } catch {}
+  }
+
+  // Close theme panel on click outside
+  useEffect(() => {
+    if (!showThemePanel) return
+    const handler = (e: MouseEvent) => {
+      if (themePanelRef.current && !themePanelRef.current.contains(e.target as Node)) {
+        setShowThemePanel(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [showThemePanel])
 
   useEffect(() => {
     async function fetchCommunityFish() {
@@ -133,6 +174,46 @@ export function CommunityFishbowl() {
                 <Fish className="w-3.5 h-3.5" />
                 My Tank
               </Link>
+              {/* Theme selector */}
+              <div className="relative" ref={themePanelRef}>
+                <button
+                  onClick={() => setShowThemePanel(!showThemePanel)}
+                  className={`p-2 rounded-lg border transition-colors ${
+                    showThemePanel
+                      ? 'bg-cyan-600/30 border-cyan-500/50 text-cyan-300'
+                      : 'bg-gray-800/80 border-gray-700/50 text-gray-300 hover:bg-gray-700/80 hover:text-white'
+                  }`}
+                  title="Tank theme"
+                >
+                  <Palette className="w-4 h-4" />
+                </button>
+                {showThemePanel && (
+                  <div className="absolute right-0 top-full mt-2 w-[320px] sm:w-[400px] p-3 rounded-xl bg-[#0A1628]/95 border border-cyan-800/30 backdrop-blur-sm shadow-xl shadow-black/40 z-40">
+                    <p className="text-[10px] text-cyan-500 font-bold uppercase mb-2">Tank Theme</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {DECOR_THEMES.map(theme => (
+                        <button
+                          key={theme.id}
+                          onClick={() => { handleThemeChange(theme.id); setShowThemePanel(false) }}
+                          className={`flex items-center gap-2 p-2.5 rounded-lg border transition-all ${
+                            activeTheme === theme.id
+                              ? 'border-cyan-400 bg-cyan-900/40 shadow-lg shadow-cyan-900/20'
+                              : 'border-cyan-800/30 bg-cyan-900/10 hover:border-cyan-600/50'
+                          }`}
+                        >
+                          <theme.icon className={`w-4 h-4 ${activeTheme === theme.id ? 'text-cyan-300' : 'text-cyan-600'}`} />
+                          <div className="text-left">
+                            <p className={`text-[10px] font-bold ${activeTheme === theme.id ? 'text-cyan-200' : 'text-cyan-400'}`}>
+                              {theme.name}
+                            </p>
+                            <p className="text-[8px] text-cyan-600">{theme.description}</p>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
               <button
                 onClick={() => setShowFishbowl(false)}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-gray-800/80 border border-gray-700/50 text-gray-300 hover:bg-gray-700/80 hover:text-white transition-all"
@@ -148,7 +229,7 @@ export function CommunityFishbowl() {
         {/* The fishbowl — fills the viewport below the lid, above the base */}
         <div className="absolute inset-0 pt-20 pb-16">
           {users.length > 0 ? (
-            <Fishbowl users={users} maxVisible={15} squareCorners />
+            <Fishbowl users={users} maxVisible={15} squareCorners theme={activeTheme} />
           ) : (
             <div
               className="w-full h-full flex items-center justify-center"
