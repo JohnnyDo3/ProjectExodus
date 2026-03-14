@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { SwimmingFish, type FishData } from './SwimmingFish'
 import { DecorationBackground, DecorationMidground, DecorationForeground } from './AquaticDecorations'
-import { PlecoPair, SnailGroup } from './TankCreatures'
+import { CrabGroup, SnailGroup } from './TankCreatures'
 import { AlgaeOverlay } from './AlgaeSystem'
 import { FishOverlay } from './FishOverlay'
 import { WaterEffects } from './WaterEffects'
@@ -213,9 +213,9 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomi
         />
       ))}
 
-      {/* Clown pleco pair — structure feeders, circle and clean decorations */}
+      {/* Baby crabs — scuttle sideways along the bottom */}
       {dimensions.width > 0 && dimensions.height > 0 && (
-        <PlecoPair containerWidth={dimensions.width} containerHeight={dimensions.height} theme={theme} />
+        <CrabGroup containerWidth={dimensions.width} containerHeight={dimensions.height} contained={contained} />
       )}
 
       {/* Algae buildup on glass (cleaned by snails over 72h) */}

@@ -63,6 +63,9 @@ export default function PersonalFishbowlPage() {
   const decorPanelRef = useRef<HTMLDivElement>(null)
   const infoPanelRef = useRef<HTMLDivElement>(null)
   const friendPanelRef = useRef<HTMLDivElement>(null)
+  const decorBtnRef = useRef<HTMLButtonElement>(null)
+  const infoBtnRef = useRef<HTMLButtonElement>(null)
+  const friendBtnRef = useRef<HTMLButtonElement>(null)
   const [tankFriendIds, setTankFriendIds] = useState<Set<string>>(() => {
     if (typeof window === 'undefined') return new Set()
     try {
@@ -96,17 +99,18 @@ export default function PersonalFishbowlPage() {
     fetchData()
   }, [status])
 
-  // Close overlay panels on click outside
+  // Close overlay panels on click outside (exclude toggle buttons to avoid reopen race)
   useEffect(() => {
     if (!showDecorPanel && !showInfo && !showFriendPanel) return
     const handler = (e: MouseEvent) => {
-      if (showDecorPanel && decorPanelRef.current && !decorPanelRef.current.contains(e.target as Node)) {
+      const target = e.target as Node
+      if (showDecorPanel && decorPanelRef.current && !decorPanelRef.current.contains(target) && !decorBtnRef.current?.contains(target)) {
         setShowDecorPanel(false)
       }
-      if (showInfo && infoPanelRef.current && !infoPanelRef.current.contains(e.target as Node)) {
+      if (showInfo && infoPanelRef.current && !infoPanelRef.current.contains(target) && !infoBtnRef.current?.contains(target)) {
         setShowInfo(false)
       }
-      if (showFriendPanel && friendPanelRef.current && !friendPanelRef.current.contains(e.target as Node)) {
+      if (showFriendPanel && friendPanelRef.current && !friendPanelRef.current.contains(target) && !friendBtnRef.current?.contains(target)) {
         setShowFriendPanel(false)
       }
     }
@@ -218,6 +222,7 @@ export default function PersonalFishbowlPage() {
               </button>
               {/* Decor toggle */}
               <button
+                ref={decorBtnRef}
                 onClick={() => { setShowDecorPanel(!showDecorPanel); setShowInfo(false); setShowFriendPanel(false) }}
                 className={`p-2 rounded-lg border transition-colors ${
                   showDecorPanel
@@ -230,14 +235,20 @@ export default function PersonalFishbowlPage() {
               </button>
               {/* Info toggle */}
               <button
+                ref={infoBtnRef}
                 onClick={() => { setShowInfo(!showInfo); setShowDecorPanel(false); setShowFriendPanel(false) }}
-                className="p-2 rounded-lg bg-cyan-900/30 border border-cyan-800/40 hover:border-cyan-600/60 transition-colors"
+                className={`p-2 rounded-lg border transition-colors ${
+                  showInfo
+                    ? 'bg-cyan-600/30 border-cyan-500/50 text-cyan-300'
+                    : 'bg-cyan-900/30 border-cyan-800/40 text-cyan-500 hover:border-cyan-600/60'
+                }`}
                 title="Fish species guide"
               >
-                <Info className="w-4 h-4 text-cyan-500" />
+                <Info className="w-4 h-4" />
               </button>
               {/* Add friend fish toggle */}
               <button
+                ref={friendBtnRef}
                 onClick={() => { setShowFriendPanel(!showFriendPanel); setShowDecorPanel(false); setShowInfo(false) }}
                 className={`p-2 rounded-lg border transition-colors ${
                   showFriendPanel

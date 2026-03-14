@@ -29,7 +29,10 @@ export function MainLayoutWrapper({
   const isAdminRoute = pathname?.startsWith('/admin')
 
   // Full-screen pages that should not have footer and should not scroll
-  const isFullScreenPage = pathname === '/messages' || pathname === '/notifications' || pathname === '/network' || pathname === '/fishbowl/personal'
+  const isFullScreenPage = pathname === '/messages' || pathname === '/notifications' || pathname === '/fishbowl/personal'
+
+  // Pages that should not have footer but need scrolling (fishbowl + content below)
+  const isScrollableFullPage = pathname === '/network'
 
   // Learning module pages - no footer, full viewport height, no scroll
   const isLearningPage = pathname?.startsWith('/learn/modules/')
@@ -87,6 +90,20 @@ export function MainLayoutWrapper({
           <div className="flex-1 overflow-y-auto min-h-0">
             {children}
           </div>
+        </div>
+        {aiAssistant}
+      </>
+    )
+  }
+
+  // Scrollable full-screen pages (network) - no footer, but content scrolls
+  if (isScrollableFullPage) {
+    return (
+      <>
+        {skyBackground}
+        <div className="relative z-10">
+          <Header />
+          {children}
         </div>
         {aiAssistant}
       </>
