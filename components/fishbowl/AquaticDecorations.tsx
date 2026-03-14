@@ -3970,21 +3970,7 @@ const SHIPWRECK_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#8B7355', lighter: '#A08B6C', detail: '#6B5B45' },
   background: {
     kelps: [
-      // Left wide cluster
-      { x: 5, height: 165, variant: 'wide', color: '#2E7D32', delay: 0 },
-      { x: 18, height: 145, variant: 'wide', color: '#33691E', delay: 0.5 },
-      { x: 32, height: 155, variant: 'wide', color: '#2E7D32', delay: 0.2 },
-      // Left bushy cluster
-      { x: 50, height: 170, variant: 'bushy', color: '#33691E', delay: 0.4 },
-      { x: 63, height: 150, variant: 'bushy', color: '#1B5E20', delay: 0.9 },
-      { x: 76, height: 160, variant: 'bushy', color: '#33691E', delay: 0.6 },
-      // Scattered thin near wreck
-      { x: 210, height: 155, variant: 'thin', color: '#558B2F', delay: 0.9 },
-      { x: 222, height: 140, variant: 'thin', color: '#2E7D32', delay: 0.3 },
-      { x: 234, height: 150, variant: 'thin', color: '#558B2F', delay: 0.7 },
-      // Mid bushy cluster
-      { x: 270, height: 165, variant: 'bushy', color: '#1B5E20', delay: 0.3 },
-      { x: 283, height: 150, variant: 'bushy', color: '#2E7D32', delay: 0.8 },
+      // Far background plants — well away from ship, behind everything
       // Mid bushy cluster 2
       { x: 360, height: 160, variant: 'bushy', color: '#2E7D32', delay: 0.5 },
       { x: 373, height: 145, variant: 'bushy', color: '#1B5E20', delay: 1.0 },
@@ -4021,9 +4007,25 @@ const SHIPWRECK_LAYOUT: LayeredDecoConfig = {
       { x: 760, y: 241, variant: 'fan', color: '#8D6E63' },
     ],
     kelps: [
+      // Ship-adjacent plants — in front of ship, fish swim behind these
+      // Left wide cluster (flanking ship)
+      { x: 5, height: 40, variant: 'wide', color: '#2E7D32', delay: 0 },
+      { x: 18, height: 36, variant: 'wide', color: '#33691E', delay: 0.5 },
+      { x: 32, height: 38, variant: 'wide', color: '#2E7D32', delay: 0.2 },
+      // Left bushy cluster (near ship bow)
+      { x: 50, height: 42, variant: 'bushy', color: '#33691E', delay: 0.4 },
+      { x: 63, height: 36, variant: 'bushy', color: '#1B5E20', delay: 0.9 },
+      { x: 76, height: 40, variant: 'bushy', color: '#33691E', delay: 0.6 },
       // Near-wreck cluster — sparse thin grass (damaged area)
-      { x: 155, height: 26, variant: 'thin', color: '#558B2F', delay: 0.9 },
-      { x: 165, height: 30, variant: 'thin', color: '#2E7D32', delay: 0.5 },
+      { x: 155, height: 30, variant: 'thin', color: '#558B2F', delay: 0.9 },
+      { x: 165, height: 34, variant: 'thin', color: '#2E7D32', delay: 0.5 },
+      // Scattered thin near wreck stern
+      { x: 210, height: 32, variant: 'thin', color: '#558B2F', delay: 0.9 },
+      { x: 222, height: 28, variant: 'thin', color: '#2E7D32', delay: 0.3 },
+      { x: 234, height: 34, variant: 'thin', color: '#558B2F', delay: 0.7 },
+      // Mid bushy cluster
+      { x: 270, height: 38, variant: 'bushy', color: '#1B5E20', delay: 0.3 },
+      { x: 283, height: 34, variant: 'bushy', color: '#2E7D32', delay: 0.8 },
       // Mid-left — wide swords cluster
       { x: 310, height: 36, variant: 'wide', color: '#1B5E20', delay: 1.3 },
       { x: 324, height: 30, variant: 'wide', color: '#33691E', delay: 0.7 },

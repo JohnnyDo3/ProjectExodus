@@ -188,7 +188,8 @@ export function CommunityFishbowl() {
                   <Palette className="w-4 h-4" />
                 </button>
                 {showThemePanel && (
-                  <div className="absolute right-0 top-full mt-2 w-[320px] sm:w-[400px] p-3 rounded-xl bg-[#0A1628]/95 border border-cyan-800/30 backdrop-blur-sm shadow-xl shadow-black/40 z-40">
+                  <div className="fixed inset-0 z-40 flex items-start justify-center pt-24 sm:pt-28" onClick={() => setShowThemePanel(false)}>
+                    <div className="w-[340px] sm:w-[420px] p-4 rounded-xl bg-[#0A1628]/95 border border-cyan-800/30 backdrop-blur-sm shadow-xl shadow-black/40" onClick={e => e.stopPropagation()}>
                     <p className="text-[10px] text-cyan-500 font-bold uppercase mb-2">Tank Theme</p>
                     <div className="grid grid-cols-2 gap-2">
                       {DECOR_THEMES.map(theme => (
@@ -211,6 +212,7 @@ export function CommunityFishbowl() {
                         </button>
                       ))}
                     </div>
+                  </div>
                   </div>
                 )}
               </div>

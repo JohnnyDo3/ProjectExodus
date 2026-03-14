@@ -181,7 +181,7 @@ export function FishCustomizer({ stockScore, currentCustomization, onSave, onClo
                 Unlock higher-tier species by earning STOCK.
                 {stockScore > 0 && ` You have ${stockScore} STOCK.`}
               </p>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="space-y-2">
                 {ALL_SPECIES.map(sp => {
                   const isUnlocked = stockScore >= sp.unlockScore
                   const isSelected = selectedSpecies === sp.species ||
@@ -192,7 +192,7 @@ export function FishCustomizer({ stockScore, currentCustomization, onSave, onClo
                       key={sp.species}
                       onClick={() => isUnlocked && setSelectedSpecies(sp.species)}
                       disabled={!isUnlocked}
-                      className={`relative flex items-center gap-3 px-3 py-3 rounded-xl border transition-all ${
+                      className={`relative w-full flex items-center gap-3 px-3 py-3 rounded-xl border transition-all ${
                         !isUnlocked
                           ? 'border-cyan-900/30 bg-cyan-950/20 opacity-50 cursor-not-allowed'
                           : isSelected
@@ -200,10 +200,10 @@ export function FishCustomizer({ stockScore, currentCustomization, onSave, onClo
                             : 'border-cyan-800/40 bg-cyan-900/10 hover:border-cyan-600/50 hover:bg-cyan-900/20'
                       }`}
                     >
-                      <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center">
-                        <FishSVG tier={sp.tier} size={36} id={`species-${sp.species}`} />
+                      <div className="flex-shrink-0 w-14 h-10 flex items-center justify-center">
+                        <FishSVG tier={sp.tier} size={48} id={`species-${sp.species}`} />
                       </div>
-                      <div className="text-left min-w-0">
+                      <div className="text-left min-w-0 flex-1">
                         <p className={`text-xs font-bold ${isUnlocked ? 'text-cyan-200' : 'text-cyan-600'}`}>
                           {sp.name}
                         </p>
