@@ -508,7 +508,7 @@ export const PlecoPair = memo(({ containerWidth, containerHeight, theme = 'ocean
   const showHearts = Math.abs(p1Pos.x - p2Pos.x) < 60 && Math.abs(p1Pos.y - p2Pos.y) < 40
 
   return (
-    <div className="absolute inset-0 z-20 pointer-events-none">
+    <div className="absolute inset-0 z-[22] pointer-events-none">
       {/* Pleco 1 */}
       <div
         className="absolute"
@@ -1088,7 +1088,7 @@ export const SnailGroup = memo(({ count, containerWidth, containerHeight }: {
         return (
           <div
             key={`snail-${i}`}
-            className="absolute z-20 pointer-events-none"
+            className="absolute z-[23] pointer-events-none"
             style={{
               left: `${pos.x}px`,
               top: `${pos.y}px`,

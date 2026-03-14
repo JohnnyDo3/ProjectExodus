@@ -209,6 +209,7 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomi
           onClick={handleFishClick}
           index={i}
           contained={contained}
+          theme={theme}
         />
       ))}
 

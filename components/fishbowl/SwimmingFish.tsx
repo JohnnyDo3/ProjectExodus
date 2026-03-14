@@ -109,6 +109,7 @@ interface SwimmingFishProps {
   onClick: (fish: FishData, rect: DOMRect) => void
   index: number
   contained?: boolean
+  theme?: string
   allFishPositions?: React.MutableRefObject<Map<string, { x: number; y: number; vx: number; size: number }>>
 }
 
@@ -131,11 +132,24 @@ const BOIDS_COHESION_FORCE = 0.004
 const WALL_TURN_MARGIN = 0.12 // fraction of container dimension
 const WALL_TURN_FORCE = 0.05
 
-// Structure avoidance zones
-const STRUCTURE_ZONES = [
-  { left: 0.15, right: 0.35, top: 0.55, bottom: 0.85 },
-  { left: 0.55, right: 0.75, top: 0.55, bottom: 0.85 },
-]
+// Theme-aware structure avoidance zones — normalized container fractions
+// Each zone covers where a structure visually appears in the tank
+// SVG viewBox is 800x320, structures rendered at scale 2, xMidYMax meet
+type StructureZone = { left: number; right: number; top: number; bottom: number }
+const THEME_STRUCTURE_ZONES: Record<string, StructureZone[]> = {
+  ocean:     [{ left: 0.18, right: 0.40, top: 0.50, bottom: 0.85 }, { left: 0.58, right: 0.78, top: 0.50, bottom: 0.85 }],
+  tropical:  [{ left: 0.15, right: 0.38, top: 0.52, bottom: 0.88 }, { left: 0.55, right: 0.75, top: 0.50, bottom: 0.85 }],
+  shipwreck: [{ left: 0.0, right: 0.28, top: 0.45, bottom: 0.85 }, { left: 0.75, right: 0.95, top: 0.55, bottom: 0.88 }],
+  sailboat:  [{ left: 0.35, right: 0.58, top: 0.55, bottom: 0.90 }, { left: 0.70, right: 0.82, top: 0.55, bottom: 0.85 }],
+  submarine: [{ left: 0.28, right: 0.52, top: 0.55, bottom: 0.90 }],
+  castle:    [{ left: 0.20, right: 0.42, top: 0.50, bottom: 0.85 }, { left: 0.65, right: 0.85, top: 0.55, bottom: 0.88 }],
+  pyramid:   [{ left: 0.05, right: 0.28, top: 0.52, bottom: 0.88 }, { left: 0.60, right: 0.80, top: 0.55, bottom: 0.88 }],
+  temple:    [{ left: 0.10, right: 0.32, top: 0.50, bottom: 0.85 }, { left: 0.55, right: 0.75, top: 0.48, bottom: 0.85 }],
+  atlantis:  [{ left: 0.08, right: 0.30, top: 0.50, bottom: 0.85 }, { left: 0.65, right: 0.85, top: 0.50, bottom: 0.85 }],
+  minimal:   [],
+  stagnant:  [{ left: 0.32, right: 0.55, top: 0.48, bottom: 0.85 }],
+}
+const DEFAULT_STRUCTURE_ZONES = THEME_STRUCTURE_ZONES.ocean
 
 // ── Helpers ─────────────────────────────────────────────────────────
 function randomBetween(a: number, b: number) {
@@ -185,7 +199,7 @@ function pickWaypoint(
 const globalFishPositions = new Map<string, { x: number; y: number; vx: number; size: number; heading: number; speed: number }>()
 
 // ── Component ───────────────────────────────────────────────────────
-export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHover, onLeave, onClick, index, contained = false, allFishPositions }: SwimmingFishProps) => {
+export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHover, onLeave, onClick, index, contained = false, theme, allFishPositions }: SwimmingFishProps) => {
   const ref = useRef<HTMLDivElement>(null)
   const stateRef = useRef<SwimmingFishState | null>(null)
   const animRef = useRef<number>(0)
@@ -409,7 +423,8 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
         // ─── 6. Structure avoidance ───────────────────────────
         const normX = s.x / containerWidth
         const normY = s.y / containerHeight
-        for (const zone of STRUCTURE_ZONES) {
+        const structureZones = (theme ? THEME_STRUCTURE_ZONES[theme] : null) || DEFAULT_STRUCTURE_ZONES
+        for (const zone of structureZones) {
           const inX = normX > zone.left - 0.08 && normX < zone.right + 0.08
           const inY = normY > zone.top - 0.08 && normY < zone.bottom + 0.02
           if (inX && inY) {
