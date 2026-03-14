@@ -8,151 +8,124 @@ import { memo, useEffect, useState, useRef, useCallback, useMemo } from 'react'
 const ClownPlecoSVG = memo(({ id, facingRight, size = 40 }: { id: string; facingRight: boolean; size?: number }) => {
   const scaleX = facingRight ? -1 : 1
   return (
-    <svg width={size} height={size * 0.5} viewBox="0 0 160 80" fill="none">
-      <g transform={`translate(80, 40) scale(${scaleX}, 1) translate(-80, -40)`}>
+    <svg width={size} height={size * 0.55} viewBox="0 0 120 66" fill="none">
+      <defs>
+        {/* Body gradient — warm dark wood tones */}
+        <radialGradient id={`pb-${id}`} cx="35%" cy="40%" r="55%">
+          <stop offset="0%" stopColor="#5C3D1E" />
+          <stop offset="70%" stopColor="#3A2410" />
+          <stop offset="100%" stopColor="#2A1808" />
+        </radialGradient>
+        {/* Belly gradient */}
+        <linearGradient id={`pbl-${id}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#4A3018" stopOpacity="0" />
+          <stop offset="100%" stopColor="#2A1808" stopOpacity="0.6" />
+        </linearGradient>
+        {/* Fin gradient */}
+        <linearGradient id={`pf-${id}`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#3A2410" />
+          <stop offset="100%" stopColor="#2A1808" />
+        </linearGradient>
+      </defs>
+      <g transform={`translate(60, 33) scale(${scaleX}, 1) translate(-60, -33)`}>
 
-        {/* === CAUDAL FIN — smooth fan shape === */}
-        <path d="M128 30 Q140 18 150 12 Q152 16 148 24 Q146 28 144 32 L128 34 Z" fill="#2E1E12" />
-        <path d="M128 50 Q140 62 150 68 Q152 64 148 56 Q146 52 144 48 L128 46 Z" fill="#2E1E12" />
-        <path d="M128 34 L144 32 Q146 36 146 40 Q146 44 144 48 L128 46 Z" fill="#3D2B1A" />
-        {/* Caudal fin rays */}
-        <line x1="130" y1="32" x2="146" y2="20" stroke="#1A0F08" strokeWidth="0.6" opacity="0.4" />
-        <line x1="130" y1="36" x2="148" y2="28" stroke="#1A0F08" strokeWidth="0.5" opacity="0.3" />
-        <line x1="130" y1="44" x2="148" y2="52" stroke="#1A0F08" strokeWidth="0.5" opacity="0.3" />
-        <line x1="130" y1="48" x2="146" y2="60" stroke="#1A0F08" strokeWidth="0.6" opacity="0.4" />
-        {/* Caudal fin gold stripes */}
-        <path d="M132 30 Q138 24 142 20" stroke="#D49228" strokeWidth="2.5" fill="none" opacity="0.4" />
-        <path d="M132 38 Q138 38 144 38" stroke="#E8A832" strokeWidth="2" fill="none" opacity="0.35" />
-        <path d="M132 50 Q138 56 142 60" stroke="#D49228" strokeWidth="2.5" fill="none" opacity="0.4" />
+        {/* === CAUDAL (TAIL) FIN — lyretail shape, forked with bold stripes === */}
+        <path d="M96 24 Q104 14 112 10 Q113 18 110 24 L96 28 Z" fill={`url(#pf-${id})`} />
+        <path d="M96 42 Q104 52 112 56 Q113 48 110 42 L96 38 Z" fill={`url(#pf-${id})`} />
+        <path d="M96 28 Q108 26 110 24 L110 42 Q108 40 96 38 Z" fill="#3A2410" />
+        {/* Tail stripes — bold amber bands */}
+        <path d="M98 22 Q104 16 110 12" stroke="#E8A832" strokeWidth="3" fill="none" opacity="0.55" strokeLinecap="round" />
+        <path d="M98 32 Q104 32 110 32" stroke="#D49228" strokeWidth="2.5" fill="none" opacity="0.45" strokeLinecap="round" />
+        <path d="M98 44 Q104 50 110 54" stroke="#E8A832" strokeWidth="3" fill="none" opacity="0.55" strokeLinecap="round" />
 
-        {/* === DORSAL FIN — tall triangular sail === */}
-        <path d="M48 24 Q50 8 56 4 Q62 6 68 14 Q74 18 80 24 Z" fill="#2E1E12" />
-        <path d="M52 22 Q54 12 56 6 Q60 10 66 16 Q72 20 76 24 Z" fill="#3D2B1A" opacity="0.6" />
-        {/* Dorsal fin rays */}
-        <line x1="54" y1="22" x2="56" y2="6" stroke="#1A0F08" strokeWidth="0.5" opacity="0.35" />
-        <line x1="60" y1="22" x2="58" y2="8" stroke="#1A0F08" strokeWidth="0.5" opacity="0.3" />
-        <line x1="66" y1="24" x2="62" y2="10" stroke="#1A0F08" strokeWidth="0.5" opacity="0.25" />
-        <line x1="72" y1="24" x2="66" y2="14" stroke="#1A0F08" strokeWidth="0.5" opacity="0.2" />
-        {/* Dorsal fin gold accent */}
-        <path d="M54 18 Q56 10 58 6" stroke="#D49228" strokeWidth="1.5" fill="none" opacity="0.4" />
+        {/* === DORSAL FIN — pronounced sail with spiny leading edge === */}
+        <path d="M36 20 Q38 6 44 3 Q50 5 56 14 L60 20 Z" fill={`url(#pf-${id})`} />
+        {/* Fin spine */}
+        <path d="M38 18 Q40 8 44 4" stroke="#5C3D1E" strokeWidth="1.2" fill="none" opacity="0.5" />
+        {/* Dorsal stripe */}
+        <path d="M42 16 Q44 8 46 5" stroke="#D49228" strokeWidth="2" fill="none" opacity="0.4" strokeLinecap="round" />
 
-        {/* === PECTORAL FINS — spread wide like wings === */}
-        <path d="M30 52 Q22 60 14 68 Q18 70 24 66 Q30 62 34 56 Z" fill="#2E1E12" />
-        <path d="M32 54 Q26 60 18 66" stroke="#3D2B1A" strokeWidth="1" fill="none" opacity="0.5" />
-        <path d="M36 52 Q30 58 22 64 Q26 66 32 62 Q36 58 38 54 Z" fill="#3D2B1A" opacity="0.5" />
-        {/* Pectoral fin spine */}
-        <line x1="30" y1="52" x2="16" y2="68" stroke="#4A3828" strokeWidth="1" opacity="0.4" />
+        {/* === PECTORAL FINS — wide paddles splayed outward === */}
+        <path d="M24 42 Q16 50 10 56 Q14 57 20 53 Q26 48 28 43 Z" fill={`url(#pf-${id})`} />
+        {/* Pectoral spine */}
+        <path d="M24 42 L12 55" stroke="#5C3D1E" strokeWidth="1" fill="none" opacity="0.4" />
+        {/* Pectoral stripe */}
+        <path d="M22 44 Q16 50 12 54" stroke="#D49228" strokeWidth="1.8" fill="none" opacity="0.35" strokeLinecap="round" />
 
-        {/* === PELVIC FIN === */}
-        <path d="M58 58 Q52 66 48 72 Q54 70 60 64 Q62 60 60 58 Z" fill="#2E1E12" />
-        <line x1="58" y1="58" x2="50" y2="70" stroke="#3D2B1A" strokeWidth="0.6" opacity="0.4" />
+        {/* === PELVIC & ANAL FINS === */}
+        <path d="M44 48 Q40 54 36 58 Q42 56 46 50 Z" fill="#2A1808" />
+        <path d="M68 48 Q66 54 62 56 Q66 54 70 50 Z" fill="#2A1808" />
 
-        {/* === ANAL FIN === */}
-        <path d="M90 58 Q86 66 82 70 Q88 68 92 64 Q94 60 92 58 Z" fill="#2E1E12" />
-        <line x1="90" y1="58" x2="84" y2="68" stroke="#3D2B1A" strokeWidth="0.6" opacity="0.4" />
+        {/* === ADIPOSE FIN — small fleshy nub === */}
+        <path d="M78 22 Q80 18 84 21 Q82 22 78 22 Z" fill="#3A2410" />
 
-        {/* === ADIPOSE FIN — small fleshy bump === */}
-        <path d="M104 26 Q108 20 112 24 Q110 26 106 26 Z" fill="#3D2B1A" />
+        {/* === MAIN BODY — broad flat shape, widest at head tapering to tail === */}
+        <path d="M12 28 Q6 32 5 34 Q6 36 12 40 Q20 46 36 48 Q56 50 72 46 Q86 42 94 36 Q96 34 94 30 Q86 24 72 20 Q56 18 36 20 Q20 22 12 28 Z" fill={`url(#pb-${id})`} />
 
-        {/* === MAIN BODY — smooth elongated torpedo shape === */}
-        <path d="M16 32 Q10 36 8 40 Q10 44 16 48 Q24 56 40 60 Q60 64 80 60 Q100 56 116 48 Q124 44 128 40 Q124 36 116 32 Q100 24 80 22 Q60 20 40 24 Q24 28 16 32 Z" fill="#3D2B1A" />
+        {/* Body shading overlay */}
+        <path d="M12 28 Q6 32 5 34 Q6 36 12 40 Q20 46 36 48 Q56 50 72 46 Q86 42 94 36 Q96 34 94 30 Q86 24 72 20 Q56 18 36 20 Q20 22 12 28 Z" fill={`url(#pbl-${id})`} />
 
-        {/* Body shading — darker underside */}
-        <path d="M20 44 Q30 54 50 58 Q70 62 90 58 Q110 54 124 44 Q122 48 110 54 Q90 60 70 62 Q50 60 30 54 Q20 48 20 44 Z" fill="#2A1C10" opacity="0.6" />
+        {/* Dorsal ridge highlight */}
+        <path d="M24 22 Q44 18 64 20 Q80 22 92 28" stroke="#6B4C28" strokeWidth="1" fill="none" opacity="0.25" />
 
-        {/* Body highlight — lighter top */}
-        <path d="M30 30 Q50 24 80 22 Q100 24 116 32 Q100 26 80 24 Q60 24 40 28 Q32 30 30 30 Z" fill="#4A3828" opacity="0.3" />
+        {/* === SCUTE ARMOR PLATES — subtle bony plate texture === */}
+        <path d="M20 26 Q44 20 70 22 Q88 26 94 30" stroke="#4A3420" strokeWidth="0.6" fill="none" opacity="0.2" />
+        <path d="M14 34 Q44 28 70 30 Q90 34 96 36" stroke="#4A3420" strokeWidth="0.6" fill="none" opacity="0.18" />
+        <path d="M18 42 Q44 38 70 40 Q88 42 94 38" stroke="#4A3420" strokeWidth="0.5" fill="none" opacity="0.15" />
 
-        {/* Belly — lighter underside */}
-        <path d="M24 52 Q40 60 60 62 Q80 62 100 58 Q112 52 120 46 Q112 54 100 60 Q80 64 60 64 Q40 62 24 52 Z" fill="#4A3622" opacity="0.5" />
+        {/* === CLOWN PATTERN — bold orange-amber wavy bands === */}
+        {/* These are the signature markings — thick, high-contrast, slightly wavy */}
 
-        {/* === SCUTE PLATES — armored scale rows === */}
-        {/* Upper scute line */}
-        <path d="M30 28 Q60 22 90 26 Q110 30 124 36" stroke="#4A3828" strokeWidth="0.8" fill="none" opacity="0.3" />
-        {/* Mid scute line */}
-        <path d="M18 38 Q50 32 80 34 Q110 36 126 40" stroke="#4A3828" strokeWidth="0.8" fill="none" opacity="0.25" />
-        {/* Lower scute line */}
-        <path d="M22 48 Q50 44 80 46 Q110 48 124 44" stroke="#4A3828" strokeWidth="0.7" fill="none" opacity="0.2" />
-        {/* Vertical scute divisions */}
-        {[34, 44, 54, 64, 74, 84, 94, 104, 114].map((sx, i) => (
-          <line key={`scute-${i}`} x1={sx} y1={24 + i * 0.5} x2={sx} y2={56 - i * 0.8} stroke="#4A3828" strokeWidth="0.5" opacity={0.15 - i * 0.01} />
-        ))}
+        {/* Band 1 — right behind the head, widest */}
+        <path d="M26 22 Q24 28 23 34 Q24 40 26 46" stroke="#E8A832" strokeWidth="6" fill="none" opacity="0.7" strokeLinecap="round" />
+        <path d="M26 22 Q24 28 23 34 Q24 40 26 46" stroke="#FFD054" strokeWidth="2.5" fill="none" opacity="0.3" strokeLinecap="round" />
 
-        {/* === CLOWN STRIPES — 5 organic curved bands of bright orange-gold === */}
-        {/* Stripe 1 — behind head, widest */}
-        <path d="M30 26 Q28 36 28 40 Q28 44 30 54" stroke="#E8A832" strokeWidth="5" fill="none" opacity="0.8" strokeLinecap="round" />
-        <path d="M30 26 Q28 36 28 40 Q28 44 30 54" stroke="#D49228" strokeWidth="3" fill="none" opacity="0.4" strokeLinecap="round" />
+        {/* Band 2 — anterior body */}
+        <path d="M40 20 Q38 28 37 34 Q38 40 40 48" stroke="#E8A832" strokeWidth="5.5" fill="none" opacity="0.65" strokeLinecap="round" />
+        <path d="M40 20 Q38 28 37 34 Q38 40 40 48" stroke="#FFD054" strokeWidth="2" fill="none" opacity="0.25" strokeLinecap="round" />
 
-        {/* Stripe 2 — mid-anterior */}
-        <path d="M46 24 Q44 34 44 40 Q44 46 46 56" stroke="#E8A832" strokeWidth="4.5" fill="none" opacity="0.75" strokeLinecap="round" />
-        <path d="M46 24 Q44 34 44 40 Q44 46 46 56" stroke="#D49228" strokeWidth="2.5" fill="none" opacity="0.35" strokeLinecap="round" />
+        {/* Band 3 — mid body, widest */}
+        <path d="M56 19 Q54 28 53 34 Q54 40 56 48" stroke="#E8A832" strokeWidth="6" fill="none" opacity="0.7" strokeLinecap="round" />
+        <path d="M56 19 Q54 28 53 34 Q54 40 56 48" stroke="#FFD054" strokeWidth="2.5" fill="none" opacity="0.28" strokeLinecap="round" />
 
-        {/* Stripe 3 — mid body */}
-        <path d="M66 22 Q64 32 64 40 Q64 48 66 58" stroke="#E8A832" strokeWidth="5" fill="none" opacity="0.8" strokeLinecap="round" />
-        <path d="M66 22 Q64 32 64 40 Q64 48 66 58" stroke="#C07E20" strokeWidth="3" fill="none" opacity="0.3" strokeLinecap="round" />
+        {/* Band 4 — posterior */}
+        <path d="M72 22 Q70 28 69 34 Q70 40 72 46" stroke="#D49228" strokeWidth="4.5" fill="none" opacity="0.6" strokeLinecap="round" />
+        <path d="M72 22 Q70 28 69 34 Q70 40 72 46" stroke="#FFD054" strokeWidth="1.5" fill="none" opacity="0.2" strokeLinecap="round" />
 
-        {/* Stripe 4 — posterior, thinner */}
-        <path d="M86 24 Q84 34 84 40 Q84 46 86 56" stroke="#D49228" strokeWidth="4" fill="none" opacity="0.7" strokeLinecap="round" />
-        <path d="M86 24 Q84 34 84 40 Q84 46 86 56" stroke="#E8A832" strokeWidth="2" fill="none" opacity="0.3" strokeLinecap="round" />
+        {/* Band 5 — near tail, thinnest */}
+        <path d="M86 26 Q84 30 84 34 Q84 38 86 42" stroke="#D49228" strokeWidth="3.5" fill="none" opacity="0.5" strokeLinecap="round" />
 
-        {/* Stripe 5 — near tail, narrowest */}
-        <path d="M104 28 Q102 36 102 40 Q102 44 104 52" stroke="#D49228" strokeWidth="3.5" fill="none" opacity="0.65" strokeLinecap="round" />
-        <path d="M104 28 Q102 36 102 40 Q102 44 104 52" stroke="#C07E20" strokeWidth="1.5" fill="none" opacity="0.25" strokeLinecap="round" />
+        {/* === HEAD — broad, flat, darker === */}
+        <path d="M5 30 Q4 32 4 34 Q4 36 5 38 Q8 42 14 44 Q18 44 22 42 Q24 38 24 34 Q24 30 22 26 Q18 24 14 24 Q8 26 5 30 Z" fill="#2A1808" />
+        {/* Head top highlight */}
+        <path d="M8 28 Q14 24 20 26" stroke="#4A3420" strokeWidth="0.8" fill="none" opacity="0.35" />
 
-        {/* === HEAD — broader, darker front section === */}
-        <path d="M8 36 Q6 38 6 40 Q6 42 8 44 Q10 48 16 50 Q20 52 26 52 Q28 48 28 40 Q28 32 26 28 Q20 28 16 30 Q10 32 8 36 Z" fill="#32220E" />
-        {/* Head contour shading */}
-        <path d="M10 36 Q14 30 22 28 Q26 28 28 32" stroke="#3A2816" strokeWidth="1" fill="none" opacity="0.5" />
-        {/* Interorbital ridge */}
-        <path d="M22 26 Q26 24 30 24" stroke="#4A3828" strokeWidth="1.2" fill="none" opacity="0.4" />
+        {/* === SUCKER MOUTH — characteristic pleco disc === */}
+        <ellipse cx="12" cy="44" rx="8" ry="4.5" fill="#1E1008" />
+        <ellipse cx="12" cy="44" rx="5.5" ry="3" fill="#140A04" />
+        {/* Lip texture */}
+        <path d="M5 42 Q12 40 19 42" stroke="#3A2816" strokeWidth="0.7" fill="none" opacity="0.35" />
+        <path d="M5 46 Q12 48 19 46" stroke="#3A2816" strokeWidth="0.7" fill="none" opacity="0.35" />
+        {/* Barbels */}
+        <path d="M18 43 Q24 46 28 50" stroke="#4A3420" strokeWidth="0.8" fill="none" opacity="0.3" strokeLinecap="round" />
 
-        {/* === SUCKER MOUTH — rounded disc on underside === */}
-        <ellipse cx="14" cy="52" rx="10" ry="6" fill="#2A1A10" />
-        <ellipse cx="14" cy="52" rx="7" ry="4" fill="#1A0E06" />
-        {/* Lip folds */}
-        <path d="M6 50 Q14 48 22 50" stroke="#3A2A18" strokeWidth="0.8" fill="none" opacity="0.4" />
-        <path d="M6 54 Q14 56 22 54" stroke="#3A2A18" strokeWidth="0.8" fill="none" opacity="0.4" />
-        {/* Inner mouth texture */}
-        <ellipse cx="14" cy="52" rx="4" ry="2.5" fill="#1A0E06" opacity="0.7" />
-        {/* Maxillary barbels */}
-        <path d="M22 50 Q28 54 32 58" stroke="#4A3828" strokeWidth="1" fill="none" opacity="0.4" strokeLinecap="round" />
-        <path d="M22 52 Q26 56 30 60" stroke="#4A3828" strokeWidth="0.8" fill="none" opacity="0.3" strokeLinecap="round" />
-
-        {/* === EYE — detailed with omega-iris and golden ring === */}
-        {/* Eye socket shadow */}
-        <circle cx="24" cy="30" r="5" fill="#1A0E08" opacity="0.5" />
-        {/* Eye globe */}
-        <circle cx="24" cy="30" r="4" fill="#0E0808" />
-        {/* Iris ring — golden-brown */}
-        <circle cx="24" cy="30" r="3.5" fill="none" stroke="#6B5030" strokeWidth="1.5" />
-        {/* Inner iris warm tone */}
-        <circle cx="24" cy="30" r="2.5" fill="#4A3020" />
-        {/* Omega iris flap — characteristic pleco feature */}
-        <path d="M21 28 Q24 26 27 28" fill="#6B5030" />
-        {/* Pupil */}
-        <circle cx="24" cy="30" r="1.8" fill="#0E0808" />
+        {/* === EYE — prominent with golden-brown iris === */}
+        <circle cx="18" cy="28" r="4" fill="#0E0808" />
+        <circle cx="18" cy="28" r="3.2" fill="none" stroke="#7B5A30" strokeWidth="1.4" />
+        <circle cx="18" cy="28" r="2.2" fill="#3A2010" />
+        {/* Omega iris — pleco signature */}
+        <path d="M15.5 26.5 Q18 25 20.5 26.5" fill="#7B5A30" />
+        <circle cx="18" cy="28" r="1.5" fill="#0E0808" />
         {/* Eye shine */}
-        <circle cx="25.5" cy="28.5" r="1" fill="white" opacity="0.7" />
-        <circle cx="23" cy="31.5" r="0.6" fill="white" opacity="0.25" />
+        <circle cx="19.2" cy="26.8" r="1" fill="white" opacity="0.7" />
+        <circle cx="17" cy="29.2" r="0.5" fill="white" opacity="0.2" />
 
-        {/* === CAUDAL PEDUNCLE — narrow section before tail === */}
-        <path d="M116 34 Q122 36 128 38 Q128 42 122 44 Q116 46 116 34 Z" fill="#2A1C10" opacity="0.5" />
+        {/* === CAUDAL PEDUNCLE — tapered section to tail === */}
+        <path d="M88 30 Q92 32 96 34 Q96 36 92 38 Q88 36 88 30 Z" fill="#2A1808" opacity="0.4" />
 
-        {/* === ODONTODE TEXTURE — tiny thorn-like projections on body === */}
-        {[38, 50, 62, 74, 86, 98, 110].map((ox, i) => (
-          <g key={`odontode-${i}`} opacity={0.2 - i * 0.01}>
-            <circle cx={ox} cy={30 + i * 0.5} r="0.6" fill="#5C4A3A" />
-            <circle cx={ox + 3} cy={44 - i * 0.3} r="0.5" fill="#5C4A3A" />
-            <circle cx={ox - 2} cy={37} r="0.4" fill="#5C4A3A" />
-          </g>
-        ))}
-
-        {/* === BODY HIGHLIGHTS — subtle light reflections on armored surface === */}
-        <path d="M32 26 Q50 22 70 22 Q90 24 106 28" stroke="white" strokeWidth="1.2" fill="none" opacity="0.06" />
-        <path d="M36 28 Q55 24 75 24 Q95 26 110 30" stroke="white" strokeWidth="0.8" fill="none" opacity="0.04" />
-
-        {/* === LATERAL LINE — subtle sensory line along body === */}
-        <path d="M26 38 Q50 34 80 36 Q110 38 126 40" stroke="#4A3828" strokeWidth="0.6" fill="none" opacity="0.2" strokeDasharray="3 2" />
+        {/* === BODY HIGHLIGHTS — wet armored surface sheen === */}
+        <path d="M26 22 Q46 18 66 20 Q82 22 90 26" stroke="white" strokeWidth="1" fill="none" opacity="0.08" />
+        <path d="M30 24 Q50 20 70 22 Q84 24 92 28" stroke="white" strokeWidth="0.6" fill="none" opacity="0.05" />
       </g>
     </svg>
   )
