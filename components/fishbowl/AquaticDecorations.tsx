@@ -4857,9 +4857,9 @@ export const DecorationForeground = memo(({ width, theme = 'ocean' }: { width: n
         preserveAspectRatio="xMidYMax meet"
         shapeRendering="crispEdges"
       >
-        {fg.kelps.map((k, i) => <Kelp key={`fg-kelp-${i}`} {...k} baseY={305} />)}
         {fg.rocks.map((r, i) => <Rock key={`fg-rock-${i}`} {...r} />)}
         {fg.corals.map((c, i) => <Coral key={`fg-coral-${i}`} {...c} />)}
+        {fg.kelps.map((k, i) => <Kelp key={`fg-kelp-${i}`} {...k} baseY={305} />)}
       </svg>
     </div>
   )
