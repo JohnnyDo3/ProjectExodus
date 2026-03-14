@@ -7,11 +7,13 @@ import {
   getTierFromScore,
   getTierName,
   TIER_COLORS,
+  SPECIES_COLOR_VARIANTS,
   type FishTier,
   type FishColors,
   type FishPattern,
   type FishSpecies,
   type FishCustomization,
+  type SpeciesColorVariant,
 } from './FishSpecies'
 
 interface FishCustomizerProps {
@@ -256,17 +258,82 @@ export function FishCustomizer({ stockScore, currentCustomization, onSave, onClo
 
           {tab === 'colors' && (
             <div className="space-y-4">
+              {/* Species color variants */}
+              {(() => {
+                const speciesKey = selectedSpecies || (() => {
+                  // Determine current guppy species based on tier
+                  const guppySpecies: Record<number, FishSpecies> = {
+                    0: 'guppy', 1: 'swift-guppy', 2: 'fancy-guppy',
+                    3: 'delta-guppy', 4: 'veil-guppy', 5: 'supreme-guppy',
+                  }
+                  return guppySpecies[userTier] || 'guppy'
+                })()
+                const variants = SPECIES_COLOR_VARIANTS[speciesKey]
+                if (!variants || variants.length === 0) return null
+
+                const speciesName = ALL_SPECIES.find(s => s.species === speciesKey)?.name || speciesKey
+
+                return (
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-[10px] text-cyan-500 font-bold uppercase">
+                        {speciesName} Variants
+                      </p>
+                      <button
+                        onClick={resetColors}
+                        className="text-[10px] text-cyan-600 hover:text-cyan-400 font-medium transition-colors"
+                      >
+                        Reset to default
+                      </button>
+                    </div>
+                    <div className="grid grid-cols-3 gap-1.5">
+                      {variants.map(variant => {
+                        const isActive = selectedColors.body === variant.colors.body &&
+                          selectedColors.fin === variant.colors.fin &&
+                          selectedColors.accent === variant.colors.accent
+                        return (
+                          <button
+                            key={variant.name}
+                            onClick={() => setSelectedColors({ ...variant.colors })}
+                            className={`relative flex flex-col items-center gap-1.5 p-2.5 rounded-xl border transition-all ${
+                              isActive
+                                ? 'border-cyan-400 bg-cyan-900/30 shadow-lg shadow-cyan-900/20'
+                                : 'border-cyan-800/30 hover:border-cyan-600/50 hover:bg-cyan-900/20'
+                            }`}
+                          >
+                            <div className="w-10 h-8 flex items-center justify-center">
+                              <FishSVG
+                                tier={previewTier as FishTier}
+                                size={32}
+                                customization={{
+                                  species: selectedSpecies,
+                                  colors: variant.colors,
+                                  pattern: selectedPattern,
+                                }}
+                                id={`variant-${variant.name}`}
+                              />
+                            </div>
+                            <div className="flex gap-0.5">
+                              <div className="w-2.5 h-2.5 rounded-full border border-white/10" style={{ backgroundColor: variant.colors.body }} />
+                              <div className="w-2.5 h-2.5 rounded-full border border-white/10" style={{ backgroundColor: variant.colors.fin }} />
+                              <div className="w-2.5 h-2.5 rounded-full border border-white/10" style={{ backgroundColor: variant.colors.accent }} />
+                              <div className="w-2.5 h-2.5 rounded-full border border-white/10" style={{ backgroundColor: variant.colors.eye }} />
+                            </div>
+                            <span className="text-[8px] font-bold text-cyan-400">{variant.name}</span>
+                            {isActive && (
+                              <Check className="absolute top-1 right-1 w-3 h-3 text-cyan-400" />
+                            )}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )
+              })()}
+
               {/* Color presets */}
               <div>
-                <div className="flex items-center justify-between mb-2">
-                  <p className="text-[10px] text-cyan-500 font-bold uppercase">Color Presets</p>
-                  <button
-                    onClick={resetColors}
-                    className="text-[10px] text-cyan-600 hover:text-cyan-400 font-medium transition-colors"
-                  >
-                    Reset to default
-                  </button>
-                </div>
+                <p className="text-[10px] text-cyan-500 font-bold uppercase mb-2">Color Presets</p>
                 <div className="grid grid-cols-4 gap-1.5">
                   {COLOR_PRESETS.map(preset => (
                     <button

@@ -733,6 +733,121 @@ const ArowanaFish = memo(({ colors, size, id }: { colors: FishColors; size: numb
 ))
 ArowanaFish.displayName = 'ArowanaFish'
 
+// ─── SPECIES COLOR VARIANTS ─────────────────────────────────────
+// Each alternate species has 6 unique color variants (matching guppy's 6 tier colors).
+// All variants within a species unlock together when the tier is reached.
+
+export interface SpeciesColorVariant {
+  name: string
+  colors: FishColors
+}
+
+const SPECIES_COLOR_VARIANTS: Record<string, SpeciesColorVariant[]> = {
+  // ── Endler's Livebearer (Tier 0) — Wild, neon micro-fish vibes ──
+  'endler': [
+    { name: 'Wild Type',    colors: { body: '#7CB342', fin: '#33691E', accent: '#FF6D00', eye: '#1B1B1B' } },
+    { name: 'Flame',        colors: { body: '#FF5722', fin: '#BF360C', accent: '#FFAB00', eye: '#1B1B1B' } },
+    { name: 'Cobra',        colors: { body: '#827717', fin: '#33691E', accent: '#FFD600', eye: '#1B1B1B' } },
+    { name: 'Peacock',      colors: { body: '#00ACC1', fin: '#006064', accent: '#EEFF41', eye: '#1B1B1B' } },
+    { name: 'Tiger',        colors: { body: '#F57C00', fin: '#3E2723', accent: '#FFFFFF', eye: '#1B1B1B' } },
+    { name: 'Neon',         colors: { body: '#00E676', fin: '#00897B', accent: '#76FF03', eye: '#1B1B1B' } },
+  ],
+  // ── Neon Tetra (Tier 1) — Iridescent stripe legends ──
+  'neon-tetra': [
+    { name: 'Classic',      colors: { body: '#1565C0', fin: '#E53935', accent: '#64B5F6', eye: '#1B1B1B' } },
+    { name: 'Cardinal',     colors: { body: '#0D47A1', fin: '#B71C1C', accent: '#42A5F5', eye: '#1B1B1B' } },
+    { name: 'Green Neon',   colors: { body: '#2E7D32', fin: '#1B5E20', accent: '#69F0AE', eye: '#1B1B1B' } },
+    { name: 'Black Neon',   colors: { body: '#37474F', fin: '#263238', accent: '#B388FF', eye: '#E0E0E0' } },
+    { name: 'Diamond',      colors: { body: '#90A4AE', fin: '#546E7A', accent: '#E1F5FE', eye: '#1B1B1B' } },
+    { name: 'Ember',        colors: { body: '#E65100', fin: '#BF360C', accent: '#FFD180', eye: '#1B1B1B' } },
+  ],
+  // ── Betta (Tier 2) — Dramatic flowing royalty ──
+  'betta': [
+    { name: 'Royal Blue',   colors: { body: '#1565C0', fin: '#0D47A1', accent: '#82B1FF', eye: '#1B1B1B' } },
+    { name: 'Koi',          colors: { body: '#FFFFFF', fin: '#D32F2F', accent: '#FFB300', eye: '#1B1B1B' } },
+    { name: 'Rose Gold',    colors: { body: '#F48FB1', fin: '#AD1457', accent: '#FCE4EC', eye: '#880E4F' } },
+    { name: 'Galaxy',       colors: { body: '#1A237E', fin: '#311B92', accent: '#B388FF', eye: '#E040FB' } },
+    { name: 'Copper',       colors: { body: '#D84315', fin: '#8D6E63', accent: '#FFCC80', eye: '#FFD700' } },
+    { name: 'Mustard Gas',  colors: { body: '#1976D2', fin: '#F9A825', accent: '#4FC3F7', eye: '#1B1B1B' } },
+  ],
+  // ── Angelfish (Tier 3) — Elegant striped aristocrats ──
+  'angelfish': [
+    { name: 'Marble',       colors: { body: '#ECEFF1', fin: '#37474F', accent: '#90A4AE', eye: '#1B1B1B' } },
+    { name: 'Gold Pearl',   colors: { body: '#FFD54F', fin: '#FF8F00', accent: '#FFF8E1', eye: '#795548' } },
+    { name: 'Koi Angel',    colors: { body: '#FFFFFF', fin: '#FF5722', accent: '#FF9800', eye: '#1B1B1B' } },
+    { name: 'Platinum',     colors: { body: '#CFD8DC', fin: '#B0BEC5', accent: '#ECEFF1', eye: '#455A64' } },
+    { name: 'Smokey',       colors: { body: '#455A64', fin: '#263238', accent: '#78909C', eye: '#E0E0E0' } },
+    { name: 'Sunset Blush', colors: { body: '#FF8A80', fin: '#F4511E', accent: '#FFCCBC', eye: '#4E342E' } },
+  ],
+  // ── Discus (Tier 4) — Ornate living mandalas ──
+  'discus': [
+    { name: 'Turquoise',    colors: { body: '#00897B', fin: '#004D40', accent: '#80CBC4', eye: '#1B1B1B' } },
+    { name: 'Pigeon Blood', colors: { body: '#EF5350', fin: '#C62828', accent: '#FFCDD2', eye: '#FFD700' } },
+    { name: 'Blue Diamond', colors: { body: '#1E88E5', fin: '#0D47A1', accent: '#BBDEFB', eye: '#1B1B1B' } },
+    { name: 'Snakeskin',    colors: { body: '#8D6E63', fin: '#4E342E', accent: '#FFCC80', eye: '#FFD700' } },
+    { name: 'Red Melon',    colors: { body: '#FF7043', fin: '#D84315', accent: '#FFCCBC', eye: '#1B1B1B' } },
+    { name: 'Leopard',      colors: { body: '#FFA726', fin: '#795548', accent: '#FFE0B2', eye: '#3E2723' } },
+  ],
+  // ── Arowana (Tier 5) — Dragon fish apex legends ──
+  'arowana': [
+    { name: 'Golden',       colors: { body: '#F9A825', fin: '#F57F17', accent: '#FFF176', eye: '#FFD700' } },
+    { name: 'Blood Red',    colors: { body: '#C62828', fin: '#8E2424', accent: '#EF5350', eye: '#FFD700' } },
+    { name: 'Platinum',     colors: { body: '#CFD8DC', fin: '#90A4AE', accent: '#ECEFF1', eye: '#B0BEC5' } },
+    { name: 'Jardini',      colors: { body: '#6D4C41', fin: '#3E2723', accent: '#FF8A65', eye: '#FFD700' } },
+    { name: 'Midnight',     colors: { body: '#1A237E', fin: '#0D1642', accent: '#5C6BC0', eye: '#FFD700' } },
+    { name: 'Chili Red',    colors: { body: '#E53935', fin: '#B71C1C', accent: '#FF8A80', eye: '#FFD700' } },
+  ],
+  // ── Guppy variants share the tier color progression ──
+  'guppy':         [
+    { name: 'Meadow',    colors: { body: '#7CB342', fin: '#558B2F', accent: '#9CCC65', eye: '#1B1B1B' } },
+    { name: 'Blaze',     colors: { body: '#E53935', fin: '#C62828', accent: '#FF7043', eye: '#1B1B1B' } },
+    { name: 'Gilded',    colors: { body: '#FFB300', fin: '#FF8F00', accent: '#FFD54F', eye: '#1B1B1B' } },
+    { name: 'Ember',     colors: { body: '#FF7043', fin: '#F4511E', accent: '#FFFFFF', eye: '#1B1B1B' } },
+    { name: 'Sapphire',  colors: { body: '#42A5F5', fin: '#1E88E5', accent: '#FFEE58', eye: '#1B1B1B' } },
+    { name: 'Amethyst',  colors: { body: '#AB47BC', fin: '#7B1FA2', accent: '#CE93D8', eye: '#FFD700' } },
+  ],
+  'swift-guppy':   [
+    { name: 'Meadow',    colors: { body: '#7CB342', fin: '#558B2F', accent: '#9CCC65', eye: '#1B1B1B' } },
+    { name: 'Blaze',     colors: { body: '#E53935', fin: '#C62828', accent: '#FF7043', eye: '#1B1B1B' } },
+    { name: 'Gilded',    colors: { body: '#FFB300', fin: '#FF8F00', accent: '#FFD54F', eye: '#1B1B1B' } },
+    { name: 'Ember',     colors: { body: '#FF7043', fin: '#F4511E', accent: '#FFFFFF', eye: '#1B1B1B' } },
+    { name: 'Sapphire',  colors: { body: '#42A5F5', fin: '#1E88E5', accent: '#FFEE58', eye: '#1B1B1B' } },
+    { name: 'Amethyst',  colors: { body: '#AB47BC', fin: '#7B1FA2', accent: '#CE93D8', eye: '#FFD700' } },
+  ],
+  'fancy-guppy':   [
+    { name: 'Meadow',    colors: { body: '#7CB342', fin: '#558B2F', accent: '#9CCC65', eye: '#1B1B1B' } },
+    { name: 'Blaze',     colors: { body: '#E53935', fin: '#C62828', accent: '#FF7043', eye: '#1B1B1B' } },
+    { name: 'Gilded',    colors: { body: '#FFB300', fin: '#FF8F00', accent: '#FFD54F', eye: '#1B1B1B' } },
+    { name: 'Ember',     colors: { body: '#FF7043', fin: '#F4511E', accent: '#FFFFFF', eye: '#1B1B1B' } },
+    { name: 'Sapphire',  colors: { body: '#42A5F5', fin: '#1E88E5', accent: '#FFEE58', eye: '#1B1B1B' } },
+    { name: 'Amethyst',  colors: { body: '#AB47BC', fin: '#7B1FA2', accent: '#CE93D8', eye: '#FFD700' } },
+  ],
+  'delta-guppy':   [
+    { name: 'Meadow',    colors: { body: '#7CB342', fin: '#558B2F', accent: '#9CCC65', eye: '#1B1B1B' } },
+    { name: 'Blaze',     colors: { body: '#E53935', fin: '#C62828', accent: '#FF7043', eye: '#1B1B1B' } },
+    { name: 'Gilded',    colors: { body: '#FFB300', fin: '#FF8F00', accent: '#FFD54F', eye: '#1B1B1B' } },
+    { name: 'Ember',     colors: { body: '#FF7043', fin: '#F4511E', accent: '#FFFFFF', eye: '#1B1B1B' } },
+    { name: 'Sapphire',  colors: { body: '#42A5F5', fin: '#1E88E5', accent: '#FFEE58', eye: '#1B1B1B' } },
+    { name: 'Amethyst',  colors: { body: '#AB47BC', fin: '#7B1FA2', accent: '#CE93D8', eye: '#FFD700' } },
+  ],
+  'veil-guppy':    [
+    { name: 'Meadow',    colors: { body: '#7CB342', fin: '#558B2F', accent: '#9CCC65', eye: '#1B1B1B' } },
+    { name: 'Blaze',     colors: { body: '#E53935', fin: '#C62828', accent: '#FF7043', eye: '#1B1B1B' } },
+    { name: 'Gilded',    colors: { body: '#FFB300', fin: '#FF8F00', accent: '#FFD54F', eye: '#1B1B1B' } },
+    { name: 'Ember',     colors: { body: '#FF7043', fin: '#F4511E', accent: '#FFFFFF', eye: '#1B1B1B' } },
+    { name: 'Sapphire',  colors: { body: '#42A5F5', fin: '#1E88E5', accent: '#FFEE58', eye: '#1B1B1B' } },
+    { name: 'Amethyst',  colors: { body: '#AB47BC', fin: '#7B1FA2', accent: '#CE93D8', eye: '#FFD700' } },
+  ],
+  'supreme-guppy': [
+    { name: 'Meadow',    colors: { body: '#7CB342', fin: '#558B2F', accent: '#9CCC65', eye: '#1B1B1B' } },
+    { name: 'Blaze',     colors: { body: '#E53935', fin: '#C62828', accent: '#FF7043', eye: '#1B1B1B' } },
+    { name: 'Gilded',    colors: { body: '#FFB300', fin: '#FF8F00', accent: '#FFD54F', eye: '#1B1B1B' } },
+    { name: 'Ember',     colors: { body: '#FF7043', fin: '#F4511E', accent: '#FFFFFF', eye: '#1B1B1B' } },
+    { name: 'Sapphire',  colors: { body: '#42A5F5', fin: '#1E88E5', accent: '#FFEE58', eye: '#1B1B1B' } },
+    { name: 'Amethyst',  colors: { body: '#AB47BC', fin: '#7B1FA2', accent: '#CE93D8', eye: '#FFD700' } },
+  ],
+}
+
 export type FishPattern = 'none' | 'scales' | 'fine-scales' | 'armored' | 'shimmer' | 'koi'
 
 export type FishSpecies =
@@ -1015,4 +1130,4 @@ export const FishSVG = memo(({ tier, size = 48, customColors, customization, id 
 })
 FishSVG.displayName = 'FishSVG'
 
-export { TIER_COLORS, SPECIES_TO_TIER }
+export { TIER_COLORS, SPECIES_TO_TIER, SPECIES_COLOR_VARIANTS }
