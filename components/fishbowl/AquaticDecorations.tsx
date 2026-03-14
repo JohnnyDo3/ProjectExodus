@@ -1684,21 +1684,21 @@ const SunkenShip = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="67" y="-12" width="2" height="6" fill="#5D4037" opacity="0.5" />
 
     {/* ═══ TATTERED SAIL — pixel blocks billowing from mast ═══ */}
-    <rect x="64" y="-10" width="4" height="4" fill="#D7CCC8" opacity="0.25" />
-    <rect x="68" y="-8" width="4" height="4" fill="#D7CCC8" opacity="0.25" />
-    <rect x="66" y="-6" width="4" height="4" fill="#EFEBE9" opacity="0.22" />
-    <rect x="70" y="-4" width="4" height="4" fill="#D7CCC8" opacity="0.25" />
-    <rect x="72" y="0" width="4" height="4" fill="#D7CCC8" opacity="0.22" />
-    <rect x="68" y="2" width="4" height="4" fill="#EFEBE9" opacity="0.2" />
-    <rect x="74" y="4" width="4" height="4" fill="#D7CCC8" opacity="0.2" />
-    <rect x="70" y="6" width="4" height="4" fill="#D7CCC8" opacity="0.22" />
-    <rect x="66" y="8" width="4" height="4" fill="#BCAAA4" opacity="0.2" />
-    <rect x="72" y="10" width="4" height="4" fill="#D7CCC8" opacity="0.18" />
-    <rect x="68" y="12" width="4" height="4" fill="#BCAAA4" opacity="0.18" />
-    <rect x="64" y="14" width="4" height="4" fill="#D7CCC8" opacity="0.15" />
+    <rect x="54" y="-10" width="4" height="4" fill="#D7CCC8" opacity="0.25" />
+    <rect x="50" y="-8" width="4" height="4" fill="#D7CCC8" opacity="0.25" />
+    <rect x="52" y="-6" width="4" height="4" fill="#EFEBE9" opacity="0.22" />
+    <rect x="48" y="-4" width="4" height="4" fill="#D7CCC8" opacity="0.25" />
+    <rect x="46" y="0" width="4" height="4" fill="#D7CCC8" opacity="0.22" />
+    <rect x="50" y="2" width="4" height="4" fill="#EFEBE9" opacity="0.2" />
+    <rect x="44" y="4" width="4" height="4" fill="#D7CCC8" opacity="0.2" />
+    <rect x="48" y="6" width="4" height="4" fill="#D7CCC8" opacity="0.22" />
+    <rect x="52" y="8" width="4" height="4" fill="#BCAAA4" opacity="0.2" />
+    <rect x="46" y="10" width="4" height="4" fill="#D7CCC8" opacity="0.18" />
+    <rect x="50" y="12" width="4" height="4" fill="#BCAAA4" opacity="0.18" />
+    <rect x="54" y="14" width="4" height="4" fill="#D7CCC8" opacity="0.15" />
     {/* Sail holes (dark pixels) */}
-    <rect x="70" y="2" width="2" height="2" fill="#0A1628" opacity="0.15" />
-    <rect x="68" y="10" width="2" height="2" fill="#0A1628" opacity="0.1" />
+    <rect x="50" y="2" width="2" height="2" fill="#0A1628" opacity="0.15" />
+    <rect x="52" y="10" width="2" height="2" fill="#0A1628" opacity="0.1" />
 
     {/* ═══ RIGGING LINES — thin rects stepped diagonally ═══ */}
     {/* Port shroud (left) */}
