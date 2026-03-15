@@ -339,7 +339,7 @@ export default function PersonalFishbowlPage() {
                 })}
               </div>
               <p className="mt-2 text-[10px] text-cyan-600 text-center">
-                Your stock score unlocks higher-tier species. Customize colors, scales, and patterns!
+                Your stock score unlocks higher-tier species. Each tier adds new skins, colors, and patterns!
               </p>
             </div>
           )}

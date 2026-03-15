@@ -23,23 +23,25 @@ interface FishCustomizerProps {
   onClose: () => void
 }
 
-const ALL_SPECIES: { species: FishSpecies; tier: FishTier; name: string; unlockScore: number; description: string }[] = [
-  // Tier 0 — 0 STOCK
-  { species: 'guppy', tier: 0, name: 'Guppy', unlockScore: 0, description: 'Your humble beginning' },
+// Skins are the visual designs (SVG shapes) available per tier.
+// Users can pick any skin from their unlocked tiers (current tier and below).
+const ALL_SKINS: { species: FishSpecies; tier: FishTier; name: string; unlockScore: number; description: string }[] = [
+  // Tier 0 skins — Guppy (0 STOCK)
+  { species: 'guppy', tier: 0, name: 'Classic Guppy', unlockScore: 0, description: 'Your humble beginning' },
   { species: 'endler', tier: 0, name: "Endler's Livebearer", unlockScore: 0, description: 'Tiny, brilliant micro-fish' },
-  // Tier 1 — 10 STOCK
+  // Tier 1 skins — Tetra (10 STOCK)
   { species: 'swift-guppy', tier: 1, name: 'Swift Guppy', unlockScore: 10, description: 'Sleeker and faster' },
   { species: 'neon-tetra', tier: 1, name: 'Neon Tetra', unlockScore: 10, description: 'Iconic iridescent stripe' },
-  // Tier 2 — 25 STOCK
+  // Tier 2 skins — Angelfish (25 STOCK)
   { species: 'fancy-guppy', tier: 2, name: 'Fancy Guppy', unlockScore: 25, description: 'Fan tail with flair' },
   { species: 'betta', tier: 2, name: 'Betta', unlockScore: 25, description: 'Dramatic flowing veil fins' },
-  // Tier 3 — 50 STOCK
+  // Tier 3 skins — Clownfish (50 STOCK)
   { species: 'delta-guppy', tier: 3, name: 'Delta Guppy', unlockScore: 50, description: 'Majestic delta tail' },
   { species: 'angelfish', tier: 3, name: 'Angelfish', unlockScore: 50, description: 'Tall diamond with trailing fins' },
-  // Tier 4 — 100 STOCK
+  // Tier 4 skins — Blue Tang (100 STOCK)
   { species: 'veil-guppy', tier: 4, name: 'Veil Guppy', unlockScore: 100, description: 'Flowing veil fins' },
   { species: 'discus', tier: 4, name: 'Discus', unlockScore: 100, description: 'Round disc with ornate patterns' },
-  // Tier 5 — 200 STOCK
+  // Tier 5 skins — Royal Betta (200 STOCK)
   { species: 'supreme-guppy', tier: 5, name: 'Supreme Guppy', unlockScore: 200, description: 'The crown jewel' },
   { species: 'arowana', tier: 5, name: 'Arowana', unlockScore: 200, description: 'Dragon fish, the apex predator' },
 ]
@@ -85,9 +87,9 @@ export function FishCustomizer({ stockScore, currentCustomization, onSave, onClo
     currentCustomization?.pattern || 'none'
   )
 
-  // The preview tier (which species shape to show)
+  // The preview tier (which skin shape to show)
   const previewTier = selectedSpecies
-    ? ALL_SPECIES.find(s => s.species === selectedSpecies)?.tier ?? userTier
+    ? ALL_SKINS.find(s => s.species === selectedSpecies)?.tier ?? userTier
     : userTier
 
   const previewCustomization: FishCustomization = {
@@ -156,9 +158,10 @@ export function FishCustomizer({ stockScore, currentCustomization, onSave, onClo
             </div>
             <div className="text-center">
               <p className="text-xs font-bold text-cyan-300">
-                {selectedSpecies
-                  ? ALL_SPECIES.find(s => s.species === selectedSpecies)?.name
-                  : getTierName(userTier)}
+                {getTierName(userTier)}
+                {selectedSpecies && (
+                  <span className="text-cyan-500 font-medium"> · {ALL_SKINS.find(s => s.species === selectedSpecies)?.name} skin</span>
+                )}
               </p>
               <p className="text-[10px] text-cyan-500">{stockScore} STOCK · Tier {userTier + 1}</p>
             </div>
@@ -168,7 +171,7 @@ export function FishCustomizer({ stockScore, currentCustomization, onSave, onClo
         {/* Tabs */}
         <div className="flex border-b border-cyan-800/30">
           {([
-            { id: 'species' as Tab, label: 'Species', icon: Fish },
+            { id: 'species' as Tab, label: 'Skins', icon: Fish },
             { id: 'colors' as Tab, label: 'Colors', icon: Palette },
             { id: 'patterns' as Tab, label: 'Designs', icon: Sparkles },
           ]).map(t => (
@@ -192,22 +195,22 @@ export function FishCustomizer({ stockScore, currentCustomization, onSave, onClo
           {tab === 'species' && (
             <div className="space-y-3">
               <p className="text-[10px] text-cyan-500 font-medium mb-2">
-                Unlock higher-tier species by earning STOCK.
+                Choose a skin for your fish. Higher tiers unlock more designs.
                 {stockScore > 0 && ` You have ${stockScore} STOCK.`}
               </p>
               {([0, 1, 2, 3, 4, 5] as const).map(tierLevel => {
-                const tierSpecies = ALL_SPECIES.filter(s => s.tier === tierLevel)
-                const tierUnlocked = stockScore >= tierSpecies[0].unlockScore
+                const tierSkins = ALL_SKINS.filter(s => s.tier === tierLevel)
+                const tierUnlocked = stockScore >= tierSkins[0].unlockScore
                 return (
                   <div key={tierLevel}>
                     <p className={`text-[9px] font-bold uppercase tracking-wider mb-1.5 ${tierUnlocked ? 'text-cyan-400' : 'text-cyan-700'}`}>
-                      Tier {tierLevel + 1} — {getTierName(tierLevel)}{tierSpecies[0].unlockScore > 0 ? ` · ${tierSpecies[0].unlockScore}+ STOCK` : ''}
+                      Tier {tierLevel + 1} — {getTierName(tierLevel)} skins{tierSkins[0].unlockScore > 0 ? ` · ${tierSkins[0].unlockScore}+ STOCK` : ''}
                     </p>
                     <div className="grid grid-cols-2 gap-1.5">
-                      {tierSpecies.map(sp => {
+                      {tierSkins.map(sp => {
                         const isUnlocked = stockScore >= sp.unlockScore
                         const isSelected = selectedSpecies === sp.species ||
-                          (!selectedSpecies && sp.tier === userTier && sp.species === ALL_SPECIES.find(s => s.tier === userTier)?.species)
+                          (!selectedSpecies && sp.tier === userTier && sp.species === ALL_SKINS.find(s => s.tier === userTier)?.species)
 
                         return (
                           <button
@@ -227,7 +230,7 @@ export function FishCustomizer({ stockScore, currentCustomization, onSave, onClo
                                 tier={sp.tier}
                                 size={40}
                                 customization={{ species: sp.species }}
-                                id={`species-${sp.species}`}
+                                id={`skin-${sp.species}`}
                               />
                             </div>
                             <div className="text-left min-w-0 flex-1">
@@ -258,26 +261,26 @@ export function FishCustomizer({ stockScore, currentCustomization, onSave, onClo
 
           {tab === 'colors' && (
             <div className="space-y-4">
-              {/* Species color variants */}
+              {/* Skin color variants */}
               {(() => {
                 const speciesKey = selectedSpecies || (() => {
-                  // Determine current guppy species based on tier
-                  const guppySpecies: Record<number, FishSpecies> = {
+                  // Default skin for current tier
+                  const defaultSkins: Record<number, FishSpecies> = {
                     0: 'guppy', 1: 'swift-guppy', 2: 'fancy-guppy',
                     3: 'delta-guppy', 4: 'veil-guppy', 5: 'supreme-guppy',
                   }
-                  return guppySpecies[userTier] || 'guppy'
+                  return defaultSkins[userTier] || 'guppy'
                 })()
                 const variants = SPECIES_COLOR_VARIANTS[speciesKey]
                 if (!variants || variants.length === 0) return null
 
-                const speciesName = ALL_SPECIES.find(s => s.species === speciesKey)?.name || speciesKey
+                const skinName = ALL_SKINS.find(s => s.species === speciesKey)?.name || speciesKey
 
                 return (
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <p className="text-[10px] text-cyan-500 font-bold uppercase">
-                        {speciesName} Variants
+                        {skinName} Variants
                       </p>
                       <button
                         onClick={resetColors}

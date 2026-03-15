@@ -2,9 +2,10 @@
 
 import { memo } from 'react'
 
-// Smooth SVG fish that evolve based on stock score tiers - ALL GUPPY VARIANTS
-// Tier 0: 0-9 (Guppy), Tier 1: 10-24 (Swift Guppy), Tier 2: 25-49 (Fancy Guppy),
-// Tier 3: 50-99 (Delta Guppy), Tier 4: 100-199 (Veil Guppy), Tier 5: 200+ (Supreme Guppy)
+// Smooth SVG fish that evolve based on stock score tiers
+// Tier 0: 0-9 (Guppy), Tier 1: 10-24 (Tetra), Tier 2: 25-49 (Angelfish),
+// Tier 3: 50-99 (Clownfish), Tier 4: 100-199 (Blue Tang), Tier 5: 200+ (Royal Betta)
+// Each tier unlocks the species. SVG shapes (guppy variants + alternates) are selectable skins.
 
 export type FishTier = 0 | 1 | 2 | 3 | 4 | 5
 
@@ -36,11 +37,11 @@ export function getTierFromScore(score: number): FishTier {
 export function getTierName(tier: FishTier): string {
   const names: Record<FishTier, string> = {
     0: 'Guppy',
-    1: 'Swift Guppy',
-    2: 'Fancy Guppy',
-    3: 'Delta Guppy',
-    4: 'Veil Guppy',
-    5: 'Supreme Guppy',
+    1: 'Tetra',
+    2: 'Angelfish',
+    3: 'Clownfish',
+    4: 'Blue Tang',
+    5: 'Royal Betta',
   }
   return names[tier]
 }
