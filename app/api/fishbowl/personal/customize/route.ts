@@ -3,15 +3,11 @@ import { auth } from '@/auth'
 import { prisma } from '@/lib/db/prisma'
 import { incrementStockScore, STOCK_POINTS } from '@/lib/stockScore'
 
-// All species — guppy variants (all tier 0) + species per tier
+// All species — guppy variants + alternate species per tier
 const ALL_SPECIES = [
   'guppy', 'swift-guppy', 'fancy-guppy', 'delta-guppy', 'veil-guppy', 'supreme-guppy',
-  'endler', 'molly', 'platy', 'danio', 'minnow',
-  'neon-tetra', 'rasbora', 'cardinal-tetra', 'white-cloud', 'killifish',
-  'betta', 'gourami', 'swordtail', 'ram-cichlid', 'pleco',
-  'angelfish', 'clownfish', 'mandarin', 'wrasse', 'butterflyfish',
-  'discus', 'tang', 'moorish-idol', 'lionfish', 'seahorse',
-  'arowana', 'koi', 'dragonet', 'mantis-shrimp', 'leafy-seadragon',
+  'endler', 'neon-tetra', 'betta', 'angelfish', 'discus', 'arowana',
+  'molly', 'rasbora', 'gourami', 'clownfish', 'tang', 'koi',
 ]
 
 const VALID_PATTERNS = ['none', 'scales', 'fine-scales', 'armored', 'shimmer', 'koi']
