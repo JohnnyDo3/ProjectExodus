@@ -29,21 +29,27 @@ const ALL_SKINS: { species: FishSpecies; tier: FishTier; name: string; unlockSco
   // Tier 0 skins — Guppy (0 STOCK)
   { species: 'guppy', tier: 0, name: 'Classic Guppy', unlockScore: 0, description: 'Your humble beginning' },
   { species: 'endler', tier: 0, name: "Endler's Livebearer", unlockScore: 0, description: 'Tiny, brilliant micro-fish' },
+  { species: 'molly', tier: 0, name: 'Molly', unlockScore: 0, description: 'Plump, friendly beginner fish' },
   // Tier 1 skins — Tetra (10 STOCK)
   { species: 'swift-guppy', tier: 1, name: 'Swift Guppy', unlockScore: 10, description: 'Sleeker and faster' },
   { species: 'neon-tetra', tier: 1, name: 'Neon Tetra', unlockScore: 10, description: 'Iconic iridescent stripe' },
+  { species: 'rasbora', tier: 1, name: 'Rasbora', unlockScore: 10, description: 'Sleek schooling harlequin' },
   // Tier 2 skins — Angelfish (25 STOCK)
   { species: 'fancy-guppy', tier: 2, name: 'Fancy Guppy', unlockScore: 25, description: 'Fan tail with flair' },
   { species: 'betta', tier: 2, name: 'Betta', unlockScore: 25, description: 'Dramatic flowing veil fins' },
+  { species: 'gourami', tier: 2, name: 'Gourami', unlockScore: 25, description: 'Labyrinth fish with thread fins' },
   // Tier 3 skins — Clownfish (50 STOCK)
   { species: 'delta-guppy', tier: 3, name: 'Delta Guppy', unlockScore: 50, description: 'Majestic delta tail' },
   { species: 'angelfish', tier: 3, name: 'Angelfish', unlockScore: 50, description: 'Tall diamond with trailing fins' },
+  { species: 'clownfish', tier: 3, name: 'Clownfish', unlockScore: 50, description: 'Iconic striped reef dweller' },
   // Tier 4 skins — Blue Tang (100 STOCK)
   { species: 'veil-guppy', tier: 4, name: 'Veil Guppy', unlockScore: 100, description: 'Flowing veil fins' },
   { species: 'discus', tier: 4, name: 'Discus', unlockScore: 100, description: 'Round disc with ornate patterns' },
+  { species: 'tang', tier: 4, name: 'Tang', unlockScore: 100, description: 'Vibrant reef surgeonfish' },
   // Tier 5 skins — Royal Betta (200 STOCK)
   { species: 'supreme-guppy', tier: 5, name: 'Supreme Guppy', unlockScore: 200, description: 'The crown jewel' },
   { species: 'arowana', tier: 5, name: 'Arowana', unlockScore: 200, description: 'Dragon fish, the apex predator' },
+  { species: 'koi', tier: 5, name: 'Koi', unlockScore: 200, description: 'Legendary ornamental fish' },
 ]
 
 const ALL_PATTERNS: { pattern: FishPattern; name: string; description: string }[] = [
@@ -206,7 +212,7 @@ export function FishCustomizer({ stockScore, currentCustomization, onSave, onClo
                     <p className={`text-[9px] font-bold uppercase tracking-wider mb-1.5 ${tierUnlocked ? 'text-cyan-400' : 'text-cyan-700'}`}>
                       Tier {tierLevel + 1} — {getTierName(tierLevel)} skins{tierSkins[0].unlockScore > 0 ? ` · ${tierSkins[0].unlockScore}+ STOCK` : ''}
                     </p>
-                    <div className="grid grid-cols-2 gap-1.5">
+                    <div className="grid grid-cols-3 gap-1.5">
                       {tierSkins.map(sp => {
                         const isUnlocked = stockScore >= sp.unlockScore
                         const isSelected = selectedSpecies === sp.species ||

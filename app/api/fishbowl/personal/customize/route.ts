@@ -7,6 +7,7 @@ import { incrementStockScore, STOCK_POINTS } from '@/lib/stockScore'
 const ALL_SPECIES = [
   'guppy', 'swift-guppy', 'fancy-guppy', 'delta-guppy', 'veil-guppy', 'supreme-guppy',
   'endler', 'neon-tetra', 'betta', 'angelfish', 'discus', 'arowana',
+  'molly', 'rasbora', 'gourami', 'clownfish', 'tang', 'koi',
 ]
 
 const VALID_PATTERNS = ['none', 'scales', 'fine-scales', 'armored', 'shimmer', 'koi']
