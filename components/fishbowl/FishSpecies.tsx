@@ -2174,13 +2174,24 @@ export type FishSpecies =
   | 'moorish-idol' | 'lionfish' | 'seahorse'
   | 'dragonet' | 'mantis-shrimp' | 'leafy-seadragon'
 
-const SPECIES_TO_TIER: Record<FishSpecies, FishTier> = {
+// Guppy variants all unlock at tier 0 but retain their visual appearance
+// Use GUPPY_VISUAL_TIER for rendering the correct SVG shape
+const GUPPY_VISUAL_TIER: Record<string, FishTier> = {
   'guppy': 0,
   'swift-guppy': 1,
   'fancy-guppy': 2,
   'delta-guppy': 3,
   'veil-guppy': 4,
   'supreme-guppy': 5,
+}
+
+const SPECIES_TO_TIER: Record<FishSpecies, FishTier> = {
+  'guppy': 0,
+  'swift-guppy': 0,
+  'fancy-guppy': 0,
+  'delta-guppy': 0,
+  'veil-guppy': 0,
+  'supreme-guppy': 0,
   'endler': 0,
   'neon-tetra': 1,
   'betta': 2,
@@ -2460,7 +2471,9 @@ export const FishSVG = memo(({ tier, size = 48, customColors, customization, id 
   const species = customization?.species || null
   let renderTier = tier
   if (species) {
-    renderTier = SPECIES_TO_TIER[species]
+    // For guppy variants, use visual tier (preserves SVG shape) not unlock tier
+    const isGuppyVariant = species in GUPPY_VISUAL_TIER
+    renderTier = isGuppyVariant ? GUPPY_VISUAL_TIER[species] : SPECIES_TO_TIER[species]
   }
 
   // Merge colors: tier defaults < customColors prop < customization colors
@@ -2546,4 +2559,4 @@ export const FishSVG = memo(({ tier, size = 48, customColors, customization, id 
 })
 FishSVG.displayName = 'FishSVG'
 
-export { TIER_COLORS, SPECIES_TO_TIER, SPECIES_COLOR_VARIANTS }
+export { TIER_COLORS, SPECIES_TO_TIER, SPECIES_COLOR_VARIANTS, GUPPY_VISUAL_TIER }
