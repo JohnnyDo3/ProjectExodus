@@ -7,11 +7,11 @@ import { incrementStockScore, STOCK_POINTS } from '@/lib/stockScore'
 const ALL_SPECIES = [
   'guppy', 'swift-guppy', 'fancy-guppy', 'delta-guppy', 'veil-guppy', 'supreme-guppy',
   'endler', 'molly', 'platy', 'danio', 'minnow',
-  'neon-tetra', 'rasbora', 'cardinal-tetra', 'white-cloud', 'killifish',
-  'betta', 'gourami', 'swordtail', 'ram-cichlid', 'pleco',
-  'angelfish', 'clownfish', 'mandarin', 'wrasse', 'butterflyfish',
-  'discus', 'tang', 'moorish-idol', 'lionfish', 'seahorse',
-  'arowana', 'koi', 'dragonet', 'mantis-shrimp', 'leafy-seadragon',
+  'neon-tetra', 'ember-tetra', 'diamond-tetra', 'rummy-tetra', 'serpae-tetra', 'glowlight-tetra',
+  'angelfish', 'marble-angelfish', 'koi-angelfish', 'platinum-angelfish', 'zebra-angelfish', 'veil-angelfish',
+  'clownfish', 'tomato-clownfish', 'maroon-clownfish', 'saddleback-clownfish', 'cinnamon-clownfish', 'snowflake-clownfish',
+  'tang', 'yellow-tang', 'powder-tang', 'achilles-tang', 'naso-tang', 'sailfin-tang',
+  'betta', 'crown-betta', 'halfmoon-betta', 'plakat-betta', 'galaxy-betta', 'dragon-betta',
 ]
 
 const VALID_PATTERNS = ['none', 'scales', 'fine-scales', 'armored', 'shimmer', 'koi']

@@ -41,34 +41,39 @@ const ALL_SKINS: { species: FishSpecies; tier: FishTier; name: string; unlockSco
   { species: 'minnow', tier: 0, name: 'Minnow', unlockScore: 0, description: 'Slim, simple freshwater classic' },
   // Tier 1 skins — Tetra (10 STOCK)
   { species: 'neon-tetra', tier: 1, name: 'Neon Tetra', unlockScore: 10, description: 'Iconic iridescent stripe' },
-  { species: 'rasbora', tier: 1, name: 'Rasbora', unlockScore: 10, description: 'Sleek schooling harlequin' },
-  { species: 'cardinal-tetra', tier: 1, name: 'Cardinal Tetra', unlockScore: 10, description: 'Full red body iridescent beauty' },
-  { species: 'white-cloud', tier: 1, name: 'White Cloud', unlockScore: 10, description: 'Delicate mountain minnow' },
-  { species: 'killifish', tier: 1, name: 'Killifish', unlockScore: 10, description: 'Colorful spotted surface dweller' },
+  { species: 'ember-tetra', tier: 1, name: 'Ember Tetra', unlockScore: 10, description: 'Warm fiery schooling fish' },
+  { species: 'diamond-tetra', tier: 1, name: 'Diamond Tetra', unlockScore: 10, description: 'Iridescent reflective beauty' },
+  { species: 'rummy-tetra', tier: 1, name: 'Rummy-Nose Tetra', unlockScore: 10, description: 'Red-nosed schooling classic' },
+  { species: 'serpae-tetra', tier: 1, name: 'Serpae Tetra', unlockScore: 10, description: 'Deep-bodied flame tetra' },
+  { species: 'glowlight-tetra', tier: 1, name: 'Glowlight Tetra', unlockScore: 10, description: 'Subtle glowing stripe' },
   // Tier 2 skins — Angelfish (25 STOCK)
-  { species: 'betta', tier: 2, name: 'Betta', unlockScore: 25, description: 'Dramatic flowing veil fins' },
-  { species: 'gourami', tier: 2, name: 'Gourami', unlockScore: 25, description: 'Labyrinth fish with thread fins' },
-  { species: 'swordtail', tier: 2, name: 'Swordtail', unlockScore: 25, description: 'Signature lower tail sword extension' },
-  { species: 'ram-cichlid', tier: 2, name: 'Ram Cichlid', unlockScore: 25, description: 'Jewel cichlid with spiny dorsal' },
-  { species: 'pleco', tier: 2, name: 'Pleco', unlockScore: 25, description: 'Armored bottom-feeder with sucker mouth' },
+  { species: 'angelfish', tier: 2, name: 'Angelfish', unlockScore: 25, description: 'Tall diamond with trailing fins' },
+  { species: 'marble-angelfish', tier: 2, name: 'Marble Angelfish', unlockScore: 25, description: 'Marbled pattern angelfish' },
+  { species: 'koi-angelfish', tier: 2, name: 'Koi Angelfish', unlockScore: 25, description: 'Koi-patterned angelfish' },
+  { species: 'platinum-angelfish', tier: 2, name: 'Platinum Angelfish', unlockScore: 25, description: 'Clean shimmering angelfish' },
+  { species: 'zebra-angelfish', tier: 2, name: 'Zebra Angelfish', unlockScore: 25, description: 'Extra-striped angelfish' },
+  { species: 'veil-angelfish', tier: 2, name: 'Veil Angelfish', unlockScore: 25, description: 'Extra-long flowing fins' },
   // Tier 3 skins — Clownfish (50 STOCK)
-  { species: 'angelfish', tier: 3, name: 'Angelfish', unlockScore: 50, description: 'Tall diamond with trailing fins' },
   { species: 'clownfish', tier: 3, name: 'Clownfish', unlockScore: 50, description: 'Iconic striped reef dweller' },
-  { species: 'mandarin', tier: 3, name: 'Mandarin', unlockScore: 50, description: 'Psychedelic swirling patterns' },
-  { species: 'wrasse', tier: 3, name: 'Wrasse', unlockScore: 50, description: 'Bold reef cleaner with thick lips' },
-  { species: 'butterflyfish', tier: 3, name: 'Butterflyfish', unlockScore: 50, description: 'Disc-shaped with false eye spot' },
+  { species: 'tomato-clownfish', tier: 3, name: 'Tomato Clownfish', unlockScore: 50, description: 'Larger deeper red clownfish' },
+  { species: 'maroon-clownfish', tier: 3, name: 'Maroon Clownfish', unlockScore: 50, description: 'Stocky gold-striped clownfish' },
+  { species: 'saddleback-clownfish', tier: 3, name: 'Saddleback Clownfish', unlockScore: 50, description: 'Elongated with saddle marking' },
+  { species: 'cinnamon-clownfish', tier: 3, name: 'Cinnamon Clownfish', unlockScore: 50, description: 'Warm brown-orange clownfish' },
+  { species: 'snowflake-clownfish', tier: 3, name: 'Snowflake Clownfish', unlockScore: 50, description: 'Irregular white patterned' },
   // Tier 4 skins — Blue Tang (100 STOCK)
-  { species: 'discus', tier: 4, name: 'Discus', unlockScore: 100, description: 'Round disc with ornate patterns' },
-  { species: 'tang', tier: 4, name: 'Tang', unlockScore: 100, description: 'Vibrant reef surgeonfish' },
-  { species: 'moorish-idol', tier: 4, name: 'Moorish Idol', unlockScore: 100, description: 'Tall disc with trailing dorsal banner' },
-  { species: 'lionfish', tier: 4, name: 'Lionfish', unlockScore: 100, description: 'Venomous spines and fan pectorals' },
-  { species: 'seahorse', tier: 4, name: 'Seahorse', unlockScore: 100, description: 'Vertical curled-tail wonder' },
+  { species: 'tang', tier: 4, name: 'Blue Tang', unlockScore: 100, description: 'Vibrant reef surgeonfish' },
+  { species: 'yellow-tang', tier: 4, name: 'Yellow Tang', unlockScore: 100, description: 'Bright yellow reef tang' },
+  { species: 'powder-tang', tier: 4, name: 'Powder Blue Tang', unlockScore: 100, description: 'Powder blue surgeonfish' },
+  { species: 'achilles-tang', tier: 4, name: 'Achilles Tang', unlockScore: 100, description: 'Dark body with orange accent' },
+  { species: 'naso-tang', tier: 4, name: 'Naso Tang', unlockScore: 100, description: 'Unicorn tang with protruding nose' },
+  { species: 'sailfin-tang', tier: 4, name: 'Sailfin Tang', unlockScore: 100, description: 'Large decorative dorsal fin' },
   // Tier 5 skins — Royal Betta (200 STOCK)
-  { species: 'arowana', tier: 5, name: 'Arowana', unlockScore: 200, description: 'Dragon fish, the apex predator' },
-  { species: 'koi', tier: 5, name: 'Koi', unlockScore: 200, description: 'Legendary ornamental fish' },
-  { species: 'dragonet', tier: 5, name: 'Dragonet', unlockScore: 200, description: 'Sail dorsal with psychedelic colors' },
-  { species: 'mantis-shrimp', tier: 5, name: 'Mantis Shrimp', unlockScore: 200, description: 'Rainbow crustacean apex predator' },
-  { species: 'leafy-seadragon', tier: 5, name: 'Leafy Seadragon', unlockScore: 200, description: 'Living artwork with leaf appendages' },
+  { species: 'betta', tier: 5, name: 'Betta', unlockScore: 200, description: 'Dramatic flowing veil fins' },
+  { species: 'crown-betta', tier: 5, name: 'Crown Betta', unlockScore: 200, description: 'Spiky-rayed crown fins' },
+  { species: 'halfmoon-betta', tier: 5, name: 'Halfmoon Betta', unlockScore: 200, description: '180-degree tail spread' },
+  { species: 'plakat-betta', tier: 5, name: 'Plakat Betta', unlockScore: 200, description: 'Short-finned muscular fighter' },
+  { species: 'galaxy-betta', tier: 5, name: 'Galaxy Betta', unlockScore: 200, description: 'Iridescent star-speckled' },
+  { species: 'dragon-betta', tier: 5, name: 'Dragon Betta', unlockScore: 200, description: 'Thick metallic scaling' },
 ]
 
 const ALL_PATTERNS: { pattern: FishPattern; name: string; description: string }[] = [
@@ -293,8 +298,8 @@ export function FishCustomizer({ stockScore, currentCustomization, onSave, onClo
                 const speciesKey = selectedSpecies || (() => {
                   // Default skin for current tier (first non-guppy species per tier)
                   const defaultSkins: Record<number, FishSpecies> = {
-                    0: 'guppy', 1: 'neon-tetra', 2: 'betta',
-                    3: 'angelfish', 4: 'discus', 5: 'arowana',
+                    0: 'guppy', 1: 'neon-tetra', 2: 'angelfish',
+                    3: 'clownfish', 4: 'tang', 5: 'betta',
                   }
                   return defaultSkins[userTier] || 'guppy'
                 })()
