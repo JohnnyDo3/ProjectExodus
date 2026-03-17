@@ -23,11 +23,33 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
+  Fish,
+  ChevronUp,
+  ChevronDown,
+  Palette,
+  Info,
+  Sparkles,
+  UserPlus,
+  Shell,
+  Flame,
+  Anchor,
+  Sailboat,
+  Ship,
+  Castle,
+  Pyramid,
+  Landmark,
+  Waves,
+  Skull,
 } from 'lucide-react'
+import Link from 'next/link'
 
 import { useVolitionLayout, LaneId, DEFAULT_LANES } from '@/hooks/useVolitionLayout'
 import { useIsMobile } from '@/hooks/useIsMobile'
 import { DeleteConfirmationModal } from '@/components/ui/DeleteConfirmationModal'
+import { Fishbowl } from '@/components/fishbowl/Fishbowl'
+import { FishSVG, getTierFromScore, getTierName, type FishCustomization, type FishTier } from '@/components/fishbowl/FishSpecies'
+import { FishCustomizer } from '@/components/fishbowl/FishCustomizer'
+import '@/components/fishbowl/fishbowl.css'
 
 import { DynamicSpotlight } from '@/components/volition/DynamicSpotlight'
 import { QuickActionsBar } from '@/components/volition/QuickActionsBar'
@@ -41,6 +63,46 @@ import { LearningCard } from '@/components/volition/cards/LearningCard'
 import { NetworkCard } from '@/components/volition/cards/NetworkCard'
 import { FeedPostCard } from '@/components/volition/cards/FeedPostCard'
 import { ImpactCard } from '@/components/volition/cards/ImpactCard'
+
+// ─── Fish Tank Types & Constants ─────────────────────────────────────────────
+
+interface FishbowlUser {
+  id: string
+  name: string | null
+  stockScore: number
+  image: string | null
+  fishCustomization?: FishCustomization | null
+  isMutual?: boolean
+}
+
+interface PersonalFishbowlData {
+  user: FishbowlUser | null
+  connections: FishbowlUser[]
+  stats: { following: number; followers: number; mutual: number }
+}
+
+const DECOR_THEMES = [
+  { id: 'ocean', name: 'Ocean Reef', icon: Shell, description: 'Coral reef with ocean plants' },
+  { id: 'volcano', name: 'Volcano', icon: Flame, description: 'Volcanic reef with lava vents' },
+  { id: 'shipwreck', name: 'Shipwreck', icon: Anchor, description: 'Sunken ship vibes' },
+  { id: 'sailboat', name: 'Sailboat', icon: Sailboat, description: 'Sunken sailboat wreck' },
+  { id: 'submarine', name: 'Submarine', icon: Ship, description: 'Sunken submarine base' },
+  { id: 'castle', name: 'Castle', icon: Castle, description: 'Sunken medieval fortress' },
+  { id: 'pyramid', name: 'Pyramid', icon: Pyramid, description: 'Ancient Egyptian ruins' },
+  { id: 'temple', name: 'Temple', icon: Landmark, description: 'Japanese torii and pagoda' },
+  { id: 'atlantis', name: 'Atlantis', icon: Waves, description: 'Lost city of Atlantis' },
+  { id: 'minimal', name: 'Minimal', icon: Fish, description: 'Clean, simple look' },
+  { id: 'stagnant', name: 'Stagnant', icon: Skull, description: 'Deer skull with willow vines' },
+] as const
+
+const FISH_SPECIES = [
+  { tier: 0 as FishTier, name: 'Guppy', unlockScore: 0 },
+  { tier: 1 as FishTier, name: 'Tetra', unlockScore: 10 },
+  { tier: 2 as FishTier, name: 'Angelfish', unlockScore: 25 },
+  { tier: 3 as FishTier, name: 'Clownfish', unlockScore: 50 },
+  { tier: 4 as FishTier, name: 'Blue Tang', unlockScore: 100 },
+  { tier: 5 as FishTier, name: 'Royal Betta', unlockScore: 200 },
+]
 
 const iconMap = {
   User,
@@ -303,6 +365,95 @@ export default function MyVolitionPage() {
   // Project preview modal
   const [previewProject, setPreviewProject] = useState<any | null>(null)
 
+  // ─── Fish Tank State ──────────────────────────────────────────────────────
+  const [showTank, setShowTank] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false
+    try { return localStorage.getItem('volition-tank-visible') !== 'false' } catch { return true }
+  })
+  const [fishData, setFishData] = useState<PersonalFishbowlData | null>(null)
+  const [fishLoading, setFishLoading] = useState(false)
+  const [showCustomizer, setShowCustomizer] = useState(false)
+  const [activeDecor, setActiveDecor] = useState<string>(() => {
+    if (typeof window === 'undefined') return 'ocean'
+    try { return localStorage.getItem('personal-tank-theme') || 'ocean' } catch { return 'ocean' }
+  })
+  const [showDecorPanel, setShowDecorPanel] = useState(false)
+  const [showFishInfo, setShowFishInfo] = useState(false)
+  const [showFriendPanel, setShowFriendPanel] = useState(false)
+  const decorPanelRef = useRef<HTMLDivElement>(null)
+  const infoPanelRef = useRef<HTMLDivElement>(null)
+  const friendPanelRef = useRef<HTMLDivElement>(null)
+  const decorBtnRef = useRef<HTMLButtonElement>(null)
+  const infoBtnRef = useRef<HTMLButtonElement>(null)
+  const friendBtnRef = useRef<HTMLButtonElement>(null)
+  const [tankFriendIds, setTankFriendIds] = useState<Set<string>>(() => {
+    if (typeof window === 'undefined') return new Set()
+    try {
+      const saved = localStorage.getItem('personal-tank-friends')
+      return saved ? new Set(JSON.parse(saved)) : new Set()
+    } catch { return new Set() }
+  })
+
+  // Toggle tank visibility
+  const toggleTank = useCallback(() => {
+    setShowTank(prev => {
+      const next = !prev
+      try { localStorage.setItem('volition-tank-visible', String(next)) } catch {}
+      return next
+    })
+  }, [])
+
+  // Fetch fish data
+  const fetchFishData = useCallback(async () => {
+    setFishLoading(true)
+    try {
+      const res = await fetch('/api/fishbowl/personal')
+      const json = await res.json()
+      if (json.success) setFishData(json.data)
+    } catch (error) {
+      console.error('Error fetching fishbowl:', error)
+    } finally {
+      setFishLoading(false)
+    }
+  }, [])
+
+  // Toggle friend in tank
+  const toggleFriendInTank = useCallback((friendId: string) => {
+    setTankFriendIds(prev => {
+      const next = new Set(prev)
+      if (next.has(friendId)) next.delete(friendId)
+      else next.add(friendId)
+      localStorage.setItem('personal-tank-friends', JSON.stringify([...next]))
+      return next
+    })
+  }, [])
+
+  // Save fish customization
+  const handleSaveFishCustomization = useCallback(async (customization: FishCustomization) => {
+    const res = await fetch('/api/fishbowl/personal/customize', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(customization),
+    })
+    const json = await res.json()
+    if (!json.success) throw new Error(json.error)
+    setFishData(prev => prev ? { ...prev, user: prev.user ? { ...prev.user, fishCustomization: customization } : null } : null)
+    setShowCustomizer(false)
+  }, [])
+
+  // Close overlay panels on click outside
+  useEffect(() => {
+    if (!showDecorPanel && !showFishInfo && !showFriendPanel) return
+    const handler = (e: MouseEvent) => {
+      const target = e.target as Node
+      if (showDecorPanel && decorPanelRef.current && !decorPanelRef.current.contains(target) && !decorBtnRef.current?.contains(target)) setShowDecorPanel(false)
+      if (showFishInfo && infoPanelRef.current && !infoPanelRef.current.contains(target) && !infoBtnRef.current?.contains(target)) setShowFishInfo(false)
+      if (showFriendPanel && friendPanelRef.current && !friendPanelRef.current.contains(target) && !friendBtnRef.current?.contains(target)) setShowFriendPanel(false)
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [showDecorPanel, showFishInfo, showFriendPanel])
+
   // Fetch functions
   const fetchProjects = useCallback(async () => {
     if (!session?.user?.id) return
@@ -472,6 +623,7 @@ export default function MyVolitionPage() {
         fetchFollowing(),
         fetchLearningModules(),
         fetchNotifications(),
+        fetchFishData(),
       ]).finally(() => setIsLoading(false))
     }
   }, [
@@ -485,6 +637,7 @@ export default function MyVolitionPage() {
     fetchFollowing,
     fetchLearningModules,
     fetchNotifications,
+    fetchFishData,
   ])
 
   // Handle delete
@@ -733,6 +886,21 @@ export default function MyVolitionPage() {
 
             {/* Desktop controls */}
             <div className="hidden md:flex items-center gap-2">
+              {/* Fish tank toggle */}
+              <button
+                onClick={toggleTank}
+                className={`relative flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors group ${
+                  showTank
+                    ? 'bg-cyan-500/30 hover:bg-cyan-500/40 text-white'
+                    : 'bg-white/20 hover:bg-white/30 text-white'
+                }`}
+                title="My Tank"
+              >
+                <Fish className="w-4 h-4" />
+                <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity">My Tank</span>
+                {showTank ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+              </button>
+
               {/* View mode toggle */}
               <button
                 onClick={cycleViewMode}
@@ -834,6 +1002,219 @@ export default function MyVolitionPage() {
               viewMode={viewMode}
               onExpand={() => setShowBusinessCardModal(true)}
             />
+          </div>
+        </section>
+      )}
+
+      {/* ═══ PERSONAL FISH TANK ═══ */}
+      {showTank && (
+        <section className="relative">
+          <div className="bg-[#0A1628] border-y-2 border-cyan-800/40">
+            {/* Tank toolbar */}
+            <div className="flex items-center justify-between px-4 sm:px-6 py-2 bg-gradient-to-r from-[#0D2137]/95 via-[#123855]/95 to-[#0D2137]/95 border-b border-cyan-800/30">
+              <div className="flex items-center gap-2">
+                <Fish className="w-4 h-4 text-cyan-400" />
+                <span className="text-sm font-bold text-cyan-100">MY TANK</span>
+                {fishData?.user && (
+                  <div className="hidden sm:flex items-center gap-1.5 ml-2 px-2 py-0.5 rounded-md bg-cyan-900/30 border border-cyan-800/40">
+                    <FishSVG tier={getTierFromScore(fishData.user.stockScore)} size={16} customization={(fishData.user.fishCustomization as FishCustomization | null) || null} id="vol-header-fish" />
+                    <span className="text-[10px] font-bold text-cyan-300">{getTierName(getTierFromScore(fishData.user.stockScore))} · {fishData.user.stockScore} STOCK</span>
+                  </div>
+                )}
+              </div>
+              <div className="flex items-center gap-1.5">
+                {/* Customize fish */}
+                {fishData?.user && (
+                  <button
+                    onClick={() => setShowCustomizer(true)}
+                    className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-bold bg-gradient-to-r from-purple-600/80 to-pink-600/80 text-white hover:from-purple-500/80 hover:to-pink-500/80 transition-all border border-purple-500/30"
+                  >
+                    <Sparkles className="w-3 h-3" />
+                    <span className="hidden sm:inline">Customize</span>
+                  </button>
+                )}
+                {/* Decor */}
+                <button
+                  ref={decorBtnRef}
+                  onClick={() => { setShowDecorPanel(!showDecorPanel); setShowFishInfo(false); setShowFriendPanel(false) }}
+                  className={`p-1.5 rounded-lg border transition-colors ${showDecorPanel ? 'bg-cyan-600/30 border-cyan-500/50 text-cyan-300' : 'bg-cyan-900/30 border-cyan-800/40 text-cyan-500 hover:border-cyan-600/60'}`}
+                  title="Tank decor"
+                >
+                  <Palette className="w-3.5 h-3.5" />
+                </button>
+                {/* Info */}
+                <button
+                  ref={infoBtnRef}
+                  onClick={() => { setShowFishInfo(!showFishInfo); setShowDecorPanel(false); setShowFriendPanel(false) }}
+                  className={`p-1.5 rounded-lg border transition-colors ${showFishInfo ? 'bg-cyan-600/30 border-cyan-500/50 text-cyan-300' : 'bg-cyan-900/30 border-cyan-800/40 text-cyan-500 hover:border-cyan-600/60'}`}
+                  title="Fish species guide"
+                >
+                  <Info className="w-3.5 h-3.5" />
+                </button>
+                {/* Add friends */}
+                <button
+                  ref={friendBtnRef}
+                  onClick={() => { setShowFriendPanel(!showFriendPanel); setShowDecorPanel(false); setShowFishInfo(false) }}
+                  className={`p-1.5 rounded-lg border transition-colors ${showFriendPanel ? 'bg-teal-600/30 border-teal-500/50 text-teal-300' : 'bg-cyan-900/30 border-cyan-800/40 text-cyan-500 hover:border-cyan-600/60'}`}
+                  title="Add friend's fish"
+                >
+                  <UserPlus className="w-3.5 h-3.5" />
+                </button>
+                {/* Community link */}
+                <Link
+                  href="/fishbowl"
+                  className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-bold bg-gradient-to-r from-teal-600 to-emerald-600 text-white hover:from-teal-500 hover:to-emerald-500 transition-all"
+                >
+                  <Fish className="w-3 h-3" />
+                  <span className="hidden sm:inline">Community</span>
+                </Link>
+                {/* Hide tank */}
+                <button
+                  onClick={toggleTank}
+                  className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-bold bg-cyan-900/30 border border-cyan-800/40 text-cyan-400 hover:bg-cyan-800/40 transition-colors"
+                >
+                  <ChevronUp className="w-3 h-3" />
+                  <span className="hidden sm:inline">Hide Tank</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Overlay panels */}
+            <div className="relative">
+              {showDecorPanel && (
+                <div ref={decorPanelRef} className="absolute left-0 right-0 top-0 mx-4 p-3 rounded-b-xl bg-[#0A1628]/95 border border-t-0 border-cyan-800/30 backdrop-blur-sm shadow-xl shadow-black/40 z-40">
+                  <p className="text-[10px] text-cyan-500 font-bold uppercase mb-2">Tank Theme</p>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    {DECOR_THEMES.map(theme => (
+                      <button
+                        key={theme.id}
+                        onClick={() => { setActiveDecor(theme.id); try { localStorage.setItem('personal-tank-theme', theme.id) } catch {} }}
+                        className={`flex items-center gap-2 p-2.5 rounded-lg border transition-all ${
+                          activeDecor === theme.id
+                            ? 'border-cyan-400 bg-cyan-900/40 shadow-lg shadow-cyan-900/20'
+                            : 'border-cyan-800/30 bg-cyan-900/10 hover:border-cyan-600/50'
+                        }`}
+                      >
+                        <theme.icon className={`w-4 h-4 ${activeDecor === theme.id ? 'text-cyan-300' : 'text-cyan-600'}`} />
+                        <div className="text-left">
+                          <p className={`text-[10px] font-bold ${activeDecor === theme.id ? 'text-cyan-200' : 'text-cyan-400'}`}>{theme.name}</p>
+                          <p className="text-[8px] text-cyan-600">{theme.description}</p>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {showFishInfo && (
+                <div ref={infoPanelRef} className="absolute left-0 right-0 top-0 mx-4 p-3 rounded-b-xl bg-[#0A1628]/95 border border-t-0 border-cyan-800/30 backdrop-blur-sm shadow-xl shadow-black/40 z-40">
+                  <p className="text-[10px] text-cyan-500 font-bold uppercase mb-2">Fish Species & Stock Levels</p>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
+                    {FISH_SPECIES.map(sp => {
+                      const isUnlocked = (fishData?.user?.stockScore || 0) >= sp.unlockScore
+                      return (
+                        <div
+                          key={sp.tier}
+                          className={`flex items-center gap-2 p-2 rounded-lg ${isUnlocked ? 'bg-cyan-900/30 border border-cyan-700/30' : 'bg-cyan-950/30 border border-cyan-900/20 opacity-50'}`}
+                        >
+                          <FishSVG tier={sp.tier} size={20} />
+                          <div>
+                            <p className="text-[9px] text-cyan-500 font-medium">{sp.name}</p>
+                            <p className="text-[9px] text-cyan-600">
+                              {sp.unlockScore === 0 ? '0-9' : sp.unlockScore === 10 ? '10-24' : sp.unlockScore === 25 ? '25-49' : sp.unlockScore === 50 ? '50-99' : sp.unlockScore === 100 ? '100-199' : '200+'} STOCK
+                            </p>
+                            {!isUnlocked && <p className="text-[8px] text-amber-500/70 font-bold">LOCKED</p>}
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {showFriendPanel && (
+                <div ref={friendPanelRef} className="absolute left-0 right-0 top-0 mx-4 p-3 rounded-b-xl bg-[#0A1628]/95 border border-t-0 border-teal-800/30 backdrop-blur-sm shadow-xl shadow-black/40 z-40">
+                  <p className="text-[10px] text-teal-500 font-bold uppercase mb-2">Add Friend&apos;s Fish to Tank</p>
+                  {(() => {
+                    const mutualFriends = fishData?.connections?.filter(c => c.isMutual) || []
+                    return mutualFriends.length > 0 ? (
+                      <div className="max-h-[160px] overflow-y-auto space-y-1">
+                        {mutualFriends.map(friend => {
+                          const friendTier = getTierFromScore(friend.stockScore)
+                          const isInTank = tankFriendIds.has(friend.id)
+                          return (
+                            <div key={friend.id} className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-cyan-900/30 transition-colors">
+                              <button
+                                onClick={() => toggleFriendInTank(friend.id)}
+                                className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center transition-all ${
+                                  isInTank
+                                    ? 'bg-teal-500/25 border border-teal-500/50 text-teal-400 hover:bg-red-500/20 hover:border-red-500/50 hover:text-red-400'
+                                    : 'bg-cyan-900/30 border border-cyan-800/40 text-cyan-700 hover:bg-teal-500/20 hover:border-teal-500/40 hover:text-teal-400'
+                                }`}
+                              >
+                                {isInTank ? <Minus className="w-3 h-3" /> : <Plus className="w-3 h-3" />}
+                              </button>
+                              <FishSVG tier={friendTier} size={18} id={`vol-friend-${friend.id}`} />
+                              <span className="flex-1 text-xs font-medium text-cyan-200 truncate">{friend.name}</span>
+                              <span className="px-1.5 py-0.5 rounded-full text-[8px] font-black bg-teal-500/20 text-teal-400 border border-teal-500/30">MUTUAL</span>
+                              <span className="text-[9px] text-cyan-600 font-bold">{friend.stockScore} STOCK</span>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    ) : (
+                      <div className="text-center py-4">
+                        <Users className="w-6 h-6 text-cyan-700 mx-auto mb-2" />
+                        <p className="text-[10px] text-cyan-600">No mutual friends yet.</p>
+                        <p className="text-[9px] text-cyan-700 mt-1">Follow people who follow you back to add their fish!</p>
+                      </div>
+                    )
+                  })()}
+                </div>
+              )}
+            </div>
+
+            {/* Fish tank */}
+            <div className="h-[300px] sm:h-[400px] p-3 sm:p-4">
+              {fishLoading ? (
+                <div className="w-full h-full flex items-center justify-center">
+                  <div className="text-center space-y-3">
+                    <div className="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto" />
+                    <p className="text-sm font-bold text-cyan-400">Filling your tank...</p>
+                  </div>
+                </div>
+              ) : (() => {
+                const mutualFriends = fishData?.connections?.filter(c => c.isMutual) || []
+                const fishbowlUsers = fishData?.user
+                  ? [fishData.user, ...mutualFriends.filter(c => tankFriendIds.has(c.id))]
+                  : []
+                const userCustomization = (fishData?.user?.fishCustomization as FishCustomization | null) || null
+
+                return fishbowlUsers.length > 0 ? (
+                  <div className="w-full h-full rounded-2xl border-2 border-cyan-800/40 shadow-lg shadow-cyan-900/20 overflow-hidden">
+                    <Fishbowl
+                      users={fishbowlUsers}
+                      ownerCustomization={userCustomization}
+                      ownerId={fishData?.user?.id}
+                      contained
+                      theme={activeDecor}
+                    />
+                  </div>
+                ) : (
+                  <div className="w-full h-full rounded-2xl border-2 border-cyan-800/40 shadow-lg shadow-cyan-900/20 overflow-hidden flex items-center justify-center" style={{ background: 'linear-gradient(180deg, #0A1628 0%, #0D2137 40%, #123855 100%)' }}>
+                    <div className="text-center space-y-3">
+                      <Fish className="w-12 h-12 text-cyan-700 mx-auto" />
+                      <p className="text-base font-bold text-cyan-500">Your tank is empty</p>
+                      <p className="text-sm text-cyan-600">Follow people to add fish!</p>
+                      <Link href="/network" className="inline-flex items-center gap-2 mt-1 px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-cyan-600 to-blue-600 text-white hover:from-cyan-500 hover:to-blue-500 transition-all">
+                        <Users className="w-4 h-4" />
+                        Find People
+                      </Link>
+                    </div>
+                  </div>
+                )
+              })()}
+            </div>
           </div>
         </section>
       )}
@@ -978,6 +1359,16 @@ export default function MyVolitionPage() {
         onClose={() => setPreviewProject(null)}
         userId={user.id}
       />
+
+      {/* Fish Customizer Modal */}
+      {showCustomizer && fishData?.user && (
+        <FishCustomizer
+          stockScore={fishData.user.stockScore}
+          currentCustomization={(fishData.user.fishCustomization as FishCustomization | null) || null}
+          onSave={handleSaveFishCustomization}
+          onClose={() => setShowCustomizer(false)}
+        />
+      )}
 
     </div>
   )

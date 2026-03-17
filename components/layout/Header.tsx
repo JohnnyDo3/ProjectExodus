@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
-import { Menu, X, Leaf, User, LogOut, Settings, Users, Calendar, LayoutDashboard, ChevronRight, MessageCircle, Bell, ChevronDown, Lock, Crown, GraduationCap, Fish } from 'lucide-react'
+import { Menu, X, Leaf, User, LogOut, Settings, Users, Calendar, ChevronRight, MessageCircle, Bell, ChevronDown, Lock, Crown, GraduationCap, Fish } from 'lucide-react'
 import NotificationBell from '@/components/notifications/NotificationBell'
 import { useDigitalScrollContext } from '@/components/learning/DigitalScroll/DigitalScrollContext'
 import { useSageContextSafe } from '@/components/ai/SageContext'
@@ -485,14 +485,6 @@ export function Header() {
                       </div>
                       <div className="p-2">
                         <Link
-                          href="/my/volition"
-                          className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors group"
-                          onClick={() => setUserMenuOpen(false)}
-                        >
-                          <LayoutDashboard className="w-4 h-4 text-theme-primary" />
-                          <span className="font-bold text-[var(--foreground)] group-hover:text-theme-primary">My Volition</span>
-                        </Link>
-                        <Link
                           href="/events"
                           className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors group"
                           onClick={() => setUserMenuOpen(false)}
@@ -688,15 +680,6 @@ export function Header() {
                   </div>
 
                   {/* User Menu Links */}
-                  <Link href="/my/volition" onClick={() => setMobileMenuOpen(false)}>
-                    <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-[var(--muted)] hover:bg-theme-primary/10 transition-colors">
-                      <div className="flex items-center gap-3">
-                        <LayoutDashboard className="w-5 h-5 text-theme-primary" />
-                        <span className="font-bold text-[var(--foreground)]">My Volition</span>
-                      </div>
-                      <ChevronRight className="w-5 h-5 text-theme-muted" />
-                    </div>
-                  </Link>
                   <Link href="/events" onClick={() => setMobileMenuOpen(false)}>
                     <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-[var(--muted)] hover:bg-theme-primary/10 transition-colors">
                       <div className="flex items-center gap-3">
