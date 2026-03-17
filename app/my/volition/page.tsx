@@ -380,6 +380,7 @@ export default function MyVolitionPage() {
   const [showDecorPanel, setShowDecorPanel] = useState(false)
   const [showFishInfo, setShowFishInfo] = useState(false)
   const [showFriendPanel, setShowFriendPanel] = useState(false)
+  const [pastTank, setPastTank] = useState(false)
   const decorPanelRef = useRef<HTMLDivElement>(null)
   const infoPanelRef = useRef<HTMLDivElement>(null)
   const friendPanelRef = useRef<HTMLDivElement>(null)
@@ -640,6 +641,15 @@ export default function MyVolitionPage() {
     fetchFishData,
   ])
 
+  // Track scroll past the tank (viewport height) to show/hide QuickActionsBar
+  useEffect(() => {
+    const handleScroll = () => {
+      setPastTank(window.scrollY > window.innerHeight * 0.8)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   // Handle delete
   const handleDelete = async () => {
     if (!deleteModal.id || !deleteModal.type) return
@@ -869,7 +879,7 @@ export default function MyVolitionPage() {
   return (
     <div className="min-h-screen bg-[var(--background)]">
       {/* ═══ PERSONAL FISH TANK - Full Viewport Landing ═══ */}
-      <section className="relative h-screen">
+      <section className="relative h-screen overflow-hidden">
         <div className="bg-[#0A1628] h-full flex flex-col">
             {/* Tank toolbar */}
             <div className="flex items-center justify-between px-4 sm:px-6 py-2 bg-gradient-to-r from-[#0D2137]/95 via-[#123855]/95 to-[#0D2137]/95 border-b border-cyan-800/30">
@@ -1228,8 +1238,15 @@ export default function MyVolitionPage() {
           })}
       </LaneScroller>
 
-      {/* Quick Actions Bar */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40">
+      {/* Quick Actions Bar - only visible below the tank */}
+      <div
+        className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 transition-all duration-300"
+        style={{
+          opacity: pastTank ? 1 : 0,
+          transform: `translateX(-50%) translateY(${pastTank ? '0' : '20px'})`,
+          pointerEvents: pastTank ? 'auto' : 'none',
+        }}
+      >
         <QuickActionsBar
           onCustomize={isCustomizing ? stopCustomizing : startCustomizing}
           isCustomizing={isCustomizing}
