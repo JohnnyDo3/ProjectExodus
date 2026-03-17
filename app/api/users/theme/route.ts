@@ -60,10 +60,10 @@ export async function PUT(req: NextRequest) {
     const { themePreference } = body
 
     // Validate theme preference
-    const validThemes = ['auto', 'light', 'dark', 'sunrise', 'sunset', 'dusk']
+    const validThemes = ['auto', 'light', 'dark']
     if (!themePreference || !validThemes.includes(themePreference)) {
       return NextResponse.json(
-        { error: 'Invalid theme preference. Must be one of: auto, light, dark, sunrise, sunset, dusk' },
+        { error: 'Invalid theme preference. Must be one of: auto, light, dark' },
         { status: 400 }
       )
     }

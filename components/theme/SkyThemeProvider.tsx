@@ -111,12 +111,7 @@ function getPhaseFromTime(hour: number): SkyPhase {
 // Map ThemeMode values to sky phases
 const modeToPhase: Record<string, SkyPhase> = {
   light: 'day',
-  morning: 'day',
-  dark: 'night',
-  night: 'midnight',
-  sunrise: 'dawn',
-  sunset: 'evening',
-  dusk: 'dusk',
+  dark: 'midnight',
 }
 
 function getInitialPhaseFromStorage(): { phase: SkyPhase; mode: string | null } {

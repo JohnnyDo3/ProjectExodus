@@ -41,7 +41,7 @@ export interface TimeKeyframe {
 }
 
 export interface UserPreferences {
-  mode: 'auto' | 'light' | 'dark' | 'sunrise' | 'sunset' | 'dusk'
+  mode: 'auto' | 'light' | 'dark'
   latitude: number | null
   longitude: number | null
   lastUpdated: number // timestamp
@@ -922,9 +922,10 @@ export function loadPreferences(): UserPreferences {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored) {
       const parsed = JSON.parse(stored)
-      // Migrate old 'morning' to 'light' and 'night' to 'dark'
+      // Migrate old modes to simplified set
       if (parsed.mode === 'morning') parsed.mode = 'light'
       if (parsed.mode === 'night') parsed.mode = 'dark'
+      if (parsed.mode === 'sunrise' || parsed.mode === 'sunset' || parsed.mode === 'dusk') parsed.mode = 'auto'
       return { ...defaults, ...parsed }
     }
   } catch (e) {
@@ -985,29 +986,21 @@ export function getTwilightProgress(
 /**
  * Get theme colors for a specific fixed mode
  */
-export function getFixedModeColors(mode: 'light' | 'dark' | 'sunrise' | 'sunset' | 'dusk'): {
+export function getFixedModeColors(mode: 'light' | 'dark'): {
   colors: ThemeColors
   phase: string
   className: string
 } {
-  // Map modes to specific keyframes
   const modeMapping = {
     light: TIME_KEYFRAMES.find(kf => kf.hour === 12), // Midday
     dark: TIME_KEYFRAMES.find(kf => kf.hour === 0), // Midnight
-    sunrise: TIME_KEYFRAMES.find(kf => kf.hour === 6), // Sunrise
-    sunset: TIME_KEYFRAMES.find(kf => kf.hour === 19.5), // Sunset Peak
-    dusk: TIME_KEYFRAMES.find(kf => kf.hour === 20.3), // Twilight
   }
 
   const keyframe = modeMapping[mode] || modeMapping.light!
 
-  // Map modes to HTML class names for visibility toggles
   const classMapping = {
     light: 'day',
     dark: 'night',
-    sunrise: 'day',
-    sunset: 'dusk',
-    dusk: 'evening',
   }
 
   return {

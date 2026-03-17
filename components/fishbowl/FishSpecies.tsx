@@ -3916,6 +3916,7 @@ export interface FishCustomization {
   species?: FishSpecies | null
   colors?: Partial<FishColors> | null
   pattern?: FishPattern | null
+  savedDesigns?: Record<string, { colors?: Partial<FishColors> | null; pattern?: FishPattern | null }> | null
 }
 
 interface FishSVGProps {

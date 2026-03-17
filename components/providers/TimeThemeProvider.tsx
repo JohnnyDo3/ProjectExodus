@@ -16,7 +16,7 @@ import {
   type UserPreferences,
 } from '@/lib/smoothThemeEngine'
 
-export type ThemeMode = 'auto' | 'light' | 'dark' | 'sunrise' | 'sunset' | 'dusk'
+export type ThemeMode = 'auto' | 'light' | 'dark'
 export type TimeTheme = 'dawn' | 'sunrise' | 'morning' | 'day' | 'afternoon' | 'dusk' | 'sunset' | 'evening' | 'night' | 'midnight'
 
 interface GeolocationCoords {
@@ -110,10 +110,14 @@ export function TimeThemeProvider({ children }: { children: React.ReactNode }) {
       fetch('/api/users/theme')
         .then(res => res.json())
         .then(data => {
-          if (data.themePreference && data.themePreference !== mode) {
-            console.log('[Theme] Loading preference from database:', data.themePreference)
-            setModeState(data.themePreference as ThemeMode)
-            savePreferences({ mode: data.themePreference as ThemeMode })
+          if (data.themePreference) {
+            // Migrate old modes to simplified set
+            let pref: ThemeMode = data.themePreference
+            if (pref !== 'auto' && pref !== 'light' && pref !== 'dark') pref = 'auto'
+            if (pref !== mode) {
+              setModeState(pref)
+              savePreferences({ mode: pref })
+            }
           }
         })
         .catch(err => console.error('[Theme] Failed to load preference from database:', err))
@@ -138,13 +142,13 @@ export function TimeThemeProvider({ children }: { children: React.ReactNode }) {
 
       // Handle fixed modes
       if (mode !== 'auto') {
-        const { colors, phase: fixedPhase, className } = getFixedModeColors(mode as 'light' | 'dark' | 'sunrise' | 'sunset' | 'dusk')
+        const { colors, phase: fixedPhase, className } = getFixedModeColors(mode as 'light' | 'dark')
         document.documentElement.className = className
         applyThemeColors(colors)
         setPhase(fixedPhase)
 
         // Set appropriate values for fixed modes
-        const isLightMode = mode === 'light' || mode === 'sunrise'
+        const isLightMode = mode === 'light'
         setIsDay(isLightMode)
         setTwilightProgress(isLightMode ? 0 : 1)
         setSunAltitude(isLightMode ? 60 : -30)

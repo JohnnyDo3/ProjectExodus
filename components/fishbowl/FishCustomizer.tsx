@@ -135,6 +135,31 @@ export function FishCustomizer({ stockScore, currentCustomization, onSave, onClo
   const [selectedPattern, setSelectedPattern] = useState<FishPattern>(
     currentCustomization?.pattern || 'none'
   )
+  // Per-species saved designs: remembers colors/pattern for each species you've customized
+  const [savedDesigns, setSavedDesigns] = useState<Record<string, { colors?: Partial<FishColors> | null; pattern?: FishPattern | null }>>(
+    (currentCustomization?.savedDesigns as Record<string, { colors?: Partial<FishColors> | null; pattern?: FishPattern | null }>) || {}
+  )
+
+  // When switching species, save current design and load the saved one for the new species
+  const handleSpeciesChange = (newSpecies: FishSpecies) => {
+    // Save current species design
+    if (selectedSpecies) {
+      setSavedDesigns(prev => ({
+        ...prev,
+        [selectedSpecies]: { colors: Object.keys(selectedColors).length > 0 ? selectedColors : null, pattern: selectedPattern },
+      }))
+    }
+    // Load saved design for new species (if any)
+    const saved = savedDesigns[newSpecies]
+    if (saved) {
+      setSelectedColors((saved.colors as Partial<FishColors>) || {})
+      setSelectedPattern(saved.pattern || 'none')
+    } else {
+      setSelectedColors({})
+      setSelectedPattern('none')
+    }
+    setSelectedSpecies(newSpecies)
+  }
 
   // The preview tier (which skin shape to show) — guppy variants use visual tier
   const previewTier = selectedSpecies
@@ -143,10 +168,17 @@ export function FishCustomizer({ stockScore, currentCustomization, onSave, onClo
         : ALL_SKINS.find(s => s.species === selectedSpecies)?.tier ?? userTier)
     : userTier
 
+  // Build full savedDesigns including current species for persistence
+  const allSavedDesigns = {
+    ...savedDesigns,
+    ...(selectedSpecies ? { [selectedSpecies]: { colors: Object.keys(selectedColors).length > 0 ? selectedColors : null, pattern: selectedPattern } } : {}),
+  }
+
   const previewCustomization: FishCustomization = {
     species: selectedSpecies,
     colors: Object.keys(selectedColors).length > 0 ? selectedColors : null,
     pattern: selectedPattern,
+    savedDesigns: Object.keys(allSavedDesigns).length > 0 ? allSavedDesigns : null,
   }
 
   const handleSave = useCallback(async () => {
@@ -266,7 +298,7 @@ export function FishCustomizer({ stockScore, currentCustomization, onSave, onClo
                         return (
                           <button
                             key={sp.species}
-                            onClick={() => isUnlocked && setSelectedSpecies(sp.species)}
+                            onClick={() => isUnlocked && handleSpeciesChange(sp.species)}
                             disabled={!isUnlocked}
                             className={`relative flex items-center gap-2 px-2.5 py-2.5 rounded-xl border transition-all ${
                               !isUnlocked
@@ -322,7 +354,7 @@ export function FishCustomizer({ stockScore, currentCustomization, onSave, onClo
                     return (
                       <button
                         key={sp.species}
-                        onClick={() => isUnlocked && setSelectedSpecies(sp.species)}
+                        onClick={() => isUnlocked && handleSpeciesChange(sp.species)}
                         disabled={!isUnlocked}
                         className={`relative flex items-center gap-2 px-2.5 py-2.5 rounded-xl border transition-all ${
                           !isUnlocked
