@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { Fish, Users, Info, Sparkles, Palette, Shell, Anchor, TreePalm, Castle, Pyramid, Landmark, Waves, Sailboat, Ship, UserPlus, Plus, Minus, Skull } from 'lucide-react'
+import { Fish, Users, Info, Sparkles, Palette, Shell, Anchor, Flame, Castle, Pyramid, Landmark, Waves, Sailboat, Ship, UserPlus, Plus, Minus, Skull } from 'lucide-react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
@@ -33,7 +33,7 @@ interface PersonalFishbowlData {
 
 const DECOR_THEMES = [
   { id: 'ocean', name: 'Ocean Reef', icon: Shell, description: 'Coral reef with ocean plants' },
-  { id: 'tropical', name: 'Tropical', icon: TreePalm, description: 'Lush tropical vegetation' },
+  { id: 'volcano', name: 'Volcano', icon: Flame, description: 'Volcanic reef with lava vents' },
   { id: 'shipwreck', name: 'Shipwreck', icon: Anchor, description: 'Sunken ship vibes' },
   { id: 'sailboat', name: 'Sailboat', icon: Sailboat, description: 'Sunken sailboat wreck' },
   { id: 'submarine', name: 'Submarine', icon: Ship, description: 'Sunken submarine base' },

@@ -14,7 +14,7 @@ export interface FishData {
 }
 
 // ── Behavioral state machine ────────────────────────────────────────
-type FishBehavior = 'cruise' | 'explore' | 'idle' | 'dart' | 'glide'
+type FishBehavior = 'cruise' | 'explore' | 'idle' | 'dart' | 'glide' | 'spiral'
 
 interface BehaviorConfig {
   minDuration: number // frames at 60fps
@@ -30,6 +30,7 @@ const BEHAVIORS: Record<FishBehavior, BehaviorConfig> = {
   idle: { minDuration: 90, maxDuration: 240, speedFactor: 0.15, turnRate: 0.01, tailFreq: 0.3 },
   dart: { minDuration: 30, maxDuration: 70, speedFactor: 2.2, turnRate: 0.06, tailFreq: 2.0 },
   glide: { minDuration: 60, maxDuration: 180, speedFactor: 0.5, turnRate: 0.008, tailFreq: 0.4 },
+  spiral: { minDuration: 200, maxDuration: 400, speedFactor: 0.8, turnRate: 0.06, tailFreq: 0.9 },
 }
 
 // Weighted transitions — each behavior has probabilities for what comes next
@@ -69,6 +70,13 @@ const BEHAVIOR_TRANSITIONS: Record<FishBehavior, { next: FishBehavior; weight: n
     { next: 'glide', weight: 10 },
     { next: 'dart', weight: 5 },
   ],
+  spiral: [
+    { next: 'cruise', weight: 40 },
+    { next: 'explore', weight: 25 },
+    { next: 'glide', weight: 20 },
+    { next: 'idle', weight: 10 },
+    { next: 'dart', weight: 5 },
+  ],
 }
 
 // ── Core fish state ─────────────────────────────────────────────────
@@ -98,6 +106,10 @@ interface SwimmingFishState {
   exiting: boolean
   direction: 'left' | 'right'
   phase: number
+  // Spiral state (temple theme)
+  spiralAngle: number
+  spiralCenterX: number
+  spiralCenterY: number
 }
 
 interface SwimmingFishProps {
@@ -138,11 +150,11 @@ const WALL_TURN_FORCE = 0.05
 type StructureZone = { left: number; right: number; top: number; bottom: number }
 const THEME_STRUCTURE_ZONES: Record<string, StructureZone[]> = {
   ocean:     [{ left: 0.18, right: 0.40, top: 0.50, bottom: 0.85 }, { left: 0.58, right: 0.78, top: 0.50, bottom: 0.85 }],
-  tropical:  [{ left: 0.15, right: 0.38, top: 0.52, bottom: 0.88 }, { left: 0.55, right: 0.75, top: 0.50, bottom: 0.85 }],
+  volcano:   [{ left: 0.15, right: 0.38, top: 0.52, bottom: 0.88 }, { left: 0.55, right: 0.75, top: 0.50, bottom: 0.85 }],
   shipwreck: [{ left: 0.0, right: 0.28, top: 0.45, bottom: 0.85 }, { left: 0.75, right: 0.95, top: 0.55, bottom: 0.88 }],
   sailboat:  [{ left: 0.35, right: 0.58, top: 0.55, bottom: 0.90 }, { left: 0.70, right: 0.82, top: 0.55, bottom: 0.85 }],
   submarine: [{ left: 0.28, right: 0.52, top: 0.55, bottom: 0.90 }],
-  castle:    [{ left: 0.20, right: 0.42, top: 0.50, bottom: 0.85 }, { left: 0.65, right: 0.85, top: 0.55, bottom: 0.88 }],
+  castle:    [],  // No avoidance — castle has open archways for fish to swim through
   pyramid:   [{ left: 0.05, right: 0.28, top: 0.52, bottom: 0.88 }, { left: 0.60, right: 0.80, top: 0.55, bottom: 0.88 }],
   temple:    [{ left: 0.10, right: 0.32, top: 0.50, bottom: 0.85 }, { left: 0.55, right: 0.75, top: 0.48, bottom: 0.85 }],
   atlantis:  [{ left: 0.08, right: 0.30, top: 0.50, bottom: 0.85 }, { left: 0.65, right: 0.85, top: 0.50, bottom: 0.85 }],
@@ -253,6 +265,9 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
       exiting: false,
       direction: enterFromLeft ? 'right' : 'left',
       phase: Math.random() * Math.PI * 2,
+      spiralAngle: 0,
+      spiralCenterX: 0,
+      spiralCenterY: 0,
     }
 
     setPos({
@@ -285,10 +300,29 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
         // ─── 1. Behavior timer & transitions ──────────────────
         s.behaviorTimer -= dt
         if (s.behaviorTimer <= 0) {
-          const nextBehavior = weightedRandom(BEHAVIOR_TRANSITIONS[s.behavior])
+          let nextBehavior = weightedRandom(BEHAVIOR_TRANSITIONS[s.behavior])
           s.behavior = nextBehavior
           const nextCfg = BEHAVIORS[nextBehavior]
           s.behaviorTimer = randomBetween(nextCfg.minDuration, nextCfg.maxDuration)
+
+          // Temple theme: chance to spiral around pagoda
+          if (theme === 'temple' && (nextBehavior === 'explore' || nextBehavior === 'cruise')) {
+            // Pagoda zone (2nd structure) center in screen coords
+            const pagodaZone = THEME_STRUCTURE_ZONES.temple?.[1]
+            if (pagodaZone && Math.random() < 0.3) {
+              const pcx = ((pagodaZone.left + pagodaZone.right) / 2) * containerWidth
+              const pcy = ((pagodaZone.top + pagodaZone.bottom) / 2) * containerHeight
+              const distToPagoda = Math.sqrt((s.x - pcx) ** 2 + (s.y - pcy) ** 2)
+              if (distToPagoda < containerWidth * 0.35) {
+                s.behavior = 'spiral'
+                nextBehavior = 'spiral' as FishBehavior
+                s.behaviorTimer = randomBetween(200, 400)
+                s.spiralCenterX = pcx
+                s.spiralCenterY = pcy
+                s.spiralAngle = Math.atan2(s.y - pcy, s.x - pcx)
+              }
+            }
+          }
 
           // Pick a new waypoint when changing behavior
           if (nextBehavior === 'explore' || nextBehavior === 'cruise') {
@@ -312,18 +346,31 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
         s.speed += (targetSpeed - s.speed) * 0.04 * dt
         s.speed = Math.max(0.1, s.speed)
 
-        // ─── 3. Waypoint steering (explore/cruise) ────────────
-        const dxWP = s.waypointX - s.x
-        const dyWP = s.waypointY - s.y
-        const distToWP = Math.sqrt(dxWP * dxWP + dyWP * dyWP)
+        // ─── 3. Waypoint steering / spiral ─────────────────────
+        if (s.behavior === 'spiral') {
+          // Spiral around pagoda: orbit while rising
+          const spiralRadius = 60 + Math.sin(s.spiralAngle * 0.5) * 15
+          s.spiralAngle += 0.02 * dt // angular velocity
+          // Gradually rise (move center upward)
+          s.spiralCenterY -= 0.15 * dt
+          const targetX = s.spiralCenterX + Math.cos(s.spiralAngle) * spiralRadius
+          const targetY = s.spiralCenterY + Math.sin(s.spiralAngle) * spiralRadius
+          s.targetHeading = Math.atan2(targetY - s.y, targetX - s.x)
+          s.waypointX = targetX
+          s.waypointY = targetY
+        } else {
+          const dxWP = s.waypointX - s.x
+          const dyWP = s.waypointY - s.y
+          const distToWP = Math.sqrt(dxWP * dxWP + dyWP * dyWP)
 
-        if (distToWP < 50) {
-          // Reached waypoint — pick a new one
-          const wp = pickWaypoint(containerWidth, containerHeight, s.x, s.y, contained)
-          s.waypointX = wp.x
-          s.waypointY = wp.y
+          if (distToWP < 50) {
+            // Reached waypoint — pick a new one
+            const wp = pickWaypoint(containerWidth, containerHeight, s.x, s.y, contained)
+            s.waypointX = wp.x
+            s.waypointY = wp.y
+          }
+          s.targetHeading = Math.atan2(s.waypointY - s.y, s.waypointX - s.x)
         }
-        s.targetHeading = Math.atan2(s.waypointY - s.y, s.waypointX - s.x)
 
         // ─── 4. Boids: separation, alignment, cohesion ────────
         let sepX = 0, sepY = 0, sepCount = 0

@@ -37,11 +37,16 @@ const CRAB_MATE_COLORS: CrabColors[] = [
   },
 ]
 
-const CrabSVG = memo(({ id, facingRight, size = 48, variant = 0 }: {
-  id: string; facingRight: boolean; size?: number; variant?: number
+const CrabSVG = memo(({ id, facingRight, size = 48, variant = 0, walkPhase = 0 }: {
+  id: string; facingRight: boolean; size?: number; variant?: number; walkPhase?: number
 }) => {
   const scaleX = facingRight ? 1 : -1
   const c = CRAB_MATE_COLORS[variant % 2]
+  // Leg animation offsets — alternating gait pattern
+  const legSwing = (pair: number) => {
+    const offset = pair * Math.PI * 0.5 // each pair offset by 90 degrees
+    return Math.sin(walkPhase + offset) * 6
+  }
   return (
     <svg width={size} height={size * 0.75} viewBox="0 0 80 60" fill="none">
       <defs>
@@ -75,46 +80,43 @@ const CrabSVG = memo(({ id, facingRight, size = 48, variant = 0 }: {
       </defs>
       <g transform={`translate(40, 30) scale(${scaleX}, 1) translate(-40, -30)`}>
 
-        {/* === WALKING LEGS (4 pairs, behind body) === */}
+        {/* === WALKING LEGS (4 pairs, animated with alternating gait) === */}
         {/* Back legs — pair 4 (rearmost) */}
-        <path d="M22 32 Q16 40 10 46 Q8 48 6 46" stroke={`url(#cl-${id})`} strokeWidth="2.2" fill="none" strokeLinecap="round" />
-        <path d="M58 32 Q64 40 70 46 Q72 48 74 46" stroke={`url(#cl-${id})`} strokeWidth="2.2" fill="none" strokeLinecap="round" />
+        <path d={`M22 32 Q${16 + legSwing(3)} 40 ${10 + legSwing(3)} 46 Q${8 + legSwing(3)} 48 ${6 + legSwing(3)} 46`} stroke={`url(#cl-${id})`} strokeWidth="2.2" fill="none" strokeLinecap="round" />
+        <path d={`M58 32 Q${64 - legSwing(3)} 40 ${70 - legSwing(3)} 46 Q${72 - legSwing(3)} 48 ${74 - legSwing(3)} 46`} stroke={`url(#cl-${id})`} strokeWidth="2.2" fill="none" strokeLinecap="round" />
         {/* Pair 3 */}
-        <path d="M26 34 Q20 42 14 50 Q12 52 10 50" stroke={`url(#cl-${id})`} strokeWidth="2.0" fill="none" strokeLinecap="round" />
-        <path d="M54 34 Q60 42 66 50 Q68 52 70 50" stroke={`url(#cl-${id})`} strokeWidth="2.0" fill="none" strokeLinecap="round" />
+        <path d={`M26 34 Q${20 + legSwing(2)} 42 ${14 + legSwing(2)} 50 Q${12 + legSwing(2)} 52 ${10 + legSwing(2)} 50`} stroke={`url(#cl-${id})`} strokeWidth="2.0" fill="none" strokeLinecap="round" />
+        <path d={`M54 34 Q${60 - legSwing(2)} 42 ${66 - legSwing(2)} 50 Q${68 - legSwing(2)} 52 ${70 - legSwing(2)} 50`} stroke={`url(#cl-${id})`} strokeWidth="2.0" fill="none" strokeLinecap="round" />
         {/* Pair 2 */}
-        <path d="M30 33 Q24 44 18 52 Q16 54 14 52" stroke={`url(#cl-${id})`} strokeWidth="1.8" fill="none" strokeLinecap="round" />
-        <path d="M50 33 Q56 44 62 52 Q64 54 66 52" stroke={`url(#cl-${id})`} strokeWidth="1.8" fill="none" strokeLinecap="round" />
+        <path d={`M30 33 Q${24 + legSwing(1)} 44 ${18 + legSwing(1)} 52 Q${16 + legSwing(1)} 54 ${14 + legSwing(1)} 52`} stroke={`url(#cl-${id})`} strokeWidth="1.8" fill="none" strokeLinecap="round" />
+        <path d={`M50 33 Q${56 - legSwing(1)} 44 ${62 - legSwing(1)} 52 Q${64 - legSwing(1)} 54 ${66 - legSwing(1)} 52`} stroke={`url(#cl-${id})`} strokeWidth="1.8" fill="none" strokeLinecap="round" />
         {/* Front legs — pair 1 */}
-        <path d="M34 30 Q28 42 22 50 Q20 52 18 50" stroke={`url(#cl-${id})`} strokeWidth="1.8" fill="none" strokeLinecap="round" />
-        <path d="M46 30 Q52 42 58 50 Q60 52 62 50" stroke={`url(#cl-${id})`} strokeWidth="1.8" fill="none" strokeLinecap="round" />
-        {/* Leg joint dots — more prominent */}
-        <circle cx="16" cy="42" r="1.0" fill={c.legBottom} opacity="0.5" />
-        <circle cx="64" cy="42" r="1.0" fill={c.legBottom} opacity="0.5" />
-        <circle cx="20" cy="44" r="1.0" fill={c.legBottom} opacity="0.5" />
-        <circle cx="60" cy="44" r="1.0" fill={c.legBottom} opacity="0.5" />
-        {/* Extra leg articulation highlights */}
-        <circle cx="14" cy="48" r="0.6" fill={c.accent} opacity="0.2" />
-        <circle cx="66" cy="48" r="0.6" fill={c.accent} opacity="0.2" />
+        <path d={`M34 30 Q${28 + legSwing(0)} 42 ${22 + legSwing(0)} 50 Q${20 + legSwing(0)} 52 ${18 + legSwing(0)} 50`} stroke={`url(#cl-${id})`} strokeWidth="1.8" fill="none" strokeLinecap="round" />
+        <path d={`M46 30 Q${52 - legSwing(0)} 42 ${58 - legSwing(0)} 50 Q${60 - legSwing(0)} 52 ${62 - legSwing(0)} 50`} stroke={`url(#cl-${id})`} strokeWidth="1.8" fill="none" strokeLinecap="round" />
+        {/* Leg joint dots */}
+        <circle cx={16 + legSwing(3) * 0.5} cy="42" r="1.0" fill={c.legBottom} opacity="0.5" />
+        <circle cx={64 - legSwing(3) * 0.5} cy="42" r="1.0" fill={c.legBottom} opacity="0.5" />
+        <circle cx={20 + legSwing(2) * 0.5} cy="44" r="1.0" fill={c.legBottom} opacity="0.5" />
+        <circle cx={60 - legSwing(2) * 0.5} cy="44" r="1.0" fill={c.legBottom} opacity="0.5" />
 
-        {/* === CLAWS (chelipeds) — robust, well-formed adult claws === */}
-        {/* Left claw arm */}
-        <path d="M28 24 Q20 18 14 14 Q10 12 8 14" stroke={`url(#cc-${id})`} strokeWidth="3.0" fill="none" strokeLinecap="round" />
-        {/* Left claw pincer — thicker, more defined */}
-        <path d="M10 10 Q5 6 3 9 Q2 12 5 14 Q8 15 10 14" fill={`url(#cc-${id})`} />
-        <path d="M10 14 Q7 18 5 19 Q3 18 4 15" fill={c.clawTip} />
-        {/* Left claw serration detail */}
-        <path d="M6 12 L5 11 M7 13 L6 12.5" stroke={c.carapaceDeep} strokeWidth="0.3" fill="none" opacity="0.35" />
-        {/* Right claw arm */}
-        <path d="M52 24 Q60 18 66 14 Q70 12 72 14" stroke={`url(#cc-${id})`} strokeWidth="3.0" fill="none" strokeLinecap="round" />
-        {/* Right claw pincer */}
-        <path d="M70 10 Q75 6 77 9 Q78 12 75 14 Q72 15 70 14" fill={`url(#cc-${id})`} />
-        <path d="M70 14 Q73 18 75 19 Q77 18 76 15" fill={c.clawTip} />
-        {/* Right claw serration detail */}
-        <path d="M74 12 L75 11 M73 13 L74 12.5" stroke={c.carapaceDeep} strokeWidth="0.3" fill="none" opacity="0.35" />
+        {/* === CLAWS (chelipeds) — held up at 90 degrees, defensive posture === */}
+        {/* Left claw arm — angled upward */}
+        <path d="M28 22 Q22 14 18 6 Q16 2 14 4" stroke={`url(#cc-${id})`} strokeWidth="3.0" fill="none" strokeLinecap="round" />
+        {/* Left claw pincer — open, pointing up */}
+        <path d="M16 2 Q10 -4 8 -1 Q7 3 10 5 Q13 6 15 4" fill={`url(#cc-${id})`} />
+        <path d="M15 4 Q12 8 10 9 Q8 8 9 5" fill={c.clawTip} />
+        {/* Left claw serration */}
+        <path d="M10 1 L9 0 M11 2 L10 1" stroke={c.carapaceDeep} strokeWidth="0.3" fill="none" opacity="0.35" />
+        {/* Right claw arm — angled upward */}
+        <path d="M52 22 Q58 14 62 6 Q64 2 66 4" stroke={`url(#cc-${id})`} strokeWidth="3.0" fill="none" strokeLinecap="round" />
+        {/* Right claw pincer — open, pointing up */}
+        <path d="M64 2 Q70 -4 72 -1 Q73 3 70 5 Q67 6 65 4" fill={`url(#cc-${id})`} />
+        <path d="M65 4 Q68 8 70 9 Q72 8 71 5" fill={c.clawTip} />
+        {/* Right claw serration */}
+        <path d="M70 1 L71 0 M69 2 L70 1" stroke={c.carapaceDeep} strokeWidth="0.3" fill="none" opacity="0.35" />
         {/* Claw highlights — wet gleam */}
-        <path d="M6 9 Q7.5 8 9 10" stroke="white" strokeWidth="0.5" fill="none" opacity="0.3" />
-        <path d="M73 9 Q74.5 8 76 10" stroke="white" strokeWidth="0.5" fill="none" opacity="0.3" />
+        <path d="M10 -2 Q11.5 -3 13 -1" stroke="white" strokeWidth="0.5" fill="none" opacity="0.3" />
+        <path d="M69 -2 Q70.5 -3 72 -1" stroke="white" strokeWidth="0.5" fill="none" opacity="0.3" />
 
         {/* === CARAPACE (main shell body — wide oval) === */}
         <ellipse cx="40" cy="26" rx="18" ry="12" fill={`url(#cb-${id})`} />
@@ -376,7 +378,7 @@ export const CrabGroup = memo(({ containerWidth, containerHeight, contained = fa
 }) => {
   const count = 2 // always a mated pair
   const crabsRef = useRef<CrabMotion[]>([])
-  const [positions, setPositions] = useState<{ x: number; y: number; facingRight: boolean }[]>([])
+  const [positions, setPositions] = useState<{ x: number; y: number; facingRight: boolean; walkPhase: number }[]>([])
 
   // Initialize the mated pair — start near each other
   useEffect(() => {
@@ -393,7 +395,7 @@ export const CrabGroup = memo(({ containerWidth, containerHeight, contained = fa
       return createCrabMotion(startX, startY)
     })
 
-    setPositions(crabsRef.current.map(c => ({ x: c.x, y: c.y, facingRight: c.facingRight })))
+    setPositions(crabsRef.current.map(c => ({ x: c.x, y: c.y, facingRight: c.facingRight, walkPhase: c.wobblePhase })))
   }, [containerWidth, containerHeight, count])
 
   // Movement loop — 10 fps, CSS transitions smooth the visual
@@ -426,7 +428,7 @@ export const CrabGroup = memo(({ containerWidth, containerHeight, contained = fa
       }
 
       setPositions(crabsRef.current.map(c => ({
-        x: c.x, y: c.y, facingRight: c.facingRight,
+        x: c.x, y: c.y, facingRight: c.facingRight, walkPhase: c.wobblePhase,
       })))
     }, 100)
 
@@ -452,6 +454,7 @@ export const CrabGroup = memo(({ containerWidth, containerHeight, contained = fa
             facingRight={pos.facingRight}
             size={CRAB_MATE_SIZES[i]}
             variant={i}
+            walkPhase={pos.walkPhase}
           />
         </div>
       ))}
