@@ -846,32 +846,27 @@ export default function MyVolitionPage() {
       )}
 
       {/* ═══ CONTENT SECTIONS ═══ */}
-      <main className="pb-24 space-y-2">
+      <main className="pb-24 space-y-4 px-4 sm:px-6 lg:px-8">
         {orderedLanes
           .filter(lane => lane.id !== 'profile')
-          .map((lane, i) => {
+          .map((lane) => {
             const Icon = iconMap[lane.icon as keyof typeof iconMap] || User
             const addConfig = getAddConfig(lane.id)
 
             return (
-              <section key={lane.id}>
-                {i > 0 && <SectionDivider />}
-
-                <SectionHeader
-                  title={lane.title}
-                  icon={Icon}
-                  count={getLaneCount(lane.id)}
-                  gradient={lane.gradient}
-                  onAdd={addConfig.onAdd}
-                  addLabel={addConfig.label}
-                  isCustomizing={isCustomizing}
-                  onRemove={() => toggleLane(lane.id)}
-                />
-
-                <VerticalGrid>
-                  {renderSectionContent(lane.id)}
-                </VerticalGrid>
-              </section>
+              <NetflixLane
+                key={lane.id}
+                title={lane.title}
+                icon={Icon}
+                count={getLaneCount(lane.id)}
+                gradient={lane.gradient}
+                onAdd={addConfig.onAdd}
+                addLabel={addConfig.label}
+                isCustomizing={isCustomizing}
+                onRemove={() => toggleLane(lane.id)}
+              >
+                {renderLaneContent(lane.id)}
+              </NetflixLane>
             )
           })}
       </main>
