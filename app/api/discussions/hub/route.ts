@@ -22,6 +22,7 @@ export async function GET(request: NextRequest) {
       recentArticleComments,
       recentProjectDiscussions,
       recentModuleDiscussions,
+      recentLikes,
     ] = await Promise.all([
       prisma.user.findMany({
         select: { id: true, name: true, image: true, createdAt: true },
@@ -109,6 +110,15 @@ export async function GET(request: NextRequest) {
           author: { select: { id: true, name: true, image: true } },
           article: { select: { slug: true, title: true } },
           _count: { select: { replies: true } },
+        },
+        orderBy: { createdAt: 'desc' },
+        take: 5,
+      }),
+      prisma.socialLike.findMany({
+        select: {
+          id: true, createdAt: true,
+          user: { select: { id: true, name: true, image: true } },
+          post: { select: { id: true, content: true, user: { select: { name: true } } } },
         },
         orderBy: { createdAt: 'desc' },
         take: 5,
@@ -251,6 +261,19 @@ export async function GET(request: NextRequest) {
         targetUrl: `/articles/${d.article.slug}`, imageUrl: null,
         engagement: d._count.replies,
         createdAt: d.createdAt.toISOString(),
+      })
+    }
+
+    for (const l of recentLikes) {
+      const postPreview = l.post.content?.slice(0, 80) || ''
+      items.push({
+        id: `like-${l.id}`, type: 'like', category: 'discussions',
+        title: `${l.user.name || 'Someone'} liked ${l.post.user?.name || 'a'}'s post`,
+        preview: postPreview,
+        userName: l.user.name || 'Anonymous', userImage: l.user.image, userId: l.user.id,
+        targetUrl: `/social`, imageUrl: null,
+        engagement: 0,
+        createdAt: l.createdAt.toISOString(),
       })
     }
 

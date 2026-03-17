@@ -34,8 +34,11 @@ interface SplashEffect {
 
 // ── Constants ──────────────────────────────────────────────────────────────
 
-const LANE_NAMES = ['Posts', 'Articles', 'Projects', 'Events', 'Members']
-const LANE_KEYS = ['posts', 'articles', 'projects', 'events', 'members']
+const LANE_NAMES = ['Posts', 'Comments', 'Discussions', 'Likes', 'Dislikes']
+const LANE_KEYS = ['posts', 'comments', 'discussions', 'likes', 'dislikes']
+
+// Only these types belong on the discussions page
+const DISCUSSION_TYPES = new Set(['post', 'comment', 'forum_post', 'like', 'dislike'])
 const NOTE_FALL_DURATION = 12 // seconds to fall from top to bottom
 const NOTE_SPAWN_INTERVAL = 2500 // ms between spawning notes
 const REFETCH_THRESHOLD = 5 // refetch when queue has fewer items
@@ -69,8 +72,9 @@ export function GuitarHeroFeed() {
       const json = await res.json()
       if (json.success) {
         setHubData(json.data)
-        // Shuffle items for variety and add to queue
-        const shuffled = [...json.data.items].sort(() => Math.random() - 0.5)
+        // Filter to discussion-only items, then shuffle for variety
+        const discussionItems = json.data.items.filter((i: ActivityItem) => DISCUSSION_TYPES.has(i.type))
+        const shuffled = [...discussionItems].sort(() => Math.random() - 0.5)
         queueRef.current = [...queueRef.current, ...shuffled]
       }
     } catch (err) {
@@ -150,8 +154,10 @@ export function GuitarHeroFeed() {
         if (!pusherClient) return
         channel = pusherClient.subscribe('activity')
         channel.bind('new-activity', (newItem: ActivityItem) => {
-          // Push to front of queue for immediate display
-          queueRef.current.unshift(newItem)
+          // Only show discussion-related items
+          if (DISCUSSION_TYPES.has(newItem.type)) {
+            queueRef.current.unshift(newItem)
+          }
         })
       } catch {
         // Pusher not configured, rely on refetch
