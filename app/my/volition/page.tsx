@@ -23,8 +23,6 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
-  ChevronDown,
-  ChevronUp,
 } from 'lucide-react'
 
 import { useVolitionLayout, LaneId, DEFAULT_LANES } from '@/hooks/useVolitionLayout'
@@ -55,10 +53,10 @@ const iconMap = {
   Rocket,
 }
 
-// ─── Netflix Lane ───────────────────────────────────────────────────────────
-// Full-width lane with horizontal scrolling cards (Netflix-style row)
+// ─── Column Lane ────────────────────────────────────────────────────────────
+// Fixed-width vertical column with vertically scrolling cards
 
-function NetflixLane({
+function ColumnLane({
   title,
   icon: Icon,
   count,
@@ -81,10 +79,78 @@ function NetflixLane({
   children: React.ReactNode
   emptyState?: React.ReactNode
 }) {
+  return (
+    <div className="w-[340px] min-w-[340px] flex flex-col bg-[var(--card)] rounded-2xl border-2 border-[var(--border)] overflow-hidden transition-all max-h-[calc(100vh-280px)]">
+      {/* Lane Header */}
+      <div className={`flex items-center justify-between p-3 bg-gradient-to-r ${gradient} bg-opacity-10 flex-shrink-0`}>
+        <div className="flex items-center gap-2.5">
+          <div className={`w-8 h-8 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center`}>
+            <Icon className="w-4 h-4 text-white" />
+          </div>
+          <div>
+            <h3 className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wide">
+              {title}
+            </h3>
+            {count > 0 && (
+              <span className="text-[11px] font-medium text-[var(--foreground)]/50">
+                {count} item{count !== 1 ? 's' : ''}
+              </span>
+            )}
+          </div>
+        </div>
+
+        <div className="flex items-center gap-1">
+          {onAdd && !isCustomizing && (
+            <button
+              onClick={onAdd}
+              className="p-1.5 rounded-lg hover:bg-[var(--muted)] transition-colors"
+              title={addLabel}
+            >
+              <Plus className="w-4 h-4 text-[var(--foreground)]/60" />
+            </button>
+          )}
+          {isCustomizing && onRemove && (
+            <button
+              onClick={onRemove}
+              className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 transition-colors"
+            >
+              <X className="w-3.5 h-3.5 text-red-500" />
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Lane Content - Vertical Scroll */}
+      <div
+        className="flex-1 overflow-y-auto p-3 space-y-3"
+        style={{ scrollbarWidth: 'thin' }}
+      >
+        {count === 0 && emptyState ? emptyState : children}
+      </div>
+
+      {/* Bottom add button */}
+      {onAdd && !isCustomizing && (
+        <div className="px-3 pb-3 flex-shrink-0">
+          <button
+            onClick={onAdd}
+            className="w-full flex items-center justify-center gap-2 py-2 rounded-xl border-2 border-dashed border-[var(--border)] hover:border-[var(--primary)] hover:bg-[var(--primary)]/5 text-xs font-medium text-[var(--foreground)]/50 hover:text-[var(--primary)] transition-all"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            {addLabel || 'Add'}
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ─── Lane Scroller ──────────────────────────────────────────────────────────
+// Netflix-style horizontal scroller for the column lanes
+
+function LaneScroller({ children }: { children: React.ReactNode }) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(false)
-  const [isCollapsed, setIsCollapsed] = useState(false)
 
   const checkScroll = useCallback(() => {
     const el = scrollRef.current
@@ -103,116 +169,43 @@ function NetflixLane({
       el.removeEventListener('scroll', checkScroll)
       window.removeEventListener('resize', checkScroll)
     }
-  }, [checkScroll, isCollapsed])
+  }, [checkScroll])
 
   const scroll = (dir: 'left' | 'right') => {
-    scrollRef.current?.scrollBy({ left: dir === 'left' ? -340 : 340, behavior: 'smooth' })
+    scrollRef.current?.scrollBy({ left: dir === 'left' ? -360 : 360, behavior: 'smooth' })
   }
 
   return (
-    <div className="bg-[var(--card)] rounded-2xl border-2 border-[var(--border)] overflow-hidden transition-all">
-      {/* Lane Header */}
-      <div className={`flex items-center justify-between p-4 bg-gradient-to-r ${gradient} bg-opacity-10`}>
-        <div className="flex items-center gap-3">
-          <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center`}>
-            <Icon className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <h3 className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wide">
-              {title}
-            </h3>
-            {count > 0 && (
-              <span className="text-xs font-medium text-[var(--foreground)]/50">
-                {count} item{count !== 1 ? 's' : ''}
-              </span>
-            )}
-          </div>
-        </div>
+    <div className="relative pb-24">
+      {/* Chevron nav */}
+      <button
+        onClick={() => scroll('left')}
+        className={`absolute left-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-[var(--card)] shadow-xl border border-[var(--border)] flex items-center justify-center transition-all ${
+          canScrollLeft ? 'opacity-100 hover:scale-110' : 'opacity-0 pointer-events-none'
+        }`}
+      >
+        <ChevronLeft className="w-5 h-5 text-[var(--foreground)]" />
+      </button>
+      <button
+        onClick={() => scroll('right')}
+        className={`absolute right-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-[var(--card)] shadow-xl border border-[var(--border)] flex items-center justify-center transition-all ${
+          canScrollRight ? 'opacity-100 hover:scale-110' : 'opacity-0 pointer-events-none'
+        }`}
+      >
+        <ChevronRight className="w-5 h-5 text-[var(--foreground)]" />
+      </button>
 
-        <div className="flex items-center gap-1">
-          {onAdd && !isCustomizing && (
-            <button
-              onClick={onAdd}
-              className="p-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
-              title={addLabel}
-            >
-              <Plus className="w-4 h-4 text-[var(--foreground)]/60" />
-            </button>
-          )}
-          {!isCustomizing && (
-            <button
-              onClick={() => setIsCollapsed(!isCollapsed)}
-              className="p-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
-            >
-              {isCollapsed ? (
-                <ChevronDown className="w-4 h-4 text-[var(--foreground)]/60" />
-              ) : (
-                <ChevronUp className="w-4 h-4 text-[var(--foreground)]/60" />
-              )}
-            </button>
-          )}
-          {isCustomizing && onRemove && (
-            <button
-              onClick={onRemove}
-              className="p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 transition-colors"
-            >
-              <X className="w-4 h-4 text-red-500" />
-            </button>
-          )}
-        </div>
+      {/* Fade edges */}
+      <div className={`absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-[var(--background)] to-transparent pointer-events-none z-20 transition-opacity ${canScrollLeft ? 'opacity-100' : 'opacity-0'}`} />
+      <div className={`absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-[var(--background)] to-transparent pointer-events-none z-20 transition-opacity ${canScrollRight ? 'opacity-100' : 'opacity-0'}`} />
+
+      <div
+        ref={scrollRef}
+        className="flex gap-4 overflow-x-auto scroll-smooth px-4 sm:px-6 lg:px-8 py-2"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        {children}
       </div>
-
-      {/* Lane Content - Horizontal Scroll */}
-      {!isCollapsed && (
-        <div className="relative">
-          {/* Chevron nav */}
-          <button
-            onClick={() => scroll('left')}
-            className={`absolute left-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-[var(--card)] shadow-lg border border-[var(--border)] flex items-center justify-center transition-all ${
-              canScrollLeft ? 'opacity-100 hover:scale-110' : 'opacity-0 pointer-events-none'
-            }`}
-          >
-            <ChevronLeft className="w-4 h-4 text-[var(--foreground)]" />
-          </button>
-          <button
-            onClick={() => scroll('right')}
-            className={`absolute right-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-[var(--card)] shadow-lg border border-[var(--border)] flex items-center justify-center transition-all ${
-              canScrollRight ? 'opacity-100 hover:scale-110' : 'opacity-0 pointer-events-none'
-            }`}
-          >
-            <ChevronRight className="w-4 h-4 text-[var(--foreground)]" />
-          </button>
-
-          {/* Fade edges */}
-          <div className={`absolute left-0 top-0 bottom-0 w-10 bg-gradient-to-r from-[var(--card)] to-transparent pointer-events-none z-10 transition-opacity ${canScrollLeft ? 'opacity-100' : 'opacity-0'}`} />
-          <div className={`absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-[var(--card)] to-transparent pointer-events-none z-10 transition-opacity ${canScrollRight ? 'opacity-100' : 'opacity-0'}`} />
-
-          <div
-            ref={scrollRef}
-            className="flex gap-4 overflow-x-auto scroll-smooth p-4"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {count === 0 && emptyState ? emptyState : children}
-          </div>
-
-          <style jsx global>{`
-            .scrollbar-none::-webkit-scrollbar { display: none; }
-          `}</style>
-        </div>
-      )}
-
-      {/* Bottom add button */}
-      {onAdd && !isCollapsed && !isCustomizing && (
-        <div className="px-4 pb-3">
-          <button
-            onClick={onAdd}
-            className="w-full flex items-center justify-center gap-2 py-2 rounded-xl border-2 border-dashed border-[var(--border)] hover:border-[var(--primary)] hover:bg-[var(--primary)]/5 text-sm font-medium text-[var(--foreground)]/50 hover:text-[var(--primary)] transition-all"
-          >
-            <Plus className="w-4 h-4" />
-            {addLabel || 'Add'}
-          </button>
-        </div>
-      )}
     </div>
   )
 }
@@ -231,7 +224,7 @@ function LaneEmptyState({
   href?: string
 }) {
   return (
-    <div className="min-w-[260px] flex flex-col items-center justify-center py-8 px-6 text-center bg-[var(--muted)]/30 rounded-xl border-2 border-dashed border-[var(--border)]">
+    <div className="flex flex-col items-center justify-center py-8 px-4 text-center bg-[var(--muted)]/30 rounded-xl border-2 border-dashed border-[var(--border)]">
       <div className="w-10 h-10 rounded-xl bg-[var(--muted)] flex items-center justify-center mb-2">
         <Icon className="w-5 h-5 text-[var(--foreground)]/30" />
       </div>
@@ -249,11 +242,11 @@ function LaneEmptyState({
 }
 
 // ─── Lane Card ──────────────────────────────────────────────────────────────
-// Fixed-width card for horizontal scrolling inside a lane
+// Full-width card for vertical stacking inside a column lane
 
-function LaneCard({ children, wide }: { children: React.ReactNode; wide?: boolean }) {
+function LaneCard({ children }: { children: React.ReactNode; wide?: boolean }) {
   return (
-    <div className={`${wide ? 'min-w-[380px] w-[380px]' : 'min-w-[300px] w-[300px]'} flex-shrink-0`}>
+    <div className="w-full">
       {children}
     </div>
   )
@@ -845,8 +838,8 @@ export default function MyVolitionPage() {
         </section>
       )}
 
-      {/* ═══ CONTENT SECTIONS ═══ */}
-      <main className="pb-24 space-y-4 px-4 sm:px-6 lg:px-8">
+      {/* ═══ CONTENT LANES ═══ */}
+      <LaneScroller>
         {orderedLanes
           .filter(lane => lane.id !== 'profile')
           .map((lane) => {
@@ -854,7 +847,7 @@ export default function MyVolitionPage() {
             const addConfig = getAddConfig(lane.id)
 
             return (
-              <NetflixLane
+              <ColumnLane
                 key={lane.id}
                 title={lane.title}
                 icon={Icon}
@@ -866,10 +859,10 @@ export default function MyVolitionPage() {
                 onRemove={() => toggleLane(lane.id)}
               >
                 {renderLaneContent(lane.id)}
-              </NetflixLane>
+              </ColumnLane>
             )
           })}
-      </main>
+      </LaneScroller>
 
       {/* Quick Actions Bar */}
       <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40">
