@@ -7,6 +7,7 @@ import {
   getTierFromScore,
   getTierName,
   TIER_COLORS,
+  SPECIES_TO_TIER,
   SPECIES_COLOR_VARIANTS,
   GUPPY_VISUAL_TIER,
   type FishTier,
@@ -39,6 +40,7 @@ const ALL_SKINS: { species: FishSpecies; tier: FishTier; name: string; unlockSco
   { species: 'platy', tier: 0, name: 'Platy', unlockScore: 0, description: 'Compact rounded fan-tail fish' },
   { species: 'danio', tier: 0, name: 'Danio', unlockScore: 0, description: 'Sleek torpedo with bright stripes' },
   { species: 'minnow', tier: 0, name: 'Minnow', unlockScore: 0, description: 'Slim, simple freshwater classic' },
+  { species: 'rasbora', tier: 0, name: 'Rasbora', unlockScore: 0, description: 'Tiny torpedo with bold stripe' },
   // Tier 1 skins — Tetra (10 STOCK)
   { species: 'neon-tetra', tier: 1, name: 'Neon Tetra', unlockScore: 10, description: 'Iconic iridescent stripe' },
   { species: 'ember-tetra', tier: 1, name: 'Ember Tetra', unlockScore: 10, description: 'Warm fiery schooling fish' },
@@ -46,6 +48,7 @@ const ALL_SKINS: { species: FishSpecies; tier: FishTier; name: string; unlockSco
   { species: 'rummy-tetra', tier: 1, name: 'Rummy-Nose Tetra', unlockScore: 10, description: 'Red-nosed schooling classic' },
   { species: 'serpae-tetra', tier: 1, name: 'Serpae Tetra', unlockScore: 10, description: 'Deep-bodied flame tetra' },
   { species: 'glowlight-tetra', tier: 1, name: 'Glowlight Tetra', unlockScore: 10, description: 'Subtle glowing stripe' },
+  { species: 'corydoras', tier: 1, name: 'Corydoras', unlockScore: 10, description: 'Armored catfish with whiskers' },
   // Tier 2 skins — Angelfish (25 STOCK)
   { species: 'angelfish', tier: 2, name: 'Angelfish', unlockScore: 25, description: 'Tall diamond with trailing fins' },
   { species: 'marble-angelfish', tier: 2, name: 'Marble Angelfish', unlockScore: 25, description: 'Marbled pattern angelfish' },
@@ -53,6 +56,7 @@ const ALL_SKINS: { species: FishSpecies; tier: FishTier; name: string; unlockSco
   { species: 'platinum-angelfish', tier: 2, name: 'Platinum Angelfish', unlockScore: 25, description: 'Clean shimmering angelfish' },
   { species: 'zebra-angelfish', tier: 2, name: 'Zebra Angelfish', unlockScore: 25, description: 'Extra-striped angelfish' },
   { species: 'veil-angelfish', tier: 2, name: 'Veil Angelfish', unlockScore: 25, description: 'Extra-long flowing fins' },
+  { species: 'discus', tier: 2, name: 'Discus', unlockScore: 25, description: 'Perfect disc-shaped king of aquaria' },
   // Tier 3 skins — Clownfish (50 STOCK)
   { species: 'clownfish', tier: 3, name: 'Clownfish', unlockScore: 50, description: 'Iconic striped reef dweller' },
   { species: 'tomato-clownfish', tier: 3, name: 'Tomato Clownfish', unlockScore: 50, description: 'Larger deeper red clownfish' },
@@ -60,6 +64,7 @@ const ALL_SKINS: { species: FishSpecies; tier: FishTier; name: string; unlockSco
   { species: 'saddleback-clownfish', tier: 3, name: 'Saddleback Clownfish', unlockScore: 50, description: 'Elongated with saddle marking' },
   { species: 'cinnamon-clownfish', tier: 3, name: 'Cinnamon Clownfish', unlockScore: 50, description: 'Warm brown-orange clownfish' },
   { species: 'snowflake-clownfish', tier: 3, name: 'Snowflake Clownfish', unlockScore: 50, description: 'Irregular white patterned' },
+  { species: 'butterflyfish', tier: 3, name: 'Butterflyfish', unlockScore: 50, description: 'Tall body with pointed snout and eyespot' },
   // Tier 4 skins — Blue Tang (100 STOCK)
   { species: 'tang', tier: 4, name: 'Blue Tang', unlockScore: 100, description: 'Vibrant reef surgeonfish' },
   { species: 'yellow-tang', tier: 4, name: 'Yellow Tang', unlockScore: 100, description: 'Bright yellow reef tang' },
@@ -67,6 +72,7 @@ const ALL_SKINS: { species: FishSpecies; tier: FishTier; name: string; unlockSco
   { species: 'achilles-tang', tier: 4, name: 'Achilles Tang', unlockScore: 100, description: 'Dark body with orange accent' },
   { species: 'naso-tang', tier: 4, name: 'Naso Tang', unlockScore: 100, description: 'Unicorn tang with protruding nose' },
   { species: 'sailfin-tang', tier: 4, name: 'Sailfin Tang', unlockScore: 100, description: 'Large decorative dorsal fin' },
+  { species: 'moorish-idol', tier: 4, name: 'Moorish Idol', unlockScore: 100, description: 'Iconic trailing dorsal filament' },
   // Tier 5 skins — Royal Betta (200 STOCK)
   { species: 'betta', tier: 5, name: 'Betta', unlockScore: 200, description: 'Dramatic flowing veil fins' },
   { species: 'crown-betta', tier: 5, name: 'Crown Betta', unlockScore: 200, description: 'Spiky-rayed crown fins' },
@@ -74,6 +80,19 @@ const ALL_SKINS: { species: FishSpecies; tier: FishTier; name: string; unlockSco
   { species: 'plakat-betta', tier: 5, name: 'Plakat Betta', unlockScore: 200, description: 'Short-finned muscular fighter' },
   { species: 'galaxy-betta', tier: 5, name: 'Galaxy Betta', unlockScore: 200, description: 'Iridescent star-speckled' },
   { species: 'dragon-betta', tier: 5, name: 'Dragon Betta', unlockScore: 200, description: 'Thick metallic scaling' },
+  { species: 'mandarin', tier: 5, name: 'Mandarin Dragonet', unlockScore: 200, description: 'Psychedelic swirling patterns' },
+]
+
+// Standalone deluxe species — special unlocks with unique score thresholds
+const DELUXE_SKINS: { species: FishSpecies; name: string; unlockScore: number; description: string }[] = [
+  { species: 'shrimp', name: 'Cherry Shrimp', unlockScore: 35, description: 'Curved body, antennae, walking legs' },
+  { species: 'seahorse', name: 'Seahorse', unlockScore: 75, description: 'Upright swimmer with curled tail' },
+  { species: 'pufferfish', name: 'Pufferfish', unlockScore: 150, description: 'Round inflatable wonder with big eyes' },
+  { species: 'jellyfish', name: 'Jellyfish', unlockScore: 250, description: 'Ethereal bell with trailing tentacles' },
+  { species: 'stingray', name: 'Stingray', unlockScore: 300, description: 'Flat diamond glider with whip tail' },
+  { species: 'axolotl', name: 'Axolotl', unlockScore: 350, description: 'Smiling salamander with feathery gills' },
+  { species: 'nautilus', name: 'Nautilus', unlockScore: 400, description: 'Living fossil with spiral shell' },
+  { species: 'lionfish', name: 'Lionfish', unlockScore: 500, description: 'Ultimate: dramatic spines and fan fins' },
 ]
 
 const ALL_PATTERNS: { pattern: FishPattern; name: string; description: string }[] = [
@@ -192,7 +211,7 @@ export function FishCustomizer({ stockScore, currentCustomization, onSave, onClo
               <p className="text-xs font-bold text-cyan-300">
                 {getTierName(userTier)}
                 {selectedSpecies && (
-                  <span className="text-cyan-500 font-medium"> · {ALL_SKINS.find(s => s.species === selectedSpecies)?.name} skin</span>
+                  <span className="text-cyan-500 font-medium"> · {(ALL_SKINS.find(s => s.species === selectedSpecies) || DELUXE_SKINS.find(s => s.species === selectedSpecies))?.name} skin</span>
                 )}
               </p>
               <p className="text-[10px] text-cyan-500">{stockScore} STOCK · Tier {userTier + 1}</p>
@@ -288,6 +307,60 @@ export function FishCustomizer({ stockScore, currentCustomization, onSave, onClo
                   </div>
                 )
               })}
+
+              {/* Standalone Deluxe Species */}
+              <div>
+                <p className={`text-[9px] font-bold uppercase tracking-wider mb-1.5 text-amber-400`}>
+                  Deluxe Collection — Unique Creatures
+                </p>
+                <div className="grid grid-cols-2 gap-1.5">
+                  {DELUXE_SKINS.map(sp => {
+                    const isUnlocked = stockScore >= sp.unlockScore
+                    const isSelected = selectedSpecies === sp.species
+                    const speciesTier = SPECIES_TO_TIER[sp.species] || 0
+
+                    return (
+                      <button
+                        key={sp.species}
+                        onClick={() => isUnlocked && setSelectedSpecies(sp.species)}
+                        disabled={!isUnlocked}
+                        className={`relative flex items-center gap-2 px-2.5 py-2.5 rounded-xl border transition-all ${
+                          !isUnlocked
+                            ? 'border-amber-900/30 bg-amber-950/20 opacity-50 cursor-not-allowed'
+                            : isSelected
+                              ? 'border-amber-400 bg-amber-900/30 shadow-lg shadow-amber-900/20'
+                              : 'border-amber-800/40 bg-amber-900/10 hover:border-amber-600/50 hover:bg-amber-900/20'
+                        }`}
+                      >
+                        <div className="flex-shrink-0 w-12 h-10 flex items-center justify-center">
+                          <FishSVG
+                            tier={speciesTier}
+                            size={40}
+                            customization={{ species: sp.species }}
+                            id={`skin-${sp.species}`}
+                          />
+                        </div>
+                        <div className="text-left min-w-0 flex-1">
+                          <p className={`text-[11px] font-bold leading-tight ${isUnlocked ? 'text-amber-200' : 'text-amber-600'}`}>
+                            {sp.name}
+                          </p>
+                          <p className="text-[8px] text-amber-600 leading-tight">
+                            {sp.description}
+                          </p>
+                          {!isUnlocked && (
+                            <p className="text-[7px] text-amber-500/80 font-bold mt-0.5">
+                              {sp.unlockScore}+ STOCK
+                            </p>
+                          )}
+                        </div>
+                        {isSelected && isUnlocked && (
+                          <Check className="absolute top-1.5 right-1.5 w-3 h-3 text-amber-400" />
+                        )}
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
             </div>
           )}
 
@@ -306,7 +379,7 @@ export function FishCustomizer({ stockScore, currentCustomization, onSave, onClo
                 const variants = SPECIES_COLOR_VARIANTS[speciesKey]
                 if (!variants || variants.length === 0) return null
 
-                const skinName = ALL_SKINS.find(s => s.species === speciesKey)?.name || speciesKey
+                const skinName = (ALL_SKINS.find(s => s.species === speciesKey) || DELUXE_SKINS.find(s => s.species === speciesKey))?.name || speciesKey
 
                 return (
                   <div>

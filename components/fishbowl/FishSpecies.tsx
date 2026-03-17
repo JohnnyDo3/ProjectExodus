@@ -2028,6 +2028,725 @@ const MinnowFish = memo(({ colors, size, id }: { colors: FishColors; size: numbe
 ))
 MinnowFish.displayName = "MinnowFish"
 
+// ─── NEW TIER SPECIES WITH UNIQUE BODY DESIGNS ──────────────────────────────
+
+// Tier 0 — Rasbora: small schooling fish with pronounced lateral stripe, torpedo shape
+const RasboraFish = memo(({ colors, size, id }: { colors: FishColors; size: number; id: string }) => (
+  <svg width={size} height={size * 0.58} viewBox="0 0 52 30">
+    <defs>
+      <radialGradient id={`ras-b-${id}`} cx="38%" cy="40%" r="55%">
+        <stop offset="0%" stopColor={colors.accent} stopOpacity="0.7" />
+        <stop offset="100%" stopColor={colors.body} />
+      </radialGradient>
+    </defs>
+    {/* Forked tail */}
+    <path d="M38 8 Q44 3 48 6 Q45 10 48 14 Q45 13 38 15 Z" fill={colors.fin} opacity="0.85" />
+    <path d="M38 18 Q44 22 48 20 Q45 16 38 15 Z" fill={colors.fin} opacity="0.75" />
+    {/* Body — slim torpedo */}
+    <path d="M5 15 Q5 7 14 6 Q28 5 38 10 Q42 13 42 15 Q42 17 38 20 Q28 25 14 24 Q5 23 5 15 Z" fill={`url(#ras-b-${id})`} />
+    {/* Bold lateral stripe — rasbora signature */}
+    <path d="M10 14 Q24 13.5 36 14.5" stroke={colors.fin} strokeWidth="2.2" fill="none" opacity="0.7" strokeLinecap="round" />
+    {/* Thin accent stripe above */}
+    <path d="M12 12 Q24 11.5 34 12.5" stroke={colors.accent} strokeWidth="0.8" fill="none" opacity="0.35" strokeLinecap="round" />
+    {/* Belly highlight */}
+    <ellipse cx="20" cy="19" rx="10" ry="3.5" fill="white" opacity="0.1" />
+    {/* Dorsal fin */}
+    <path d="M20 6 Q24 2 27 5 Q24 7 20 7 Z" fill={colors.fin} opacity="0.8" />
+    {/* Anal fin */}
+    <path d="M26 23 Q28 27 31 25 Q29 22 28 21 Z" fill={colors.fin} opacity="0.7" />
+    {/* Pectoral fin */}
+    <path d="M14 17 Q12 22 16 23 Q15 19 16 17 Z" fill={colors.fin} opacity="0.6" />
+    {/* Eye */}
+    <circle cx="9" cy="13" r="3" fill="white" />
+    <circle cx="8.5" cy="12.5" r="1.7" fill={colors.eye} />
+    <circle cx="8" cy="12" r="0.7" fill="white" opacity="0.8" />
+    {/* Mouth */}
+    <path d="M5 15.5 Q3.5 15 5 14.5" stroke={colors.fin} strokeWidth="0.5" fill="none" opacity="0.5" />
+  </svg>
+))
+RasboraFish.displayName = "RasboraFish"
+
+// Tier 1 — Corydoras: armored catfish with flat belly, barbels, rounded head
+const CorydorasFish = memo(({ colors, size, id }: { colors: FishColors; size: number; id: string }) => (
+  <svg width={size} height={size * 0.72} viewBox="0 0 58 42">
+    <defs>
+      <radialGradient id={`cor-b-${id}`} cx="45%" cy="35%" r="55%">
+        <stop offset="0%" stopColor={colors.accent} stopOpacity="0.6" />
+        <stop offset="100%" stopColor={colors.body} />
+      </radialGradient>
+      <linearGradient id={`cor-a-${id}`} x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor={colors.body} />
+        <stop offset="100%" stopColor={colors.fin} stopOpacity="0.6" />
+      </linearGradient>
+    </defs>
+    {/* Tail — rounded, small */}
+    <path d="M42 16 Q48 12 52 15 Q50 20 52 26 Q48 28 42 24 Z" fill={colors.fin} opacity="0.8" />
+    {/* Body — flat-bottomed, deep, armored look */}
+    <path d="M8 20 Q8 10 16 8 Q28 6 40 12 Q44 16 44 20 Q44 28 40 30 Q28 34 16 33 Q8 32 8 28 Z" fill={`url(#cor-b-${id})`} />
+    {/* Flat belly */}
+    <path d="M12 30 Q24 34 38 30" stroke={colors.fin} strokeWidth="0.8" fill="none" opacity="0.3" />
+    {/* Armored plate lines — cory signature */}
+    <path d="M14 14 Q28 12 38 16" stroke={colors.fin} strokeWidth="0.8" fill="none" opacity="0.25" />
+    <path d="M12 18 Q26 16 40 18" stroke={colors.fin} strokeWidth="0.7" fill="none" opacity="0.2" />
+    <path d="M12 22 Q26 20 40 22" stroke={colors.fin} strokeWidth="0.6" fill="none" opacity="0.2" />
+    <path d="M14 26 Q26 24 38 26" stroke={colors.fin} strokeWidth="0.5" fill="none" opacity="0.15" />
+    {/* Belly highlight */}
+    <ellipse cx="24" cy="28" rx="12" ry="4" fill="white" opacity="0.08" />
+    {/* Tall dorsal spine — cory signature */}
+    <path d="M22 8 Q24 1 28 3 Q28 7 26 9 Z" fill={colors.fin} opacity="0.9" />
+    <path d="M24 7 Q25 2 27 4" stroke={colors.accent} strokeWidth="0.4" fill="none" opacity="0.4" />
+    {/* Adipose fin (small) */}
+    <path d="M34 10 Q36 7 38 10 Q36 11 34 11 Z" fill={colors.fin} opacity="0.6" />
+    {/* Pectoral fin — horizontal, wide (cory spreads these) */}
+    <path d="M16 24 Q10 32 20 36 Q18 30 20 24 Z" fill={colors.fin} opacity="0.7" />
+    {/* Anal fin */}
+    <path d="M30 32 Q32 37 35 34 Q34 31 33 30 Z" fill={colors.fin} opacity="0.7" />
+    {/* Barbels — catfish whiskers! */}
+    <path d="M8 22 Q3 24 1 28" stroke={colors.fin} strokeWidth="0.7" fill="none" opacity="0.6" />
+    <path d="M8 24 Q4 26 2 30" stroke={colors.fin} strokeWidth="0.6" fill="none" opacity="0.5" />
+    <circle cx="1" cy="28" r="0.6" fill={colors.fin} opacity="0.5" />
+    <circle cx="2" cy="30" r="0.5" fill={colors.fin} opacity="0.4" />
+    {/* Eye — smaller, higher up */}
+    <circle cx="12" cy="16" r="2.8" fill="white" />
+    <circle cx="11.5" cy="15.5" r="1.6" fill={colors.eye} />
+    <circle cx="11" cy="15" r="0.6" fill="white" opacity="0.8" />
+    {/* Mouth — downward facing */}
+    <path d="M8 24 Q6 23 8 22" stroke={colors.fin} strokeWidth="0.5" fill="none" opacity="0.5" />
+  </svg>
+))
+CorydorasFish.displayName = "CorydorasFish"
+
+// Tier 2 — Discus: nearly perfectly circular disc-shaped body
+const DiscusFish = memo(({ colors, size, id }: { colors: FishColors; size: number; id: string }) => (
+  <svg width={size} height={size * 1.0} viewBox="0 0 65 65">
+    <defs>
+      <radialGradient id={`disc-b-${id}`} cx="45%" cy="45%" r="50%">
+        <stop offset="0%" stopColor={colors.accent} stopOpacity="0.8" />
+        <stop offset="40%" stopColor={colors.body} />
+        <stop offset="100%" stopColor={colors.fin} stopOpacity="0.6" />
+      </radialGradient>
+      <linearGradient id={`disc-f-${id}`} x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor={colors.fin} />
+        <stop offset="100%" stopColor={colors.accent} stopOpacity="0.7" />
+      </linearGradient>
+      <radialGradient id={`disc-s-${id}`} cx="35%" cy="35%" r="45%">
+        <stop offset="0%" stopColor="white" stopOpacity="0.1" />
+        <stop offset="100%" stopColor="white" stopOpacity="0" />
+      </radialGradient>
+    </defs>
+    {/* Small tail */}
+    <path d="M50 26 Q56 22 58 26 Q56 32 58 38 Q54 36 50 36 Z" fill={colors.fin} opacity="0.8" />
+    {/* Body — perfect circle! Discus signature */}
+    <circle cx="30" cy="32" r="24" fill={`url(#disc-b-${id})`} />
+    {/* Vertical bar pattern — discus signature */}
+    <path d="M18 16 Q18 32 20 48" stroke={colors.fin} strokeWidth="1.2" fill="none" opacity="0.15" />
+    <path d="M24 12 Q24 32 25 52" stroke={colors.fin} strokeWidth="1" fill="none" opacity="0.12" />
+    <path d="M30 10 Q30 32 30 54" stroke={colors.fin} strokeWidth="1" fill="none" opacity="0.12" />
+    <path d="M36 12 Q36 32 35 52" stroke={colors.fin} strokeWidth="1" fill="none" opacity="0.12" />
+    <path d="M42 16 Q42 32 40 48" stroke={colors.fin} strokeWidth="1.2" fill="none" opacity="0.15" />
+    {/* Shimmer overlay */}
+    <circle cx="30" cy="32" r="22" fill={`url(#disc-s-${id})`} />
+    {/* Eye stripe — horizontal through eye */}
+    <path d="M6 30 Q14 28 20 30" stroke={colors.fin} strokeWidth="2.5" fill="none" opacity="0.5" />
+    {/* Tall dorsal fin — extends along entire top */}
+    <path d="M16 10 Q20 4 30 2 Q40 4 44 10" stroke={colors.fin} strokeWidth="0.6" fill={`url(#disc-f-${id})`} opacity="0.7" />
+    {/* Tall anal fin — extends along entire bottom */}
+    <path d="M16 54 Q20 60 30 62 Q40 60 44 54" stroke={colors.fin} strokeWidth="0.6" fill={`url(#disc-f-${id})`} opacity="0.7" />
+    {/* Small pectoral fin */}
+    <path d="M18 36 Q14 42 20 44 Q19 40 20 36 Z" fill={colors.fin} opacity="0.6" />
+    {/* Eye — red/orange is classic discus */}
+    <circle cx="14" cy="30" r="4" fill="white" />
+    <circle cx="13.5" cy="29.5" r="2.5" fill={colors.eye} />
+    <circle cx="13" cy="29" r="1.5" fill="#111" />
+    <circle cx="12.2" cy="28.2" r="0.8" fill="white" opacity="0.8" />
+    {/* Mouth — small */}
+    <path d="M7 33 Q5 32.5 7 32" stroke={colors.fin} strokeWidth="0.6" fill="none" opacity="0.5" />
+  </svg>
+))
+DiscusFish.displayName = "DiscusFish"
+
+// Tier 3 — Butterflyfish: tall compressed body, long pointed snout, eyespot
+const ButterflyfishFish = memo(({ colors, size, id }: { colors: FishColors; size: number; id: string }) => (
+  <svg width={size} height={size * 0.85} viewBox="0 0 68 58">
+    <defs>
+      <radialGradient id={`bf-b-${id}`} cx="45%" cy="45%" r="50%">
+        <stop offset="0%" stopColor={colors.accent} stopOpacity="0.8" />
+        <stop offset="50%" stopColor={colors.body} />
+        <stop offset="100%" stopColor={colors.fin} stopOpacity="0.5" />
+      </radialGradient>
+      <linearGradient id={`bf-f-${id}`} x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor={colors.fin} />
+        <stop offset="100%" stopColor={colors.accent} />
+      </linearGradient>
+    </defs>
+    {/* Tail */}
+    <path d="M52 22 Q58 18 62 22 Q60 28 62 34 Q58 36 52 32 Z" fill={colors.fin} opacity="0.8" />
+    {/* Body — tall, laterally compressed disc */}
+    <ellipse cx="34" cy="29" rx="20" ry="22" fill={`url(#bf-b-${id})`} />
+    {/* Diagonal stripe pattern — butterflyfish signature */}
+    <path d="M22 14 Q34 22 46 14" stroke={colors.fin} strokeWidth="1.8" fill="none" opacity="0.3" />
+    <path d="M20 20 Q34 28 48 20" stroke={colors.fin} strokeWidth="1.5" fill="none" opacity="0.25" />
+    <path d="M20 26 Q34 34 48 26" stroke={colors.fin} strokeWidth="1.5" fill="none" opacity="0.25" />
+    <path d="M22 32 Q34 40 46 32" stroke={colors.fin} strokeWidth="1.8" fill="none" opacity="0.3" />
+    {/* Long pointed snout — butterflyfish signature */}
+    <path d="M14 27 Q8 26 4 25 Q8 24 14 24" fill={colors.body} stroke={colors.fin} strokeWidth="0.5" opacity="0.8" />
+    {/* Eyespot on rear body — butterflyfish signature */}
+    <circle cx="44" cy="20" r="4" fill={colors.fin} opacity="0.5" />
+    <circle cx="44" cy="20" r="2.5" fill="#111" opacity="0.6" />
+    <circle cx="44" cy="20" r="1.2" fill="white" opacity="0.3" />
+    {/* Dorsal fin — pointed */}
+    <path d="M26 8 Q32 2 40 4 Q42 7 40 10 Q34 9 26 9 Z" fill={`url(#bf-f-${id})`} opacity="0.85" />
+    {/* Anal fin — pointed */}
+    <path d="M26 50 Q32 56 40 54 Q42 51 40 48 Q34 49 26 49 Z" fill={`url(#bf-f-${id})`} opacity="0.85" />
+    {/* Pectoral fin */}
+    <path d="M22 32 Q18 38 24 40 Q23 36 24 32 Z" fill={colors.fin} opacity="0.6" />
+    {/* Eye — with dark stripe through it */}
+    <path d="M16 18 Q16 26 16 34" stroke={colors.fin} strokeWidth="3" fill="none" opacity="0.6" />
+    <circle cx="16" cy="26" r="3.5" fill="white" />
+    <circle cx="15.5" cy="25.5" r="2.2" fill={colors.eye} />
+    <circle cx="15" cy="25" r="1.2" fill="#111" />
+    <circle cx="14.5" cy="24.5" r="0.6" fill="white" opacity="0.8" />
+    {/* Mouth at end of snout */}
+    <path d="M4 25.5 Q2.5 25 4 24.5" stroke={colors.fin} strokeWidth="0.5" fill="none" opacity="0.5" />
+  </svg>
+))
+ButterflyfishFish.displayName = "ButterflyfishFish"
+
+// Tier 4 — Moorish Idol: iconic tall body with extremely long trailing dorsal filament
+const MoorishIdolFish = memo(({ colors, size, id }: { colors: FishColors; size: number; id: string }) => (
+  <svg width={size} height={size * 1.06} viewBox="0 0 80 85">
+    <defs>
+      <radialGradient id={`mi-b-${id}`} cx="45%" cy="50%" r="50%">
+        <stop offset="0%" stopColor={colors.accent} stopOpacity="0.8" />
+        <stop offset="60%" stopColor={colors.body} />
+        <stop offset="100%" stopColor={colors.fin} stopOpacity="0.5" />
+      </radialGradient>
+      <linearGradient id={`mi-f-${id}`} x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor={colors.fin} />
+        <stop offset="100%" stopColor={colors.accent} stopOpacity="0.6" />
+      </linearGradient>
+    </defs>
+    {/* Tail */}
+    <path d="M58 36 Q64 32 68 36 Q66 42 68 48 Q64 50 58 46 Z" fill={colors.fin} opacity="0.85" />
+    {/* Body — tall, compressed, triangular profile */}
+    <path d="M20 40 Q14 28 20 16 Q28 8 40 10 Q52 14 56 28 Q58 40 56 52 Q52 66 40 70 Q28 72 20 64 Q14 52 20 40 Z" fill={`url(#mi-b-${id})`} />
+    {/* Bold vertical bands — moorish idol signature */}
+    <path d="M28 14 Q26 40 28 66" stroke={colors.fin} strokeWidth="5" fill="none" opacity="0.5" />
+    <path d="M42 12 Q44 40 42 68" stroke={colors.fin} strokeWidth="5" fill="none" opacity="0.5" />
+    {/* White band between dark bands */}
+    <path d="M34 12 Q34 40 34 68" stroke="white" strokeWidth="3" fill="none" opacity="0.15" />
+    {/* Extremely long trailing dorsal filament — THE signature feature! */}
+    <path d="M30 10 Q28 4 24 2 Q18 0 10 2 Q6 4 4 6" stroke={colors.accent} strokeWidth="1.2" fill="none" opacity="0.8" />
+    <path d="M30 10 Q26 4 20 2 Q14 1 8 3" stroke={colors.fin} strokeWidth="0.6" fill="none" opacity="0.4" />
+    {/* Dorsal fin base */}
+    <path d="M28 10 Q34 6 42 10" fill={`url(#mi-f-${id})`} opacity="0.8" />
+    {/* Pointed snout — moorish idol has elongated snout */}
+    <path d="M18 38 Q12 36 8 35 Q12 34 18 33" fill={colors.body} stroke={colors.fin} strokeWidth="0.5" opacity="0.8" />
+    {/* Anal fin — pointed */}
+    <path d="M30 70 Q34 78 42 76 Q44 72 42 68 Q36 70 30 70 Z" fill={`url(#mi-f-${id})`} opacity="0.8" />
+    {/* Pectoral fin */}
+    <path d="M24 44 Q20 50 26 52 Q25 48 26 44 Z" fill={colors.fin} opacity="0.6" />
+    {/* Eye */}
+    <circle cx="20" cy="36" r="3.5" fill="white" />
+    <circle cx="19.5" cy="35.5" r="2.2" fill={colors.eye} />
+    <circle cx="19" cy="35" r="1.2" fill="#111" />
+    <circle cx="18.5" cy="34.5" r="0.6" fill="white" opacity="0.8" />
+    {/* Mouth */}
+    <path d="M8 35.5 Q6 35 8 34.5" stroke={colors.fin} strokeWidth="0.5" fill="none" opacity="0.5" />
+  </svg>
+))
+MoorishIdolFish.displayName = "MoorishIdolFish"
+
+// Tier 5 — Mandarin Dragonet: psychedelic, wide flat head, fan pelvic fins
+const MandarinFish = memo(({ colors, size, id }: { colors: FishColors; size: number; id: string }) => (
+  <svg width={size} height={size * 0.69} viewBox="0 0 72 50">
+    <defs>
+      <radialGradient id={`man-b-${id}`} cx="40%" cy="40%" r="55%">
+        <stop offset="0%" stopColor={colors.accent} stopOpacity="0.9" />
+        <stop offset="50%" stopColor={colors.body} />
+        <stop offset="100%" stopColor={colors.fin} stopOpacity="0.7" />
+      </radialGradient>
+      <linearGradient id={`man-f-${id}`} x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor={colors.fin} />
+        <stop offset="50%" stopColor={colors.accent} stopOpacity="0.7" />
+        <stop offset="100%" stopColor={colors.fin} />
+      </linearGradient>
+      <radialGradient id={`man-s-${id}`} cx="35%" cy="35%" r="40%">
+        <stop offset="0%" stopColor="white" stopOpacity="0.1" />
+        <stop offset="100%" stopColor="white" stopOpacity="0" />
+      </radialGradient>
+    </defs>
+    {/* Rounded tail */}
+    <path d="M54 16 Q60 12 64 16 Q62 22 64 28 Q60 30 56 28 Q55 22 54 20 Z" fill={`url(#man-f-${id})`} opacity="0.85" />
+    {/* Body — rounded, wider head tapering to tail */}
+    <path d="M8 24 Q6 14 14 10 Q24 6 36 8 Q48 10 54 16 Q58 22 54 28 Q48 34 36 36 Q24 38 14 34 Q6 30 8 24 Z" fill={`url(#man-b-${id})`} />
+    {/* Psychedelic swirl patterns — mandarin signature */}
+    <path d="M16 16 Q22 12 28 16 Q34 20 28 24 Q22 20 16 24" stroke={colors.accent} strokeWidth="1.2" fill="none" opacity="0.35" />
+    <path d="M30 14 Q36 10 42 14 Q48 18 42 22 Q36 18 30 22" stroke={colors.accent} strokeWidth="1" fill="none" opacity="0.3" />
+    <path d="M20 22 Q26 18 32 22 Q38 26 32 30 Q26 26 20 30" stroke={colors.fin} strokeWidth="0.8" fill="none" opacity="0.25" />
+    {/* Shimmer */}
+    <ellipse cx="28" cy="22" rx="18" ry="10" fill={`url(#man-s-${id})`} />
+    {/* First dorsal fin — tall spike (mandarin signature) */}
+    <path d="M22 8 Q24 1 28 2 Q28 6 26 8 Z" fill={colors.fin} opacity="0.9" />
+    {/* Second dorsal fin — longer, lower */}
+    <path d="M32 8 Q38 3 46 6 Q44 9 36 10 Q32 10 32 8 Z" fill={`url(#man-f-${id})`} opacity="0.8" />
+    {/* Large fan pelvic fins — mandarin signature */}
+    <path d="M18 30 Q12 38 18 42 Q22 44 24 40 Q20 36 22 30 Z" fill={`url(#man-f-${id})`} opacity="0.75" />
+    <path d="M24 32 Q20 40 26 44 Q30 44 30 40 Q28 36 28 32 Z" fill={colors.accent} opacity="0.5" />
+    {/* Anal fin */}
+    <path d="M36 34 Q38 40 42 38 Q40 35 40 33 Z" fill={colors.fin} opacity="0.7" />
+    {/* Pectoral fin — wide, fan-like */}
+    <path d="M16 24 Q10 30 16 34 Q16 30 18 26 Z" fill={colors.fin} opacity="0.6" />
+    {/* Eye — large, prominent */}
+    <circle cx="12" cy="20" r="4" fill="white" />
+    <circle cx="11.5" cy="19.5" r="2.5" fill={colors.eye} />
+    <circle cx="11" cy="19" r="1.5" fill="#111" />
+    <circle cx="10.5" cy="18.5" r="0.8" fill="white" opacity="0.8" />
+    {/* Mouth — small, downward */}
+    <path d="M8 26 Q6 25.5 8 25" stroke={colors.fin} strokeWidth="0.5" fill="none" opacity="0.5" />
+  </svg>
+))
+MandarinFish.displayName = "MandarinFish"
+
+// ─── STANDALONE DELUXE SPECIES ──────────────────────────────────────────────
+// These are premium unlocks with radically unique body shapes
+
+// Seahorse — vertical body, curled tail, horse-like head, segmented armor
+const SeahorseFish = memo(({ colors, size, id }: { colors: FishColors; size: number; id: string }) => (
+  <svg width={size} height={size * 1.75} viewBox="0 0 40 70">
+    <defs>
+      <linearGradient id={`sh-b-${id}`} x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor={colors.accent} stopOpacity="0.8" />
+        <stop offset="50%" stopColor={colors.body} />
+        <stop offset="100%" stopColor={colors.fin} stopOpacity="0.7" />
+      </linearGradient>
+      <linearGradient id={`sh-f-${id}`} x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stopColor={colors.fin} />
+        <stop offset="100%" stopColor={colors.accent} stopOpacity="0.6" />
+      </linearGradient>
+    </defs>
+    {/* Crown/coronet — seahorse signature */}
+    <path d="M16 6 Q14 2 18 1 Q22 2 20 6" fill={colors.fin} opacity="0.8" />
+    {/* Head — horse-like, facing left */}
+    <path d="M8 16 Q4 14 4 10 Q6 6 14 6 Q20 6 22 10 Q22 16 18 18 Z" fill={`url(#sh-b-${id})`} />
+    {/* Snout — long, tubular */}
+    <path d="M4 12 Q0 11.5 -2 11 Q0 10.5 4 10" fill={colors.body} stroke={colors.fin} strokeWidth="0.4" opacity="0.9" />
+    {/* Body — vertical, S-curved, segmented */}
+    <path d="M14 18 Q22 20 24 28 Q24 36 20 42 Q16 48 18 54 Q20 58 16 62" fill={`url(#sh-b-${id})`} stroke={colors.fin} strokeWidth="0.3" opacity="0.9" />
+    {/* Segment rings — seahorse signature */}
+    <path d="M14 20 Q20 19 22 22" stroke={colors.fin} strokeWidth="0.6" fill="none" opacity="0.3" />
+    <path d="M16 24 Q22 23 24 26" stroke={colors.fin} strokeWidth="0.6" fill="none" opacity="0.3" />
+    <path d="M18 28 Q24 27 24 30" stroke={colors.fin} strokeWidth="0.6" fill="none" opacity="0.3" />
+    <path d="M18 32 Q24 31 24 34" stroke={colors.fin} strokeWidth="0.6" fill="none" opacity="0.25" />
+    <path d="M18 36 Q22 35 22 38" stroke={colors.fin} strokeWidth="0.5" fill="none" opacity="0.25" />
+    <path d="M16 40 Q20 39 20 42" stroke={colors.fin} strokeWidth="0.5" fill="none" opacity="0.2" />
+    <path d="M16 44 Q20 43 20 46" stroke={colors.fin} strokeWidth="0.5" fill="none" opacity="0.2" />
+    <path d="M18 48 Q20 47 20 50" stroke={colors.fin} strokeWidth="0.5" fill="none" opacity="0.2" />
+    {/* Curled prehensile tail — seahorse signature */}
+    <path d="M16 62 Q12 66 14 68 Q18 68 20 64 Q22 60 20 58" stroke={colors.body} strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.8" />
+    <path d="M16 62 Q12 66 14 68 Q18 68 20 64 Q22 60 20 58" stroke={colors.fin} strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.3" />
+    {/* Dorsal fin — tiny, on back */}
+    <path d="M22 28 Q28 26 28 30 Q28 34 22 32 Z" fill={`url(#sh-f-${id})`} opacity="0.7" />
+    {/* Dorsal fin rays */}
+    <path d="M23 28 Q27 27 27 29" stroke={colors.fin} strokeWidth="0.3" fill="none" opacity="0.4" />
+    <path d="M23 30 Q27 30 27 32" stroke={colors.fin} strokeWidth="0.3" fill="none" opacity="0.4" />
+    {/* Pectoral fin — small, behind head */}
+    <path d="M20 18 Q24 16 26 20 Q24 20 20 20 Z" fill={colors.fin} opacity="0.6" />
+    {/* Belly pouch hint */}
+    <ellipse cx="18" cy="36" rx="3" ry="6" fill="white" opacity="0.06" />
+    {/* Eye */}
+    <circle cx="10" cy="10" r="2.8" fill="white" />
+    <circle cx="9.5" cy="9.5" r="1.6" fill={colors.eye} />
+    <circle cx="9" cy="9" r="0.7" fill="white" opacity="0.8" />
+    {/* Mouth at end of snout */}
+    <circle cx="-1" cy="11" r="0.4" fill={colors.fin} opacity="0.5" />
+  </svg>
+))
+SeahorseFish.displayName = "SeahorseFish"
+
+// Shrimp — curved C-shaped body, walking legs, long antennae, fan tail
+const ShrimpFish = memo(({ colors, size, id }: { colors: FishColors; size: number; id: string }) => (
+  <svg width={size} height={size * 0.62} viewBox="0 0 65 40">
+    <defs>
+      <linearGradient id={`shr-b-${id}`} x1="0" y1="0" x2="1" y2="0.5">
+        <stop offset="0%" stopColor={colors.accent} stopOpacity="0.7" />
+        <stop offset="50%" stopColor={colors.body} />
+        <stop offset="100%" stopColor={colors.fin} stopOpacity="0.8" />
+      </linearGradient>
+      <linearGradient id={`shr-s-${id}`} x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor={colors.body} />
+        <stop offset="100%" stopColor={colors.fin} />
+      </linearGradient>
+    </defs>
+    {/* Long antennae — shrimp signature */}
+    <path d="M10 14 Q4 10 0 6" stroke={colors.accent} strokeWidth="0.6" fill="none" opacity="0.6" />
+    <path d="M10 12 Q6 6 2 2" stroke={colors.accent} strokeWidth="0.5" fill="none" opacity="0.5" />
+    <circle cx="0" cy="6" r="0.5" fill={colors.accent} opacity="0.5" />
+    <circle cx="2" cy="2" r="0.4" fill={colors.accent} opacity="0.4" />
+    {/* Rostrum (pointed head spike) */}
+    <path d="M10 14 Q4 13 2 12" stroke={colors.fin} strokeWidth="1" fill="none" opacity="0.7" />
+    {/* Body — curved, segmented C-shape */}
+    <path d="M10 14 Q16 8 26 8 Q36 8 42 12 Q48 18 52 24 Q54 28 52 30 Z" fill={`url(#shr-b-${id})`} />
+    {/* Carapace (head section) — larger, rounded */}
+    <path d="M10 14 Q8 10 12 8 Q18 6 24 8 Q16 8 10 14 Z" fill={colors.body} opacity="0.4" />
+    {/* Body segments — shrimp signature */}
+    <path d="M26 8 Q26 16 26 20" stroke={colors.fin} strokeWidth="0.6" fill="none" opacity="0.25" />
+    <path d="M30 8 Q31 16 32 22" stroke={colors.fin} strokeWidth="0.6" fill="none" opacity="0.25" />
+    <path d="M34 9 Q36 17 38 24" stroke={colors.fin} strokeWidth="0.6" fill="none" opacity="0.25" />
+    <path d="M38 10 Q40 18 44 26" stroke={colors.fin} strokeWidth="0.6" fill="none" opacity="0.25" />
+    <path d="M42 12 Q44 20 48 28" stroke={colors.fin} strokeWidth="0.5" fill="none" opacity="0.2" />
+    <path d="M46 16 Q48 22 50 28" stroke={colors.fin} strokeWidth="0.5" fill="none" opacity="0.2" />
+    {/* Fan tail — uropod */}
+    <path d="M52 28 Q56 24 60 26 Q58 30 60 34 Q56 36 52 32 Z" fill={colors.fin} opacity="0.7" />
+    <path d="M52 30 Q56 28 58 30" stroke={colors.accent} strokeWidth="0.4" fill="none" opacity="0.4" />
+    <path d="M52 32 Q56 34 58 32" stroke={colors.accent} strokeWidth="0.4" fill="none" opacity="0.4" />
+    {/* Walking legs — swimmerets */}
+    <path d="M18 16 Q16 22 14 26" stroke={colors.fin} strokeWidth="0.7" fill="none" opacity="0.4" />
+    <path d="M22 16 Q20 22 18 28" stroke={colors.fin} strokeWidth="0.7" fill="none" opacity="0.4" />
+    <path d="M26 16 Q26 24 24 30" stroke={colors.fin} strokeWidth="0.6" fill="none" opacity="0.35" />
+    <path d="M30 16 Q32 24 30 30" stroke={colors.fin} strokeWidth="0.6" fill="none" opacity="0.35" />
+    <path d="M34 18 Q36 26 34 32" stroke={colors.fin} strokeWidth="0.5" fill="none" opacity="0.3" />
+    <path d="M38 20 Q40 28 38 34" stroke={colors.fin} strokeWidth="0.5" fill="none" opacity="0.3" />
+    {/* Belly highlight */}
+    <path d="M14 14 Q30 12 46 20" stroke="white" strokeWidth="0.8" fill="none" opacity="0.1" />
+    {/* Eye — on stalk */}
+    <circle cx="12" cy="10" r="2.2" fill="white" />
+    <circle cx="11.7" cy="9.7" r="1.3" fill={colors.eye} />
+    <circle cx="11.3" cy="9.3" r="0.5" fill="white" opacity="0.8" />
+  </svg>
+))
+ShrimpFish.displayName = "ShrimpFish"
+
+// Pufferfish — almost perfectly round inflated body, tiny fins, spiky hints
+const PufferfishFish = memo(({ colors, size, id }: { colors: FishColors; size: number; id: string }) => (
+  <svg width={size} height={size * 0.92} viewBox="0 0 60 55">
+    <defs>
+      <radialGradient id={`puf-b-${id}`} cx="45%" cy="45%" r="50%">
+        <stop offset="0%" stopColor={colors.accent} stopOpacity="0.8" />
+        <stop offset="40%" stopColor={colors.body} />
+        <stop offset="100%" stopColor={colors.fin} stopOpacity="0.5" />
+      </radialGradient>
+      <radialGradient id={`puf-s-${id}`} cx="35%" cy="30%" r="40%">
+        <stop offset="0%" stopColor="white" stopOpacity="0.12" />
+        <stop offset="100%" stopColor="white" stopOpacity="0" />
+      </radialGradient>
+    </defs>
+    {/* Tiny tail */}
+    <path d="M48 22 Q52 19 54 22 Q53 27 54 32 Q52 34 48 30 Z" fill={colors.fin} opacity="0.7" />
+    {/* Body — big round inflated sphere! Pufferfish signature */}
+    <ellipse cx="28" cy="27" rx="22" ry="22" fill={`url(#puf-b-${id})`} />
+    {/* Speckle pattern — pufferfish signature */}
+    <circle cx="18" cy="18" r="1" fill={colors.fin} opacity="0.2" />
+    <circle cx="24" cy="14" r="0.8" fill={colors.fin} opacity="0.2" />
+    <circle cx="32" cy="16" r="1" fill={colors.fin} opacity="0.2" />
+    <circle cx="38" cy="20" r="0.9" fill={colors.fin} opacity="0.2" />
+    <circle cx="40" cy="28" r="1" fill={colors.fin} opacity="0.2" />
+    <circle cx="38" cy="36" r="0.8" fill={colors.fin} opacity="0.2" />
+    <circle cx="32" cy="40" r="1" fill={colors.fin} opacity="0.2" />
+    <circle cx="24" cy="42" r="0.9" fill={colors.fin} opacity="0.2" />
+    <circle cx="16" cy="38" r="0.8" fill={colors.fin} opacity="0.2" />
+    <circle cx="14" cy="28" r="1" fill={colors.fin} opacity="0.2" />
+    <circle cx="20" cy="32" r="0.7" fill={colors.fin} opacity="0.15" />
+    <circle cx="30" cy="30" r="0.8" fill={colors.fin} opacity="0.15" />
+    <circle cx="28" cy="22" r="0.7" fill={colors.fin} opacity="0.15" />
+    {/* Shimmer */}
+    <ellipse cx="24" cy="24" rx="14" ry="14" fill={`url(#puf-s-${id})`} />
+    {/* White belly */}
+    <ellipse cx="26" cy="36" rx="14" ry="10" fill="white" opacity="0.08" />
+    {/* Tiny dorsal fin */}
+    <path d="M30 6 Q34 3 36 6 Q34 8 30 8 Z" fill={colors.fin} opacity="0.7" />
+    {/* Tiny pectoral fin — puffers paddle with these */}
+    <path d="M14 28 Q10 32 14 34 Q14 32 16 30 Z" fill={colors.fin} opacity="0.6" />
+    {/* Tiny anal fin */}
+    <path d="M30 48 Q34 50 36 48 Q34 46 32 46 Z" fill={colors.fin} opacity="0.6" />
+    {/* Big expressive eyes — pufferfish signature */}
+    <circle cx="14" cy="22" r="5" fill="white" />
+    <circle cx="14" cy="22" r="5" stroke={colors.accent} strokeWidth="0.5" fill="none" opacity="0.3" />
+    <circle cx="13" cy="21" r="3.2" fill={colors.eye} />
+    <circle cx="12.5" cy="20.5" r="2" fill="#111" />
+    <circle cx="11.8" cy="19.8" r="1" fill="white" opacity="0.85" />
+    <circle cx="14.5" cy="22.5" r="0.5" fill="white" opacity="0.4" />
+    {/* Beak mouth — pufferfish signature */}
+    <path d="M8 28 Q6 27.5 6 27 Q6 26.5 8 26" stroke={colors.fin} strokeWidth="1" fill={colors.body} opacity="0.7" />
+  </svg>
+))
+PufferfishFish.displayName = "PufferfishFish"
+
+// Jellyfish — bell/dome body, trailing tentacles
+const JellyfishFish = memo(({ colors, size, id }: { colors: FishColors; size: number; id: string }) => (
+  <svg width={size} height={size * 1.5} viewBox="0 0 50 75">
+    <defs>
+      <radialGradient id={`jf-b-${id}`} cx="50%" cy="35%" r="50%">
+        <stop offset="0%" stopColor={colors.accent} stopOpacity="0.6" />
+        <stop offset="50%" stopColor={colors.body} stopOpacity="0.5" />
+        <stop offset="100%" stopColor={colors.fin} stopOpacity="0.3" />
+      </radialGradient>
+      <radialGradient id={`jf-s-${id}`} cx="40%" cy="30%" r="40%">
+        <stop offset="0%" stopColor="white" stopOpacity="0.2" />
+        <stop offset="100%" stopColor="white" stopOpacity="0" />
+      </radialGradient>
+    </defs>
+    {/* Bell/dome body — jellyfish signature */}
+    <path d="M5 28 Q5 6 25 4 Q45 6 45 28 Q45 32 40 32 Q35 30 30 32 Q25 34 20 32 Q15 30 10 32 Q5 32 5 28 Z" fill={`url(#jf-b-${id})`} />
+    {/* Bell inner structure */}
+    <path d="M10 26 Q10 10 25 8 Q40 10 40 26" stroke={colors.accent} strokeWidth="0.6" fill="none" opacity="0.2" />
+    {/* Shimmer on bell */}
+    <ellipse cx="22" cy="16" rx="10" ry="8" fill={`url(#jf-s-${id})`} />
+    {/* Radial lines inside bell */}
+    <path d="M25 8 Q25 18 25 28" stroke={colors.accent} strokeWidth="0.4" fill="none" opacity="0.15" />
+    <path d="M18 10 Q17 18 16 28" stroke={colors.accent} strokeWidth="0.4" fill="none" opacity="0.12" />
+    <path d="M32 10 Q33 18 34 28" stroke={colors.accent} strokeWidth="0.4" fill="none" opacity="0.12" />
+    {/* Oral arms — thick, wavy inner tentacles */}
+    <path d="M18 32 Q16 40 20 48 Q18 52 20 58 Q18 62 20 66" stroke={colors.body} strokeWidth="1.8" fill="none" opacity="0.4" strokeLinecap="round" />
+    <path d="M25 34 Q23 42 26 50 Q24 54 26 60 Q24 64 26 70" stroke={colors.body} strokeWidth="1.8" fill="none" opacity="0.4" strokeLinecap="round" />
+    <path d="M32 32 Q34 40 30 48 Q32 52 30 58 Q32 62 30 66" stroke={colors.body} strokeWidth="1.8" fill="none" opacity="0.4" strokeLinecap="round" />
+    {/* Trailing tentacles — thin, long, flowing */}
+    <path d="M12 32 Q8 40 12 48 Q8 56 12 64 Q8 70 10 74" stroke={colors.accent} strokeWidth="0.7" fill="none" opacity="0.35" />
+    <path d="M15 32 Q13 42 16 52 Q13 60 15 68 Q12 72 14 75" stroke={colors.accent} strokeWidth="0.6" fill="none" opacity="0.3" />
+    <path d="M35 32 Q37 42 34 52 Q37 60 35 68 Q38 72 36 75" stroke={colors.accent} strokeWidth="0.6" fill="none" opacity="0.3" />
+    <path d="M38 32 Q42 40 38 48 Q42 56 38 64 Q42 70 40 74" stroke={colors.accent} strokeWidth="0.7" fill="none" opacity="0.35" />
+    {/* Bioluminescent dots */}
+    <circle cx="20" cy="16" r="0.8" fill="white" opacity="0.4" />
+    <circle cx="30" cy="14" r="0.6" fill="white" opacity="0.35" />
+    <circle cx="25" cy="22" r="0.7" fill="white" opacity="0.35" />
+    <circle cx="16" cy="20" r="0.5" fill="white" opacity="0.3" />
+    <circle cx="34" cy="22" r="0.5" fill="white" opacity="0.3" />
+  </svg>
+))
+JellyfishFish.displayName = "JellyfishFish"
+
+// Stingray — flat diamond/kite body, long whip tail
+const StingrayFish = memo(({ colors, size, id }: { colors: FishColors; size: number; id: string }) => (
+  <svg width={size} height={size * 0.67} viewBox="0 0 75 50">
+    <defs>
+      <radialGradient id={`ray-b-${id}`} cx="35%" cy="45%" r="55%">
+        <stop offset="0%" stopColor={colors.accent} stopOpacity="0.6" />
+        <stop offset="50%" stopColor={colors.body} />
+        <stop offset="100%" stopColor={colors.fin} stopOpacity="0.7" />
+      </radialGradient>
+      <radialGradient id={`ray-s-${id}`} cx="30%" cy="35%" r="40%">
+        <stop offset="0%" stopColor="white" stopOpacity="0.1" />
+        <stop offset="100%" stopColor="white" stopOpacity="0" />
+      </radialGradient>
+    </defs>
+    {/* Body — flat diamond/kite shape. Stingray signature */}
+    <path d="M8 25 Q4 20 8 10 Q14 4 22 2 Q28 4 32 10 Q32 20 32 25 Q32 30 32 40 Q28 46 22 48 Q14 46 8 40 Q4 30 8 25 Z" fill={`url(#ray-b-${id})`} />
+    {/* Wing tips — extending to sides */}
+    <path d="M8 10 Q2 6 0 8 Q4 14 8 18" fill={colors.body} opacity="0.6" />
+    <path d="M8 40 Q2 44 0 42 Q4 36 8 32" fill={colors.body} opacity="0.6" />
+    <path d="M32 10 Q38 4 40 8 Q36 14 32 18" fill={colors.body} opacity="0.6" />
+    <path d="M32 40 Q38 44 40 42 Q36 36 32 32" fill={colors.body} opacity="0.6" />
+    {/* Long whip tail — stingray signature */}
+    <path d="M30 25 Q40 25 50 24 Q58 23 64 22 Q70 21 74 20" stroke={colors.fin} strokeWidth="1.5" fill="none" opacity="0.7" strokeLinecap="round" />
+    <path d="M30 25 Q40 25 50 24 Q58 23 64 22 Q70 21 74 20" stroke={colors.body} strokeWidth="0.6" fill="none" opacity="0.3" strokeLinecap="round" />
+    {/* Barb on tail */}
+    <path d="M56 22 L58 20 L60 23 Z" fill={colors.fin} opacity="0.5" />
+    {/* Surface texture — spots */}
+    <circle cx="16" cy="18" r="1.2" fill={colors.fin} opacity="0.15" />
+    <circle cx="22" cy="14" r="1" fill={colors.fin} opacity="0.15" />
+    <circle cx="26" cy="20" r="1.1" fill={colors.fin} opacity="0.15" />
+    <circle cx="14" cy="30" r="1" fill={colors.fin} opacity="0.15" />
+    <circle cx="22" cy="34" r="1.2" fill={colors.fin} opacity="0.15" />
+    <circle cx="28" cy="28" r="0.9" fill={colors.fin} opacity="0.12" />
+    {/* Shimmer */}
+    <ellipse cx="20" cy="22" rx="10" ry="12" fill={`url(#ray-s-${id})`} />
+    {/* White belly hint */}
+    <ellipse cx="20" cy="28" rx="8" ry="6" fill="white" opacity="0.06" />
+    {/* Eyes — on top of head */}
+    <circle cx="14" cy="12" r="2.2" fill="white" />
+    <circle cx="13.6" cy="11.6" r="1.3" fill={colors.eye} />
+    <circle cx="13.2" cy="11.2" r="0.5" fill="white" opacity="0.8" />
+    <circle cx="26" cy="12" r="2.2" fill="white" />
+    <circle cx="25.6" cy="11.6" r="1.3" fill={colors.eye} />
+    <circle cx="25.2" cy="11.2" r="0.5" fill="white" opacity="0.8" />
+    {/* Mouth — underside, small */}
+    <path d="M18 28 Q20 29 22 28" stroke={colors.fin} strokeWidth="0.5" fill="none" opacity="0.3" />
+  </svg>
+))
+StingrayFish.displayName = "StingrayFish"
+
+// Axolotl — salamander with external feathery gills, wide head, stubby legs
+const AxolotlFish = memo(({ colors, size, id }: { colors: FishColors; size: number; id: string }) => (
+  <svg width={size} height={size * 0.64} viewBox="0 0 70 45">
+    <defs>
+      <radialGradient id={`axo-b-${id}`} cx="35%" cy="45%" r="55%">
+        <stop offset="0%" stopColor={colors.accent} stopOpacity="0.7" />
+        <stop offset="50%" stopColor={colors.body} />
+        <stop offset="100%" stopColor={colors.body} stopOpacity="0.9" />
+      </radialGradient>
+      <linearGradient id={`axo-g-${id}`} x1="0" y1="0" x2="0.5" y2="1">
+        <stop offset="0%" stopColor={colors.fin} />
+        <stop offset="100%" stopColor={colors.accent} />
+      </linearGradient>
+    </defs>
+    {/* Tail — long, flat, paddle-like with fin edge */}
+    <path d="M48 20 Q56 18 62 16 Q66 15 68 16 Q66 20 68 24 Q66 26 62 24 Q56 22 48 24 Z" fill={colors.body} opacity="0.8" />
+    <path d="M52 18 Q58 15 64 16" stroke={colors.fin} strokeWidth="0.8" fill="none" opacity="0.3" />
+    <path d="M52 24 Q58 26 64 24" stroke={colors.fin} strokeWidth="0.8" fill="none" opacity="0.3" />
+    {/* Tail fin crest */}
+    <path d="M56 16 Q60 12 64 14 Q62 16 56 18" fill={colors.fin} opacity="0.4" />
+    <path d="M56 24 Q60 28 64 26 Q62 24 56 22" fill={colors.fin} opacity="0.4" />
+    {/* Body — elongated, pudgy */}
+    <path d="M10 20 Q8 14 14 10 Q22 8 34 10 Q44 12 48 18 Q50 22 48 26 Q44 30 34 32 Q22 34 14 32 Q8 28 10 22 Z" fill={`url(#axo-b-${id})`} />
+    {/* Belly */}
+    <ellipse cx="28" cy="28" rx="14" ry="5" fill="white" opacity="0.08" />
+    {/* External gills — LEFT side (3 feathery branches) — AXOLOTL SIGNATURE */}
+    <path d="M14 10 Q8 4 4 2" stroke={`url(#axo-g-${id})`} strokeWidth="1.5" fill="none" opacity="0.8" />
+    <path d="M5 3 Q3 2 2 0" stroke={colors.accent} strokeWidth="0.6" fill="none" opacity="0.5" />
+    <path d="M6 4 Q4 5 3 4" stroke={colors.accent} strokeWidth="0.5" fill="none" opacity="0.4" />
+    <path d="M16 10 Q12 2 10 0" stroke={`url(#axo-g-${id})`} strokeWidth="1.3" fill="none" opacity="0.75" />
+    <path d="M11 1 Q9 0 8 -1" stroke={colors.accent} strokeWidth="0.5" fill="none" opacity="0.4" />
+    <path d="M12 2 Q10 3 9 2" stroke={colors.accent} strokeWidth="0.5" fill="none" opacity="0.4" />
+    <path d="M18 10 Q16 4 16 0" stroke={`url(#axo-g-${id})`} strokeWidth="1.2" fill="none" opacity="0.7" />
+    <path d="M16 1 Q15 -1 14 -1" stroke={colors.accent} strokeWidth="0.5" fill="none" opacity="0.4" />
+    {/* External gills — RIGHT side (visible behind head) */}
+    <path d="M14 32 Q8 38 4 40" stroke={`url(#axo-g-${id})`} strokeWidth="1.5" fill="none" opacity="0.7" />
+    <path d="M5 39 Q3 40 2 42" stroke={colors.accent} strokeWidth="0.6" fill="none" opacity="0.4" />
+    <path d="M16 32 Q12 40 10 42" stroke={`url(#axo-g-${id})`} strokeWidth="1.3" fill="none" opacity="0.65" />
+    <path d="M18 32 Q16 38 16 42" stroke={`url(#axo-g-${id})`} strokeWidth="1.2" fill="none" opacity="0.6" />
+    {/* Front legs — stubby, cute */}
+    <path d="M18 28 Q14 34 12 36" stroke={colors.body} strokeWidth="2.5" fill="none" opacity="0.7" strokeLinecap="round" />
+    <circle cx="12" cy="36" r="1.5" fill={colors.body} opacity="0.6" />
+    <path d="M24 30 Q20 36 18 38" stroke={colors.body} strokeWidth="2.5" fill="none" opacity="0.7" strokeLinecap="round" />
+    <circle cx="18" cy="38" r="1.5" fill={colors.body} opacity="0.6" />
+    {/* Back legs */}
+    <path d="M36 30 Q34 36 32 38" stroke={colors.body} strokeWidth="2.2" fill="none" opacity="0.6" strokeLinecap="round" />
+    <circle cx="32" cy="38" r="1.3" fill={colors.body} opacity="0.5" />
+    <path d="M42 28 Q40 34 38 36" stroke={colors.body} strokeWidth="2.2" fill="none" opacity="0.6" strokeLinecap="round" />
+    <circle cx="38" cy="36" r="1.3" fill={colors.body} opacity="0.5" />
+    {/* Dorsal ridge */}
+    <path d="M24 10 Q30 6 40 10" stroke={colors.fin} strokeWidth="0.8" fill="none" opacity="0.2" />
+    {/* Spots on body */}
+    <circle cx="22" cy="18" r="1.2" fill={colors.fin} opacity="0.15" />
+    <circle cx="30" cy="16" r="1" fill={colors.fin} opacity="0.15" />
+    <circle cx="38" cy="18" r="1.1" fill={colors.fin} opacity="0.15" />
+    <circle cx="26" cy="24" r="0.9" fill={colors.fin} opacity="0.12" />
+    {/* Smiley face — axolotl signature :) */}
+    <circle cx="10" cy="18" r="2.5" fill="white" />
+    <circle cx="9.6" cy="17.6" r="1.4" fill={colors.eye} />
+    <circle cx="9.2" cy="17.2" r="0.6" fill="white" opacity="0.8" />
+    {/* Wide smile */}
+    <path d="M8 22 Q10 24 14 22" stroke={colors.fin} strokeWidth="0.6" fill="none" opacity="0.4" />
+  </svg>
+))
+AxolotlFish.displayName = "AxolotlFish"
+
+// Nautilus — spiral shell, tentacles
+const NautilusFish = memo(({ colors, size, id }: { colors: FishColors; size: number; id: string }) => (
+  <svg width={size} height={size * 0.97} viewBox="0 0 60 58">
+    <defs>
+      <radialGradient id={`nau-b-${id}`} cx="55%" cy="45%" r="50%">
+        <stop offset="0%" stopColor={colors.accent} stopOpacity="0.7" />
+        <stop offset="50%" stopColor={colors.body} />
+        <stop offset="100%" stopColor={colors.fin} stopOpacity="0.6" />
+      </radialGradient>
+      <linearGradient id={`nau-s-${id}`} x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor={colors.accent} />
+        <stop offset="100%" stopColor={colors.fin} stopOpacity="0.5" />
+      </linearGradient>
+    </defs>
+    {/* Shell — spiral shape. Nautilus signature */}
+    <circle cx="36" cy="28" r="22" fill={`url(#nau-b-${id})`} />
+    {/* Shell spiral lines — logarithmic spiral pattern */}
+    <path d="M36 6 Q52 8 54 28 Q52 48 36 50 Q20 48 18 28 Q20 14 36 12 Q46 14 48 28 Q46 42 36 44 Q26 42 24 28 Q26 18 36 16 Q42 18 44 28 Q42 36 36 38 Q30 36 28 28 Q30 22 36 20 Q40 22 40 28 Q40 32 36 34" stroke={colors.fin} strokeWidth="0.8" fill="none" opacity="0.3" />
+    {/* Shell chamber divisions — nautilus signature */}
+    <path d="M36 6 Q36 12 36 16" stroke={colors.fin} strokeWidth="0.6" fill="none" opacity="0.25" />
+    <path d="M54 28 Q48 28 44 28" stroke={colors.fin} strokeWidth="0.6" fill="none" opacity="0.25" />
+    <path d="M36 50 Q36 44 36 38" stroke={colors.fin} strokeWidth="0.6" fill="none" opacity="0.25" />
+    <path d="M18 28 Q24 28 28 28" stroke={colors.fin} strokeWidth="0.6" fill="none" opacity="0.25" />
+    {/* Shell rim highlight */}
+    <path d="M14 28 Q14 8 36 6 Q56 8 58 28 Q56 48 36 50 Q14 48 14 28 Z" stroke={colors.accent} strokeWidth="0.8" fill="none" opacity="0.2" />
+    {/* Shell shimmer */}
+    <ellipse cx="40" cy="20" rx="8" ry="6" fill="white" opacity="0.08" />
+    {/* Tentacles — extending from shell opening */}
+    <path d="M16 22 Q10 18 6 14 Q4 12 2 14" stroke={colors.body} strokeWidth="1.2" fill="none" opacity="0.6" strokeLinecap="round" />
+    <path d="M16 26 Q8 22 4 20 Q2 18 0 20" stroke={colors.body} strokeWidth="1" fill="none" opacity="0.55" strokeLinecap="round" />
+    <path d="M16 30 Q8 30 4 28 Q2 26 0 28" stroke={colors.body} strokeWidth="1" fill="none" opacity="0.55" strokeLinecap="round" />
+    <path d="M16 34 Q10 36 6 40 Q4 42 2 40" stroke={colors.body} strokeWidth="1.2" fill="none" opacity="0.6" strokeLinecap="round" />
+    <path d="M16 38 Q12 42 8 44 Q6 46 4 44" stroke={colors.body} strokeWidth="0.8" fill="none" opacity="0.45" strokeLinecap="round" />
+    {/* Hood (tissue covering shell opening) */}
+    <path d="M16 18 Q14 24 14 28 Q14 32 16 38" fill={colors.body} stroke={colors.fin} strokeWidth="0.4" opacity="0.6" />
+    {/* Eye */}
+    <circle cx="16" cy="24" r="2.5" fill="white" />
+    <circle cx="15.6" cy="23.6" r="1.5" fill={colors.eye} />
+    <circle cx="15.2" cy="23.2" r="0.6" fill="white" opacity="0.8" />
+  </svg>
+))
+NautilusFish.displayName = "NautilusFish"
+
+// Lionfish — dramatic fan pectoral fins, ornate dorsal spines, striped body
+const LionfishFish = memo(({ colors, size, id }: { colors: FishColors; size: number; id: string }) => (
+  <svg width={size} height={size * 0.81} viewBox="0 0 80 65">
+    <defs>
+      <radialGradient id={`lion-b-${id}`} cx="40%" cy="40%" r="55%">
+        <stop offset="0%" stopColor={colors.accent} stopOpacity="0.8" />
+        <stop offset="50%" stopColor={colors.body} />
+        <stop offset="100%" stopColor={colors.fin} stopOpacity="0.6" />
+      </radialGradient>
+      <linearGradient id={`lion-f-${id}`} x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor={colors.fin} />
+        <stop offset="50%" stopColor={colors.accent} stopOpacity="0.6" />
+        <stop offset="100%" stopColor={colors.fin} stopOpacity="0.8" />
+      </linearGradient>
+      <linearGradient id={`lion-s-${id}`} x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor={colors.accent} />
+        <stop offset="100%" stopColor={colors.fin} />
+      </linearGradient>
+    </defs>
+    {/* Dramatic dorsal spines — LONG, separate rays. Lionfish signature */}
+    <path d="M20 22 Q20 8 18 2" stroke={`url(#lion-s-${id})`} strokeWidth="1.2" fill="none" opacity="0.8" />
+    <path d="M24 20 Q24 6 22 0" stroke={`url(#lion-s-${id})`} strokeWidth="1.1" fill="none" opacity="0.75" />
+    <path d="M28 18 Q30 4 30 -1" stroke={`url(#lion-s-${id})`} strokeWidth="1.1" fill="none" opacity="0.75" />
+    <path d="M32 18 Q36 6 38 0" stroke={`url(#lion-s-${id})`} strokeWidth="1" fill="none" opacity="0.7" />
+    <path d="M36 18 Q40 8 44 2" stroke={`url(#lion-s-${id})`} strokeWidth="1" fill="none" opacity="0.7" />
+    <path d="M40 20 Q44 10 48 4" stroke={`url(#lion-s-${id})`} strokeWidth="0.9" fill="none" opacity="0.65" />
+    <path d="M44 20 Q48 12 52 6" stroke={`url(#lion-s-${id})`} strokeWidth="0.9" fill="none" opacity="0.65" />
+    {/* Membrane between dorsal spines (thin) */}
+    <path d="M18 4 Q22 8 22 2 Q26 6 30 0 Q34 6 38 2 Q40 6 44 4 Q46 8 48 6 Q50 10 52 8" stroke={colors.accent} strokeWidth="0.4" fill={colors.accent} fillOpacity="0.08" opacity="0.4" />
+    {/* Tail */}
+    <path d="M56 28 Q62 24 66 28 Q64 34 66 40 Q62 42 58 38 Z" fill={colors.fin} opacity="0.7" />
+    {/* Tail rays */}
+    <path d="M58 28 Q64 26 66 28" stroke={colors.accent} strokeWidth="0.5" fill="none" opacity="0.4" />
+    <path d="M58 34 Q64 34 66 36" stroke={colors.accent} strokeWidth="0.5" fill="none" opacity="0.4" />
+    <path d="M58 38 Q64 40 66 40" stroke={colors.accent} strokeWidth="0.5" fill="none" opacity="0.4" />
+    {/* Body — stocky, slightly deep */}
+    <ellipse cx="36" cy="32" rx="22" ry="16" fill={`url(#lion-b-${id})`} />
+    {/* Bold vertical stripes — lionfish signature */}
+    <path d="M20 18 Q20 32 22 46" stroke={colors.fin} strokeWidth="2.5" fill="none" opacity="0.35" />
+    <path d="M28 16 Q28 32 28 48" stroke={colors.fin} strokeWidth="2" fill="none" opacity="0.3" />
+    <path d="M36 16 Q36 32 36 48" stroke={colors.fin} strokeWidth="2" fill="none" opacity="0.3" />
+    <path d="M44 18 Q44 32 44 46" stroke={colors.fin} strokeWidth="2.5" fill="none" opacity="0.35" />
+    <path d="M52 22 Q52 32 50 42" stroke={colors.fin} strokeWidth="2" fill="none" opacity="0.3" />
+    {/* Fan pectoral fins — HUGE, dramatic spread. Lionfish signature */}
+    <path d="M22 34 Q14 40 6 50 Q4 52 6 54" stroke={`url(#lion-f-${id})`} strokeWidth="1.2" fill="none" opacity="0.7" />
+    <path d="M22 34 Q16 42 10 52 Q8 56 10 58" stroke={`url(#lion-f-${id})`} strokeWidth="1.1" fill="none" opacity="0.65" />
+    <path d="M24 36 Q20 44 16 54 Q14 58 16 60" stroke={`url(#lion-f-${id})`} strokeWidth="1" fill="none" opacity="0.6" />
+    <path d="M26 36 Q24 46 22 56 Q22 60 24 62" stroke={`url(#lion-f-${id})`} strokeWidth="1" fill="none" opacity="0.6" />
+    <path d="M28 38 Q28 48 28 58 Q28 62 30 64" stroke={`url(#lion-f-${id})`} strokeWidth="0.9" fill="none" opacity="0.55" />
+    {/* Membrane between pectoral fin rays */}
+    <path d="M6 52 Q10 54 10 52 Q14 56 16 54 Q20 58 22 56 Q24 60 28 58 Q28 62 30 60" stroke={colors.accent} strokeWidth="0.4" fill={colors.accent} fillOpacity="0.06" opacity="0.3" />
+    {/* Anal fin spines */}
+    <path d="M38 48 Q40 54 42 56" stroke={colors.fin} strokeWidth="0.8" fill="none" opacity="0.5" />
+    <path d="M42 46 Q44 52 46 54" stroke={colors.fin} strokeWidth="0.8" fill="none" opacity="0.5" />
+    <path d="M46 44 Q48 50 50 52" stroke={colors.fin} strokeWidth="0.8" fill="none" opacity="0.5" />
+    {/* Eye stripe */}
+    <path d="M16 24 Q16 32 16 40" stroke={colors.fin} strokeWidth="2.5" fill="none" opacity="0.5" />
+    {/* Eye — detailed */}
+    <circle cx="16" cy="30" r="4" fill="white" />
+    <circle cx="16" cy="30" r="4" stroke={colors.accent} strokeWidth="0.5" fill="none" opacity="0.3" />
+    <circle cx="15.5" cy="29.5" r="2.5" fill={colors.eye} />
+    <circle cx="15" cy="29" r="1.5" fill="#111" />
+    <circle cx="14.5" cy="28.5" r="0.8" fill="white" opacity="0.85" />
+    <circle cx="16.5" cy="30.5" r="0.4" fill="white" opacity="0.4" />
+    {/* Mouth */}
+    <path d="M14 36 Q12 35.5 14 35" stroke={colors.fin} strokeWidth="0.7" fill="none" opacity="0.5" />
+    {/* Supraorbital tentacle (above eye) — lionfish signature */}
+    <path d="M16 26 Q14 20 12 16" stroke={colors.accent} strokeWidth="0.8" fill="none" opacity="0.5" />
+    <circle cx="12" cy="16" r="0.6" fill={colors.accent} opacity="0.5" />
+  </svg>
+))
+LionfishFish.displayName = "LionfishFish"
+
 
 // ─── SPECIES COLOR VARIANTS ─────────────────────────────────────
 // Each alternate species has 6 unique color variants (matching guppy's 6 tier colors).
@@ -2354,6 +3073,132 @@ const SPECIES_COLOR_VARIANTS: Record<string, SpeciesColorVariant[]> = {
     { name: 'White',        colors: { body: '#F5F5F5', fin: '#BDBDBD', accent: '#FFFFFF', eye: '#1B1B1B' } },
     { name: 'Bronze',       colors: { body: '#A1887F', fin: '#5D4037', accent: '#D7CCC8', eye: '#1B1B1B' } },
   ],
+  // ── Rasbora (Tier 0) — Tiny schooling torpedo ──
+  'rasbora': [
+    { name: 'Harlequin',    colors: { body: '#FF7043', fin: '#BF360C', accent: '#1B1B1B', eye: '#1B1B1B' } },
+    { name: 'Chili',         colors: { body: '#D32F2F', fin: '#B71C1C', accent: '#FF8A80', eye: '#1B1B1B' } },
+    { name: 'Galaxy',        colors: { body: '#1A237E', fin: '#0D47A1', accent: '#FFD54F', eye: '#E0E0E0' } },
+    { name: 'Emerald',       colors: { body: '#2E7D32', fin: '#1B5E20', accent: '#A5D6A7', eye: '#1B1B1B' } },
+    { name: 'Platinum',      colors: { body: '#CFD8DC', fin: '#78909C', accent: '#ECEFF1', eye: '#455A64' } },
+    { name: 'Neon',           colors: { body: '#00E676', fin: '#00897B', accent: '#76FF03', eye: '#1B1B1B' } },
+  ],
+  // ── Corydoras (Tier 1) — Armored catfish ──
+  'corydoras': [
+    { name: 'Peppered',      colors: { body: '#8D6E63', fin: '#5D4037', accent: '#D7CCC8', eye: '#1B1B1B' } },
+    { name: 'Albino',         colors: { body: '#FFECB3', fin: '#FFD54F', accent: '#FFFFFF', eye: '#EF5350' } },
+    { name: 'Panda',          colors: { body: '#EFEBE9', fin: '#263238', accent: '#FFFFFF', eye: '#1B1B1B' } },
+    { name: 'Bronze',         colors: { body: '#A1887F', fin: '#6D4C41', accent: '#BCAAA4', eye: '#1B1B1B' } },
+    { name: 'Sterbai',        colors: { body: '#37474F', fin: '#FF8F00', accent: '#78909C', eye: '#FFD700' } },
+    { name: 'Julii',          colors: { body: '#B0BEC5', fin: '#455A64', accent: '#ECEFF1', eye: '#1B1B1B' } },
+  ],
+  // ── Discus (Tier 2) — Disc-shaped king of aquaria ──
+  'discus': [
+    { name: 'Red Turquoise', colors: { body: '#00ACC1', fin: '#D32F2F', accent: '#80DEEA', eye: '#D32F2F' } },
+    { name: 'Pigeon Blood',  colors: { body: '#FFCC80', fin: '#D32F2F', accent: '#FFF8E1', eye: '#D32F2F' } },
+    { name: 'Cobalt Blue',   colors: { body: '#1565C0', fin: '#0D47A1', accent: '#42A5F5', eye: '#FFD700' } },
+    { name: 'Leopard',        colors: { body: '#FFB300', fin: '#D32F2F', accent: '#FFF176', eye: '#D32F2F' } },
+    { name: 'Snow White',    colors: { body: '#FFFFFF', fin: '#ECEFF1', accent: '#FFFFFF', eye: '#D32F2F' } },
+    { name: 'Green',          colors: { body: '#2E7D32', fin: '#1B5E20', accent: '#69F0AE', eye: '#FFD700' } },
+  ],
+  // ── Butterflyfish (Tier 3) — Tall body with eyespot ──
+  'butterflyfish': [
+    { name: 'Copperband',    colors: { body: '#FFFFFF', fin: '#FF8F00', accent: '#FFE0B2', eye: '#1B1B1B' } },
+    { name: 'Racoon',         colors: { body: '#FFD54F', fin: '#263238', accent: '#FFF8E1', eye: '#1B1B1B' } },
+    { name: 'Longnose',       colors: { body: '#FFD600', fin: '#1B1B1B', accent: '#FFFFFF', eye: '#1B1B1B' } },
+    { name: 'Bannerfish',     colors: { body: '#FFFFFF', fin: '#263238', accent: '#FFD54F', eye: '#1B1B1B' } },
+    { name: 'Threadfin',      colors: { body: '#ECEFF1', fin: '#FFD54F', accent: '#FFFFFF', eye: '#263238' } },
+    { name: 'Sunset',         colors: { body: '#FF8A65', fin: '#263238', accent: '#FFCCBC', eye: '#1B1B1B' } },
+  ],
+  // ── Moorish Idol (Tier 4) — Iconic reef fish with dorsal streamer ──
+  'moorish-idol': [
+    { name: 'Classic',        colors: { body: '#FFD600', fin: '#263238', accent: '#FFFFFF', eye: '#1B1B1B' } },
+    { name: 'Midnight',       colors: { body: '#263238', fin: '#1B1B1B', accent: '#FFD600', eye: '#FFD700' } },
+    { name: 'Pearl',           colors: { body: '#ECEFF1', fin: '#455A64', accent: '#FFFFFF', eye: '#455A64' } },
+    { name: 'Coral',           colors: { body: '#FF7043', fin: '#263238', accent: '#FFCCBC', eye: '#1B1B1B' } },
+    { name: 'Ocean',           colors: { body: '#42A5F5', fin: '#0D47A1', accent: '#FFFFFF', eye: '#FFD700' } },
+    { name: 'Royal',           colors: { body: '#7B1FA2', fin: '#4A148C', accent: '#FFD600', eye: '#FFD700' } },
+  ],
+  // ── Mandarin Dragonet (Tier 5) — Psychedelic dragonet ──
+  'mandarin': [
+    { name: 'Classic',        colors: { body: '#FF6D00', fin: '#1565C0', accent: '#00E676', eye: '#1B1B1B' } },
+    { name: 'Spotted',        colors: { body: '#FF8F00', fin: '#00897B', accent: '#FFD600', eye: '#1B1B1B' } },
+    { name: 'Red',             colors: { body: '#D32F2F', fin: '#B71C1C', accent: '#FF8A80', eye: '#FFD700' } },
+    { name: 'Psychedelic',    colors: { body: '#E040FB', fin: '#AA00FF', accent: '#76FF03', eye: '#FFD700' } },
+    { name: 'Green',           colors: { body: '#00C853', fin: '#00897B', accent: '#FF6D00', eye: '#1B1B1B' } },
+    { name: 'Nebula',          colors: { body: '#311B92', fin: '#1A237E', accent: '#E040FB', eye: '#E040FB' } },
+  ],
+  // ── Seahorse (Standalone Deluxe) — Upright swimmer ──
+  'seahorse': [
+    { name: 'Pygmy',           colors: { body: '#FF7043', fin: '#E64A19', accent: '#FFAB91', eye: '#1B1B1B' } },
+    { name: 'Lined',           colors: { body: '#FFD54F', fin: '#4E342E', accent: '#FFF8E1', eye: '#1B1B1B' } },
+    { name: 'Thorny',          colors: { body: '#8D6E63', fin: '#3E2723', accent: '#D7CCC8', eye: '#FFD700' } },
+    { name: 'Pacific',         colors: { body: '#42A5F5', fin: '#0D47A1', accent: '#90CAF9', eye: '#1B1B1B' } },
+    { name: 'Weedy',           colors: { body: '#66BB6A', fin: '#2E7D32', accent: '#A5D6A7', eye: '#1B1B1B' } },
+    { name: 'Ghost',           colors: { body: '#ECEFF1', fin: '#B0BEC5', accent: '#FFFFFF', eye: '#78909C' } },
+  ],
+  // ── Shrimp (Standalone Deluxe) — Crustacean king ──
+  'shrimp': [
+    { name: 'Cherry',          colors: { body: '#D32F2F', fin: '#B71C1C', accent: '#FFCDD2', eye: '#1B1B1B' } },
+    { name: 'Crystal Red',    colors: { body: '#FFFFFF', fin: '#D32F2F', accent: '#FFCDD2', eye: '#1B1B1B' } },
+    { name: 'Blue Dream',     colors: { body: '#1565C0', fin: '#0D47A1', accent: '#90CAF9', eye: '#1B1B1B' } },
+    { name: 'Amano',           colors: { body: '#CFD8DC', fin: '#78909C', accent: '#ECEFF1', eye: '#455A64' } },
+    { name: 'Golden Bee',     colors: { body: '#FFD600', fin: '#F9A825', accent: '#FFF9C4', eye: '#1B1B1B' } },
+    { name: 'Black Rose',     colors: { body: '#263238', fin: '#1B1B1B', accent: '#455A64', eye: '#E0E0E0' } },
+  ],
+  // ── Pufferfish (Standalone Deluxe) — Inflatable wonder ──
+  'pufferfish': [
+    { name: 'Spotted',         colors: { body: '#FFD54F', fin: '#4E342E', accent: '#FFF8E1', eye: '#1B1B1B' } },
+    { name: 'Porcupine',      colors: { body: '#A1887F', fin: '#5D4037', accent: '#D7CCC8', eye: '#FFD700' } },
+    { name: 'Fahaka',          colors: { body: '#8D6E63', fin: '#3E2723', accent: '#FFD600', eye: '#FFD700' } },
+    { name: 'Amazon',          colors: { body: '#66BB6A', fin: '#2E7D32', accent: '#C8E6C9', eye: '#1B1B1B' } },
+    { name: 'Dwarf',           colors: { body: '#FFB300', fin: '#E65100', accent: '#FFF176', eye: '#1B1B1B' } },
+    { name: 'Mbu',              colors: { body: '#37474F', fin: '#263238', accent: '#FFD54F', eye: '#FFD700' } },
+  ],
+  // ── Jellyfish (Standalone Deluxe) — Ethereal drifter ──
+  'jellyfish': [
+    { name: 'Moon',             colors: { body: '#B0BEC5', fin: '#78909C', accent: '#ECEFF1', eye: '#78909C' } },
+    { name: 'Crystal',          colors: { body: '#80DEEA', fin: '#00ACC1', accent: '#E0F7FA', eye: '#006064' } },
+    { name: 'Blue Fire',       colors: { body: '#1565C0', fin: '#0D47A1', accent: '#E040FB', eye: '#E040FB' } },
+    { name: 'Pink',             colors: { body: '#F48FB1', fin: '#EC407A', accent: '#FCE4EC', eye: '#AD1457' } },
+    { name: 'Aurora',           colors: { body: '#00E676', fin: '#00897B', accent: '#E040FB', eye: '#76FF03' } },
+    { name: 'Deep Sea',        colors: { body: '#311B92', fin: '#1A237E', accent: '#B388FF', eye: '#E040FB' } },
+  ],
+  // ── Stingray (Standalone Deluxe) — Flat ocean glider ──
+  'stingray': [
+    { name: 'Blue Spotted',   colors: { body: '#78909C', fin: '#546E7A', accent: '#42A5F5', eye: '#1B1B1B' } },
+    { name: 'Manta',           colors: { body: '#263238', fin: '#1B1B1B', accent: '#ECEFF1', eye: '#E0E0E0' } },
+    { name: 'Southern',        colors: { body: '#A1887F', fin: '#6D4C41', accent: '#D7CCC8', eye: '#1B1B1B' } },
+    { name: 'Electric',        colors: { body: '#6D4C41', fin: '#3E2723', accent: '#FFD600', eye: '#FFD700' } },
+    { name: 'Marble',          colors: { body: '#ECEFF1', fin: '#78909C', accent: '#CFD8DC', eye: '#455A64' } },
+    { name: 'Cownose',        colors: { body: '#FF8A65', fin: '#BF360C', accent: '#FFCCBC', eye: '#1B1B1B' } },
+  ],
+  // ── Axolotl (Standalone Deluxe) — Smiling salamander ──
+  'axolotl': [
+    { name: 'Leucistic',      colors: { body: '#FFECB3', fin: '#FF7043', accent: '#FFFFFF', eye: '#1B1B1B' } },
+    { name: 'Wild',             colors: { body: '#4E342E', fin: '#3E2723', accent: '#795548', eye: '#FFD700' } },
+    { name: 'Golden',          colors: { body: '#FFD600', fin: '#FF8F00', accent: '#FFF176', eye: '#1B1B1B' } },
+    { name: 'Melanoid',       colors: { body: '#1B1B1B', fin: '#263238', accent: '#37474F', eye: '#E0E0E0' } },
+    { name: 'GFP',              colors: { body: '#76FF03', fin: '#00E676', accent: '#CCFF90', eye: '#1B1B1B' } },
+    { name: 'Copper',          colors: { body: '#D84315', fin: '#8D6E63', accent: '#FFCC80', eye: '#FFD700' } },
+  ],
+  // ── Nautilus (Standalone Deluxe) — Living fossil ──
+  'nautilus': [
+    { name: 'Chambered',      colors: { body: '#FFCC80', fin: '#5D4037', accent: '#FFF8E1', eye: '#1B1B1B' } },
+    { name: 'Emperor',         colors: { body: '#6D4C41', fin: '#3E2723', accent: '#FFD54F', eye: '#FFD700' } },
+    { name: 'Palau',            colors: { body: '#FF8A65', fin: '#BF360C', accent: '#FFFFFF', eye: '#1B1B1B' } },
+    { name: 'Deep Sea',        colors: { body: '#1A237E', fin: '#0D47A1', accent: '#B388FF', eye: '#E040FB' } },
+    { name: 'Fossil',           colors: { body: '#8D6E63', fin: '#4E342E', accent: '#A1887F', eye: '#FFD700' } },
+    { name: 'Pearl',            colors: { body: '#EFEBE9', fin: '#BCAAA4', accent: '#FFFFFF', eye: '#795548' } },
+  ],
+  // ── Lionfish (Standalone Deluxe) — Ultimate premium ──
+  'lionfish': [
+    { name: 'Red',              colors: { body: '#D32F2F', fin: '#B71C1C', accent: '#FFCDD2', eye: '#FFD700' } },
+    { name: 'Volitan',          colors: { body: '#8D6E63', fin: '#3E2723', accent: '#D7CCC8', eye: '#FFD700' } },
+    { name: 'Zebra',            colors: { body: '#ECEFF1', fin: '#263238', accent: '#FFFFFF', eye: '#1B1B1B' } },
+    { name: 'Fuzzy Dwarf',    colors: { body: '#FF7043', fin: '#4E342E', accent: '#FFAB91', eye: '#FFD700' } },
+    { name: 'Antennata',       colors: { body: '#795548', fin: '#263238', accent: '#FFCC80', eye: '#FFD700' } },
+    { name: 'Clearfin',        colors: { body: '#B0BEC5', fin: '#37474F', accent: '#ECEFF1', eye: '#FFD700' } },
+  ],
   // ── Guppy variants share the tier color progression ──
   'guppy':         [
     { name: 'Meadow',    colors: { body: '#7CB342', fin: '#558B2F', accent: '#9CCC65', eye: '#1B1B1B' } },
@@ -2409,12 +3254,13 @@ export type FishPattern = 'none' | 'scales' | 'fine-scales' | 'armored' | 'shimm
 
 export type FishSpecies =
   | 'guppy' | 'swift-guppy' | 'fancy-guppy' | 'delta-guppy' | 'veil-guppy' | 'supreme-guppy'
-  | 'endler' | 'molly' | 'platy' | 'danio' | 'minnow'
-  | 'neon-tetra' | 'ember-tetra' | 'diamond-tetra' | 'rummy-tetra' | 'serpae-tetra' | 'glowlight-tetra'
-  | 'angelfish' | 'marble-angelfish' | 'koi-angelfish' | 'platinum-angelfish' | 'zebra-angelfish' | 'veil-angelfish'
-  | 'clownfish' | 'tomato-clownfish' | 'maroon-clownfish' | 'saddleback-clownfish' | 'cinnamon-clownfish' | 'snowflake-clownfish'
-  | 'tang' | 'yellow-tang' | 'powder-tang' | 'achilles-tang' | 'naso-tang' | 'sailfin-tang'
-  | 'betta' | 'crown-betta' | 'halfmoon-betta' | 'plakat-betta' | 'galaxy-betta' | 'dragon-betta'
+  | 'endler' | 'molly' | 'platy' | 'danio' | 'minnow' | 'rasbora'
+  | 'neon-tetra' | 'ember-tetra' | 'diamond-tetra' | 'rummy-tetra' | 'serpae-tetra' | 'glowlight-tetra' | 'corydoras'
+  | 'angelfish' | 'marble-angelfish' | 'koi-angelfish' | 'platinum-angelfish' | 'zebra-angelfish' | 'veil-angelfish' | 'discus'
+  | 'clownfish' | 'tomato-clownfish' | 'maroon-clownfish' | 'saddleback-clownfish' | 'cinnamon-clownfish' | 'snowflake-clownfish' | 'butterflyfish'
+  | 'tang' | 'yellow-tang' | 'powder-tang' | 'achilles-tang' | 'naso-tang' | 'sailfin-tang' | 'moorish-idol'
+  | 'betta' | 'crown-betta' | 'halfmoon-betta' | 'plakat-betta' | 'galaxy-betta' | 'dragon-betta' | 'mandarin'
+  | 'seahorse' | 'shrimp' | 'pufferfish' | 'jellyfish' | 'stingray' | 'axolotl' | 'nautilus' | 'lionfish'
 
 // Guppy variants all unlock at tier 0 but retain their visual appearance
 // Use GUPPY_VISUAL_TIER for rendering the correct SVG shape
@@ -2429,12 +3275,14 @@ const GUPPY_VISUAL_TIER: Record<string, FishTier> = {
 
 const SPECIES_TO_TIER: Record<FishSpecies, FishTier> = {
   'guppy': 0, 'swift-guppy': 0, 'fancy-guppy': 0, 'delta-guppy': 0, 'veil-guppy': 0, 'supreme-guppy': 0,
-  'endler': 0, 'molly': 0, 'platy': 0, 'danio': 0, 'minnow': 0,
-  'neon-tetra': 1, 'ember-tetra': 1, 'diamond-tetra': 1, 'rummy-tetra': 1, 'serpae-tetra': 1, 'glowlight-tetra': 1,
-  'angelfish': 2, 'marble-angelfish': 2, 'koi-angelfish': 2, 'platinum-angelfish': 2, 'zebra-angelfish': 2, 'veil-angelfish': 2,
-  'clownfish': 3, 'tomato-clownfish': 3, 'maroon-clownfish': 3, 'saddleback-clownfish': 3, 'cinnamon-clownfish': 3, 'snowflake-clownfish': 3,
-  'tang': 4, 'yellow-tang': 4, 'powder-tang': 4, 'achilles-tang': 4, 'naso-tang': 4, 'sailfin-tang': 4,
-  'betta': 5, 'crown-betta': 5, 'halfmoon-betta': 5, 'plakat-betta': 5, 'galaxy-betta': 5, 'dragon-betta': 5,
+  'endler': 0, 'molly': 0, 'platy': 0, 'danio': 0, 'minnow': 0, 'rasbora': 0,
+  'neon-tetra': 1, 'ember-tetra': 1, 'diamond-tetra': 1, 'rummy-tetra': 1, 'serpae-tetra': 1, 'glowlight-tetra': 1, 'corydoras': 1,
+  'angelfish': 2, 'marble-angelfish': 2, 'koi-angelfish': 2, 'platinum-angelfish': 2, 'zebra-angelfish': 2, 'veil-angelfish': 2, 'discus': 2,
+  'clownfish': 3, 'tomato-clownfish': 3, 'maroon-clownfish': 3, 'saddleback-clownfish': 3, 'cinnamon-clownfish': 3, 'snowflake-clownfish': 3, 'butterflyfish': 3,
+  'tang': 4, 'yellow-tang': 4, 'powder-tang': 4, 'achilles-tang': 4, 'naso-tang': 4, 'sailfin-tang': 4, 'moorish-idol': 4,
+  'betta': 5, 'crown-betta': 5, 'halfmoon-betta': 5, 'plakat-betta': 5, 'galaxy-betta': 5, 'dragon-betta': 5, 'mandarin': 5,
+  // Standalone deluxe — mapped to tiers for rendering, but unlock via custom scores
+  'shrimp': 2, 'seahorse': 3, 'pufferfish': 4, 'jellyfish': 5, 'stingray': 5, 'axolotl': 5, 'nautilus': 5, 'lionfish': 5,
 }
 
 // Body clip paths per species — patterns are clipped to these shapes
@@ -2487,6 +3335,22 @@ const BODY_CLIPS: Record<string, string> = {
   'plakat-betta': 'M6 22 Q6 7 28 7 Q50 7 50 22 Q50 37 28 37 Q6 37 6 22 Z',
   'galaxy-betta': 'M8 24 Q8 9 28 9 Q48 9 48 24 Q48 39 28 39 Q8 39 8 24 Z',
   'dragon-betta': 'M8 26 Q8 9 30 9 Q52 9 52 26 Q52 43 30 43 Q8 43 8 26 Z',
+  // New tier species
+  'rasbora': 'M4 15 Q4 7 14 6 Q28 5 38 10 Q42 14 38 20 Q28 25 14 24 Q4 23 4 15 Z',
+  'corydoras': 'M6 20 Q6 10 16 8 Q28 6 40 12 Q44 18 40 28 Q28 32 16 32 Q6 30 6 20 Z',
+  'discus': 'M6 32 Q6 8 30 8 Q54 8 54 32 Q54 56 30 56 Q6 56 6 32 Z',
+  'butterflyfish': 'M6 29 Q6 10 34 10 Q54 10 54 29 Q54 48 34 48 Q6 48 6 29 Z',
+  'moorish-idol': 'M12 40 Q12 16 38 16 Q58 16 58 40 Q58 64 38 64 Q12 64 12 40 Z',
+  'mandarin': 'M6 24 Q6 10 24 8 Q42 6 54 16 Q58 22 54 28 Q42 36 24 36 Q6 34 6 24 Z',
+  // Standalone deluxe species
+  'seahorse': 'M8 20 Q8 8 18 6 Q26 6 26 20 Q26 40 18 50 Q8 50 8 40 Z',
+  'shrimp': 'M8 14 Q8 6 24 6 Q40 6 52 14 Q56 22 52 30 Q40 34 24 34 Q8 30 8 22 Z',
+  'pufferfish': 'M6 27 Q6 5 28 5 Q50 5 50 27 Q50 49 28 49 Q6 49 6 27 Z',
+  'jellyfish': 'M5 18 Q5 6 25 4 Q45 6 45 18 Q45 28 25 30 Q5 28 5 18 Z',
+  'stingray': 'M4 25 Q4 6 22 2 Q36 6 40 25 Q36 44 22 48 Q4 44 4 25 Z',
+  'axolotl': 'M8 20 Q8 10 14 10 Q34 8 48 16 Q50 22 48 28 Q34 34 14 34 Q8 30 8 20 Z',
+  'nautilus': 'M14 28 Q14 6 36 6 Q58 6 58 28 Q58 50 36 50 Q14 50 14 28 Z',
+  'lionfish': 'M14 32 Q14 16 36 16 Q58 16 58 32 Q58 48 36 48 Q14 48 14 32 Z',
 }
 
 // Scale pattern generator — produces columns of overlapping arc shapes
@@ -2690,6 +3554,22 @@ const SPECIES_VIEWBOXES: Record<string, string> = {
   'plakat-betta': '0 0 68 46',
   'galaxy-betta': '0 0 76 56',
   'dragon-betta': '0 0 78 58',
+  // New tier species
+  'rasbora': '0 0 52 30',
+  'corydoras': '0 0 58 42',
+  'discus': '0 0 65 65',
+  'butterflyfish': '0 0 68 58',
+  'moorish-idol': '0 0 80 85',
+  'mandarin': '0 0 72 50',
+  // Standalone deluxe species
+  'seahorse': '0 0 40 70',
+  'shrimp': '0 0 65 40',
+  'pufferfish': '0 0 60 55',
+  'jellyfish': '0 0 50 75',
+  'stingray': '0 0 75 50',
+  'axolotl': '0 0 70 45',
+  'nautilus': '0 0 60 58',
+  'lionfish': '0 0 80 65',
 }
 
 // Aspect ratios per species
@@ -2701,6 +3581,10 @@ const SPECIES_ASPECTS: Record<string, number> = {
   'clownfish': 0.7, 'tomato-clownfish': 0.74, 'maroon-clownfish': 0.76, 'saddleback-clownfish': 0.66, 'cinnamon-clownfish': 0.7, 'snowflake-clownfish': 0.7,
   'tang': 0.82, 'yellow-tang': 0.85, 'powder-tang': 0.82, 'achilles-tang': 0.82, 'naso-tang': 0.82, 'sailfin-tang': 0.95,
   'betta': 0.74, 'crown-betta': 0.74, 'halfmoon-betta': 0.8, 'plakat-betta': 0.68, 'galaxy-betta': 0.74, 'dragon-betta': 0.74,
+  // New tier species
+  'rasbora': 0.58, 'corydoras': 0.72, 'discus': 1.0, 'butterflyfish': 0.85, 'moorish-idol': 1.06, 'mandarin': 0.69,
+  // Standalone deluxe species
+  'seahorse': 1.75, 'shrimp': 0.62, 'pufferfish': 0.92, 'jellyfish': 1.5, 'stingray': 0.67, 'axolotl': 0.64, 'nautilus': 0.97, 'lionfish': 0.81,
 }
 
 export const FishSVG = memo(({ tier, size = 48, customColors, customization, id }: FishSVGProps) => {
@@ -2771,6 +3655,22 @@ export const FishSVG = memo(({ tier, size = 48, customColors, customization, id 
         case 'plakat-betta': return <PlacatBetta colors={colors} size={size} id={gradientId} />
         case 'galaxy-betta': return <GalaxyBetta colors={colors} size={size} id={gradientId} />
         case 'dragon-betta': return <DragonBetta colors={colors} size={size} id={gradientId} />
+        // New tier species
+        case 'rasbora': return <RasboraFish colors={colors} size={size} id={gradientId} />
+        case 'corydoras': return <CorydorasFish colors={colors} size={size} id={gradientId} />
+        case 'discus': return <DiscusFish colors={colors} size={size} id={gradientId} />
+        case 'butterflyfish': return <ButterflyfishFish colors={colors} size={size} id={gradientId} />
+        case 'moorish-idol': return <MoorishIdolFish colors={colors} size={size} id={gradientId} />
+        case 'mandarin': return <MandarinFish colors={colors} size={size} id={gradientId} />
+        // Standalone deluxe species
+        case 'seahorse': return <SeahorseFish colors={colors} size={size} id={gradientId} />
+        case 'shrimp': return <ShrimpFish colors={colors} size={size} id={gradientId} />
+        case 'pufferfish': return <PufferfishFish colors={colors} size={size} id={gradientId} />
+        case 'jellyfish': return <JellyfishFish colors={colors} size={size} id={gradientId} />
+        case 'stingray': return <StingrayFish colors={colors} size={size} id={gradientId} />
+        case 'axolotl': return <AxolotlFish colors={colors} size={size} id={gradientId} />
+        case 'nautilus': return <NautilusFish colors={colors} size={size} id={gradientId} />
+        case 'lionfish': return <LionfishFish colors={colors} size={size} id={gradientId} />
       }
     }
     // Default guppy variants
