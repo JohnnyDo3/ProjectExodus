@@ -1,14 +1,19 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
+import { useSession } from 'next-auth/react'
+import { ChevronDown, MessageSquare } from 'lucide-react'
+import { BackButton } from '@/components/navigation/BackButton'
 import { CreatePost } from '@/components/social/CreatePost'
 import { FeedPost } from '@/components/social/FeedPost'
 import { Button } from '@/components/ui/Button'
-import { Card, CardContent } from '@/components/ui/Card'
-import { Loader2, TrendingUp, Users, Sparkles } from 'lucide-react'
-import { BackButton } from '@/components/navigation/BackButton'
-import Link from 'next/link'
-import { useSession } from 'next-auth/react'
+import { Loader2 } from 'lucide-react'
+
+import { useScrollReveal } from '@/components/community/roundtable/useScrollReveal'
+import { RoundTable } from '@/components/community/roundtable/RoundTable'
+import { PostOrbit } from '@/components/community/roundtable/PostOrbit'
+import { TableCenterpiece } from '@/components/community/roundtable/TableCenterpiece'
+import { PostPreviewOverlay } from '@/components/community/roundtable/PostPreviewOverlay'
 
 interface TrendingHashtag {
   hashtag: string
@@ -18,15 +23,15 @@ interface TrendingHashtag {
 export default function DiscussionsPage() {
   const { data: session } = useSession()
   const [posts, setPosts] = useState<any[]>([])
-  const [filteredPosts, setFilteredPosts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
-  const [filter, setFilter] = useState<'all' | 'newest' | 'oldest' | 'popular'>('all')
   const [trendingHashtags, setTrendingHashtags] = useState<TrendingHashtag[]>([])
-  const [loadingTrending, setLoadingTrending] = useState(true)
+  const [selectedPost, setSelectedPost] = useState<any | null>(null)
 
-  const fetchPosts = async (pageNum: number = 1) => {
+  const { revealProgress, containerRef } = useScrollReveal(500)
+
+  const fetchPosts = useCallback(async (pageNum: number = 1) => {
     try {
       setLoading(true)
       const res = await fetch(`/api/social/feed?page=${pageNum}&limit=50`)
@@ -45,47 +50,24 @@ export default function DiscussionsPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
 
-  const fetchTrendingHashtags = async () => {
+  const fetchTrendingHashtags = useCallback(async () => {
     try {
-      setLoadingTrending(true)
       const res = await fetch('/api/social/trending')
       const data = await res.json()
-
       if (data.success) {
         setTrendingHashtags(data.data)
       }
     } catch (error) {
       console.error('Error fetching trending hashtags:', error)
-    } finally {
-      setLoadingTrending(false)
     }
-  }
+  }, [])
 
   useEffect(() => {
     fetchPosts(1)
     fetchTrendingHashtags()
-  }, [])
-
-  useEffect(() => {
-    // Apply filter
-    const sorted = [...posts]
-
-    if (filter === 'newest') {
-      sorted.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-    } else if (filter === 'oldest') {
-      sorted.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
-    } else if (filter === 'popular') {
-      sorted.sort((a, b) => {
-        const popularityA = (a._count?.likes || 0) + (a._count?.comments || 0)
-        const popularityB = (b._count?.likes || 0) + (b._count?.comments || 0)
-        return popularityB - popularityA
-      })
-    }
-
-    setFilteredPosts(sorted)
-  }, [posts, filter])
+  }, [fetchPosts, fetchTrendingHashtags])
 
   const handlePostCreated = () => {
     fetchPosts(1)
@@ -99,229 +81,147 @@ export default function DiscussionsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--background)]">
-      {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] via-[color-mix(in_srgb,var(--accent)_15%,var(--background))] to-[color-mix(in_srgb,var(--secondary)_15%,var(--background))]">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Community" fallbackUrl="/community" />
-          </div>
-          <div className="max-w-5xl mx-auto text-center space-y-4">
-            <h1 className="text-5xl font-black text-[var(--foreground)]">
-              COMMUNITY DISCUSSIONS
+    <div className="min-h-[250vh] bg-[var(--background)]">
+      {/* ═══ ZONE A: HERO / LANDING ═══ */}
+      <section className="h-screen flex flex-col relative overflow-hidden">
+        {/* Background ambiance */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[color-mix(in_srgb,var(--primary)_8%,var(--background))] via-[var(--background)] to-[color-mix(in_srgb,var(--accent)_5%,var(--background))]" />
+
+        {/* Back button */}
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+          <BackButton label="Back to Community" fallbackUrl="/community" />
+        </div>
+
+        {/* Title area */}
+        <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4">
+          <div className="space-y-4 mb-12">
+            <div className="flex items-center justify-center gap-3 text-[10px] uppercase tracking-[0.3em] font-bold text-[var(--foreground)]/40">
+              <span>⚜</span>
+              <span>The Community</span>
+              <span>⚜</span>
+            </div>
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-black text-[var(--foreground)] tracking-tight">
+              ROUND TABLE
             </h1>
-            <p className="text-xl font-semibold text-theme-muted">
-              Share your sustainability journey, connect with like-minded people
+            <p className="text-lg sm:text-xl text-[var(--foreground)]/50 font-medium max-w-lg mx-auto">
+              Where every voice shapes the future. Join the discussion.
             </p>
           </div>
-        </div>
-      </section>
 
-      {/* Main Content */}
-      <section className="py-12">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto grid lg:grid-cols-3 gap-8">
-            {/* Left Sidebar - User Stats */}
-            <div className="lg:col-span-1 space-y-6">
-              {session?.user && (
-                <Card className="border-4 border-theme-primary">
-                  <CardContent className="p-6">
-                    <div className="text-center">
-                      {session.user.image ? (
-                        <img
-                          src={session.user.image}
-                          alt={session.user.name || 'User'}
-                          className="w-20 h-20 rounded-full mx-auto mb-4 object-cover"
-                        />
-                      ) : (
-                        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center mx-auto mb-4">
-                          <span className="text-3xl font-black text-white">
-                            {session.user.name?.[0]?.toUpperCase() || session.user.email?.[0].toUpperCase()}
-                          </span>
-                        </div>
-                      )}
-                      <h3 className="text-xl font-black text-[var(--foreground)] mb-1">
-                        {session.user.name || 'Anonymous User'}
-                      </h3>
-                      <Link href="/settings">
-                        <Button variant="outline" size="sm" className="mt-3 font-black">
-                          EDIT PROFILE
-                        </Button>
-                      </Link>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-
-              {/* Quick Links */}
-              <Card className="border-4 border-theme-accent">
-                <CardContent className="p-6">
-                  <h3 className="text-lg font-black text-[var(--foreground)] mb-4 flex items-center gap-2">
-                    <Sparkles className="w-5 h-5 text-theme-accent" />
-                    EXPLORE
-                  </h3>
-                  <div className="space-y-2">
-                    <Link href="/community/projects">
-                      <button className="w-full text-left px-4 py-3 rounded-lg hover:bg-[var(--muted)] transition-colors font-bold text-[var(--foreground)]">
-                        Community Projects
-                      </button>
-                    </Link>
-                    <Link href="/products">
-                      <button className="w-full text-left px-4 py-3 rounded-lg hover:bg-[var(--muted)] transition-colors font-bold text-[var(--foreground)]">
-                        Sustainable Products
-                      </button>
-                    </Link>
-                    <Link href="/learn">
-                      <button className="w-full text-left px-4 py-3 rounded-lg hover:bg-[var(--muted)] transition-colors font-bold text-[var(--foreground)]">
-                        Learn & Resources
-                      </button>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Trending Topics */}
-              <Card className="border-4 border-theme-secondary">
-                <CardContent className="p-6">
-                  <h3 className="text-lg font-black text-[var(--foreground)] mb-4 flex items-center gap-2">
-                    <TrendingUp className="w-5 h-5 text-theme-secondary" />
-                    TRENDING
-                  </h3>
-                  <div className="space-y-3">
-                    {loadingTrending ? (
-                      <div className="flex justify-center py-4">
-                        <Loader2 className="w-6 h-6 animate-spin text-theme-secondary" />
-                      </div>
-                    ) : trendingHashtags.length > 0 ? (
-                      trendingHashtags.slice(0, 5).map((tag, i) => (
-                        <button
-                          key={i}
-                          className="block w-full text-left px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
-                        >
-                          <div className="font-black text-theme-primary">{tag.hashtag}</div>
-                          <div className="text-xs font-semibold text-theme-muted">{tag.count} {tag.count === 1 ? 'post' : 'posts'}</div>
-                        </button>
-                      ))
-                    ) : (
-                      <p className="text-sm font-semibold text-theme-muted text-center py-4">
-                        No trending hashtags yet. Be the first to use #hashtags!
-                      </p>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Center Feed */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Create Post */}
-              <CreatePost onPostCreated={handlePostCreated} />
-
-              {/* Filter Buttons */}
-              <Card className="border-2 border-theme-primary">
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-black text-[var(--foreground)] mr-2">FILTER:</span>
-                    <button
-                      onClick={() => setFilter('all')}
-                      className={`px-4 py-2 rounded-full text-xs font-bold transition-colors ${
-                        filter === 'all'
-                          ? 'bg-[var(--primary)] text-white'
-                          : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/20'
-                      }`}
-                    >
-                      All Posts
-                    </button>
-                    <button
-                      onClick={() => setFilter('newest')}
-                      className={`px-4 py-2 rounded-full text-xs font-bold transition-colors ${
-                        filter === 'newest'
-                          ? 'bg-[var(--primary)] text-white'
-                          : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/20'
-                      }`}
-                    >
-                      Newest
-                    </button>
-                    <button
-                      onClick={() => setFilter('oldest')}
-                      className={`px-4 py-2 rounded-full text-xs font-bold transition-colors ${
-                        filter === 'oldest'
-                          ? 'bg-[var(--primary)] text-white'
-                          : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/20'
-                      }`}
-                    >
-                      Oldest
-                    </button>
-                    <button
-                      onClick={() => setFilter('popular')}
-                      className={`px-4 py-2 rounded-full text-xs font-bold transition-colors ${
-                        filter === 'popular'
-                          ? 'bg-[var(--primary)] text-white'
-                          : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/20'
-                      }`}
-                    >
-                      Most Popular
-                    </button>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Posts Feed */}
-              {loading && page === 1 ? (
-                <div className="flex justify-center items-center py-20">
-                  <Loader2 className="w-12 h-12 animate-spin text-theme-primary" />
-                </div>
-              ) : filteredPosts.length > 0 ? (
-                <>
-                  <div className="space-y-6">
-                    {filteredPosts.map((post) => (
-                      <FeedPost
-                        key={post.id}
-                        post={post}
-                        onLike={() => {}}
-                        onComment={() => {}}
-                      />
-                    ))}
-                  </div>
-
-                  {/* Load More */}
-                  {hasMore && (
-                    <div className="text-center py-6">
-                      <Button
-                        onClick={loadMore}
-                        disabled={loading}
-                        size="lg"
-                        className="font-black px-12"
-                      >
-                        {loading ? (
-                          <>
-                            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                            LOADING...
-                          </>
-                        ) : (
-                          'LOAD MORE POSTS'
-                        )}
-                      </Button>
-                    </div>
-                  )}
-                </>
-              ) : (
-                <Card className="border-4 border-theme-secondary">
-                  <CardContent className="p-16 text-center">
-                    <Users className="w-20 h-20 text-theme-secondary mx-auto mb-6" />
-                    <h3 className="text-3xl font-black mb-4 text-theme-muted">
-                      NO POSTS YET
-                    </h3>
-                    <p className="text-lg font-semibold mb-8 text-theme-muted">
-                      Be the first to share your sustainability story!
-                    </p>
-                  </CardContent>
-                </Card>
-              )}
-            </div>
+          {/* Scroll indicator */}
+          <div className="animate-bounce">
+            <ChevronDown className="w-8 h-8 text-[var(--foreground)]/30" />
           </div>
         </div>
+
+        {/* Semicircle table peek at bottom */}
+        <div className="relative z-10 flex justify-center">
+          <div
+            className="w-[70vw] max-w-[700px] h-[80px] rounded-t-[50%] -mb-1"
+            style={{
+              background: 'radial-gradient(ellipse at 50% 100%, #8B6914 0%, #5C3D0E 60%, #3A2508 100%)',
+              border: '4px solid #3A2508',
+              borderBottom: 'none',
+              boxShadow: '0 -8px 30px rgba(0,0,0,0.3), inset 0 4px 12px rgba(139,105,20,0.2)',
+            }}
+          />
+        </div>
       </section>
+
+      {/* ═══ ZONE B: TABLE REVEAL + POSTS ═══ */}
+      <section ref={containerRef} className="relative min-h-screen py-12">
+        <RoundTable revealProgress={revealProgress}>
+          <TableCenterpiece
+            trending={trendingHashtags}
+            totalPosts={posts.length}
+          />
+          <PostOrbit
+            posts={posts}
+            onSelectPost={setSelectedPost}
+          />
+        </RoundTable>
+      </section>
+
+      {/* ═══ ZONE C: TRADITIONAL FEED + CREATE POST ═══ */}
+      <section className="relative py-12 bg-gradient-to-b from-[var(--background)] to-[color-mix(in_srgb,var(--primary)_5%,var(--background))]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
+          {/* Section header */}
+          <div className="text-center mb-10">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="h-px flex-1 max-w-[100px] bg-gradient-to-r from-transparent via-[var(--border)] to-transparent" />
+              <MessageSquare className="w-5 h-5 text-[var(--foreground)]/30" />
+              <div className="h-px flex-1 max-w-[100px] bg-gradient-to-r from-transparent via-[var(--border)] to-transparent" />
+            </div>
+            <h2 className="text-2xl font-black text-[var(--foreground)] mb-2">
+              ALL DISCUSSIONS
+            </h2>
+            <p className="text-sm text-[var(--foreground)]/50">
+              Full feed with all community posts
+            </p>
+          </div>
+
+          {/* Create Post */}
+          {session?.user && (
+            <div className="mb-8">
+              <CreatePost onPostCreated={handlePostCreated} />
+            </div>
+          )}
+
+          {/* Posts list */}
+          {loading && page === 1 ? (
+            <div className="flex justify-center py-20">
+              <Loader2 className="w-10 h-10 animate-spin text-[var(--primary)]" />
+            </div>
+          ) : posts.length > 0 ? (
+            <div className="space-y-6">
+              {posts.map((post) => (
+                <FeedPost
+                  key={post.id}
+                  post={post}
+                  onLike={() => {}}
+                  onComment={() => {}}
+                />
+              ))}
+
+              {hasMore && (
+                <div className="text-center py-6">
+                  <Button
+                    onClick={loadMore}
+                    disabled={loading}
+                    size="lg"
+                    className="font-black px-12"
+                  >
+                    {loading ? (
+                      <>
+                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                        LOADING...
+                      </>
+                    ) : (
+                      'LOAD MORE'
+                    )}
+                  </Button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="text-center py-16">
+              <MessageSquare className="w-16 h-16 text-[var(--foreground)]/20 mx-auto mb-4" />
+              <h3 className="text-xl font-black text-[var(--foreground)]/50 mb-2">
+                NO DISCUSSIONS YET
+              </h3>
+              <p className="text-sm text-[var(--foreground)]/40">
+                Be the first to start a conversation!
+              </p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Post Preview Overlay */}
+      <PostPreviewOverlay
+        post={selectedPost}
+        onClose={() => setSelectedPost(null)}
+      />
     </div>
   )
 }
