@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
-import { useEffect, useState, useCallback, useRef } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import {
   Zap,
   User,
@@ -21,8 +21,6 @@ import {
   Settings,
   Plus,
   X,
-  ChevronLeft,
-  ChevronRight,
 } from 'lucide-react'
 
 import { useVolitionLayout, LaneId, DEFAULT_LANES } from '@/hooks/useVolitionLayout'
@@ -53,73 +51,13 @@ const iconMap = {
   Rocket,
 }
 
-// ─── Scroll Row ──────────────────────────────────────────────────────────────
-// Netflix-style horizontal scroll container with navigation arrows
+// ─── Vertical Grid ──────────────────────────────────────────────────────────
+// Vertical grid layout for section content
 
-function ScrollRow({ children }: { children: React.ReactNode }) {
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const [canScrollLeft, setCanScrollLeft] = useState(false)
-  const [canScrollRight, setCanScrollRight] = useState(false)
-
-  const checkScroll = useCallback(() => {
-    const el = scrollRef.current
-    if (!el) return
-    setCanScrollLeft(el.scrollLeft > 10)
-    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 10)
-  }, [])
-
-  useEffect(() => {
-    const el = scrollRef.current
-    if (!el) return
-    checkScroll()
-    el.addEventListener('scroll', checkScroll, { passive: true })
-    window.addEventListener('resize', checkScroll)
-    return () => {
-      el.removeEventListener('scroll', checkScroll)
-      window.removeEventListener('resize', checkScroll)
-    }
-  }, [checkScroll, children])
-
-  const scroll = (direction: 'left' | 'right') => {
-    const el = scrollRef.current
-    if (!el) return
-    const amount = el.clientWidth * 0.75
-    el.scrollBy({ left: direction === 'left' ? -amount : amount, behavior: 'smooth' })
-  }
-
+function VerticalGrid({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative group/row">
-      {canScrollLeft && (
-        <button
-          onClick={() => scroll('left')}
-          className="absolute left-0 top-0 bottom-0 w-14 z-20 bg-gradient-to-r from-[var(--background)] via-[var(--background)]/80 to-transparent flex items-center justify-start pl-2 opacity-0 group-hover/row:opacity-100 transition-opacity duration-300"
-          aria-label="Scroll left"
-        >
-          <div className="w-9 h-9 rounded-full bg-[var(--card)] border border-[var(--border)] flex items-center justify-center shadow-lg">
-            <ChevronLeft className="w-4 h-4 text-[var(--foreground)]" />
-          </div>
-        </button>
-      )}
-
-      {canScrollRight && (
-        <button
-          onClick={() => scroll('right')}
-          className="absolute right-0 top-0 bottom-0 w-14 z-20 bg-gradient-to-l from-[var(--background)] via-[var(--background)]/80 to-transparent flex items-center justify-end pr-2 opacity-0 group-hover/row:opacity-100 transition-opacity duration-300"
-          aria-label="Scroll right"
-        >
-          <div className="w-9 h-9 rounded-full bg-[var(--card)] border border-[var(--border)] flex items-center justify-center shadow-lg">
-            <ChevronRight className="w-4 h-4 text-[var(--foreground)]" />
-          </div>
-        </button>
-      )}
-
-      <div
-        ref={scrollRef}
-        className="flex gap-4 overflow-x-auto px-4 sm:px-6 lg:px-8 pb-3"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-      >
-        {children}
-      </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 px-4 sm:px-6 lg:px-8 pb-3">
+      {children}
     </div>
   )
 }
@@ -211,7 +149,7 @@ function RowEmptyState({
   href?: string
 }) {
   return (
-    <div className="w-[280px] min-w-[280px] flex-shrink-0 flex flex-col items-center justify-center py-10 text-center bg-[var(--card)] rounded-2xl border-2 border-dashed border-[var(--border)]">
+    <div className="col-span-full flex flex-col items-center justify-center py-10 text-center bg-[var(--card)] rounded-2xl border-2 border-dashed border-[var(--border)]">
       <div className="w-12 h-12 rounded-xl bg-[var(--muted)] flex items-center justify-center mb-3">
         <Icon className="w-6 h-6 text-[var(--foreground)]/30" />
       </div>
@@ -228,11 +166,11 @@ function RowEmptyState({
   )
 }
 
-// ─── Card wrapper for horizontal scroll ──────────────────────────────────────
+// ─── Card wrapper for vertical grid ──────────────────────────────────────────
 
-function HCard({ children, wide }: { children: React.ReactNode; wide?: boolean }) {
+function VCard({ children, wide }: { children: React.ReactNode; wide?: boolean }) {
   return (
-    <div className={`${wide ? 'w-[340px] min-w-[340px]' : 'w-[280px] min-w-[280px]'} flex-shrink-0`}>
+    <div className={wide ? 'col-span-1 sm:col-span-2' : ''}>
       {children}
     </div>
   )
@@ -588,7 +526,7 @@ export default function MyVolitionPage() {
           return <RowEmptyState {...emptyStates.projects} />
         }
         return projects.map((project) => (
-          <HCard key={project.id}>
+          <VCard key={project.id}>
             <ProjectCard
               project={project}
               userId={user.id}
@@ -603,7 +541,7 @@ export default function MyVolitionPage() {
                 })
               }
             />
-          </HCard>
+          </VCard>
         ))
 
       case 'articles': {
@@ -614,7 +552,7 @@ export default function MyVolitionPage() {
         return (
           <>
             {localDrafts.map((draft) => (
-              <HCard key={draft.id}>
+              <VCard key={draft.id}>
                 <ArticleCard
                   article={{ ...draft, status: 'DRAFT' }}
                   viewMode={viewMode}
@@ -623,10 +561,10 @@ export default function MyVolitionPage() {
                     setLocalDrafts([])
                   }}
                 />
-              </HCard>
+              </VCard>
             ))}
             {articles.map((article) => (
-              <HCard key={article.id}>
+              <VCard key={article.id}>
                 <ArticleCard
                   article={article}
                   viewMode={viewMode}
@@ -639,7 +577,7 @@ export default function MyVolitionPage() {
                     })
                   }
                 />
-              </HCard>
+              </VCard>
             ))}
           </>
         )
@@ -650,9 +588,9 @@ export default function MyVolitionPage() {
           return <RowEmptyState {...emptyStates.learning} />
         }
         return learningModules.map((module) => (
-          <HCard key={module.id}>
+          <VCard key={module.id}>
             <LearningCard module={module} viewMode={viewMode} />
-          </HCard>
+          </VCard>
         ))
 
       case 'network': {
@@ -662,21 +600,21 @@ export default function MyVolitionPage() {
         }
         following.forEach((u) => {
           networkItems.push(
-            <HCard key={`following-${u.id}`}>
+            <VCard key={`following-${u.id}`}>
               <NetworkCard user={u} type="following" viewMode={viewMode} />
-            </HCard>
+            </VCard>
           )
         })
         networkSuggestions.forEach((u) => {
           networkItems.push(
-            <HCard key={`suggestion-${u.id}`}>
+            <VCard key={`suggestion-${u.id}`}>
               <NetworkCard
                 user={u}
                 type="suggestion"
                 viewMode={viewMode}
                 onFollow={handleFollow}
               />
-            </HCard>
+            </VCard>
           )
         })
         return networkItems
@@ -687,7 +625,7 @@ export default function MyVolitionPage() {
           return <RowEmptyState {...emptyStates.feed} />
         }
         return feedPosts.map((post) => (
-          <HCard key={post.id} wide>
+          <VCard key={post.id} wide>
             <FeedPostCard
               post={post}
               currentUserId={user.id}
@@ -701,14 +639,14 @@ export default function MyVolitionPage() {
                 })
               }
             />
-          </HCard>
+          </VCard>
         ))
 
       case 'impact':
         return (
-          <HCard wide>
+          <VCard wide>
             <ImpactCard viewMode={viewMode} />
-          </HCard>
+          </VCard>
         )
 
       default:
@@ -864,9 +802,9 @@ export default function MyVolitionPage() {
                   onRemove={() => toggleLane(lane.id)}
                 />
 
-                <ScrollRow>
+                <VerticalGrid>
                   {renderSectionContent(lane.id)}
-                </ScrollRow>
+                </VerticalGrid>
               </section>
             )
           })}
@@ -987,15 +925,6 @@ export default function MyVolitionPage() {
         userId={user.id}
       />
 
-      <style jsx global>{`
-        .scrollbar-none::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-none {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
     </div>
   )
 }
