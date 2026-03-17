@@ -879,8 +879,8 @@ export default function MyVolitionPage() {
   return (
     <div className="min-h-screen bg-[var(--background)]">
       {/* ═══ PERSONAL FISH TANK - Full Viewport Landing ═══ */}
-      <section className="relative h-screen overflow-hidden">
-        <div className="bg-[#0A1628] h-full flex flex-col">
+      <section className="relative h-[100svh] max-h-[100svh] overflow-hidden">
+        <div className="bg-[#0A1628] h-full flex flex-col min-h-0">
             {/* Tank toolbar */}
             <div className="flex items-center justify-between px-4 sm:px-6 py-2 bg-gradient-to-r from-[#0D2137]/95 via-[#123855]/95 to-[#0D2137]/95 border-b border-cyan-800/30">
               <div className="flex items-center gap-2">
@@ -1046,7 +1046,7 @@ export default function MyVolitionPage() {
             </div>
 
             {/* Fish tank */}
-            <div className="flex-1 p-3 sm:p-4">
+            <div className="flex-1 min-h-0 p-3 sm:p-4">
               {fishLoading ? (
                 <div className="w-full h-full flex items-center justify-center">
                   <div className="text-center space-y-3">
@@ -1240,10 +1240,10 @@ export default function MyVolitionPage() {
 
       {/* Quick Actions Bar - only visible below the tank */}
       <div
-        className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 transition-all duration-300"
+        className="fixed bottom-6 left-1/2 z-40 transition-all duration-300"
         style={{
           opacity: pastTank ? 1 : 0,
-          transform: `translateX(-50%) translateY(${pastTank ? '0' : '20px'})`,
+          transform: `translateX(-50%) translateY(${pastTank ? '0px' : '20px'})`,
           pointerEvents: pastTank ? 'auto' : 'none',
         }}
       >
