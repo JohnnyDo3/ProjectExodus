@@ -868,123 +868,9 @@ export default function MyVolitionPage() {
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
-      {/* Header */}
-      <div className="sticky top-0 z-50 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] border-b border-white/10">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center">
-                <Zap className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-white">Your Volition</h1>
-                <p className="text-xs text-white/60">
-                  Track your contributions to Project Exodus
-                </p>
-              </div>
-            </div>
-
-            {/* Desktop controls */}
-            <div className="hidden md:flex items-center gap-2">
-              {/* Fish tank toggle */}
-              <button
-                onClick={toggleTank}
-                className={`relative flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors group ${
-                  showTank
-                    ? 'bg-cyan-500/30 hover:bg-cyan-500/40 text-white'
-                    : 'bg-white/20 hover:bg-white/30 text-white'
-                }`}
-                title="My Tank"
-              >
-                <Fish className="w-4 h-4" />
-                <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity">My Tank</span>
-                {showTank ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-              </button>
-
-              {/* View mode toggle */}
-              <button
-                onClick={cycleViewMode}
-                className="flex items-center gap-2 px-3 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors"
-                title={
-                  viewMode === 'expanded' ? 'Switch to compact view' :
-                  viewMode === 'compact' ? 'Switch to minimal view' :
-                  'Switch to expanded view'
-                }
-              >
-                {viewMode === 'expanded' ? (
-                  <Minimize2 className="w-4 h-4" />
-                ) : viewMode === 'compact' ? (
-                  <Minus className="w-4 h-4" />
-                ) : (
-                  <Maximize2 className="w-4 h-4" />
-                )}
-                <span className="text-xs">
-                  {viewMode === 'expanded' ? 'Full' :
-                   viewMode === 'compact' ? 'Compact' :
-                   'Minimal'}
-                </span>
-              </button>
-
-              {!isCustomizing ? (
-                <button
-                  onClick={startCustomizing}
-                  className="flex items-center gap-2 px-3 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors"
-                >
-                  <Settings className="w-4 h-4" />
-                  <span>Customize</span>
-                </button>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setShowLanePicker(true)}
-                    className="flex items-center gap-2 px-3 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors"
-                  >
-                    <Plus className="w-4 h-4" />
-                    <span>Sections</span>
-                  </button>
-                  <button
-                    onClick={resetToDefaults}
-                    className="flex items-center gap-2 px-3 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors"
-                  >
-                    <RotateCcw className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={stopCustomizing}
-                    className="flex items-center gap-2 px-3 py-2 bg-white hover:bg-white/90 rounded-lg text-[var(--primary)] text-sm font-bold transition-colors"
-                  >
-                    <Check className="w-4 h-4" />
-                    <span>Done</span>
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Customize mode banner */}
-      {isCustomizing && (
-        <div className="bg-[var(--primary)]/10 border-b border-[var(--primary)]/20 py-2 px-4 text-center">
-          <p className="text-sm font-medium text-[var(--primary)]">
-            Customize Mode: Manage your sections and layout
-          </p>
-        </div>
-      )}
-
-      {/* Dynamic Spotlight */}
-      <div className="container mx-auto px-4 pt-6">
-        <DynamicSpotlight
-          notifications={notifications}
-          learningModules={learningModules}
-          projects={projects}
-          onDismiss={dismissSpotlight}
-        />
-      </div>
-
-      {/* ═══ PERSONAL FISH TANK ═══ */}
-      {showTank && (
-        <section className="relative">
-          <div className="bg-[#0A1628] border-y-2 border-cyan-800/40">
+      {/* ═══ PERSONAL FISH TANK - Full Viewport Landing ═══ */}
+      <section className="relative h-screen">
+        <div className="bg-[#0A1628] h-full flex flex-col">
             {/* Tank toolbar */}
             <div className="flex items-center justify-between px-4 sm:px-6 py-2 bg-gradient-to-r from-[#0D2137]/95 via-[#123855]/95 to-[#0D2137]/95 border-b border-cyan-800/30">
               <div className="flex items-center gap-2">
@@ -1043,13 +929,13 @@ export default function MyVolitionPage() {
                   <Fish className="w-3 h-3" />
                   <span className="hidden sm:inline">Community</span>
                 </Link>
-                {/* Hide tank */}
+                {/* Scroll to content */}
                 <button
-                  onClick={toggleTank}
+                  onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
                   className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-bold bg-cyan-900/30 border border-cyan-800/40 text-cyan-400 hover:bg-cyan-800/40 transition-colors"
                 >
-                  <ChevronUp className="w-3 h-3" />
-                  <span className="hidden sm:inline">Hide Tank</span>
+                  <ChevronDown className="w-3 h-3" />
+                  <span className="hidden sm:inline">View Content</span>
                 </button>
               </div>
             </div>
@@ -1150,7 +1036,7 @@ export default function MyVolitionPage() {
             </div>
 
             {/* Fish tank */}
-            <div className="h-[300px] sm:h-[400px] p-3 sm:p-4">
+            <div className="flex-1 p-3 sm:p-4">
               {fishLoading ? (
                 <div className="w-full h-full flex items-center justify-center">
                   <div className="text-center space-y-3">
@@ -1191,8 +1077,106 @@ export default function MyVolitionPage() {
               })()}
             </div>
           </div>
-        </section>
+        </div>
+      </section>
+
+      {/* ═══ YOUR VOLITION HEADER ═══ */}
+      <div className="sticky top-0 z-50 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] border-b border-white/10">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center">
+                <Zap className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-white">Your Volition</h1>
+                <p className="text-xs text-white/60">
+                  Track your contributions to Project Exodus
+                </p>
+              </div>
+            </div>
+
+            {/* Desktop controls */}
+            <div className="hidden md:flex items-center gap-2">
+              {/* View mode toggle */}
+              <button
+                onClick={cycleViewMode}
+                className="flex items-center gap-2 px-3 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors"
+                title={
+                  viewMode === 'expanded' ? 'Switch to compact view' :
+                  viewMode === 'compact' ? 'Switch to minimal view' :
+                  'Switch to expanded view'
+                }
+              >
+                {viewMode === 'expanded' ? (
+                  <Minimize2 className="w-4 h-4" />
+                ) : viewMode === 'compact' ? (
+                  <Minus className="w-4 h-4" />
+                ) : (
+                  <Maximize2 className="w-4 h-4" />
+                )}
+                <span className="text-xs">
+                  {viewMode === 'expanded' ? 'Full' :
+                   viewMode === 'compact' ? 'Compact' :
+                   'Minimal'}
+                </span>
+              </button>
+
+              {!isCustomizing ? (
+                <button
+                  onClick={startCustomizing}
+                  className="flex items-center gap-2 px-3 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors"
+                >
+                  <Settings className="w-4 h-4" />
+                  <span>Customize</span>
+                </button>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setShowLanePicker(true)}
+                    className="flex items-center gap-2 px-3 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>Sections</span>
+                  </button>
+                  <button
+                    onClick={resetToDefaults}
+                    className="flex items-center gap-2 px-3 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors"
+                  >
+                    <RotateCcw className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={stopCustomizing}
+                    className="flex items-center gap-2 px-3 py-2 bg-white hover:bg-white/90 rounded-lg text-[var(--primary)] text-sm font-bold transition-colors"
+                  >
+                    <Check className="w-4 h-4" />
+                    <span>Done</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Customize mode banner */}
+      {isCustomizing && (
+        <div className="bg-[var(--primary)]/10 border-b border-[var(--primary)]/20 py-2 px-4 text-center">
+          <p className="text-sm font-medium text-[var(--primary)]">
+            Customize Mode: Manage your sections and layout
+          </p>
+        </div>
       )}
+
+      {/* Dynamic Spotlight */}
+      <div className="container mx-auto px-4 pt-6">
+        <DynamicSpotlight
+          notifications={notifications}
+          learningModules={learningModules}
+          projects={projects}
+          onDismiss={dismissSpotlight}
+        />
+      </div>
 
       {/* ═══ PROFILE HERO SECTION ═══ */}
       {orderedLanes.some(l => l.id === 'profile') && (
