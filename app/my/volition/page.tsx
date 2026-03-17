@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import {
   Zap,
   User,
@@ -21,6 +21,10 @@ import {
   Settings,
   Plus,
   X,
+  ChevronLeft,
+  ChevronRight,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react'
 
 import { useVolitionLayout, LaneId, DEFAULT_LANES } from '@/hooks/useVolitionLayout'
@@ -51,20 +55,10 @@ const iconMap = {
   Rocket,
 }
 
-// ─── Vertical Grid ──────────────────────────────────────────────────────────
-// Vertical grid layout for section content
+// ─── Netflix Lane ───────────────────────────────────────────────────────────
+// Full-width lane with horizontal scrolling cards (Netflix-style row)
 
-function VerticalGrid({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 px-4 sm:px-6 lg:px-8 pb-3">
-      {children}
-    </div>
-  )
-}
-
-// ─── Section Header ──────────────────────────────────────────────────────────
-
-function SectionHeader({
+function NetflixLane({
   title,
   icon: Icon,
   count,
@@ -73,6 +67,8 @@ function SectionHeader({
   addLabel,
   isCustomizing,
   onRemove,
+  children,
+  emptyState,
 }: {
   title: string
   icon: any
@@ -82,62 +78,148 @@ function SectionHeader({
   addLabel?: string
   isCustomizing?: boolean
   onRemove?: () => void
+  children: React.ReactNode
+  emptyState?: React.ReactNode
 }) {
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(false)
+  const [isCollapsed, setIsCollapsed] = useState(false)
+
+  const checkScroll = useCallback(() => {
+    const el = scrollRef.current
+    if (!el) return
+    setCanScrollLeft(el.scrollLeft > 10)
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 10)
+  }, [])
+
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+    checkScroll()
+    el.addEventListener('scroll', checkScroll)
+    window.addEventListener('resize', checkScroll)
+    return () => {
+      el.removeEventListener('scroll', checkScroll)
+      window.removeEventListener('resize', checkScroll)
+    }
+  }, [checkScroll, isCollapsed])
+
+  const scroll = (dir: 'left' | 'right') => {
+    scrollRef.current?.scrollBy({ left: dir === 'left' ? -340 : 340, behavior: 'smooth' })
+  }
+
   return (
-    <div className="flex items-center justify-between mb-4 px-4 sm:px-6 lg:px-8">
-      <div className="flex items-center gap-3">
-        <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center`}>
-          <Icon className="w-5 h-5 text-white" />
+    <div className="bg-[var(--card)] rounded-2xl border-2 border-[var(--border)] overflow-hidden transition-all">
+      {/* Lane Header */}
+      <div className={`flex items-center justify-between p-4 bg-gradient-to-r ${gradient} bg-opacity-10`}>
+        <div className="flex items-center gap-3">
+          <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center`}>
+            <Icon className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h3 className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wide">
+              {title}
+            </h3>
+            {count > 0 && (
+              <span className="text-xs font-medium text-[var(--foreground)]/50">
+                {count} item{count !== 1 ? 's' : ''}
+              </span>
+            )}
+          </div>
         </div>
-        <div>
-          <h2 className="text-lg sm:text-xl font-bold text-[var(--foreground)] tracking-tight">
-            {title}
-          </h2>
-          {count > 0 && (
-            <p className="text-[11px] text-[var(--muted-foreground)] mt-0.5 tracking-wide">
-              {count} item{count !== 1 ? 's' : ''}
-            </p>
+
+        <div className="flex items-center gap-1">
+          {onAdd && !isCustomizing && (
+            <button
+              onClick={onAdd}
+              className="p-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
+              title={addLabel}
+            >
+              <Plus className="w-4 h-4 text-[var(--foreground)]/60" />
+            </button>
+          )}
+          {!isCustomizing && (
+            <button
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              className="p-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
+            >
+              {isCollapsed ? (
+                <ChevronDown className="w-4 h-4 text-[var(--foreground)]/60" />
+              ) : (
+                <ChevronUp className="w-4 h-4 text-[var(--foreground)]/60" />
+              )}
+            </button>
+          )}
+          {isCustomizing && onRemove && (
+            <button
+              onClick={onRemove}
+              className="p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 transition-colors"
+            >
+              <X className="w-4 h-4 text-red-500" />
+            </button>
           )}
         </div>
       </div>
 
-      <div className="flex items-center gap-2">
-        {onAdd && !isCustomizing && (
+      {/* Lane Content - Horizontal Scroll */}
+      {!isCollapsed && (
+        <div className="relative">
+          {/* Chevron nav */}
+          <button
+            onClick={() => scroll('left')}
+            className={`absolute left-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-[var(--card)] shadow-lg border border-[var(--border)] flex items-center justify-center transition-all ${
+              canScrollLeft ? 'opacity-100 hover:scale-110' : 'opacity-0 pointer-events-none'
+            }`}
+          >
+            <ChevronLeft className="w-4 h-4 text-[var(--foreground)]" />
+          </button>
+          <button
+            onClick={() => scroll('right')}
+            className={`absolute right-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-[var(--card)] shadow-lg border border-[var(--border)] flex items-center justify-center transition-all ${
+              canScrollRight ? 'opacity-100 hover:scale-110' : 'opacity-0 pointer-events-none'
+            }`}
+          >
+            <ChevronRight className="w-4 h-4 text-[var(--foreground)]" />
+          </button>
+
+          {/* Fade edges */}
+          <div className={`absolute left-0 top-0 bottom-0 w-10 bg-gradient-to-r from-[var(--card)] to-transparent pointer-events-none z-10 transition-opacity ${canScrollLeft ? 'opacity-100' : 'opacity-0'}`} />
+          <div className={`absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-[var(--card)] to-transparent pointer-events-none z-10 transition-opacity ${canScrollRight ? 'opacity-100' : 'opacity-0'}`} />
+
+          <div
+            ref={scrollRef}
+            className="flex gap-4 overflow-x-auto scroll-smooth p-4"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {count === 0 && emptyState ? emptyState : children}
+          </div>
+
+          <style jsx global>{`
+            .scrollbar-none::-webkit-scrollbar { display: none; }
+          `}</style>
+        </div>
+      )}
+
+      {/* Bottom add button */}
+      {onAdd && !isCollapsed && !isCustomizing && (
+        <div className="px-4 pb-3">
           <button
             onClick={onAdd}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--primary)]/10 text-[var(--primary)] text-xs font-bold hover:bg-[var(--primary)]/20 transition-colors"
+            className="w-full flex items-center justify-center gap-2 py-2 rounded-xl border-2 border-dashed border-[var(--border)] hover:border-[var(--primary)] hover:bg-[var(--primary)]/5 text-sm font-medium text-[var(--foreground)]/50 hover:text-[var(--primary)] transition-all"
           >
-            <Plus className="w-3.5 h-3.5" />
+            <Plus className="w-4 h-4" />
             {addLabel || 'Add'}
           </button>
-        )}
-        {isCustomizing && onRemove && (
-          <button
-            onClick={onRemove}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-500/10 text-red-500 text-xs font-bold hover:bg-red-500/20 transition-colors"
-          >
-            <X className="w-3.5 h-3.5" />
-            Remove
-          </button>
-        )}
-      </div>
-    </div>
-  )
-}
-
-// ─── Section Divider ─────────────────────────────────────────────────────────
-
-function SectionDivider() {
-  return (
-    <div className="px-4 sm:px-6 lg:px-8 py-2">
-      <div className="h-px bg-gradient-to-r from-transparent via-[var(--border)] to-transparent" />
+        </div>
+      )}
     </div>
   )
 }
 
 // ─── Empty State ─────────────────────────────────────────────────────────────
 
-function RowEmptyState({
+function LaneEmptyState({
   icon: Icon,
   message,
   action,
@@ -149,15 +231,15 @@ function RowEmptyState({
   href?: string
 }) {
   return (
-    <div className="col-span-full flex flex-col items-center justify-center py-10 text-center bg-[var(--card)] rounded-2xl border-2 border-dashed border-[var(--border)]">
-      <div className="w-12 h-12 rounded-xl bg-[var(--muted)] flex items-center justify-center mb-3">
-        <Icon className="w-6 h-6 text-[var(--foreground)]/30" />
+    <div className="min-w-[260px] flex flex-col items-center justify-center py-8 px-6 text-center bg-[var(--muted)]/30 rounded-xl border-2 border-dashed border-[var(--border)]">
+      <div className="w-10 h-10 rounded-xl bg-[var(--muted)] flex items-center justify-center mb-2">
+        <Icon className="w-5 h-5 text-[var(--foreground)]/30" />
       </div>
-      <p className="text-sm font-medium text-[var(--foreground)]/50 mb-3">{message}</p>
+      <p className="text-sm font-medium text-[var(--foreground)]/50 mb-2">{message}</p>
       {action && href && (
         <a
           href={href}
-          className="px-4 py-2 rounded-lg bg-[var(--primary)]/10 text-[var(--primary)] text-sm font-bold hover:bg-[var(--primary)]/20 transition-colors"
+          className="px-3 py-1.5 rounded-lg bg-[var(--primary)]/10 text-[var(--primary)] text-xs font-bold hover:bg-[var(--primary)]/20 transition-colors"
         >
           {action}
         </a>
@@ -166,11 +248,12 @@ function RowEmptyState({
   )
 }
 
-// ─── Card wrapper for vertical grid ──────────────────────────────────────────
+// ─── Lane Card ──────────────────────────────────────────────────────────────
+// Fixed-width card for horizontal scrolling inside a lane
 
-function VCard({ children, wide }: { children: React.ReactNode; wide?: boolean }) {
+function LaneCard({ children, wide }: { children: React.ReactNode; wide?: boolean }) {
   return (
-    <div className={wide ? 'col-span-1 sm:col-span-2' : ''}>
+    <div className={`${wide ? 'min-w-[380px] w-[380px]' : 'min-w-[300px] w-[300px]'} flex-shrink-0`}>
       {children}
     </div>
   )
@@ -518,15 +601,12 @@ export default function MyVolitionPage() {
     }
   }
 
-  // Render a section's content as horizontal cards
-  const renderSectionContent = (laneId: LaneId) => {
+  // Render a lane's cards for horizontal scrolling
+  const renderLaneContent = (laneId: LaneId) => {
     switch (laneId) {
       case 'projects':
-        if (projects.length === 0) {
-          return <RowEmptyState {...emptyStates.projects} />
-        }
         return projects.map((project) => (
-          <VCard key={project.id}>
+          <LaneCard key={project.id}>
             <ProjectCard
               project={project}
               userId={user.id}
@@ -541,18 +621,14 @@ export default function MyVolitionPage() {
                 })
               }
             />
-          </VCard>
+          </LaneCard>
         ))
 
-      case 'articles': {
-        const allArticles = [...localDrafts, ...articles]
-        if (allArticles.length === 0) {
-          return <RowEmptyState {...emptyStates.articles} />
-        }
+      case 'articles':
         return (
           <>
             {localDrafts.map((draft) => (
-              <VCard key={draft.id}>
+              <LaneCard key={draft.id}>
                 <ArticleCard
                   article={{ ...draft, status: 'DRAFT' }}
                   viewMode={viewMode}
@@ -561,10 +637,10 @@ export default function MyVolitionPage() {
                     setLocalDrafts([])
                   }}
                 />
-              </VCard>
+              </LaneCard>
             ))}
             {articles.map((article) => (
-              <VCard key={article.id}>
+              <LaneCard key={article.id}>
                 <ArticleCard
                   article={article}
                   viewMode={viewMode}
@@ -577,55 +653,45 @@ export default function MyVolitionPage() {
                     })
                   }
                 />
-              </VCard>
+              </LaneCard>
             ))}
           </>
         )
-      }
 
       case 'learning':
-        if (learningModules.length === 0) {
-          return <RowEmptyState {...emptyStates.learning} />
-        }
         return learningModules.map((module) => (
-          <VCard key={module.id}>
+          <LaneCard key={module.id}>
             <LearningCard module={module} viewMode={viewMode} />
-          </VCard>
+          </LaneCard>
         ))
 
       case 'network': {
         const networkItems: React.ReactNode[] = []
-        if (following.length === 0 && networkSuggestions.length === 0) {
-          return <RowEmptyState {...emptyStates.network} />
-        }
         following.forEach((u) => {
           networkItems.push(
-            <VCard key={`following-${u.id}`}>
+            <LaneCard key={`following-${u.id}`}>
               <NetworkCard user={u} type="following" viewMode={viewMode} />
-            </VCard>
+            </LaneCard>
           )
         })
         networkSuggestions.forEach((u) => {
           networkItems.push(
-            <VCard key={`suggestion-${u.id}`}>
+            <LaneCard key={`suggestion-${u.id}`}>
               <NetworkCard
                 user={u}
                 type="suggestion"
                 viewMode={viewMode}
                 onFollow={handleFollow}
               />
-            </VCard>
+            </LaneCard>
           )
         })
         return networkItems
       }
 
       case 'feed':
-        if (feedPosts.length === 0) {
-          return <RowEmptyState {...emptyStates.feed} />
-        }
         return feedPosts.map((post) => (
-          <VCard key={post.id} wide>
+          <LaneCard key={post.id} wide>
             <FeedPostCard
               post={post}
               currentUserId={user.id}
@@ -639,14 +705,14 @@ export default function MyVolitionPage() {
                 })
               }
             />
-          </VCard>
+          </LaneCard>
         ))
 
       case 'impact':
         return (
-          <VCard wide>
+          <LaneCard wide>
             <ImpactCard viewMode={viewMode} />
-          </VCard>
+          </LaneCard>
         )
 
       default:
