@@ -4023,6 +4023,28 @@ const AtlanteanObelisk = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="13" y="-20" width="4" height="58" fill="#3498DB" opacity="0.25" />
     {/* Shaft shadow (dark side) */}
     <rect x="24" y="-20" width="3" height="58" fill="#1A5276" opacity="0.2" />
+    {/* Intermediate stone color gradation blocks */}
+    <rect x="14" y="-14" width="4" height="4" fill="#2471A3" opacity="0.15" />
+    <rect x="18" y="2" width="6" height="4" fill="#5499C7" opacity="0.12" />
+    <rect x="14" y="14" width="4" height="4" fill="#1F618D" opacity="0.14" />
+    <rect x="20" y="24" width="4" height="4" fill="#2980B9" opacity="0.12" />
+    <rect x="16" y="-8" width="4" height="2" fill="#3498DB" opacity="0.18" />
+    <rect x="22" y="6" width="4" height="2" fill="#1A5276" opacity="0.1" />
+    {/* Stone erosion pitting — small dark rects */}
+    <rect x="14" y="-2" width="2" height="2" fill="#154360" opacity="0.2" />
+    <rect x="22" y="4" width="2" height="1" fill="#154360" opacity="0.18" />
+    <rect x="16" y="16" width="2" height="2" fill="#154360" opacity="0.15" />
+    <rect x="24" y="22" width="2" height="1" fill="#154360" opacity="0.14" />
+    <rect x="14" y="30" width="2" height="2" fill="#154360" opacity="0.16" />
+    <rect x="20" y="-12" width="2" height="1" fill="#154360" opacity="0.13" />
+    <rect x="18" y="10" width="1" height="2" fill="#154360" opacity="0.12" />
+    <rect x="26" y="14" width="1" height="2" fill="#154360" opacity="0.1" />
+    {/* Mineral vein detail pixels */}
+    <rect x="15" y="-6" width="1" height="8" fill="#5DADE2" opacity="0.12" />
+    <rect x="23" y="8" width="1" height="10" fill="#85C1E9" opacity="0.1" />
+    <rect x="17" y="18" width="1" height="6" fill="#AED6F1" opacity="0.08" />
+    <rect x="25" y="-4" width="1" height="6" fill="#D4E6F1" opacity="0.07" />
+    <rect x="14" y="24" width="1" height="8" fill="#5499C7" opacity="0.09" />
     {/* Decorative cap ring */}
     <rect x="10" y="-16" width="20" height="4" fill="#3498DB" />
     <rect x="10" y="-17" width="20" height="1" fill="#5DADE2" opacity="0.4" />
@@ -4037,8 +4059,23 @@ const AtlanteanObelisk = memo(({ x, y }: { x: number; y: number }) => (
     {/* Crystal facet highlights */}
     <rect x="15" y="-26" width="2" height="4" fill="#AED6F1" opacity="0.25" />
     <rect x="17" y="-32" width="2" height="3" fill="#D4E6F1" opacity="0.2" />
+    {/* Crystal color depth intermediate blocks */}
+    <rect x="14" y="-24" width="4" height="2" fill="#3498DB" opacity="0.3" />
+    <rect x="22" y="-24" width="4" height="2" fill="#2471A3" opacity="0.25" />
+    <rect x="16" y="-30" width="2" height="2" fill="#5499C7" opacity="0.2" />
+    <rect x="22" y="-30" width="2" height="2" fill="#2980B9" opacity="0.2" />
+    <rect x="18" y="-36" width="2" height="2" fill="#AED6F1" opacity="0.3" />
+    <rect x="20" y="-36" width="2" height="2" fill="#85C1E9" opacity="0.25" />
+    {/* Crystal edge refraction pixels */}
+    <rect x="14" y="-28" width="1" height="8" fill="#2471A3" opacity="0.2" />
+    <rect x="25" y="-28" width="1" height="8" fill="#1A5276" opacity="0.18" />
+    <rect x="16" y="-34" width="1" height="6" fill="#2E86C1" opacity="0.15" />
+    <rect x="23" y="-34" width="1" height="6" fill="#1F618D" opacity="0.15" />
     {/* Capstone glow pulse */}
     <rect x="18" y="-39" width="4" height="2" fill="#00E5FF" opacity="0.15" />
+    <rect x="17" y="-38" width="2" height="2" fill="#00BCD4" opacity="0.1" />
+    <rect x="21" y="-38" width="2" height="2" fill="#4DD0E1" opacity="0.08" />
+    <rect x="19" y="-41" width="2" height="2" fill="#00E5FF" opacity="0.1" />
 
     {/* ═══ Hieroglyphic carvings — extensive Atlantean script ═══ */}
     {/* Row 1: Eye and wave symbols */}
@@ -4073,6 +4110,25 @@ const AtlanteanObelisk = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="18" y="26" width="4" height="4" fill="#00BCD4" opacity="0.3" />
     <rect x="14" y="28" width="2" height="2" fill="#00BCD4" opacity="0.2" />
     <rect x="24" y="28" width="2" height="2" fill="#00BCD4" opacity="0.2" />
+    {/* Additional hieroglyph/rune detail pixels */}
+    {/* Spiral glyph */}
+    <rect x="15" y="-14" width="2" height="2" fill="#00BCD4" opacity="0.2" />
+    <rect x="17" y="-15" width="2" height="1" fill="#4DD0E1" opacity="0.15" />
+    <rect x="23" y="-14" width="2" height="2" fill="#00BCD4" opacity="0.18" />
+    <rect x="21" y="-15" width="2" height="1" fill="#4DD0E1" opacity="0.12" />
+    {/* Dot border row */}
+    <rect x="14" y="4" width="2" height="1" fill="#00BCD4" opacity="0.15" />
+    <rect x="18" y="4" width="2" height="1" fill="#00BCD4" opacity="0.12" />
+    <rect x="22" y="4" width="2" height="1" fill="#00BCD4" opacity="0.15" />
+    <rect x="26" y="4" width="2" height="1" fill="#00BCD4" opacity="0.1" />
+    {/* Fish glyph */}
+    <rect x="16" y="20" width="6" height="1" fill="#00BCD4" opacity="0.18" />
+    <rect x="14" y="21" width="2" height="2" fill="#4DD0E1" opacity="0.12" />
+    <rect x="22" y="21" width="2" height="1" fill="#4DD0E1" opacity="0.1" />
+    {/* Lower column dots */}
+    <rect x="15" y="30" width="2" height="2" fill="#00BCD4" opacity="0.15" />
+    <rect x="23" y="30" width="2" height="2" fill="#00BCD4" opacity="0.12" />
+    <rect x="19" y="32" width="2" height="2" fill="#00E5FF" opacity="0.1" />
 
     {/* ═══ Glowing Eye of Atlantis — centerpiece ═══ */}
     <rect x="15" y="-8" width="10" height="4" fill="#004D40" opacity="0.4" />
@@ -4108,7 +4164,21 @@ const AtlanteanObelisk = memo(({ x, y }: { x: number; y: number }) => (
 
     {/* ═══ Barnacles ═══ */}
     <rect x="2" y="50" width="3" height="2" fill="#9CA3AF" opacity="0.25" />
+    <rect x="3" y="49" width="2" height="2" fill="#B0BEC5" opacity="0.18" />
     <rect x="36" y="48" width="3" height="2" fill="#9CA3AF" opacity="0.2" />
+    <rect x="37" y="47" width="2" height="2" fill="#B0BEC5" opacity="0.15" />
+    {/* Additional barnacle clusters */}
+    <rect x="12" y="54" width="3" height="2" fill="#9CA3AF" opacity="0.18" />
+    <rect x="26" y="52" width="2" height="2" fill="#78909C" opacity="0.15" />
+    <rect x="8" y="50" width="2" height="2" fill="#B0BEC5" opacity="0.12" />
+
+    {/* ═══ Base sediment accumulation blocks ═══ */}
+    <rect x="0" y="56" width="40" height="4" fill="#C4A862" opacity="0.12" />
+    <rect x="2" y="55" width="10" height="2" fill="#D4B872" opacity="0.1" />
+    <rect x="28" y="55" width="10" height="2" fill="#B89B52" opacity="0.1" />
+    <rect x="6" y="58" width="8" height="2" fill="#8B7355" opacity="0.08" />
+    <rect x="24" y="58" width="6" height="2" fill="#8B7355" opacity="0.07" />
+    <rect x="14" y="57" width="12" height="2" fill="#A08060" opacity="0.06" />
 
     {/* ═══ Bubbles ═══ */}
     <circle cx="20" cy="-38" r="1" fill="rgba(255,255,255,0.25)" style={{ animation: 'bubbleRise 4s ease-in 0.5s infinite' }} />
@@ -4276,6 +4346,26 @@ const DeerSkullWillow = memo(({ x, y }: { x: number; y: number }) => (
     {/* Extra cranium highlights */}
     <rect x="56" y="42" width="4" height="2" fill="#F0E6D2" opacity="0.35" />
     <rect x="68" y="42" width="4" height="2" fill="#F0E6D2" opacity="0.3" />
+    {/* Bone texture color depth blocks — intermediate tones */}
+    <rect x="46" y="46" width="4" height="2" fill="#DDD0B8" opacity="0.3" />
+    <rect x="54" y="48" width="4" height="2" fill="#D4C8A8" opacity="0.25" />
+    <rect x="62" y="46" width="4" height="2" fill="#E0D4BC" opacity="0.2" />
+    <rect x="72" y="50" width="4" height="2" fill="#DDD0B8" opacity="0.2" />
+    <rect x="42" y="52" width="4" height="2" fill="#D4C8A8" opacity="0.22" />
+    <rect x="58" y="54" width="4" height="2" fill="#E0D4BC" opacity="0.18" />
+    <rect x="78" y="52" width="4" height="2" fill="#DDD0B8" opacity="0.15" />
+    {/* Bone pitting — tiny dark weathering marks */}
+    <rect x="50" y="42" width="1" height="1" fill="#A89C84" opacity="0.25" />
+    <rect x="58" y="46" width="1" height="1" fill="#8B7D68" opacity="0.2" />
+    <rect x="66" y="44" width="1" height="1" fill="#A89C84" opacity="0.2" />
+    <rect x="74" y="48" width="1" height="1" fill="#8B7D68" opacity="0.18" />
+    <rect x="46" y="50" width="1" height="1" fill="#A89C84" opacity="0.18" />
+    <rect x="62" y="50" width="1" height="1" fill="#8B7D68" opacity="0.15" />
+    <rect x="82" y="54" width="1" height="1" fill="#A89C84" opacity="0.15" />
+    {/* Bone weathering stain blocks — yellowed aging */}
+    <rect x="44" y="56" width="6" height="4" fill="#C4A862" opacity="0.08" />
+    <rect x="60" y="52" width="8" height="4" fill="#B89B52" opacity="0.06" />
+    <rect x="76" y="48" width="6" height="4" fill="#C4A862" opacity="0.05" />
     {/* Nuchal crest — pronounced ridge at back of skull */}
     <rect x="36" y="48" width="4" height="8" fill="#C4B8A0" opacity="0.5" />
     <rect x="38" y="46" width="4" height="4" fill="#C4B8A0" opacity="0.4" />
@@ -4341,6 +4431,15 @@ const DeerSkullWillow = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="78" y="54" width="4" height="4" fill="#0E0708" opacity="0.65" />
     <rect x="74" y="54" width="4" height="2" fill="#0E0708" opacity="0.5" />
     <rect x="82" y="54" width="4" height="2" fill="#0E0708" opacity="0.5" />
+    {/* Deep socket gradient — layered darkness */}
+    <rect x="76" y="54" width="6" height="4" fill="#060304" opacity="0.5" />
+    <rect x="74" y="52" width="2" height="4" fill="#120A06" opacity="0.4" />
+    <rect x="84" y="54" width="2" height="4" fill="#120A06" opacity="0.35" />
+    <rect x="78" y="58" width="4" height="2" fill="#060304" opacity="0.4" />
+    {/* Socket inner rim highlight — light catching on bone edge */}
+    <rect x="72" y="48" width="2" height="2" fill="#D4C8B0" opacity="0.15" />
+    <rect x="92" y="52" width="2" height="2" fill="#D4C8B0" opacity="0.12" />
+    <rect x="72" y="62" width="2" height="2" fill="#D4C8B0" opacity="0.1" />
 
     {/* ═══ NASAL BONES & BRIDGE — long tapering snout (key deer feature) ═══ */}
     {/* Upper nasal — forms the long nose bridge */}
@@ -4436,6 +4535,19 @@ const DeerSkullWillow = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="106" y="84" width="4" height="4" fill="#F0E6D2" opacity="0.55" />
     <rect x="106" y="86" width="2" height="2" fill="#E8DCC8" opacity="0.4" />
     <rect x="108" y="84" width="2" height="2" fill="#D4C8B0" opacity="0.3" />
+    {/* Tooth cusp detail pixels — worn enamel highlights */}
+    <rect x="77" y="84" width="2" height="1" fill="#FFFFFF" opacity="0.1" />
+    <rect x="83" y="84" width="2" height="1" fill="#FFFFFF" opacity="0.08" />
+    <rect x="89" y="84" width="2" height="1" fill="#FFFFFF" opacity="0.1" />
+    <rect x="95" y="84" width="2" height="1" fill="#FFFFFF" opacity="0.07" />
+    <rect x="101" y="84" width="2" height="1" fill="#FFFFFF" opacity="0.08" />
+    <rect x="107" y="84" width="2" height="1" fill="#FFFFFF" opacity="0.07" />
+    {/* Tooth root shadow line */}
+    <rect x="76" y="88" width="34" height="1" fill="#8B7D68" opacity="0.12" />
+    {/* Gumline decay staining */}
+    <rect x="78" y="87" width="2" height="1" fill="#A89C84" opacity="0.1" />
+    <rect x="88" y="87" width="2" height="1" fill="#8B7D68" opacity="0.08" />
+    <rect x="100" y="87" width="2" height="1" fill="#A89C84" opacity="0.08" />
 
     {/* ═══ EAR BONE OPENING — auditory bulla near back of skull ═══ */}
     <rect x="40" y="52" width="6" height="6" fill="#2A1A10" opacity="0.5" />
