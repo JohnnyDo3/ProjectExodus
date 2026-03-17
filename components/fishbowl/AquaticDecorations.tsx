@@ -1051,19 +1051,19 @@ const SunkenSubmarine = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="112" y="-4" width="4" height="16" fill="#388E3C" opacity="0.3" style={{ animation: 'kelpSway 4s ease-in-out 1s infinite', transformOrigin: '114px -4px' }} />
     <rect x="84" y="-12" width="4" height="12" fill="#1B5E20" opacity="0.25" style={{ animation: 'kelpSway 4.5s ease-in-out 0.5s infinite', transformOrigin: '86px -12px' }} />
 
-    {/* Portholes — 4 with glass glint detail */}
-    <circle cx="44" cy="56" r="9" fill="#0D2137" stroke="#607D8B" strokeWidth="4" />
-    <circle cx="44" cy="56" r="5" fill="#1A5276" opacity="0.5" />
-    <rect x="40" y="52" width="4" height="2" fill="#4FC3F7" opacity="0.3" />
+    {/* Portholes — 4 evenly spaced on hull body */}
+    <circle cx="50" cy="56" r="9" fill="#0D2137" stroke="#607D8B" strokeWidth="4" />
+    <circle cx="50" cy="56" r="5" fill="#1A5276" opacity="0.5" />
+    <rect x="46" y="52" width="4" height="2" fill="#4FC3F7" opacity="0.3" />
     <circle cx="84" cy="56" r="9" fill="#0D2137" stroke="#607D8B" strokeWidth="4" />
     <circle cx="84" cy="56" r="5" fill="#1A5276" opacity="0.4" />
     <rect x="80" y="52" width="4" height="2" fill="#4FC3F7" opacity="0.25" />
-    <circle cx="132" cy="56" r="9" fill="#0D2137" stroke="#607D8B" strokeWidth="4" />
-    <circle cx="132" cy="56" r="5" fill="#1A5276" opacity="0.4" />
-    <rect x="128" y="52" width="4" height="2" fill="#4FC3F7" opacity="0.25" />
-    <circle cx="168" cy="56" r="9" fill="#0D2137" stroke="#607D8B" strokeWidth="4" />
-    <circle cx="168" cy="56" r="5" fill="#1A5276" opacity="0.3" />
-    <rect x="164" y="52" width="4" height="2" fill="#4FC3F7" opacity="0.2" />
+    <circle cx="118" cy="56" r="9" fill="#0D2137" stroke="#607D8B" strokeWidth="4" />
+    <circle cx="118" cy="56" r="5" fill="#1A5276" opacity="0.4" />
+    <rect x="114" y="52" width="4" height="2" fill="#4FC3F7" opacity="0.25" />
+    <circle cx="152" cy="56" r="9" fill="#0D2137" stroke="#607D8B" strokeWidth="4" />
+    <circle cx="152" cy="56" r="5" fill="#1A5276" opacity="0.3" />
+    <rect x="148" y="52" width="4" height="2" fill="#4FC3F7" opacity="0.2" />
 
     {/* Hull number stencil remnant */}
     <rect x="176" y="28" width="4" height="8" fill="#B0BEC5" opacity="0.15" />
@@ -1319,112 +1319,118 @@ TreasureCluster.displayName = 'TreasureCluster'
 
 const SunkenAnchor = memo(({ x, y }: { x: number; y: number }) => (
   <g transform={`translate(${x}, ${y})`}>
-    {/* Old-era admiralty anchor — ornate forged iron */}
+    {/* Pirate ship anchor — heavy forged iron with dramatic curved arms */}
 
-    {/* Shank (main vertical shaft) — thick forged iron with taper */}
-    <rect x="20" y="-18" width="8" height="62" fill="#4B5563" />
-    <rect x="21" y="-18" width="6" height="62" fill="#546E7A" opacity="0.4" />
-    <rect x="20" y="-18" width="1" height="62" fill="#607D8B" opacity="0.2" />
-    {/* Shank decorative collar bands */}
-    <rect x="18" y="-4" width="12" height="3" fill="#546E7A" />
-    <rect x="19" y="-4" width="10" height="1" fill="#78909C" opacity="0.3" />
-    <rect x="18" y="10" width="12" height="3" fill="#546E7A" />
-    <rect x="19" y="10" width="10" height="1" fill="#78909C" opacity="0.3" />
-
-    {/* Ring at top — large ornate forged iron ring */}
-    <circle cx="24" cy="-16" r="10" fill="none" stroke="#4B5563" strokeWidth="5" />
-    <circle cx="24" cy="-16" r="10" fill="none" stroke="#607D8B" strokeWidth="1.5" opacity="0.25" />
-    {/* Ring wear at top */}
-    <rect x="22" y="-27" width="4" height="2" fill="#78909C" opacity="0.3" />
-
-    {/* Stock (wooden cross-bar near top) — older style with iron bands */}
-    <rect x="2" y="-8" width="44" height="5" fill="#795548" />
-    <rect x="3" y="-8" width="42" height="2" fill="#8D6E63" opacity="0.35" />
-    {/* Stock iron bands */}
-    <rect x="4" y="-9" width="4" height="7" fill="#4B5563" opacity="0.5" />
-    <rect x="40" y="-9" width="4" height="7" fill="#4B5563" opacity="0.5" />
-    <rect x="22" y="-9" width="4" height="7" fill="#4B5563" opacity="0.4" />
-    {/* Stock end caps — ornate iron knobs */}
-    <rect x="0" y="-10" width="4" height="9" fill="#546E7A" />
-    <rect x="44" y="-10" width="4" height="9" fill="#546E7A" />
-    <rect x="-1" y="-9" width="2" height="7" fill="#607D8B" opacity="0.3" />
-    <rect x="46" y="-9" width="2" height="7" fill="#607D8B" opacity="0.3" />
-
-    {/* Crown / arms — wide sweeping curves, old admiralty style */}
-    <path d="M6 42 Q2 34 8 26 Q14 22 20 28 L20 46 Q14 48 6 42Z" fill="#6B7280" />
-    <path d="M42 42 Q46 34 40 26 Q34 22 28 28 L28 46 Q34 48 42 42Z" fill="#6B7280" />
-    {/* Arm inner shading */}
-    <path d="M8 40 Q5 34 10 28 Q14 24 20 30 L20 42 Q14 44 8 40Z" fill="#546E7A" opacity="0.3" />
-    <path d="M40 40 Q43 34 38 28 Q34 24 28 30 L28 42 Q34 44 40 40Z" fill="#546E7A" opacity="0.3" />
-    {/* Fluke tips — large spade-shaped, old era style */}
-    <path d="M6 42 L-6 56 L0 54 L8 50 L14 46 Z" fill="#546E7A" />
-    <path d="M42 42 L54 56 L48 54 L40 50 L34 46 Z" fill="#546E7A" />
-    {/* Fluke inner detail */}
-    <path d="M-4 54 L4 44" stroke="#78909C" strokeWidth="0.8" fill="none" opacity="0.25" />
-    <path d="M52 54 L44 44" stroke="#78909C" strokeWidth="0.8" fill="none" opacity="0.25" />
-    {/* Bill (crown point) */}
-    <rect x="21" y="46" width="6" height="6" fill="#4B5563" />
-    <rect x="22" y="52" width="4" height="3" fill="#546E7A" />
-    <rect x="23" y="55" width="2" height="2" fill="#607D8B" opacity="0.5" />
-
-    {/* Decorative scrollwork on crown — old era flourish */}
-    <path d="M16 40 Q12 38 14 34" stroke="#78909C" strokeWidth="1" fill="none" opacity="0.25" />
-    <path d="M32 40 Q36 38 34 34" stroke="#78909C" strokeWidth="1" fill="none" opacity="0.25" />
-
-    {/* Rust patches — heavy patina */}
-    <ellipse cx="24" cy="6" rx="5" ry="6" fill="#B45309" opacity="0.28" />
-    <ellipse cx="24" cy="8" rx="3" ry="3" fill="#E65100" opacity="0.18" />
-    <ellipse cx="12" cy="38" rx="4" ry="4" fill="#B45309" opacity="0.22" />
-    <ellipse cx="36" cy="38" rx="4" ry="4" fill="#BF360C" opacity="0.2" />
-    <ellipse cx="24" cy="26" rx="4" ry="5" fill="#8B4513" opacity="0.2" />
-    {/* Rust streaks */}
-    <rect x="23" y="14" width="2" height="10" fill="#B45309" opacity="0.12" />
-    <rect x="25" y="32" width="1" height="8" fill="#BF360C" opacity="0.1" />
-    {/* Stock wood rust staining */}
-    <rect x="8" y="-7" width="6" height="3" fill="#E65100" opacity="0.15" />
-    <rect x="32" y="-7" width="8" height="3" fill="#B45309" opacity="0.12" />
-
-    {/* Heavy chain from ring — coiled on seabed */}
-    <path d="M16 -18 Q6 -12 0 -2 Q-4 8 -2 20 Q0 30 -4 38" stroke="#4B5563" strokeWidth="3" fill="none" opacity="0.45" />
+    {/* Heavy chain trailing from ring — draped across seabed */}
+    <path d="M18 -22 Q4 -14 -6 0 Q-12 12 -10 26 Q-8 36 -14 44" stroke="#3D4852" strokeWidth="3.5" fill="none" opacity="0.5" />
     {/* Chain link details */}
-    <circle cx="6" cy="-8" r="2" fill="none" stroke="#546E7A" strokeWidth="0.8" opacity="0.3" />
-    <circle cx="0" cy="2" r="2" fill="none" stroke="#546E7A" strokeWidth="0.8" opacity="0.25" />
-    <circle cx="-2" cy="14" r="2" fill="none" stroke="#546E7A" strokeWidth="0.8" opacity="0.2" />
-    <circle cx="-2" cy="26" r="2" fill="none" stroke="#546E7A" strokeWidth="0.8" opacity="0.18" />
+    {[[-2, -8], [-8, 6], [-10, 18], [-12, 32]].map(([cx, cy], i) => (
+      <circle key={`ch-${i}`} cx={cx} cy={cy} r="2.2" fill="none" stroke="#546E7A" strokeWidth="1" opacity={0.3 - i * 0.04} />
+    ))}
     {/* Chain pile on seabed */}
-    <path d="M-4 38 Q-8 42 -2 46 Q4 48 -2 52" stroke="#4B5563" strokeWidth="2.5" fill="none" opacity="0.3" />
+    <path d="M-14 44 Q-18 48 -12 52 Q-6 54 -12 58 Q-16 60 -10 62" stroke="#3D4852" strokeWidth="2.5" fill="none" opacity="0.3" />
 
-    {/* Rope coiled around shank */}
-    <path d="M15 16 Q24 14 33 16" stroke="#8B7355" strokeWidth="2" fill="none" opacity="0.5" />
-    <path d="M14 20 Q24 18 34 20" stroke="#A08060" strokeWidth="2" fill="none" opacity="0.4" />
-    <path d="M15 24 Q24 22 33 24" stroke="#8B7355" strokeWidth="1.5" fill="none" opacity="0.35" />
+    {/* Shank (main vertical shaft) — thick heavy iron with slight taper */}
+    <rect x="19" y="-20" width="10" height="72" fill="#37474F" />
+    <rect x="20" y="-20" width="8" height="72" fill="#455A64" opacity="0.5" />
+    <rect x="19" y="-20" width="2" height="72" fill="#607D8B" opacity="0.15" />
+    <rect x="27" y="-20" width="2" height="72" fill="#263238" opacity="0.2" />
+
+    {/* Ornate ring at top — large heavy iron D-ring */}
+    <path d="M24 -18 Q10 -18 8 -28 Q6 -38 16 -42 Q24 -44 32 -42 Q42 -38 40 -28 Q38 -18 24 -18" fill="none" stroke="#37474F" strokeWidth="5" />
+    <path d="M24 -18 Q10 -18 8 -28 Q6 -38 16 -42 Q24 -44 32 -42 Q42 -38 40 -28 Q38 -18 24 -18" fill="none" stroke="#607D8B" strokeWidth="1.5" opacity="0.25" />
+    {/* Ring wear/highlight */}
+    <rect x="18" y="-44" width="12" height="2" fill="#78909C" opacity="0.25" />
+
+    {/* Decorative collar at shank top — ornate band */}
+    <rect x="15" y="-16" width="18" height="4" fill="#455A64" />
+    <rect x="14" y="-14" width="20" height="2" fill="#546E7A" opacity="0.4" />
+    <rect x="16" y="-16" width="16" height="1" fill="#78909C" opacity="0.25" />
+
+    {/* Second collar band mid-shank */}
+    <rect x="16" y="8" width="16" height="3" fill="#455A64" />
+    <rect x="17" y="8" width="14" height="1" fill="#78909C" opacity="0.2" />
+
+    {/* Crown — heavy forged piece where arms meet shank */}
+    <rect x="12" y="46" width="24" height="8" fill="#37474F" />
+    <rect x="14" y="44" width="20" height="4" fill="#455A64" />
+    <rect x="13" y="46" width="22" height="3" fill="#546E7A" opacity="0.3" />
+
+    {/* Left arm — dramatic sweeping curve upward with heavy fluke */}
+    <path d="M12 50 Q-4 52 -14 44 Q-22 36 -24 24 Q-26 16 -20 10" fill="#455A64" stroke="#37474F" strokeWidth="1.5" />
+    <path d="M14 48 Q0 50 -10 42 Q-18 34 -20 24 Q-22 18 -18 12" fill="#546E7A" opacity="0.3" />
+    {/* Left fluke — large dramatic spade/hook shape */}
+    <path d="M-20 10 Q-28 4 -34 -2 Q-38 -8 -32 -10 Q-26 -12 -22 -6 Q-18 0 -20 10" fill="#37474F" />
+    <path d="M-22 8 Q-28 2 -32 -2 Q-34 -6 -30 -8 Q-26 -8 -22 -2 Q-20 2 -22 8" fill="#546E7A" opacity="0.25" />
+    {/* Left fluke tip — sharp curved point */}
+    <path d="M-34 -2 L-40 -8 Q-38 -12 -32 -10" fill="#455A64" />
+
+    {/* Right arm — mirror dramatic sweep */}
+    <path d="M36 50 Q52 52 62 44 Q70 36 72 24 Q74 16 68 10" fill="#455A64" stroke="#37474F" strokeWidth="1.5" />
+    <path d="M34 48 Q48 50 58 42 Q66 34 68 24 Q70 18 66 12" fill="#546E7A" opacity="0.3" />
+    {/* Right fluke — dramatic spade/hook */}
+    <path d="M68 10 Q76 4 82 -2 Q86 -8 80 -10 Q74 -12 70 -6 Q66 0 68 10" fill="#37474F" />
+    <path d="M70 8 Q76 2 80 -2 Q82 -6 78 -8 Q74 -8 70 -2 Q68 2 70 8" fill="#546E7A" opacity="0.25" />
+    {/* Right fluke tip */}
+    <path d="M82 -2 L88 -8 Q86 -12 80 -10" fill="#455A64" />
+
+    {/* Bill (crown point) — heavy drop at bottom */}
+    <rect x="20" y="54" width="8" height="6" fill="#37474F" />
+    <rect x="21" y="60" width="6" height="4" fill="#455A64" />
+    <rect x="22" y="64" width="4" height="3" fill="#546E7A" opacity="0.6" />
+    <rect x="23" y="67" width="2" height="2" fill="#607D8B" opacity="0.4" />
+
+    {/* Ornate scrollwork on arms — pirate era flourish */}
+    <path d="M8 44 Q2 40 0 34 Q-2 28 -6 24" stroke="#78909C" strokeWidth="1.2" fill="none" opacity="0.2" />
+    <path d="M40 44 Q46 40 48 34 Q50 28 54 24" stroke="#78909C" strokeWidth="1.2" fill="none" opacity="0.2" />
+    {/* Extra scroll curls */}
+    <path d="M-6 24 Q-10 22 -8 18" stroke="#78909C" strokeWidth="0.8" fill="none" opacity="0.18" />
+    <path d="M54 24 Q58 22 56 18" stroke="#78909C" strokeWidth="0.8" fill="none" opacity="0.18" />
+
+    {/* Rust and heavy patina — old pirate iron */}
+    <ellipse cx="24" cy="4" rx="5" ry="7" fill="#B45309" opacity="0.25" />
+    <ellipse cx="24" cy="30" rx="4" ry="5" fill="#8B4513" opacity="0.2" />
+    <ellipse cx="-10" cy="36" rx="5" ry="4" fill="#BF360C" opacity="0.2" />
+    <ellipse cx="58" cy="36" rx="5" ry="4" fill="#B45309" opacity="0.18" />
+    <ellipse cx="24" cy="52" rx="6" ry="3" fill="#E65100" opacity="0.15" />
+    {/* Rust streaks running down shank */}
+    <rect x="22" y="14" width="2" height="12" fill="#B45309" opacity="0.12" />
+    <rect x="26" y="28" width="1" height="10" fill="#BF360C" opacity="0.1" />
+    {/* Fluke rust */}
+    <ellipse cx="-26" cy="4" rx="4" ry="3" fill="#E65100" opacity="0.18" />
+    <ellipse cx="74" cy="4" rx="4" ry="3" fill="#BF360C" opacity="0.15" />
+
+    {/* Rope wound around shank */}
+    <path d="M14 18 Q24 16 34 18" stroke="#8B7355" strokeWidth="2.2" fill="none" opacity="0.5" />
+    <path d="M13 22 Q24 20 35 22" stroke="#A08060" strokeWidth="2" fill="none" opacity="0.4" />
+    <path d="M14 26 Q24 24 34 26" stroke="#8B7355" strokeWidth="1.8" fill="none" opacity="0.35" />
+    <path d="M15 30 Q24 28 33 30" stroke="#A08060" strokeWidth="1.5" fill="none" opacity="0.3" />
 
     {/* Barnacle clusters */}
-    <circle cx="30" cy="34" r="2.5" fill="#9CA3AF" opacity="0.4" />
-    <circle cx="32" cy="36" r="1.5" fill="#B0BEC5" opacity="0.3" />
-    <circle cx="16" cy="18" r="2" fill="#9CA3AF" opacity="0.35" />
-    <rect x="4" y="-6" width="3" height="3" fill="#78909C" opacity="0.3" />
-    <rect x="2" y="48" width="4" height="3" fill="#9CA3AF" opacity="0.3" />
-    <rect x="42" y="48" width="4" height="3" fill="#9CA3AF" opacity="0.25" />
+    <circle cx="32" cy="40" r="2.5" fill="#9CA3AF" opacity="0.4" />
+    <circle cx="34" cy="42" r="1.5" fill="#B0BEC5" opacity="0.3" />
+    <circle cx="14" cy="20" r="2" fill="#9CA3AF" opacity="0.35" />
+    <rect x="-16" y="38" width="4" height="3" fill="#78909C" opacity="0.3" />
+    <rect x="60" y="38" width="4" height="3" fill="#9CA3AF" opacity="0.25" />
+    <rect x="18" y="58" width="5" height="3" fill="#9CA3AF" opacity="0.3" />
 
     {/* Seaweed draped on anchor */}
-    <path d="M32 30 Q40 26 38 16 Q36 10 38 4" stroke="#2E7D32" strokeWidth="1.2" fill="none" opacity="0.4" />
-    <path d="M30 32 Q36 28 34 20" stroke="#388E3C" strokeWidth="1" fill="none" opacity="0.3" />
-    <path d="M16 34 Q10 30 12 22" stroke="#1B5E20" strokeWidth="1" fill="none" opacity="0.3" />
-    <rect x="38" y="6" width="4" height="2" fill="#4CAF50" opacity="0.3" />
-    <rect x="34" y="18" width="3" height="2" fill="#388E3C" opacity="0.25" />
+    <path d="M34 36 Q44 30 42 18 Q40 10 42 2" stroke="#2E7D32" strokeWidth="1.2" fill="none" opacity="0.4" />
+    <path d="M14 38 Q6 32 8 22" stroke="#1B5E20" strokeWidth="1" fill="none" opacity="0.3" />
+    <path d="M60 30 Q66 24 64 14" stroke="#388E3C" strokeWidth="1" fill="none" opacity="0.3" />
+    <rect x="42" y="4" width="4" height="2" fill="#4CAF50" opacity="0.3" />
 
-    {/* Starfish on anchor arm */}
-    <rect x="8" y="34" width="3" height="3" fill="#FF5722" opacity="0.3" />
-    <rect x="7" y="35" width="1" height="1" fill="#FF7043" opacity="0.25" />
-    <rect x="11" y="35" width="1" height="1" fill="#FF7043" opacity="0.25" />
+    {/* Starfish on right arm */}
+    <rect x="56" y="28" width="3" height="3" fill="#FF5722" opacity="0.3" />
+    <rect x="55" y="29" width="1" height="1" fill="#FF7043" opacity="0.25" />
+    <rect x="59" y="29" width="1" height="1" fill="#FF7043" opacity="0.25" />
 
     {/* Sand mounding around base */}
-    <rect x="-6" y="56" width="60" height="4" fill="#C4A862" opacity="0.2" />
+    <rect x="-16" y="68" width="80" height="4" fill="#C4A862" opacity="0.2" />
 
     {/* Bubbles */}
-    <circle cx="24" cy="-24" r="1.2" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4s ease-in 1s infinite' }} />
-    <circle cx="4" cy="28" r="0.8" fill="rgba(255,255,255,0.15)" style={{ animation: 'bubbleRise 5s ease-in 3s infinite' }} />
+    <circle cx="24" cy="-42" r="1.2" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4s ease-in 1s infinite' }} />
+    <circle cx="-8" cy="20" r="0.8" fill="rgba(255,255,255,0.15)" style={{ animation: 'bubbleRise 5s ease-in 3s infinite' }} />
   </g>
 ))
 SunkenAnchor.displayName = 'SunkenAnchor'
@@ -2044,6 +2050,146 @@ const SunkenSailboat = memo(({ x, y }: { x: number; y: number }) => (
   </g>
 ))
 SunkenSailboat.displayName = 'SunkenSailboat'
+
+// ─── Large Driftwood Log ─────────────────────────────────────────────
+
+const SunkenLog = memo(({ x, y }: { x: number; y: number }) => (
+  <g transform={`translate(${x}, ${y})`}>
+    {/* Shadow on seabed */}
+    <ellipse cx="60" cy="38" rx="80" ry="6" fill="#000" opacity="0.1" />
+
+    {/* Main log body — long horizontal driftwood, slightly curved */}
+    <rect x="-20" y="8" width="160" height="22" fill="#5D4037" />
+    <rect x="-16" y="4" width="152" height="8" fill="#6D4C41" />
+    <rect x="-12" y="28" width="144" height="6" fill="#3E2723" />
+    {/* Log curvature — top */}
+    <rect x="-8" y="0" width="136" height="6" fill="#795548" opacity="0.6" />
+    {/* Log bottom roundness */}
+    <rect x="-8" y="32" width="136" height="4" fill="#2E1B0E" opacity="0.5" />
+
+    {/* Bark texture — rough ridges */}
+    <rect x="-14" y="10" width="148" height="1" fill="#795548" opacity="0.3" />
+    <rect x="-12" y="16" width="144" height="1" fill="#8D6E63" opacity="0.25" />
+    <rect x="-10" y="22" width="140" height="1" fill="#795548" opacity="0.2" />
+    {/* Bark cracks */}
+    <rect x="20" y="6" width="1" height="22" fill="#3E2723" opacity="0.2" />
+    <rect x="55" y="4" width="1" height="26" fill="#3E2723" opacity="0.18" />
+    <rect x="88" y="6" width="1" height="22" fill="#3E2723" opacity="0.2" />
+    <rect x="115" y="8" width="1" height="18" fill="#3E2723" opacity="0.15" />
+
+    {/* Left broken end — jagged snap */}
+    <rect x="-28" y="10" width="12" height="16" fill="#6D4C41" />
+    <rect x="-32" y="14" width="8" height="10" fill="#795548" opacity="0.5" />
+    <rect x="-30" y="12" width="4" height="4" fill="#8D6E63" opacity="0.4" />
+    <rect x="-26" y="24" width="6" height="4" fill="#3E2723" opacity="0.4" />
+
+    {/* Right tapered end */}
+    <rect x="136" y="10" width="16" height="16" fill="#5D4037" />
+    <rect x="148" y="14" width="10" height="10" fill="#6D4C41" opacity="0.6" />
+    <rect x="154" y="16" width="6" height="6" fill="#795548" opacity="0.4" />
+
+    {/* Branch stub — top, angled left */}
+    <rect x="36" y="-8" width="8" height="12" fill="#6D4C41" />
+    <rect x="34" y="-14" width="6" height="8" fill="#795548" opacity="0.6" />
+    <rect x="32" y="-18" width="4" height="6" fill="#8D6E63" opacity="0.4" />
+
+    {/* Branch stub — top right, shorter */}
+    <rect x="96" y="-4" width="6" height="8" fill="#5D4037" />
+    <rect x="94" y="-8" width="4" height="6" fill="#6D4C41" opacity="0.5" />
+
+    {/* Branch stub — bottom, small */}
+    <rect x="66" y="30" width="6" height="8" fill="#4E342E" opacity="0.5" />
+
+    {/* Highlight strip — light on top */}
+    <rect x="0" y="2" width="120" height="2" fill="#8D6E63" opacity="0.3" />
+
+    {/* Knot holes */}
+    <ellipse cx="42" cy="18" rx="4" ry="3" fill="#3E2723" opacity="0.5" />
+    <ellipse cx="42" cy="18" rx="2" ry="1.5" fill="#2E1B0E" opacity="0.4" />
+    <ellipse cx="105" cy="14" rx="3" ry="2.5" fill="#3E2723" opacity="0.4" />
+
+    {/* Moss and algae growth */}
+    <rect x="10" y="0" width="14" height="4" fill="#2E7D32" opacity="0.4" />
+    <rect x="6" y="-2" width="8" height="4" fill="#388E3C" opacity="0.3" />
+    <rect x="70" y="2" width="10" height="4" fill="#1B5E20" opacity="0.35" />
+    <rect x="130" y="8" width="8" height="4" fill="#2E7D32" opacity="0.3" />
+    <rect x="34" y="-16" width="6" height="3" fill="#388E3C" opacity="0.35" />
+
+    {/* Barnacles */}
+    <circle cx="0" cy="26" r="2" fill="#9CA3AF" opacity="0.35" />
+    <circle cx="50" cy="30" r="2.5" fill="#9CA3AF" opacity="0.3" />
+    <circle cx="120" cy="28" r="2" fill="#B0BEC5" opacity="0.3" />
+
+    {/* Waterlogging stain */}
+    <rect x="-16" y="18" width="156" height="12" fill="#3E2723" opacity="0.15" />
+
+    {/* Bubbles */}
+    <circle cx="42" cy="0" r="1" fill="rgba(255,255,255,0.15)" style={{ animation: 'bubbleRise 5s ease-in 2s infinite' }} />
+    <circle cx="96" cy="-4" r="0.8" fill="rgba(255,255,255,0.12)" style={{ animation: 'bubbleRise 6s ease-in 4s infinite' }} />
+  </g>
+))
+SunkenLog.displayName = 'SunkenLog'
+
+// ─── Large Rock Formation ────────────────────────────────────────────
+
+const LargeRockFormation = memo(({ x, y }: { x: number; y: number }) => (
+  <g transform={`translate(${x}, ${y})`}>
+    {/* Shadow */}
+    <ellipse cx="40" cy="56" rx="50" ry="5" fill="#000" opacity="0.1" />
+
+    {/* Main large boulder */}
+    <rect x="8" y="16" width="64" height="36" fill="#6B7280" />
+    <rect x="12" y="8" width="56" height="12" fill="#78716C" />
+    <rect x="20" y="2" width="40" height="8" fill="#8D8680" />
+    <rect x="28" y="-2" width="24" height="6" fill="#9E9890" opacity="0.7" />
+    {/* Bottom */}
+    <rect x="12" y="48" width="56" height="6" fill="#57534E" />
+
+    {/* Highlight */}
+    <rect x="24" y="4" width="20" height="4" fill="#A8A098" opacity="0.4" />
+    <rect x="16" y="12" width="8" height="4" fill="#9E9890" opacity="0.3" />
+
+    {/* Shadow faces */}
+    <rect x="60" y="16" width="12" height="32" fill="#4B5563" opacity="0.3" />
+    <rect x="8" y="40" width="64" height="8" fill="#57534E" opacity="0.25" />
+
+    {/* Texture — mineral veins and cracks */}
+    <rect x="20" y="18" width="1" height="20" fill="#9E9890" opacity="0.2" />
+    <rect x="44" y="12" width="1" height="28" fill="#57534E" opacity="0.15" />
+    <rect x="32" y="10" width="16" height="1" fill="#A8A098" opacity="0.18" />
+    <rect x="16" y="28" width="40" height="1" fill="#57534E" opacity="0.15" />
+    {/* Quartz vein */}
+    <path d="M18 20 Q28 16 38 22 Q48 26 56 20" stroke="#D4D0C8" strokeWidth="0.8" fill="none" opacity="0.15" />
+
+    {/* Secondary rock — leaning against main */}
+    <rect x="-8" y="28" width="24" height="24" fill="#78716C" />
+    <rect x="-4" y="22" width="18" height="8" fill="#8D8680" />
+    <rect x="0" y="18" width="12" height="6" fill="#9E9890" opacity="0.6" />
+    {/* Secondary highlight */}
+    <rect x="2" y="20" width="6" height="3" fill="#A8A098" opacity="0.35" />
+
+    {/* Small rock — right side */}
+    <rect x="64" y="36" width="18" height="14" fill="#6B7280" />
+    <rect x="66" y="32" width="14" height="6" fill="#78716C" />
+    <rect x="68" y="34" width="6" height="3" fill="#9E9890" opacity="0.3" />
+
+    {/* Pebbles scattered */}
+    <rect x="-12" y="50" width="4" height="3" fill="#78716C" opacity="0.4" />
+    <rect x="78" y="48" width="3" height="3" fill="#6B7280" opacity="0.35" />
+    <rect x="36" y="54" width="4" height="2" fill="#8D8680" opacity="0.3" />
+
+    {/* Moss/lichen patches */}
+    <rect x="14" y="10" width="6" height="4" fill="#2E7D32" opacity="0.3" />
+    <rect x="48" y="6" width="8" height="4" fill="#388E3C" opacity="0.25" />
+    <rect x="-2" y="24" width="6" height="3" fill="#1B5E20" opacity="0.3" />
+    <rect x="66" y="34" width="4" height="3" fill="#2E7D32" opacity="0.25" />
+
+    {/* Lichen spots */}
+    <rect x="30" y="14" width="4" height="3" fill="#B8A030" opacity="0.2" />
+    <rect x="52" y="28" width="3" height="3" fill="#90A020" opacity="0.18" />
+  </g>
+))
+LargeRockFormation.displayName = 'LargeRockFormation'
 
 // ─── MINIMAL: Stacked Stone Cairn ────────────────────────────────────
 
@@ -3375,80 +3521,135 @@ const DeerSkullWillow = memo(({ x, y }: { x: number; y: number }) => (
     {/* ═══ SIDE PROFILE DEER SKULL — lateral view, facing right ═══ */}
     {/* Dolichocephalic (long, narrow) skull shape — DOUBLED SIZE with extra detail */}
 
-    {/* ═══ ANTLER — single visible antler from side profile, branching upward ═══ */}
-    {/* Main beam — rises from pedicle on top of cranium, curves backward then up */}
-    <rect x="56" y="36" width="6" height="6" fill="#D4C8A8" />
-    <rect x="60" y="28" width="6" height="8" fill="#D4C8A8" />
-    <rect x="64" y="20" width="6" height="8" fill="#D4C8A8" />
-    <rect x="68" y="12" width="6" height="8" fill="#D4C8A8" />
-    <rect x="72" y="4" width="6" height="8" fill="#B8A888" />
-    <rect x="76" y="-4" width="6" height="8" fill="#B8A888" />
-    <rect x="82" y="-10" width="4" height="6" fill="#A09480" />
-    {/* Beam highlight pixels */}
+    {/* ═══ ANTLER — single visible antler from side profile, tall dramatic branching ═══ */}
+
+    {/* Main beam — rises from pedicle, curves back then sweeps up high */}
+    <rect x="56" y="36" width="7" height="6" fill="#D4C8A8" />
+    <rect x="60" y="28" width="7" height="8" fill="#D4C8A8" />
+    <rect x="64" y="20" width="7" height="8" fill="#D4C8A8" />
+    <rect x="68" y="12" width="7" height="8" fill="#D4C8A8" />
+    <rect x="72" y="4" width="7" height="8" fill="#C4B8A0" />
+    <rect x="76" y="-4" width="7" height="8" fill="#B8A888" />
+    <rect x="80" y="-14" width="6" height="10" fill="#B8A888" />
+    <rect x="84" y="-24" width="6" height="10" fill="#A89C84" />
+    <rect x="88" y="-34" width="5" height="10" fill="#A09480" />
+    <rect x="92" y="-42" width="5" height="8" fill="#A09480" />
+    <rect x="94" y="-48" width="4" height="6" fill="#8B7D68" />
+    {/* Beam highlight pixels — light catching on bone */}
     <rect x="62" y="24" width="4" height="4" fill="#E0D4B8" opacity="0.5" />
-    <rect x="70" y="8" width="4" height="4" fill="#E0D4B8" opacity="0.4" />
-    <rect x="78" y="-2" width="4" height="4" fill="#E0D4B8" opacity="0.35" />
+    <rect x="70" y="8" width="4" height="4" fill="#E0D4B8" opacity="0.45" />
+    <rect x="78" y="-2" width="4" height="4" fill="#E0D4B8" opacity="0.4" />
+    <rect x="86" y="-20" width="4" height="4" fill="#E0D4B8" opacity="0.35" />
+    <rect x="90" y="-38" width="3" height="4" fill="#E0D4B8" opacity="0.3" />
+    {/* Beam dark edge — depth */}
+    <rect x="56" y="36" width="2" height="6" fill="#A89C84" opacity="0.3" />
+    <rect x="60" y="28" width="2" height="8" fill="#A89C84" opacity="0.25" />
+    <rect x="68" y="12" width="2" height="8" fill="#A89C84" opacity="0.2" />
+
     {/* Burr texture at antler base — rough bumpy blocks */}
-    <rect x="56" y="38" width="2" height="2" fill="#C4B8A0" opacity="0.6" />
-    <rect x="58" y="40" width="2" height="2" fill="#B8A888" opacity="0.5" />
-    <rect x="60" y="37" width="2" height="2" fill="#A89C84" opacity="0.55" />
-    <rect x="55" y="36" width="2" height="2" fill="#C4B8A0" opacity="0.5" />
-    <rect x="57" y="42" width="3" height="2" fill="#B8A888" opacity="0.45" />
-    <rect x="62" y="36" width="2" height="2" fill="#A89C84" opacity="0.4" />
-    {/* Pearling along main beam — tiny highlight dots */}
-    <rect x="63" y="26" width="2" height="2" fill="#F0E6D2" opacity="0.35" />
-    <rect x="66" y="22" width="2" height="2" fill="#F0E6D2" opacity="0.3" />
-    <rect x="69" y="16" width="2" height="2" fill="#F0E6D2" opacity="0.3" />
-    <rect x="73" y="8" width="2" height="2" fill="#F0E6D2" opacity="0.25" />
-    <rect x="77" y="0" width="2" height="2" fill="#F0E6D2" opacity="0.25" />
-    <rect x="80" y="-6" width="2" height="2" fill="#F0E6D2" opacity="0.2" />
+    <rect x="54" y="38" width="3" height="3" fill="#C4B8A0" opacity="0.6" />
+    <rect x="57" y="40" width="3" height="3" fill="#B8A888" opacity="0.5" />
+    <rect x="60" y="37" width="3" height="3" fill="#A89C84" opacity="0.55" />
+    <rect x="53" y="35" width="3" height="3" fill="#C4B8A0" opacity="0.5" />
+    <rect x="56" y="42" width="4" height="2" fill="#B8A888" opacity="0.45" />
+    <rect x="63" y="36" width="3" height="3" fill="#A89C84" opacity="0.4" />
+    <rect x="55" y="34" width="2" height="2" fill="#D4C8A8" opacity="0.3" />
 
-    {/* Brow tine — first fork near base, points forward/up */}
-    <rect x="60" y="28" width="4" height="6" fill="#D4C8A8" />
-    <rect x="56" y="20" width="4" height="8" fill="#D4C8A8" />
-    <rect x="52" y="12" width="4" height="8" fill="#B8A888" />
-    <rect x="48" y="4" width="4" height="8" fill="#B8A888" />
-    <rect x="44" y="-2" width="4" height="6" fill="#A09480" />
+    {/* Pearling along main beam — tiny raised bumps */}
+    <rect x="63" y="26" width="2" height="2" fill="#F0E6D2" opacity="0.4" />
+    <rect x="66" y="22" width="2" height="2" fill="#F0E6D2" opacity="0.35" />
+    <rect x="70" y="16" width="2" height="2" fill="#F0E6D2" opacity="0.35" />
+    <rect x="74" y="8" width="2" height="2" fill="#F0E6D2" opacity="0.3" />
+    <rect x="78" y="0" width="2" height="2" fill="#F0E6D2" opacity="0.3" />
+    <rect x="82" y="-10" width="2" height="2" fill="#F0E6D2" opacity="0.25" />
+    <rect x="86" y="-20" width="2" height="2" fill="#F0E6D2" opacity="0.22" />
+    <rect x="90" y="-30" width="2" height="2" fill="#F0E6D2" opacity="0.2" />
+
+    {/* === Brow tine — first fork near base, sweeps forward and up === */}
+    <rect x="60" y="28" width="5" height="6" fill="#D4C8A8" />
+    <rect x="56" y="20" width="5" height="8" fill="#D4C8A8" />
+    <rect x="52" y="12" width="5" height="8" fill="#C4B8A0" />
+    <rect x="48" y="4" width="5" height="8" fill="#B8A888" />
+    <rect x="44" y="-4" width="4" height="8" fill="#A89C84" />
+    <rect x="40" y="-12" width="4" height="8" fill="#A09480" />
+    <rect x="36" y="-18" width="4" height="6" fill="#8B7D68" />
     {/* Brow tine highlight */}
-    <rect x="54" y="16" width="2" height="4" fill="#E0D4B8" opacity="0.4" />
-    {/* Brow tine tip detail */}
-    <rect x="44" y="-2" width="2" height="2" fill="#8B7D68" opacity="0.3" />
-    <rect x="46" y="0" width="2" height="2" fill="#C4B8A0" opacity="0.3" />
+    <rect x="54" y="16" width="3" height="4" fill="#E0D4B8" opacity="0.4" />
+    <rect x="46" y="2" width="3" height="4" fill="#E0D4B8" opacity="0.35" />
+    <rect x="42" y="-8" width="2" height="4" fill="#E0D4B8" opacity="0.3" />
+    {/* Brow tine tip — sharp point */}
+    <rect x="36" y="-20" width="2" height="4" fill="#A09480" opacity="0.6" />
+    <rect x="34" y="-22" width="2" height="4" fill="#8B7D68" opacity="0.4" />
 
-    {/* Bez tine — second fork, branches forward */}
-    <rect x="66" y="16" width="4" height="6" fill="#D4C8A8" />
-    <rect x="60" y="8" width="6" height="8" fill="#D4C8A8" />
-    <rect x="56" y="0" width="4" height="8" fill="#B8A888" />
-    <rect x="52" y="-6" width="4" height="6" fill="#A09480" />
+    {/* === Bez tine — second fork, branches forward and up === */}
+    <rect x="66" y="16" width="5" height="6" fill="#D4C8A8" />
+    <rect x="62" y="8" width="5" height="8" fill="#C4B8A0" />
+    <rect x="58" y="0" width="5" height="8" fill="#B8A888" />
+    <rect x="54" y="-8" width="4" height="8" fill="#A89C84" />
+    <rect x="50" y="-16" width="4" height="8" fill="#A09480" />
+    <rect x="46" y="-22" width="4" height="6" fill="#8B7D68" />
+    {/* Bez tine highlight */}
+    <rect x="60" y="4" width="3" height="4" fill="#E0D4B8" opacity="0.35" />
+    <rect x="52" y="-10" width="2" height="4" fill="#E0D4B8" opacity="0.3" />
     {/* Bez tine tip */}
-    <rect x="52" y="-6" width="2" height="2" fill="#8B7D68" opacity="0.3" />
+    <rect x="46" y="-24" width="2" height="4" fill="#A09480" opacity="0.5" />
+    <rect x="44" y="-26" width="2" height="4" fill="#8B7D68" opacity="0.35" />
 
-    {/* Trez tine — third fork, upper branch */}
-    <rect x="72" y="4" width="4" height="6" fill="#D4C8A8" />
-    <rect x="68" y="-4" width="4" height="8" fill="#B8A888" />
-    <rect x="64" y="-10" width="4" height="6" fill="#A09480" />
-    <rect x="60" y="-14" width="4" height="4" fill="#A09480" />
+    {/* === Trez tine — third fork from upper beam, branches forward === */}
+    <rect x="76" y="-4" width="5" height="6" fill="#C4B8A0" />
+    <rect x="72" y="-12" width="5" height="8" fill="#B8A888" />
+    <rect x="68" y="-20" width="4" height="8" fill="#A89C84" />
+    <rect x="64" y="-28" width="4" height="8" fill="#A09480" />
+    <rect x="60" y="-34" width="4" height="6" fill="#8B7D68" />
+    {/* Trez tine highlight */}
+    <rect x="70" y="-16" width="3" height="4" fill="#E0D4B8" opacity="0.3" />
     {/* Trez tine tip */}
-    <rect x="60" y="-14" width="2" height="2" fill="#8B7D68" opacity="0.3" />
+    <rect x="60" y="-36" width="2" height="4" fill="#A09480" opacity="0.5" />
+    <rect x="58" y="-38" width="2" height="4" fill="#8B7D68" opacity="0.3" />
 
-    {/* Crown tine — topmost points */}
-    <rect x="80" y="-8" width="4" height="6" fill="#B8A888" />
-    <rect x="84" y="-14" width="4" height="6" fill="#A09480" />
-    <rect x="88" y="-18" width="4" height="4" fill="#A09480" />
-    {/* Second crown point */}
-    <rect x="76" y="-12" width="4" height="4" fill="#A09480" />
-    {/* Crown tine tips */}
-    <rect x="88" y="-18" width="2" height="2" fill="#8B7D68" opacity="0.3" />
-    <rect x="76" y="-12" width="2" height="2" fill="#8B7D68" opacity="0.25" />
+    {/* === Crown — topmost branching, multiple points === */}
+    {/* Crown main beam continues up */}
+    <rect x="92" y="-42" width="5" height="6" fill="#A09480" />
+    <rect x="96" y="-50" width="4" height="8" fill="#8B7D68" />
+    <rect x="98" y="-56" width="3" height="6" fill="#8B7D68" opacity="0.7" />
+    {/* Crown point 1 — forward fork */}
+    <rect x="88" y="-42" width="4" height="6" fill="#A89C84" />
+    <rect x="84" y="-50" width="4" height="8" fill="#A09480" />
+    <rect x="80" y="-56" width="4" height="6" fill="#8B7D68" />
+    <rect x="78" y="-60" width="3" height="4" fill="#8B7D68" opacity="0.6" />
+    {/* Crown point 2 — back fork */}
+    <rect x="96" y="-46" width="4" height="6" fill="#A89C84" />
+    <rect x="100" y="-54" width="4" height="8" fill="#A09480" />
+    <rect x="104" y="-60" width="3" height="6" fill="#8B7D68" />
+    <rect x="106" y="-64" width="3" height="4" fill="#8B7D68" opacity="0.6" />
+    {/* Crown point 3 — small upper spur */}
+    <rect x="92" y="-52" width="3" height="6" fill="#A89C84" />
+    <rect x="90" y="-58" width="3" height="6" fill="#A09480" opacity="0.7" />
+    {/* Crown highlights */}
+    <rect x="86" y="-48" width="2" height="3" fill="#E0D4B8" opacity="0.25" />
+    <rect x="102" y="-52" width="2" height="3" fill="#E0D4B8" opacity="0.25" />
+    <rect x="98" y="-54" width="2" height="3" fill="#E0D4B8" opacity="0.2" />
+    {/* Crown tips — sharp points */}
+    <rect x="78" y="-62" width="2" height="3" fill="#6B5D48" opacity="0.5" />
+    <rect x="106" y="-66" width="2" height="3" fill="#6B5D48" opacity="0.5" />
+    <rect x="98" y="-58" width="2" height="3" fill="#6B5D48" opacity="0.4" />
 
-    {/* Antler texture — shadow blocks */}
-    <rect x="64" y="24" width="4" height="4" fill="#A89C84" opacity="0.3" />
-    <rect x="72" y="8" width="4" height="4" fill="#A89C84" opacity="0.25" />
-    <rect x="80" y="-4" width="4" height="4" fill="#8B7D68" opacity="0.2" />
-    {/* More antler texture — groove detail */}
-    <rect x="66" y="18" width="2" height="4" fill="#8B7D68" opacity="0.15" />
-    <rect x="74" y="2" width="2" height="4" fill="#8B7D68" opacity="0.15" />
-    <rect x="70" y="14" width="2" height="2" fill="#A89C84" opacity="0.2" />
+    {/* Antler texture — deep longitudinal grooves */}
+    <rect x="64" y="24" width="5" height="1" fill="#A89C84" opacity="0.3" />
+    <rect x="72" y="8" width="5" height="1" fill="#A89C84" opacity="0.25" />
+    <rect x="80" y="-4" width="5" height="1" fill="#8B7D68" opacity="0.2" />
+    <rect x="86" y="-18" width="4" height="1" fill="#8B7D68" opacity="0.18" />
+    <rect x="90" y="-32" width="4" height="1" fill="#8B7D68" opacity="0.15" />
+    {/* Vertical groove lines */}
+    <rect x="66" y="18" width="1" height="8" fill="#8B7D68" opacity="0.18" />
+    <rect x="74" y="2" width="1" height="8" fill="#8B7D68" opacity="0.15" />
+    <rect x="82" y="-12" width="1" height="8" fill="#8B7D68" opacity="0.13" />
+    <rect x="90" y="-28" width="1" height="8" fill="#8B7D68" opacity="0.12" />
+    {/* Tine groove lines */}
+    <rect x="54" y="14" width="1" height="8" fill="#8B7D68" opacity="0.15" />
+    <rect x="50" y="2" width="1" height="8" fill="#8B7D68" opacity="0.13" />
+    <rect x="62" y="4" width="1" height="8" fill="#8B7D68" opacity="0.15" />
+    <rect x="70" y="-14" width="1" height="8" fill="#8B7D68" opacity="0.12" />
 
     {/* ═══ CRANIUM — rounded braincase, viewed from side ═══ */}
     {/* Cranium is roughly oval from the side, sits behind the eye */}
@@ -3668,41 +3869,49 @@ const DeerSkullWillow = memo(({ x, y }: { x: number; y: number }) => (
       <rect x="60" y="20" width="4" height="6" fill="#00E676" opacity="0.45" />
     </g>
 
-    {/* Antler tip vines — long cascading strands draping down */}
-    <g style={{ transformOrigin: '86px -14px', animation: 'kelpSway 5s ease-in-out infinite 1s' }}>
-      <path d="M86 -14 Q96 8 104 40 Q108 68 100 92 Q92 108 84 116" stroke="#2E7D32" strokeWidth="1.3" fill="none" opacity="0.7" strokeLinecap="round" />
-      <path d="M88 -10 Q100 12 108 44 Q112 72 104 96 Q96 112 88 120" stroke="#1B5E20" strokeWidth="1.1" fill="none" opacity="0.6" strokeLinecap="round" />
-      <path d="M84 -8 Q92 16 100 48 Q104 76 96 100" stroke="#388E3C" strokeWidth="0.9" fill="none" opacity="0.5" strokeLinecap="round" />
-      <rect x="100" y="32" width="4" height="4" fill="#43A047" opacity="0.5" />
-      <rect x="108" y="56" width="6" height="4" fill="#2E7D32" opacity="0.45" />
-      <rect x="104" y="80" width="4" height="4" fill="#00C853" opacity="0.4" />
-      <rect x="96" y="100" width="4" height="4" fill="#388E3C" opacity="0.4" />
+    {/* Antler tip vines — long cascading strands from upper antler */}
+    <g style={{ transformOrigin: '94px -48px', animation: 'kelpSway 5s ease-in-out infinite 1s' }}>
+      <path d="M94 -48 Q104 -20 110 20 Q114 56 106 88 Q98 108 90 116" stroke="#2E7D32" strokeWidth="1.3" fill="none" opacity="0.7" strokeLinecap="round" />
+      <path d="M96 -44 Q108 -16 114 24 Q118 60 110 92 Q102 112 94 120" stroke="#1B5E20" strokeWidth="1.1" fill="none" opacity="0.6" strokeLinecap="round" />
+      <path d="M92 -44 Q100 -12 106 28 Q110 64 102 96" stroke="#388E3C" strokeWidth="0.9" fill="none" opacity="0.5" strokeLinecap="round" />
+      <rect x="108" y="12" width="4" height="4" fill="#43A047" opacity="0.5" />
+      <rect x="114" y="44" width="6" height="4" fill="#2E7D32" opacity="0.45" />
+      <rect x="106" y="76" width="4" height="4" fill="#00C853" opacity="0.4" />
+      <rect x="98" y="100" width="4" height="4" fill="#388E3C" opacity="0.4" />
     </g>
 
-    {/* Crown tine vine */}
-    <g style={{ transformOrigin: '88px -18px', animation: 'kelpSway 5.2s ease-in-out infinite 1.5s' }}>
-      <path d="M88 -18 Q100 4 108 32 Q112 56 104 80 Q96 96 88 104" stroke="#2E7D32" strokeWidth="1.1" fill="none" opacity="0.6" strokeLinecap="round" />
-      <path d="M90 -14 Q104 8 112 36 Q116 60 108 84" stroke="#43A047" strokeWidth="0.8" fill="none" opacity="0.5" strokeLinecap="round" />
-      <rect x="104" y="20" width="4" height="4" fill="#00C853" opacity="0.4" />
-      <rect x="112" y="44" width="4" height="4" fill="#388E3C" opacity="0.35" />
-      <rect x="104" y="68" width="4" height="4" fill="#2E7D32" opacity="0.3" />
+    {/* Crown point vines — draping from the crown tips */}
+    <g style={{ transformOrigin: '106px -64px', animation: 'kelpSway 5.2s ease-in-out infinite 1.5s' }}>
+      <path d="M106 -64 Q118 -32 122 4 Q124 36 116 68 Q108 92 100 104" stroke="#2E7D32" strokeWidth="1.1" fill="none" opacity="0.6" strokeLinecap="round" />
+      <path d="M108 -60 Q120 -28 126 8 Q128 40 120 72" stroke="#43A047" strokeWidth="0.8" fill="none" opacity="0.5" strokeLinecap="round" />
+      <rect x="120" y="-8" width="4" height="4" fill="#00C853" opacity="0.4" />
+      <rect x="124" y="28" width="4" height="4" fill="#388E3C" opacity="0.35" />
+      <rect x="116" y="56" width="4" height="4" fill="#2E7D32" opacity="0.3" />
     </g>
 
-    {/* Brow tine vine — twists around forward fork */}
-    <g style={{ transformOrigin: '44px -2px', animation: 'kelpSway 4.2s ease-in-out infinite 0.3s' }}>
-      <path d="M44 -2 Q36 20 28 48 Q24 72 32 96 Q40 108 48 112" stroke="#2E7D32" strokeWidth="1.1" fill="none" opacity="0.6" strokeLinecap="round" />
-      <path d="M48 4 Q40 28 32 56 Q28 80 36 100" stroke="#43A047" strokeWidth="0.8" fill="none" opacity="0.5" strokeLinecap="round" />
-      <rect x="32" y="36" width="4" height="4" fill="#00C853" opacity="0.4" />
-      <rect x="28" y="64" width="4" height="4" fill="#388E3C" opacity="0.35" />
-      <rect x="36" y="88" width="4" height="4" fill="#2E7D32" opacity="0.3" />
+    {/* Forward crown point vine */}
+    <g style={{ transformOrigin: '78px -60px', animation: 'kelpSway 4.5s ease-in-out infinite 2s' }}>
+      <path d="M78 -60 Q68 -32 60 0 Q56 32 64 60 Q72 80 80 88" stroke="#1B5E20" strokeWidth="1" fill="none" opacity="0.55" strokeLinecap="round" />
+      <rect x="64" y="-8" width="4" height="4" fill="#43A047" opacity="0.35" />
+      <rect x="60" y="24" width="4" height="4" fill="#388E3C" opacity="0.3" />
+      <rect x="64" y="52" width="4" height="4" fill="#2E7D32" opacity="0.25" />
+    </g>
+
+    {/* Brow tine vine — twists around the long forward fork */}
+    <g style={{ transformOrigin: '36px -18px', animation: 'kelpSway 4.2s ease-in-out infinite 0.3s' }}>
+      <path d="M36 -18 Q28 8 20 40 Q16 68 24 92 Q32 108 40 112" stroke="#2E7D32" strokeWidth="1.1" fill="none" opacity="0.6" strokeLinecap="round" />
+      <path d="M38 -14 Q30 16 24 48 Q20 76 28 100" stroke="#43A047" strokeWidth="0.8" fill="none" opacity="0.5" strokeLinecap="round" />
+      <rect x="24" y="28" width="4" height="4" fill="#00C853" opacity="0.4" />
+      <rect x="20" y="60" width="4" height="4" fill="#388E3C" opacity="0.35" />
+      <rect x="28" y="84" width="4" height="4" fill="#2E7D32" opacity="0.3" />
     </g>
 
     {/* Trez tine vine */}
-    <g style={{ transformOrigin: '60px -14px', animation: 'kelpSway 4.8s ease-in-out infinite 1.8s' }}>
-      <path d="M60 -14 Q52 8 44 36 Q40 60 48 84 Q56 100 64 108" stroke="#1B5E20" strokeWidth="1" fill="none" opacity="0.55" strokeLinecap="round" />
-      <rect x="48" y="24" width="4" height="4" fill="#43A047" opacity="0.4" />
-      <rect x="44" y="48" width="4" height="4" fill="#00C853" opacity="0.35" />
-      <rect x="48" y="72" width="4" height="4" fill="#388E3C" opacity="0.3" />
+    <g style={{ transformOrigin: '60px -34px', animation: 'kelpSway 4.8s ease-in-out infinite 1.8s' }}>
+      <path d="M60 -34 Q52 -8 44 24 Q40 52 48 76 Q56 92 64 100" stroke="#1B5E20" strokeWidth="1" fill="none" opacity="0.55" strokeLinecap="round" />
+      <rect x="48" y="8" width="4" height="4" fill="#43A047" opacity="0.4" />
+      <rect x="44" y="36" width="4" height="4" fill="#00C853" opacity="0.35" />
+      <rect x="48" y="64" width="4" height="4" fill="#388E3C" opacity="0.3" />
     </g>
 
     {/* Nasal cavity vine — small growth from nose tip */}
@@ -3773,13 +3982,21 @@ const DeerSkullWillow = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="71" y="46" width="3" height="1" fill="#6B5D48" opacity="0.11" />
     <rect x="101" y="60" width="3" height="1" fill="#6B5D48" opacity="0.1" />
 
-    {/* ═══ Antler groove detail — longitudinal ridges ═══ */}
+    {/* ═══ Antler groove detail — longitudinal ridges along full length ═══ */}
     <rect x="62" y="22" width="1" height="8" fill="#A09480" opacity="0.25" />
     <rect x="64" y="14" width="1" height="8" fill="#A09480" opacity="0.22" />
     <rect x="70" y="6" width="1" height="8" fill="#A09480" opacity="0.2" />
     <rect x="74" y="-2" width="1" height="8" fill="#A09480" opacity="0.18" />
+    <rect x="82" y="-16" width="1" height="8" fill="#A09480" opacity="0.16" />
+    <rect x="86" y="-28" width="1" height="8" fill="#A09480" opacity="0.14" />
+    <rect x="90" y="-40" width="1" height="8" fill="#A09480" opacity="0.12" />
+    {/* Tine grooves */}
     <rect x="54" y="14" width="1" height="8" fill="#A09480" opacity="0.2" />
     <rect x="50" y="6" width="1" height="8" fill="#A09480" opacity="0.18" />
+    <rect x="46" y="-4" width="1" height="8" fill="#A09480" opacity="0.16" />
+    <rect x="42" y="-14" width="1" height="8" fill="#A09480" opacity="0.14" />
+    <rect x="56" y="-2" width="1" height="8" fill="#A09480" opacity="0.17" />
+    <rect x="52" y="-12" width="1" height="8" fill="#A09480" opacity="0.14" />
 
     {/* ═══ Barnacle clusters on skull ═══ */}
     <rect x="42" y="56" width="4" height="3" fill="#9CA3AF" opacity="0.3" />
@@ -4112,7 +4329,7 @@ const SAILBOAT_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'sailboat', x: 334, y: 174, scale: 1.8 },
+      { type: 'sailboat', x: 334, y: 184, scale: 1.5 },
       { type: 'anchor', x: 600, y: 140 },
     ],
   },
@@ -4221,121 +4438,98 @@ const SUBMARINE_LAYOUT: LayeredDecoConfig = {
 const MINIMAL_LAYOUT: LayeredDecoConfig = {
   background: {
     kelps: [
-      // Dense planted tank — lush background wall grouped by species
-      // Bushy cluster 1
-      { x: 5, height: 180, variant: 'bushy', color: '#2E7D32', delay: 0 },
-      { x: 18, height: 160, variant: 'bushy', color: '#33691E', delay: 0.4 },
-      { x: 32, height: 170, variant: 'bushy', color: '#2E7D32', delay: 0.8 },
-      { x: 45, height: 150, variant: 'bushy', color: '#388E3C', delay: 0.2 },
-      { x: 58, height: 165, variant: 'bushy', color: '#33691E', delay: 0.6 },
-      // Wide cluster 1
-      { x: 78, height: 165, variant: 'wide', color: '#388E3C', delay: 0.7 },
-      { x: 92, height: 150, variant: 'wide', color: '#4CAF50', delay: 1.1 },
-      { x: 105, height: 160, variant: 'wide', color: '#43A047', delay: 0.3 },
-      { x: 118, height: 145, variant: 'wide', color: '#388E3C', delay: 0.9 },
-      // Thin cluster 1
-      { x: 138, height: 175, variant: 'thin', color: '#43A047', delay: 1.3 },
-      { x: 148, height: 155, variant: 'thin', color: '#2E7D32', delay: 0.5 },
-      { x: 158, height: 165, variant: 'thin', color: '#388E3C', delay: 1.0 },
-      { x: 168, height: 148, variant: 'thin', color: '#4CAF50', delay: 0.2 },
-      // Bushy cluster 2
-      { x: 190, height: 170, variant: 'bushy', color: '#2E7D32', delay: 0.8 },
-      { x: 203, height: 155, variant: 'bushy', color: '#33691E', delay: 0.3 },
-      { x: 216, height: 162, variant: 'bushy', color: '#388E3C', delay: 1.2 },
-      { x: 230, height: 148, variant: 'bushy', color: '#2E7D32', delay: 0.6 },
-      // Wide cluster 2
-      { x: 250, height: 165, variant: 'wide', color: '#4CAF50', delay: 1.5 },
-      { x: 263, height: 150, variant: 'wide', color: '#43A047', delay: 0.4 },
-      { x: 276, height: 158, variant: 'wide', color: '#388E3C', delay: 0.9 },
-      // Thin cluster 2
-      { x: 296, height: 170, variant: 'thin', color: '#33691E', delay: 0.6 },
-      { x: 306, height: 152, variant: 'thin', color: '#2E7D32', delay: 1.1 },
-      { x: 316, height: 162, variant: 'thin', color: '#43A047', delay: 0.3 },
-      // Bushy cluster 3
-      { x: 338, height: 175, variant: 'bushy', color: '#2E7D32', delay: 1.1 },
-      { x: 351, height: 155, variant: 'bushy', color: '#33691E', delay: 0.5 },
-      { x: 364, height: 165, variant: 'bushy', color: '#4CAF50', delay: 0.2 },
-      // Wide cluster 3
-      { x: 385, height: 160, variant: 'wide', color: '#43A047', delay: 0.4 },
-      { x: 398, height: 148, variant: 'wide', color: '#388E3C', delay: 0.9 },
-      { x: 411, height: 155, variant: 'wide', color: '#2E7D32', delay: 1.4 },
-      // Thin cluster 3
-      { x: 432, height: 168, variant: 'thin', color: '#388E3C', delay: 0.9 },
-      { x: 442, height: 150, variant: 'thin', color: '#4CAF50', delay: 0.3 },
-      { x: 452, height: 158, variant: 'thin', color: '#33691E', delay: 0.7 },
-      // Bushy cluster 4
-      { x: 472, height: 172, variant: 'bushy', color: '#388E3C', delay: 1.2 },
-      { x: 485, height: 155, variant: 'bushy', color: '#2E7D32', delay: 0.5 },
-      { x: 498, height: 165, variant: 'bushy', color: '#33691E', delay: 0.8 },
-      // Wide cluster 4
-      { x: 518, height: 160, variant: 'wide', color: '#43A047', delay: 0.5 },
-      { x: 531, height: 145, variant: 'wide', color: '#4CAF50', delay: 1.0 },
-      { x: 544, height: 155, variant: 'wide', color: '#388E3C', delay: 0.2 },
-      // Thin cluster 4
-      { x: 564, height: 175, variant: 'thin', color: '#2E7D32', delay: 1.0 },
-      { x: 574, height: 155, variant: 'thin', color: '#43A047', delay: 0.4 },
-      { x: 584, height: 165, variant: 'thin', color: '#33691E', delay: 0.8 },
-      // Bushy cluster 5
-      { x: 604, height: 168, variant: 'bushy', color: '#4CAF50', delay: 0.3 },
-      { x: 617, height: 152, variant: 'bushy', color: '#2E7D32', delay: 0.8 },
-      { x: 630, height: 160, variant: 'bushy', color: '#388E3C', delay: 1.3 },
-      // Wide cluster 5
-      { x: 650, height: 162, variant: 'wide', color: '#33691E', delay: 0.8 },
-      { x: 663, height: 148, variant: 'wide', color: '#43A047', delay: 0.3 },
-      { x: 676, height: 155, variant: 'wide', color: '#4CAF50', delay: 1.1 },
-      // Thin cluster 5
-      { x: 696, height: 170, variant: 'thin', color: '#388E3C', delay: 1.3 },
-      { x: 706, height: 152, variant: 'thin', color: '#2E7D32', delay: 0.6 },
-      { x: 716, height: 162, variant: 'thin', color: '#43A047', delay: 0.2 },
-      // Final bushy cluster
-      { x: 736, height: 165, variant: 'bushy', color: '#2E7D32', delay: 0.6 },
-      { x: 749, height: 148, variant: 'bushy', color: '#33691E', delay: 1.1 },
-      { x: 762, height: 158, variant: 'bushy', color: '#4CAF50', delay: 0.4 },
-      // Final wide
-      { x: 780, height: 155, variant: 'wide', color: '#388E3C', delay: 0.9 },
-      { x: 793, height: 145, variant: 'wide', color: '#2E7D32', delay: 1.5 },
+      // Naturally scattered background — irregular spacing, varied density, organic feel
+      // Left sparse cluster
+      { x: 3, height: 175, variant: 'bushy', color: '#2E7D32', delay: 0 },
+      { x: 14, height: 158, variant: 'thin', color: '#388E3C', delay: 0.6 },
+      { x: 28, height: 182, variant: 'bushy', color: '#33691E', delay: 1.1 },
+      // Gap — open space
+      { x: 52, height: 145, variant: 'wide', color: '#4CAF50', delay: 0.3 },
+      // Sparse singles
+      { x: 78, height: 168, variant: 'thin', color: '#2E7D32', delay: 0.8 },
+      { x: 95, height: 155, variant: 'bushy', color: '#388E3C', delay: 0.2 },
+      // Dense patch — left of rock formation
+      { x: 118, height: 178, variant: 'wide', color: '#33691E', delay: 1.4 },
+      { x: 128, height: 162, variant: 'bushy', color: '#2E7D32', delay: 0.5 },
+      { x: 140, height: 172, variant: 'wide', color: '#4CAF50', delay: 0.9 },
+      { x: 150, height: 148, variant: 'thin', color: '#388E3C', delay: 1.6 },
+      { x: 162, height: 170, variant: 'bushy', color: '#33691E', delay: 0.3 },
+      // Sparse behind structures
+      { x: 195, height: 155, variant: 'thin', color: '#2E7D32', delay: 0.7 },
+      { x: 215, height: 180, variant: 'bushy', color: '#1B5E20', delay: 1.2 },
+      // Mid gap — let structures breathe
+      { x: 268, height: 150, variant: 'wide', color: '#43A047', delay: 0.4 },
+      { x: 290, height: 165, variant: 'thin', color: '#2E7D32', delay: 1.0 },
+      // Right of log area — dense natural patch
+      { x: 365, height: 175, variant: 'bushy', color: '#388E3C', delay: 0.6 },
+      { x: 378, height: 155, variant: 'wide', color: '#33691E', delay: 1.3 },
+      { x: 395, height: 168, variant: 'thin', color: '#2E7D32', delay: 0.2 },
+      // Scattered mid-right
+      { x: 432, height: 158, variant: 'bushy', color: '#4CAF50', delay: 0.8 },
+      { x: 460, height: 172, variant: 'wide', color: '#2E7D32', delay: 1.5 },
+      { x: 478, height: 148, variant: 'thin', color: '#388E3C', delay: 0.4 },
+      // Dense cluster right
+      { x: 520, height: 180, variant: 'bushy', color: '#33691E', delay: 0.9 },
+      { x: 532, height: 162, variant: 'bushy', color: '#2E7D32', delay: 0.3 },
+      { x: 548, height: 175, variant: 'wide', color: '#388E3C', delay: 1.1 },
+      // Gap
+      { x: 585, height: 155, variant: 'thin', color: '#43A047', delay: 0.7 },
+      // Sparse right
+      { x: 618, height: 168, variant: 'bushy', color: '#2E7D32', delay: 1.4 },
+      { x: 645, height: 150, variant: 'wide', color: '#33691E', delay: 0.5 },
+      { x: 672, height: 175, variant: 'thin', color: '#388E3C', delay: 0.2 },
+      // Dense far right
+      { x: 705, height: 182, variant: 'bushy', color: '#2E7D32', delay: 0.8 },
+      { x: 718, height: 158, variant: 'wide', color: '#4CAF50', delay: 1.2 },
+      { x: 738, height: 170, variant: 'thin', color: '#33691E', delay: 0.6 },
+      { x: 755, height: 148, variant: 'bushy', color: '#388E3C', delay: 1.0 },
+      // Far edge singles
+      { x: 778, height: 162, variant: 'wide', color: '#2E7D32', delay: 0.3 },
+      { x: 794, height: 155, variant: 'thin', color: '#33691E', delay: 1.5 },
     ],
   },
   midground: {
-    structures: [],
+    structures: [
+      { type: 'rock-formation', x: 120, y: 158, scale: 1.8 },
+      { type: 'driftwood', x: 420, y: 176, scale: 1.6 },
+    ],
   },
   foreground: {
     rocks: [
       { x: 47, y: 270, variant: 'small', color: '#78716C' },
-      { x: 233, y: 258, variant: 'small', color: '#6B7280' },
+      { x: 295, y: 262, variant: 'medium', color: '#6B7280' },
       { x: 518, y: 275, variant: 'small', color: '#57534E' },
-      { x: 710, y: 264, variant: 'small', color: '#78716C' },
-      { x: 355, y: 272, variant: 'small', color: '#6B7280' },
+      { x: 710, y: 250, variant: 'medium', color: '#78716C' },
+      { x: 165, y: 272, variant: 'small', color: '#6B7280' },
     ],
     corals: [
-      { x: 82, y: 246, variant: 'branch', color: '#81C784' },
-      { x: 310, y: 258, variant: 'fan', color: '#A5D6A7' },
-      { x: 488, y: 243, variant: 'branch', color: '#81C784' },
-      { x: 672, y: 250, variant: 'fan', color: '#A5D6A7' },
-      { x: 165, y: 254, variant: 'branch', color: '#81C784' },
+      { x: 55, y: 248, variant: 'branch', color: '#81C784' },
+      { x: 342, y: 255, variant: 'fan', color: '#A5D6A7' },
+      { x: 580, y: 243, variant: 'branch', color: '#81C784' },
+      { x: 752, y: 258, variant: 'fan', color: '#A5D6A7' },
     ],
     kelps: [
-      // Scattered naturally — irregular spacing, mixed species
-      { x: 12, height: 38, variant: 'bushy', color: '#4CAF50', delay: 0.3 },
-      { x: 35, height: 28, variant: 'thin', color: '#2E7D32', delay: 1.1 },
-      { x: 67, height: 34, variant: 'wide', color: '#43A047', delay: 0.5 },
-      { x: 95, height: 40, variant: 'thin', color: '#388E3C', delay: 0.8 },
-      { x: 142, height: 30, variant: 'bushy', color: '#33691E', delay: 1.4 },
-      { x: 178, height: 36, variant: 'wide', color: '#2E7D32', delay: 0.2 },
-      { x: 203, height: 26, variant: 'thin', color: '#4CAF50', delay: 0.9 },
-      { x: 256, height: 38, variant: 'bushy', color: '#388E3C', delay: 0.6 },
-      { x: 298, height: 32, variant: 'wide', color: '#33691E', delay: 1.2 },
-      { x: 342, height: 28, variant: 'thin', color: '#43A047', delay: 0.4 },
-      { x: 388, height: 36, variant: 'bushy', color: '#2E7D32', delay: 1.0 },
-      { x: 430, height: 30, variant: 'thin', color: '#4CAF50', delay: 0.7 },
-      { x: 475, height: 40, variant: 'wide', color: '#388E3C', delay: 0.3 },
-      { x: 522, height: 34, variant: 'bushy', color: '#33691E', delay: 1.5 },
-      { x: 558, height: 26, variant: 'thin', color: '#2E7D32', delay: 0.8 },
-      { x: 610, height: 38, variant: 'wide', color: '#43A047', delay: 0.5 },
-      { x: 647, height: 32, variant: 'bushy', color: '#4CAF50', delay: 1.1 },
-      { x: 695, height: 36, variant: 'thin', color: '#388E3C', delay: 0.2 },
-      { x: 732, height: 28, variant: 'wide', color: '#2E7D32', delay: 0.9 },
-      { x: 770, height: 34, variant: 'bushy', color: '#33691E', delay: 0.6 },
+      // Naturally scattered foreground — irregular gaps, mixed species
+      { x: 8, height: 36, variant: 'bushy', color: '#4CAF50', delay: 0.3 },
+      { x: 42, height: 28, variant: 'thin', color: '#2E7D32', delay: 1.1 },
+      { x: 75, height: 38, variant: 'wide', color: '#43A047', delay: 0.5 },
+      // Gap
+      { x: 148, height: 30, variant: 'thin', color: '#388E3C', delay: 0.8 },
+      { x: 195, height: 36, variant: 'bushy', color: '#33691E', delay: 1.4 },
+      // Gap
+      { x: 262, height: 32, variant: 'wide', color: '#2E7D32', delay: 0.2 },
+      { x: 310, height: 26, variant: 'thin', color: '#4CAF50', delay: 0.9 },
+      { x: 338, height: 40, variant: 'bushy', color: '#388E3C', delay: 0.6 },
+      // Sparse around log
+      { x: 465, height: 28, variant: 'thin', color: '#33691E', delay: 1.2 },
+      { x: 510, height: 36, variant: 'wide', color: '#43A047', delay: 0.4 },
+      // Gap
+      { x: 575, height: 32, variant: 'bushy', color: '#2E7D32', delay: 1.0 },
+      { x: 622, height: 38, variant: 'wide', color: '#4CAF50', delay: 0.7 },
+      // Gap
+      { x: 688, height: 30, variant: 'thin', color: '#388E3C', delay: 0.3 },
+      { x: 735, height: 36, variant: 'bushy', color: '#33691E', delay: 1.5 },
+      { x: 775, height: 28, variant: 'wide', color: '#2E7D32', delay: 0.8 },
     ],
   },
 }
@@ -4657,54 +4851,41 @@ const STAGNANT_LAYOUT: LayeredDecoConfig = {
   sandColors: { color: '#5C4A38', lighter: '#6B5A48', detail: '#4A3828' },
   background: {
     kelps: [
-      // Dense, overgrown background — murky stagnant pool feel
-      // Left heavy cluster
-      { x: 5, height: 185, variant: 'bushy', color: '#1B5E20', delay: 0 },
-      { x: 18, height: 168, variant: 'bushy', color: '#2E7D32', delay: 0.4 },
-      { x: 32, height: 178, variant: 'bushy', color: '#1B5E20', delay: 0.8 },
-      { x: 45, height: 155, variant: 'bushy', color: '#33691E', delay: 0.2 },
-      { x: 58, height: 170, variant: 'bushy', color: '#2E7D32', delay: 0.6 },
-      { x: 72, height: 162, variant: 'wide', color: '#33691E', delay: 1.0 },
-      { x: 85, height: 148, variant: 'wide', color: '#1B5E20', delay: 0.3 },
-      { x: 98, height: 158, variant: 'wide', color: '#2E7D32', delay: 0.7 },
-      // Thin grass transition
-      { x: 115, height: 172, variant: 'thin', color: '#33691E', delay: 1.2 },
-      { x: 125, height: 155, variant: 'thin', color: '#1B5E20', delay: 0.5 },
-      { x: 135, height: 165, variant: 'thin', color: '#2E7D32', delay: 0.9 },
-      // Mid-left bushy
-      { x: 160, height: 175, variant: 'bushy', color: '#1B5E20', delay: 0.3 },
-      { x: 173, height: 158, variant: 'bushy', color: '#33691E', delay: 0.8 },
-      { x: 186, height: 168, variant: 'bushy', color: '#2E7D32', delay: 0.5 },
-      // Wide transition around structure
-      { x: 210, height: 160, variant: 'wide', color: '#2E7D32', delay: 1.4 },
-      { x: 223, height: 145, variant: 'wide', color: '#1B5E20', delay: 0.6 },
-      // Right side of structure area
-      { x: 480, height: 155, variant: 'wide', color: '#33691E', delay: 0.4 },
-      { x: 493, height: 142, variant: 'wide', color: '#2E7D32', delay: 0.9 },
-      { x: 506, height: 150, variant: 'wide', color: '#1B5E20', delay: 1.6 },
-      // Mid-right bushy
-      { x: 530, height: 172, variant: 'bushy', color: '#2E7D32', delay: 0.3 },
-      { x: 543, height: 155, variant: 'bushy', color: '#1B5E20', delay: 0.8 },
-      { x: 556, height: 165, variant: 'bushy', color: '#33691E', delay: 0.5 },
-      { x: 570, height: 148, variant: 'bushy', color: '#2E7D32', delay: 1.1 },
-      // Right thin cluster
-      { x: 590, height: 170, variant: 'thin', color: '#33691E', delay: 0.7 },
-      { x: 600, height: 152, variant: 'thin', color: '#1B5E20', delay: 0.2 },
-      { x: 610, height: 162, variant: 'thin', color: '#2E7D32', delay: 1.0 },
-      // Far right heavy cluster
-      { x: 635, height: 180, variant: 'bushy', color: '#1B5E20', delay: 0.6 },
-      { x: 648, height: 160, variant: 'bushy', color: '#2E7D32', delay: 1.3 },
-      { x: 661, height: 172, variant: 'bushy', color: '#33691E', delay: 0.4 },
-      { x: 675, height: 150, variant: 'bushy', color: '#1B5E20', delay: 0.9 },
-      { x: 690, height: 165, variant: 'wide', color: '#2E7D32', delay: 0.5 },
-      { x: 703, height: 148, variant: 'wide', color: '#33691E', delay: 1.1 },
-      { x: 718, height: 158, variant: 'wide', color: '#1B5E20', delay: 0.3 },
-      // Far right thin
-      { x: 740, height: 175, variant: 'thin', color: '#33691E', delay: 0.8 },
-      { x: 752, height: 155, variant: 'thin', color: '#2E7D32', delay: 0.2 },
-      { x: 764, height: 165, variant: 'thin', color: '#1B5E20', delay: 1.5 },
-      { x: 778, height: 148, variant: 'thin', color: '#2E7D32', delay: 0.6 },
-      { x: 790, height: 158, variant: 'thin', color: '#33691E', delay: 1.0 },
+      // Dense, overgrown background — murky stagnant pool, organically irregular
+      // Left thick overgrowth
+      { x: 3, height: 188, variant: 'bushy', color: '#1B5E20', delay: 0 },
+      { x: 16, height: 165, variant: 'wide', color: '#2E7D32', delay: 0.5 },
+      { x: 35, height: 180, variant: 'bushy', color: '#1B5E20', delay: 0.9 },
+      { x: 52, height: 148, variant: 'thin', color: '#33691E', delay: 0.2 },
+      { x: 68, height: 175, variant: 'bushy', color: '#2E7D32', delay: 1.3 },
+      // Sparse patch
+      { x: 92, height: 158, variant: 'wide', color: '#1B5E20', delay: 0.4 },
+      { x: 112, height: 172, variant: 'thin', color: '#33691E', delay: 1.0 },
+      // Dense behind skull
+      { x: 142, height: 182, variant: 'bushy', color: '#2E7D32', delay: 0.6 },
+      { x: 158, height: 160, variant: 'wide', color: '#1B5E20', delay: 1.4 },
+      { x: 178, height: 175, variant: 'bushy', color: '#33691E', delay: 0.3 },
+      { x: 196, height: 155, variant: 'thin', color: '#2E7D32', delay: 0.8 },
+      { x: 218, height: 168, variant: 'wide', color: '#1B5E20', delay: 1.6 },
+      // Right of skull — overgrowth creeping in
+      { x: 475, height: 162, variant: 'bushy', color: '#33691E', delay: 0.5 },
+      { x: 498, height: 178, variant: 'wide', color: '#2E7D32', delay: 1.1 },
+      { x: 520, height: 150, variant: 'thin', color: '#1B5E20', delay: 0.2 },
+      // Dense mid-right patch
+      { x: 545, height: 185, variant: 'bushy', color: '#2E7D32', delay: 0.7 },
+      { x: 562, height: 155, variant: 'bushy', color: '#1B5E20', delay: 1.3 },
+      { x: 582, height: 170, variant: 'wide', color: '#33691E', delay: 0.4 },
+      // Sparse transition
+      { x: 610, height: 158, variant: 'thin', color: '#2E7D32', delay: 0.9 },
+      { x: 635, height: 175, variant: 'bushy', color: '#1B5E20', delay: 1.5 },
+      // Far right heavy overgrowth
+      { x: 658, height: 182, variant: 'wide', color: '#33691E', delay: 0.3 },
+      { x: 678, height: 165, variant: 'bushy', color: '#2E7D32', delay: 0.8 },
+      { x: 698, height: 178, variant: 'thin', color: '#1B5E20', delay: 1.2 },
+      { x: 718, height: 155, variant: 'bushy', color: '#33691E', delay: 0.5 },
+      { x: 742, height: 170, variant: 'wide', color: '#2E7D32', delay: 1.0 },
+      { x: 765, height: 160, variant: 'thin', color: '#1B5E20', delay: 0.6 },
+      { x: 788, height: 175, variant: 'bushy', color: '#33691E', delay: 1.4 },
     ],
   },
   midground: {
@@ -4726,40 +4907,36 @@ const STAGNANT_LAYOUT: LayeredDecoConfig = {
       { x: 672, y: 246, variant: 'brain', color: '#4E342E' },
     ],
     kelps: [
-      // Dense overgrown foreground — stagnant pool, plants everywhere
-      // Left bushy Rotala mass
-      { x: 5, height: 40, variant: 'bushy', color: '#1B5E20', delay: 0.3 },
-      { x: 18, height: 36, variant: 'bushy', color: '#2E7D32', delay: 0.7 },
-      { x: 32, height: 38, variant: 'bushy', color: '#1B5E20', delay: 1.2 },
-      // Wide sword cluster
-      { x: 55, height: 36, variant: 'wide', color: '#2E7D32', delay: 0.5 },
-      { x: 68, height: 40, variant: 'wide', color: '#33691E', delay: 0.9 },
-      { x: 82, height: 34, variant: 'wide', color: '#1B5E20', delay: 1.5 },
-      // Thin overgrowth patch
-      { x: 140, height: 36, variant: 'thin', color: '#33691E', delay: 0.4 },
-      { x: 150, height: 40, variant: 'thin', color: '#1B5E20', delay: 1.0 },
-      { x: 160, height: 30, variant: 'thin', color: '#2E7D32', delay: 0.6 },
-      // Mid-left bushy
-      { x: 230, height: 40, variant: 'bushy', color: '#1B5E20', delay: 1.3 },
-      { x: 244, height: 36, variant: 'bushy', color: '#33691E', delay: 0.8 },
-      // Center wide mass
-      { x: 390, height: 40, variant: 'wide', color: '#2E7D32', delay: 1.0 },
-      { x: 404, height: 36, variant: 'wide', color: '#1B5E20', delay: 0.6 },
-      { x: 418, height: 38, variant: 'wide', color: '#33691E', delay: 1.4 },
-      // Center-right thin
-      { x: 455, height: 30, variant: 'thin', color: '#33691E', delay: 0.2 },
-      { x: 465, height: 36, variant: 'thin', color: '#1B5E20', delay: 1.1 },
-      // Right bushy cluster
-      { x: 535, height: 40, variant: 'bushy', color: '#1B5E20', delay: 0.8 },
-      { x: 548, height: 36, variant: 'bushy', color: '#2E7D32', delay: 0.3 },
-      { x: 562, height: 38, variant: 'bushy', color: '#33691E', delay: 1.5 },
-      // Right wide
-      { x: 608, height: 36, variant: 'wide', color: '#2E7D32', delay: 0.5 },
-      { x: 622, height: 40, variant: 'wide', color: '#1B5E20', delay: 1.2 },
-      // Far right thin carpet
-      { x: 760, height: 36, variant: 'thin', color: '#33691E', delay: 0.2 },
-      { x: 770, height: 40, variant: 'thin', color: '#1B5E20', delay: 0.9 },
-      { x: 780, height: 30, variant: 'thin', color: '#2E7D32', delay: 1.6 },
+      // Dense overgrown foreground — stagnant pool, organically scattered
+      { x: 6, height: 42, variant: 'bushy', color: '#1B5E20', delay: 0.3 },
+      { x: 22, height: 34, variant: 'wide', color: '#2E7D32', delay: 0.8 },
+      { x: 48, height: 38, variant: 'thin', color: '#1B5E20', delay: 1.4 },
+      // Gap
+      { x: 78, height: 40, variant: 'bushy', color: '#33691E', delay: 0.5 },
+      { x: 105, height: 32, variant: 'wide', color: '#1B5E20', delay: 1.0 },
+      // Sparse
+      { x: 148, height: 36, variant: 'thin', color: '#2E7D32', delay: 0.2 },
+      { x: 182, height: 42, variant: 'bushy', color: '#33691E', delay: 0.7 },
+      // Around skull base
+      { x: 238, height: 38, variant: 'wide', color: '#1B5E20', delay: 1.3 },
+      { x: 265, height: 34, variant: 'thin', color: '#2E7D32', delay: 0.4 },
+      // Gap
+      { x: 318, height: 40, variant: 'bushy', color: '#1B5E20', delay: 0.9 },
+      { x: 355, height: 36, variant: 'wide', color: '#33691E', delay: 1.5 },
+      // Mid
+      { x: 405, height: 38, variant: 'thin', color: '#2E7D32', delay: 0.6 },
+      { x: 440, height: 42, variant: 'bushy', color: '#1B5E20', delay: 1.1 },
+      // Gap
+      { x: 492, height: 34, variant: 'wide', color: '#33691E', delay: 0.3 },
+      { x: 538, height: 40, variant: 'bushy', color: '#2E7D32', delay: 0.8 },
+      { x: 568, height: 36, variant: 'thin', color: '#1B5E20', delay: 1.6 },
+      // Right
+      { x: 615, height: 38, variant: 'wide', color: '#33691E', delay: 0.5 },
+      { x: 660, height: 42, variant: 'bushy', color: '#1B5E20', delay: 1.2 },
+      // Far right sparse
+      { x: 705, height: 34, variant: 'thin', color: '#2E7D32', delay: 0.4 },
+      { x: 748, height: 40, variant: 'bushy', color: '#33691E', delay: 0.9 },
+      { x: 782, height: 36, variant: 'wide', color: '#1B5E20', delay: 1.4 },
     ],
   },
 }
@@ -4804,6 +4981,8 @@ function renderStructure(s: { type: string; x: number; y: number; scale?: number
     case 'atlantean-dome': inner = <AtlanteanDome x={0} y={0} />; break
     case 'atlantean-obelisk': inner = <AtlanteanObelisk x={0} y={0} />; break
     case 'deer-skull': inner = <DeerSkullWillow x={0} y={0} />; break
+    case 'driftwood': inner = <SunkenLog x={0} y={0} />; break
+    case 'rock-formation': inner = <LargeRockFormation x={0} y={0} />; break
     default: return null
   }
 

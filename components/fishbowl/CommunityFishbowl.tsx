@@ -88,19 +88,37 @@ export function CommunityFishbowl() {
     )
   }
 
-  // Collapsed view — no fishbowl, just a compact bar
+  // Theme colors for the collapsed header bar
+  const themeColors: Record<string, { bg: string; border: string; iconBg: string; iconBorder: string; icon: string; title: string; subtitle: string; btnBg: string; btnBorder: string; btnText: string }> = {
+    ocean:      { bg: 'bg-[#0A1628]', border: 'border-cyan-900/50', iconBg: 'bg-cyan-900/50', iconBorder: 'border-cyan-700/50', icon: 'text-cyan-400', title: 'text-cyan-100', subtitle: 'text-cyan-500/80', btnBg: 'bg-cyan-900/40', btnBorder: 'border-cyan-800/40', btnText: 'text-cyan-400' },
+    volcano:    { bg: 'bg-[#1A0A08]', border: 'border-red-900/50', iconBg: 'bg-red-900/50', iconBorder: 'border-red-700/50', icon: 'text-orange-400', title: 'text-orange-100', subtitle: 'text-orange-500/80', btnBg: 'bg-red-900/40', btnBorder: 'border-red-800/40', btnText: 'text-orange-400' },
+    shipwreck:  { bg: 'bg-[#0D1520]', border: 'border-amber-900/50', iconBg: 'bg-amber-900/50', iconBorder: 'border-amber-700/50', icon: 'text-amber-400', title: 'text-amber-100', subtitle: 'text-amber-500/80', btnBg: 'bg-amber-900/40', btnBorder: 'border-amber-800/40', btnText: 'text-amber-400' },
+    sailboat:   { bg: 'bg-[#0D1520]', border: 'border-sky-900/50', iconBg: 'bg-sky-900/50', iconBorder: 'border-sky-700/50', icon: 'text-sky-400', title: 'text-sky-100', subtitle: 'text-sky-500/80', btnBg: 'bg-sky-900/40', btnBorder: 'border-sky-800/40', btnText: 'text-sky-400' },
+    submarine:  { bg: 'bg-[#0A0F18]', border: 'border-slate-700/50', iconBg: 'bg-slate-800/50', iconBorder: 'border-slate-600/50', icon: 'text-slate-300', title: 'text-slate-100', subtitle: 'text-slate-400/80', btnBg: 'bg-slate-800/40', btnBorder: 'border-slate-700/40', btnText: 'text-slate-300' },
+    castle:     { bg: 'bg-[#0E1218]', border: 'border-stone-700/50', iconBg: 'bg-stone-800/50', iconBorder: 'border-stone-600/50', icon: 'text-stone-300', title: 'text-stone-100', subtitle: 'text-stone-400/80', btnBg: 'bg-stone-800/40', btnBorder: 'border-stone-700/40', btnText: 'text-stone-300' },
+    pyramid:    { bg: 'bg-[#14100A]', border: 'border-yellow-900/50', iconBg: 'bg-yellow-900/50', iconBorder: 'border-yellow-700/50', icon: 'text-yellow-400', title: 'text-yellow-100', subtitle: 'text-yellow-500/80', btnBg: 'bg-yellow-900/40', btnBorder: 'border-yellow-800/40', btnText: 'text-yellow-400' },
+    temple:     { bg: 'bg-[#0C0A14]', border: 'border-rose-900/50', iconBg: 'bg-rose-900/50', iconBorder: 'border-rose-700/50', icon: 'text-rose-400', title: 'text-rose-100', subtitle: 'text-rose-500/80', btnBg: 'bg-rose-900/40', btnBorder: 'border-rose-800/40', btnText: 'text-rose-400' },
+    atlantis:   { bg: 'bg-[#060E18]', border: 'border-teal-900/50', iconBg: 'bg-teal-900/50', iconBorder: 'border-teal-700/50', icon: 'text-teal-400', title: 'text-teal-100', subtitle: 'text-teal-500/80', btnBg: 'bg-teal-900/40', btnBorder: 'border-teal-800/40', btnText: 'text-teal-400' },
+    minimal:    { bg: 'bg-[#0A1628]', border: 'border-emerald-900/50', iconBg: 'bg-emerald-900/50', iconBorder: 'border-emerald-700/50', icon: 'text-emerald-400', title: 'text-emerald-100', subtitle: 'text-emerald-500/80', btnBg: 'bg-emerald-900/40', btnBorder: 'border-emerald-800/40', btnText: 'text-emerald-400' },
+    stagnant:   { bg: 'bg-[#12100A]', border: 'border-lime-900/50', iconBg: 'bg-lime-900/50', iconBorder: 'border-lime-700/50', icon: 'text-lime-400', title: 'text-lime-100', subtitle: 'text-lime-500/80', btnBg: 'bg-lime-900/40', btnBorder: 'border-lime-800/40', btnText: 'text-lime-400' },
+  }
+  const tc = themeColors[activeTheme] || themeColors.ocean
+  const activeThemeData = DECOR_THEMES.find(t => t.id === activeTheme)
+  const ThemeIcon = activeThemeData?.icon || Fish
+
+  // Collapsed view — no fishbowl, just a compact bar matching the active theme
   if (!showFishbowl) {
     return (
-      <div className="relative bg-[#0A1628] border-b border-cyan-900/50">
+      <div className={`relative ${tc.bg} border-b ${tc.border}`}>
         <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-cyan-900/50 flex items-center justify-center border border-cyan-700/50">
-                <Fish className="w-4 h-4 text-cyan-400" />
+              <div className={`w-8 h-8 rounded-lg ${tc.iconBg} flex items-center justify-center border ${tc.iconBorder}`}>
+                <ThemeIcon className={`w-4 h-4 ${tc.icon}`} />
               </div>
               <div>
-                <h2 className="text-sm font-black text-cyan-100">COMMUNITY FISHBOWL</h2>
-                <p className="text-[10px] font-medium text-cyan-500/80">
+                <h2 className={`text-sm font-black ${tc.title}`}>COMMUNITY FISHBOWL</h2>
+                <p className={`text-[10px] font-medium ${tc.subtitle}`}>
                   {users.length} members swimming together
                 </p>
               </div>
@@ -115,7 +133,7 @@ export function CommunityFishbowl() {
               </Link>
               <button
                 onClick={() => setShowFishbowl(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-cyan-900/40 border border-cyan-800/40 text-cyan-400 hover:bg-cyan-900/60 transition-all"
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold ${tc.btnBg} border ${tc.btnBorder} ${tc.btnText} hover:opacity-80 transition-all`}
                 title="Show fishbowl"
               >
                 <Eye className="w-3.5 h-3.5" />
