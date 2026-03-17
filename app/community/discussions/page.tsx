@@ -2,13 +2,15 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
-import { ChevronDown, MessageSquare, TrendingUp, Hash, Loader2 } from 'lucide-react'
+import { ChevronDown, MessageSquare, Loader2 } from 'lucide-react'
 import { BackButton } from '@/components/navigation/BackButton'
 import { CreatePost } from '@/components/social/CreatePost'
 import { FeedPost } from '@/components/social/FeedPost'
 import { Button } from '@/components/ui/Button'
 
 import { RoundTable } from '@/components/community/roundtable/RoundTable'
+import { PostOrbit } from '@/components/community/roundtable/PostOrbit'
+import { TableCenterpiece } from '@/components/community/roundtable/TableCenterpiece'
 import { PostPreviewOverlay } from '@/components/community/roundtable/PostPreviewOverlay'
 
 interface TrendingHashtag {
@@ -75,7 +77,7 @@ export default function DiscussionsPage() {
     <div className="min-h-screen bg-[var(--background)]">
       {/* ═══ HERO - above the fold ═══ */}
       <section className="h-[100svh] flex flex-col relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[color-mix(in_srgb,var(--primary)_8%,var(--background))] via-[var(--background)] to-[#3A2508]/20" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[color-mix(in_srgb,var(--primary)_8%,var(--background))] via-[var(--background)] to-[color-mix(in_srgb,var(--accent)_3%,var(--background))]" />
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 pt-6">
           <BackButton label="Back to Community" fallbackUrl="/community" />
@@ -104,10 +106,10 @@ export default function DiscussionsPage() {
         {/* Table edge peeking from bottom */}
         <div className="relative z-10 flex justify-center">
           <div
-            className="w-[85vw] max-w-[1100px] h-[60px] rounded-t-[50%] -mb-1"
+            className="w-[80vw] max-w-[900px] h-[50px] rounded-t-full -mb-1"
             style={{
               background: 'radial-gradient(ellipse at 50% 100%, #8B6914 0%, #5C3D0E 60%, #3A2508 100%)',
-              border: '6px solid #3A2508',
+              border: '6px solid #2E1D06',
               borderBottom: 'none',
               boxShadow: '0 -8px 30px rgba(0,0,0,0.3), inset 0 4px 12px rgba(139,105,20,0.2)',
             }}
@@ -115,75 +117,78 @@ export default function DiscussionsPage() {
         </div>
       </section>
 
-      {/* ═══ THE TABLE - continues below the fold ═══ */}
-      <section className="relative px-4 sm:px-6 lg:px-8 -mt-2">
-        <RoundTable>
-          {/* Table nameplate */}
-          <div className="text-center mb-10">
-            <div className="inline-block px-6 py-2.5 rounded-lg bg-[#3A2508]/80 border border-[#8B6914]/40 shadow-lg mb-4">
-              <h2 className="text-sm font-black uppercase tracking-[0.2em] text-[#D4A54A]">
-                Round Table
-              </h2>
-              <p className="text-[10px] text-[#8B6914] font-medium mt-0.5">
-                {posts.length} discussions
-              </p>
-            </div>
+      {/* ═══ THE ROUND TABLE — bird's eye with orbiting posts ═══ */}
+      <section className="relative py-16 sm:py-24 px-4 sm:px-8 overflow-hidden">
+        {/* Dark ambient bg behind table */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[color-mix(in_srgb,var(--accent)_3%,var(--background))] via-[var(--background)] to-[var(--background)]" />
 
-            {/* Trending on table */}
-            {trendingHashtags.length > 0 && (
-              <div className="flex flex-wrap items-center justify-center gap-2 mt-3">
-                <TrendingUp className="w-3.5 h-3.5 text-[#8B6914]" />
-                {trendingHashtags.slice(0, 5).map((tag, i) => (
-                  <span
-                    key={i}
-                    className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-[#3A2508]/50 border border-[#8B6914]/25 text-[#D4A54A]"
-                  >
-                    <Hash className="w-2.5 h-2.5 inline mr-0.5" />
-                    {tag.hashtag}
-                  </span>
-                ))}
-              </div>
-            )}
+        <div className="relative z-10">
+          {loading && posts.length === 0 ? (
+            <div className="flex justify-center py-32">
+              <Loader2 className="w-12 h-12 animate-spin text-[var(--primary)]" />
+            </div>
+          ) : (
+            <RoundTable className="w-[min(85vw,700px)] sm:w-[min(80vw,800px)]">
+              {/* Center content */}
+              <TableCenterpiece
+                trending={trendingHashtags}
+                totalPosts={posts.length}
+              />
+              {/* Orbiting post cards */}
+              <PostOrbit
+                posts={posts}
+                onSelectPost={setSelectedPost}
+              />
+            </RoundTable>
+          )}
+        </div>
+      </section>
+
+      {/* ═══ FULL FEED BELOW ═══ */}
+      <section className="relative py-12 bg-gradient-to-b from-[var(--background)] to-[color-mix(in_srgb,var(--primary)_5%,var(--background))]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
+          <div className="text-center mb-10">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="h-px flex-1 max-w-[100px] bg-gradient-to-r from-transparent via-[var(--border)] to-transparent" />
+              <MessageSquare className="w-5 h-5 text-[var(--foreground)]/30" />
+              <div className="h-px flex-1 max-w-[100px] bg-gradient-to-r from-transparent via-[var(--border)] to-transparent" />
+            </div>
+            <h2 className="text-2xl font-black text-[var(--foreground)] mb-2">
+              ALL DISCUSSIONS
+            </h2>
+            <p className="text-sm text-[var(--foreground)]/50">
+              Full feed with all community posts
+            </p>
           </div>
 
-          {/* Create post area */}
           {session?.user && (
-            <div className="max-w-2xl mx-auto mb-8">
+            <div className="mb-8">
               <CreatePost onPostCreated={handlePostCreated} />
             </div>
           )}
 
-          {/* Posts on the table */}
           {loading && page === 1 ? (
             <div className="flex justify-center py-20">
-              <Loader2 className="w-10 h-10 animate-spin text-[#D4A54A]" />
+              <Loader2 className="w-10 h-10 animate-spin text-[var(--primary)]" />
             </div>
           ) : posts.length > 0 ? (
-            <div className="max-w-2xl mx-auto space-y-6">
+            <div className="space-y-6">
               {posts.map((post) => (
-                <div
+                <FeedPost
                   key={post.id}
-                  className="cursor-pointer"
-                  onClick={() => setSelectedPost(post)}
-                >
-                  <FeedPost
-                    post={post}
-                    onLike={() => {}}
-                    onComment={() => {}}
-                  />
-                </div>
+                  post={post}
+                  onLike={() => {}}
+                  onComment={() => {}}
+                />
               ))}
 
               {hasMore && (
-                <div className="text-center py-8">
+                <div className="text-center py-6">
                   <Button
-                    onClick={(e: React.MouseEvent) => {
-                      e.stopPropagation()
-                      loadMore()
-                    }}
+                    onClick={loadMore}
                     disabled={loading}
                     size="lg"
-                    className="font-black px-12 bg-[#5C3D0E] hover:bg-[#6B4F10] text-[#D4A54A] border border-[#8B6914]/40"
+                    className="font-black px-12"
                   >
                     {loading ? (
                       <>
@@ -199,16 +204,16 @@ export default function DiscussionsPage() {
             </div>
           ) : (
             <div className="text-center py-16">
-              <MessageSquare className="w-16 h-16 text-[#8B6914]/30 mx-auto mb-4" />
-              <h3 className="text-xl font-black text-[#D4A54A]/60 mb-2">
-                THE TABLE AWAITS
+              <MessageSquare className="w-16 h-16 text-[var(--foreground)]/20 mx-auto mb-4" />
+              <h3 className="text-xl font-black text-[var(--foreground)]/50 mb-2">
+                NO DISCUSSIONS YET
               </h3>
-              <p className="text-sm text-[#8B6914]/60">
-                Be the first to take a seat and start a discussion.
+              <p className="text-sm text-[var(--foreground)]/40">
+                Be the first to start a conversation!
               </p>
             </div>
           )}
-        </RoundTable>
+        </div>
       </section>
 
       {/* Post Preview Overlay */}
