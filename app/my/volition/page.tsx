@@ -981,31 +981,6 @@ export default function MyVolitionPage() {
         />
       </div>
 
-      {/* ═══ PROFILE HERO SECTION ═══ */}
-      {orderedLanes.some(l => l.id === 'profile') && (
-        <section className="py-6">
-          <div className="px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto">
-            {isCustomizing && (
-              <div className="flex justify-end mb-2">
-                <button
-                  onClick={() => toggleLane('profile')}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-500/10 text-red-500 text-xs font-bold hover:bg-red-500/20 transition-colors"
-                >
-                  <X className="w-3.5 h-3.5" />
-                  Remove
-                </button>
-              </div>
-            )}
-            <ProfileCard
-              user={user}
-              userProfile={userProfile}
-              viewMode={viewMode}
-              onExpand={() => setShowBusinessCardModal(true)}
-            />
-          </div>
-        </section>
-      )}
-
       {/* ═══ PERSONAL FISH TANK ═══ */}
       {showTank && (
         <section className="relative">
@@ -1215,6 +1190,31 @@ export default function MyVolitionPage() {
                 )
               })()}
             </div>
+          </div>
+        </section>
+      )}
+
+      {/* ═══ PROFILE HERO SECTION ═══ */}
+      {orderedLanes.some(l => l.id === 'profile') && (
+        <section className="py-6">
+          <div className="px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto">
+            {isCustomizing && (
+              <div className="flex justify-end mb-2">
+                <button
+                  onClick={() => toggleLane('profile')}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-500/10 text-red-500 text-xs font-bold hover:bg-red-500/20 transition-colors"
+                >
+                  <X className="w-3.5 h-3.5" />
+                  Remove
+                </button>
+              </div>
+            )}
+            <ProfileCard
+              user={user}
+              userProfile={userProfile}
+              viewMode={viewMode}
+              onExpand={() => setShowBusinessCardModal(true)}
+            />
           </div>
         </section>
       )}
