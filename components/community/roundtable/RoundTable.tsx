@@ -3,126 +3,90 @@
 import React from 'react'
 
 interface RoundTableProps {
-  revealProgress: number
   children: React.ReactNode
 }
 
-export function RoundTable({ revealProgress, children }: RoundTableProps) {
-  // Interpolate values based on scroll progress
-  const translateY = 60 * (1 - revealProgress) // 60vh → 0
-  const rotateX = 65 - 10 * revealProgress // 65deg → 55deg
-  const contentOpacity = Math.max(0, (revealProgress - 0.4) / 0.6) // fade in after 40%
-
+export function RoundTable({ children }: RoundTableProps) {
   return (
-    <div className="relative flex items-center justify-center py-20 overflow-hidden">
-      {/* Perspective container */}
-      <div
-        className="relative"
+    <div className="relative w-full max-w-5xl mx-auto">
+      {/* Wood table surface - tall oval that extends as you scroll */}
+      <div className="relative rounded-[50%/120px] overflow-hidden min-h-[600px]"
         style={{
-          perspective: '1200px',
-          perspectiveOrigin: '50% 30%',
+          background: `
+            radial-gradient(ellipse 130% 100% at 50% 50%,
+              #8B6914 0%,
+              #6B4F10 20%,
+              #5C3D0E 45%,
+              #4A2F0C 70%,
+              #3A2508 100%
+            )
+          `,
+          border: '10px solid #3A2508',
+          boxShadow: `
+            inset 0 0 40px rgba(0,0,0,0.4),
+            inset 0 6px 20px rgba(139,105,20,0.2),
+            0 30px 80px rgba(0,0,0,0.5),
+            0 10px 30px rgba(0,0,0,0.3)
+          `,
         }}
       >
-        {/* Table element */}
-        <div
-          className="relative mx-auto"
-          style={{
-            width: 'min(80vw, 900px)',
-            aspectRatio: '1.6 / 1',
-            borderRadius: '50%',
-            transform: `translateY(${translateY}vh) rotateX(${rotateX}deg)`,
-            willChange: 'transform',
-            transition: 'none',
-          }}
+        {/* Wood grain SVG overlay */}
+        <svg
+          className="absolute inset-0 w-full h-full opacity-[0.1] pointer-events-none"
+          preserveAspectRatio="none"
+          viewBox="0 0 400 600"
         >
-          {/* Wood table surface */}
-          <div
-            className="absolute inset-0 rounded-[50%] overflow-hidden"
-            style={{
-              background: `
-                radial-gradient(ellipse 120% 120% at 50% 40%,
-                  #8B6914 0%,
-                  #6B4F10 25%,
-                  #5C3D0E 50%,
-                  #4A2F0C 75%,
-                  #3A2508 100%
-                )
-              `,
-              border: '8px solid #3A2508',
-              boxShadow: `
-                inset 0 -4px 20px rgba(0,0,0,0.4),
-                inset 0 4px 12px rgba(139,105,20,0.3),
-                0 20px 60px rgba(0,0,0,0.6),
-                0 8px 24px rgba(0,0,0,0.4)
-              `,
-            }}
-          >
-            {/* Wood grain lines */}
-            <svg
-              className="absolute inset-0 w-full h-full opacity-[0.12]"
-              viewBox="0 0 400 250"
-              preserveAspectRatio="none"
-            >
-              {[...Array(12)].map((_, i) => (
-                <ellipse
-                  key={i}
-                  cx="200"
-                  cy="125"
-                  rx={80 + i * 14}
-                  ry={50 + i * 9}
-                  fill="none"
-                  stroke="#D4A54A"
-                  strokeWidth="0.5"
-                  opacity={0.3 + (i % 3) * 0.15}
-                />
-              ))}
-              {/* Subtle grain streaks */}
-              {[...Array(8)].map((_, i) => (
-                <line
-                  key={`g${i}`}
-                  x1={50 + i * 40}
-                  y1="0"
-                  x2={60 + i * 38}
-                  y2="250"
-                  stroke="#D4A54A"
-                  strokeWidth="0.3"
-                  opacity={0.15}
-                />
-              ))}
-            </svg>
-
-            {/* Table rim highlight */}
-            <div
-              className="absolute inset-0 rounded-[50%]"
-              style={{
-                background: 'linear-gradient(180deg, rgba(212,165,74,0.15) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.2) 100%)',
-              }}
+          {[...Array(15)].map((_, i) => (
+            <ellipse
+              key={i}
+              cx="200"
+              cy="300"
+              rx={60 + i * 12}
+              ry={40 + i * 20}
+              fill="none"
+              stroke="#D4A54A"
+              strokeWidth="0.5"
+              opacity={0.25 + (i % 3) * 0.1}
             />
-
-            {/* Table center darker circle (inner area) */}
-            <div
-              className="absolute rounded-[50%]"
-              style={{
-                top: '15%',
-                left: '15%',
-                right: '15%',
-                bottom: '15%',
-                background: 'radial-gradient(ellipse at center, rgba(58,37,8,0.3) 0%, transparent 70%)',
-                border: '1px solid rgba(139,105,20,0.15)',
-              }}
+          ))}
+          {[...Array(10)].map((_, i) => (
+            <line
+              key={`g${i}`}
+              x1={40 + i * 35}
+              y1="0"
+              x2={50 + i * 33}
+              y2="600"
+              stroke="#D4A54A"
+              strokeWidth="0.3"
+              opacity={0.12}
             />
-          </div>
+          ))}
+        </svg>
 
-          {/* Content layer (posts, centerpiece) - counter-rotate to face viewer */}
-          <div
-            className="absolute inset-0"
-            style={{
-              opacity: contentOpacity,
-              transform: `rotateX(${-rotateX}deg)`,
-            }}
-          >
-            {children}
-          </div>
+        {/* Rim highlight */}
+        <div
+          className="absolute inset-0 rounded-[50%/120px] pointer-events-none"
+          style={{
+            background: 'linear-gradient(180deg, rgba(212,165,74,0.12) 0%, transparent 15%, transparent 85%, rgba(0,0,0,0.15) 100%)',
+          }}
+        />
+
+        {/* Inner darker ring */}
+        <div
+          className="absolute pointer-events-none rounded-[50%/80px]"
+          style={{
+            top: '40px',
+            left: '40px',
+            right: '40px',
+            bottom: '40px',
+            border: '1px solid rgba(139,105,20,0.12)',
+            background: 'radial-gradient(ellipse at center, rgba(58,37,8,0.15) 0%, transparent 60%)',
+          }}
+        />
+
+        {/* Content on the table */}
+        <div className="relative z-10 px-6 sm:px-10 lg:px-16 py-12">
+          {children}
         </div>
       </div>
     </div>
