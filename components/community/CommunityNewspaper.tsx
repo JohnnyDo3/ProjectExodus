@@ -329,14 +329,14 @@ export function CommunityNewspaper({
           {/* Ambient background */}
           <div className="absolute inset-0 bg-gradient-to-b from-[var(--background)] via-[var(--background)] to-[var(--muted)]/10" />
 
-          <div className="relative max-w-7xl mx-auto px-4 py-8">
-            <div className="grid grid-cols-12 gap-6">
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
+            <div className="grid grid-cols-12 gap-5 lg:gap-8">
 
               {/* ======================================== */}
               {/* LEFT COLUMN - Round Table (Discussions) */}
               {/* Guardian of Humanity - Heart */}
               {/* ======================================== */}
-              <div className="col-span-12 lg:col-span-4 space-y-5">
+              <div className="col-span-12 lg:col-span-4 space-y-6">
                 {/* Section Header - Bio-Digital Style */}
                 <div className="relative">
                   <div className="flex items-center gap-3 mb-4">
@@ -492,7 +492,7 @@ export function CommunityNewspaper({
               {/* CENTER COLUMN - Active Initiatives */}
               {/* Guardian of Courage - Flame */}
               {/* ======================================== */}
-              <div className="col-span-12 lg:col-span-4 space-y-5">
+              <div className="col-span-12 lg:col-span-4 space-y-6">
                 {/* Section Header - Bio-Digital Style */}
                 <div className="relative">
                   <div className="flex items-center gap-3 mb-4">
@@ -650,7 +650,7 @@ export function CommunityNewspaper({
               {/* RIGHT COLUMN - Collective Intelligence */}
               {/* Guardian of Wisdom - Eye */}
               {/* ======================================== */}
-              <div className="col-span-12 lg:col-span-4 space-y-5">
+              <div className="col-span-12 lg:col-span-4 space-y-6">
                 {/* Section Header - Bio-Digital Style */}
                 <div className="relative">
                   <div className="flex items-center gap-3 mb-4">
@@ -903,8 +903,13 @@ export function CommunityNewspaper({
             {/* ============================================ */}
             {/* BOTTOM GRID - Living Archives */}
             {/* ============================================ */}
-            <div className="mt-10 pt-8 border-t border-[var(--border)]/30">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="mt-12 pt-10 border-t-2 border-[var(--border)]/40">
+              <div className="flex items-center justify-center gap-3 mb-8">
+                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[var(--border)]/50 to-transparent" />
+                <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-theme-muted">Living Archives</span>
+                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[var(--border)]/50 to-transparent" />
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-8">
 
                 {/* Trending Streams - Guardian of Nature */}
                 <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-[var(--card)] to-[var(--card)]/50 border border-[var(--border)]/50">
@@ -1035,7 +1040,7 @@ export function CommunityNewspaper({
               </div>
 
               {/* Wisdom Transmission - Exodology Quote */}
-              <div className="mt-8 relative rounded-xl overflow-hidden">
+              <div className="mt-12 relative rounded-2xl overflow-hidden border border-[var(--border)]/20">
                 <div className="absolute inset-0 bg-gradient-to-r from-[var(--primary)]/5 via-[var(--accent)]/5 to-[var(--secondary)]/5" />
                 <div className="absolute top-0 left-1/4 w-32 h-32 bg-[var(--primary)]/10 rounded-full blur-3xl" />
                 <div className="absolute top-0 right-1/4 w-32 h-32 bg-[var(--accent)]/10 rounded-full blur-3xl" />
@@ -1065,7 +1070,7 @@ export function CommunityNewspaper({
         {/* ============================================ */}
         {/* FOOTER - Bio-Digital Signature */}
         {/* ============================================ */}
-        <div className="relative border-t border-[var(--border)]/30 bg-gradient-to-br from-[var(--card)] via-[var(--background)] to-[var(--card)] mt-10">
+        <div className="relative border-t-2 border-[var(--border)]/30 bg-gradient-to-br from-[var(--card)] via-[var(--background)] to-[var(--card)] mt-16">
           {/* Subtle grid overlay */}
           <div className="absolute inset-0 opacity-[0.02]" style={{
             backgroundImage: `
