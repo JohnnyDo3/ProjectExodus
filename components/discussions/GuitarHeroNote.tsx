@@ -53,9 +53,10 @@ interface GuitarHeroNoteProps {
   animationDuration: number
   onSplash: () => void
   onSelect?: (item: ActivityItem, laneCategory: string) => void
+  dataKey?: number
 }
 
-export function GuitarHeroNote({ item, laneCategory, animationDuration, onSplash, onSelect }: GuitarHeroNoteProps) {
+export function GuitarHeroNote({ item, laneCategory, animationDuration, onSplash, onSelect, dataKey }: GuitarHeroNoteProps) {
   const config = LANE_CONFIG[laneCategory] || LANE_CONFIG.posts
   const Icon = TYPE_ICON[item.type] || MessageSquare
 
@@ -69,6 +70,7 @@ export function GuitarHeroNote({ item, laneCategory, animationDuration, onSplash
   return (
     <div
       className="gh-note absolute left-0 right-0 mx-2"
+      data-note-key={dataKey}
       style={{
         animation: `gh-note-fall ${animationDuration}s linear forwards`,
         '--note-color': config.color,
