@@ -6,6 +6,7 @@ import { Activity, Zap, TrendingUp, Hash } from 'lucide-react'
 import Link from 'next/link'
 import type { ActivityItem } from './ActivityCard'
 import { GuitarHeroNote, LANE_CONFIG, getLaneCategory } from './GuitarHeroNote'
+import { NoteOverlay } from './NoteOverlay'
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -51,6 +52,7 @@ export function GuitarHeroFeed() {
   const [totalSplashed, setTotalSplashed] = useState(0)
   const [streak, setStreak] = useState(0)
   const [combo, setCombo] = useState(0)
+  const [selectedItem, setSelectedItem] = useState<{ item: import('./ActivityCard').ActivityItem; lane: string } | null>(null)
 
   const queueRef = useRef<ActivityItem[]>([])
   const noteKeyRef = useRef(0)
@@ -89,7 +91,7 @@ export function GuitarHeroFeed() {
   // ── Note spawner ───────────────────────────────────────────────────────
 
   useEffect(() => {
-    if (isLoading) return
+    if (isLoading || selectedItem) return // Pause spawner when overlay is open
 
     const interval = setInterval(() => {
       // Refetch if queue is low
@@ -108,7 +110,7 @@ export function GuitarHeroFeed() {
     }, NOTE_SPAWN_INTERVAL)
 
     return () => clearInterval(interval)
-  }, [isLoading, fetchData])
+  }, [isLoading, fetchData, selectedItem])
 
   // ── Splash handler ─────────────────────────────────────────────────────
 
@@ -186,7 +188,7 @@ export function GuitarHeroFeed() {
   // ── Render ─────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-black overflow-hidden relative select-none">
+    <div className={`min-h-screen bg-black overflow-hidden relative select-none ${selectedItem ? 'gh-frozen' : ''}`}>
       {/* Background grid */}
       <div className="absolute inset-0 gh-grid-bg opacity-20" />
 
@@ -286,6 +288,7 @@ export function GuitarHeroFeed() {
                   laneCategory={note.laneCategory}
                   animationDuration={NOTE_FALL_DURATION}
                   onSplash={() => handleSplash(note.key, note.laneCategory)}
+                  onSelect={(item, lane) => setSelectedItem({ item, lane })}
                 />
               ))}
 
@@ -354,6 +357,13 @@ export function GuitarHeroFeed() {
           </div>
         </div>
       )}
+
+      {/* ═══ NOTE PREVIEW OVERLAY ═══ */}
+      <NoteOverlay
+        item={selectedItem?.item ?? null}
+        laneCategory={selectedItem?.lane ?? 'posts'}
+        onClose={() => setSelectedItem(null)}
+      />
     </div>
   )
 }

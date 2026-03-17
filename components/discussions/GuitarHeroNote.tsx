@@ -1,6 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { MessageSquare, FileText, Briefcase, Calendar, Users, MessageCircle, Heart, ThumbsUp, ThumbsDown, Hash } from 'lucide-react'
 import type { ActivityItem } from './ActivityCard'
 
@@ -53,17 +52,17 @@ interface GuitarHeroNoteProps {
   laneCategory: string
   animationDuration: number
   onSplash: () => void
+  onSelect?: (item: ActivityItem, laneCategory: string) => void
 }
 
-export function GuitarHeroNote({ item, laneCategory, animationDuration, onSplash }: GuitarHeroNoteProps) {
-  const router = useRouter()
+export function GuitarHeroNote({ item, laneCategory, animationDuration, onSplash, onSelect }: GuitarHeroNoteProps) {
   const config = LANE_CONFIG[laneCategory] || LANE_CONFIG.posts
   const Icon = TYPE_ICON[item.type] || MessageSquare
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation()
-    if (item.targetUrl) {
-      router.push(item.targetUrl)
+    if (onSelect) {
+      onSelect(item, laneCategory)
     }
   }
 

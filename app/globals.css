@@ -1252,6 +1252,11 @@ main, section, article, aside, header, footer, nav, div {
   background-size: 40px 40px;
 }
 
+/* Freeze all note animations when overlay is open */
+.gh-frozen .gh-note {
+  animation-play-state: paused !important;
+}
+
 /* Note hover glow boost */
 .gh-note:hover > div {
   filter: brightness(1.3);
