@@ -78,43 +78,113 @@ export const Rock = memo(({ x, y, variant = 'medium', color = '#6B7280' }: RockP
 
   if (variant === 'small') {
     // ~25×18px bounding box (scaled up from 12×8)
+    const midTone = color === '#6B7280' ? '#5C6370' : '#637080'
+    const midLight = color === '#6B7280' ? '#8894A0' : '#7D8A96'
     return (
       <g transform={`translate(${x}, ${y})`}>
+        {/* Dark base shadow */}
+        <rect x="1" y="18" width="24" height="4" fill={darker} opacity="0.35" />
+        {/* Main body */}
         <rect x="3" y="10" width="20" height="10" fill={color} />
         <rect x="6" y="5" width="14" height="7" fill={color} />
+        {/* Mid-tone shading layers for gradient depth */}
+        <rect x="4" y="12" width="8" height="6" fill={midLight} opacity="0.35" />
+        <rect x="14" y="10" width="8" height="5" fill={midTone} opacity="0.4" />
+        {/* Top highlight */}
         <rect x="9" y="3" width="8" height="4" fill={lighter} />
         <rect x="7" y="10" width="5" height="5" fill={lighter} opacity="0.5" />
+        {/* Shadow side */}
         <rect x="16" y="12" width="4" height="3" fill={darker} opacity="0.3" />
+        {/* Darker crevice line */}
+        <rect x="13" y="8" width="1" height="7" fill={darker} opacity="0.2" />
+        {/* Mineral sparkle pixel */}
+        <rect x="10" y="5" width="2" height="2" fill="#D4D0C8" opacity="0.3" />
       </g>
     )
   }
   if (variant === 'large') {
     // ~70×42px bounding box (scaled up from 32×16)
+    const midTone = color === '#6B7280' ? '#5C6370' : '#637080'
+    const midLight = color === '#6B7280' ? '#8894A0' : '#7D8A96'
     return (
       <g transform={`translate(${x}, ${y})`}>
+        {/* Main body */}
         <rect x="6" y="20" width="60" height="22" fill={color} />
         <rect x="10" y="12" width="52" height="14" fill={color} />
+        {/* Intermediate color gradient layers */}
+        <rect x="12" y="14" width="20" height="10" fill={midLight} opacity="0.4" />
+        <rect x="34" y="16" width="18" height="8" fill={midTone} opacity="0.35" />
+        <rect x="8" y="28" width="24" height="8" fill={midLight} opacity="0.25" />
+        {/* Top highlight */}
         <rect x="18" y="5" width="36" height="12" fill={lighter} />
         <rect x="14" y="14" width="12" height="10" fill={lighter} opacity="0.4" />
+        {/* Right side shadow gradient */}
         <rect x="44" y="20" width="16" height="10" fill={darker} opacity="0.3" />
-        <rect x="10" y="16" width="8" height="5" fill="#5D8A3C" opacity="0.6" />
-        <rect x="50" y="10" width="10" height="5" fill="#5D8A3C" opacity="0.4" />
-        {/* Extra detail at this size — crevice lines */}
-        <rect x="22" y="18" width="1" height="8" fill={darker} opacity="0.15" />
-        <rect x="38" y="14" width="1" height="10" fill={darker} opacity="0.12" />
+        <rect x="56" y="18" width="8" height="18" fill={darker} opacity="0.2" />
+        <rect x="62" y="22" width="4" height="14" fill={darker} opacity="0.15" />
+        {/* Moss patches in different greens */}
+        <rect x="10" y="16" width="8" height="5" fill="#1B5E20" opacity="0.55" />
+        <rect x="12" y="18" width="4" height="3" fill="#388E3C" opacity="0.5" />
+        <rect x="50" y="10" width="10" height="5" fill="#388E3C" opacity="0.4" />
+        <rect x="52" y="12" width="5" height="3" fill="#66BB6A" opacity="0.35" />
+        <rect x="28" y="30" width="6" height="4" fill="#1B5E20" opacity="0.4" />
+        <rect x="30" y="31" width="3" height="2" fill="#66BB6A" opacity="0.3" />
+        {/* Crevice/crack lines */}
+        <rect x="22" y="18" width="1" height="8" fill={darker} opacity="0.2" />
+        <rect x="38" y="14" width="1" height="10" fill={darker} opacity="0.18" />
+        <rect x="30" y="20" width="1" height="12" fill={darker} opacity="0.15" />
+        <rect x="48" y="22" width="1" height="8" fill={darker} opacity="0.12" />
+        <rect x="16" y="26" width="1" height="6" fill={darker} opacity="0.14" />
+        {/* Mineral vein pixels (quartz) */}
+        <rect x="24" y="8" width="2" height="2" fill="#D4D0C8" opacity="0.25" />
+        <rect x="40" y="12" width="2" height="1" fill="#D4D0C8" opacity="0.2" />
+        <rect x="18" y="22" width="1" height="3" fill="#D4D0C8" opacity="0.18" />
+        <rect x="52" y="26" width="2" height="2" fill="#D4D0C8" opacity="0.15" />
+        {/* Small pebble debris near base */}
+        <rect x="2" y="40" width="4" height="3" fill={midTone} opacity="0.5" />
+        <rect x="64" y="38" width="3" height="3" fill={midTone} opacity="0.45" />
+        <rect x="68" y="40" width="2" height="2" fill={color} opacity="0.4" />
+        <rect x="0" y="41" width="2" height="2" fill={darker} opacity="0.35" />
       </g>
     )
   }
   // Medium: ~42×28px bounding box (scaled up from 20×12)
+  const midToneM = color === '#6B7280' ? '#5C6370' : '#637080'
+  const midLightM = color === '#6B7280' ? '#8894A0' : '#7D8A96'
   return (
     <g transform={`translate(${x}, ${y})`}>
+      {/* Dark base shadow */}
+      <rect x="3" y="29" width="42" height="4" fill={darker} opacity="0.3" />
+      {/* Main body */}
       <rect x="4" y="14" width="40" height="16" fill={color} />
       <rect x="8" y="8" width="32" height="12" fill={color} />
+      {/* Intermediate shade rects for color depth */}
+      <rect x="6" y="16" width="14" height="8" fill={midLightM} opacity="0.35" />
+      <rect x="22" y="14" width="12" height="6" fill={midToneM} opacity="0.3" />
+      <rect x="10" y="22" width="18" height="5" fill={midLightM} opacity="0.2" />
+      {/* Top highlight */}
       <rect x="14" y="4" width="20" height="10" fill={lighter} />
       <rect x="12" y="12" width="8" height="8" fill={lighter} opacity="0.4" />
+      {/* Subtle highlight on top-left */}
+      <rect x="14" y="4" width="8" height="4" fill="#B0BAC4" opacity="0.3" />
+      <rect x="10" y="8" width="6" height="3" fill={lighter} opacity="0.25" />
+      {/* Right side shadow */}
       <rect x="30" y="14" width="10" height="8" fill={darker} opacity="0.3" />
-      {/* Moss patch */}
+      <rect x="36" y="12" width="6" height="12" fill={darker} opacity="0.2" />
+      {/* Crack/crevice pixels */}
+      <rect x="20" y="10" width="1" height="10" fill={darker} opacity="0.2" />
+      <rect x="32" y="16" width="1" height="8" fill={darker} opacity="0.15" />
+      <rect x="14" y="18" width="1" height="6" fill={darker} opacity="0.12" />
+      {/* Moss patch #1 */}
       <rect x="8" y="10" width="6" height="4" fill="#5D8A3C" opacity="0.45" />
+      <rect x="9" y="11" width="3" height="2" fill="#66BB6A" opacity="0.35" />
+      {/* Moss patch #2 — different green */}
+      <rect x="34" y="8" width="5" height="3" fill="#388E3C" opacity="0.4" />
+      <rect x="35" y="9" width="3" height="2" fill="#1B5E20" opacity="0.35" />
+      {/* Mineral grain detail pixels */}
+      <rect x="18" y="6" width="2" height="2" fill="#D4D0C8" opacity="0.22" />
+      <rect x="28" y="18" width="1" height="2" fill="#D4D0C8" opacity="0.18" />
+      <rect x="40" y="22" width="2" height="1" fill="#D4D0C8" opacity="0.15" />
     </g>
   )
 })
@@ -281,28 +351,52 @@ export const Coral = memo(({ x, y, variant = 'branch', color = '#E91E63' }: Cora
   const lighter = '#F48FB1'
   const darker = color === '#E91E63' ? '#C2185B' : '#8B4A52'
 
+  // Intermediate shade between color and lighter
+  const midCoral = color === '#E91E63' ? '#F06292' : '#C47080'
+
   if (variant === 'branch') {
     // ~45×50px bounding box (scaled up from ~20×22)
     return (
       <g transform={`translate(${x}, ${y})`}>
         {/* Base */}
         <rect x="12" y="38" width="22" height="12" fill={color} />
+        {/* Base encrustation detail (barnacle dots) */}
+        <rect x="14" y="40" width="2" height="2" fill={darker} opacity="0.3" />
+        <rect x="20" y="42" width="2" height="2" fill={darker} opacity="0.25" />
+        <rect x="28" y="40" width="2" height="2" fill={darker} opacity="0.2" />
+        <rect x="16" y="46" width="3" height="2" fill={darker} opacity="0.22" />
         {/* Trunk */}
         <rect x="16" y="24" width="12" height="16" fill={color} />
+        {/* Trunk texture ridges (horizontal 1px lines) */}
+        <rect x="16" y="26" width="12" height="1" fill={darker} opacity="0.15" />
+        <rect x="16" y="30" width="12" height="1" fill={darker} opacity="0.12" />
+        <rect x="16" y="34" width="12" height="1" fill={darker} opacity="0.1" />
+        {/* Trunk intermediate color depth */}
+        <rect x="18" y="26" width="8" height="10" fill={midCoral} opacity="0.3" />
         {/* Left branch */}
         <rect x="6" y="14" width="12" height="16" fill={color} />
+        <rect x="8" y="16" width="8" height="8" fill={midCoral} opacity="0.3" />
         <rect x="3" y="6" width="10" height="10" fill={lighter} />
         <rect x="5" y="2" width="6" height="6" fill={lighter} opacity="0.8" />
+        {/* Left branch growth tip */}
+        <rect x="6" y="0" width="4" height="3" fill={lighter} opacity="0.45" />
         {/* Right branch */}
         <rect x="28" y="10" width="12" height="20" fill={color} />
+        <rect x="30" y="12" width="8" height="12" fill={midCoral} opacity="0.25" />
         <rect x="30" y="2" width="10" height="10" fill={lighter} />
         <rect x="33" y="-2" width="6" height="6" fill={lighter} opacity="0.8" />
+        {/* Right branch growth tip */}
+        <rect x="34" y="-4" width="4" height="3" fill={lighter} opacity="0.4" />
         {/* Middle highlight */}
         <rect x="18" y="16" width="8" height="8" fill={lighter} opacity="0.5" />
-        {/* Polyp dots */}
+        {/* Polyp dots — original */}
         <rect x="7" y="10" width="3" height="3" fill={lighter} opacity="0.6" />
         <rect x="32" y="6" width="3" height="3" fill={lighter} opacity="0.6" />
         <rect x="20" y="28" width="3" height="3" fill={darker} opacity="0.3" />
+        {/* Additional polyp dots */}
+        <rect x="10" y="20" width="2" height="2" fill={lighter} opacity="0.5" />
+        <rect x="36" y="16" width="2" height="2" fill={lighter} opacity="0.5" />
+        <rect x="14" y="26" width="2" height="2" fill={lighter} opacity="0.45" />
       </g>
     )
   }
@@ -310,15 +404,39 @@ export const Coral = memo(({ x, y, variant = 'branch', color = '#E91E63' }: Cora
     // ~50×40px bounding box (scaled up from ~24×16)
     return (
       <g transform={`translate(${x}, ${y})`}>
+        {/* Main body */}
         <rect x="6" y="20" width="42" height="20" fill={color} />
         <rect x="10" y="10" width="34" height="16" fill={color} />
         <rect x="16" y="4" width="22" height="10" fill={lighter} />
-        {/* Brain meander ridges */}
+        {/* Side shadow rects for 3D depth */}
+        <rect x="6" y="20" width="6" height="18" fill={darker} opacity="0.2" />
+        <rect x="42" y="20" width="6" height="18" fill={darker} opacity="0.15" />
+        <rect x="8" y="28" width="4" height="10" fill={darker} opacity="0.12" />
+        {/* Surface highlights on top */}
+        <rect x="18" y="4" width="10" height="4" fill="#F8BBD0" opacity="0.3" />
+        <rect x="22" y="6" width="6" height="3" fill="#FCE4EC" opacity="0.2" />
+        {/* Brain meander ridges — original */}
         <rect x="16" y="14" width="22" height="2" fill={lighter} opacity="0.45" />
         <rect x="10" y="22" width="34" height="2" fill={lighter} opacity="0.4" />
         <rect x="14" y="30" width="26" height="2" fill={lighter} opacity="0.35" />
         <rect x="16" y="38" width="22" height="2" fill={lighter} opacity="0.3" />
-        {/* Polyp highlights */}
+        {/* Additional meander ridges */}
+        <rect x="12" y="18" width="30" height="2" fill={lighter} opacity="0.35" />
+        <rect x="18" y="26" width="18" height="2" fill={lighter} opacity="0.32" />
+        <rect x="12" y="34" width="28" height="2" fill={lighter} opacity="0.28" />
+        {/* Valley shadow pixels between ridges */}
+        <rect x="16" y="16" width="22" height="1" fill={darker} opacity="0.18" />
+        <rect x="10" y="24" width="34" height="1" fill={darker} opacity="0.15" />
+        <rect x="12" y="20" width="30" height="1" fill={darker} opacity="0.14" />
+        <rect x="14" y="32" width="26" height="1" fill={darker} opacity="0.12" />
+        <rect x="18" y="28" width="18" height="1" fill={darker} opacity="0.13" />
+        {/* Polyp cup detail pixels */}
+        <rect x="20" y="12" width="2" height="2" fill={midCoral} opacity="0.3" />
+        <rect x="30" y="20" width="2" height="2" fill={midCoral} opacity="0.28" />
+        <rect x="16" y="28" width="2" height="2" fill={midCoral} opacity="0.25" />
+        <rect x="36" y="32" width="2" height="2" fill={midCoral} opacity="0.22" />
+        <rect x="24" y="36" width="2" height="2" fill={midCoral} opacity="0.2" />
+        {/* Polyp highlights — original */}
         <rect x="12" y="16" width="3" height="3" fill={lighter} opacity="0.35" />
         <rect x="34" y="24" width="3" height="3" fill={lighter} opacity="0.3" />
       </g>
@@ -329,14 +447,35 @@ export const Coral = memo(({ x, y, variant = 'branch', color = '#E91E63' }: Cora
     <g transform={`translate(${x}, ${y})`}>
       {/* Stem */}
       <rect x="18" y="34" width="10" height="16" fill={color} />
+      {/* Base attachment detail rects */}
+      <rect x="16" y="46" width="14" height="4" fill={darker} opacity="0.3" />
+      <rect x="20" y="48" width="6" height="3" fill={darker} opacity="0.2" />
       {/* Fan body */}
       <rect x="4" y="14" width="40" height="22" fill={color} opacity="0.8" />
+      {/* Color depth intermediate rects */}
+      <rect x="8" y="16" width="16" height="14" fill={midCoral} opacity="0.25" />
+      <rect x="26" y="16" width="14" height="14" fill={midCoral} opacity="0.2" />
       <rect x="8" y="6" width="32" height="14" fill={lighter} opacity="0.6" />
       <rect x="12" y="0" width="22" height="10" fill={lighter} opacity="0.4" />
-      {/* Fan holes (transparent polyp cups) */}
+      {/* Growth edge detail (lighter pixels at top edge) */}
+      <rect x="14" y="0" width="18" height="2" fill="#FCE4EC" opacity="0.35" />
+      <rect x="10" y="2" width="4" height="2" fill="#F8BBD0" opacity="0.3" />
+      <rect x="32" y="2" width="4" height="2" fill="#F8BBD0" opacity="0.25" />
+      {/* Vein/branch pattern lines (1px dark lines radiating from stem) */}
+      <rect x="22" y="14" width="1" height="20" fill={darker} opacity="0.15" />
+      <rect x="16" y="16" width="1" height="16" fill={darker} opacity="0.12" />
+      <rect x="30" y="16" width="1" height="16" fill={darker} opacity="0.12" />
+      <rect x="10" y="20" width="1" height="10" fill={darker} opacity="0.1" />
+      <rect x="36" y="20" width="1" height="10" fill={darker} opacity="0.1" />
+      {/* Fan holes (transparent polyp cups) — original */}
       <rect x="14" y="20" width="4" height="4" fill="transparent" />
       <rect x="28" y="16" width="4" height="4" fill="transparent" />
       <rect x="20" y="10" width="4" height="4" fill="transparent" />
+      {/* Additional polyp cup holes */}
+      <rect x="8" y="24" width="3" height="3" fill="transparent" />
+      <rect x="34" y="22" width="3" height="3" fill="transparent" />
+      <rect x="24" y="18" width="3" height="3" fill="transparent" />
+      <rect x="18" y="26" width="3" height="3" fill="transparent" />
       {/* Edge detail */}
       <rect x="4" y="14" width="2" height="22" fill={darker} opacity="0.2" />
       <rect x="42" y="14" width="2" height="22" fill={darker} opacity="0.15" />
@@ -345,15 +484,28 @@ export const Coral = memo(({ x, y, variant = 'branch', color = '#E91E63' }: Cora
 })
 Coral.displayName = 'Coral'
 
-export const BubbleStream = memo(({ x, count = 3 }: { x: number; count?: number }) => (
+export const BubbleStream = memo(({ x, count = 5 }: { x: number; count?: number }) => (
   <g>
-    {Array.from({ length: count }, (_, i) => (
-      <circle
-        key={i} cx={x + (i % 2) * 4} cy={0} r={2 + (i % 2)}
-        fill="rgba(255, 255, 255, 0.3)" stroke="rgba(255, 255, 255, 0.5)" strokeWidth="0.5"
-        style={{ animation: `bubbleRise ${3 + i * 0.7}s ease-in ${i * 1.2}s infinite` }}
-      />
-    ))}
+    {Array.from({ length: count }, (_, i) => {
+      const bubbleOpacity = 0.15 + (i % 3) * 0.1
+      const bx = x + (i % 3) * 4 - 2
+      const br = 1.5 + (i % 3) * 0.8
+      return (
+        <g key={i}>
+          <circle
+            cx={bx} cy={0} r={br}
+            fill={`rgba(255, 255, 255, ${bubbleOpacity})`} stroke={`rgba(255, 255, 255, ${bubbleOpacity + 0.2})`} strokeWidth="0.5"
+            style={{ animation: `bubbleRise ${3 + i * 0.6}s ease-in ${i * 0.9}s infinite` }}
+          />
+          {/* Tiny highlight pixel on each bubble */}
+          <rect
+            x={bx - br * 0.3} y={-br * 0.4} width={Math.max(1, br * 0.4)} height={Math.max(1, br * 0.4)}
+            fill="white" opacity={0.15 + (i % 2) * 0.08}
+            style={{ animation: `bubbleRise ${3 + i * 0.6}s ease-in ${i * 0.9}s infinite` }}
+          />
+        </g>
+      )
+    })}
   </g>
 ))
 BubbleStream.displayName = 'BubbleStream'
@@ -410,6 +562,17 @@ const CoralReefArch = memo(({ x, y }: { x: number; y: number }) => (
     {/* Left pillar: coralline algae (pink crust) */}
     <rect x="8" y="50" width="6" height="2" fill="#CE93D8" opacity="0.3" />
     <rect x="16" y="36" width="4" height="2" fill="#E1BEE7" opacity="0.25" />
+    {/* Left pillar: micro-polyp texture blocks */}
+    <rect x="6" y="26" width="2" height="1" fill="#E57373" opacity="0.3" />
+    <rect x="12" y="34" width="2" height="1" fill="#EF9A9A" opacity="0.25" />
+    <rect x="8" y="40" width="1" height="2" fill="#E57373" opacity="0.2" />
+    {/* Left pillar: depth shadow gradient blocks */}
+    <rect x="2" y="24" width="4" height="4" fill="#7B0A0A" opacity="0.15" />
+    <rect x="2" y="32" width="4" height="4" fill="#7B0A0A" opacity="0.12" />
+    <rect x="2" y="40" width="4" height="4" fill="#7B0A0A" opacity="0.1" />
+    {/* Left pillar: intermediate color depth blocks */}
+    <rect x="6" y="14" width="12" height="2" fill="#D32F2F" opacity="0.35" />
+    <rect x="4" y="18" width="14" height="1" fill="#E53935" opacity="0.3" />
 
     {/* Right pillar — staghorn + fire coral colony */}
     <rect x="70" y="20" width="24" height="40" fill="#E65100" />
@@ -454,6 +617,15 @@ const CoralReefArch = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="74" y="54" width="4" height="2" fill="#78909C" opacity="0.35" />
     {/* Right algae */}
     <rect x="72" y="56" width="6" height="2" fill="#1B5E20" opacity="0.4" />
+    {/* Right pillar: intermediate depth blocks */}
+    <rect x="72" y="22" width="4" height="4" fill="#D84315" opacity="0.15" />
+    <rect x="72" y="34" width="4" height="4" fill="#D84315" opacity="0.12" />
+    {/* Right pillar: texture spots */}
+    <rect x="78" y="28" width="2" height="2" fill="#FFAB91" opacity="0.3" />
+    <rect x="82" y="40" width="2" height="2" fill="#FF8A65" opacity="0.25" />
+    <rect x="76" y="48" width="3" height="1" fill="#FFCCBC" opacity="0.2" />
+    {/* Right pillar: mineral deposit */}
+    <rect x="80" y="32" width="3" height="2" fill="#D7CCC8" opacity="0.15" />
 
     {/* Arch bridge — connecting coral mass, varied species */}
     <rect x="10" y="4" width="72" height="10" fill="#C2185B" />
@@ -480,6 +652,12 @@ const CoralReefArch = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="54" y="12" width="3" height="5" fill="#E91E63" opacity="0.5" />
     <rect x="64" y="12" width="2" height="4" fill="#C2185B" opacity="0.45" />
     <rect x="36" y="12" width="2" height="3" fill="#D81B60" opacity="0.4" />
+    {/* Arch: color depth transition blocks */}
+    <rect x="16" y="2" width="60" height="1" fill="#D81B60" opacity="0.2" />
+    {/* Arch: encrusting detail */}
+    <rect x="24" y="8" width="3" height="2" fill="#AD1457" opacity="0.2" />
+    <rect x="48" y="8" width="4" height="2" fill="#880E4F" opacity="0.15" />
+    <rect x="38" y="10" width="2" height="2" fill="#C2185B" opacity="0.18" />
 
     {/* Diverse coral colonies growing on top of arch */}
     {/* Yellow scroll coral */}
@@ -515,6 +693,12 @@ const CoralReefArch = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="25" y="54" width="1" height="3" fill="#37474F" opacity="0.3" />
     <rect x="21" y="56" width="1" height="2" fill="#37474F" opacity="0.25" />
     <rect x="27" y="56" width="1" height="2" fill="#37474F" opacity="0.25" />
+    {/* Additional sea life detail blocks */}
+    <rect x="32" y="56" width="4" height="2" fill="#FF8F00" opacity="0.2" />
+    <rect x="33" y="55" width="2" height="2" fill="#FFB300" opacity="0.15" />
+    {/* Encrusting coralline algae blocks on base */}
+    <rect x="40" y="58" width="6" height="2" fill="#CE93D8" opacity="0.2" />
+    <rect x="58" y="56" width="4" height="2" fill="#E1BEE7" opacity="0.18" />
 
     {/* Christmas tree worms (spiral dots on right pillar) */}
     <circle cx="80" cy="28" r="2" fill="#FFEB3B" opacity="0.5" />
@@ -548,6 +732,14 @@ const SunkenTemple = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="20" y="48" width="1" height="6" fill="#4B5563" opacity="0.15" />
     <rect x="40" y="48" width="1" height="6" fill="#4B5563" opacity="0.15" />
     <rect x="60" y="48" width="1" height="6" fill="#4B5563" opacity="0.15" />
+    {/* Platform: sediment layer detail */}
+    <rect x="2" y="46" width="4" height="2" fill="#A09080" opacity="0.2" />
+    <rect x="36" y="46" width="6" height="2" fill="#90A4AE" opacity="0.15" />
+    <rect x="62" y="46" width="4" height="2" fill="#A09080" opacity="0.18" />
+    {/* Platform: more stone block division lines */}
+    <rect x="10" y="48" width="1" height="6" fill="#4B5563" opacity="0.12" />
+    <rect x="50" y="48" width="1" height="6" fill="#4B5563" opacity="0.12" />
+    <rect x="70" y="48" width="1" height="6" fill="#4B5563" opacity="0.1" />
     {/* Steps — worn and cracked */}
     <rect x="4" y="40" width="72" height="6" fill="#78716C" />
     <rect x="8" y="36" width="64" height="6" fill="#78716C" />
@@ -576,6 +768,12 @@ const SunkenTemple = memo(({ x, y }: { x: number; y: number }) => (
     {/* Weathering cracks on left column */}
     <rect x="12" y="14" width="1" height="4" fill="#616161" opacity="0.3" />
     <rect x="13" y="16" width="1" height="2" fill="#616161" opacity="0.2" />
+    {/* Left column: mineral deposit pixels */}
+    <rect x="10" y="8" width="2" height="2" fill="#D4D0C8" opacity="0.15" />
+    <rect x="14" y="20" width="2" height="2" fill="#E0E0E0" opacity="0.12" />
+    {/* Left column: additional fluting detail */}
+    <rect x="12" y="5" width="1" height="29" fill="#BDBDBD" opacity="0.25" />
+    <rect x="16" y="5" width="1" height="29" fill="#757575" opacity="0.12" />
 
     {/* Center column — partially standing */}
     <rect x="36" y="16" width="7" height="22" fill="#9E9E9E" opacity="0.7" />
@@ -647,6 +845,16 @@ const SunkenTemple = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="50" y="28" width="2" height="4" fill="#90A4AE" opacity="0.2" />
     <rect x="28" y="34" width="3" height="2" fill="#90A4AE" opacity="0.15" />
     <rect x="49" y="34" width="3" height="2" fill="#90A4AE" opacity="0.15" />
+    {/* Face: cheek contour depth blocks */}
+    <rect x="30" y="28" width="4" height="3" fill="#5A6570" opacity="0.2" />
+    <rect x="46" y="28" width="4" height="3" fill="#5A6570" opacity="0.2" />
+    {/* Face: forehead texture */}
+    <rect x="34" y="18" width="12" height="1" fill="#78909C" opacity="0.15" />
+    {/* Face: chin detail */}
+    <rect x="36" y="34" width="8" height="1" fill="#546E7A" opacity="0.2" />
+    {/* Face: erosion pitting */}
+    <rect x="42" y="24" width="2" height="2" fill="#57534E" opacity="0.2" />
+    <rect x="36" y="30" width="1" height="1" fill="#57534E" opacity="0.15" />
 
     {/* Algae and moss growth — extensive colonization */}
     <rect x="10" y="26" width="6" height="4" fill="#2E7D32" opacity="0.5" />
@@ -728,6 +936,15 @@ const VolcanoFormation = memo(({ x, y }: { x: number; y: number }) => (
     {/* Right shoulder bump */}
     <rect x="74" y="10" width="8" height="6" fill="#78909C" opacity="0.5" />
     <rect x="78" y="14" width="6" height="4" fill="#607D8B" opacity="0.4" />
+    {/* Rock face intermediate color depth blocks */}
+    <rect x="14" y="36" width="6" height="2" fill="#4B606E" opacity="0.25" />
+    <rect x="22" y="28" width="4" height="2" fill="#4B606E" opacity="0.2" />
+    <rect x="68" y="28" width="6" height="2" fill="#5A7080" opacity="0.2" />
+    <rect x="82" y="36" width="4" height="2" fill="#4B606E" opacity="0.22" />
+    {/* Deep volcanic fissure detail */}
+    <rect x="30" y="20" width="1" height="14" fill="#0A0A0A" opacity="0.2" />
+    <rect x="70" y="18" width="1" height="16" fill="#0A0A0A" opacity="0.18" />
+    <rect x="50" y="24" width="1" height="10" fill="#0A0A0A" opacity="0.15" />
 
     {/* Crater opening — wider, deeper, more dramatic */}
     <rect x="36" y="-8" width="28" height="8" fill="#0A0A0A" />
@@ -774,6 +991,19 @@ const VolcanoFormation = memo(({ x, y }: { x: number; y: number }) => (
     {/* Cooled lava streaks (darker) */}
     <rect x="28" y="36" width="3" height="10" fill="#3E2723" opacity="0.3" />
     <rect x="70" y="34" width="3" height="12" fill="#3E2723" opacity="0.25" />
+    {/* Lava flow: cooling crust detail blocks */}
+    <rect x="36" y="12" width="3" height="2" fill="#4A1800" opacity="0.3" />
+    <rect x="60" y="10" width="3" height="2" fill="#4A1800" opacity="0.25" />
+    {/* Lava flow: ember glow pixels at edges */}
+    <rect x="37" y="6" width="1" height="2" fill="#FF6D00" opacity="0.25" />
+    <rect x="59" y="4" width="1" height="2" fill="#FF6D00" opacity="0.2" />
+    {/* Lava pool in crater */}
+    <rect x="40" y="-6" width="20" height="2" fill="#FF3D00" opacity="0.35" />
+    <rect x="42" y="-4" width="16" height="2" fill="#DD2C00" opacity="0.4" />
+    {/* Obsidian glass fragments */}
+    <rect x="20" y="48" width="2" height="2" fill="#212121" opacity="0.3" />
+    <rect x="76" y="48" width="2" height="2" fill="#212121" opacity="0.25" />
+    <rect x="50" y="50" width="3" height="1" fill="#212121" opacity="0.2" />
 
     {/* Rock texture — porous vesicular basalt */}
     <rect x="6" y="44" width="4" height="4" fill="#1A1A1A" opacity="0.5" />
@@ -796,6 +1026,19 @@ const VolcanoFormation = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="6" y="50" width="1" height="18" fill="#455A64" opacity="0.18" />
     <rect x="92" y="50" width="1" height="18" fill="#455A64" opacity="0.18" />
     <rect x="98" y="52" width="1" height="16" fill="#455A64" opacity="0.15" />
+    {/* More columnar basalt joints */}
+    <rect x="12" y="50" width="1" height="18" fill="#455A64" opacity="0.15" />
+    <rect x="18" y="48" width="1" height="20" fill="#455A64" opacity="0.12" />
+    <rect x="82" y="48" width="1" height="20" fill="#455A64" opacity="0.15" />
+    <rect x="88" y="50" width="1" height="18" fill="#455A64" opacity="0.12" />
+    {/* Volcanic glass sheen highlights */}
+    <rect x="30" y="16" width="6" height="1" fill="#B0BEC5" opacity="0.12" />
+    <rect x="58" y="18" width="8" height="1" fill="#B0BEC5" opacity="0.1" />
+    {/* Pumice texture (porous spots) */}
+    <rect x="10" y="56" width="2" height="2" fill="#37474F" opacity="0.3" />
+    <rect x="30" y="50" width="2" height="2" fill="#37474F" opacity="0.25" />
+    <rect x="64" y="52" width="2" height="2" fill="#37474F" opacity="0.25" />
+    <rect x="86" y="56" width="2" height="2" fill="#37474F" opacity="0.2" />
 
     {/* Thermophilic algae near vents */}
     <rect x="40" y="10" width="4" height="2" fill="#FF8F00" opacity="0.35" />
@@ -861,6 +1104,17 @@ const DragonStoneArch = memo(({ x, y }: { x: number; y: number }) => (
     {/* Surface highlights */}
     <rect x="6" y="18" width="4" height="1" fill="#D7CCC8" opacity="0.3" />
     <rect x="8" y="32" width="3" height="1" fill="#BCAAA4" opacity="0.25" />
+    {/* Left pillar: intermediate color depth blocks */}
+    <rect x="2" y="22" width="16" height="2" fill="#6D4C41" opacity="0.2" />
+    <rect x="2" y="38" width="16" height="2" fill="#725A50" opacity="0.15" />
+    {/* Left pillar: weathering texture micro-blocks */}
+    <rect x="8" y="28" width="2" height="1" fill="#A1887F" opacity="0.2" />
+    <rect x="14" y="40" width="2" height="1" fill="#BCAAA4" opacity="0.18" />
+    <rect x="6" y="52" width="2" height="1" fill="#D7CCC8" opacity="0.15" />
+    {/* Left pillar: honeycomb erosion texture */}
+    <rect x="10" y="34" width="2" height="2" fill="#4E342E" opacity="0.3" />
+    <rect x="6" y="44" width="2" height="2" fill="#3E2723" opacity="0.25" />
+    <rect x="16" y="46" width="2" height="2" fill="#4E342E" opacity="0.2" />
 
     {/* Right pillar — shorter, wider */}
     <rect x="58" y="20" width="20" height="40" fill="#795548" />
@@ -884,6 +1138,14 @@ const DragonStoneArch = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="60" y="28" width="16" height="1" fill="#BF360C" opacity="0.18" />
     <rect x="58" y="42" width="18" height="1" fill="#E65100" opacity="0.15" />
     <rect x="60" y="54" width="16" height="1" fill="#BF360C" opacity="0.12" />
+    {/* Right pillar: additional erosion texture */}
+    <rect x="64" y="34" width="2" height="2" fill="#3E2723" opacity="0.25" />
+    <rect x="72" y="38" width="2" height="2" fill="#4E342E" opacity="0.2" />
+    {/* Right pillar: highlight spots */}
+    <rect x="66" y="20" width="3" height="1" fill="#D7CCC8" opacity="0.2" />
+    <rect x="70" y="48" width="2" height="1" fill="#BCAAA4" opacity="0.15" />
+    {/* Right pillar: intermediate depth blocks */}
+    <rect x="60" y="34" width="16" height="2" fill="#725A50" opacity="0.12" />
 
     {/* Arch bridge — wide stone span, lower */}
     <rect x="8" y="8" width="62" height="8" fill="#8D6E63" />
@@ -901,6 +1163,13 @@ const DragonStoneArch = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="48" y="10" width="3" height="3" fill="#4E342E" opacity="0.25" />
     {/* Arch iron oxide veins */}
     <rect x="16" y="8" width="46" height="1" fill="#BF360C" opacity="0.15" />
+    {/* Arch: more pitting and erosion detail */}
+    <rect x="26" y="10" width="2" height="2" fill="#5D4037" opacity="0.2" />
+    <rect x="56" y="12" width="3" height="2" fill="#4E342E" opacity="0.18" />
+    {/* Arch: highlight streak on top */}
+    <rect x="20" y="2" width="38" height="1" fill="#D7CCC8" opacity="0.15" />
+    {/* Arch: intermediate color transition */}
+    <rect x="10" y="12" width="58" height="1" fill="#725A50" opacity="0.12" />
 
     {/* Plants growing from crevices */}
     <rect x="16" y="8" width="3" height="8" fill="#00C853" opacity="0.6" />
@@ -967,6 +1236,14 @@ const SunkenSubmarine = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="36" y="92" width="136" height="4" fill="#1A1A1A" opacity="0.3" />
     {/* Hull highlight strip (light reflection) */}
     <rect x="36" y="28" width="136" height="2" fill="#90A4AE" opacity="0.2" />
+    {/* Hull: intermediate color depth blocks */}
+    <rect x="40" y="20" width="128" height="2" fill="#4B6070" opacity="0.15" />
+    <rect x="32" y="76" width="144" height="2" fill="#1E2E38" opacity="0.12" />
+    {/* Hull: weld bead detail */}
+    <rect x="28" y="44" width="2" height="2" fill="#607D8B" opacity="0.2" />
+    <rect x="60" y="58" width="2" height="2" fill="#607D8B" opacity="0.18" />
+    <rect x="100" y="50" width="2" height="2" fill="#607D8B" opacity="0.15" />
+    <rect x="140" y="46" width="2" height="2" fill="#607D8B" opacity="0.15" />
 
     {/* Hull panel lines — welded plate seams */}
     <rect x="28" y="40" width="144" height="2" fill="#2C3E50" opacity="0.3" />
@@ -1028,6 +1305,15 @@ const SunkenSubmarine = memo(({ x, y }: { x: number; y: number }) => (
     {/* Bridge windscreen / viewport */}
     <rect x="84" y="-6" width="24" height="4" fill="#0D2137" opacity="0.6" />
     <rect x="86" y="-6" width="20" height="2" fill="#1A5276" opacity="0.3" />
+    {/* Conning tower: antenna stubs */}
+    <rect x="116" y="-14" width="2" height="6" fill="#78909C" opacity="0.3" />
+    <rect x="118" y="-16" width="3" height="2" fill="#90A4AE" opacity="0.25" />
+    {/* Conning tower: depth charge rack remnant */}
+    <rect x="72" y="24" width="8" height="3" fill="#37474F" opacity="0.25" />
+    <rect x="74" y="22" width="4" height="2" fill="#455A64" opacity="0.2" />
+    {/* Conning tower: paint remnant patches */}
+    <rect x="80" y="4" width="12" height="4" fill="#1A237E" opacity="0.08" />
+    <rect x="84" y="12" width="8" height="4" fill="#1A237E" opacity="0.06" />
 
     {/* Periscope — bent and encrusted */}
     <rect x="92" y="-32" width="6" height="24" fill="#78909C" />
@@ -1068,6 +1354,15 @@ const SunkenSubmarine = memo(({ x, y }: { x: number; y: number }) => (
     {/* Hull number stencil remnant */}
     <rect x="176" y="28" width="4" height="8" fill="#B0BEC5" opacity="0.15" />
     <rect x="184" y="28" width="4" height="8" fill="#B0BEC5" opacity="0.12" />
+    {/* Hull number: additional faded markings */}
+    <rect x="180" y="30" width="2" height="6" fill="#B0BEC5" opacity="0.1" />
+    {/* Hull: access hatch detail */}
+    <rect x="128" y="28" width="8" height="8" fill="#2C3E50" opacity="0.15" />
+    <rect x="130" y="30" width="4" height="4" fill="#37474F" opacity="0.12" />
+    {/* Hull: depth gauge marking pixels */}
+    <rect x="24" y="32" width="1" height="3" fill="#90A4AE" opacity="0.12" />
+    <rect x="24" y="38" width="1" height="3" fill="#90A4AE" opacity="0.1" />
+    <rect x="24" y="44" width="1" height="3" fill="#90A4AE" opacity="0.08" />
 
     {/* Propeller at stern — multi-blade */}
     <rect x="0" y="44" width="16" height="6" fill="#78909C" />
@@ -1180,6 +1475,20 @@ const TreasureCluster = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="13" y="29" width="6" height="4" fill="#B8862D" />
     <rect x="15" y="30" width="2" height="2" fill="#4E342E" opacity="0.7" />
     <rect x="14" y="32" width="4" height="1" fill="#4E342E" opacity="0.5" />
+    {/* Chest body: wood grain depth blocks */}
+    <rect x="4" y="28" width="2" height="8" fill="#4A2618" opacity="0.2" />
+    <rect x="10" y="28" width="2" height="8" fill="#6D4030" opacity="0.15" />
+    <rect x="22" y="28" width="2" height="8" fill="#4A2618" opacity="0.18" />
+    <rect x="28" y="28" width="2" height="8" fill="#6D4030" opacity="0.12" />
+    {/* Chest: iron nail heads */}
+    <rect x="6" y="32" width="1" height="1" fill="#546E7A" opacity="0.3" />
+    <rect x="16" y="36" width="1" height="1" fill="#546E7A" opacity="0.25" />
+    <rect x="26" y="34" width="1" height="1" fill="#546E7A" opacity="0.25" />
+    {/* Lid: brass trim highlight */}
+    <rect x="-2" y="16" width="30" height="1" fill="#E8C468" opacity="0.2" />
+    {/* Lock escutcheon detail */}
+    <rect x="11" y="28" width="10" height="1" fill="#E8C468" opacity="0.2" />
+    <rect x="14" y="33" width="4" height="1" fill="#B8862D" opacity="0.15" />
 
     {/* Gold and jewels spilling out — lavish overflow */}
     {/* Gold coin pile spilling right */}
@@ -1207,6 +1516,15 @@ const TreasureCluster = memo(({ x, y }: { x: number; y: number }) => (
     {/* Gold bar visible */}
     <rect x="10" y="24" width="8" height="2" fill="#FFD700" opacity="0.6" />
     <rect x="11" y="24" width="6" height="1" fill="#FFF59D" opacity="0.3" />
+    {/* Gold pile: coin edge detail blocks */}
+    <rect x="5" y="22" width="1" height="3" fill="#B8862D" opacity="0.3" />
+    <rect x="14" y="21" width="1" height="3" fill="#B8862D" opacity="0.25" />
+    {/* Gold pile: gleam highlight pixels */}
+    <rect x="8" y="21" width="2" height="1" fill="#FFF59D" opacity="0.3" />
+    <rect x="16" y="19" width="1" height="1" fill="#FFFFFF" opacity="0.2" />
+    {/* Silver coins mixed in */}
+    <circle cx="22" cy="22" r="1.5" fill="#E0E0E0" opacity="0.3" />
+    <circle cx="12" cy="24" r="1" fill="#BDBDBD" opacity="0.25" />
 
     {/* Crown — detailed royal crown */}
     <rect x="4" y="16" width="14" height="4" fill="#FFD700" opacity="0.7" />
@@ -1220,6 +1538,12 @@ const TreasureCluster = memo(({ x, y }: { x: number; y: number }) => (
     <circle cx="14.5" cy="15" r="0.8" fill="#2E7D32" opacity="0.45" />
     {/* Crown velvet lining */}
     <rect x="6" y="17" width="10" height="2" fill="#880E4F" opacity="0.3" />
+    {/* Crown: filigree detail pixels */}
+    <rect x="6" y="15" width="1" height="2" fill="#FFC107" opacity="0.3" />
+    <rect x="10" y="13" width="1" height="2" fill="#FFC107" opacity="0.3" />
+    <rect x="14" y="15" width="1" height="2" fill="#FFC107" opacity="0.25" />
+    {/* Crown: base band intermediate shade */}
+    <rect x="5" y="18" width="12" height="1" fill="#DAA520" opacity="0.3" />
 
     {/* Pearl necklace draped over chest edge — longer strand */}
     {[0, 3.5, 7, 10.5, 14, 17.5, 21, 24.5].map((px, i) => (
@@ -2450,6 +2774,19 @@ const SunkenCastle = memo(({ x, y }: { x: number; y: number }) => (
     {/* Keep banner bracket */}
     <rect x="60" y="-14" width="6" height="2" fill="#4B5563" opacity="0.3" />
     <rect x="64" y="-16" width="2" height="4" fill="#4B5563" opacity="0.25" />
+    {/* Keep: arrow loop detail */}
+    <rect x="44" y="28" width="2" height="6" fill="#0A0A1E" opacity="0.4" />
+    <rect x="56" y="34" width="2" height="6" fill="#0A0A1E" opacity="0.35" />
+    {/* Keep: intermediate stone color blocks */}
+    <rect x="32" y="-22" width="36" height="2" fill="#646464" opacity="0.2" />
+    <rect x="34" y="10" width="32" height="2" fill="#5E5E5E" opacity="0.15" />
+    <rect x="30" y="30" width="40" height="2" fill="#585858" opacity="0.12" />
+    {/* Keep: weathering stain blocks */}
+    <rect x="36" y="40" width="12" height="3" fill="#4A4030" opacity="0.12" />
+    <rect x="52" y="44" width="8" height="3" fill="#4A4030" opacity="0.1" />
+    {/* Keep: mortar line details */}
+    <rect x="28" y="0" width="44" height="1" fill="#8A8A8A" opacity="0.15" />
+    <rect x="28" y="20" width="44" height="1" fill="#505050" opacity="0.12" />
 
     {/* Left tower — round drum tower */}
     <rect x="2" y="-8" width="28" height="68" fill="#555555" />
@@ -2765,6 +3102,46 @@ const SunkenPyramid = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="68" y="36" width="1" height="3" fill="#FFD54F" opacity="0.3" />
     <rect x="68" y="42" width="1" height="3" fill="#FFD54F" opacity="0.25" />
 
+    {/* Sandstone color depth — intermediate tone blocks between layers */}
+    <rect x="4" y="50" width="112" height="2" fill="#AA7E12" opacity="0.15" />
+    <rect x="10" y="40" width="100" height="2" fill="#BF9220" opacity="0.12" />
+    <rect x="18" y="30" width="84" height="2" fill="#C9A030" opacity="0.1" />
+    <rect x="26" y="20" width="68" height="2" fill="#D2AC38" opacity="0.08" />
+    <rect x="34" y="12" width="52" height="1" fill="#DCBA48" opacity="0.08" />
+    <rect x="42" y="4" width="36" height="1" fill="#E0C050" opacity="0.06" />
+    {/* Hieroglyph detail pixels — tiny colored symbol fragments */}
+    <rect x="24" y="42" width="1" height="1" fill="#E8B830" opacity="0.25" />
+    <rect x="25" y="43" width="2" height="1" fill="#D4A020" opacity="0.2" />
+    <rect x="94" y="38" width="1" height="1" fill="#E8B830" opacity="0.22" />
+    <rect x="95" y="39" width="2" height="1" fill="#D4A020" opacity="0.18" />
+    <rect x="30" y="50" width="1" height="2" fill="#FFD54F" opacity="0.15" />
+    <rect x="86" y="44" width="1" height="2" fill="#FFD54F" opacity="0.12" />
+    <rect x="50" y="27" width="1" height="1" fill="#FFCA28" opacity="0.2" />
+    <rect x="66" y="27" width="1" height="1" fill="#FFCA28" opacity="0.18" />
+    {/* Erosion pitting — small dark damage rects */}
+    <rect x="14" y="46" width="2" height="2" fill="#7A6830" opacity="0.2" />
+    <rect x="38" y="52" width="2" height="1" fill="#6B5B28" opacity="0.18" />
+    <rect x="76" y="36" width="2" height="2" fill="#7A6830" opacity="0.15" />
+    <rect x="102" y="48" width="2" height="1" fill="#6B5B28" opacity="0.12" />
+    <rect x="20" y="34" width="1" height="2" fill="#5C4E22" opacity="0.15" />
+    <rect x="92" y="40" width="1" height="2" fill="#5C4E22" opacity="0.12" />
+    {/* Sand deposit pixels along ledges */}
+    <rect x="8" y="48" width="6" height="1" fill="#D4B872" opacity="0.2" />
+    <rect x="106" y="48" width="6" height="1" fill="#D4B872" opacity="0.18" />
+    <rect x="16" y="38" width="4" height="1" fill="#C4A862" opacity="0.15" />
+    <rect x="96" y="38" width="4" height="1" fill="#C4A862" opacity="0.12" />
+    <rect x="24" y="28" width="3" height="1" fill="#D4B872" opacity="0.12" />
+    <rect x="89" y="28" width="3" height="1" fill="#D4B872" opacity="0.1" />
+    <rect x="32" y="18" width="2" height="1" fill="#C4A862" opacity="0.1" />
+    <rect x="84" y="18" width="2" height="1" fill="#C4A862" opacity="0.08" />
+    {/* Limestone cap detail blocks */}
+    <rect x="55" y="-14" width="10" height="1" fill="#FFF8E1" opacity="0.15" />
+    <rect x="56" y="-17" width="8" height="1" fill="#FFFDE7" opacity="0.12" />
+    <rect x="57" y="-19" width="6" height="1" fill="#FFF9C4" opacity="0.1" />
+    <rect x="58" y="-21" width="4" height="1" fill="#FFFFFF" opacity="0.08" />
+    <rect x="56" y="-15" width="2" height="2" fill="#FFE082" opacity="0.2" />
+    <rect x="62" y="-15" width="2" height="2" fill="#FFE082" opacity="0.18" />
+
     {/* Sand drift against base — windswept accumulation */}
     <rect x="-6" y="56" width="34" height="6" fill="#C4A862" opacity="0.5" />
     <rect x="-4" y="58" width="20" height="4" fill="#D4B872" opacity="0.35" />
@@ -2893,6 +3270,50 @@ const SunkenSphinx = memo(({ x, y }: { x: number; y: number }) => (
     {/* Erosion channels */}
     <rect x="20" y="14" width="1" height="8" fill="#A07820" opacity="0.15" />
     <rect x="50" y="16" width="1" height="10" fill="#A07820" opacity="0.12" />
+
+    {/* Face detail pixels — nose contour and lip definition */}
+    <rect x="7" y="12" width="1" height="1" fill="#C49A1A" opacity="0.35" />
+    <rect x="11" y="12" width="1" height="1" fill="#B8860B" opacity="0.3" />
+    <rect x="9" y="14" width="1" height="1" fill="#DEB84A" opacity="0.25" />
+    <rect x="7" y="11" width="2" height="1" fill="#D4B03A" opacity="0.2" />
+    {/* Lip detail */}
+    <rect x="6" y="18" width="1" height="1" fill="#A07820" opacity="0.25" />
+    <rect x="14" y="18" width="1" height="1" fill="#A07820" opacity="0.22" />
+    <rect x="7" y="19" width="6" height="1" fill="#C49A1A" opacity="0.2" />
+    {/* Ear blocks */}
+    <rect x="-6" y="6" width="2" height="4" fill="#D4A82A" opacity="0.25" />
+    <rect x="-5" y="7" width="1" height="2" fill="#C49A1A" opacity="0.2" />
+    <rect x="22" y="6" width="2" height="4" fill="#D4A82A" opacity="0.22" />
+    {/* Paw texture blocks with color depth */}
+    <rect x="-4" y="36" width="4" height="2" fill="#C49A1A" opacity="0.2" />
+    <rect x="0" y="38" width="6" height="2" fill="#D4B03A" opacity="0.15" />
+    <rect x="-2" y="40" width="3" height="1" fill="#B8860B" opacity="0.18" />
+    <rect x="60" y="36" width="4" height="2" fill="#C49A1A" opacity="0.18" />
+    <rect x="64" y="38" width="6" height="2" fill="#D4B03A" opacity="0.14" />
+    <rect x="72" y="40" width="3" height="1" fill="#B8860B" opacity="0.16" />
+    {/* Paw joint lines */}
+    <rect x="-4" y="42" width="16" height="1" fill="#A07820" opacity="0.12" />
+    <rect x="60" y="42" width="16" height="1" fill="#A07820" opacity="0.1" />
+    {/* Headdress stripe detail — extra depth */}
+    <rect x="-7" y="-5" width="32" height="1" fill="#0D47A1" opacity="0.2" />
+    <rect x="-6" y="-3" width="30" height="1" fill="#1976D2" opacity="0.15" />
+    <rect x="-8" y="2" width="4" height="1" fill="#FFD54F" opacity="0.12" />
+    <rect x="-8" y="6" width="4" height="1" fill="#FFD54F" opacity="0.1" />
+    <rect x="22" y="2" width="4" height="1" fill="#FFD54F" opacity="0.12" />
+    <rect x="22" y="6" width="4" height="1" fill="#FFD54F" opacity="0.1" />
+    {/* Erosion weathering blocks — surface decay */}
+    <rect x="32" y="26" width="4" height="2" fill="#8B7355" opacity="0.18" />
+    <rect x="40" y="32" width="3" height="2" fill="#A07820" opacity="0.15" />
+    <rect x="56" y="20" width="4" height="2" fill="#8B7355" opacity="0.14" />
+    <rect x="14" y="28" width="2" height="3" fill="#A07820" opacity="0.12" />
+    <rect x="62" y="28" width="3" height="2" fill="#8B7355" opacity="0.1" />
+    {/* Sand drift accumulation pixels */}
+    <rect x="-8" y="40" width="6" height="2" fill="#D4B872" opacity="0.2" />
+    <rect x="-6" y="38" width="4" height="2" fill="#C4A862" opacity="0.15" />
+    <rect x="74" y="38" width="6" height="2" fill="#D4B872" opacity="0.18" />
+    <rect x="76" y="36" width="4" height="2" fill="#C4A862" opacity="0.12" />
+    <rect x="36" y="44" width="4" height="1" fill="#D4B872" opacity="0.12" />
+    <rect x="44" y="44" width="4" height="1" fill="#C4A862" opacity="0.1" />
 
     {/* Sand buildup — partially buried */}
     <rect x="-10" y="42" width="24" height="6" fill="#C4A862" opacity="0.45" />
@@ -3059,6 +3480,46 @@ const SunkenTorii = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="0" y="60" width="4" height="2" fill="#78909C" opacity="0.25" />
     <rect x="74" y="58" width="4" height="2" fill="#78909C" opacity="0.22" />
 
+    {/* ═══ Wood grain texture blocks on posts — extra depth ═══ */}
+    <rect x="7" y="10" width="1" height="12" fill="#6D0000" opacity="0.1" />
+    <rect x="9" y="16" width="1" height="8" fill="#FF1744" opacity="0.05" />
+    <rect x="11" y="12" width="1" height="14" fill="#6D0000" opacity="0.08" />
+    <rect x="67" y="10" width="1" height="12" fill="#6D0000" opacity="0.1" />
+    <rect x="69" y="16" width="1" height="8" fill="#FF1744" opacity="0.05" />
+    <rect x="71" y="12" width="1" height="14" fill="#6D0000" opacity="0.08" />
+    {/* ═══ Intermediate vermillion/red color depth layers ═══ */}
+    <rect x="5" y="4" width="10" height="2" fill="#B71C1C" opacity="0.12" />
+    <rect x="5" y="20" width="10" height="2" fill="#D84315" opacity="0.08" />
+    <rect x="5" y="36" width="10" height="2" fill="#BF360C" opacity="0.1" />
+    <rect x="65" y="4" width="10" height="2" fill="#B71C1C" opacity="0.12" />
+    <rect x="65" y="20" width="10" height="2" fill="#D84315" opacity="0.08" />
+    <rect x="65" y="36" width="10" height="2" fill="#BF360C" opacity="0.1" />
+    {/* ═══ Kasagi (top beam) edge detail ═══ */}
+    <rect x="-4" y="-3" width="88" height="1" fill="#6D0000" opacity="0.12" />
+    <rect x="-6" y="-11" width="92" height="1" fill="#E53935" opacity="0.06" />
+    <rect x="-3" y="-6" width="2" height="2" fill="#8B0000" opacity="0.15" />
+    <rect x="81" y="-6" width="2" height="2" fill="#8B0000" opacity="0.12" />
+    <rect x="0" y="-8" width="4" height="1" fill="#AD1457" opacity="0.1" />
+    <rect x="76" y="-8" width="4" height="1" fill="#AD1457" opacity="0.08" />
+    {/* ═══ Nuki (tie beam) joint detail blocks ═══ */}
+    <rect x="16" y="4" width="4" height="6" fill="#AD1457" opacity="0.12" />
+    <rect x="17" y="5" width="2" height="4" fill="#8B0000" opacity="0.1" />
+    <rect x="60" y="4" width="4" height="6" fill="#AD1457" opacity="0.12" />
+    <rect x="61" y="5" width="2" height="4" fill="#8B0000" opacity="0.1" />
+    <rect x="18" y="10" width="2" height="1" fill="#6D0000" opacity="0.08" />
+    <rect x="62" y="10" width="2" height="1" fill="#6D0000" opacity="0.08" />
+    {/* ═══ More moss/lichen patches with varied greens ═══ */}
+    <rect x="8" y="34" width="3" height="2" fill="#33691E" opacity="0.2" />
+    <rect x="6" y="40" width="4" height="2" fill="#558B2F" opacity="0.15" />
+    <rect x="70" y="32" width="3" height="2" fill="#33691E" opacity="0.18" />
+    <rect x="72" y="38" width="4" height="2" fill="#558B2F" opacity="0.12" />
+    <rect x="30" y="-6" width="3" height="2" fill="#1B5E20" opacity="0.12" />
+    <rect x="50" y="-8" width="3" height="2" fill="#2E7D32" opacity="0.1" />
+    <rect x="14" y="56" width="2" height="2" fill="#4CAF50" opacity="0.18" />
+    <rect x="62" y="56" width="2" height="2" fill="#66BB6A" opacity="0.15" />
+    <rect x="36" y="10" width="2" height="1" fill="#81C784" opacity="0.12" />
+    <rect x="46" y="8" width="2" height="1" fill="#A5D6A7" opacity="0.1" />
+
     {/* ═══ Small coral growth ═══ */}
     <rect x="-2" y="54" width="4" height="4" fill="#E91E63" opacity="0.2" />
     <rect x="-1" y="53" width="2" height="2" fill="#F48FB1" opacity="0.15" />
@@ -3222,6 +3683,53 @@ const StonePagoda = memo(({ x, y }: { x: number; y: number }) => (
     {/* Mineral stain */}
     <rect x="36" y="34" width="2" height="10" fill="#6B6560" opacity="0.1" />
 
+    {/* ═══ Stone texture blocks per tier — extra depth ═══ */}
+    {/* First tier */}
+    <rect x="12" y="38" width="4" height="2" fill="#A8A8A8" opacity="0.12" />
+    <rect x="22" y="36" width="6" height="2" fill="#929292" opacity="0.1" />
+    <rect x="36" y="40" width="4" height="2" fill="#A8A8A8" opacity="0.1" />
+    <rect x="44" y="38" width="3" height="2" fill="#929292" opacity="0.08" />
+    {/* Second tier */}
+    <rect x="16" y="22" width="4" height="2" fill="#A8A8A8" opacity="0.1" />
+    <rect x="28" y="24" width="4" height="2" fill="#929292" opacity="0.08" />
+    <rect x="38" y="22" width="3" height="2" fill="#A8A8A8" opacity="0.08" />
+    {/* Third tier */}
+    <rect x="22" y="8" width="3" height="2" fill="#A8A8A8" opacity="0.08" />
+    <rect x="34" y="6" width="3" height="2" fill="#929292" opacity="0.06" />
+    {/* ═══ Eave shadow detail pixels ═══ */}
+    <rect x="0" y="31" width="60" height="1" fill="#3E3B38" opacity="0.1" />
+    <rect x="4" y="15" width="52" height="1" fill="#3E3B38" opacity="0.08" />
+    <rect x="8" y="1" width="44" height="1" fill="#3E3B38" opacity="0.06" />
+    <rect x="2" y="32" width="4" height="1" fill="#4B4845" opacity="0.12" />
+    <rect x="54" y="32" width="4" height="1" fill="#4B4845" opacity="0.1" />
+    <rect x="6" y="16" width="3" height="1" fill="#4B4845" opacity="0.1" />
+    <rect x="51" y="16" width="3" height="1" fill="#4B4845" opacity="0.08" />
+    {/* ═══ Finial (top ornament) detail ═══ */}
+    <rect x="29" y="-21" width="2" height="1" fill="#A8A8A8" opacity="0.3" />
+    <rect x="28" y="-17" width="4" height="1" fill="#B8B8B8" opacity="0.2" />
+    <rect x="27" y="-13" width="6" height="1" fill="#C8C8C8" opacity="0.15" />
+    <rect x="29" y="-24" width="2" height="2" fill="#78716C" opacity="0.4" />
+    <rect x="29.5" y="-25" width="1" height="1" fill="#9E9E9E" opacity="0.35" />
+    {/* Finial vertical spine */}
+    <rect x="29.5" y="-20" width="1" height="10" fill="#6B7280" opacity="0.12" />
+    {/* ═══ Intermediate stone color depth blocks ═══ */}
+    <rect x="10" y="35" width="40" height="1" fill="#8A8A8A" opacity="0.1" />
+    <rect x="10" y="43" width="40" height="1" fill="#787878" opacity="0.08" />
+    <rect x="14" y="19" width="32" height="1" fill="#8A8A8A" opacity="0.08" />
+    <rect x="14" y="27" width="32" height="1" fill="#787878" opacity="0.06" />
+    <rect x="18" y="5" width="24" height="1" fill="#8A8A8A" opacity="0.06" />
+    <rect x="18" y="11" width="24" height="1" fill="#787878" opacity="0.05" />
+    {/* ═══ Weather stain patterns ═══ */}
+    <rect x="14" y="36" width="2" height="8" fill="#6B6560" opacity="0.12" />
+    <rect x="40" y="34" width="2" height="6" fill="#57534E" opacity="0.1" />
+    <rect x="18" y="20" width="2" height="6" fill="#6B6560" opacity="0.08" />
+    <rect x="36" y="18" width="2" height="6" fill="#57534E" opacity="0.06" />
+    <rect x="24" y="6" width="1" height="4" fill="#6B6560" opacity="0.06" />
+    <rect x="34" y="4" width="1" height="4" fill="#57534E" opacity="0.05" />
+    {/* Rust drip stains */}
+    <rect x="26" y="30" width="1" height="4" fill="#8D6E63" opacity="0.08" />
+    <rect x="32" y="14" width="1" height="3" fill="#8D6E63" opacity="0.06" />
+
     {/* ═══ Bubbles ═══ */}
     <circle cx="30" cy="-18" r="1" fill="rgba(255,255,255,0.2)" style={{ animation: 'bubbleRise 4s ease-in 1s infinite' }} />
     <circle cx="26" cy="-8" r="0.7" fill="rgba(255,255,255,0.15)" style={{ animation: 'bubbleRise 5s ease-in 3s infinite' }} />
@@ -3279,30 +3787,94 @@ const AtlanteanDome = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="34" y="2" width="1" height="28" fill="#1A5276" opacity="0.1" />
     <rect x="50" y="-4" width="1" height="34" fill="#1A5276" opacity="0.1" />
     <rect x="66" y="2" width="1" height="28" fill="#1A5276" opacity="0.1" />
+    {/* Panel seam detail pixels — riveted joints */}
+    <rect x="34" y="6" width="2" height="2" fill="#154360" opacity="0.18" />
+    <rect x="34" y="14" width="2" height="2" fill="#154360" opacity="0.16" />
+    <rect x="34" y="22" width="2" height="2" fill="#154360" opacity="0.14" />
+    <rect x="50" y="0" width="2" height="2" fill="#154360" opacity="0.18" />
+    <rect x="50" y="8" width="2" height="2" fill="#154360" opacity="0.16" />
+    <rect x="50" y="16" width="2" height="2" fill="#154360" opacity="0.14" />
+    <rect x="50" y="24" width="2" height="2" fill="#154360" opacity="0.12" />
+    <rect x="66" y="6" width="2" height="2" fill="#154360" opacity="0.16" />
+    <rect x="66" y="14" width="2" height="2" fill="#154360" opacity="0.14" />
+    <rect x="66" y="22" width="2" height="2" fill="#154360" opacity="0.12" />
+    {/* Horizontal panel seam lines */}
+    <rect x="18" y="26" width="64" height="1" fill="#1A5276" opacity="0.08" />
+    <rect x="24" y="6" width="52" height="1" fill="#1A5276" opacity="0.07" />
+    {/* Crystal/orichalcum color depth intermediate blocks */}
+    <rect x="20" y="12" width="8" height="4" fill="#2980B9" opacity="0.2" />
+    <rect x="38" y="4" width="6" height="4" fill="#5499C7" opacity="0.15" />
+    <rect x="56" y="8" width="8" height="4" fill="#1F618D" opacity="0.18" />
+    <rect x="70" y="14" width="6" height="4" fill="#2980B9" opacity="0.15" />
+    <rect x="28" y="20" width="4" height="4" fill="#1A5276" opacity="0.12" />
+    <rect x="60" y="22" width="6" height="4" fill="#1F618D" opacity="0.14" />
+    {/* Orichalcum shimmer accent pixels */}
+    <rect x="36" y="-2" width="2" height="2" fill="#D4A017" opacity="0.1" />
+    <rect x="42" y="-6" width="2" height="2" fill="#DAA520" opacity="0.08" />
+    <rect x="56" y="-2" width="2" height="2" fill="#D4A017" opacity="0.1" />
+    <rect x="46" y="2" width="2" height="2" fill="#B8860B" opacity="0.12" />
+    <rect x="62" y="6" width="2" height="2" fill="#DAA520" opacity="0.08" />
+    <rect x="30" y="8" width="2" height="2" fill="#D4A017" opacity="0.09" />
+    {/* Rune/glyph marking pixels on dome surface */}
+    <rect x="24" y="16" width="4" height="4" fill="#00BCD4" opacity="0.12" />
+    <rect x="25" y="17" width="2" height="2" fill="#00E5FF" opacity="0.1" />
+    <rect x="72" y="18" width="4" height="4" fill="#00BCD4" opacity="0.1" />
+    <rect x="73" y="19" width="2" height="2" fill="#00E5FF" opacity="0.08" />
+    <rect x="42" y="24" width="2" height="2" fill="#00BCD4" opacity="0.1" />
+    <rect x="58" y="26" width="2" height="2" fill="#00BCD4" opacity="0.08" />
 
     {/* ═══ Dome windows — glowing with interior light ═══ */}
     <rect x="30" y="10" width="8" height="10" fill="#00BCD4" opacity="0.5" />
     <rect x="32" y="8" width="4" height="3" fill="#4DD0E1" opacity="0.4" />
-    {/* Window frame */}
+    {/* Window frame with corner blocks */}
     <rect x="30" y="10" width="8" height="1" fill="#1A5276" opacity="0.2" />
     <rect x="30" y="10" width="1" height="10" fill="#1A5276" opacity="0.15" />
     <rect x="37" y="10" width="1" height="10" fill="#1A5276" opacity="0.15" />
+    <rect x="30" y="19" width="8" height="1" fill="#1A5276" opacity="0.18" />
+    <rect x="30" y="10" width="2" height="2" fill="#154360" opacity="0.2" />
+    <rect x="36" y="10" width="2" height="2" fill="#154360" opacity="0.18" />
+    <rect x="30" y="18" width="2" height="2" fill="#154360" opacity="0.16" />
+    <rect x="36" y="18" width="2" height="2" fill="#154360" opacity="0.15" />
+    {/* Window crossbar */}
+    <rect x="33" y="10" width="1" height="10" fill="#1A5276" opacity="0.1" />
+    <rect x="30" y="14" width="8" height="1" fill="#1A5276" opacity="0.1" />
     {/* Interior glow */}
     <rect x="31" y="12" width="6" height="6" fill="#00E5FF" opacity="0.08" />
+    {/* Bioluminescent glow spill */}
+    <rect x="29" y="12" width="1" height="6" fill="#00E5FF" opacity="0.06" />
+    <rect x="38" y="12" width="1" height="6" fill="#00E5FF" opacity="0.05" />
 
     <rect x="46" y="10" width="8" height="10" fill="#00BCD4" opacity="0.5" />
     <rect x="48" y="8" width="4" height="3" fill="#4DD0E1" opacity="0.4" />
     <rect x="46" y="10" width="8" height="1" fill="#1A5276" opacity="0.2" />
     <rect x="46" y="10" width="1" height="10" fill="#1A5276" opacity="0.15" />
     <rect x="53" y="10" width="1" height="10" fill="#1A5276" opacity="0.15" />
+    <rect x="46" y="19" width="8" height="1" fill="#1A5276" opacity="0.18" />
+    <rect x="46" y="10" width="2" height="2" fill="#154360" opacity="0.2" />
+    <rect x="52" y="10" width="2" height="2" fill="#154360" opacity="0.18" />
+    <rect x="46" y="18" width="2" height="2" fill="#154360" opacity="0.16" />
+    <rect x="52" y="18" width="2" height="2" fill="#154360" opacity="0.15" />
+    <rect x="49" y="10" width="1" height="10" fill="#1A5276" opacity="0.1" />
+    <rect x="46" y="14" width="8" height="1" fill="#1A5276" opacity="0.1" />
     <rect x="47" y="12" width="6" height="6" fill="#00E5FF" opacity="0.08" />
+    <rect x="45" y="12" width="1" height="6" fill="#00E5FF" opacity="0.06" />
+    <rect x="54" y="12" width="1" height="6" fill="#00E5FF" opacity="0.05" />
 
     <rect x="62" y="10" width="8" height="10" fill="#00BCD4" opacity="0.5" />
     <rect x="64" y="8" width="4" height="3" fill="#4DD0E1" opacity="0.4" />
     <rect x="62" y="10" width="8" height="1" fill="#1A5276" opacity="0.2" />
     <rect x="62" y="10" width="1" height="10" fill="#1A5276" opacity="0.15" />
     <rect x="69" y="10" width="1" height="10" fill="#1A5276" opacity="0.15" />
+    <rect x="62" y="19" width="8" height="1" fill="#1A5276" opacity="0.18" />
+    <rect x="62" y="10" width="2" height="2" fill="#154360" opacity="0.2" />
+    <rect x="68" y="10" width="2" height="2" fill="#154360" opacity="0.18" />
+    <rect x="62" y="18" width="2" height="2" fill="#154360" opacity="0.16" />
+    <rect x="68" y="18" width="2" height="2" fill="#154360" opacity="0.15" />
+    <rect x="65" y="10" width="1" height="10" fill="#1A5276" opacity="0.1" />
+    <rect x="62" y="14" width="8" height="1" fill="#1A5276" opacity="0.1" />
     <rect x="63" y="12" width="6" height="6" fill="#00E5FF" opacity="0.08" />
+    <rect x="61" y="12" width="1" height="6" fill="#00E5FF" opacity="0.06" />
+    <rect x="70" y="12" width="1" height="6" fill="#00E5FF" opacity="0.05" />
 
     {/* ═══ Central entrance — grand archway ═══ */}
     <rect x="38" y="26" width="24" height="16" fill="#0A1628" opacity="0.8" />
@@ -3357,24 +3929,61 @@ const AtlanteanDome = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="80" y="28" width="3" height="2" fill="#00E5FF" opacity="0.2" />
     {/* Glow on dome apex */}
     <rect x="48" y="-13" width="4" height="2" fill="#00E5FF" opacity="0.12" />
-    {/* Scattered glow dots */}
+    {/* Scattered glow dots — cyan/teal bioluminescence */}
     <rect x="22" y="20" width="2" height="2" fill="#00E5FF" opacity="0.1" />
     <rect x="76" y="22" width="2" height="2" fill="#00E5FF" opacity="0.1" />
     <rect x="40" y="-2" width="2" height="2" fill="#00E5FF" opacity="0.08" />
+    <rect x="28" y="14" width="2" height="2" fill="#00BCD4" opacity="0.08" />
+    <rect x="70" y="6" width="2" height="2" fill="#4DD0E1" opacity="0.07" />
+    <rect x="54" y="28" width="2" height="2" fill="#00E5FF" opacity="0.07" />
+    <rect x="36" y="32" width="2" height="2" fill="#4DD0E1" opacity="0.06" />
+    <rect x="64" y="30" width="2" height="2" fill="#00BCD4" opacity="0.06" />
+    {/* Pillar base glow accents */}
+    <rect x="30" y="38" width="2" height="2" fill="#00E5FF" opacity="0.1" />
+    <rect x="68" y="38" width="2" height="2" fill="#00E5FF" opacity="0.08" />
+    {/* Bioluminescent glow halo pixels */}
+    <rect x="11" y="37" width="2" height="2" fill="#00BCD4" opacity="0.12" />
+    <rect x="15" y="40" width="2" height="1" fill="#009688" opacity="0.1" />
+    <rect x="83" y="37" width="2" height="2" fill="#00BCD4" opacity="0.1" />
+    <rect x="87" y="40" width="2" height="1" fill="#009688" opacity="0.08" />
 
     {/* ═══ Coral, algae, barnacles ═══ */}
     <rect x="0" y="52" width="8" height="3" fill="#2E7D32" opacity="0.3" />
     <rect x="2" y="51" width="4" height="2" fill="#4CAF50" opacity="0.2" />
     <rect x="88" y="50" width="10" height="3" fill="#1B5E20" opacity="0.3" />
     <rect x="90" y="49" width="4" height="2" fill="#2E7D32" opacity="0.2" />
-    {/* Coral cluster */}
+    {/* Coral cluster — right side with color depth */}
     <rect x="98" y="44" width="6" height="5" fill="#E91E63" opacity="0.25" />
     <rect x="100" y="42" width="3" height="3" fill="#F48FB1" opacity="0.18" />
+    <rect x="99" y="46" width="4" height="2" fill="#C2185B" opacity="0.2" />
+    <rect x="101" y="41" width="2" height="2" fill="#FCE4EC" opacity="0.12" />
+    <rect x="96" y="46" width="3" height="3" fill="#AD1457" opacity="0.15" />
+    {/* Coral cluster — left side with color depth */}
     <rect x="-2" y="48" width="5" height="4" fill="#FF5722" opacity="0.2" />
     <rect x="0" y="46" width="3" height="3" fill="#FF8A65" opacity="0.15" />
-    {/* Barnacles */}
+    <rect x="-1" y="50" width="4" height="2" fill="#BF360C" opacity="0.15" />
+    <rect x="1" y="45" width="2" height="2" fill="#FFAB91" opacity="0.1" />
+    <rect x="3" y="49" width="3" height="3" fill="#D84315" opacity="0.12" />
+    {/* Coral encrustation blocks on lower dome sections */}
+    <rect x="16" y="30" width="4" height="3" fill="#E91E63" opacity="0.12" />
+    <rect x="17" y="29" width="2" height="2" fill="#F48FB1" opacity="0.1" />
+    <rect x="78" y="30" width="4" height="3" fill="#FF5722" opacity="0.1" />
+    <rect x="79" y="29" width="2" height="2" fill="#FF8A65" opacity="0.08" />
+    <rect x="22" y="34" width="3" height="2" fill="#C2185B" opacity="0.1" />
+    <rect x="74" y="34" width="3" height="2" fill="#D84315" opacity="0.08" />
+    {/* Barnacle detail clusters */}
     <rect x="4" y="54" width="3" height="2" fill="#9CA3AF" opacity="0.25" />
+    <rect x="5" y="53" width="2" height="2" fill="#B0BEC5" opacity="0.18" />
+    <rect x="3" y="55" width="2" height="1" fill="#78909C" opacity="0.2" />
     <rect x="92" y="52" width="4" height="2" fill="#9CA3AF" opacity="0.2" />
+    <rect x="93" y="51" width="2" height="2" fill="#B0BEC5" opacity="0.15" />
+    <rect x="95" y="53" width="2" height="1" fill="#78909C" opacity="0.15" />
+    {/* Additional barnacle clusters on base steps */}
+    <rect x="20" y="56" width="3" height="2" fill="#9CA3AF" opacity="0.18" />
+    <rect x="21" y="55" width="2" height="2" fill="#B0BEC5" opacity="0.12" />
+    <rect x="74" y="54" width="3" height="2" fill="#9CA3AF" opacity="0.15" />
+    <rect x="42" y="56" width="2" height="2" fill="#78909C" opacity="0.12" />
+    <rect x="60" y="55" width="3" height="2" fill="#9CA3AF" opacity="0.13" />
 
     {/* ═══ Bubbles ═══ */}
     <circle cx="50" cy="-24" r="1.5" fill="rgba(255,255,255,0.3)" style={{ animation: 'bubbleRise 3.5s ease-in 0s infinite' }} />
@@ -4330,7 +4939,6 @@ const SAILBOAT_LAYOUT: LayeredDecoConfig = {
   midground: {
     structures: [
       { type: 'sailboat', x: 334, y: 184, scale: 1.5 },
-      { type: 'anchor', x: 600, y: 140, scale: 0.8 },
     ],
   },
   foreground: {
@@ -4890,7 +5498,7 @@ const STAGNANT_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'deer-skull', x: 200, y: 95, scale: 1.6 },
+      { type: 'deer-skull', x: 200, y: 95, scale: 1.0 },
     ],
   },
   foreground: {
