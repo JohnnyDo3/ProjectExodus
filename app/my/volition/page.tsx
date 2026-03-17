@@ -1177,16 +1177,6 @@ export default function MyVolitionPage() {
         </div>
       )}
 
-      {/* Dynamic Spotlight */}
-      <div className="container mx-auto px-4 pt-6">
-        <DynamicSpotlight
-          notifications={notifications}
-          learningModules={learningModules}
-          projects={projects}
-          onDismiss={dismissSpotlight}
-        />
-      </div>
-
       {/* ═══ PROFILE HERO SECTION ═══ */}
       {orderedLanes.some(l => l.id === 'profile') && (
         <section className="py-6">
