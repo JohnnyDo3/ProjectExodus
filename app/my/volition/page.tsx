@@ -879,8 +879,8 @@ export default function MyVolitionPage() {
   return (
     <div className="min-h-screen bg-[var(--background)]">
       {/* ═══ PERSONAL FISH TANK - Full Viewport Landing ═══ */}
-      <section className="relative h-[100svh] max-h-[100svh] overflow-hidden">
-        <div className="bg-[#0A1628] h-full flex flex-col min-h-0">
+      <section className="relative h-screen max-h-screen overflow-hidden">
+        <div className="bg-[#0A1628] h-full flex flex-col min-h-0 max-h-screen overflow-hidden">
             {/* Tank toolbar */}
             <div className="flex items-center justify-between px-4 sm:px-6 py-2 bg-gradient-to-r from-[#0D2137]/95 via-[#123855]/95 to-[#0D2137]/95 border-b border-cyan-800/30">
               <div className="flex items-center gap-2">
