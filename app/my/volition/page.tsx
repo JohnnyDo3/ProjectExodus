@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import {
   Zap,
   User,
@@ -21,6 +21,8 @@ import {
   Settings,
   Plus,
   X,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react'
 
 import { useVolitionLayout, LaneId, DEFAULT_LANES } from '@/hooks/useVolitionLayout'
@@ -28,11 +30,6 @@ import { useIsMobile } from '@/hooks/useIsMobile'
 import { DeleteConfirmationModal } from '@/components/ui/DeleteConfirmationModal'
 
 import { DynamicSpotlight } from '@/components/volition/DynamicSpotlight'
-import { SortableLaneContainer } from '@/components/volition/SortableLaneContainer'
-import { DraggableLane } from '@/components/volition/DraggableLane'
-import { Lane } from '@/components/volition/Lane'
-import { SortableLane } from '@/components/volition/SortableLane'
-import { SortableCard } from '@/components/volition/SortableCard'
 import { QuickActionsBar } from '@/components/volition/QuickActionsBar'
 
 import { ProfileCard } from '@/components/volition/cards/ProfileCard'
@@ -56,6 +53,193 @@ const iconMap = {
   Rocket,
 }
 
+// ─── Scroll Row ──────────────────────────────────────────────────────────────
+// Netflix-style horizontal scroll container with navigation arrows
+
+function ScrollRow({ children }: { children: React.ReactNode }) {
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(false)
+
+  const checkScroll = useCallback(() => {
+    const el = scrollRef.current
+    if (!el) return
+    setCanScrollLeft(el.scrollLeft > 10)
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 10)
+  }, [])
+
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+    checkScroll()
+    el.addEventListener('scroll', checkScroll, { passive: true })
+    window.addEventListener('resize', checkScroll)
+    return () => {
+      el.removeEventListener('scroll', checkScroll)
+      window.removeEventListener('resize', checkScroll)
+    }
+  }, [checkScroll, children])
+
+  const scroll = (direction: 'left' | 'right') => {
+    const el = scrollRef.current
+    if (!el) return
+    const amount = el.clientWidth * 0.75
+    el.scrollBy({ left: direction === 'left' ? -amount : amount, behavior: 'smooth' })
+  }
+
+  return (
+    <div className="relative group/row">
+      {canScrollLeft && (
+        <button
+          onClick={() => scroll('left')}
+          className="absolute left-0 top-0 bottom-0 w-14 z-20 bg-gradient-to-r from-[var(--background)] via-[var(--background)]/80 to-transparent flex items-center justify-start pl-2 opacity-0 group-hover/row:opacity-100 transition-opacity duration-300"
+          aria-label="Scroll left"
+        >
+          <div className="w-9 h-9 rounded-full bg-[var(--card)] border border-[var(--border)] flex items-center justify-center shadow-lg">
+            <ChevronLeft className="w-4 h-4 text-[var(--foreground)]" />
+          </div>
+        </button>
+      )}
+
+      {canScrollRight && (
+        <button
+          onClick={() => scroll('right')}
+          className="absolute right-0 top-0 bottom-0 w-14 z-20 bg-gradient-to-l from-[var(--background)] via-[var(--background)]/80 to-transparent flex items-center justify-end pr-2 opacity-0 group-hover/row:opacity-100 transition-opacity duration-300"
+          aria-label="Scroll right"
+        >
+          <div className="w-9 h-9 rounded-full bg-[var(--card)] border border-[var(--border)] flex items-center justify-center shadow-lg">
+            <ChevronRight className="w-4 h-4 text-[var(--foreground)]" />
+          </div>
+        </button>
+      )}
+
+      <div
+        ref={scrollRef}
+        className="flex gap-4 overflow-x-auto px-4 sm:px-6 lg:px-8 pb-3"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        {children}
+      </div>
+    </div>
+  )
+}
+
+// ─── Section Header ──────────────────────────────────────────────────────────
+
+function SectionHeader({
+  title,
+  icon: Icon,
+  count,
+  gradient,
+  onAdd,
+  addLabel,
+  isCustomizing,
+  onRemove,
+}: {
+  title: string
+  icon: any
+  count: number
+  gradient: string
+  onAdd?: () => void
+  addLabel?: string
+  isCustomizing?: boolean
+  onRemove?: () => void
+}) {
+  return (
+    <div className="flex items-center justify-between mb-4 px-4 sm:px-6 lg:px-8">
+      <div className="flex items-center gap-3">
+        <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center`}>
+          <Icon className="w-5 h-5 text-white" />
+        </div>
+        <div>
+          <h2 className="text-lg sm:text-xl font-bold text-[var(--foreground)] tracking-tight">
+            {title}
+          </h2>
+          {count > 0 && (
+            <p className="text-[11px] text-[var(--muted-foreground)] mt-0.5 tracking-wide">
+              {count} item{count !== 1 ? 's' : ''}
+            </p>
+          )}
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2">
+        {onAdd && !isCustomizing && (
+          <button
+            onClick={onAdd}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--primary)]/10 text-[var(--primary)] text-xs font-bold hover:bg-[var(--primary)]/20 transition-colors"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            {addLabel || 'Add'}
+          </button>
+        )}
+        {isCustomizing && onRemove && (
+          <button
+            onClick={onRemove}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-500/10 text-red-500 text-xs font-bold hover:bg-red-500/20 transition-colors"
+          >
+            <X className="w-3.5 h-3.5" />
+            Remove
+          </button>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// ─── Section Divider ─────────────────────────────────────────────────────────
+
+function SectionDivider() {
+  return (
+    <div className="px-4 sm:px-6 lg:px-8 py-2">
+      <div className="h-px bg-gradient-to-r from-transparent via-[var(--border)] to-transparent" />
+    </div>
+  )
+}
+
+// ─── Empty State ─────────────────────────────────────────────────────────────
+
+function RowEmptyState({
+  icon: Icon,
+  message,
+  action,
+  href,
+}: {
+  icon: any
+  message: string
+  action?: string
+  href?: string
+}) {
+  return (
+    <div className="w-[280px] min-w-[280px] flex-shrink-0 flex flex-col items-center justify-center py-10 text-center bg-[var(--card)] rounded-2xl border-2 border-dashed border-[var(--border)]">
+      <div className="w-12 h-12 rounded-xl bg-[var(--muted)] flex items-center justify-center mb-3">
+        <Icon className="w-6 h-6 text-[var(--foreground)]/30" />
+      </div>
+      <p className="text-sm font-medium text-[var(--foreground)]/50 mb-3">{message}</p>
+      {action && href && (
+        <a
+          href={href}
+          className="px-4 py-2 rounded-lg bg-[var(--primary)]/10 text-[var(--primary)] text-sm font-bold hover:bg-[var(--primary)]/20 transition-colors"
+        >
+          {action}
+        </a>
+      )}
+    </div>
+  )
+}
+
+// ─── Card wrapper for horizontal scroll ──────────────────────────────────────
+
+function HCard({ children, wide }: { children: React.ReactNode; wide?: boolean }) {
+  return (
+    <div className={`${wide ? 'w-[340px] min-w-[340px]' : 'w-[280px] min-w-[280px]'} flex-shrink-0`}>
+      {children}
+    </div>
+  )
+}
+
+// ─── Page ────────────────────────────────────────────────────────────────────
+
 export default function MyVolitionPage() {
   const { data: session, status } = useSession()
   const isMobile = useIsMobile()
@@ -73,9 +257,6 @@ export default function MyVolitionPage() {
     startCustomizing,
     stopCustomizing,
     dismissSpotlight,
-    getCardOrder,
-    setCardOrder,
-    reorderLanes,
   } = useVolitionLayout()
 
   // Data state
@@ -89,9 +270,6 @@ export default function MyVolitionPage() {
   const [learningModules, setLearningModules] = useState<any[]>([])
   const [notifications, setNotifications] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
-
-  // Mobile tab navigation
-  const [activeLaneIndex, setActiveLaneIndex] = useState(0)
 
   // Delete modal state
   const [deleteModal, setDeleteModal] = useState<{
@@ -154,7 +332,6 @@ export default function MyVolitionPage() {
       if (savedDraft) {
         const draft = JSON.parse(savedDraft)
         if (draft.articleData?.title || draft.articleData?.content) {
-          // Create a pseudo-article object for the draft
           const draftArticle = {
             id: 'local-draft',
             title: draft.articleData.title || 'Untitled Draft',
@@ -270,7 +447,6 @@ export default function MyVolitionPage() {
   // Initial data fetch
   useEffect(() => {
     if (session?.user?.id) {
-      // Load local drafts from localStorage (sync operation)
       loadLocalDrafts()
 
       Promise.all([
@@ -370,60 +546,87 @@ export default function MyVolitionPage() {
   const user = session.user
   const orderedLanes = getOrderedLanes()
 
-  // Render lane content based on lane ID
-  const renderLaneContent = (laneId: LaneId) => {
+  // Get lane count
+  const getLaneCount = (laneId: LaneId): number => {
     switch (laneId) {
-      case 'profile':
-        // Profile is handled separately - business card IS the lane
-        return null
+      case 'profile': return 1
+      case 'projects': return projects.length
+      case 'articles': return articles.length + localDrafts.length
+      case 'learning': return learningModules.length
+      case 'network': return following.length + networkSuggestions.length
+      case 'feed': return feedPosts.length
+      default: return 0
+    }
+  }
 
+  // Get lane empty state config
+  const emptyStates: Record<LaneId, { icon: any; message: string; action?: string; href?: string }> = {
+    profile: { icon: User, message: 'Complete your profile' },
+    projects: { icon: Briefcase, message: 'No projects yet', action: 'Start a Project', href: '/community/projects/new' },
+    articles: { icon: FileText, message: 'No articles yet', action: 'Write an Article', href: '/articles/write' },
+    learning: { icon: BookOpen, message: 'Start learning', action: 'Browse Courses', href: '/learn' },
+    network: { icon: Users, message: 'Grow your network', action: 'Find People', href: '/network/browse' },
+    feed: { icon: MessageCircle, message: 'No posts yet', action: 'Start a Discussion', href: '/community/forum/new' },
+    impact: { icon: Leaf, message: 'Track your impact' },
+  }
+
+  // Get add config per lane
+  const getAddConfig = (laneId: LaneId) => {
+    switch (laneId) {
+      case 'projects': return { onAdd: () => window.location.href = '/community/projects/new', label: 'New Project' }
+      case 'articles': return { onAdd: () => window.location.href = '/articles/write', label: 'Write Article' }
+      case 'feed': return { onAdd: () => window.location.href = '/community/forum/new', label: 'New Post' }
+      default: return {}
+    }
+  }
+
+  // Render a section's content as horizontal cards
+  const renderSectionContent = (laneId: LaneId) => {
+    switch (laneId) {
       case 'projects':
-        return projects.length > 0 ? (
-          getSortedItems(projects, 'projects').map((project) => (
-            <SortableCard key={project.id} id={project.id} isCustomizing={isCustomizing}>
-              <ProjectCard
-                project={project}
-                userId={user.id}
-                viewMode={viewMode}
-                onPreview={(p) => setPreviewProject(p)}
-                onDelete={(id) =>
-                  setDeleteModal({
-                    isOpen: true,
-                    type: 'project',
-                    id,
-                    title: 'Delete Project',
-                  })
-                }
-              />
-            </SortableCard>
-          ))
-        ) : null
+        if (projects.length === 0) {
+          return <RowEmptyState {...emptyStates.projects} />
+        }
+        return projects.map((project) => (
+          <HCard key={project.id}>
+            <ProjectCard
+              project={project}
+              userId={user.id}
+              viewMode={viewMode}
+              onPreview={(p) => setPreviewProject(p)}
+              onDelete={(id) =>
+                setDeleteModal({
+                  isOpen: true,
+                  type: 'project',
+                  id,
+                  title: 'Delete Project',
+                })
+              }
+            />
+          </HCard>
+        ))
 
-      case 'articles':
-        // Combine local drafts with API-fetched articles
+      case 'articles': {
         const allArticles = [...localDrafts, ...articles]
-        return allArticles.length > 0 ? (
+        if (allArticles.length === 0) {
+          return <RowEmptyState {...emptyStates.articles} />
+        }
+        return (
           <>
-            {/* Local drafts first */}
             {localDrafts.map((draft) => (
-              <SortableCard key={draft.id} id={draft.id} isCustomizing={isCustomizing}>
+              <HCard key={draft.id}>
                 <ArticleCard
-                  article={{
-                    ...draft,
-                    status: 'DRAFT', // Display as DRAFT for styling
-                  }}
+                  article={{ ...draft, status: 'DRAFT' }}
                   viewMode={viewMode}
                   onDelete={() => {
-                    // Clear local draft
                     localStorage.removeItem('article-draft-v2')
                     setLocalDrafts([])
                   }}
                 />
-              </SortableCard>
+              </HCard>
             ))}
-            {/* API-fetched articles */}
-            {getSortedItems(articles, 'articles').map((article) => (
-              <SortableCard key={article.id} id={article.id} isCustomizing={isCustomizing}>
+            {articles.map((article) => (
+              <HCard key={article.id}>
                 <ArticleCard
                   article={article}
                   viewMode={viewMode}
@@ -436,168 +639,81 @@ export default function MyVolitionPage() {
                     })
                   }
                 />
-              </SortableCard>
+              </HCard>
             ))}
           </>
-        ) : null
+        )
+      }
 
       case 'learning':
-        return learningModules.length > 0 ? (
-          getSortedItems(learningModules, 'learning').map((module) => (
-            <SortableCard key={module.id} id={module.id} isCustomizing={isCustomizing}>
-              <LearningCard
-                module={module}
-                viewMode={viewMode}
-              />
-            </SortableCard>
-          ))
-        ) : null
+        if (learningModules.length === 0) {
+          return <RowEmptyState {...emptyStates.learning} />
+        }
+        return learningModules.map((module) => (
+          <HCard key={module.id}>
+            <LearningCard module={module} viewMode={viewMode} />
+          </HCard>
+        ))
 
-      case 'network':
-        return (
-          <>
-            {following.length > 0 && (
-              <div className="mb-4">
-                <h4 className="text-xs font-bold text-[var(--foreground)]/50 uppercase mb-2 px-1">
-                  Following
-                </h4>
-                {following.slice(0, 3).map((user) => (
-                  <NetworkCard
-                    key={user.id}
-                    user={user}
-                    type="following"
-                    viewMode={viewMode}
-                    className="mb-2"
-                  />
-                ))}
-              </div>
-            )}
-            {networkSuggestions.length > 0 && (
-              <div>
-                <h4 className="text-xs font-bold text-[var(--foreground)]/50 uppercase mb-2 px-1">
-                  Suggested
-                </h4>
-                {networkSuggestions.slice(0, 5).map((user) => (
-                  <NetworkCard
-                    key={user.id}
-                    user={user}
-                    type="suggestion"
-                    viewMode={viewMode}
-                    onFollow={handleFollow}
-                    className="mb-2"
-                  />
-                ))}
-              </div>
-            )}
-          </>
-        )
+      case 'network': {
+        const networkItems: React.ReactNode[] = []
+        if (following.length === 0 && networkSuggestions.length === 0) {
+          return <RowEmptyState {...emptyStates.network} />
+        }
+        following.forEach((u) => {
+          networkItems.push(
+            <HCard key={`following-${u.id}`}>
+              <NetworkCard user={u} type="following" viewMode={viewMode} />
+            </HCard>
+          )
+        })
+        networkSuggestions.forEach((u) => {
+          networkItems.push(
+            <HCard key={`suggestion-${u.id}`}>
+              <NetworkCard
+                user={u}
+                type="suggestion"
+                viewMode={viewMode}
+                onFollow={handleFollow}
+              />
+            </HCard>
+          )
+        })
+        return networkItems
+      }
 
       case 'feed':
-        return feedPosts.length > 0 ? (
-          getSortedItems(feedPosts, 'feed').map((post) => (
-            <SortableCard key={post.id} id={post.id} isCustomizing={isCustomizing}>
-              <FeedPostCard
-                post={post}
-                currentUserId={user.id}
-                viewMode={viewMode}
-                onDelete={(id) =>
-                  setDeleteModal({
-                    isOpen: true,
-                    type: 'discussion',
-                    id,
-                    title: 'Delete Post',
-                  })
-                }
-              />
-            </SortableCard>
-          ))
-        ) : null
+        if (feedPosts.length === 0) {
+          return <RowEmptyState {...emptyStates.feed} />
+        }
+        return feedPosts.map((post) => (
+          <HCard key={post.id} wide>
+            <FeedPostCard
+              post={post}
+              currentUserId={user.id}
+              viewMode={viewMode}
+              onDelete={(id) =>
+                setDeleteModal({
+                  isOpen: true,
+                  type: 'discussion',
+                  id,
+                  title: 'Delete Post',
+                })
+              }
+            />
+          </HCard>
+        ))
 
       case 'impact':
-        return <ImpactCard viewMode={viewMode} />
+        return (
+          <HCard wide>
+            <ImpactCard viewMode={viewMode} />
+          </HCard>
+        )
 
       default:
         return null
     }
-  }
-
-  // Get lane empty state
-  const getLaneEmptyState = (laneId: LaneId) => {
-    const emptyStates: Record<LaneId, { icon: any; message: string; action?: string; href?: string }> = {
-      profile: { icon: User, message: 'Complete your profile' },
-      projects: { icon: Briefcase, message: 'No projects yet', action: 'Start a Project', href: '/community/projects/new' },
-      articles: { icon: FileText, message: 'No articles yet', action: 'Write an Article', href: '/articles/write' },
-      learning: { icon: BookOpen, message: 'Start learning', action: 'Browse Courses', href: '/learn' },
-      network: { icon: Users, message: 'Grow your network', action: 'Find People', href: '/network/browse' },
-      feed: { icon: MessageCircle, message: 'No posts yet', action: 'Start a Discussion', href: '/community/forum/new' },
-      impact: { icon: Leaf, message: 'Track your impact' },
-    }
-
-    const state = emptyStates[laneId]
-    const Icon = state.icon
-
-    return (
-      <div className="flex flex-col items-center justify-center py-8 text-center">
-        <div className="w-12 h-12 rounded-xl bg-[var(--muted)] flex items-center justify-center mb-3">
-          <Icon className="w-6 h-6 text-[var(--foreground)]/30" />
-        </div>
-        <p className="text-sm font-medium text-[var(--foreground)]/50 mb-3">{state.message}</p>
-        {state.action && state.href && (
-          <a
-            href={state.href}
-            className="px-4 py-2 rounded-lg bg-[var(--primary)]/10 text-[var(--primary)] text-sm font-bold hover:bg-[var(--primary)]/20 transition-colors"
-          >
-            {state.action}
-          </a>
-        )}
-      </div>
-    )
-  }
-
-  // Get lane count
-  const getLaneCount = (laneId: LaneId): number => {
-    switch (laneId) {
-      case 'profile': return 1 // Always show the business card
-      case 'projects': return projects.length
-      case 'articles': return articles.length + localDrafts.length
-      case 'learning': return learningModules.length
-      case 'network': return following.length + networkSuggestions.length
-      case 'feed': return feedPosts.length
-      default: return 0
-    }
-  }
-
-  // Get item IDs for a lane
-  const getLaneItemIds = (laneId: LaneId): string[] => {
-    switch (laneId) {
-      case 'projects': return projects.map(p => p.id)
-      case 'articles': return [...localDrafts.map(d => d.id), ...articles.map(a => a.id)]
-      case 'learning': return learningModules.map(m => m.id)
-      case 'feed': return feedPosts.map(p => p.id)
-      default: return []
-    }
-  }
-
-  // Get sorted items based on saved order
-  const getSortedItems = <T extends { id: string }>(items: T[], laneId: LaneId): T[] => {
-    const savedOrder = getCardOrder(laneId)
-    if (savedOrder.length === 0) return items
-
-    // Sort items based on saved order, putting items not in saved order at the end
-    return [...items].sort((a, b) => {
-      const indexA = savedOrder.indexOf(a.id)
-      const indexB = savedOrder.indexOf(b.id)
-
-      if (indexA === -1 && indexB === -1) return 0
-      if (indexA === -1) return 1
-      if (indexB === -1) return -1
-      return indexA - indexB
-    })
-  }
-
-  // Handle card reorder
-  const handleCardReorder = (laneId: LaneId, newOrder: string[]) => {
-    setCardOrder(laneId, newOrder)
   }
 
   return (
@@ -659,7 +775,7 @@ export default function MyVolitionPage() {
                     className="flex items-center gap-2 px-3 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors"
                   >
                     <Plus className="w-4 h-4" />
-                    <span>Lanes</span>
+                    <span>Sections</span>
                   </button>
                   <button
                     onClick={resetToDefaults}
@@ -681,43 +797,17 @@ export default function MyVolitionPage() {
         </div>
       </div>
 
-      {/* Mobile lane tabs */}
-      {isMobile && (
-        <div className="sticky top-[72px] z-40 bg-[var(--background)] border-b border-[var(--border)] overflow-x-auto scrollbar-none">
-          <div className="flex px-2 py-2 gap-2">
-            {orderedLanes.map((lane, index) => {
-              const Icon = iconMap[lane.icon as keyof typeof iconMap] || User
-              const isActive = index === activeLaneIndex
-              return (
-                <button
-                  key={lane.id}
-                  onClick={() => setActiveLaneIndex(index)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap transition-all ${
-                    isActive
-                      ? `bg-gradient-to-r ${lane.gradient} text-white`
-                      : 'bg-[var(--muted)] text-[var(--foreground)]/70'
-                  }`}
-                >
-                  <Icon className="w-4 h-4" />
-                  <span className="text-sm font-bold">{lane.title}</span>
-                </button>
-              )
-            })}
-          </div>
-        </div>
-      )}
-
       {/* Customize mode banner */}
       {isCustomizing && (
         <div className="bg-[var(--primary)]/10 border-b border-[var(--primary)]/20 py-2 px-4 text-center">
           <p className="text-sm font-medium text-[var(--primary)]">
-            Customize Mode: Manage your lanes and layout
+            Customize Mode: Manage your sections and layout
           </p>
         </div>
       )}
 
       {/* Dynamic Spotlight */}
-      <div className="container mx-auto px-4 pt-4">
+      <div className="container mx-auto px-4 pt-6">
         <DynamicSpotlight
           notifications={notifications}
           learningModules={learningModules}
@@ -726,143 +816,61 @@ export default function MyVolitionPage() {
         />
       </div>
 
-      {/* Main content area */}
-      <div className="py-4">
-        {isMobile ? (
-          // Mobile: Show active lane only
-          <div className="container mx-auto px-4">
-            {orderedLanes[activeLaneIndex] && (
-              orderedLanes[activeLaneIndex].id === 'profile' ? (
-                // Profile lane: the business card IS the lane (no wrapper)
-                <ProfileCard
-                  user={user}
-                  userProfile={userProfile}
-                  viewMode={viewMode}
-                  onExpand={() => setShowBusinessCardModal(true)}
-                />
-              ) : (
-                <Lane
-                  id={orderedLanes[activeLaneIndex].id}
-                  title={orderedLanes[activeLaneIndex].title}
-                  icon={iconMap[orderedLanes[activeLaneIndex].icon as keyof typeof iconMap] || User}
-                  count={getLaneCount(orderedLanes[activeLaneIndex].id)}
-                  gradient={orderedLanes[activeLaneIndex].gradient}
-                  viewMode={viewMode}
-                  isCustomizing={isCustomizing}
-                  onRemove={() => toggleLane(orderedLanes[activeLaneIndex].id)}
-                  emptyState={getLaneEmptyState(orderedLanes[activeLaneIndex].id)}
-                  className="w-full"
+      {/* ═══ PROFILE HERO SECTION ═══ */}
+      {orderedLanes.some(l => l.id === 'profile') && (
+        <section className="py-6">
+          <div className="px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto">
+            {isCustomizing && (
+              <div className="flex justify-end mb-2">
+                <button
+                  onClick={() => toggleLane('profile')}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-500/10 text-red-500 text-xs font-bold hover:bg-red-500/20 transition-colors"
                 >
-                  {renderLaneContent(orderedLanes[activeLaneIndex].id)}
-                </Lane>
-              )
+                  <X className="w-3.5 h-3.5" />
+                  Remove
+                </button>
+              </div>
             )}
+            <ProfileCard
+              user={user}
+              userProfile={userProfile}
+              viewMode={viewMode}
+              onExpand={() => setShowBusinessCardModal(true)}
+            />
           </div>
-        ) : (
-          // Desktop: Horizontal scrolling lanes with drag-to-reorder
-          <SortableLaneContainer
-            laneIds={orderedLanes.map(l => l.id)}
-            onReorder={reorderLanes}
-            isCustomizing={isCustomizing}
-            showNavArrows
-          >
-            {orderedLanes.map((lane) => {
-              const Icon = iconMap[lane.icon as keyof typeof iconMap] || User
-              const isSortable = ['projects', 'articles', 'learning', 'feed'].includes(lane.id)
-              const itemIds = getLaneItemIds(lane.id)
+        </section>
+      )}
 
-              // Profile lane: the business card IS the lane (no wrapper)
-              if (lane.id === 'profile') {
-                return (
-                  <DraggableLane key={lane.id} id={lane.id} isCustomizing={isCustomizing}>
-                    <div className={`w-[300px] min-w-[300px] flex-shrink-0 ${isCustomizing ? 'relative' : ''}`}>
-                      {/* Customize mode remove button */}
-                      {isCustomizing && (
-                        <button
-                          onClick={() => toggleLane(lane.id)}
-                          className="absolute -top-2 -right-2 z-10 p-1.5 rounded-full bg-red-500 hover:bg-red-600 transition-colors shadow-lg"
-                          title="Remove lane"
-                        >
-                          <X className="w-4 h-4 text-white" />
-                        </button>
-                      )}
-                      <ProfileCard
-                        user={user}
-                        userProfile={userProfile}
-                        viewMode={viewMode}
-                        onExpand={() => setShowBusinessCardModal(true)}
-                      />
-                    </div>
-                  </DraggableLane>
-                )
-              }
+      {/* ═══ CONTENT SECTIONS ═══ */}
+      <main className="pb-24 space-y-2">
+        {orderedLanes
+          .filter(lane => lane.id !== 'profile')
+          .map((lane, i) => {
+            const Icon = iconMap[lane.icon as keyof typeof iconMap] || User
+            const addConfig = getAddConfig(lane.id)
 
-              // Wrap each lane in DraggableLane for lane reordering
-              const laneContent = isSortable && itemIds.length > 0 ? (
-                <SortableLane
-                  id={lane.id}
-                  title={lane.title}
-                  icon={Icon}
-                  itemIds={itemIds}
-                  count={getLaneCount(lane.id)}
-                  gradient={lane.gradient}
-                  viewMode={viewMode}
-                  isCustomizing={isCustomizing}
-                  onRemove={() => toggleLane(lane.id)}
-                  emptyState={getLaneEmptyState(lane.id)}
-                  onReorder={(newOrder) => handleCardReorder(lane.id as LaneId, newOrder)}
-                  onAdd={
-                    lane.id === 'projects' ? () => window.location.href = '/community/projects/new' :
-                    lane.id === 'articles' ? () => window.location.href = '/articles/write' :
-                    lane.id === 'feed' ? () => window.location.href = '/community/forum/new' :
-                    undefined
-                  }
-                  addLabel={
-                    lane.id === 'projects' ? 'New Project' :
-                    lane.id === 'articles' ? 'Write Article' :
-                    lane.id === 'feed' ? 'New Post' :
-                    'Add'
-                  }
-                >
-                  {renderLaneContent(lane.id)}
-                </SortableLane>
-              ) : (
-                <Lane
-                  id={lane.id}
+            return (
+              <section key={lane.id}>
+                {i > 0 && <SectionDivider />}
+
+                <SectionHeader
                   title={lane.title}
                   icon={Icon}
                   count={getLaneCount(lane.id)}
                   gradient={lane.gradient}
-                  viewMode={viewMode}
+                  onAdd={addConfig.onAdd}
+                  addLabel={addConfig.label}
                   isCustomizing={isCustomizing}
                   onRemove={() => toggleLane(lane.id)}
-                  emptyState={getLaneEmptyState(lane.id)}
-                  onAdd={
-                    lane.id === 'projects' ? () => window.location.href = '/community/projects/new' :
-                    lane.id === 'articles' ? () => window.location.href = '/articles/write' :
-                    lane.id === 'feed' ? () => window.location.href = '/community/forum/new' :
-                    undefined
-                  }
-                  addLabel={
-                    lane.id === 'projects' ? 'New Project' :
-                    lane.id === 'articles' ? 'Write Article' :
-                    lane.id === 'feed' ? 'New Post' :
-                    'Add'
-                  }
-                >
-                  {renderLaneContent(lane.id)}
-                </Lane>
-              )
+                />
 
-              return (
-                <DraggableLane key={lane.id} id={lane.id} isCustomizing={isCustomizing}>
-                  {laneContent}
-                </DraggableLane>
-              )
-            })}
-          </SortableLaneContainer>
-        )}
-      </div>
+                <ScrollRow>
+                  {renderSectionContent(lane.id)}
+                </ScrollRow>
+              </section>
+            )
+          })}
+      </main>
 
       {/* Quick Actions Bar */}
       <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40">
@@ -883,8 +891,8 @@ export default function MyVolitionPage() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-5 border-b border-[var(--border)]">
-              <h2 className="text-lg font-bold text-[var(--foreground)]">Manage Lanes</h2>
-              <p className="text-sm text-[var(--foreground)]/60">Toggle which lanes appear on your dashboard</p>
+              <h2 className="text-lg font-bold text-[var(--foreground)]">Manage Sections</h2>
+              <p className="text-sm text-[var(--foreground)]/60">Toggle which sections appear on your dashboard</p>
             </div>
 
             <div className="p-4 max-h-[50vh] overflow-y-auto space-y-2">
