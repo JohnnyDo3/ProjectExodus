@@ -10,6 +10,7 @@ import {
   Wifi, RefreshCw, TreePine, Sunrise
 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
+import { GuitarHeroFeed } from '@/components/discussions/GuitarHeroFeed'
 import { useEffect, useState } from 'react'
 
 // Guardian archetype icons - Exodology's Seven Virtues
@@ -323,22 +324,20 @@ export function CommunityNewspaper({
         </div>
 
         {/* ============================================ */}
-        {/* MAIN CONTENT - Bio-Digital 3 Column Grid */}
+        {/* GUITAR HERO LIVE FEED - Replaces 3 Column Grid */}
         {/* ============================================ */}
         <div className="flex-1 relative">
-          {/* Ambient background */}
+          <GuitarHeroFeed />
+        </div>
+
+        {/* ============================================ */}
+        {/* LIVING ARCHIVES SECTION */}
+        {/* ============================================ */}
+        <div className="flex-1 relative">
           <div className="absolute inset-0 bg-gradient-to-b from-[var(--background)] via-[var(--background)] to-[var(--muted)]/10" />
-
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
-            <div className="grid grid-cols-12 gap-5 lg:gap-8">
-
-              {/* ======================================== */}
-              {/* LEFT COLUMN - Round Table (Discussions) */}
-              {/* Guardian of Humanity - Heart */}
-              {/* ======================================== */}
-              <div className="col-span-12 lg:col-span-4 space-y-6">
-                {/* Section Header - Bio-Digital Style */}
-                <div className="relative">
+                {/* Old columns removed - content moved to GH lanes */}
+                <div className="hidden">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="relative">
                       <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-pink-500 via-rose-400 to-red-400 flex items-center justify-center">
@@ -899,6 +898,7 @@ export function CommunityNewspaper({
                 </div>
               </div>
             </div>
+            </div>{/* End hidden old columns */}
 
             {/* ============================================ */}
             {/* BOTTOM GRID - Living Archives */}

@@ -34,11 +34,8 @@ interface SplashEffect {
 
 // ── Constants ──────────────────────────────────────────────────────────────
 
-const LANE_NAMES = ['Posts', 'Comments', 'Discussions', 'Likes', 'Dislikes']
-const LANE_KEYS = ['posts', 'comments', 'discussions', 'likes', 'dislikes']
-
-// Only these types belong on the discussions page
-const DISCUSSION_TYPES = new Set(['post', 'comment', 'forum_post', 'like', 'dislike'])
+const LANE_NAMES = ['Posts', 'Articles', 'Projects', 'Events', 'Members', 'Discussions', 'Stats', 'Network']
+const LANE_KEYS = ['posts', 'articles', 'projects', 'events', 'members', 'discussions', 'stats', 'network']
 const NOTE_FALL_DURATION = 12 // seconds to fall from top to bottom
 const NOTE_SPAWN_INTERVAL = 2500 // ms between spawning notes
 const REFETCH_THRESHOLD = 5 // refetch when queue has fewer items
@@ -72,9 +69,8 @@ export function GuitarHeroFeed() {
       const json = await res.json()
       if (json.success) {
         setHubData(json.data)
-        // Filter to discussion-only items, then shuffle for variety
-        const discussionItems = json.data.items.filter((i: ActivityItem) => DISCUSSION_TYPES.has(i.type))
-        const shuffled = [...discussionItems].sort(() => Math.random() - 0.5)
+        // Shuffle all items for variety
+        const shuffled = [...json.data.items].sort(() => Math.random() - 0.5)
         queueRef.current = [...queueRef.current, ...shuffled]
       }
     } catch (err) {
@@ -154,10 +150,7 @@ export function GuitarHeroFeed() {
         if (!pusherClient) return
         channel = pusherClient.subscribe('activity')
         channel.bind('new-activity', (newItem: ActivityItem) => {
-          // Only show discussion-related items
-          if (DISCUSSION_TYPES.has(newItem.type)) {
-            queueRef.current.unshift(newItem)
-          }
+          queueRef.current.unshift(newItem)
         })
       } catch {
         // Pusher not configured, rely on refetch
@@ -247,13 +240,13 @@ export function GuitarHeroFeed() {
       </div>
 
       {/* ═══ LANE HEADERS ═══ */}
-      <div className="relative z-10 flex border-b border-white/5">
+      <div className="relative z-10 flex border-b border-white/5 overflow-x-auto scrollbar-hide" style={{ scrollbarWidth: 'none' }}>
         {LANE_KEYS.map((key, i) => {
           const config = LANE_CONFIG[key]
           return (
             <div
               key={key}
-              className="flex-1 text-center py-2 border-r border-white/5 last:border-r-0"
+              className="min-w-[120px] flex-1 text-center py-2 border-r border-white/5 last:border-r-0 flex-shrink-0"
             >
               <span
                 className="text-[10px] font-black uppercase tracking-[0.2em]"
@@ -267,7 +260,7 @@ export function GuitarHeroFeed() {
       </div>
 
       {/* ═══ THE FRETBOARD (main area) ═══ */}
-      <div className="relative flex" style={{ height: 'calc(100vh - 130px)' }}>
+      <div className="relative flex overflow-x-auto scrollbar-hide" style={{ height: 'calc(100vh - 130px)', scrollbarWidth: 'none' }}>
         {/* Lane columns */}
         {LANE_KEYS.map((key, laneIndex) => {
           const config = LANE_CONFIG[key]
@@ -277,7 +270,7 @@ export function GuitarHeroFeed() {
           return (
             <div
               key={key}
-              className="flex-1 relative border-r border-white/[0.03] last:border-r-0 overflow-hidden"
+              className="min-w-[120px] flex-1 relative border-r border-white/[0.03] last:border-r-0 overflow-hidden flex-shrink-0"
             >
               {/* Lane center line (subtle) */}
               <div
@@ -345,7 +338,7 @@ export function GuitarHeroFeed() {
         })}
 
         {/* Horizontal hit zone line across all lanes */}
-        <div className="absolute bottom-6 left-0 right-0 h-px z-5 pointer-events-none" style={{ background: 'linear-gradient(90deg, #FF6B6B30, #4ECDC430, #45B7D130, #A78BFA30, #F472B630)' }} />
+        <div className="absolute bottom-6 left-0 right-0 h-px z-5 pointer-events-none" style={{ background: 'linear-gradient(90deg, #FF6B6B30, #4ECDC430, #45B7D130, #A78BFA30, #F472B630, #FBBF2430, #34D39930, #818CF830)' }} />
       </div>
 
       {/* ═══ STREAK INDICATOR ═══ */}
