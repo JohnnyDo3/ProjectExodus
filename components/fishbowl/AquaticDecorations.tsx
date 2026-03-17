@@ -4330,7 +4330,7 @@ const SAILBOAT_LAYOUT: LayeredDecoConfig = {
   midground: {
     structures: [
       { type: 'sailboat', x: 334, y: 184, scale: 1.5 },
-      { type: 'anchor', x: 600, y: 140 },
+      { type: 'anchor', x: 600, y: 140, scale: 0.8 },
     ],
   },
   foreground: {
@@ -4491,7 +4491,7 @@ const MINIMAL_LAYOUT: LayeredDecoConfig = {
   midground: {
     structures: [
       { type: 'rock-formation', x: 120, y: 158, scale: 1.8 },
-      { type: 'driftwood', x: 420, y: 176, scale: 1.6 },
+      { type: 'driftwood', x: 420, y: 200, scale: 1.6 },
     ],
   },
   foreground: {
@@ -4890,7 +4890,7 @@ const STAGNANT_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'deer-skull', x: 200, y: 55, scale: 2.5 },
+      { type: 'deer-skull', x: 200, y: 95, scale: 1.6 },
     ],
   },
   foreground: {
