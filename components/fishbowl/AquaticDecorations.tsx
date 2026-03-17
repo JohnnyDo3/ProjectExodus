@@ -5760,7 +5760,7 @@ const STAGNANT_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'deer-skull', x: 200, y: 95, scale: 1.0 },
+      { type: 'deer-skull', x: 200, y: 210, scale: 1.0 },
     ],
   },
   foreground: {
