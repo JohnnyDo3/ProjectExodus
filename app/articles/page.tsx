@@ -4801,156 +4801,134 @@ export default function ArticlesPage() {
       </div>
 
       {/* ========================================================= */}
-      {/* GRAND LIBRARY - Full Width Bookshelf Content Area         */}
+      {/* CONVEYOR BELT - Continuous Article Train                  */}
       {/* ========================================================= */}
-      <div className="relative bg-gradient-to-b from-stone-900 via-amber-950/50 to-stone-900 min-h-screen">
-        {/* Wood panel background texture */}
-        <div className="absolute inset-0 opacity-10" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 50 Q100 45 200 50' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3Cpath d='M0 100 Q100 95 200 100' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3Cpath d='M0 150 Q100 145 200 150' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
+      <div className="relative bg-gradient-to-b from-stone-900 via-amber-950/30 to-stone-900">
+        {/* Rail track texture */}
+        <div className="absolute inset-0 opacity-[0.04]" style={{
+          backgroundImage: `repeating-linear-gradient(90deg, transparent 0px, transparent 198px, rgba(217,176,110,0.3) 198px, rgba(217,176,110,0.3) 200px)`,
         }} />
 
-        <div className="container mx-auto px-4 py-6 sm:py-8 relative">
+        {/* Section header */}
+        <div className="container mx-auto px-4 pt-8 pb-4">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-600/30 to-transparent" />
+            <span className="text-[10px] font-black uppercase tracking-[0.25em] text-amber-400/60">All Published Works</span>
+            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-600/30 to-transparent" />
+          </div>
+          <div className="flex items-center justify-between">
+            <p className="text-xs text-amber-300/40">{articles.length} articles in the collection</p>
+          </div>
+        </div>
+
+        {/* Filter bar */}
+        <div className="sticky top-16 sm:top-20 z-40 bg-stone-900/95 backdrop-blur-sm border-y border-amber-700/20">
+          <div className="container mx-auto px-4 py-3">
+            <div className="flex items-center gap-3 overflow-x-auto scrollbar-hide pb-0.5">
+              {/* Sort options */}
+              {sortOptions.map((option) => {
+                const Icon = option.icon
+                const isActive = activeSort === option.value
+                return (
+                  <button
+                    key={option.value}
+                    onClick={() => setActiveSort(option.value)}
+                    disabled={option.value === 'read' && !session}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-bold text-xs whitespace-nowrap transition-all flex-shrink-0 border ${
+                      isActive
+                        ? 'bg-amber-600 border-amber-500 text-white shadow-md shadow-amber-900/30'
+                        : 'bg-stone-800/50 border-stone-700/50 text-amber-300/60 hover:bg-stone-700/50 hover:text-amber-200/80'
+                    } ${option.value === 'read' && !session ? 'opacity-30 cursor-not-allowed' : ''}`}
+                  >
+                    <Icon className="w-3.5 h-3.5" />
+                    <span>{option.label}</span>
+                  </button>
+                )
+              })}
+
+              <div className="w-px h-5 bg-amber-700/30 flex-shrink-0 mx-1" />
+
+              {/* Category filters */}
+              <button
+                onClick={() => setActiveCategoryFilter(null)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-bold text-xs whitespace-nowrap transition-all flex-shrink-0 border ${
+                  activeCategoryFilter === null
+                    ? 'bg-amber-600 border-amber-500 text-white shadow-md shadow-amber-900/30'
+                    : 'bg-stone-800/50 border-stone-700/50 text-amber-300/60 hover:bg-stone-700/50 hover:text-amber-200/80'
+                }`}
+              >
+                <BookOpen className="w-3.5 h-3.5" />
+                All
+              </button>
+              {BOOK_CATEGORIES.map((cat) => {
+                const isActive = activeCategoryFilter === cat.slug
+                const CatIcon = cat.icon
+                const count = articlesByCategory[cat.slug]?.length || 0
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => setActiveCategoryFilter(isActive ? null : cat.slug)}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-bold text-xs whitespace-nowrap transition-all flex-shrink-0 border ${
+                      isActive
+                        ? `bg-gradient-to-r ${cat.color} border-white/20 text-white shadow-md`
+                        : 'bg-stone-800/50 border-stone-700/50 text-amber-300/60 hover:bg-stone-700/50 hover:text-amber-200/80'
+                    }`}
+                  >
+                    <CatIcon className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">{cat.name}</span>
+                    {count > 0 && (
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${isActive ? 'bg-white/20' : 'bg-amber-700/30'}`}>
+                        {count}
+                      </span>
+                    )}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Error / Loading states */}
         {error ? (
-          <div className="flex items-center justify-center py-16 sm:py-20">
+          <div className="flex items-center justify-center py-16">
             <div className="text-center">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 rounded-full bg-red-100 flex items-center justify-center">
-                <BookOpen className="w-8 h-8 sm:w-10 sm:h-10 text-red-500" />
-              </div>
-              <h2 className="text-xl sm:text-2xl font-black text-[var(--foreground)] mb-2">Error Loading Articles</h2>
-              <p className="text-sm sm:text-base text-theme-muted font-medium mb-6">{error}</p>
+              <BookOpen className="w-12 h-12 mx-auto mb-4 text-red-500" />
+              <h2 className="text-xl font-black text-amber-100 mb-2">Error Loading Articles</h2>
+              <p className="text-sm text-amber-300/60 mb-6">{error}</p>
               <Button onClick={() => { setError(null); setIsLoading(true); fetchArticles(true); }} className="font-black">
                 Try Again
               </Button>
             </div>
           </div>
         ) : isLoading && articles.length === 0 ? (
-          <div className="flex items-center justify-center py-16 sm:py-20">
+          <div className="flex items-center justify-center py-16">
             <div className="text-center">
-              <Loader2 className="w-8 h-8 sm:w-10 sm:h-10 mx-auto mb-4 animate-spin text-amber-500" />
-              <p className="text-sm sm:text-base text-amber-300/70 font-medium">Loading the library...</p>
+              <Loader2 className="w-10 h-10 mx-auto mb-4 animate-spin text-amber-500" />
+              <p className="text-sm text-amber-300/60 font-medium">Loading the conveyor...</p>
+            </div>
+          </div>
+        ) : articles.length === 0 ? (
+          <div className="flex items-center justify-center py-16">
+            <div className="text-center">
+              <BookOpen className="w-12 h-12 mx-auto mb-4 text-amber-600/40" />
+              <p className="text-sm text-amber-300/50 font-medium">No articles yet. Be the first to publish!</p>
             </div>
           </div>
         ) : (
           <>
+            {/* Conveyor belt track */}
+            <div className="relative py-8 overflow-hidden">
+              {/* Top rail */}
+              <div className="absolute top-6 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-amber-700/30 to-transparent" />
+              <div className="absolute top-6 left-0 right-0 h-px bg-amber-600/20" />
 
-            {/* ========================================== */}
-            {/* ARTICLE GRID - Modern Card Layout         */}
-            {/* Clean, theme-aware article display        */}
-            {/* ========================================== */}
-            <div className="space-y-8">
+              {/* Bottom rail */}
+              <div className="absolute bottom-6 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-amber-700/30 to-transparent" />
+              <div className="absolute bottom-6 left-0 right-0 h-px bg-amber-600/20" />
 
-              {/* ========================================== */}
-              {/* YOUR COLLECTION - Modern Card Row         */}
-              {/* ========================================== */}
-              {savedArticles.length > 0 && (
-                <div className="bg-[var(--card)]/50 backdrop-blur-sm rounded-xl p-6 border border-[var(--border)]">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-lg">
-                        <Bookmark className="w-5 h-5 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-bold text-[var(--foreground)]">Your Collection</h3>
-                        <p className="text-sm text-theme-muted">{savedArticles.length} saved articles</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                    {articles
-                      .filter(a => savedArticles.includes(a.id))
-                      .slice(0, 4)
-                      .map((article) => {
-                        const articleProg = readingProgress[article.id]
-                        const progPercent = articleProg?.scrollProgress || 0
-                        const isCompleted = articleProg?.completed || false
-                        return (
-                          <div
-                            key={article.id}
-                            onClick={() => setPreviewArticle(article)}
-                            className="group cursor-pointer bg-[var(--card)] rounded-lg overflow-hidden border border-[var(--border)] hover:border-[var(--primary)]/50 transition-all hover:shadow-lg hover:-translate-y-1"
-                          >
-                            {article.coverImage && (
-                              <div className="relative h-32 overflow-hidden">
-                                <img src={article.coverImage} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                                {isCompleted && (
-                                  <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center">
-                                    <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                    </svg>
-                                  </div>
-                                )}
-                              </div>
-                            )}
-                            <div className="p-4">
-                              <span className="text-xs font-semibold text-[var(--primary)] uppercase tracking-wide">{article.category?.name || 'Article'}</span>
-                              <h4 className="font-bold text-[var(--foreground)] mt-1 line-clamp-2 group-hover:text-[var(--primary)] transition-colors">{article.title}</h4>
-                              {progPercent > 0 && !isCompleted && (
-                                <div className="mt-2 h-1 bg-[var(--muted)] rounded-full overflow-hidden">
-                                  <div className="h-full bg-emerald-500 transition-all" style={{ width: `${progPercent}%` }} />
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        )
-                      })}
-                  </div>
-                </div>
-              )}
-
-              {/* ========================================== */}
-              {/* RECOMMENDED FOR YOU - Modern Card Row     */}
-              {/* ========================================== */}
-              {session && getRecommendedArticles().length > 0 && (
-                <div className="bg-gradient-to-br from-violet-500/10 to-purple-500/10 backdrop-blur-sm rounded-xl p-6 border border-violet-500/20">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-700 flex items-center justify-center shadow-lg">
-                        <Sparkles className="w-5 h-5 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-bold text-[var(--foreground)]">Recommended For You</h3>
-                        <p className="text-sm text-theme-muted">Based on your reading history</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                    {getRecommendedArticles().slice(0, 4).map((article) => (
-                      <div
-                        key={article.id}
-                        onClick={() => setPreviewArticle(article)}
-                        className="group cursor-pointer bg-[var(--card)] rounded-lg overflow-hidden border border-[var(--border)] hover:border-violet-500/50 transition-all hover:shadow-lg hover:shadow-violet-500/10 hover:-translate-y-1"
-                      >
-                        {article.coverImage && (
-                          <div className="relative h-32 overflow-hidden">
-                            <img src={article.coverImage} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                            <div className="absolute top-2 left-2 px-2 py-0.5 bg-violet-500/90 rounded-full">
-                              <span className="text-[10px] font-bold text-white flex items-center gap-1">
-                                <Sparkles className="w-2.5 h-2.5" /> Recommended
-                              </span>
-                            </div>
-                          </div>
-                        )}
-                        <div className="p-4">
-                          <span className="text-xs font-semibold text-violet-500 uppercase tracking-wide">{article.category?.name || 'Article'}</span>
-                          <h4 className="font-bold text-[var(--foreground)] mt-1 line-clamp-2 group-hover:text-violet-500 transition-colors">{article.title}</h4>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* ========================================== */}
-              {/* ALL ARTICLES - Responsive Card Grid       */}
-              {/* ========================================== */}
-              <div>
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-xl font-bold text-[var(--foreground)]">All Articles</h3>
-                  <span className="text-sm text-theme-muted">{articles.length} articles</span>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {/* The scrolling train of article cards */}
+              <div className="relative px-4 overflow-x-auto scrollbar-hide">
+                <div className="flex gap-5 pb-4 pt-2" style={{ minWidth: 'min-content' }}>
                   {articles.map((article) => {
                     const articleProg = readingProgress[article.id]
                     const progPercent = articleProg?.scrollProgress || 0
@@ -4963,107 +4941,114 @@ export default function ArticlesPage() {
                       <div
                         key={article.id}
                         onClick={() => setPreviewArticle(article)}
-                        className="group cursor-pointer bg-[var(--card)] rounded-xl overflow-hidden border border-[var(--border)] hover:border-[var(--primary)]/50 transition-all hover:shadow-xl hover:-translate-y-1"
+                        className="group cursor-pointer flex-shrink-0 w-[260px] sm:w-[300px] bg-gradient-to-b from-stone-800/80 to-stone-900/80 rounded-xl overflow-hidden border border-amber-700/20 hover:border-amber-500/50 transition-all hover:shadow-xl hover:shadow-amber-900/20 hover:-translate-y-1 backdrop-blur-sm"
                       >
                         {/* Cover Image */}
-                        <div className="relative h-40 overflow-hidden bg-[var(--muted)]">
+                        <div className="relative h-36 overflow-hidden bg-stone-800">
                           {article.coverImage ? (
                             <img src={article.coverImage} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                           ) : (
                             <div className={`w-full h-full bg-gradient-to-br ${category?.color || 'from-emerald-500 to-emerald-700'} flex items-center justify-center`}>
-                              {category && <category.icon className="w-12 h-12 text-white/30" />}
+                              {category && <category.icon className="w-10 h-10 text-white/20" />}
                             </div>
                           )}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-stone-900/80 via-transparent to-transparent" />
 
                           {/* Badges */}
-                          <div className="absolute top-3 left-3 flex items-center gap-2">
+                          <div className="absolute top-2 left-2 flex items-center gap-1.5">
                             {scrollAge === 'new' && (
-                              <span className="px-2 py-0.5 bg-emerald-500 text-white text-[10px] font-bold rounded-full">NEW</span>
+                              <span className="px-1.5 py-0.5 bg-emerald-500 text-white text-[9px] font-bold rounded-full">NEW</span>
                             )}
                           </div>
-                          <div className="absolute top-3 right-3 flex items-center gap-2">
+                          <div className="absolute top-2 right-2 flex items-center gap-1.5">
                             {isSaved && (
-                              <div className="w-7 h-7 rounded-full bg-amber-500 flex items-center justify-center shadow-lg">
-                                <Bookmark className="w-3.5 h-3.5 text-white fill-current" />
+                              <div className="w-6 h-6 rounded-full bg-amber-500/90 flex items-center justify-center">
+                                <Bookmark className="w-3 h-3 text-white fill-current" />
                               </div>
                             )}
                             {isCompleted && (
-                              <div className="w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center shadow-lg">
-                                <svg className="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                              <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center">
+                                <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
                                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                                 </svg>
                               </div>
                             )}
                           </div>
 
-                          {/* Category badge at bottom of image */}
-                          <div className="absolute bottom-3 left-3">
-                            <span className={`px-2.5 py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r ${category?.color || 'from-emerald-500 to-emerald-700'} shadow-lg`}>
+                          {/* Category badge */}
+                          <div className="absolute bottom-2 left-2">
+                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold text-white bg-gradient-to-r ${category?.color || 'from-emerald-500 to-emerald-700'} shadow-lg`}>
                               {article.category?.name || 'Article'}
                             </span>
                           </div>
                         </div>
 
                         {/* Content */}
-                        <div className="p-5">
-                          <h4 className="font-bold text-[var(--foreground)] text-lg leading-tight line-clamp-2 group-hover:text-[var(--primary)] transition-colors mb-2">{article.title}</h4>
-                          <p className="text-sm text-theme-muted line-clamp-2 mb-4">{article.excerpt}</p>
+                        <div className="p-4">
+                          <h4 className="font-bold text-amber-100 text-sm leading-tight line-clamp-2 group-hover:text-amber-300 transition-colors mb-2">{article.title}</h4>
+                          <p className="text-xs text-amber-300/40 line-clamp-2 mb-3">{article.excerpt}</p>
 
                           {/* Meta */}
-                          <div className="flex items-center justify-between text-xs text-theme-muted">
-                            <div className="flex items-center gap-3">
-                              <span className="flex items-center gap-1">
-                                <Clock className="w-3.5 h-3.5" />
-                                {article.readTime} min
+                          <div className="flex items-center justify-between text-[10px] text-amber-300/50">
+                            <div className="flex items-center gap-2">
+                              <span className="flex items-center gap-0.5">
+                                <Clock className="w-3 h-3" />
+                                {article.readTime}m
                               </span>
-                              <span className="flex items-center gap-1">
-                                <Eye className="w-3.5 h-3.5" />
+                              <span className="flex items-center gap-0.5">
+                                <Eye className="w-3 h-3" />
                                 {article._count.readBy}
                               </span>
                             </div>
                             {article.author && (
-                              <span className="font-medium truncate max-w-[100px]">{article.author.name}</span>
+                              <span className="font-medium truncate max-w-[80px]">{article.author.name}</span>
                             )}
                           </div>
 
                           {/* Reading Progress */}
                           {progPercent > 0 && !isCompleted && (
-                            <div className="mt-3">
-                              <div className="flex items-center justify-between text-xs mb-1">
-                                <span className="text-emerald-500 font-medium">{Math.round(progPercent)}% read</span>
-                              </div>
-                              <div className="h-1.5 bg-[var(--muted)] rounded-full overflow-hidden">
-                                <div className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 transition-all rounded-full" style={{ width: `${progPercent}%` }} />
+                            <div className="mt-2">
+                              <div className="h-1 bg-stone-700 rounded-full overflow-hidden">
+                                <div className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full" style={{ width: `${progPercent}%` }} />
                               </div>
                             </div>
                           )}
                         </div>
+
+                        {/* Bottom connector nub (train coupler visual) */}
+                        <div className="h-1 bg-gradient-to-r from-transparent via-amber-600/20 to-transparent" />
                       </div>
                     )
                   })}
+
+                  {/* End of line indicator */}
+                  <div className="flex-shrink-0 w-32 flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="w-8 h-8 mx-auto mb-2 rounded-full border-2 border-amber-700/30 flex items-center justify-center">
+                        <BookOpen className="w-4 h-4 text-amber-600/40" />
+                      </div>
+                      <p className="text-[10px] text-amber-300/30 font-bold">{articles.length} total</p>
+                    </div>
+                  </div>
                 </div>
               </div>
+
+              {/* Fade edges */}
+              <div className="absolute top-0 left-0 bottom-0 w-12 bg-gradient-to-r from-stone-900 to-transparent pointer-events-none z-10" />
+              <div className="absolute top-0 right-0 bottom-0 w-12 bg-gradient-to-l from-stone-900 to-transparent pointer-events-none z-10" />
             </div>
-            {/* End Article Grid */}
 
             {/* Load More Trigger */}
-            <div ref={loadMoreRef} className="py-6 sm:py-8 flex justify-center">
+            <div ref={loadMoreRef} className="py-4 flex justify-center">
               {isLoading && articles.length > 0 && (
-                <div className="flex items-center gap-2 text-theme-muted">
-                  <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
-                  <span className="text-sm sm:text-base font-medium">Loading more...</span>
+                <div className="flex items-center gap-2 text-amber-300/50">
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span className="text-xs font-medium">Loading more...</span>
                 </div>
-              )}
-              {!hasMore && articles.length > 0 && (
-                <p className="text-xs sm:text-sm text-theme-muted font-medium text-center px-4">
-                  You've reached the end! {articles.length + (featuredArticle ? 1 : 0)} articles total.
-                </p>
               )}
             </div>
           </>
         )}
-        </div>
       </div>
 
       {/* Dust Puff Particles Portal - Fixed position particles for ancient scroll clicks */}
