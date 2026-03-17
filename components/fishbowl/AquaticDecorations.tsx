@@ -4224,6 +4224,23 @@ const DeerSkullWillow = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="56" y="36" width="2" height="6" fill="#A89C84" opacity="0.3" />
     <rect x="60" y="28" width="2" height="8" fill="#A89C84" opacity="0.25" />
     <rect x="68" y="12" width="2" height="8" fill="#A89C84" opacity="0.2" />
+    {/* Antler branch color depth intermediates */}
+    <rect x="58" y="32" width="4" height="2" fill="#C8BC9C" opacity="0.3" />
+    <rect x="62" y="26" width="4" height="2" fill="#BEB298" opacity="0.25" />
+    <rect x="66" y="18" width="4" height="2" fill="#C8BC9C" opacity="0.2" />
+    <rect x="74" y="6" width="4" height="2" fill="#BEB298" opacity="0.2" />
+    <rect x="82" y="-8" width="4" height="2" fill="#AEA48C" opacity="0.18" />
+    <rect x="88" y="-26" width="3" height="2" fill="#AEA48C" opacity="0.15" />
+    {/* Antler surface knobby texture pixels */}
+    <rect x="60" y="30" width="2" height="2" fill="#F0E6D2" opacity="0.2" />
+    <rect x="68" y="14" width="2" height="2" fill="#E0D4B8" opacity="0.18" />
+    <rect x="76" y="2" width="2" height="2" fill="#F0E6D2" opacity="0.15" />
+    <rect x="84" y="-18" width="2" height="2" fill="#E0D4B8" opacity="0.13" />
+    <rect x="92" y="-40" width="2" height="2" fill="#D4C8A8" opacity="0.12" />
+    {/* Antler dark grain detail */}
+    <rect x="64" y="22" width="3" height="1" fill="#6B5D48" opacity="0.12" />
+    <rect x="72" y="10" width="3" height="1" fill="#6B5D48" opacity="0.1" />
+    <rect x="80" y="-6" width="3" height="1" fill="#6B5D48" opacity="0.1" />
 
     {/* Burr texture at antler base — rough bumpy blocks */}
     <rect x="54" y="38" width="3" height="3" fill="#C4B8A0" opacity="0.6" />
@@ -4582,12 +4599,25 @@ const DeerSkullWillow = memo(({ x, y }: { x: number; y: number }) => (
       <path d="M80 56 Q72 36 60 16 Q52 0 44 -16" stroke="#2E7D32" strokeWidth="1.6" fill="none" opacity="0.8" strokeLinecap="round" />
       <path d="M76 54 Q68 36 56 16 Q48 0 36 -12" stroke="#1B5E20" strokeWidth="1.3" fill="none" opacity="0.7" strokeLinecap="round" />
       <path d="M84 56 Q76 40 68 20 Q60 4 52 -8" stroke="#388E3C" strokeWidth="1" fill="none" opacity="0.6" strokeLinecap="round" />
-      {/* Leaf pixel blocks */}
+      {/* Leaf pixel blocks — varied green depth */}
       <rect x="68" y="28" width="6" height="4" fill="#43A047" opacity="0.7" />
+      <rect x="67" y="30" width="4" height="2" fill="#2E7D32" opacity="0.5" />
+      <rect x="70" y="26" width="3" height="3" fill="#66BB6A" opacity="0.4" />
       <rect x="56" y="8" width="6" height="4" fill="#2E7D32" opacity="0.6" />
+      <rect x="54" y="10" width="4" height="2" fill="#1B5E20" opacity="0.4" />
+      <rect x="58" y="6" width="3" height="3" fill="#4CAF50" opacity="0.35" />
       <rect x="48" y="-8" width="4" height="4" fill="#00C853" opacity="0.55" />
+      <rect x="46" y="-6" width="3" height="3" fill="#00E676" opacity="0.35" />
       <rect x="40" y="-12" width="6" height="4" fill="#388E3C" opacity="0.5" />
+      <rect x="38" y="-10" width="3" height="3" fill="#1B5E20" opacity="0.35" />
+      <rect x="42" y="-14" width="3" height="2" fill="#4CAF50" opacity="0.3" />
       <rect x="60" y="20" width="4" height="6" fill="#00E676" opacity="0.45" />
+      <rect x="58" y="22" width="3" height="3" fill="#81C784" opacity="0.3" />
+      <rect x="62" y="18" width="3" height="3" fill="#2E7D32" opacity="0.35" />
+      {/* Bark/wood texture on vine stems */}
+      <rect x="72" y="38" width="2" height="4" fill="#5D4037" opacity="0.15" />
+      <rect x="64" y="24" width="2" height="4" fill="#4E342E" opacity="0.12" />
+      <rect x="52" y="4" width="2" height="4" fill="#5D4037" opacity="0.1" />
     </g>
 
     {/* Antler tip vines — long cascading strands from upper antler */}
@@ -4645,12 +4675,23 @@ const DeerSkullWillow = memo(({ x, y }: { x: number; y: number }) => (
 
     {/* ═══ MOSS & ALGAE patches — pixel-block overgrowth ═══ */}
     <rect x="48" y="44" width="6" height="4" fill="#2E7D32" opacity="0.35" />
+    <rect x="49" y="43" width="3" height="2" fill="#4CAF50" opacity="0.2" />
     <rect x="52" y="48" width="4" height="4" fill="#388E3C" opacity="0.3" />
+    <rect x="53" y="47" width="2" height="2" fill="#66BB6A" opacity="0.18" />
     <rect x="72" y="44" width="6" height="4" fill="#2E7D32" opacity="0.3" />
+    <rect x="73" y="43" width="3" height="2" fill="#81C784" opacity="0.15" />
     <rect x="108" y="64" width="4" height="4" fill="#388E3C" opacity="0.25" />
+    <rect x="109" y="63" width="2" height="2" fill="#4CAF50" opacity="0.15" />
     <rect x="92" y="72" width="4" height="4" fill="#1B5E20" opacity="0.3" />
+    <rect x="93" y="71" width="2" height="2" fill="#2E7D32" opacity="0.2" />
     <rect x="40" y="52" width="4" height="4" fill="#43A047" opacity="0.25" />
+    <rect x="41" y="51" width="2" height="2" fill="#66BB6A" opacity="0.15" />
     <rect x="80" y="40" width="4" height="4" fill="#2E7D32" opacity="0.2" />
+    <rect x="81" y="39" width="2" height="2" fill="#4CAF50" opacity="0.12" />
+    {/* Moss on skull top — spreading growth */}
+    <rect x="56" y="40" width="6" height="2" fill="#2E7D32" opacity="0.18" />
+    <rect x="64" y="42" width="4" height="2" fill="#1B5E20" opacity="0.15" />
+    <rect x="48" y="42" width="4" height="2" fill="#388E3C" opacity="0.12" />
     {/* Extra moss patches */}
     <rect x="60" y="58" width="4" height="4" fill="#2E7D32" opacity="0.25" />
     <rect x="100" y="58" width="4" height="2" fill="#388E3C" opacity="0.2" />
