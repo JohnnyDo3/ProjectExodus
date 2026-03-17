@@ -2395,22 +2395,51 @@ const SunkenLog = memo(({ x, y }: { x: number; y: number }) => (
     <rect x="-14" y="10" width="148" height="1" fill="#795548" opacity="0.3" />
     <rect x="-12" y="16" width="144" height="1" fill="#8D6E63" opacity="0.25" />
     <rect x="-10" y="22" width="140" height="1" fill="#795548" opacity="0.2" />
+    <rect x="-8" y="13" width="136" height="1" fill="#6D4C41" opacity="0.15" />
+    <rect x="-6" y="19" width="132" height="1" fill="#8D6E63" opacity="0.12" />
+    <rect x="-4" y="25" width="128" height="1" fill="#5D4037" opacity="0.12" />
+    {/* Bark scale texture blocks — irregular patches */}
+    <rect x="6" y="8" width="6" height="4" fill="#795548" opacity="0.15" />
+    <rect x="30" y="12" width="8" height="4" fill="#6D4C41" opacity="0.12" />
+    <rect x="60" y="6" width="6" height="4" fill="#8D6E63" opacity="0.12" />
+    <rect x="100" y="10" width="8" height="4" fill="#795548" opacity="0.1" />
+    <rect x="124" y="12" width="6" height="4" fill="#6D4C41" opacity="0.1" />
+    <rect x="42" y="18" width="6" height="4" fill="#8D6E63" opacity="0.1" />
+    <rect x="74" y="20" width="8" height="4" fill="#795548" opacity="0.08" />
     {/* Bark cracks */}
     <rect x="20" y="6" width="1" height="22" fill="#3E2723" opacity="0.2" />
     <rect x="55" y="4" width="1" height="26" fill="#3E2723" opacity="0.18" />
     <rect x="88" y="6" width="1" height="22" fill="#3E2723" opacity="0.2" />
     <rect x="115" y="8" width="1" height="18" fill="#3E2723" opacity="0.15" />
+    {/* Additional bark cracks */}
+    <rect x="38" y="6" width="1" height="20" fill="#3E2723" opacity="0.12" />
+    <rect x="72" y="4" width="1" height="24" fill="#3E2723" opacity="0.1" />
+    <rect x="102" y="8" width="1" height="18" fill="#3E2723" opacity="0.1" />
 
     {/* Left broken end — jagged snap */}
     <rect x="-28" y="10" width="12" height="16" fill="#6D4C41" />
     <rect x="-32" y="14" width="8" height="10" fill="#795548" opacity="0.5" />
     <rect x="-30" y="12" width="4" height="4" fill="#8D6E63" opacity="0.4" />
     <rect x="-26" y="24" width="6" height="4" fill="#3E2723" opacity="0.4" />
+    {/* Ring pattern at broken left end */}
+    <rect x="-28" y="14" width="8" height="1" fill="#8D6E63" opacity="0.3" />
+    <rect x="-26" y="18" width="6" height="1" fill="#A1887F" opacity="0.25" />
+    <rect x="-28" y="22" width="8" height="1" fill="#6D4C41" opacity="0.2" />
+    <rect x="-24" y="16" width="1" height="8" fill="#8D6E63" opacity="0.2" />
+    <rect x="-28" y="16" width="1" height="6" fill="#6D4C41" opacity="0.15" />
+    {/* Heart/pith at center */}
+    <rect x="-26" y="17" width="2" height="2" fill="#3E2723" opacity="0.35" />
 
     {/* Right tapered end */}
     <rect x="136" y="10" width="16" height="16" fill="#5D4037" />
     <rect x="148" y="14" width="10" height="10" fill="#6D4C41" opacity="0.6" />
     <rect x="154" y="16" width="6" height="6" fill="#795548" opacity="0.4" />
+    {/* Ring pattern at right end */}
+    <rect x="138" y="14" width="10" height="1" fill="#8D6E63" opacity="0.25" />
+    <rect x="140" y="18" width="8" height="1" fill="#A1887F" opacity="0.2" />
+    <rect x="138" y="22" width="10" height="1" fill="#6D4C41" opacity="0.18" />
+    <rect x="142" y="14" width="1" height="10" fill="#795548" opacity="0.15" />
+    <rect x="146" y="16" width="1" height="6" fill="#6D4C41" opacity="0.12" />
 
     {/* Branch stub — top, angled left */}
     <rect x="36" y="-8" width="8" height="12" fill="#6D4C41" />
@@ -2427,16 +2456,38 @@ const SunkenLog = memo(({ x, y }: { x: number; y: number }) => (
     {/* Highlight strip — light on top */}
     <rect x="0" y="2" width="120" height="2" fill="#8D6E63" opacity="0.3" />
 
-    {/* Knot holes */}
+    {/* Knot holes — enhanced detail */}
     <ellipse cx="42" cy="18" rx="4" ry="3" fill="#3E2723" opacity="0.5" />
     <ellipse cx="42" cy="18" rx="2" ry="1.5" fill="#2E1B0E" opacity="0.4" />
+    <rect x="39" y="15" width="2" height="2" fill="#1A0E08" opacity="0.3" />
+    <rect x="43" y="19" width="2" height="2" fill="#1A0E08" opacity="0.25" />
+    {/* Knot ring detail */}
+    <rect x="38" y="16" width="8" height="1" fill="#5D4037" opacity="0.2" />
+    <rect x="40" y="20" width="4" height="1" fill="#5D4037" opacity="0.15" />
     <ellipse cx="105" cy="14" rx="3" ry="2.5" fill="#3E2723" opacity="0.4" />
+    <rect x="103" y="12" width="2" height="2" fill="#2E1B0E" opacity="0.3" />
+    <rect x="103" y="14" width="4" height="1" fill="#5D4037" opacity="0.18" />
+    {/* Additional small knot */}
+    <ellipse cx="76" cy="22" rx="2" ry="2" fill="#3E2723" opacity="0.3" />
+    <rect x="75" y="21" width="2" height="2" fill="#2E1B0E" opacity="0.2" />
+
+    {/* Fungal growth patches — shelf fungi */}
+    <rect x="46" y="4" width="6" height="3" fill="#BCAAA4" opacity="0.25" />
+    <rect x="47" y="3" width="4" height="2" fill="#D7CCC8" opacity="0.2" />
+    <rect x="48" y="5" width="2" height="1" fill="#A1887F" opacity="0.15" />
+    <rect x="82" y="6" width="5" height="3" fill="#BCAAA4" opacity="0.2" />
+    <rect x="83" y="5" width="3" height="2" fill="#D7CCC8" opacity="0.15" />
+    <rect x="120" y="10" width="4" height="3" fill="#8D6E63" opacity="0.2" />
+    <rect x="121" y="9" width="2" height="2" fill="#BCAAA4" opacity="0.15" />
 
     {/* Moss and algae growth */}
     <rect x="10" y="0" width="14" height="4" fill="#2E7D32" opacity="0.4" />
     <rect x="6" y="-2" width="8" height="4" fill="#388E3C" opacity="0.3" />
+    <rect x="12" y="-1" width="4" height="2" fill="#4CAF50" opacity="0.2" />
     <rect x="70" y="2" width="10" height="4" fill="#1B5E20" opacity="0.35" />
+    <rect x="72" y="1" width="4" height="2" fill="#2E7D32" opacity="0.2" />
     <rect x="130" y="8" width="8" height="4" fill="#2E7D32" opacity="0.3" />
+    <rect x="132" y="7" width="4" height="2" fill="#4CAF50" opacity="0.18" />
     <rect x="34" y="-16" width="6" height="3" fill="#388E3C" opacity="0.35" />
 
     {/* Barnacles */}
@@ -2444,8 +2495,13 @@ const SunkenLog = memo(({ x, y }: { x: number; y: number }) => (
     <circle cx="50" cy="30" r="2.5" fill="#9CA3AF" opacity="0.3" />
     <circle cx="120" cy="28" r="2" fill="#B0BEC5" opacity="0.3" />
 
-    {/* Waterlogging stain */}
+    {/* Waterlogging stain — color depth blocks */}
     <rect x="-16" y="18" width="156" height="12" fill="#3E2723" opacity="0.15" />
+    <rect x="-12" y="22" width="148" height="8" fill="#2E1B0E" opacity="0.08" />
+    <rect x="-8" y="26" width="140" height="6" fill="#1A0E08" opacity="0.06" />
+    <rect x="0" y="20" width="20" height="4" fill="#3E2723" opacity="0.1" />
+    <rect x="60" y="22" width="24" height="4" fill="#2E1B0E" opacity="0.08" />
+    <rect x="110" y="20" width="18" height="4" fill="#3E2723" opacity="0.07" />
 
     {/* Bubbles */}
     <circle cx="42" cy="0" r="1" fill="rgba(255,255,255,0.15)" style={{ animation: 'bubbleRise 5s ease-in 2s infinite' }} />
@@ -2472,18 +2528,53 @@ const LargeRockFormation = memo(({ x, y }: { x: number; y: number }) => (
     {/* Highlight */}
     <rect x="24" y="4" width="20" height="4" fill="#A8A098" opacity="0.4" />
     <rect x="16" y="12" width="8" height="4" fill="#9E9890" opacity="0.3" />
+    {/* Intermediate stone color blocks — gradation */}
+    <rect x="14" y="20" width="12" height="6" fill="#7D756E" opacity="0.2" />
+    <rect x="36" y="18" width="10" height="4" fill="#8A8480" opacity="0.18" />
+    <rect x="52" y="22" width="8" height="6" fill="#6B6560" opacity="0.15" />
+    <rect x="20" y="32" width="14" height="4" fill="#7D756E" opacity="0.15" />
+    <rect x="42" y="30" width="10" height="4" fill="#8A8480" opacity="0.12" />
+    <rect x="28" y="8" width="8" height="4" fill="#A8A098" opacity="0.2" />
+    <rect x="46" y="12" width="6" height="4" fill="#9E9890" opacity="0.15" />
+    {/* Surface texture blocks — rough stone grain */}
+    <rect x="12" y="18" width="4" height="2" fill="#78716C" opacity="0.2" />
+    <rect x="24" y="24" width="6" height="2" fill="#8D8680" opacity="0.15" />
+    <rect x="40" y="20" width="4" height="2" fill="#6B7280" opacity="0.12" />
+    <rect x="54" y="28" width="6" height="2" fill="#78716C" opacity="0.12" />
+    <rect x="18" y="36" width="4" height="2" fill="#8D8680" opacity="0.1" />
+    <rect x="36" y="34" width="6" height="2" fill="#6B7280" opacity="0.1" />
+    <rect x="48" y="36" width="4" height="2" fill="#78716C" opacity="0.08" />
 
-    {/* Shadow faces */}
+    {/* Shadow faces — deeper gradient */}
     <rect x="60" y="16" width="12" height="32" fill="#4B5563" opacity="0.3" />
+    <rect x="64" y="18" width="8" height="28" fill="#3F4852" opacity="0.15" />
+    <rect x="68" y="20" width="4" height="24" fill="#374151" opacity="0.1" />
     <rect x="8" y="40" width="64" height="8" fill="#57534E" opacity="0.25" />
+    <rect x="10" y="42" width="60" height="4" fill="#4B4540" opacity="0.12" />
+    <rect x="12" y="44" width="56" height="2" fill="#3F3A36" opacity="0.08" />
 
     {/* Texture — mineral veins and cracks */}
     <rect x="20" y="18" width="1" height="20" fill="#9E9890" opacity="0.2" />
     <rect x="44" y="12" width="1" height="28" fill="#57534E" opacity="0.15" />
     <rect x="32" y="10" width="16" height="1" fill="#A8A098" opacity="0.18" />
     <rect x="16" y="28" width="40" height="1" fill="#57534E" opacity="0.15" />
+    {/* Additional crack lines */}
+    <rect x="28" y="16" width="1" height="14" fill="#6B6560" opacity="0.12" />
+    <rect x="52" y="14" width="1" height="20" fill="#57534E" opacity="0.1" />
+    <rect x="12" y="22" width="24" height="1" fill="#6B6560" opacity="0.1" />
+    <rect x="36" y="36" width="20" height="1" fill="#57534E" opacity="0.08" />
     {/* Quartz vein */}
     <path d="M18 20 Q28 16 38 22 Q48 26 56 20" stroke="#D4D0C8" strokeWidth="0.8" fill="none" opacity="0.15" />
+    {/* Additional mineral vein detail pixels */}
+    <rect x="22" y="20" width="2" height="1" fill="#D4D0C8" opacity="0.12" />
+    <rect x="34" y="18" width="2" height="1" fill="#E0DCD4" opacity="0.1" />
+    <rect x="46" y="22" width="2" height="1" fill="#D4D0C8" opacity="0.1" />
+    {/* Iron oxide stain vein */}
+    <rect x="14" y="24" width="1" height="8" fill="#8B6914" opacity="0.08" />
+    <rect x="15" y="26" width="1" height="4" fill="#A07828" opacity="0.06" />
+    {/* Dark mineral inclusion */}
+    <rect x="38" y="28" width="2" height="2" fill="#374151" opacity="0.12" />
+    <rect x="26" y="34" width="2" height="2" fill="#3F4852" opacity="0.1" />
 
     {/* Secondary rock — leaning against main */}
     <rect x="-8" y="28" width="24" height="24" fill="#78716C" />
@@ -2511,6 +2602,24 @@ const LargeRockFormation = memo(({ x, y }: { x: number; y: number }) => (
     {/* Lichen spots */}
     <rect x="30" y="14" width="4" height="3" fill="#B8A030" opacity="0.2" />
     <rect x="52" y="28" width="3" height="3" fill="#90A020" opacity="0.18" />
+    <rect x="22" y="20" width="3" height="2" fill="#B8A030" opacity="0.15" />
+    <rect x="58" y="18" width="3" height="2" fill="#90A020" opacity="0.12" />
+    <rect x="40" y="32" width="3" height="2" fill="#A8A030" opacity="0.1" />
+    {/* Lichen color depth */}
+    <rect x="31" y="15" width="2" height="1" fill="#C8B840" opacity="0.12" />
+    <rect x="53" y="29" width="2" height="1" fill="#A0B028" opacity="0.1" />
+
+    {/* Small fossil impression pixels — ammonite spiral */}
+    <rect x="34" y="22" width="4" height="4" fill="#78716C" opacity="0.15" />
+    <rect x="35" y="23" width="2" height="2" fill="#6B6560" opacity="0.12" />
+    <rect x="36" y="22" width="1" height="1" fill="#57534E" opacity="0.18" />
+    <rect x="34" y="24" width="1" height="1" fill="#8D8680" opacity="0.1" />
+    <rect x="37" y="25" width="1" height="1" fill="#8D8680" opacity="0.1" />
+    {/* Shell impression */}
+    <rect x="50" y="38" width="3" height="2" fill="#78716C" opacity="0.12" />
+    <rect x="51" y="37" width="2" height="1" fill="#6B6560" opacity="0.1" />
+    <rect x="50" y="39" width="1" height="1" fill="#8D8680" opacity="0.08" />
+    <rect x="52" y="39" width="1" height="1" fill="#57534E" opacity="0.08" />
   </g>
 ))
 LargeRockFormation.displayName = 'LargeRockFormation'
