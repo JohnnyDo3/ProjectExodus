@@ -1077,7 +1077,6 @@ export default function MyVolitionPage() {
               })()}
             </div>
           </div>
-        </div>
       </section>
 
       {/* ═══ YOUR VOLITION HEADER ═══ */}
