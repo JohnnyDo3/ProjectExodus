@@ -103,26 +103,27 @@ export default function DiscussionsPage() {
           </div>
         </div>
 
-        {/* Table edge peeking from bottom */}
+        {/* Table arch — peeking from the bottom, flows directly into the table below */}
         <div className="relative z-10 flex justify-center">
           <div
-            className="w-[80vw] max-w-[900px] h-[50px] rounded-t-full -mb-1"
+            className="w-[min(85vw,700px)] sm:w-[min(80vw,800px)] h-[80px] rounded-t-full"
             style={{
               background: 'radial-gradient(ellipse at 50% 100%, #8B6914 0%, #5C3D0E 60%, #3A2508 100%)',
               border: '6px solid #2E1D06',
               borderBottom: 'none',
               boxShadow: '0 -8px 30px rgba(0,0,0,0.3), inset 0 4px 12px rgba(139,105,20,0.2)',
+              marginBottom: '-6px',
             }}
           />
         </div>
       </section>
 
-      {/* ═══ THE ROUND TABLE — bird's eye with orbiting posts ═══ */}
-      <section className="relative py-16 sm:py-24 px-4 sm:px-8 overflow-hidden">
-        {/* Dark ambient bg behind table */}
+      {/* ═══ THE ROUND TABLE — seamless continuation from arch ═══ */}
+      <section className="relative px-4 sm:px-8 overflow-visible" style={{ marginTop: '-1px' }}>
+        {/* Continuous ambient background */}
         <div className="absolute inset-0 bg-gradient-to-b from-[color-mix(in_srgb,var(--accent)_3%,var(--background))] via-[var(--background)] to-[var(--background)]" />
 
-        <div className="relative z-10">
+        <div className="relative z-10 pt-4 sm:pt-8">
           {loading && posts.length === 0 ? (
             <div className="flex justify-center py-32">
               <Loader2 className="w-12 h-12 animate-spin text-[var(--primary)]" />
@@ -144,8 +145,13 @@ export default function DiscussionsPage() {
         </div>
       </section>
 
-      {/* ═══ FULL FEED BELOW ═══ */}
+      {/* ═══ FEED — wraps around the table like seats at a conference ═══ */}
       <section className="relative py-12 bg-gradient-to-b from-[var(--background)] to-[color-mix(in_srgb,var(--primary)_5%,var(--background))]">
+        {/* Subtle curved connector from table to feed */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[min(85vw,700px)] sm:w-[min(80vw,800px)] h-12 pointer-events-none" style={{
+          background: 'radial-gradient(ellipse at 50% 0%, rgba(90,65,15,0.08) 0%, transparent 70%)',
+        }} />
+
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
           <div className="text-center mb-10">
             <div className="flex items-center justify-center gap-3 mb-4">
@@ -154,10 +160,10 @@ export default function DiscussionsPage() {
               <div className="h-px flex-1 max-w-[100px] bg-gradient-to-r from-transparent via-[var(--border)] to-transparent" />
             </div>
             <h2 className="text-2xl font-black text-[var(--foreground)] mb-2">
-              ALL DISCUSSIONS
+              AROUND THE TABLE
             </h2>
             <p className="text-sm text-[var(--foreground)]/50">
-              Full feed with all community posts
+              Pull up a chair — browse the full discussion
             </p>
           </div>
 
@@ -173,13 +179,21 @@ export default function DiscussionsPage() {
             </div>
           ) : posts.length > 0 ? (
             <div className="space-y-6">
-              {posts.map((post) => (
-                <FeedPost
+              {posts.map((post, index) => (
+                <div
                   key={post.id}
-                  post={post}
-                  onLike={() => {}}
-                  onComment={() => {}}
-                />
+                  style={{
+                    // Alternating left/right offset to simulate "around the table" seating
+                    marginLeft: index % 2 === 0 ? '0px' : '24px',
+                    marginRight: index % 2 === 0 ? '24px' : '0px',
+                  }}
+                >
+                  <FeedPost
+                    post={post}
+                    onLike={() => {}}
+                    onComment={() => {}}
+                  />
+                </div>
               ))}
 
               {hasMore && (

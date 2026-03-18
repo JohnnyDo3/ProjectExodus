@@ -129,6 +129,7 @@ function ColumnLane({
   onRemove,
   children,
   emptyState,
+  viewMode = 'expanded',
 }: {
   title: string
   icon: any
@@ -140,7 +141,41 @@ function ColumnLane({
   onRemove?: () => void
   children: React.ReactNode
   emptyState?: React.ReactNode
+  viewMode?: 'expanded' | 'compact' | 'minimal'
 }) {
+  const isMinimal = viewMode === 'minimal'
+
+  // Minimal: collapsed to just the header title bar, no content
+  if (isMinimal) {
+    return (
+      <div className="flex-shrink-0 flex flex-col bg-[var(--card)] rounded-2xl border-2 border-[var(--border)] overflow-hidden transition-all w-[160px] min-w-[160px]">
+        <div className={`flex items-center gap-2.5 p-3 bg-gradient-to-r ${gradient} bg-opacity-10 flex-shrink-0`}>
+          <div className={`w-7 h-7 rounded-lg bg-gradient-to-br ${gradient} flex items-center justify-center`}>
+            <Icon className="w-3.5 h-3.5 text-white" />
+          </div>
+          <div className="min-w-0">
+            <h3 className="text-xs font-bold text-[var(--foreground)] uppercase tracking-wide truncate">
+              {title}
+            </h3>
+            {count > 0 && (
+              <span className="text-[10px] font-medium text-[var(--foreground)]/50">
+                {count}
+              </span>
+            )}
+          </div>
+          {isCustomizing && onRemove && (
+            <button
+              onClick={onRemove}
+              className="ml-auto p-1 rounded-lg bg-red-500/10 hover:bg-red-500/20 transition-colors"
+            >
+              <X className="w-3 h-3 text-red-500" />
+            </button>
+          )}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="w-[340px] min-w-[340px] flex flex-col bg-[var(--card)] rounded-2xl border-2 border-[var(--border)] overflow-hidden transition-all max-h-[calc(100vh-280px)]">
       {/* Lane Header */}
@@ -209,7 +244,7 @@ function ColumnLane({
 // ─── Lane Scroller ──────────────────────────────────────────────────────────
 // Netflix-style horizontal scroller for the column lanes
 
-function LaneScroller({ children }: { children: React.ReactNode }) {
+function LaneScroller({ children, viewMode = 'expanded' }: { children: React.ReactNode; viewMode?: 'expanded' | 'compact' | 'minimal' }) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(false)
@@ -235,6 +270,17 @@ function LaneScroller({ children }: { children: React.ReactNode }) {
 
   const scroll = (dir: 'left' | 'right') => {
     scrollRef.current?.scrollBy({ left: dir === 'left' ? -360 : 360, behavior: 'smooth' })
+  }
+
+  // Minimal mode: wrap all lanes in a simple flex-wrap grid, no horizontal scrolling
+  if (viewMode === 'minimal') {
+    return (
+      <div className="pb-12 px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-wrap gap-3 justify-center py-2">
+          {children}
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -1203,7 +1249,7 @@ export default function MyVolitionPage() {
       )}
 
       {/* ═══ CONTENT LANES ═══ */}
-      <LaneScroller>
+      <LaneScroller viewMode={viewMode}>
         {orderedLanes
           .filter(lane => lane.id !== 'profile')
           .map((lane) => {
@@ -1221,6 +1267,7 @@ export default function MyVolitionPage() {
                 addLabel={addConfig.label}
                 isCustomizing={isCustomizing}
                 onRemove={() => toggleLane(lane.id)}
+                viewMode={viewMode}
               >
                 {renderLaneContent(lane.id)}
               </ColumnLane>
