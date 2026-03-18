@@ -9,7 +9,7 @@ import { FeedPost } from '@/components/social/FeedPost'
 import { Button } from '@/components/ui/Button'
 
 import { RoundTable } from '@/components/community/roundtable/RoundTable'
-import { TablePostCard } from '@/components/community/roundtable/TablePostCard'
+import { TableCarousel } from '@/components/community/roundtable/TableCarousel'
 import { PostPreviewOverlay } from '@/components/community/roundtable/PostPreviewOverlay'
 
 interface TrendingHashtag {
@@ -75,14 +75,13 @@ export default function DiscussionsPage() {
     fetchPosts(nextPage)
   }
 
-  // Calculate how tall the table needs to be based on post content
-  const postRows = Math.ceil(posts.length / 2)
-  const minTableHeight = Math.max(600, 200 + postRows * 200 + 200)
+  // Table height — tall enough for the perimeter carousel to breathe
+  const minTableHeight = 900
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
-      {/* Navigation bar - floats above everything */}
-      <div className="fixed top-20 left-4 sm:left-8 z-50">
+      {/* Navigation bar - floats above everything, below page header */}
+      <div className="fixed top-4 left-4 sm:left-8 z-50">
         <BackButton label="Back to Community" fallbackUrl="/community" />
       </div>
 
@@ -157,84 +156,40 @@ export default function DiscussionsPage() {
       <div className="relative flex justify-center">
         <div
           ref={tableRef}
-          className="relative w-[88vw] max-w-[900px] z-10 -mt-20"
+          className="relative w-[94vw] max-w-[1200px] z-10 -mt-20"
           style={{ minHeight: `${minTableHeight}px` }}
         >
           <RoundTable className="w-full h-full" >
-            {/* ─── TABLE HEAD — divider with icon ─── */}
-            <div className="flex items-center justify-center gap-3 px-[15%] pt-24 pb-6">
-              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#8B6914]/20 to-transparent" />
-              <MessageSquare className="w-4 h-4 text-[#8B6914]/30" />
-              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#8B6914]/20 to-transparent" />
+            {/* ─── CENTER LABEL ─── */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+              {loading && posts.length === 0 ? (
+                <Loader2 className="w-10 h-10 animate-spin text-[#D4A54A]/60" />
+              ) : posts.length === 0 ? (
+                <>
+                  <MessageSquare className="w-14 h-14 text-[#8B6914]/25 mb-3" />
+                  <h3 className="text-lg font-black text-[#D4A54A]/50 mb-1">
+                    EMPTY TABLE
+                  </h3>
+                  <p className="text-xs text-[#8B6914]/40">
+                    Be the first to take a seat
+                  </p>
+                </>
+              ) : (
+                <>
+                  <MessageSquare className="w-8 h-8 text-[#8B6914]/20 mb-2" />
+                  <p className="text-[10px] text-[#8B6914]/40 font-bold uppercase tracking-widest">
+                    {posts.length} discussions
+                  </p>
+                </>
+              )}
             </div>
 
-            {/* ─── SEATS AROUND THE TABLE — posts alternate left/right ─── */}
-            {loading && posts.length === 0 ? (
-              <div className="flex justify-center py-20">
-                <Loader2 className="w-10 h-10 animate-spin text-[#D4A54A]/60" />
-              </div>
-            ) : posts.length > 0 ? (
-              <div className="px-3 sm:px-4 pb-16">
-                {posts.map((post, index) => {
-                  const isLeft = index % 2 === 0
-
-                  return (
-                    <div
-                      key={post.id}
-                      className="flex items-start mb-4"
-                      style={{
-                        // Alternate: left-aligned or right-aligned
-                        justifyContent: isLeft ? 'flex-start' : 'flex-end',
-                      }}
-                    >
-                      {/* The "chair" — post card positioned at the table edge */}
-                      <div
-                        className="w-[48%] sm:w-[44%]"
-                        style={{
-                          // Slight inward offset so cards overlap the table edge
-                          marginLeft: isLeft ? '2%' : undefined,
-                          marginRight: !isLeft ? '2%' : undefined,
-                        }}
-                      >
-                        <TablePostCard
-                          post={post}
-                          onClick={() => setSelectedPost(post)}
-                        />
-                      </div>
-                    </div>
-                  )
-                })}
-
-                {hasMore && (
-                  <div className="text-center py-6">
-                    <Button
-                      onClick={loadMore}
-                      disabled={loading}
-                      size="lg"
-                      className="font-black px-12 bg-[#D4A54A]/20 hover:bg-[#D4A54A]/30 border border-[#D4A54A]/30 text-[#D4A54A]"
-                    >
-                      {loading ? (
-                        <>
-                          <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                          LOADING...
-                        </>
-                      ) : (
-                        'PULL UP MORE CHAIRS'
-                      )}
-                    </Button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="text-center py-20">
-                <MessageSquare className="w-14 h-14 text-[#8B6914]/25 mx-auto mb-3" />
-                <h3 className="text-lg font-black text-[#D4A54A]/50 mb-1">
-                  EMPTY TABLE
-                </h3>
-                <p className="text-xs text-[#8B6914]/40">
-                  Be the first to take a seat
-                </p>
-              </div>
+            {/* ─── PERIMETER CAROUSEL — cards orbit the table edge ─── */}
+            {posts.length > 0 && (
+              <TableCarousel
+                posts={posts}
+                onPostClick={(post) => setSelectedPost(post)}
+              />
             )}
           </RoundTable>
 
