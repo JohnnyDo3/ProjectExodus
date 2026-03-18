@@ -1,117 +1,152 @@
-# Discussions Hub Redesign: "The Living Pulse"
+# Architecture Globe Landing — Implementation Plan
 
 ## Concept
-
-A curvilinear, organic activity hub that aggregates ALL platform activity into a living, breathing page. Not a forum. Not a feed. A **living organism** that shows the heartbeat of the entire community.
-
-Think: if the Daily Prophet met a bioluminescent coral reef that reacts to touch.
+A full-viewport 3D rotating globe (Been app style) showing architectural influence connections as animated arcs between world regions. A draggable timeline slider (prehistory → today) reveals connections as they formed throughout history. The globe is interactive — rotate, zoom, 360-degree view.
 
 ---
 
-## Available Data Sources (from codebase audit)
+## Library Choice: `react-globe.gl`
 
-| Source | API | What it gives us |
-|--------|-----|-----------------|
-| Unified Activity | `/api/activity/feed` | new_user, new_post, new_project, new_article, new_event, new_follow, new_comment (7 days) |
-| Social Feed | `/api/social/feed` | Posts with comments, likes, hashtags, mentions, media |
-| Trending | `/api/social/trending` | Trending hashtags with counts |
-| Forum | `/api/forum` | Categories with post/reply counts |
-| Project Discussions | `/api/projects/[id]/discussions` | Project-level threads |
-| Learning Discussions | `/api/learning/modules/[id]/discussions` | Module Q&A threads |
-| Article Comments | Article endpoints | Comments, peer reviews, ratings |
-| Notifications | `/api/notifications` | All user alerts |
-| Pusher | `lib/pusher.ts` | Real-time WebSocket channels |
+**Why:** First-class arc connections, dark aesthetic by default, declarative React props, proven Next.js pattern (`dynamic` + `ssr: false`). ~113K weekly downloads, actively maintained.
+
+**Install:** `npm install react-globe.gl`
 
 ---
 
-## Layout Architecture: 5 Zones
+## Data Pipeline (already exists in codebase)
 
-### Zone 1: "The Pulse" (Top — Activity Heartbeat)
-- Concentric rings that pulse faster/slower based on live activity rate
-- Center shows "X active now" count
-- Surrounding arc heatmap: 24-hour activity intensity on a curved timeline
-- Ticker tape below: smooth auto-scrolling latest activity one-liners
-- The rings use the theme system — warm amber at dawn, bright green at day, deep blue at night
+### Source data:
+- `data/architecture/periods.ts` — 40+ periods with `startYear`, `endYear`, `primaryRegions[]`, `influencedBy[]`, `influenced[]`, and `color`
+- `data/architecture/regions.ts` — 13 regions with colors and sub-regions
 
-### Zone 2: "The Archipelago" (Category Navigation)
-- Organic blob-shaped category islands scattered in a non-grid arrangement
-- Each island: blob border-radius, slight rotation, gentle floating animation
-- Categories: Discussions, Articles, Projects, Learning, Ratings, New Members
-- Island SIZE scales with activity volume (busier = bigger)
-- Clicking an island filters Zone 3 to that category
-- Thin curved SVG lines connect related islands (constellation effect)
+### Derived connection data (new file):
+Create `data/architecture/globeConnections.ts` that:
+1. Maps each region to a lat/lng centroid (e.g., MEDITERRANEAN → [41.9, 12.5], EAST_ASIA → [35.8, 104.1])
+2. Iterates every period's `influencedBy[]` relationships
+3. For each influence edge: looks up the source period's `primaryRegions` and the target period's `primaryRegions`
+4. Produces arc objects: `{ fromLat, fromLng, toLat, toLng, startYear, endYear, sourcePeriod, targetPeriod, color }`
+5. Deduplicates region-to-region arcs that share the same time window
 
-### Zone 3: "The River" (Main Content — Curved Bento Grid)
-- Bento grid with VARIED border-radius on each card (not uniform rectangles)
-- Card shapes cycle: organic rounded, pill-ish, diamond-ish, circle-ish
-- Featured/high-engagement items span 2x2 cells
-- Cards stagger-animate in on load and when new items arrive
-- Gentle "breathing" idle animation (0.5% scale oscillation, 6s cycle)
-- New items slide in from the right with a spring animation
-- Cover images get the Daily Prophet treatment (Ken Burns hover)
-- Wave-shaped clip-path dividers between content zones
-- Justified text with Lora serif for post previews
-
-### Zone 4: "The Constellation" (Thread Connections — Optional Toggle)
-- Force-directed node graph showing discussion clusters
-- Each node = a discussion/post, sized by engagement
-- Lines between nodes = replies/connections, thickness = reply count
-- Color-coded by category (uses theme CSS vars)
-- At night theme: nodes literally glow against dark background
-- Hovering a node shows preview tooltip, clicking navigates
-- D3 force layout for physics, React SVG for rendering
-
-### Zone 5: "The Shore" (Footer CTA)
-- Wave clip-path top edge
-- Simple serif CTA: "Start a Discussion" + "Explore Forums"
-- Community guidelines note
+**Result:** ~100-200 arc connections spanning 3100 BCE → 2025 CE
 
 ---
 
-## Moving Parts (Meaningful Motion)
+## Components
 
-| Animation | Where | Technique | Distracting? |
-|-----------|-------|-----------|--------------|
-| Pulse rings | Zone 1 | CSS `animate-ping` with dynamic speed | No — ambient, peripheral |
-| Ticker scroll | Zone 1 | CSS `translateX` infinite, pauses on hover | No — expected UX pattern |
-| Island float | Zone 2 | CSS `translateY` 4px oscillation, 8s ease, staggered | No — very subtle, different timing per island |
-| Blob morph | Zone 2 dividers | CSS `border-radius` animation, 10s cycle | No — subconscious only |
-| Card stagger entrance | Zone 3 | Motion staggerChildren, spring physics | No — happens once on load |
-| Card breathing | Zone 3 | CSS scale 1→1.005, 6s cycle | No — imperceptible unless you stare |
-| Ken Burns on images | Zone 3 | CSS `transform: scale(1.05)` over 6s on hover | No — user-triggered only |
-| Ripple on new activity | Zone 3 | CSS expanding ring, 1.5s, on new item arrival | No — brief, informational |
-| Constellation drift | Zone 4 | D3 force simulation, nodes settle then idle | No — opt-in view only |
-| All animations | Everywhere | Disabled via `prefers-reduced-motion` | Accessible |
+### 1. `ArchitectureGlobe.tsx` (new)
+Client-only component wrapping `react-globe.gl`:
+- **Globe setup:** Dark sphere, subtle atmosphere halo (amber/gold tint to match architecture theme), no texture or just a subtle land outline
+- **Arcs layer:** `arcsData` filtered by current timeline year. Animated dashed arcs with period colors
+- **Points layer:** `pointsData` — region centroids as glowing dots, sized by number of active connections
+- **Labels layer:** Region names appearing on hover
+- **Ring pulses:** When a new connection appears (timeline crosses a period start), a ring pulse animates at both endpoints
+- **Controls:** Auto-rotation (slow), user can drag to rotate, scroll to zoom, double-click to reset view
 
----
+### 2. `GlobeTimeline.tsx` (new)
+Horizontal slider at the bottom of the viewport:
+- Range: -3500 (Mesopotamian) → 2025 (today)
+- Styled as a gold/amber track with period-colored segments
+- Draggable thumb with year label
+- Auto-play button (slowly advances through time)
+- Period name label updates as you cross boundaries ("Ancient Egyptian → Classical Greek → ...")
+- Tick marks at major period boundaries
 
-## Curvilinear CSS Techniques
+### 3. `GlobeInfoPanel.tsx` (new)
+Floating panel (top-right or bottom-left) that shows:
+- Current era name + date range
+- Number of active connections
+- When user hovers an arc: shows source period → target period, what was influenced
+- Subtle, glass-morphism style panel
 
-1. **Blob shapes**: `border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%` with keyframe morphing
-2. **Wave dividers**: `clip-path: polygon(0% 0%, 100% 0%, 100% 85%, 75% 90%, 50% 95%, 25% 88%, 0% 92%)`
-3. **Curved bento cards**: Varied `rounded-[2rem_1rem_2rem_1rem]` per card type
-4. **Arc heatmap**: Absolute-positioned cells using `cos/sin` for semicircle placement
-5. **River path**: SVG `<path>` with cubic beziers as background decoration
-
----
-
-## Files to Create/Modify
-
-### New files:
-- `app/community/discussions/page.tsx` — Main hub page
-- `components/discussions/PulseHeader.tsx` — Zone 1: heartbeat + ticker
-- `components/discussions/Archipelago.tsx` — Zone 2: category islands
-- `components/discussions/ActivityRiver.tsx` — Zone 3: bento grid
-- `components/discussions/ConstellationMap.tsx` — Zone 4: thread graph
-- `components/discussions/ActivityCard.tsx` — Shared card component
-- `app/api/discussions/hub/route.ts` — Aggregated hub API endpoint
-
-### Modified files:
-- `app/globals.css` — Blob keyframes, wave clip-paths, breathing animation
-- `package.json` — Add `d3-force` + `@types/d3-force` for constellation (if Zone 4 approved)
+### 4. Updated `app/architecture/page.tsx`
+- The empty `h-screen` placeholder section gets filled with the globe
+- Globe loads via `dynamic(() => import(...), { ssr: false })` with a loading skeleton
+- Title "ARCHITECTURE" overlaid on the globe (top or center, semi-transparent)
+- Subtitle: "5,000 Years of Connected Design"
+- Scroll indicator at bottom
+- All existing content remains below the fold
 
 ---
 
-## Questions for User
+## Layout (above the fold)
 
-See below — need decisions on scope and visual direction before building.
+```
+┌─────────────────────────────────────────┐
+│                                         │
+│            A R C H I T E C T U R E      │  ← overlaid title
+│       5,000 Years of Connected Design   │
+│                                         │
+│              ╭─────────╮                │
+│           ╭──│  🌍     │──╮             │  ← 3D globe with arcs
+│          │   │  ╱╲ ╱╲  │   │            │
+│           ╰──│         │──╯             │
+│              ╰─────────╯                │
+│                                         │
+│  [info panel]              [controls]   │
+│                                         │
+│  ──●━━━━━━━━━━━━━━━━━━━●──────────── │  ← timeline slider
+│   -3500    "Gothic (1150)"        2025  │
+│                                         │
+│                ↓ scroll                  │
+└─────────────────────────────────────────┘
+```
+
+---
+
+## Timeline Interaction
+
+1. **Page load:** Globe appears with auto-rotation, timeline at ~1200 CE (Gothic — lots of connections visible)
+2. **Drag slider left:** Connections disappear as you go back in time. At -3000 only Egyptian→Mesopotamian arcs
+3. **Drag slider right:** Connections multiply rapidly through Renaissance, Baroque, Colonial era
+4. **Modern era (1900+):** Globe lights up — International Style connects every continent
+5. **Auto-play mode:** Button starts slow animation from prehistory, arcs bloom across the globe
+
+---
+
+## Visual Style
+
+- **Globe:** Dark/charcoal sphere with subtle country outlines (low-opacity land polygons)
+- **Atmosphere:** Warm amber glow halo (matches architecture page theme)
+- **Arcs:** Animated dashed lines using period colors, slight altitude curve
+- **Points:** Glowing amber dots at region centroids
+- **Background:** Very dark, almost black, with subtle radial gradient
+- **Typography:** Same gold/amber palette as the existing architecture page
+- **Timeline:** Gold track, glass-morphism panel, period colors as segment backgrounds
+
+---
+
+## Questions
+
+1. **Auto-play default?** Should the timeline auto-advance on page load (cinematic intro), or start paused at a specific era?
+
+2. **Globe texture:** Pure dark sphere with subtle land outlines, or completely abstract (just dots and arcs, no geography)?
+
+3. **Arc detail level:** Show individual element connections (e.g., "Pointed Arch traveled from Islamic → Gothic") or keep it at the period level ("Islamic Architecture influenced Gothic Architecture")?
+
+4. **Click interaction:** When you click a region dot, should it zoom in and show elements/periods specific to that region, or just show info in a panel?
+
+---
+
+## File Structure
+
+```
+components/architecture/globe/
+  ArchitectureGlobe.tsx       — main globe component
+  GlobeTimeline.tsx           — timeline slider
+  GlobeInfoPanel.tsx          — floating info panel
+  globeWrapper.tsx            — dynamic import wrapper for SSR
+
+data/architecture/
+  globeConnections.ts         — derived arc data from periods + regions
+```
+
+## Implementation Steps
+
+1. `npm install react-globe.gl`
+2. Create `globeConnections.ts` — derive arcs from existing period/region data
+3. Create `ArchitectureGlobe.tsx` — globe + arcs + points
+4. Create `GlobeTimeline.tsx` — slider component
+5. Create `GlobeInfoPanel.tsx` — hover/click info display
+6. Create `globeWrapper.tsx` — SSR-safe dynamic import
+7. Wire into `app/architecture/page.tsx` — fill the empty hero section
+8. Style and polish — title overlay, scroll indicator, loading state
