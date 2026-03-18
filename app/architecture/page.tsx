@@ -105,6 +105,13 @@ export default function ArchitecturePage() {
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
+      {/* ═══ NEW LANDING — empty placeholder for redesign ═══ */}
+      <section className="relative h-screen flex flex-col items-center justify-center">
+        {/* TODO: New landing page design goes here */}
+      </section>
+
+      {/* ═══ EXISTING CONTENT — now below the fold ═══ */}
+
       {/* Hero Section */}
       <section className="relative py-20 lg:py-32 overflow-hidden">
         {/* Background gradient */}
