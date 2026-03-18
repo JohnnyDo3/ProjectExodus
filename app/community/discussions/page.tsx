@@ -76,11 +76,9 @@ export default function DiscussionsPage() {
   }
 
   // Calculate how tall the table needs to be based on content
-  // Each "seat" row is ~180px, hero area is ~100svh, plus padding
+  // Hero area (~400px) + post rows (~200px each) + padding
   const postRows = Math.ceil(posts.length / 2)
-  const minTableHeight = typeof window !== 'undefined'
-    ? Math.max(window.innerHeight * 1.8, window.innerHeight + postRows * 200 + 400)
-    : 2400
+  const minTableHeight = Math.max(800, 500 + postRows * 200 + 400)
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
@@ -94,15 +92,15 @@ export default function DiscussionsPage() {
         {/* Background ambient */}
         <div className="absolute inset-0 bg-gradient-to-b from-[color-mix(in_srgb,var(--primary)_6%,var(--background))] via-[var(--background)] to-[color-mix(in_srgb,var(--primary)_4%,var(--background))]" />
 
-        {/* The table — one tall oval spanning above and below the fold */}
+        {/* The table — arch peeks ~80px above the fold, rectangular body below */}
         <div
           ref={tableRef}
-          className="relative w-[88vw] max-w-[900px] z-10"
+          className="relative w-[88vw] max-w-[900px] z-10 mt-[calc(100vh-80px)]"
           style={{ minHeight: `${minTableHeight}px` }}
         >
           <RoundTable className="w-full h-full" >
-            {/* ─── HEAD OF TABLE (above the fold) ─── */}
-            <div className="flex flex-col items-center pt-[15vh] sm:pt-[18vh] pb-12 px-6 sm:px-12">
+            {/* ─── HEAD OF TABLE (revealed on scroll) ─── */}
+            <div className="flex flex-col items-center pt-16 sm:pt-20 pb-12 px-6 sm:px-12">
               <div className="flex items-center justify-center gap-3 text-[10px] uppercase tracking-[0.3em] font-bold text-[#D4A54A]/60 mb-4">
                 <span>⚜</span>
                 <span>The Community</span>
@@ -241,12 +239,12 @@ export default function DiscussionsPage() {
           </RoundTable>
 
           {/* Chair shadows along the sides — decorative */}
-          <div className="absolute top-[60vh] bottom-[10%] left-0 w-[6%] pointer-events-none opacity-30"
+          <div className="absolute top-[400px] bottom-[10%] left-0 w-[6%] pointer-events-none opacity-30"
             style={{
               background: 'repeating-linear-gradient(180deg, transparent 0px, transparent 160px, rgba(46,29,6,0.15) 170px, rgba(46,29,6,0.08) 190px, transparent 200px)',
             }}
           />
-          <div className="absolute top-[60vh] bottom-[10%] right-0 w-[6%] pointer-events-none opacity-30"
+          <div className="absolute top-[400px] bottom-[10%] right-0 w-[6%] pointer-events-none opacity-30"
             style={{
               background: 'repeating-linear-gradient(180deg, transparent 0px, transparent 160px, rgba(46,29,6,0.15) 170px, rgba(46,29,6,0.08) 190px, transparent 200px)',
             }}

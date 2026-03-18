@@ -8,25 +8,29 @@ interface RoundTableProps {
 }
 
 /**
- * Bird's-eye conference table — a tall oval wood surface.
- * Spans the full height of its container, creating one continuous
- * table that crosses the fold. Children layer on top.
+ * Conference table — arched top with rounded-corner rectangular body.
+ * The arch (~80px dome) peeks above the fold, rectangular body below.
+ * One continuous wood surface spanning the full height.
  */
+
+// Shared border-radius: arch top + rounded bottom corners
+const TABLE_RADIUS = '50% 50% 24px 24px / 80px 80px 24px 24px'
+// Inner runner uses slightly smaller radii
+const RUNNER_RADIUS = '50% 50% 16px 16px / 60px 60px 16px 16px'
+
 export function RoundTable({ children, className = '' }: RoundTableProps) {
   return (
     <div className={`relative mx-auto ${className}`}>
-      {/* The oval table surface */}
+      {/* The table surface */}
       <div
         className="relative w-full h-full"
-        style={{
-          borderRadius: '50% / 4%',
-        }}
+        style={{ borderRadius: TABLE_RADIUS }}
       >
         {/* Wood surface fill */}
         <div
           className="absolute inset-0"
           style={{
-            borderRadius: '50% / 4%',
+            borderRadius: TABLE_RADIUS,
             background: `
               linear-gradient(180deg,
                 #7A5C12 0%,
@@ -49,7 +53,7 @@ export function RoundTable({ children, className = '' }: RoundTableProps) {
             `,
           }}
         >
-          {/* Wood grain — horizontal lines across the table */}
+          {/* Wood grain — longitudinal lines + knots */}
           <svg
             className="absolute inset-0 w-full h-full opacity-[0.06] pointer-events-none"
             viewBox="0 0 200 1000"
@@ -84,11 +88,11 @@ export function RoundTable({ children, className = '' }: RoundTableProps) {
             ))}
           </svg>
 
-          {/* Highlight/shine — top and center gleam */}
+          {/* Highlight/shine — top arch gleam + center */}
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
-              borderRadius: '50% / 4%',
+              borderRadius: TABLE_RADIUS,
               background: `
                 linear-gradient(180deg,
                   rgba(212,165,74,0.1) 0%,
@@ -109,21 +113,21 @@ export function RoundTable({ children, className = '' }: RoundTableProps) {
           <div
             className="absolute inset-[6px] pointer-events-none"
             style={{
-              borderRadius: '50% / 4%',
+              borderRadius: TABLE_RADIUS,
               border: '1.5px solid rgba(139,105,20,0.12)',
               boxShadow: 'inset 0 3px 12px rgba(212,165,74,0.06)',
             }}
           />
 
-          {/* Inner decorative runner line down the center */}
+          {/* Inner decorative runner line */}
           <div
             className="absolute pointer-events-none"
             style={{
-              top: '6%',
-              bottom: '6%',
+              top: '4%',
+              bottom: '4%',
               left: '15%',
               right: '15%',
-              borderRadius: '50% / 4%',
+              borderRadius: RUNNER_RADIUS,
               border: '1px solid rgba(139,105,20,0.08)',
             }}
           />
@@ -131,7 +135,7 @@ export function RoundTable({ children, className = '' }: RoundTableProps) {
       </div>
 
       {/* Content layer — on top of the table */}
-      <div className="absolute inset-0" style={{ borderRadius: '50% / 4%' }}>
+      <div className="absolute inset-0" style={{ borderRadius: TABLE_RADIUS }}>
         {children}
       </div>
     </div>
