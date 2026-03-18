@@ -146,7 +146,6 @@ export default function GlobeInfoPanel({
       {/* Main Panel */}
       <div
         className={[
-          'absolute top-4 right-4 z-20',
           'bg-black/30 backdrop-blur-[8px] border border-white/10 rounded-xl',
           'shadow-lg shadow-black/20',
           'transition-all duration-500 ease-in-out',

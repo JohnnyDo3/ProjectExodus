@@ -4,7 +4,6 @@ import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import GlobeTimeline from './GlobeTimeline'
 import GlobeInfoPanel from './GlobeInfoPanel'
-import SkylineDivider from './SkylineDivider'
 import {
   getArcsForYear,
   getPointsForYear,
@@ -12,12 +11,9 @@ import {
   getCurrentPeriodForYear,
   formatYear,
   getYearDuration,
-  getArcsForYear as getArcs,
-  ALL_ARCS,
   REGION_CENTROIDS,
   type GlobeArc,
 } from '@/data/architecture/globeConnections'
-import { ARCHITECTURAL_PERIODS } from '@/data/architecture/periods'
 
 // Dynamic imports
 const ArchitectureGlobe = dynamic(() => import('./ArchitectureGlobe'), {
@@ -66,10 +62,8 @@ function useIsMobile(): boolean {
 
   useEffect(() => {
     const check = () => {
-      // Check screen width + touch capability
       const narrow = window.innerWidth < 768
       const touch = 'ontouchstart' in window || navigator.maxTouchPoints > 0
-      // Check WebGL support
       let weakGPU = false
       try {
         const canvas = document.createElement('canvas')
@@ -80,7 +74,6 @@ function useIsMobile(): boolean {
           const debugInfo = (gl as WebGLRenderingContext).getExtension('WEBGL_debug_renderer_info')
           if (debugInfo) {
             const renderer = (gl as WebGLRenderingContext).getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
-            // Detect known low-power GPUs
             if (/swiftshader|llvmpipe|software/i.test(renderer)) {
               weakGPU = true
             }
@@ -89,12 +82,9 @@ function useIsMobile(): boolean {
       } catch {
         weakGPU = true
       }
-
       setIsMobile((narrow && touch) || weakGPU)
     }
-
     check()
-    // No need for resize listener — this is checked once on mount
   }, [])
 
   return isMobile
@@ -120,12 +110,7 @@ function useLongPress(delay: number = 500) {
   const onTouchStart = useCallback((e: React.TouchEvent, content: string) => {
     const touch = e.touches[0]
     timerRef.current = setTimeout(() => {
-      setTooltip({
-        visible: true,
-        x: touch.clientX,
-        y: touch.clientY - 50,
-        content,
-      })
+      setTooltip({ visible: true, x: touch.clientX, y: touch.clientY - 50, content })
     }, delay)
   }, [delay])
 
@@ -140,53 +125,52 @@ function useLongPress(delay: number = 500) {
   }, [])
 
   useEffect(() => {
-    return () => {
-      if (timerRef.current) clearTimeout(timerRef.current)
-    }
+    return () => { if (timerRef.current) clearTimeout(timerRef.current) }
   }, [])
 
   return { tooltip, onTouchStart, onTouchEnd, dismiss }
 }
 
 // =============================================================================
-// AUTO-PLAY TIMING
+// LOGARITHMIC TIME PACING
+//
+// Maps the year range to a normalized t ∈ [0,1] via log scale.
+// Early years (prehistory) compress; recent years (modern) expand.
 // =============================================================================
 
 const MIN_YEAR = -12000
 const MAX_YEAR = 2025
-const TOTAL_RANGE = MAX_YEAR - MIN_YEAR
+const TOTAL_RANGE = MAX_YEAR - MIN_YEAR // 14025
 
-const PREHISTORIC_END = -3500
+// Full play-through duration at speed=1 (ms)
+const FULL_DURATION_MS = 150000 // 2.5 minutes
 
-const PREHISTORIC_DURATION = 40000
-const HISTORY_DURATION = 90000
+// Log base for the mapping
+const LOG_BASE = Math.log(TOTAL_RANGE + 1)
 
-// Year step for keyboard arrow keys
-const KEYBOARD_YEAR_STEP = 200
-const KEYBOARD_YEAR_STEP_LARGE = 1000
-
-function getYearsPerMs(year: number, speed: number): number {
-  if (year < PREHISTORIC_END) {
-    const prehistoricRange = PREHISTORIC_END - MIN_YEAR
-    return (prehistoricRange / PREHISTORIC_DURATION) * speed
-  }
-  const historyRange = MAX_YEAR - PREHISTORIC_END
-  return (historyRange / HISTORY_DURATION) * speed
+/** Convert year → normalised t (0→1) using log scale */
+function yearToT(year: number): number {
+  const clamped = Math.max(MIN_YEAR, Math.min(MAX_YEAR, year))
+  return Math.log(clamped - MIN_YEAR + 1) / LOG_BASE
 }
 
-// =============================================================================
-// REGION LIST (for keyboard cycling)
-// =============================================================================
+/** Convert normalised t (0→1) → year using inverse log */
+function tToYear(t: number): number {
+  const clamped = Math.max(0, Math.min(1, t))
+  return MIN_YEAR + Math.exp(clamped * LOG_BASE) - 1
+}
 
-const REGION_IDS = Object.keys(REGION_CENTROIDS)
+// Keyboard step sizes (in t-space)
+const KEYBOARD_STEP = 0.015       // ~small jump
+const KEYBOARD_STEP_LARGE = 0.06  // ~large jump
 
 // =============================================================================
 // MAIN COMPONENT
 // =============================================================================
 
 export default function GlobeLanding() {
-  // State
-  const [currentYear, setCurrentYear] = useState(MIN_YEAR)
+  // State — t is the normalised time parameter, year is derived
+  const [tParam, setTParam] = useState(0) // 0 → 1
   const [isPlaying, setIsPlaying] = useState(false)
   const [speed, setSpeed] = useState(1)
   const [zoomedRegion, setZoomedRegion] = useState<string | null>(null)
@@ -198,6 +182,9 @@ export default function GlobeLanding() {
   const initialPauseRef = useRef(true)
   const containerRef = useRef<HTMLDivElement>(null)
   const regionCycleIndexRef = useRef(-1)
+
+  // Derive year from t
+  const currentYear = Math.round(tToYear(tParam))
 
   // Mobile detection
   const isMobile = useIsMobile()
@@ -211,7 +198,6 @@ export default function GlobeLanding() {
   const activePeriods = useMemo(() => getActivePeriodsForYear(currentYear), [currentYear])
   const currentPeriod = useMemo(() => getCurrentPeriodForYear(currentYear), [currentYear])
 
-  // Stats for info panel
   const activeConnections = arcs.length
   const activeRegions = points.length
   const activePeriodsCount = activePeriods.length
@@ -231,12 +217,10 @@ export default function GlobeLanding() {
 
     const buildings = regionPeriods.flatMap(p => p.iconicBuildings).slice(0, 5)
 
-    // Get key characteristics for this era
     const keyChars = regionPeriods
       .flatMap(p => p.keyCharacteristics || [])
       .slice(0, 4)
 
-    // Get description from the most recent active period (use HIGH_SCHOOL level for concise text)
     const description = regionPeriods.length > 0
       ? regionPeriods[regionPeriods.length - 1].description?.HIGH_SCHOOL
       : undefined
@@ -253,7 +237,7 @@ export default function GlobeLanding() {
     }
   }, [zoomedRegion, arcs, activePeriods])
 
-  // Hovered arc data formatted for info panel
+  // Hovered arc data
   const hoveredArcData = useMemo(() => {
     if (!hoveredArc) return null
     return {
@@ -268,7 +252,7 @@ export default function GlobeLanding() {
   }, [hoveredArc])
 
   // -------------------------------------------------------------------------
-  // Auto-play animation loop
+  // Auto-play animation loop (logarithmic time)
   // -------------------------------------------------------------------------
 
   useEffect(() => {
@@ -279,17 +263,16 @@ export default function GlobeLanding() {
 
     lastTickRef.current = performance.now()
 
+    const tPerMs = (1 / FULL_DURATION_MS) * speed
+
     const tick = (now: number) => {
       const delta = now - lastTickRef.current
       lastTickRef.current = now
 
-      setCurrentYear(prev => {
-        const yearsPerMs = getYearsPerMs(prev, speed)
-        const nextYear = prev + yearsPerMs * delta
-        if (nextYear >= MAX_YEAR) {
-          return MIN_YEAR
-        }
-        return Math.min(nextYear, MAX_YEAR)
+      setTParam(prev => {
+        const next = prev + tPerMs * delta
+        if (next >= 1) return 0 // loop
+        return Math.min(next, 1)
       })
 
       animFrameRef.current = requestAnimationFrame(tick)
@@ -303,7 +286,7 @@ export default function GlobeLanding() {
   }, [isPlaying, speed])
 
   // -------------------------------------------------------------------------
-  // 1.5 second pause, then auto-play starts
+  // Initial pause then auto-play
   // -------------------------------------------------------------------------
 
   useEffect(() => {
@@ -324,7 +307,6 @@ export default function GlobeLanding() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Only handle if globe section is in viewport
       const container = containerRef.current
       if (!container) return
 
@@ -341,21 +323,16 @@ export default function GlobeLanding() {
         case 'ArrowRight':
           e.preventDefault()
           setIsPlaying(false)
-          setCurrentYear(prev =>
-            Math.min(prev + (e.shiftKey ? KEYBOARD_YEAR_STEP_LARGE : KEYBOARD_YEAR_STEP), MAX_YEAR)
-          )
+          setTParam(prev => Math.min(prev + (e.shiftKey ? KEYBOARD_STEP_LARGE : KEYBOARD_STEP), 1))
           break
 
         case 'ArrowLeft':
           e.preventDefault()
           setIsPlaying(false)
-          setCurrentYear(prev =>
-            Math.max(prev - (e.shiftKey ? KEYBOARD_YEAR_STEP_LARGE : KEYBOARD_YEAR_STEP), MIN_YEAR)
-          )
+          setTParam(prev => Math.max(prev - (e.shiftKey ? KEYBOARD_STEP_LARGE : KEYBOARD_STEP), 0))
           break
 
         case 'Tab':
-          // Cycle through active regions
           if (points.length > 0) {
             e.preventDefault()
             const activeRegionIds = points.map(p => p.region)
@@ -367,10 +344,7 @@ export default function GlobeLanding() {
           break
 
         case 'Enter':
-          // Zoom into currently focused region (if one is selected)
-          if (zoomedRegion) {
-            // Already zoomed — no-op
-          } else if (points.length > 0) {
+          if (!zoomedRegion && points.length > 0) {
             e.preventDefault()
             const idx = Math.max(0, regionCycleIndexRef.current)
             const activeRegionIds = points.map(p => p.region)
@@ -406,20 +380,16 @@ export default function GlobeLanding() {
   }, [points, zoomedRegion])
 
   // -------------------------------------------------------------------------
-  // Touch gesture: swipe left/right on timeline area to scrub
+  // Touch gestures: swipe to scrub
   // -------------------------------------------------------------------------
 
-  const touchStartRef = useRef<{ x: number; y: number; year: number } | null>(null)
+  const touchStartRef = useRef<{ x: number; y: number; t: number } | null>(null)
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     if (e.touches.length === 1) {
-      touchStartRef.current = {
-        x: e.touches[0].clientX,
-        y: e.touches[0].clientY,
-        year: currentYear,
-      }
+      touchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY, t: tParam }
     }
-  }, [currentYear])
+  }, [tParam])
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (!touchStartRef.current || e.touches.length !== 1) return
@@ -427,14 +397,11 @@ export default function GlobeLanding() {
     const dx = e.touches[0].clientX - touchStartRef.current.x
     const dy = e.touches[0].clientY - touchStartRef.current.y
 
-    // Only trigger horizontal scrub if mostly horizontal
     if (Math.abs(dx) > Math.abs(dy) * 1.5 && Math.abs(dx) > 20) {
       e.preventDefault()
       setIsPlaying(false)
-      // Map screen width to full year range
-      const yearDelta = (dx / window.innerWidth) * TOTAL_RANGE * 0.5
-      const newYear = Math.max(MIN_YEAR, Math.min(MAX_YEAR, touchStartRef.current.year + yearDelta))
-      setCurrentYear(newYear)
+      const tDelta = (dx / window.innerWidth) * 0.3
+      setTParam(Math.max(0, Math.min(1, touchStartRef.current.t + tDelta)))
     }
   }, [])
 
@@ -447,7 +414,7 @@ export default function GlobeLanding() {
   // -------------------------------------------------------------------------
 
   const handleTimelineChange = useCallback((year: number) => {
-    setCurrentYear(year)
+    setTParam(yearToT(year))
     setIsPlaying(false)
   }, [])
 
@@ -474,13 +441,13 @@ export default function GlobeLanding() {
   }, [])
 
   // -------------------------------------------------------------------------
-  // ARIA live region announcements
+  // ARIA
   // -------------------------------------------------------------------------
 
   const ariaAnnouncement = useMemo(() => {
     const parts: string[] = []
     if (currentPeriod) parts.push(currentPeriod.name)
-    parts.push(formatYear(Math.round(currentYear)))
+    parts.push(formatYear(currentYear))
     parts.push(`${activeConnections} connections across ${activeRegions} regions`)
     if (zoomedRegion && zoomedRegionData) {
       parts.push(`Zoomed into ${zoomedRegionData.name}`)
@@ -494,26 +461,20 @@ export default function GlobeLanding() {
 
   return (
     <>
-      {/* ARIA live region for screen readers */}
-      <div
-        aria-live="polite"
-        aria-atomic="true"
-        className="sr-only"
-        role="status"
-      >
+      {/* ARIA live region */}
+      <div aria-live="polite" aria-atomic="true" className="sr-only" role="status">
         {ariaAnnouncement}
       </div>
 
-      {/* Globe Hero Section — FIXED behind everything */}
+      {/* Globe Hero — FIXED, starts below header (h-16 / sm:h-20) */}
       <div
         ref={containerRef}
-        className="fixed inset-0 w-full h-screen overflow-hidden"
+        className="fixed top-16 sm:top-20 left-0 right-0 bottom-0 overflow-hidden"
         style={{ zIndex: 0 }}
         role="application"
         aria-label="Interactive Architecture Globe. Space: play/pause. Arrow keys: scrub timeline. Tab: cycle regions. Enter: zoom in. Escape: zoom out."
         aria-roledescription="3D globe visualization"
         tabIndex={0}
-        // Touch gestures on the globe area
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -525,12 +486,12 @@ export default function GlobeLanding() {
         <div className="absolute inset-0" style={{ padding: '2vh 2vw 14vh 2vw' }}>
           {isMobile ? (
             <MobileGlobeFallback
-              currentYear={Math.round(currentYear)}
+              currentYear={currentYear}
               onRegionClick={handleRegionClick}
             />
           ) : (
             <ArchitectureGlobe
-              currentYear={Math.round(currentYear)}
+              currentYear={currentYear}
               onRegionClick={handleRegionClick}
               onArcHover={handleArcHover}
               zoomedRegion={zoomedRegion}
@@ -553,13 +514,13 @@ export default function GlobeLanding() {
               <p
                 className="text-xs md:text-sm font-medium"
                 style={{ color: 'rgba(212,165,74,0.9)' }}
-                aria-label={`Current period: ${currentPeriod.name}, ${formatYear(Math.round(currentYear))}`}
+                aria-label={`Current period: ${currentPeriod.name}, ${formatYear(currentYear)}`}
               >
-                {currentPeriod.name} · {formatYear(Math.round(currentYear))}
+                {currentPeriod.name} · {formatYear(currentYear)}
               </p>
             )}
             <p className="text-[10px] md:text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
-              12,000 BCE – {formatYear(Math.round(currentYear))} · {getYearDuration(MIN_YEAR, Math.round(currentYear))} Years
+              12,000 BCE – {formatYear(currentYear)} · {getYearDuration(MIN_YEAR, currentYear)} Years
             </p>
             <p className="text-[10px] md:text-xs italic" style={{ color: 'rgba(255,255,255,0.4)' }}>
               From First Shelters to Skyscrapers
@@ -567,10 +528,10 @@ export default function GlobeLanding() {
           </div>
         </div>
 
-        {/* Info Panel — top right */}
+        {/* Info Panel — top right (stat board + region card) */}
         <div className="absolute top-4 right-4 md:top-6 md:right-6 z-10">
           <GlobeInfoPanel
-            currentYear={Math.round(currentYear)}
+            currentYear={currentYear}
             activeConnections={activeConnections}
             activeRegions={activeRegions}
             activePeriods={activePeriodsCount}
@@ -580,14 +541,14 @@ export default function GlobeLanding() {
           />
         </div>
 
-        {/* Timeline — bottom, compact */}
+        {/* Timeline — bottom */}
         <div
           className="absolute bottom-0 left-0 right-0 z-10 px-3 pb-3 md:px-6 md:pb-4"
           role="group"
           aria-label="Timeline controls"
         >
           <GlobeTimeline
-            currentYear={Math.round(currentYear)}
+            currentYear={currentYear}
             onChange={handleTimelineChange}
             isPlaying={isPlaying}
             onTogglePlay={handleTogglePlay}
@@ -612,13 +573,12 @@ export default function GlobeLanding() {
         )}
       </div>
 
-      {/* Spacer — pushes content below the fixed globe */}
-      <div className="h-screen" style={{ position: 'relative', zIndex: 0 }} aria-hidden="true" />
-
-      {/* Skyline Divider — sits between globe and content, scrolls over the globe */}
-      <div className="relative" style={{ zIndex: 10, marginTop: '-1px' }} aria-hidden="true">
-        <SkylineDivider className="text-[var(--background)]" />
-      </div>
+      {/* Spacer — pushes page content below the fixed globe area */}
+      <div
+        className="h-[calc(100vh-4rem)] sm:h-[calc(100vh-5rem)]"
+        style={{ position: 'relative', zIndex: 0 }}
+        aria-hidden="true"
+      />
     </>
   )
 }

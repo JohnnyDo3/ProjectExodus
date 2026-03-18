@@ -10,6 +10,7 @@ import {
   type GlobePoint,
 } from '@/data/architecture/globeConnections'
 import { useTerminatorMaterial } from './useTerminatorMaterial'
+import { usePrehistoryMaterial } from './usePrehistoryMaterial'
 
 const GlobeGL = dynamic(() => import('react-globe.gl'), { ssr: false })
 
@@ -47,13 +48,10 @@ interface GeoJSONFeature {
 }
 
 // ---------------------------------------------------------------------------
-// Helpers
+// Constants
 // ---------------------------------------------------------------------------
 
-/** Compute the midpoint between two lat/lng pairs (simple average, good enough for globe view) */
-function midpoint(lat1: number, lng1: number, lat2: number, lng2: number) {
-  return { lat: (lat1 + lat2) / 2, lng: (lng1 + lng2) / 2 }
-}
+const PREHISTORY_END = -3500
 
 // ---------------------------------------------------------------------------
 // Component
@@ -71,14 +69,29 @@ export default function ArchitectureGlobe({
   const prevPointsRef = useRef<Set<string>>(new Set())
   const ringsTimeoutRef = useRef<ReturnType<typeof setTimeout>[]>([])
   const globeReadyRef = useRef(false)
-  const lastFollowedArcRef = useRef<string | null>(null)
+
+  // Region queue camera state
+  const regionQueueRef = useRef<string[]>([])
+  const regionQueueIndexRef = useRef(0)
+  const regionCameraTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const lastRegionSetRef = useRef<string>('')
+  const isPanningRef = useRef(false)
 
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
   const [countries, setCountries] = useState<GeoJSONFeature[]>([])
   const [ringsData, setRingsData] = useState<RingDatum[]>([])
 
-  // Terminator day/night shader material
+  // Prehistory vs post-prehistory material
+  const isPrehistory = currentYear < PREHISTORY_END
+  const prehistoryProgress = isPrehistory
+    ? Math.max(0, Math.min(1, (currentYear - (-12000)) / (PREHISTORY_END - (-12000))))
+    : 1
+
   const terminatorMaterial = useTerminatorMaterial()
+  const prehistoryMaterial = usePrehistoryMaterial(prehistoryProgress)
+
+  // Pick the right material
+  const globeMaterial = isPrehistory ? prehistoryMaterial : terminatorMaterial
 
   // -------------------------------------------------------------------------
   // Container resize tracking
@@ -97,7 +110,6 @@ export default function ArchitectureGlobe({
 
     observer.observe(container)
 
-    // Capture initial size
     const rect = container.getBoundingClientRect()
     setDimensions({ width: rect.width, height: rect.height })
 
@@ -120,9 +132,7 @@ export default function ArchitectureGlobe({
           setCountries(data.features)
         }
       })
-      .catch(() => {
-        // Silently handle missing geojson
-      })
+      .catch(() => {})
 
     return () => {
       cancelled = true
@@ -152,7 +162,7 @@ export default function ArchitectureGlobe({
   }, [])
 
   // -------------------------------------------------------------------------
-  // Keep auto-rotate enabled (re-enable after any pointOfView animation)
+  // Keep auto-rotate enabled while playing (re-enable after POV animations)
   // -------------------------------------------------------------------------
 
   useEffect(() => {
@@ -175,7 +185,12 @@ export default function ArchitectureGlobe({
   // Derived data
   // -------------------------------------------------------------------------
 
-  const arcsData = useMemo(() => getArcsForYear(currentYear), [currentYear])
+  const arcsData = useMemo(() => {
+    // No arcs during prehistory
+    if (isPrehistory) return []
+    return getArcsForYear(currentYear)
+  }, [currentYear, isPrehistory])
+
   const pointsData = useMemo(() => getPointsForYear(currentYear), [currentYear])
 
   // -------------------------------------------------------------------------
@@ -204,7 +219,6 @@ export default function ArchitectureGlobe({
 
       setRingsData((prev) => [...prev, ...newRings])
 
-      // Remove rings after 2 seconds
       const timeout = setTimeout(() => {
         setRingsData((prev) =>
           prev.filter((r) => !newRings.some((nr) => nr.lat === r.lat && nr.lng === r.lng))
@@ -215,62 +229,100 @@ export default function ArchitectureGlobe({
     }
 
     prevPointsRef.current = currentRegions
-
-    return () => {
-      // Cleanup is handled at unmount level
-    }
   }, [pointsData])
 
   // Cleanup ring timeouts on unmount
   useEffect(() => {
     const timeouts = ringsTimeoutRef.current
     return () => {
-      for (const t of timeouts) {
-        clearTimeout(t)
-      }
+      for (const t of timeouts) clearTimeout(t)
     }
   }, [])
 
   // -------------------------------------------------------------------------
-  // Follow the action – ALWAYS pan to show newest arc midpoint while playing
+  // REGION PRIORITY QUEUE CAMERA
+  //
+  // Sorts active regions west → east by longitude.
+  // Cycles through them, spending equal time on each.
+  // New regions interrupt the queue briefly.
   // -------------------------------------------------------------------------
 
   useEffect(() => {
     const globe = globeRef.current
-    if (!globe || !isPlaying || !globeReadyRef.current) return
+    if (!globe || !isPlaying || !globeReadyRef.current || zoomedRegion) return
 
-    // If we have arcs, follow the newest one
-    if (arcsData.length > 0) {
-      const newestArc = arcsData[arcsData.length - 1]
+    // Build sorted region list (west → east by longitude)
+    const sorted = [...pointsData].sort((a, b) => a.lng - b.lng)
+    const regionIds = sorted.map((p) => p.region)
+    const regionKey = regionIds.join(',')
 
-      // Only animate if this is a different arc than last time
-      if (lastFollowedArcRef.current === newestArc.id) return
-      lastFollowedArcRef.current = newestArc.id
+    // Detect new regions appearing
+    const prevIds = new Set(regionQueueRef.current)
+    const newRegions = sorted.filter((p) => !prevIds.has(p.region))
 
-      // Compute midpoint between source and target so both are visible
-      const mid = midpoint(
-        newestArc.fromLat,
-        newestArc.fromLng,
-        newestArc.toLat,
-        newestArc.toLng
-      )
+    // Update the queue
+    regionQueueRef.current = regionIds
 
-      globe.pointOfView(
-        { lat: mid.lat, lng: mid.lng, altitude: 2.2 },
-        2500 // slower, smoother pan
-      )
-    } else {
-      // No arcs yet (prehistoric beginning) — start at Levant and slowly pan
-      // Only set once at the beginning
-      if (lastFollowedArcRef.current === null) {
-        lastFollowedArcRef.current = '__no_arcs__'
+    // If a new region appeared, interrupt and fly to it
+    if (newRegions.length > 0 && regionKey !== lastRegionSetRef.current) {
+      lastRegionSetRef.current = regionKey
+      const newest = newRegions[newRegions.length - 1]
+      const idx = regionIds.indexOf(newest.region)
+      regionQueueIndexRef.current = idx >= 0 ? idx : 0
+
+      const centroid = REGION_CENTROIDS[newest.region]
+      if (centroid) {
+        // Altitude adapts to number of active regions
+        const altitude = regionIds.length <= 4 ? 1.8 : regionIds.length <= 8 ? 2.2 : 2.5
         globe.pointOfView(
-          { lat: 31.8, lng: 35.2, altitude: 2.2 },
-          2000
+          { lat: centroid.lat, lng: centroid.lng, altitude },
+          3000
         )
       }
+      return
     }
-  }, [arcsData, isPlaying])
+
+    lastRegionSetRef.current = regionKey
+
+    // If no regions, nothing to track
+    if (regionIds.length === 0) return
+
+    // Dwell time per region: more regions → shorter dwell, but minimum 4s
+    const dwellTime = Math.max(4000, Math.round(8000 / regionIds.length))
+
+    // Set up the cycling timer
+    if (regionCameraTimerRef.current) {
+      clearTimeout(regionCameraTimerRef.current)
+    }
+
+    const advanceCamera = () => {
+      const queue = regionQueueRef.current
+      if (queue.length === 0 || !globeRef.current) return
+
+      regionQueueIndexRef.current = (regionQueueIndexRef.current + 1) % queue.length
+      const regionId = queue[regionQueueIndexRef.current]
+      const centroid = REGION_CENTROIDS[regionId]
+
+      if (centroid) {
+        const altitude = queue.length <= 4 ? 1.8 : queue.length <= 8 ? 2.2 : 2.5
+        globeRef.current.pointOfView(
+          { lat: centroid.lat, lng: centroid.lng, altitude },
+          3000 // 3 second pan
+        )
+      }
+
+      regionCameraTimerRef.current = setTimeout(advanceCamera, dwellTime)
+    }
+
+    regionCameraTimerRef.current = setTimeout(advanceCamera, dwellTime)
+
+    return () => {
+      if (regionCameraTimerRef.current) {
+        clearTimeout(regionCameraTimerRef.current)
+        regionCameraTimerRef.current = null
+      }
+    }
+  }, [pointsData, isPlaying, zoomedRegion])
 
   // -------------------------------------------------------------------------
   // Zoom on region click / zoom out
@@ -281,6 +333,12 @@ export default function ArchitectureGlobe({
     if (!globe) return
 
     if (zoomedRegion) {
+      // Stop the queue camera
+      if (regionCameraTimerRef.current) {
+        clearTimeout(regionCameraTimerRef.current)
+        regionCameraTimerRef.current = null
+      }
+
       const centroid = REGION_CENTROIDS[zoomedRegion]
       if (centroid) {
         globe.pointOfView(
@@ -289,20 +347,21 @@ export default function ArchitectureGlobe({
         )
       }
     } else {
-      // Fly back to overview
-      const newestArc = arcsData.length > 0 ? arcsData[arcsData.length - 1] : null
-      const fallback = newestArc
-        ? midpoint(newestArc.fromLat, newestArc.fromLng, newestArc.toLat, newestArc.toLng)
-        : { lat: 31.8, lng: 35.2 }
-
-      if (fallback) {
-        globe.pointOfView(
-          { lat: fallback.lat, lng: fallback.lng, altitude: 2.2 },
-          1500
-        )
+      // Fly back to overview — let the queue camera take over
+      const queue = regionQueueRef.current
+      if (queue.length > 0) {
+        const idx = regionQueueIndexRef.current % queue.length
+        const regionId = queue[idx]
+        const centroid = REGION_CENTROIDS[regionId]
+        if (centroid) {
+          globe.pointOfView(
+            { lat: centroid.lat, lng: centroid.lng, altitude: 2.2 },
+            1500
+          )
+        }
       }
     }
-  }, [zoomedRegion, arcsData])
+  }, [zoomedRegion])
 
   // -------------------------------------------------------------------------
   // Callbacks
@@ -326,6 +385,11 @@ export default function ArchitectureGlobe({
   // Render
   // -------------------------------------------------------------------------
 
+  // Country border opacity: fade in during prehistory
+  const borderOpacity = isPrehistory
+    ? Math.max(0.05, prehistoryProgress * 0.4)
+    : 0.4
+
   return (
     <div ref={containerRef} className="w-full h-full">
       {dimensions.width > 0 && dimensions.height > 0 && (
@@ -333,16 +397,16 @@ export default function ArchitectureGlobe({
         ref={globeRef}
         width={dimensions.width}
         height={dimensions.height}
-        // Use terminator shader when ready, fallback to night texture
-        {...(terminatorMaterial
-          ? { globeMaterial: terminatorMaterial, globeImageUrl: '' }
+        // Use appropriate material based on era
+        {...(globeMaterial
+          ? { globeMaterial, globeImageUrl: '' }
           : { globeImageUrl: '//unpkg.com/three-globe/example/img/earth-night.jpg' }
         )}
         backgroundImageUrl={null as any}
         showAtmosphere={true}
-        atmosphereColor="#D4A54A"
-        atmosphereAltitude={0.15}
-        // Arcs layer
+        atmosphereColor={isPrehistory ? '#D4A54A' : '#D4A54A'}
+        atmosphereAltitude={isPrehistory ? 0.08 + prehistoryProgress * 0.07 : 0.15}
+        // Arcs layer (empty during prehistory)
         arcsData={arcsData}
         arcStartLat={(d: any) => d.fromLat}
         arcStartLng={(d: any) => d.fromLng}
@@ -373,11 +437,11 @@ export default function ArchitectureGlobe({
         ringPropagationSpeed={(d: any) => d.propagationSpeed}
         ringRepeatPeriod={(d: any) => d.repeatPeriod}
         ringColor={() => '#D4A54A'}
-        // Polygons layer (country borders)
+        // Polygons layer (country borders — fade in during prehistory)
         polygonsData={countries}
         polygonCapColor={() => 'rgba(0,0,0,0)'}
         polygonSideColor={() => 'rgba(0,0,0,0)'}
-        polygonStrokeColor={() => 'rgba(212, 165, 74, 0.4)'}
+        polygonStrokeColor={() => `rgba(212, 165, 74, ${borderOpacity})`}
         polygonAltitude={0.001}
       />
       )}
