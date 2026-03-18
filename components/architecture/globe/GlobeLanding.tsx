@@ -69,8 +69,8 @@ const TOTAL_RANGE = MAX_YEAR - MIN_YEAR
 const PREHISTORIC_END = -3500
 
 // Base duration in ms for one full play-through at 1x speed
-const PREHISTORIC_DURATION = 15000  // 15 seconds for -12000 to -3500
-const HISTORY_DURATION = 45000      // 45 seconds for -3500 to 2025
+const PREHISTORIC_DURATION = 40000  // 40 seconds for -12000 to -3500
+const HISTORY_DURATION = 90000      // 90 seconds for -3500 to 2025
 
 function getYearsPerMs(year: number, speed: number): number {
   if (year < PREHISTORIC_END) {
@@ -247,16 +247,16 @@ export default function GlobeLanding() {
 
   return (
     <>
-      {/* Globe Hero Section — sticky for parallax */}
-      <section
-        className="relative h-screen w-full overflow-hidden"
-        style={{ position: 'sticky', top: 0, zIndex: 0 }}
+      {/* Globe Hero Section — FIXED behind everything */}
+      <div
+        className="fixed inset-0 w-full h-screen overflow-hidden"
+        style={{ zIndex: 0 }}
       >
         {/* Dark background */}
         <div className="absolute inset-0 bg-black" />
 
-        {/* Globe fills ~85% of viewport */}
-        <div className="absolute inset-0" style={{ padding: '2vh 2vw 12vh 2vw' }}>
+        {/* Globe fills viewport */}
+        <div className="absolute inset-0" style={{ padding: '2vh 2vw 14vh 2vw' }}>
           <ArchitectureGlobe
             currentYear={Math.round(currentYear)}
             onRegionClick={handleRegionClick}
@@ -267,30 +267,30 @@ export default function GlobeLanding() {
         </div>
 
         {/* Title — top left */}
-        <div className="absolute top-6 left-6 md:top-8 md:left-8 z-10 pointer-events-none">
+        <div className="absolute top-4 left-4 md:top-6 md:left-6 z-10 pointer-events-none">
           <h1
-            className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight"
+            className="text-3xl md:text-4xl lg:text-5xl font-light tracking-tight"
             style={{ color: 'rgba(255,255,255,0.85)' }}
           >
             Architecture
           </h1>
-          <div className="mt-2 space-y-0.5">
+          <div className="mt-1 space-y-0.5">
             {currentPeriod && (
-              <p className="text-sm md:text-base font-medium" style={{ color: 'rgba(212,165,74,0.9)' }}>
+              <p className="text-xs md:text-sm font-medium" style={{ color: 'rgba(212,165,74,0.9)' }}>
                 {currentPeriod.name} · {formatYear(Math.round(currentYear))}
               </p>
             )}
-            <p className="text-xs md:text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>
+            <p className="text-[10px] md:text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
               12,000 BCE – {formatYear(Math.round(currentYear))} · {getYearDuration(MIN_YEAR, Math.round(currentYear))} Years
             </p>
-            <p className="text-xs md:text-sm italic" style={{ color: 'rgba(255,255,255,0.4)' }}>
+            <p className="text-[10px] md:text-xs italic" style={{ color: 'rgba(255,255,255,0.4)' }}>
               From First Shelters to Skyscrapers
             </p>
           </div>
         </div>
 
         {/* Info Panel — top right */}
-        <div className="absolute top-6 right-6 md:top-8 md:right-8 z-10">
+        <div className="absolute top-4 right-4 md:top-6 md:right-6 z-10">
           <GlobeInfoPanel
             currentYear={Math.round(currentYear)}
             activeConnections={activeConnections}
@@ -302,8 +302,8 @@ export default function GlobeLanding() {
           />
         </div>
 
-        {/* Timeline — bottom */}
-        <div className="absolute bottom-0 left-0 right-0 z-10 px-4 pb-4 md:px-8 md:pb-6">
+        {/* Timeline — bottom, compact */}
+        <div className="absolute bottom-0 left-0 right-0 z-10 px-3 pb-3 md:px-6 md:pb-4">
           <GlobeTimeline
             currentYear={Math.round(currentYear)}
             onChange={handleTimelineChange}
@@ -318,10 +318,13 @@ export default function GlobeLanding() {
         <div className="sr-only" role="application" aria-label="Interactive 3D Architecture Globe. Use arrow keys to control timeline, Space to play/pause, Tab to cycle regions, Enter to zoom in, Escape to zoom out.">
           Architecture Globe Visualization
         </div>
-      </section>
+      </div>
 
-      {/* Skyline Divider — sits between globe and content */}
-      <div className="relative z-10" style={{ marginTop: '-1px' }}>
+      {/* Spacer — pushes content below the fixed globe */}
+      <div className="h-screen" style={{ position: 'relative', zIndex: 0 }} />
+
+      {/* Skyline Divider — sits between globe and content, scrolls over the globe */}
+      <div className="relative" style={{ zIndex: 10, marginTop: '-1px' }}>
         <SkylineDivider className="text-[var(--background)]" />
       </div>
     </>

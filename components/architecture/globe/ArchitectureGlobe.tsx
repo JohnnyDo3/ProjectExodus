@@ -46,6 +46,15 @@ interface GeoJSONFeature {
 }
 
 // ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+/** Compute the midpoint between two lat/lng pairs (simple average, good enough for globe view) */
+function midpoint(lat1: number, lng1: number, lat2: number, lng2: number) {
+  return { lat: (lat1 + lat2) / 2, lng: (lng1 + lng2) / 2 }
+}
+
+// ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
 
@@ -60,6 +69,8 @@ export default function ArchitectureGlobe({
   const containerRef = useRef<HTMLDivElement>(null)
   const prevPointsRef = useRef<Set<string>>(new Set())
   const ringsTimeoutRef = useRef<ReturnType<typeof setTimeout>[]>([])
+  const globeReadyRef = useRef(false)
+  const lastFollowedArcRef = useRef<string | null>(null)
 
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
   const [countries, setCountries] = useState<GeoJSONFeature[]>([])
@@ -122,15 +133,39 @@ export default function ArchitectureGlobe({
     const globe = globeRef.current
     if (!globe) return
 
-    // Starting point of view: Europe / Mediterranean
-    globe.pointOfView({ lat: 41.9, lng: 12.5, altitude: 2.5 })
+    // Starting point of view: Levant (first architectural region)
+    globe.pointOfView({ lat: 31.8, lng: 35.2, altitude: 2.2 })
 
     const controls = globe.controls()
     if (controls) {
       controls.autoRotate = true
-      controls.autoRotateSpeed = 0.3
+      controls.autoRotateSpeed = 0.4
+      controls.enableDamping = true
+      controls.dampingFactor = 0.1
     }
+
+    globeReadyRef.current = true
   }, [])
+
+  // -------------------------------------------------------------------------
+  // Keep auto-rotate enabled (re-enable after any pointOfView animation)
+  // -------------------------------------------------------------------------
+
+  useEffect(() => {
+    if (!isPlaying) return
+
+    const interval = setInterval(() => {
+      const globe = globeRef.current
+      if (!globe) return
+      const controls = globe.controls()
+      if (controls && !controls.autoRotate) {
+        controls.autoRotate = true
+        controls.autoRotateSpeed = 0.4
+      }
+    }, 2000)
+
+    return () => clearInterval(interval)
+  }, [isPlaying])
 
   // -------------------------------------------------------------------------
   // Derived data
@@ -193,22 +228,44 @@ export default function ArchitectureGlobe({
   }, [])
 
   // -------------------------------------------------------------------------
-  // Follow the action – pan to newest arc target while playing
+  // Follow the action – ALWAYS pan to show newest arc midpoint while playing
   // -------------------------------------------------------------------------
 
   useEffect(() => {
     const globe = globeRef.current
-    if (!globe || !isPlaying || arcsData.length === 0) return
+    if (!globe || !isPlaying || !globeReadyRef.current) return
 
-    // The arcs are sorted by startYear; the last one is the newest
-    const newestArc = arcsData[arcsData.length - 1]
-    const targetCentroid = REGION_CENTROIDS[newestArc.targetRegion]
-    if (!targetCentroid) return
+    // If we have arcs, follow the newest one
+    if (arcsData.length > 0) {
+      const newestArc = arcsData[arcsData.length - 1]
 
-    globe.pointOfView(
-      { lat: targetCentroid.lat, lng: targetCentroid.lng, altitude: 2.5 },
-      1000
-    )
+      // Only animate if this is a different arc than last time
+      if (lastFollowedArcRef.current === newestArc.id) return
+      lastFollowedArcRef.current = newestArc.id
+
+      // Compute midpoint between source and target so both are visible
+      const mid = midpoint(
+        newestArc.fromLat,
+        newestArc.fromLng,
+        newestArc.toLat,
+        newestArc.toLng
+      )
+
+      globe.pointOfView(
+        { lat: mid.lat, lng: mid.lng, altitude: 2.2 },
+        2500 // slower, smoother pan
+      )
+    } else {
+      // No arcs yet (prehistoric beginning) — start at Levant and slowly pan
+      // Only set once at the beginning
+      if (lastFollowedArcRef.current === null) {
+        lastFollowedArcRef.current = '__no_arcs__'
+        globe.pointOfView(
+          { lat: 31.8, lng: 35.2, altitude: 2.2 },
+          2000
+        )
+      }
+    }
   }, [arcsData, isPlaying])
 
   // -------------------------------------------------------------------------
@@ -231,12 +288,12 @@ export default function ArchitectureGlobe({
       // Fly back to overview
       const newestArc = arcsData.length > 0 ? arcsData[arcsData.length - 1] : null
       const fallback = newestArc
-        ? REGION_CENTROIDS[newestArc.targetRegion]
-        : { lat: 41.9, lng: 12.5 }
+        ? midpoint(newestArc.fromLat, newestArc.fromLng, newestArc.toLat, newestArc.toLng)
+        : { lat: 31.8, lng: 35.2 }
 
       if (fallback) {
         globe.pointOfView(
-          { lat: fallback.lat, lng: fallback.lng, altitude: 2.5 },
+          { lat: fallback.lat, lng: fallback.lng, altitude: 2.2 },
           1500
         )
       }

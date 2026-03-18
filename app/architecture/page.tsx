@@ -113,8 +113,8 @@ export default function ArchitecturePage() {
       {/* ═══ 3D GLOBE LANDING ═══ */}
       <GlobeLanding />
 
-      {/* ═══ EXISTING CONTENT — scrolls over the globe (parallax) ═══ */}
-      <div className="relative z-10 bg-[var(--background)]">
+      {/* ═══ EXISTING CONTENT — scrolls over the fixed globe ═══ */}
+      <div className="relative bg-[var(--background)]" style={{ zIndex: 10 }}>
 
       {/* Hero Section */}
       <section className="relative py-20 lg:py-32 overflow-hidden">
