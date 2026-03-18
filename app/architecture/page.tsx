@@ -13,10 +13,15 @@ import {
   HardHat, Hammer, Wrench
 } from 'lucide-react'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import { ALL_ELEMENTS, ELEMENT_STATS } from '@/data/architecture/elements'
 import { PERIODS } from '@/data/architecture/periods'
 import { REGIONS } from '@/data/architecture/regions'
 import { CATEGORIES } from '@/data/architecture/categories'
+
+const GlobeLanding = dynamic(() => import('@/components/architecture/globe/GlobeLanding'), {
+  ssr: false,
+})
 
 // Learning level definitions
 const learningLevels = [
@@ -105,12 +110,11 @@ export default function ArchitecturePage() {
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
-      {/* ═══ NEW LANDING — empty placeholder for redesign ═══ */}
-      <section className="relative h-screen flex flex-col items-center justify-center">
-        {/* TODO: New landing page design goes here */}
-      </section>
+      {/* ═══ 3D GLOBE LANDING ═══ */}
+      <GlobeLanding />
 
-      {/* ═══ EXISTING CONTENT — now below the fold ═══ */}
+      {/* ═══ EXISTING CONTENT — scrolls over the globe (parallax) ═══ */}
+      <div className="relative z-10 bg-[var(--background)]">
 
       {/* Hero Section */}
       <section className="relative py-20 lg:py-32 overflow-hidden">
@@ -683,6 +687,7 @@ export default function ArchitecturePage() {
           </div>
         </div>
       </section>
+      </div>{/* end parallax content wrapper */}
     </div>
   )
 }

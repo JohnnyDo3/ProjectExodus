@@ -43,6 +43,13 @@ export type ElementCategory =
 export type GeographicRegion = string;
 
 export type ArchitecturalPeriod =
+  // Prehistoric
+  | 'natufian'
+  | 'ppna'
+  | 'ppnb'
+  | 'catalhoyuk'
+  | 'early-indus'
+  | 'megalithic'
   // Ancient
   | 'ancient-egyptian'
   | 'mesopotamian'
@@ -95,7 +102,8 @@ export type ArchitecturalPeriod =
   // 21st Century
   | 'parametricism'
   | 'sustainable'
-  | 'neo-futurism';
+  | 'neo-futurism'
+  | 'contemporary';
 
 export type ArchitecturalStyle =
   | 'classical'
