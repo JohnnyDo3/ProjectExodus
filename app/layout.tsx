@@ -1,9 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import dynamic from "next/dynamic";
 import { SessionProvider } from "@/components/providers/SessionProvider";
 import { TimeThemeProvider } from "@/components/providers/TimeThemeProvider";
 import { SkyThemeProvider } from "@/components/theme/SkyThemeProvider";
+import { SkyBackground } from "@/components/theme/SkyBackground";
+import { ProjectExodusAI } from "@/components/ai/ProjectExodusAI";
+import { DecorativeBranches } from "@/components/decorative/DecorativeBranches";
 import { generateMetadata, siteConfig } from "@/lib/metadata";
 import { auth } from "@/auth";
 import { Toaster } from "react-hot-toast";
@@ -11,20 +13,6 @@ import { headers } from "next/headers";
 import { MainLayoutWrapper } from "@/components/layout/MainLayoutWrapper";
 import { DigitalScrollProvider } from "@/components/learning/DigitalScroll/DigitalScrollContext";
 import { SageProvider } from "@/components/ai/SageContext";
-
-// Lazy load decorative/non-critical components
-const SkyBackground = dynamic(
-  () => import("@/components/theme/SkyBackground").then(mod => ({ default: mod.SkyBackground })),
-  { ssr: false }
-);
-const ProjectExodusAI = dynamic(
-  () => import("@/components/ai/ProjectExodusAI").then(mod => ({ default: mod.ProjectExodusAI })),
-  { ssr: false }
-);
-const DecorativeBranches = dynamic(
-  () => import("@/components/decorative/DecorativeBranches").then(mod => ({ default: mod.DecorativeBranches })),
-  { ssr: false }
-);
 
 // Viewport configuration for mobile responsiveness
 export const viewport: Viewport = {

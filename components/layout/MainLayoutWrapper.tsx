@@ -2,8 +2,23 @@
 
 import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
+import dynamic from 'next/dynamic'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
+
+// Lazy load decorative/non-critical components (client-only, no SSR)
+const LazySkyBackground = dynamic(
+  () => import('@/components/theme/SkyBackground').then(mod => ({ default: mod.SkyBackground })),
+  { ssr: false }
+)
+const LazyProjectExodusAI = dynamic(
+  () => import('@/components/ai/ProjectExodusAI').then(mod => ({ default: mod.ProjectExodusAI })),
+  { ssr: false }
+)
+const LazyDecorativeBranches = dynamic(
+  () => import('@/components/decorative/DecorativeBranches').then(mod => ({ default: mod.DecorativeBranches })),
+  { ssr: false }
+)
 
 interface MainLayoutWrapperProps {
   children: React.ReactNode
@@ -18,6 +33,10 @@ export function MainLayoutWrapper({
   decorativeBranches,
   aiAssistant
 }: MainLayoutWrapperProps) {
+  // Use lazy-loaded versions if props not provided
+  const sky = skyBackground ?? <LazySkyBackground />
+  const branches = decorativeBranches ?? <LazyDecorativeBranches />
+  const ai = aiAssistant ?? <LazyProjectExodusAI />
   const pathname = usePathname()
 
   // Scroll to top on route change
@@ -52,14 +71,14 @@ export function MainLayoutWrapper({
   if (isArchitectureGame) {
     return (
       <>
-        {skyBackground}
+        {sky}
         <div className="relative z-10 h-screen flex flex-col" style={{ height: '100dvh' }}>
           <Header />
           <div className="flex-1 overflow-hidden min-h-0">
             {children}
           </div>
         </div>
-        {aiAssistant}
+        {ai}
       </>
     )
   }
@@ -68,14 +87,14 @@ export function MainLayoutWrapper({
   if (isLearningPage) {
     return (
       <>
-        {skyBackground}
+        {sky}
         <div className="relative z-10 h-screen flex flex-col" style={{ height: '100dvh' }}>
           <Header />
           <div className="flex-1 overflow-hidden min-h-0">
             {children}
           </div>
         </div>
-        {aiAssistant}
+        {ai}
       </>
     )
   }
@@ -84,14 +103,14 @@ export function MainLayoutWrapper({
   if (isProjectWizard) {
     return (
       <>
-        {skyBackground}
+        {sky}
         <div className="relative z-10 h-screen flex flex-col overflow-hidden" style={{ height: '100dvh' }}>
           <Header />
           <div className="flex-1 overflow-y-auto min-h-0">
             {children}
           </div>
         </div>
-        {aiAssistant}
+        {ai}
       </>
     )
   }
@@ -100,12 +119,12 @@ export function MainLayoutWrapper({
   if (isScrollableFullPage) {
     return (
       <>
-        {skyBackground}
+        {sky}
         <div className="relative z-10">
           <Header />
           {children}
         </div>
-        {aiAssistant}
+        {ai}
       </>
     )
   }
@@ -114,14 +133,14 @@ export function MainLayoutWrapper({
   if (isFullScreenPage) {
     return (
       <>
-        {skyBackground}
+        {sky}
         <div className="relative z-10 h-screen flex flex-col" style={{ height: '100dvh' }}>
           <Header />
           <div className="flex-1 overflow-hidden min-h-0">
             {children}
           </div>
         </div>
-        {aiAssistant}
+        {ai}
       </>
     )
   }
@@ -129,14 +148,14 @@ export function MainLayoutWrapper({
   // Regular pages get all the bells and whistles
   return (
     <>
-      {skyBackground}
-      {decorativeBranches}
+      {sky}
+      {branches}
       <div className="relative z-10">
         <Header />
         {children}
         <Footer />
       </div>
-      {aiAssistant}
+      {ai}
     </>
   )
 }
