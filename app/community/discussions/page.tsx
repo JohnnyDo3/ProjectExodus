@@ -154,14 +154,18 @@ export default function DiscussionsPage() {
 
       {/* ═══ THE TABLE — revealed as user scrolls past the hero ═══ */}
       <div className="relative flex justify-center">
+        {/* Outer carousel zone — cards orbit in this space around the table */}
         <div
           ref={tableRef}
           className="relative w-[94vw] max-w-[1200px] z-10 -mt-20"
           style={{ minHeight: `${minTableHeight}px` }}
         >
-          <RoundTable className="w-full h-full" >
-            {/* ─── CENTER LABEL ─── */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+          {/* The table itself — centered, half the size of the outer zone */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="w-[50%] h-[60%] pointer-events-auto">
+              <RoundTable className="w-full h-full" >
+                {/* ─── CENTER LABEL ─── */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
               {loading && posts.length === 0 ? (
                 <Loader2 className="w-10 h-10 animate-spin text-[#D4A54A]/60" />
               ) : posts.length === 0 ? (
@@ -184,26 +188,17 @@ export default function DiscussionsPage() {
               )}
             </div>
 
-            {/* ─── PERIMETER CAROUSEL — cards orbit the table edge ─── */}
-            {posts.length > 0 && (
-              <TableCarousel
-                posts={posts}
-                onPostClick={(post) => setSelectedPost(post)}
-              />
-            )}
-          </RoundTable>
+              </RoundTable>
+            </div>
+          </div>
 
-          {/* Chair shadows along the sides — decorative */}
-          <div className="absolute top-[140px] bottom-[10%] left-0 w-[6%] pointer-events-none opacity-30"
-            style={{
-              background: 'repeating-linear-gradient(180deg, transparent 0px, transparent 160px, rgba(46,29,6,0.15) 170px, rgba(46,29,6,0.08) 190px, transparent 200px)',
-            }}
-          />
-          <div className="absolute top-[140px] bottom-[10%] right-0 w-[6%] pointer-events-none opacity-30"
-            style={{
-              background: 'repeating-linear-gradient(180deg, transparent 0px, transparent 160px, rgba(46,29,6,0.15) 170px, rgba(46,29,6,0.08) 190px, transparent 200px)',
-            }}
-          />
+          {/* ─── PERIMETER CAROUSEL — cards orbit in the space around the table ─── */}
+          {posts.length > 0 && (
+            <TableCarousel
+              posts={posts}
+              onPostClick={(post) => setSelectedPost(post)}
+            />
+          )}
         </div>
       </div>
 
