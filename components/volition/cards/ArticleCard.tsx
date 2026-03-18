@@ -37,16 +37,15 @@ export function ArticleCard({
   const isPublished = article.status === 'PUBLISHED'
   const isDraft = article.status === 'DRAFT'
 
-  // Minimal view - just title header
+  // Minimal view - compact one-liner row for dashboard tile
   if (isMinimal) {
     return (
-      <div className={`rounded-lg overflow-hidden ${className}`}>
-        <div className="p-2 bg-gradient-to-r from-[var(--accent)] to-[var(--secondary)]">
-          <div className="flex items-center gap-2">
-            <FileText className="w-4 h-4 text-white flex-shrink-0" />
-            <h3 className="text-xs font-bold text-white truncate">{article.title}</h3>
-          </div>
-        </div>
+      <div className={`flex items-center gap-2 px-2 py-1.5 rounded-lg bg-[var(--muted)]/50 hover:bg-[var(--muted)] transition-colors ${className}`}>
+        <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${isDraft ? 'bg-amber-500' : 'bg-green-500'}`} />
+        <span className="text-[11px] font-medium text-[var(--foreground)] truncate flex-1">{article.title}</span>
+        <span className={`text-[9px] font-bold uppercase flex-shrink-0 ${isDraft ? 'text-amber-500' : 'text-green-500'}`}>
+          {isDraft ? 'Draft' : 'Live'}
+        </span>
       </div>
     )
   }

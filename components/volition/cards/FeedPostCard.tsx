@@ -61,16 +61,13 @@ export function FeedPostCard({
     return d.toLocaleDateString()
   }
 
-  // Minimal view - just title header
+  // Minimal view - compact one-liner with post snippet
   if (isMinimal) {
     return (
-      <div className={`rounded-lg overflow-hidden ${className}`}>
-        <div className="p-2 bg-gradient-to-r from-[var(--secondary)] to-[var(--accent)]">
-          <div className="flex items-center gap-2">
-            <MessageCircle className="w-4 h-4 text-white flex-shrink-0" />
-            <h3 className="text-xs font-bold text-white truncate">Feed Post</h3>
-          </div>
-        </div>
+      <div className={`flex items-center gap-2 px-2 py-1.5 rounded-lg bg-[var(--muted)]/50 hover:bg-[var(--muted)] transition-colors ${className}`}>
+        <MessageCircle className="w-3 h-3 text-[var(--foreground)]/30 flex-shrink-0" />
+        <span className="text-[11px] text-[var(--foreground)] truncate flex-1">{post.content}</span>
+        <span className="text-[9px] text-[var(--foreground)]/40 flex-shrink-0">{formatDate(post.createdAt)}</span>
       </div>
     )
   }

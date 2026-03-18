@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
-import { useEffect, useState, useCallback, useRef } from 'react'
+import React, { useEffect, useState, useCallback, useRef } from 'react'
 import {
   Zap,
   User,
@@ -145,31 +145,65 @@ function ColumnLane({
 }) {
   const isMinimal = viewMode === 'minimal'
 
-  // Minimal: collapsed to a compact pill — icon + short title + count, auto-sized
+  // Minimal: dashboard summary tile — gradient header + content preview
   if (isMinimal) {
+    const childArray = Array.isArray(children) ? children : React.Children.toArray(children)
+    const visibleItems = childArray.flat().slice(0, 3)
+    const remaining = count - visibleItems.length
+
     return (
-      <div className="flex-shrink-0 bg-[var(--card)] rounded-xl border border-[var(--border)] overflow-hidden transition-all hover:border-[var(--primary)]/40 hover:shadow-md cursor-default">
-        <div className={`flex items-center gap-1.5 px-2.5 py-2 bg-gradient-to-r ${gradient} bg-opacity-10`}>
-          <div className={`w-5 h-5 rounded-md bg-gradient-to-br ${gradient} flex items-center justify-center flex-shrink-0`}>
-            <Icon className="w-2.5 h-2.5 text-white" />
+      <div className="bg-[var(--card)] rounded-xl border border-[var(--border)] overflow-hidden transition-all hover:shadow-lg hover:border-[var(--primary)]/30 group">
+        {/* Gradient header strip */}
+        <div className={`flex items-center justify-between px-3 py-2 bg-gradient-to-r ${gradient}`}>
+          <div className="flex items-center gap-2">
+            <Icon className="w-3.5 h-3.5 text-white" />
+            <h3 className="text-[11px] font-bold text-white uppercase tracking-wide">{title}</h3>
           </div>
-          <span className="text-[10px] font-bold text-[var(--foreground)] uppercase tracking-wide whitespace-nowrap">
-            {title}
-          </span>
-          {count > 0 && (
-            <span className="text-[9px] font-bold text-[var(--foreground)]/40 tabular-nums">
-              {count}
-            </span>
-          )}
-          {isCustomizing && onRemove && (
-            <button
-              onClick={onRemove}
-              className="ml-1 p-0.5 rounded bg-red-500/10 hover:bg-red-500/20 transition-colors"
-            >
-              <X className="w-2.5 h-2.5 text-red-500" />
-            </button>
+          <div className="flex items-center gap-2">
+            {count > 0 && (
+              <span className="px-1.5 py-0.5 rounded-md bg-white/20 text-[10px] font-bold text-white tabular-nums">
+                {count}
+              </span>
+            )}
+            {isCustomizing && onRemove && (
+              <button
+                onClick={onRemove}
+                className="p-0.5 rounded bg-white/10 hover:bg-red-500/40 transition-colors"
+              >
+                <X className="w-3 h-3 text-white" />
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Content preview */}
+        <div className="p-2 space-y-1">
+          {count === 0 && emptyState ? (
+            <p className="text-[10px] text-center text-[var(--foreground)]/40 py-2 italic">No items yet</p>
+          ) : (
+            <>
+              {visibleItems}
+              {remaining > 0 && (
+                <p className="text-[10px] text-center text-[var(--foreground)]/40 pt-0.5">
+                  +{remaining} more
+                </p>
+              )}
+            </>
           )}
         </div>
+
+        {/* Quick add */}
+        {onAdd && !isCustomizing && (
+          <div className="px-2 pb-2">
+            <button
+              onClick={onAdd}
+              className="w-full flex items-center justify-center gap-1 py-1 rounded-lg border border-dashed border-[var(--border)] hover:border-[var(--primary)] hover:bg-[var(--primary)]/5 text-[10px] font-medium text-[var(--foreground)]/40 hover:text-[var(--primary)] transition-all"
+            >
+              <Plus className="w-2.5 h-2.5" />
+              {addLabel || 'Add'}
+            </button>
+          </div>
+        )}
       </div>
     )
   }
@@ -270,11 +304,11 @@ function LaneScroller({ children, viewMode = 'expanded' }: { children: React.Rea
     scrollRef.current?.scrollBy({ left: dir === 'left' ? -360 : 360, behavior: 'smooth' })
   }
 
-  // Minimal mode: compact flex-wrap of pill-sized lane tiles, no horizontal scrolling
+  // Minimal mode: responsive dashboard grid
   if (viewMode === 'minimal') {
     return (
-      <div className="pb-8 px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap gap-2 justify-center py-1">
+      <div className="px-4 sm:px-6 lg:px-8 pb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 max-w-7xl mx-auto">
           {children}
         </div>
       </div>
@@ -922,9 +956,9 @@ export default function MyVolitionPage() {
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
-      {/* ═══ PERSONAL FISH TANK - Full Viewport Landing ═══ */}
-      <section className="relative h-screen max-h-screen overflow-hidden">
-        <div className="bg-[#0A1628] h-full flex flex-col min-h-0 max-h-screen overflow-hidden">
+      {/* ═══ PERSONAL FISH TANK - Peeking Above Fold ═══ */}
+      <section className="relative h-screen max-h-screen overflow-hidden pt-[70vh]">
+        <div className="bg-[#0A1628] h-full flex flex-col min-h-0 overflow-hidden max-w-3xl mx-auto rounded-t-3xl border-x border-t border-cyan-800/30">
             {/* Tank toolbar */}
             <div className="flex items-center justify-between px-4 sm:px-6 py-2 bg-gradient-to-r from-[#0D2137]/95 via-[#123855]/95 to-[#0D2137]/95 border-b border-cyan-800/30">
               <div className="flex items-center gap-2">
@@ -1224,34 +1258,80 @@ export default function MyVolitionPage() {
       )}
 
       {/* ═══ PROFILE HERO SECTION ═══ */}
-      {orderedLanes.some(l => l.id === 'profile') && viewMode !== 'minimal' && (
-        <section className="py-6">
-          <div className="px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto">
-            {isCustomizing && (
-              <div className="flex justify-end mb-2">
-                <button
-                  onClick={() => toggleLane('profile')}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-500/10 text-red-500 text-xs font-bold hover:bg-red-500/20 transition-colors"
-                >
-                  <X className="w-3.5 h-3.5" />
-                  Remove
-                </button>
+      {orderedLanes.some(l => l.id === 'profile') && (
+        viewMode === 'minimal' ? (
+          /* Minimal: compact profile bar */
+          <section className="px-4 sm:px-6 lg:px-8 pt-3 pb-1">
+            <div className="max-w-7xl mx-auto">
+              <div className="bg-[var(--card)] rounded-xl border border-[var(--border)] overflow-hidden">
+                <div className="flex items-center gap-3 px-4 py-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0 overflow-hidden">
+                    {user.image ? (
+                      <img src={user.image} alt={user.name || ''} className="w-full h-full object-cover" />
+                    ) : (
+                      <User className="w-4 h-4 text-white" />
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold text-[var(--foreground)] truncate">{user.name || 'User'}</p>
+                    {userProfile?.headline && (
+                      <p className="text-[10px] text-[var(--foreground)]/50 truncate">{userProfile.headline}</p>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-4 text-[10px] font-bold text-[var(--foreground)]/50 uppercase">
+                    <span className="text-center"><span className="text-sm font-bold text-[var(--foreground)] block">{userProfile?._count?.followers || 0}</span>Followers</span>
+                    <span className="text-center"><span className="text-sm font-bold text-[var(--foreground)] block">{userProfile?._count?.following || 0}</span>Following</span>
+                    <span className="text-center"><span className="text-sm font-bold text-[var(--foreground)] block">{userProfile?._count?.projectMemberships || 0}</span>Projects</span>
+                    <span className="text-center"><span className="text-sm font-bold text-[var(--foreground)] block">{userProfile?._count?.articles || 0}</span>Articles</span>
+                  </div>
+                  <button
+                    onClick={() => setShowBusinessCardModal(true)}
+                    className="p-1.5 rounded-lg bg-[var(--muted)] hover:bg-[var(--primary)]/10 transition-colors ml-2"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-[var(--primary)]" />
+                  </button>
+                  {isCustomizing && (
+                    <button
+                      onClick={() => toggleLane('profile')}
+                      className="p-1 rounded bg-red-500/10 hover:bg-red-500/20 transition-colors"
+                    >
+                      <X className="w-3 h-3 text-red-500" />
+                    </button>
+                  )}
+                </div>
               </div>
-            )}
-            <ProfileCard
-              user={user}
-              userProfile={userProfile}
-              viewMode={viewMode}
-              onExpand={() => setShowBusinessCardModal(true)}
-            />
-          </div>
-        </section>
+            </div>
+          </section>
+        ) : (
+          /* Normal: full profile card */
+          <section className="py-6">
+            <div className="px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto">
+              {isCustomizing && (
+                <div className="flex justify-end mb-2">
+                  <button
+                    onClick={() => toggleLane('profile')}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-500/10 text-red-500 text-xs font-bold hover:bg-red-500/20 transition-colors"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                    Remove
+                  </button>
+                </div>
+              )}
+              <ProfileCard
+                user={user}
+                userProfile={userProfile}
+                viewMode={viewMode}
+                onExpand={() => setShowBusinessCardModal(true)}
+              />
+            </div>
+          </section>
+        )
       )}
 
       {/* ═══ CONTENT LANES ═══ */}
       <LaneScroller viewMode={viewMode}>
         {orderedLanes
-          .filter(lane => viewMode === 'minimal' ? true : lane.id !== 'profile')
+          .filter(lane => lane.id !== 'profile')
           .map((lane) => {
             const Icon = iconMap[lane.icon as keyof typeof iconMap] || User
             const addConfig = getAddConfig(lane.id)

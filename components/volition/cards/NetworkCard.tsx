@@ -47,16 +47,21 @@ export function NetworkCard({
     }
   }
 
-  // Minimal view - just title header
+  // Minimal view - compact one-liner with type indicator
   if (isMinimal) {
     return (
-      <div className={`rounded-lg overflow-hidden ${className}`}>
-        <div className="p-2 bg-gradient-to-r from-[var(--accent)] to-[var(--primary)]">
-          <div className="flex items-center gap-2">
-            <Users className="w-4 h-4 text-white flex-shrink-0" />
-            <h3 className="text-xs font-bold text-white truncate">{user.name || 'Network'}</h3>
-          </div>
+      <div className={`flex items-center gap-2 px-2 py-1.5 rounded-lg bg-[var(--muted)]/50 hover:bg-[var(--muted)] transition-colors ${className}`}>
+        <div className="w-4 h-4 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0 overflow-hidden">
+          {user.image ? (
+            <img src={user.image} alt="" className="w-full h-full object-cover" />
+          ) : (
+            <Users className="w-2 h-2 text-white" />
+          )}
         </div>
+        <span className="text-[11px] font-medium text-[var(--foreground)] truncate flex-1">{user.name || 'User'}</span>
+        <span className={`text-[9px] font-bold uppercase flex-shrink-0 ${type === 'following' ? 'text-blue-500' : 'text-[var(--foreground)]/40'}`}>
+          {type === 'following' ? 'Following' : 'Suggested'}
+        </span>
       </div>
     )
   }
