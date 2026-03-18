@@ -19,10 +19,14 @@ import {
 } from '@/data/architecture/globeConnections'
 import { ARCHITECTURAL_PERIODS } from '@/data/architecture/periods'
 
-// Dynamic import of the heavy globe component
+// Dynamic imports
 const ArchitectureGlobe = dynamic(() => import('./ArchitectureGlobe'), {
   ssr: false,
   loading: () => <GlobeLoadingSkeleton />,
+})
+
+const MobileGlobeFallback = dynamic(() => import('./MobileGlobeFallback'), {
+  ssr: false,
 })
 
 // =============================================================================
@@ -33,28 +37,115 @@ function GlobeLoadingSkeleton() {
   return (
     <div className="w-full h-full flex items-center justify-center">
       <div className="relative">
-        {/* Wireframe sphere using CSS */}
         <div
           className="w-64 h-64 md:w-80 md:h-80 rounded-full border-2 border-amber-500/30 animate-pulse"
           style={{
             background: 'radial-gradient(circle at 30% 30%, rgba(212,165,74,0.05) 0%, transparent 70%)',
           }}
         >
-          {/* Latitude lines */}
           <div className="absolute inset-0 rounded-full border border-amber-500/15" style={{ margin: '20%' }} />
           <div className="absolute inset-0 rounded-full border border-amber-500/15" style={{ margin: '40%' }} />
-          {/* Longitude line */}
           <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-full">
             <div className="w-full h-full rounded-full border border-amber-500/15" style={{ transform: 'scaleX(0.3)' }} />
           </div>
         </div>
-        {/* Loading text */}
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="text-amber-500/60 text-sm font-mono animate-pulse">Loading globe...</span>
         </div>
       </div>
     </div>
   )
+}
+
+// =============================================================================
+// MOBILE DETECTION HOOK
+// =============================================================================
+
+function useIsMobile(): boolean {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const check = () => {
+      // Check screen width + touch capability
+      const narrow = window.innerWidth < 768
+      const touch = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+      // Check WebGL support
+      let weakGPU = false
+      try {
+        const canvas = document.createElement('canvas')
+        const gl = canvas.getContext('webgl2') || canvas.getContext('webgl')
+        if (!gl) {
+          weakGPU = true
+        } else {
+          const debugInfo = (gl as WebGLRenderingContext).getExtension('WEBGL_debug_renderer_info')
+          if (debugInfo) {
+            const renderer = (gl as WebGLRenderingContext).getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
+            // Detect known low-power GPUs
+            if (/swiftshader|llvmpipe|software/i.test(renderer)) {
+              weakGPU = true
+            }
+          }
+        }
+      } catch {
+        weakGPU = true
+      }
+
+      setIsMobile((narrow && touch) || weakGPU)
+    }
+
+    check()
+    // No need for resize listener — this is checked once on mount
+  }, [])
+
+  return isMobile
+}
+
+// =============================================================================
+// LONG-PRESS HOOK
+// =============================================================================
+
+interface LongPressTooltip {
+  visible: boolean
+  x: number
+  y: number
+  content: string
+}
+
+function useLongPress(delay: number = 500) {
+  const [tooltip, setTooltip] = useState<LongPressTooltip>({
+    visible: false, x: 0, y: 0, content: '',
+  })
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const onTouchStart = useCallback((e: React.TouchEvent, content: string) => {
+    const touch = e.touches[0]
+    timerRef.current = setTimeout(() => {
+      setTooltip({
+        visible: true,
+        x: touch.clientX,
+        y: touch.clientY - 50,
+        content,
+      })
+    }, delay)
+  }, [delay])
+
+  const onTouchEnd = useCallback(() => {
+    if (timerRef.current) clearTimeout(timerRef.current)
+    timerRef.current = null
+    setTooltip(prev => ({ ...prev, visible: false }))
+  }, [])
+
+  const dismiss = useCallback(() => {
+    setTooltip(prev => ({ ...prev, visible: false }))
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current)
+    }
+  }, [])
+
+  return { tooltip, onTouchStart, onTouchEnd, dismiss }
 }
 
 // =============================================================================
@@ -65,12 +156,14 @@ const MIN_YEAR = -12000
 const MAX_YEAR = 2025
 const TOTAL_RANGE = MAX_YEAR - MIN_YEAR
 
-// Prehistoric threshold — fast speed before this, normal after
 const PREHISTORIC_END = -3500
 
-// Base duration in ms for one full play-through at 1x speed
-const PREHISTORIC_DURATION = 40000  // 40 seconds for -12000 to -3500
-const HISTORY_DURATION = 90000      // 90 seconds for -3500 to 2025
+const PREHISTORIC_DURATION = 40000
+const HISTORY_DURATION = 90000
+
+// Year step for keyboard arrow keys
+const KEYBOARD_YEAR_STEP = 200
+const KEYBOARD_YEAR_STEP_LARGE = 1000
 
 function getYearsPerMs(year: number, speed: number): number {
   if (year < PREHISTORIC_END) {
@@ -80,6 +173,12 @@ function getYearsPerMs(year: number, speed: number): number {
   const historyRange = MAX_YEAR - PREHISTORIC_END
   return (historyRange / HISTORY_DURATION) * speed
 }
+
+// =============================================================================
+// REGION LIST (for keyboard cycling)
+// =============================================================================
+
+const REGION_IDS = Object.keys(REGION_CENTROIDS)
 
 // =============================================================================
 // MAIN COMPONENT
@@ -97,7 +196,14 @@ export default function GlobeLanding() {
   const animFrameRef = useRef<number>(0)
   const lastTickRef = useRef<number>(0)
   const initialPauseRef = useRef(true)
-  const mountTimeRef = useRef(Date.now())
+  const containerRef = useRef<HTMLDivElement>(null)
+  const regionCycleIndexRef = useRef(-1)
+
+  // Mobile detection
+  const isMobile = useIsMobile()
+
+  // Long-press tooltip
+  const { tooltip: longPressTooltip, onTouchStart: lpTouchStart, onTouchEnd: lpTouchEnd, dismiss: dismissTooltip } = useLongPress(400)
 
   // Derived state
   const arcs = useMemo(() => getArcsForYear(currentYear), [currentYear])
@@ -119,13 +225,21 @@ export default function GlobeLanding() {
     const inbound = arcs.filter(a => a.targetRegion === zoomedRegion).length
     const outbound = arcs.filter(a => a.sourceRegion === zoomedRegion).length
 
-    // Get periods active in this region at current year
     const regionPeriods = activePeriods.filter(p =>
       p.primaryRegions.includes(zoomedRegion)
     )
 
-    // Get iconic buildings from those periods
     const buildings = regionPeriods.flatMap(p => p.iconicBuildings).slice(0, 5)
+
+    // Get key characteristics for this era
+    const keyChars = regionPeriods
+      .flatMap(p => p.keyCharacteristics || [])
+      .slice(0, 4)
+
+    // Get description from the most recent active period (use HIGH_SCHOOL level for concise text)
+    const description = regionPeriods.length > 0
+      ? regionPeriods[regionPeriods.length - 1].description?.HIGH_SCHOOL
+      : undefined
 
     return {
       name: centroid.name,
@@ -134,6 +248,8 @@ export default function GlobeLanding() {
       outbound,
       activePeriods: regionPeriods.map(p => p.name),
       iconicBuildings: buildings,
+      keyMaterials: keyChars,
+      description,
     }
   }, [zoomedRegion, arcs, activePeriods])
 
@@ -171,7 +287,6 @@ export default function GlobeLanding() {
         const yearsPerMs = getYearsPerMs(prev, speed)
         const nextYear = prev + yearsPerMs * delta
         if (nextYear >= MAX_YEAR) {
-          // Loop back
           return MIN_YEAR
         }
         return Math.min(nextYear, MAX_YEAR)
@@ -188,7 +303,7 @@ export default function GlobeLanding() {
   }, [isPlaying, speed])
 
   // -------------------------------------------------------------------------
-  // 1-2 second pause, then auto-play starts
+  // 1.5 second pause, then auto-play starts
   // -------------------------------------------------------------------------
 
   useEffect(() => {
@@ -204,12 +319,135 @@ export default function GlobeLanding() {
   }, [])
 
   // -------------------------------------------------------------------------
+  // Keyboard handlers
+  // -------------------------------------------------------------------------
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Only handle if globe section is in viewport
+      const container = containerRef.current
+      if (!container) return
+
+      const rect = container.getBoundingClientRect()
+      if (rect.bottom < 0 || rect.top > window.innerHeight) return
+
+      switch (e.key) {
+        case ' ':
+        case 'Spacebar':
+          e.preventDefault()
+          setIsPlaying(prev => !prev)
+          break
+
+        case 'ArrowRight':
+          e.preventDefault()
+          setIsPlaying(false)
+          setCurrentYear(prev =>
+            Math.min(prev + (e.shiftKey ? KEYBOARD_YEAR_STEP_LARGE : KEYBOARD_YEAR_STEP), MAX_YEAR)
+          )
+          break
+
+        case 'ArrowLeft':
+          e.preventDefault()
+          setIsPlaying(false)
+          setCurrentYear(prev =>
+            Math.max(prev - (e.shiftKey ? KEYBOARD_YEAR_STEP_LARGE : KEYBOARD_YEAR_STEP), MIN_YEAR)
+          )
+          break
+
+        case 'Tab':
+          // Cycle through active regions
+          if (points.length > 0) {
+            e.preventDefault()
+            const activeRegionIds = points.map(p => p.region)
+            regionCycleIndexRef.current =
+              (regionCycleIndexRef.current + (e.shiftKey ? -1 : 1) + activeRegionIds.length) % activeRegionIds.length
+            setZoomedRegion(activeRegionIds[regionCycleIndexRef.current])
+            setIsPlaying(false)
+          }
+          break
+
+        case 'Enter':
+          // Zoom into currently focused region (if one is selected)
+          if (zoomedRegion) {
+            // Already zoomed — no-op
+          } else if (points.length > 0) {
+            e.preventDefault()
+            const idx = Math.max(0, regionCycleIndexRef.current)
+            const activeRegionIds = points.map(p => p.region)
+            setZoomedRegion(activeRegionIds[idx % activeRegionIds.length])
+            setIsPlaying(false)
+          }
+          break
+
+        case 'Escape':
+          if (zoomedRegion) {
+            e.preventDefault()
+            setZoomedRegion(null)
+            regionCycleIndexRef.current = -1
+          }
+          break
+
+        case '+':
+        case '=':
+          e.preventDefault()
+          setSpeed(prev => Math.min(prev * 2, 4))
+          break
+
+        case '-':
+        case '_':
+          e.preventDefault()
+          setSpeed(prev => Math.max(prev / 2, 1))
+          break
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [points, zoomedRegion])
+
+  // -------------------------------------------------------------------------
+  // Touch gesture: swipe left/right on timeline area to scrub
+  // -------------------------------------------------------------------------
+
+  const touchStartRef = useRef<{ x: number; y: number; year: number } | null>(null)
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (e.touches.length === 1) {
+      touchStartRef.current = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY,
+        year: currentYear,
+      }
+    }
+  }, [currentYear])
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (!touchStartRef.current || e.touches.length !== 1) return
+
+    const dx = e.touches[0].clientX - touchStartRef.current.x
+    const dy = e.touches[0].clientY - touchStartRef.current.y
+
+    // Only trigger horizontal scrub if mostly horizontal
+    if (Math.abs(dx) > Math.abs(dy) * 1.5 && Math.abs(dx) > 20) {
+      e.preventDefault()
+      setIsPlaying(false)
+      // Map screen width to full year range
+      const yearDelta = (dx / window.innerWidth) * TOTAL_RANGE * 0.5
+      const newYear = Math.max(MIN_YEAR, Math.min(MAX_YEAR, touchStartRef.current.year + yearDelta))
+      setCurrentYear(newYear)
+    }
+  }, [])
+
+  const handleTouchEnd = useCallback(() => {
+    touchStartRef.current = null
+  }, [])
+
+  // -------------------------------------------------------------------------
   // Callbacks
   // -------------------------------------------------------------------------
 
   const handleTimelineChange = useCallback((year: number) => {
     setCurrentYear(year)
-    // Touching the slider pauses auto-play
     setIsPlaying(false)
   }, [])
 
@@ -223,23 +461,32 @@ export default function GlobeLanding() {
 
   const handleRegionClick = useCallback((region: string) => {
     setZoomedRegion(region)
-    setIsPlaying(false) // Pause when zooming
+    setIsPlaying(false)
   }, [])
 
   const handleCloseRegion = useCallback(() => {
     setZoomedRegion(null)
+    regionCycleIndexRef.current = -1
   }, [])
 
   const handleArcHover = useCallback((arc: GlobeArc | null) => {
     setHoveredArc(arc)
   }, [])
 
-  // Click on globe background to fly back
-  const handleGlobeBackgroundClick = useCallback(() => {
-    if (zoomedRegion) {
-      setZoomedRegion(null)
+  // -------------------------------------------------------------------------
+  // ARIA live region announcements
+  // -------------------------------------------------------------------------
+
+  const ariaAnnouncement = useMemo(() => {
+    const parts: string[] = []
+    if (currentPeriod) parts.push(currentPeriod.name)
+    parts.push(formatYear(Math.round(currentYear)))
+    parts.push(`${activeConnections} connections across ${activeRegions} regions`)
+    if (zoomedRegion && zoomedRegionData) {
+      parts.push(`Zoomed into ${zoomedRegionData.name}`)
     }
-  }, [zoomedRegion])
+    return parts.join('. ')
+  }, [currentPeriod, currentYear, activeConnections, activeRegions, zoomedRegion, zoomedRegionData])
 
   // -------------------------------------------------------------------------
   // Render
@@ -247,23 +494,49 @@ export default function GlobeLanding() {
 
   return (
     <>
+      {/* ARIA live region for screen readers */}
+      <div
+        aria-live="polite"
+        aria-atomic="true"
+        className="sr-only"
+        role="status"
+      >
+        {ariaAnnouncement}
+      </div>
+
       {/* Globe Hero Section — FIXED behind everything */}
       <div
+        ref={containerRef}
         className="fixed inset-0 w-full h-screen overflow-hidden"
         style={{ zIndex: 0 }}
+        role="application"
+        aria-label="Interactive Architecture Globe. Space: play/pause. Arrow keys: scrub timeline. Tab: cycle regions. Enter: zoom in. Escape: zoom out."
+        aria-roledescription="3D globe visualization"
+        tabIndex={0}
+        // Touch gestures on the globe area
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       >
         {/* Dark background */}
         <div className="absolute inset-0 bg-black" />
 
-        {/* Globe fills viewport */}
+        {/* Globe / Mobile fallback */}
         <div className="absolute inset-0" style={{ padding: '2vh 2vw 14vh 2vw' }}>
-          <ArchitectureGlobe
-            currentYear={Math.round(currentYear)}
-            onRegionClick={handleRegionClick}
-            onArcHover={handleArcHover}
-            zoomedRegion={zoomedRegion}
-            isPlaying={isPlaying}
-          />
+          {isMobile ? (
+            <MobileGlobeFallback
+              currentYear={Math.round(currentYear)}
+              onRegionClick={handleRegionClick}
+            />
+          ) : (
+            <ArchitectureGlobe
+              currentYear={Math.round(currentYear)}
+              onRegionClick={handleRegionClick}
+              onArcHover={handleArcHover}
+              zoomedRegion={zoomedRegion}
+              isPlaying={isPlaying}
+            />
+          )}
         </div>
 
         {/* Title — top left */}
@@ -271,12 +544,17 @@ export default function GlobeLanding() {
           <h1
             className="text-3xl md:text-4xl lg:text-5xl font-light tracking-tight"
             style={{ color: 'rgba(255,255,255,0.85)' }}
+            id="globe-title"
           >
             Architecture
           </h1>
           <div className="mt-1 space-y-0.5">
             {currentPeriod && (
-              <p className="text-xs md:text-sm font-medium" style={{ color: 'rgba(212,165,74,0.9)' }}>
+              <p
+                className="text-xs md:text-sm font-medium"
+                style={{ color: 'rgba(212,165,74,0.9)' }}
+                aria-label={`Current period: ${currentPeriod.name}, ${formatYear(Math.round(currentYear))}`}
+              >
                 {currentPeriod.name} · {formatYear(Math.round(currentYear))}
               </p>
             )}
@@ -303,7 +581,11 @@ export default function GlobeLanding() {
         </div>
 
         {/* Timeline — bottom, compact */}
-        <div className="absolute bottom-0 left-0 right-0 z-10 px-3 pb-3 md:px-6 md:pb-4">
+        <div
+          className="absolute bottom-0 left-0 right-0 z-10 px-3 pb-3 md:px-6 md:pb-4"
+          role="group"
+          aria-label="Timeline controls"
+        >
           <GlobeTimeline
             currentYear={Math.round(currentYear)}
             onChange={handleTimelineChange}
@@ -314,17 +596,27 @@ export default function GlobeLanding() {
           />
         </div>
 
-        {/* Keyboard instructions (sr-only) */}
-        <div className="sr-only" role="application" aria-label="Interactive 3D Architecture Globe. Use arrow keys to control timeline, Space to play/pause, Tab to cycle regions, Enter to zoom in, Escape to zoom out.">
-          Architecture Globe Visualization
-        </div>
+        {/* Long-press tooltip (mobile) */}
+        {longPressTooltip.visible && (
+          <div
+            className="fixed z-50 pointer-events-none px-3 py-1.5 rounded-lg bg-black/80 backdrop-blur-sm border border-amber-500/30 text-xs text-white"
+            style={{
+              left: longPressTooltip.x,
+              top: longPressTooltip.y,
+              transform: 'translate(-50%, -100%)',
+            }}
+            role="tooltip"
+          >
+            {longPressTooltip.content}
+          </div>
+        )}
       </div>
 
       {/* Spacer — pushes content below the fixed globe */}
-      <div className="h-screen" style={{ position: 'relative', zIndex: 0 }} />
+      <div className="h-screen" style={{ position: 'relative', zIndex: 0 }} aria-hidden="true" />
 
       {/* Skyline Divider — sits between globe and content, scrolls over the globe */}
-      <div className="relative" style={{ zIndex: 10, marginTop: '-1px' }}>
+      <div className="relative" style={{ zIndex: 10, marginTop: '-1px' }} aria-hidden="true">
         <SkylineDivider className="text-[var(--background)]" />
       </div>
     </>

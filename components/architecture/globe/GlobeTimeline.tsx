@@ -232,6 +232,11 @@ export default function GlobeTimeline({
             value={currentYear}
             onChange={handleChange}
             className="globe-timeline-range relative z-10 w-full"
+            aria-label={`Timeline: ${formattedYear}`}
+            aria-valuemin={MIN_YEAR}
+            aria-valuemax={MAX_YEAR}
+            aria-valuenow={currentYear}
+            aria-valuetext={formattedYear}
           />
 
           {/* Era labels below the track */}

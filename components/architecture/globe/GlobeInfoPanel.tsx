@@ -28,6 +28,8 @@ interface GlobeInfoPanelProps {
     outbound: number
     activePeriods: string[]
     iconicBuildings: { name: string; location: string; year: string }[]
+    keyMaterials?: string[]
+    description?: string
   } | null
   onCloseRegion: () => void
 }
@@ -260,12 +262,23 @@ function RegionCard({
       </div>
 
       {/* Scrollable content */}
-      <div className="overflow-y-auto max-h-[50vh] px-4 py-3 space-y-4">
+      <div className="overflow-y-auto max-h-[50vh] px-4 py-3 space-y-4" role="region" aria-label={`Details for ${region.name}`}>
+        {/* Description (from most recent active period) */}
+        {region.description && (
+          <p
+            className="text-xs leading-relaxed"
+            style={{ color: 'var(--muted-foreground)' }}
+          >
+            {region.description}
+          </p>
+        )}
+
         {/* Connection Breakdown */}
         <div>
           <div
             className="font-mono text-xl font-bold"
             style={{ color: 'var(--foreground)' }}
+            aria-label={`${region.connectionCount} connections: ${region.inbound} inbound, ${region.outbound} outbound`}
           >
             {region.connectionCount}
             <span
@@ -275,13 +288,48 @@ function RegionCard({
               connections
             </span>
           </div>
-          <div
-            className="text-xs mt-1 font-mono"
-            style={{ color: 'var(--muted-foreground)' }}
-          >
-            {region.inbound}&#8594; &middot; {region.outbound}&#8592;
+          <div className="flex items-center gap-3 mt-1.5">
+            <div className="flex items-center gap-1">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M2 6h8M7 3l3 3-3 3" stroke="rgba(74,158,142,0.8)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              <span className="text-[10px] font-mono" style={{ color: 'rgba(74,158,142,0.8)' }}>
+                {region.inbound} in
+              </span>
+            </div>
+            <div className="flex items-center gap-1">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M10 6H2M5 3L2 6l3 3" stroke="rgba(212,165,74,0.8)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              <span className="text-[10px] font-mono" style={{ color: 'rgba(212,165,74,0.8)' }}>
+                {region.outbound} out
+              </span>
+            </div>
           </div>
         </div>
+
+        {/* Key Materials */}
+        {region.keyMaterials && region.keyMaterials.length > 0 && (
+          <div>
+            <h4
+              className="text-[10px] uppercase tracking-wider mb-2"
+              style={{ color: 'var(--muted-foreground)' }}
+            >
+              Key Materials
+            </h4>
+            <div className="flex flex-wrap gap-1.5">
+              {region.keyMaterials.map((material) => (
+                <span
+                  key={material}
+                  className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 border border-white/10"
+                  style={{ color: 'var(--foreground)' }}
+                >
+                  {material}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Active Periods */}
         {region.activePeriods.length > 0 && (
@@ -292,12 +340,13 @@ function RegionCard({
             >
               Active Periods
             </h4>
-            <ul className="space-y-1.5">
+            <ul className="space-y-1.5" role="list">
               {region.activePeriods.map((period) => (
                 <li key={period} className="flex items-center gap-2">
                   <span
                     className="w-2 h-2 rounded-full flex-shrink-0"
                     style={{ backgroundColor: getPeriodColor(period) }}
+                    aria-hidden="true"
                   />
                   <span
                     className="text-xs"
@@ -320,7 +369,7 @@ function RegionCard({
             >
               Notable Buildings
             </h4>
-            <ul className="space-y-2">
+            <ul className="space-y-2" role="list">
               {region.iconicBuildings.map((building, i) => (
                 <li key={`${building.name}-${i}`} className="flex flex-col">
                   <span

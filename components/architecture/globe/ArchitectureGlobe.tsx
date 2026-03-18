@@ -9,6 +9,7 @@ import {
   type GlobeArc,
   type GlobePoint,
 } from '@/data/architecture/globeConnections'
+import { useTerminatorMaterial } from './useTerminatorMaterial'
 
 const GlobeGL = dynamic(() => import('react-globe.gl'), { ssr: false })
 
@@ -75,6 +76,9 @@ export default function ArchitectureGlobe({
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
   const [countries, setCountries] = useState<GeoJSONFeature[]>([])
   const [ringsData, setRingsData] = useState<RingDatum[]>([])
+
+  // Terminator day/night shader material
+  const terminatorMaterial = useTerminatorMaterial()
 
   // -------------------------------------------------------------------------
   // Container resize tracking
@@ -329,7 +333,11 @@ export default function ArchitectureGlobe({
         ref={globeRef}
         width={dimensions.width}
         height={dimensions.height}
-        globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
+        // Use terminator shader when ready, fallback to night texture
+        {...(terminatorMaterial
+          ? { globeMaterial: terminatorMaterial, globeImageUrl: '' }
+          : { globeImageUrl: '//unpkg.com/three-globe/example/img/earth-night.jpg' }
+        )}
         backgroundImageUrl={null as any}
         showAtmosphere={true}
         atmosphereColor="#D4A54A"
