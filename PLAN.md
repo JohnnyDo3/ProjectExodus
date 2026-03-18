@@ -1,19 +1,22 @@
-# Architecture Globe Landing — Final Plan v3
+# Architecture Globe Landing — Final Plan v4 (ALL DECISIONS LOCKED)
 
-## All Decisions (locked in)
+## All Decisions
 
 | Decision | Choice |
 |----------|--------|
 | Auto-play | Yes — cinematic intro, auto-spin + timeline progression |
-| Globe surface | Real Earth continents with country borders |
+| Globe surface | Real Earth continents with **clearly visible** country borders |
 | Arc accumulation | Cumulative — all connections from prehistory to slider position |
-| Click behavior | Zoom into clicked region |
-| Arc differentiation | **Material Evolution + Altitude** — color shifts stone→bronze→copper→gold→steel AND older arcs hug surface, newer soar higher |
+| Click behavior | **Close zoom** into region (see country borders), **fly-back** out on exit |
+| Arc differentiation | **Material Evolution + Altitude** — stone→bronze→copper→gold→steel, low→high |
 | Layout | **Immersive Hero** — globe fills ~85% viewport, title top-left, info top-right, timeline bottom |
 | Night/dark theme | NASA night lights + country border overlays |
 | Day/light theme | NASA Blue Marble + country border overlays |
 | Mobile | Static pre-rendered hero image, tap to activate 3D |
 | Arc brightness | All equally bright, differentiated by color + altitude only |
+| Border visibility | **Clearly visible** — educational, identifiable countries |
+| Auto-play start | **1-2 second pause** — empty globe breathes, then arcs bloom |
+| Zoom behavior | **Close zoom + fly-back** — click zooms close, exit/click elsewhere flies back out |
 
 ---
 
@@ -41,7 +44,7 @@
 - **Atmosphere:** Soft white/blue glow
 
 ### Border Overlay Approach
-react-globe.gl supports `polygonsData` with GeoJSON — we load a lightweight countries GeoJSON (~50KB simplified) and render as stroke-only polygons on top of the texture. This gives us real country outlines that work with any base texture.
+react-globe.gl supports `polygonsData` with GeoJSON — we load a countries GeoJSON and render as **clearly visible** stroke-only polygons. Borders should be distinct enough to identify individual countries (educational feel). Night mode: amber/gold border lines. Day mode: dark border lines. Line width ~0.5-1px equivalent.
 
 ---
 
@@ -115,7 +118,8 @@ Props: `{ currentYear, onRegionClick, theme: 'day' | 'night' }`
 - **Auto-rotation:** `autoRotationSpeed: 0.3`, pauses on user interaction
 - **Arcs:** Filtered by `currentYear`. Era-colored, era-altitude, animated dashes
 - **Points:** Region centroids as glowing dots. Amber (night) / dark gold (day)
-- **Click:** `onPointClick` → `pointOfView({ lat, lng, altitude: 1.5 })` zooms in
+- **Click:** `onPointClick` → close zoom (`pointOfView({ lat, lng, altitude: 0.8 })`), see country borders in region
+- **Fly-back:** On click elsewhere or "back" action → smooth fly-back to default altitude (~2.5). Auto-rotation resumes after fly-back.
 
 ### 2. `GlobeTimeline.tsx`
 Props: `{ currentYear, onChange, isPlaying, onTogglePlay }`
@@ -190,8 +194,8 @@ Composes everything into the hero section:
 
 | Time | Year Range | What Happens |
 |------|-----------|--------------|
-| 0s | -3500 | Globe fades in, dark Earth, no arcs |
-| 0–2s | -3500 → -3000 | Globe starts rotating, first stone arcs (Egyptian → Mesopotamian) |
+| 0s | -3500 | Globe fades in, dark Earth visible with country borders, no arcs. 1-2 second pause. |
+| 1–3s | -3500 → -3000 | After pause: globe starts rotating, first stone arcs bloom (Egyptian → Mesopotamian) |
 | 2–15s | -3000 → -200 | Ancient world lights up. Low stone/bronze arcs across Mediterranean |
 | 15–30s | -200 → 1400 | Classical → Medieval. Copper arcs web Europe/Middle East. Byzantine, Islamic, Gothic. |
 | 30–45s | 1400 → 1800 | Renaissance → Colonial. Gold arcs reach Americas. Globe filling up. |
@@ -246,10 +250,4 @@ public/globe/
 
 ---
 
-## Open Questions
-
-1. **Country borders thickness/color:** Should borders be very faint (just enough to see countries) or clearly visible? Faint keeps focus on arcs; visible makes the geography more educational.
-
-2. **Auto-play trigger:** Should auto-play start immediately on page load, or after a brief pause (1-2 seconds) to let the user see the empty globe first? The pause creates a "wow" moment when arcs start appearing.
-
-3. **Zoom-on-click depth:** When clicking a region dot, how close should we zoom? Close enough to see individual country borders in that region, or just a moderate zoom to center the region?
+## Status: READY TO BUILD (pending user approval)
