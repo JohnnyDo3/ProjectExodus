@@ -145,19 +145,39 @@ const TOTAL_RANGE = MAX_YEAR - MIN_YEAR // 14025
 // Full play-through duration at speed=1 (ms)
 const FULL_DURATION_MS = 150000 // 2.5 minutes
 
-// Log base for the mapping
-const LOG_BASE = Math.log(TOTAL_RANGE + 1)
+// Piecewise time allocation:
+// Prehistory (-12000 → -3500) gets 10% of t-space (fast build-up)
+// History (-3500 → 2025) gets 90% with log distribution (modern = slowest)
+const PREHISTORY_END = -3500
+const PREHISTORY_RANGE = PREHISTORY_END - MIN_YEAR  // 8500
+const HISTORY_RANGE = MAX_YEAR - PREHISTORY_END      // 5525
+const PREHISTORY_T = 0.10  // 10% of t-space
+const HISTORY_LOG_BASE = Math.log(HISTORY_RANGE + 1)
 
-/** Convert year → normalised t (0→1) using log scale */
+/** Convert year → normalised t (0→1) */
 function yearToT(year: number): number {
   const clamped = Math.max(MIN_YEAR, Math.min(MAX_YEAR, year))
-  return Math.log(clamped - MIN_YEAR + 1) / LOG_BASE
+  if (clamped < PREHISTORY_END) {
+    // Linear through prehistory, compressed into t=[0, 0.10]
+    const progress = (clamped - MIN_YEAR) / PREHISTORY_RANGE
+    return progress * PREHISTORY_T
+  }
+  // Log scale through history, expanded into t=[0.10, 1.0]
+  const progress = Math.log(clamped - PREHISTORY_END + 1) / HISTORY_LOG_BASE
+  return PREHISTORY_T + progress * (1 - PREHISTORY_T)
 }
 
-/** Convert normalised t (0→1) → year using inverse log */
+/** Convert normalised t (0→1) → year */
 function tToYear(t: number): number {
   const clamped = Math.max(0, Math.min(1, t))
-  return MIN_YEAR + Math.exp(clamped * LOG_BASE) - 1
+  if (clamped < PREHISTORY_T) {
+    // Linear inverse through prehistory
+    const progress = clamped / PREHISTORY_T
+    return MIN_YEAR + progress * PREHISTORY_RANGE
+  }
+  // Log inverse through history
+  const historyT = (clamped - PREHISTORY_T) / (1 - PREHISTORY_T)
+  return PREHISTORY_END + Math.exp(historyT * HISTORY_LOG_BASE) - 1
 }
 
 // Keyboard step sizes (in t-space)
