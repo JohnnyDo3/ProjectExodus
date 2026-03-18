@@ -154,13 +154,23 @@ const HISTORY_RANGE = MAX_YEAR - PREHISTORY_END      // 5525
 const PREHISTORY_T = 0.10  // 10% of t-space
 const HISTORY_LOG_BASE = Math.log(HISTORY_RANGE + 1)
 
+/** Ease-out curve: fast start, decelerates at end */
+function easeOutCubic(x: number): number {
+  return 1 - Math.pow(1 - x, 3)
+}
+
+/** Inverse ease-out cubic */
+function easeOutCubicInverse(y: number): number {
+  return 1 - Math.pow(1 - y, 1 / 3)
+}
+
 /** Convert year → normalised t (0→1) */
 function yearToT(year: number): number {
   const clamped = Math.max(MIN_YEAR, Math.min(MAX_YEAR, year))
   if (clamped < PREHISTORY_END) {
-    // Linear through prehistory, compressed into t=[0, 0.10]
+    // Ease-out through prehistory: fast early, slows down approaching -3500
     const progress = (clamped - MIN_YEAR) / PREHISTORY_RANGE
-    return progress * PREHISTORY_T
+    return easeOutCubicInverse(progress) * PREHISTORY_T
   }
   // Log scale through history, expanded into t=[0.10, 1.0]
   const progress = Math.log(clamped - PREHISTORY_END + 1) / HISTORY_LOG_BASE
@@ -171,8 +181,9 @@ function yearToT(year: number): number {
 function tToYear(t: number): number {
   const clamped = Math.max(0, Math.min(1, t))
   if (clamped < PREHISTORY_T) {
-    // Linear inverse through prehistory
-    const progress = clamped / PREHISTORY_T
+    // Inverse ease-out: maps linear t to decelerating years
+    const tNorm = clamped / PREHISTORY_T
+    const progress = easeOutCubic(tNorm)
     return MIN_YEAR + progress * PREHISTORY_RANGE
   }
   // Log inverse through history

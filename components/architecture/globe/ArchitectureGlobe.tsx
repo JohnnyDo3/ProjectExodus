@@ -52,6 +52,8 @@ interface GeoJSONFeature {
 // ---------------------------------------------------------------------------
 
 const PREHISTORY_END = -3500
+const CROSSFADE_END = -3200   // Crossfade zone: -3500 to -3200
+const PAUSE_DURATION = -3400  // Arcs start appearing after a brief "glow" pause
 
 // ---------------------------------------------------------------------------
 // Component
@@ -81,17 +83,34 @@ export default function ArchitectureGlobe({
   const [countries, setCountries] = useState<GeoJSONFeature[]>([])
   const [ringsData, setRingsData] = useState<RingDatum[]>([])
 
-  // Prehistory vs post-prehistory material
+  // -------------------------------------------------------------------------
+  // Prehistory state & material selection
+  // -------------------------------------------------------------------------
+
   const isPrehistory = currentYear < PREHISTORY_END
+  const isCrossfading = currentYear >= PREHISTORY_END && currentYear < CROSSFADE_END
+
   const prehistoryProgress = isPrehistory
     ? Math.max(0, Math.min(1, (currentYear - (-12000)) / (PREHISTORY_END - (-12000))))
     : 1
 
-  const terminatorMaterial = useTerminatorMaterial()
-  const prehistoryMaterial = usePrehistoryMaterial(prehistoryProgress)
+  // Active region positions for the shard shader (spread fill from these points)
+  const allPointsData = useMemo(() => getPointsForYear(currentYear), [currentYear])
+  const activeRegionPositions = useMemo(() => {
+    if (allPointsData.length > 0) {
+      return allPointsData.map(p => ({ lat: p.lat, lng: p.lng }))
+    }
+    return [{ lat: 31.8, lng: 35.2 }] // Levant default
+  }, [allPointsData])
 
-  // Pick the right material
-  const globeMaterial = isPrehistory ? prehistoryMaterial : terminatorMaterial
+  const terminatorMaterial = useTerminatorMaterial()
+  const prehistoryMaterial = usePrehistoryMaterial(prehistoryProgress, activeRegionPositions)
+
+  // During crossfade zone, keep showing the completed shard material
+  // After crossfade, switch to terminator
+  const globeMaterial = (isPrehistory || isCrossfading)
+    ? prehistoryMaterial
+    : terminatorMaterial
 
   // -------------------------------------------------------------------------
   // Container resize tracking
@@ -186,12 +205,13 @@ export default function ArchitectureGlobe({
   // -------------------------------------------------------------------------
 
   const arcsData = useMemo(() => {
-    // No arcs during prehistory
-    if (isPrehistory) return []
+    // No arcs during prehistory or during the pause phase
+    if (currentYear < PAUSE_DURATION) return []
     return getArcsForYear(currentYear)
-  }, [currentYear, isPrehistory])
+  }, [currentYear])
 
-  const pointsData = useMemo(() => getPointsForYear(currentYear), [currentYear])
+  // Points: use the already-computed allPointsData from above
+  const pointsData = allPointsData
 
   // -------------------------------------------------------------------------
   // Rings – shockwave effect when new regions appear
