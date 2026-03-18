@@ -75,10 +75,9 @@ export default function DiscussionsPage() {
     fetchPosts(nextPage)
   }
 
-  // Calculate how tall the table needs to be based on content
-  // Hero area (~400px) + post rows (~200px each) + padding
+  // Calculate how tall the table needs to be based on post content
   const postRows = Math.ceil(posts.length / 2)
-  const minTableHeight = Math.max(800, 500 + postRows * 200 + 400)
+  const minTableHeight = Math.max(600, 200 + postRows * 200 + 200)
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
@@ -87,82 +86,83 @@ export default function DiscussionsPage() {
         <BackButton label="Back to Community" fallbackUrl="/community" />
       </div>
 
-      {/* ═══ THE CONFERENCE TABLE — one continuous surface ═══ */}
-      <div className="relative flex justify-center">
+      {/* ═══ HERO LANDING — full viewport title page ═══ */}
+      <section className="relative h-screen flex flex-col items-center justify-center px-6">
         {/* Background ambient */}
         <div className="absolute inset-0 bg-gradient-to-b from-[color-mix(in_srgb,var(--primary)_6%,var(--background))] via-[var(--background)] to-[color-mix(in_srgb,var(--primary)_4%,var(--background))]" />
 
-        {/* The table — arch peeks ~80px above the fold, rectangular body below */}
+        <div className="relative z-10 flex flex-col items-center text-center">
+          <div className="flex items-center justify-center gap-3 text-[10px] uppercase tracking-[0.3em] font-bold text-[#D4A54A]/60 mb-4">
+            <span>⚜</span>
+            <span>The Community</span>
+            <span>⚜</span>
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-[#D4A54A] tracking-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+            ROUND TABLE
+          </h1>
+
+          <p className="text-sm sm:text-base text-[#D4A54A]/50 font-medium max-w-md mx-auto mt-3">
+            Where every voice shapes the future
+          </p>
+
+          {/* Trending + stats */}
+          <div className="mt-8 space-y-3">
+            <div className="mx-auto px-5 py-2.5 rounded-xl bg-[#2E1D06]/60 border border-[#8B6914]/30 backdrop-blur-sm shadow-lg">
+              <p className="text-[10px] text-[#8B6914] font-bold">
+                {posts.length} discussions at the table
+              </p>
+            </div>
+
+            {trendingHashtags.length > 0 && (
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-center gap-1 text-[9px] text-[#8B6914]/70">
+                  <TrendingUp className="w-3 h-3" />
+                  <span className="font-bold uppercase tracking-wider">Trending</span>
+                </div>
+                <div className="flex flex-wrap justify-center gap-1.5">
+                  {trendingHashtags.slice(0, 4).map((tag, i) => (
+                    <span
+                      key={i}
+                      className="px-2.5 py-1 rounded-full text-[9px] font-bold bg-[#2E1D06]/50 border border-[#8B6914]/25 text-[#D4A54A]/80"
+                    >
+                      <Hash className="w-2.5 h-2.5 inline mr-0.5" />
+                      {tag.hashtag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Create post button */}
+          {session?.user && (
+            <button
+              onClick={() => setShowCreatePost(true)}
+              className="mt-8 flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#D4A54A]/20 hover:bg-[#D4A54A]/30 border border-[#D4A54A]/30 text-[#D4A54A] text-sm font-bold transition-all hover:scale-105"
+            >
+              <Plus className="w-4 h-4" />
+              Start a Discussion
+            </button>
+          )}
+
+          {/* Scroll indicator */}
+          <div className="mt-10 animate-bounce">
+            <ChevronDown className="w-7 h-7 text-[#D4A54A]/30" />
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ THE TABLE — revealed as user scrolls past the hero ═══ */}
+      <div className="relative flex justify-center">
         <div
           ref={tableRef}
-          className="relative w-[88vw] max-w-[900px] z-10 mt-[calc(100vh-80px)]"
+          className="relative w-[88vw] max-w-[900px] z-10 -mt-20"
           style={{ minHeight: `${minTableHeight}px` }}
         >
           <RoundTable className="w-full h-full" >
-            {/* ─── HEAD OF TABLE (revealed on scroll) ─── */}
-            <div className="flex flex-col items-center pt-16 sm:pt-20 pb-12 px-6 sm:px-12">
-              <div className="flex items-center justify-center gap-3 text-[10px] uppercase tracking-[0.3em] font-bold text-[#D4A54A]/60 mb-4">
-                <span>⚜</span>
-                <span>The Community</span>
-                <span>⚜</span>
-              </div>
-
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-[#D4A54A] tracking-tight text-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
-                ROUND TABLE
-              </h1>
-
-              <p className="text-sm sm:text-base text-[#D4A54A]/50 font-medium max-w-md mx-auto text-center mt-3">
-                Where every voice shapes the future
-              </p>
-
-              {/* Scroll indicator */}
-              <div className="mt-8 animate-bounce">
-                <ChevronDown className="w-7 h-7 text-[#D4A54A]/30" />
-              </div>
-
-              {/* Trending + stats centerpiece */}
-              <div className="mt-8 space-y-3">
-                <div className="mx-auto px-5 py-2.5 rounded-xl bg-[#2E1D06]/60 border border-[#8B6914]/30 backdrop-blur-sm shadow-lg">
-                  <p className="text-[10px] text-[#8B6914] font-bold text-center">
-                    {posts.length} discussions at the table
-                  </p>
-                </div>
-
-                {trendingHashtags.length > 0 && (
-                  <div className="space-y-1.5">
-                    <div className="flex items-center justify-center gap-1 text-[9px] text-[#8B6914]/70">
-                      <TrendingUp className="w-3 h-3" />
-                      <span className="font-bold uppercase tracking-wider">Trending</span>
-                    </div>
-                    <div className="flex flex-wrap justify-center gap-1.5">
-                      {trendingHashtags.slice(0, 4).map((tag, i) => (
-                        <span
-                          key={i}
-                          className="px-2.5 py-1 rounded-full text-[9px] font-bold bg-[#2E1D06]/50 border border-[#8B6914]/25 text-[#D4A54A]/80"
-                        >
-                          <Hash className="w-2.5 h-2.5 inline mr-0.5" />
-                          {tag.hashtag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Create post button */}
-              {session?.user && (
-                <button
-                  onClick={() => setShowCreatePost(true)}
-                  className="mt-8 flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#D4A54A]/20 hover:bg-[#D4A54A]/30 border border-[#D4A54A]/30 text-[#D4A54A] text-sm font-bold transition-all hover:scale-105"
-                >
-                  <Plus className="w-4 h-4" />
-                  Start a Discussion
-                </button>
-              )}
-            </div>
-
-            {/* ─── TABLE DIVIDER ─── */}
-            <div className="flex items-center justify-center gap-3 px-[15%] my-4">
+            {/* ─── TABLE HEAD — divider with icon ─── */}
+            <div className="flex items-center justify-center gap-3 px-[15%] pt-24 pb-6">
               <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#8B6914]/20 to-transparent" />
               <MessageSquare className="w-4 h-4 text-[#8B6914]/30" />
               <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#8B6914]/20 to-transparent" />
@@ -239,12 +239,12 @@ export default function DiscussionsPage() {
           </RoundTable>
 
           {/* Chair shadows along the sides — decorative */}
-          <div className="absolute top-[400px] bottom-[10%] left-0 w-[6%] pointer-events-none opacity-30"
+          <div className="absolute top-[140px] bottom-[10%] left-0 w-[6%] pointer-events-none opacity-30"
             style={{
               background: 'repeating-linear-gradient(180deg, transparent 0px, transparent 160px, rgba(46,29,6,0.15) 170px, rgba(46,29,6,0.08) 190px, transparent 200px)',
             }}
           />
-          <div className="absolute top-[400px] bottom-[10%] right-0 w-[6%] pointer-events-none opacity-30"
+          <div className="absolute top-[140px] bottom-[10%] right-0 w-[6%] pointer-events-none opacity-30"
             style={{
               background: 'repeating-linear-gradient(180deg, transparent 0px, transparent 160px, rgba(46,29,6,0.15) 170px, rgba(46,29,6,0.08) 190px, transparent 200px)',
             }}
