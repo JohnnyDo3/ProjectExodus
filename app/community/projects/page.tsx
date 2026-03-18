@@ -13,7 +13,12 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { JoinProjectButton } from '@/components/projects/JoinProjectButton'
 import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { BirdFlightCanvas } from '@/components/community/BirdFlightCanvas'
+import dynamic from 'next/dynamic'
+
+const BirdFlightCanvas = dynamic(
+  () => import('@/components/community/BirdFlightCanvas').then(mod => ({ default: mod.BirdFlightCanvas })),
+  { ssr: false }
+)
 
 
 // ─── Types ───────────────────────────────────────────────────────────────────

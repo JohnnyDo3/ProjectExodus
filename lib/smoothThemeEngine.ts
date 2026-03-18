@@ -724,11 +724,19 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
 // ============================================
 
 /**
- * Get sun times for a given location and date
+ * Get sun times for a given location and date.
+ * Results are cached per day since sun times only change once daily.
  */
+let _sunTimesCache: { key: string; value: SunTimes } | null = null
+
 export function getSunTimes(lat: number, lon: number, date: Date = new Date()): SunTimes {
+  const cacheKey = `${lat.toFixed(2)}_${lon.toFixed(2)}_${date.getFullYear()}_${date.getMonth()}_${date.getDate()}`
+  if (_sunTimesCache && _sunTimesCache.key === cacheKey) {
+    return _sunTimesCache.value
+  }
+
   const times = SunCalc.getTimes(date, lat, lon)
-  return {
+  const result: SunTimes = {
     sunrise: times.sunrise,
     sunset: times.sunset,
     solarNoon: times.solarNoon,
@@ -737,6 +745,8 @@ export function getSunTimes(lat: number, lon: number, date: Date = new Date()): 
     nauticalDawn: times.nauticalDawn,
     nauticalDusk: times.nauticalDusk,
   }
+  _sunTimesCache = { key: cacheKey, value: result }
+  return result
 }
 
 /**

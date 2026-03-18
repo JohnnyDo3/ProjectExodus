@@ -93,11 +93,13 @@ export async function GET(
               orderBy: {
                 createdAt: 'asc',
               },
+              take: 10,
             },
           },
           orderBy: {
             createdAt: 'desc',
           },
+          take: 30,
         },
         peerReviews: {
           include: {

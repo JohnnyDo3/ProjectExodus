@@ -7,7 +7,7 @@ async function getForumCategories() {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
     const res = await fetch(`${baseUrl}/api/forum`, {
-      cache: 'no-store',
+      next: { revalidate: 120 },
     })
 
     if (!res.ok) {

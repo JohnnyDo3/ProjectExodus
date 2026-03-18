@@ -2,11 +2,17 @@
 
 import { useState } from 'react'
 import { User } from 'lucide-react'
+import Image from 'next/image'
 
 interface SafeImageProps {
   src?: string | null
   alt: string
   className?: string
+  width?: number
+  height?: number
+  fill?: boolean
+  sizes?: string
+  priority?: boolean
   fallbackIcon?: React.ReactNode
   onError?: () => void
 }
@@ -19,12 +25,17 @@ interface SafeImageProps {
  * - Blocks SVG data URLs (XSS prevention)
  * - Only allows HTTPS URLs (no http://)
  * - Provides fallback for invalid/missing images
- * - Lazy loading for performance
+ * - Uses Next.js Image for optimization (WebP/AVIF, lazy loading, sizing)
  */
 export function SafeImage({
   src,
   alt,
   className = '',
+  width,
+  height,
+  fill,
+  sizes,
+  priority = false,
   fallbackIcon,
   onError
 }: SafeImageProps) {
@@ -51,6 +62,27 @@ export function SafeImage({
     )
   }
 
+  // Use Next.js Image for HTTPS URLs (optimized with WebP/AVIF)
+  if (src.startsWith('https://')) {
+    return (
+      <Image
+        src={src}
+        alt={alt}
+        className={className}
+        width={fill ? undefined : (width || 128)}
+        height={fill ? undefined : (height || 128)}
+        fill={fill}
+        sizes={sizes || '(max-width: 768px) 100vw, 128px'}
+        priority={priority}
+        onError={() => {
+          setImageError(true)
+          onError?.()
+        }}
+      />
+    )
+  }
+
+  // Fallback to img for data URLs (can't be optimized by Next.js)
   return (
     <img
       src={src}

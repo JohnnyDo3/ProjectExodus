@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback, createContext, useContext } from 'react'
+import { useEffect, useState, useCallback, useMemo, createContext, useContext } from 'react'
 import { useSession } from 'next-auth/react'
 import * as SunCalc from 'suncalc'
 import {
@@ -137,13 +137,20 @@ export function TimeThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!mounted) return
 
+    const themeClasses = ['day', 'night', 'sunrise', 'sunset', 'dusk', 'evening']
+    const setThemeClass = (cls: string) => {
+      const el = document.documentElement
+      themeClasses.forEach(c => el.classList.remove(c))
+      el.classList.add(cls)
+    }
+
     const updateTheme = () => {
       const now = new Date()
 
       // Handle fixed modes
       if (mode !== 'auto') {
         const { colors, phase: fixedPhase, className } = getFixedModeColors(mode as 'light' | 'dark')
-        document.documentElement.className = className
+        setThemeClass(className)
         applyThemeColors(colors)
         setPhase(fixedPhase)
 
@@ -171,13 +178,13 @@ export function TimeThemeProvider({ children }: { children: React.ReactNode }) {
       // Set appropriate class for day-only/night-only CSS visibility
       // Use a smooth threshold with hysteresis
       if (twilight < 0.3) {
-        document.documentElement.className = 'day'
+        setThemeClass('day')
       } else if (twilight > 0.7) {
-        document.documentElement.className = 'night'
+        setThemeClass('night')
       } else if (twilight < 0.5) {
-        document.documentElement.className = 'dusk'
+        setThemeClass('dusk')
       } else {
-        document.documentElement.className = 'evening'
+        setThemeClass('evening')
       }
     }
 
@@ -202,8 +209,8 @@ export function TimeThemeProvider({ children }: { children: React.ReactNode }) {
     }
   }, [mounted, coords, mode])
 
-  // Context value
-  const contextValue: TimeThemeContextType = {
+  // Memoize context value to prevent unnecessary re-renders of consumers
+  const contextValue = useMemo<TimeThemeContextType>(() => ({
     mode,
     setMode,
     phase,
@@ -211,7 +218,7 @@ export function TimeThemeProvider({ children }: { children: React.ReactNode }) {
     twilightProgress,
     sunAltitude,
     coords,
-  }
+  }), [mode, setMode, phase, isDay, twilightProgress, sunAltitude, coords])
 
   return (
     <TimeThemeContext.Provider value={contextValue}>

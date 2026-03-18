@@ -103,11 +103,24 @@ export default function NetworkPage() {
   const [followerIds, setFollowerIds] = useState<Set<string>>(new Set())
   const [loadingFollow, setLoadingFollow] = useState<Set<string>>(new Set())
 
-  // Fetch all data
+  // Fetch all data in parallel (avoid waterfall)
   const fetchData = useCallback(async () => {
     setIsLoading(true)
     try {
-      const usersRes = await fetch('/api/users', { cache: 'no-store' })
+      // Fire all requests in parallel instead of sequentially
+      const fetches: Promise<Response>[] = [
+        fetch('/api/users'),
+      ]
+      if (session?.user?.id) {
+        fetches.push(
+          fetch('/api/users/following'),
+          fetch('/api/users/followers'),
+        )
+      }
+
+      const results = await Promise.all(fetches)
+      const [usersRes, followingRes, followersRes] = results
+
       if (usersRes.ok) {
         const usersData = await usersRes.json()
         if (usersData.success) {
@@ -115,26 +128,19 @@ export default function NetworkPage() {
         }
       }
 
-      if (session?.user?.id) {
-        const [followingRes, followersRes] = await Promise.all([
-          fetch('/api/users/following', { cache: 'no-store' }),
-          fetch('/api/users/followers', { cache: 'no-store' }),
-        ])
-
-        if (followingRes.ok) {
-          const followingData = await followingRes.json()
-          if (followingData.success) {
-            setFollowingUsers(followingData.data)
-            setFollowingIds(new Set(followingData.data.map((u: UserProfile) => u.id)))
-          }
+      if (followingRes?.ok) {
+        const followingData = await followingRes.json()
+        if (followingData.success) {
+          setFollowingUsers(followingData.data)
+          setFollowingIds(new Set(followingData.data.map((u: UserProfile) => u.id)))
         }
+      }
 
-        if (followersRes.ok) {
-          const followersData = await followersRes.json()
-          if (followersData.success) {
-            setFollowers(followersData.data)
-            setFollowerIds(new Set(followersData.data.map((u: UserProfile) => u.id)))
-          }
+      if (followersRes?.ok) {
+        const followersData = await followersRes.json()
+        if (followersData.success) {
+          setFollowers(followersData.data)
+          setFollowerIds(new Set(followersData.data.map((u: UserProfile) => u.id)))
         }
       }
     } catch (error) {

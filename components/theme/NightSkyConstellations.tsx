@@ -798,7 +798,13 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 3000 }:
   useEffect(() => {
     if (!isNightTime) return
 
+    // Throttled mousemove: only run hit detection every 50ms to avoid perf issues
+    let lastMoveTime = 0
     const handleMouseMove = (e: MouseEvent) => {
+      const now = performance.now()
+      if (now - lastMoveTime < 50) return
+      lastMoveTime = now
+
       const canvas = canvasRef.current
       if (!canvas) return
 
@@ -841,7 +847,7 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 3000 }:
       activeConstellationRef.current = nearestConstellation
     }
 
-    document.addEventListener('mousemove', handleMouseMove)
+    document.addEventListener('mousemove', handleMouseMove, { passive: true })
     return () => document.removeEventListener('mousemove', handleMouseMove)
   }, [isNightTime])
 

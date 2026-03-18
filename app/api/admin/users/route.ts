@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // Fetch users
+    // Fetch users and their ban status in 2 queries (avoids N+1)
     const [users, total] = await Promise.all([
       prisma.user.findMany({
         where,
@@ -88,27 +88,28 @@ export async function GET(request: NextRequest) {
       prisma.user.count({ where })
     ])
 
-    // Attach ban status to users
-    const usersWithStatus = await Promise.all(
-      users.map(async (user: any) => {
-        const ban = await prisma.userBan.findFirst({
-          where: { userId: user.id, active: true },
-          select: { id: true, reason: true, expiresAt: true, createdAt: true }
-        })
+    // Batch fetch all active bans for these users (1 query instead of N)
+    const userIds = users.map((u: any) => u.id)
+    const activeBans = await prisma.userBan.findMany({
+      where: { userId: { in: userIds }, active: true },
+      select: { id: true, userId: true, reason: true, expiresAt: true, createdAt: true },
+    })
+    const bansByUserId = new Map(activeBans.map((b: any) => [b.userId, b]))
 
-        return {
-          ...user,
-          isBanned: !!ban,
-          ban: ban || null,
-          stats: {
-            articles: user._count.articles,
-            products: user._count.userProducts,
-            projects: user._count.createdProjects,
-            followers: user._count.followers,
-          }
+    const usersWithStatus = users.map((user: any) => {
+      const ban = bansByUserId.get(user.id) || null
+      return {
+        ...user,
+        isBanned: !!ban,
+        ban,
+        stats: {
+          articles: user._count.articles,
+          products: user._count.userProducts,
+          projects: user._count.createdProjects,
+          followers: user._count.followers,
         }
-      })
-    )
+      }
+    })
 
     return NextResponse.json({
       users: usersWithStatus,

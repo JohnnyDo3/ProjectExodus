@@ -7,7 +7,7 @@ async function getVendors() {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
     const res = await fetch(`${baseUrl}/api/vendors`, {
-      cache: 'no-store',
+      next: { revalidate: 300 },
     })
 
     if (!res.ok) {
