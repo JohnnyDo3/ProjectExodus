@@ -4,120 +4,134 @@ import React from 'react'
 
 interface RoundTableProps {
   children: React.ReactNode
-  /** Diameter of the table in px. Defaults to responsive sizing via CSS */
   className?: string
 }
 
 /**
- * Bird's-eye-view round table.
- * A single, uniform circular wood surface.
- * Children (centerpiece, orbiting posts) are layered on top.
+ * Bird's-eye conference table — a tall oval wood surface.
+ * Spans the full height of its container, creating one continuous
+ * table that crosses the fold. Children layer on top.
  */
 export function RoundTable({ children, className = '' }: RoundTableProps) {
   return (
     <div className={`relative mx-auto ${className}`}>
-      {/* The circular table surface */}
+      {/* The oval table surface */}
       <div
-        className="relative w-full rounded-full overflow-hidden"
+        className="relative w-full h-full"
         style={{
-          paddingBottom: '100%', // 1:1 aspect ratio = perfect circle
+          borderRadius: '50% / 4%',
         }}
       >
         {/* Wood surface fill */}
         <div
-          className="absolute inset-0 rounded-full"
+          className="absolute inset-0"
           style={{
+            borderRadius: '50% / 4%',
             background: `
-              radial-gradient(circle at 45% 42%,
-                #A67C1A 0%,
-                #8B6914 15%,
-                #6B4F10 35%,
-                #5C3D0E 55%,
-                #4A2F0C 75%,
-                #3A2508 100%
+              linear-gradient(180deg,
+                #7A5C12 0%,
+                #8B6914 8%,
+                #A67C1A 20%,
+                #8B6914 35%,
+                #6B4F10 50%,
+                #8B6914 65%,
+                #A67C1A 80%,
+                #8B6914 92%,
+                #7A5C12 100%
               )
             `,
-            border: '12px solid #2E1D06',
+            border: '10px solid #2E1D06',
             boxShadow: `
-              inset 0 0 60px rgba(0,0,0,0.35),
-              inset 0 0 120px rgba(0,0,0,0.15),
-              0 40px 100px rgba(0,0,0,0.6),
-              0 15px 40px rgba(0,0,0,0.4)
+              inset 0 0 80px rgba(0,0,0,0.3),
+              inset 0 0 200px rgba(0,0,0,0.1),
+              0 30px 80px rgba(0,0,0,0.5),
+              0 10px 30px rgba(0,0,0,0.3)
             `,
           }}
         >
-          {/* Wood grain rings */}
+          {/* Wood grain — horizontal lines across the table */}
           <svg
-            className="absolute inset-0 w-full h-full opacity-[0.08] pointer-events-none"
-            viewBox="0 0 500 500"
+            className="absolute inset-0 w-full h-full opacity-[0.06] pointer-events-none"
+            viewBox="0 0 200 1000"
+            preserveAspectRatio="none"
           >
-            {[...Array(18)].map((_, i) => (
-              <circle
-                key={i}
-                cx="245"
-                cy="240"
-                r={30 + i * 13}
-                fill="none"
+            {/* Longitudinal grain lines */}
+            {[...Array(30)].map((_, i) => (
+              <line
+                key={`g${i}`}
+                x1={10 + (i * 6) + (i % 3) * 2}
+                y1="0"
+                x2={10 + (i * 6) + (i % 3) * 2 + (i % 5 - 2) * 3}
+                y2="1000"
                 stroke="#D4A54A"
-                strokeWidth={0.4 + (i % 3) * 0.2}
-                opacity={0.2 + (i % 4) * 0.08}
+                strokeWidth={0.3 + (i % 4) * 0.15}
+                opacity={0.3 + (i % 3) * 0.1}
               />
             ))}
-            {/* Radial grain streaks */}
-            {[...Array(16)].map((_, i) => {
-              const angle = (i / 16) * Math.PI * 2
-              const x1 = 250 + 40 * Math.cos(angle)
-              const y1 = 250 + 40 * Math.sin(angle)
-              const x2 = 250 + 230 * Math.cos(angle)
-              const y2 = 250 + 230 * Math.sin(angle)
-              return (
-                <line
-                  key={`r${i}`}
-                  x1={x1} y1={y1} x2={x2} y2={y2}
-                  stroke="#D4A54A"
-                  strokeWidth="0.3"
-                  opacity={0.08 + (i % 3) * 0.04}
-                />
-              )
-            })}
+            {/* Cross-grain knots */}
+            {[...Array(8)].map((_, i) => (
+              <ellipse
+                key={`k${i}`}
+                cx={60 + (i % 3) * 40}
+                cy={80 + i * 120}
+                rx={8 + (i % 2) * 4}
+                ry={3 + (i % 3)}
+                fill="none"
+                stroke="#D4A54A"
+                strokeWidth="0.3"
+                opacity={0.15}
+              />
+            ))}
           </svg>
 
-          {/* Highlight/shine on top edge */}
+          {/* Highlight/shine — top and center gleam */}
           <div
-            className="absolute inset-0 rounded-full pointer-events-none"
+            className="absolute inset-0 pointer-events-none"
             style={{
+              borderRadius: '50% / 4%',
               background: `
-                radial-gradient(circle at 40% 35%, rgba(212,165,74,0.12) 0%, transparent 40%),
-                radial-gradient(circle at 60% 65%, rgba(0,0,0,0.15) 0%, transparent 40%)
+                linear-gradient(180deg,
+                  rgba(212,165,74,0.1) 0%,
+                  transparent 15%,
+                  transparent 40%,
+                  rgba(212,165,74,0.05) 50%,
+                  transparent 60%,
+                  transparent 85%,
+                  rgba(212,165,74,0.1) 100%
+                ),
+                radial-gradient(ellipse at 50% 30%, rgba(212,165,74,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 70%, rgba(212,165,74,0.06) 0%, transparent 50%)
               `,
             }}
           />
 
           {/* Outer rim bevel */}
           <div
-            className="absolute inset-[8px] rounded-full pointer-events-none"
+            className="absolute inset-[6px] pointer-events-none"
             style={{
-              border: '2px solid rgba(139,105,20,0.15)',
-              boxShadow: 'inset 0 2px 8px rgba(212,165,74,0.08)',
+              borderRadius: '50% / 4%',
+              border: '1.5px solid rgba(139,105,20,0.12)',
+              boxShadow: 'inset 0 3px 12px rgba(212,165,74,0.06)',
             }}
           />
 
-          {/* Inner decorative ring */}
+          {/* Inner decorative runner line down the center */}
           <div
-            className="absolute rounded-full pointer-events-none"
+            className="absolute pointer-events-none"
             style={{
-              top: '12%',
-              left: '12%',
-              right: '12%',
-              bottom: '12%',
-              border: '1.5px solid rgba(139,105,20,0.1)',
+              top: '6%',
+              bottom: '6%',
+              left: '15%',
+              right: '15%',
+              borderRadius: '50% / 4%',
+              border: '1px solid rgba(139,105,20,0.08)',
             }}
           />
         </div>
       </div>
 
-      {/* Content layer — sits on top of the table, centered */}
-      <div className="absolute inset-0">
+      {/* Content layer — on top of the table */}
+      <div className="absolute inset-0" style={{ borderRadius: '50% / 4%' }}>
         {children}
       </div>
     </div>
