@@ -1,18 +1,15 @@
 'use client'
 
 import React, { useCallback, useMemo, useRef } from 'react'
-import { formatYear, getCurrentPeriodForYear } from '@/data/architecture/globeConnections'
+import { formatYear, getCurrentPeriodForYear, ALL_ARCS } from '@/data/architecture/globeConnections'
 
 interface GlobeTimelineProps {
   currentYear: number
   onChange: (year: number) => void
-  isPlaying: boolean
-  onTogglePlay: () => void
-  speed: number
-  onSpeedChange: (speed: number) => void
 }
 
-const MIN_YEAR = -12000
+// Timeline range: from first arc year to 2025
+const MIN_YEAR = ALL_ARCS.length > 0 ? ALL_ARCS[0].startYear : -12000
 const MAX_YEAR = 2025
 const RANGE = MAX_YEAR - MIN_YEAR
 
@@ -35,28 +32,24 @@ const ERA_LABELS = [
   { label: 'Modern', year: 1900 },
 ] as const
 
-const SPEEDS = [1, 2, 4] as const
-
 function yearToPercent(year: number): number {
   return ((year - MIN_YEAR) / RANGE) * 100
 }
 
 function buildTrackGradient(): string {
-  const stops = ERA_SEGMENTS.map((seg) => {
-    const startPct = yearToPercent(seg.start)
-    const endPct = yearToPercent(seg.end)
-    return `${seg.color} ${startPct}%, ${seg.color} ${endPct}%`
-  })
+  const stops = ERA_SEGMENTS
+    .filter(seg => seg.end > MIN_YEAR) // only show segments in range
+    .map((seg) => {
+      const startPct = yearToPercent(Math.max(seg.start, MIN_YEAR))
+      const endPct = yearToPercent(seg.end)
+      return `${seg.color} ${startPct}%, ${seg.color} ${endPct}%`
+    })
   return `linear-gradient(to right, ${stops.join(', ')})`
 }
 
 export default function GlobeTimeline({
   currentYear,
   onChange,
-  isPlaying,
-  onTogglePlay,
-  speed,
-  onSpeedChange,
 }: GlobeTimelineProps) {
   const trackRef = useRef<HTMLDivElement>(null)
 
@@ -156,108 +149,69 @@ export default function GlobeTimeline({
         }
       `}</style>
 
-      {/* Controls row */}
-      <div className="flex items-center gap-3">
-        {/* Play/Pause button */}
-        <button
-          onClick={onTogglePlay}
-          className="flex-shrink-0 flex items-center justify-center w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-150"
-          aria-label={isPlaying ? 'Pause' : 'Play'}
+      {/* Slider area */}
+      <div className="relative" ref={trackRef}>
+        {/* Floating year label */}
+        <div
+          className="absolute -top-7 pointer-events-none"
+          style={{
+            left: `${thumbPercent}%`,
+            transform: 'translateX(-50%)',
+          }}
         >
-          {isPlaying ? (
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <rect x="2" y="1" width="3.5" height="12" rx="0.75" fill="#D4A54A" />
-              <rect x="8.5" y="1" width="3.5" height="12" rx="0.75" fill="#D4A54A" />
-            </svg>
-          ) : (
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M3 1.5L12 7L3 12.5V1.5Z" fill="#D4A54A" />
-            </svg>
-          )}
-        </button>
-
-        {/* Speed buttons */}
-        <div className="flex-shrink-0 flex items-center gap-1">
-          {SPEEDS.map((s) => (
-            <button
-              key={s}
-              onClick={() => onSpeedChange(s)}
-              className={`px-2 py-0.5 text-xs font-medium rounded transition-colors duration-150 ${
-                speed === s
-                  ? 'bg-amber-500/30 text-amber-300 border border-amber-500/50'
-                  : 'bg-white/5 text-white/50 border border-white/10 hover:bg-white/10 hover:text-white/70'
-              }`}
-            >
-              {s}x
-            </button>
-          ))}
+          <span className="inline-block px-2 py-0.5 text-xs font-semibold text-amber-200 bg-black/60 rounded-md whitespace-nowrap backdrop-blur-sm border border-amber-500/20">
+            {formattedYear}
+          </span>
         </div>
 
-        {/* Slider area */}
-        <div className="flex-1 relative" ref={trackRef}>
-          {/* Floating year label */}
+        {/* Era-colored track background */}
+        <div
+          className="absolute top-1/2 left-0 right-0 h-2 rounded-full overflow-hidden -translate-y-1/2 pointer-events-none"
+          style={{ background: trackGradient }}
+        >
           <div
-            className="absolute -top-7 pointer-events-none"
+            className="absolute inset-y-0 left-0 rounded-full"
             style={{
-              left: `${thumbPercent}%`,
-              transform: 'translateX(-50%)',
+              width: `${thumbPercent}%`,
+              background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.1))',
             }}
-          >
-            <span className="inline-block px-2 py-0.5 text-xs font-semibold text-amber-200 bg-black/60 rounded-md whitespace-nowrap backdrop-blur-sm border border-amber-500/20">
-              {formattedYear}
-            </span>
-          </div>
-
-          {/* Era-colored track background */}
-          <div
-            className="absolute top-1/2 left-0 right-0 h-2 rounded-full overflow-hidden -translate-y-1/2 pointer-events-none"
-            style={{ background: trackGradient }}
-          >
-            {/* Played portion overlay for subtle glow */}
-            <div
-              className="absolute inset-y-0 left-0 rounded-full"
-              style={{
-                width: `${thumbPercent}%`,
-                background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.1))',
-              }}
-            />
-          </div>
-
-          {/* Range input */}
-          <input
-            type="range"
-            min={MIN_YEAR}
-            max={MAX_YEAR}
-            step={1}
-            value={currentYear}
-            onChange={handleChange}
-            className="globe-timeline-range relative z-10 w-full"
-            aria-label={`Timeline: ${formattedYear}`}
-            aria-valuemin={MIN_YEAR}
-            aria-valuemax={MAX_YEAR}
-            aria-valuenow={currentYear}
-            aria-valuetext={formattedYear}
           />
+        </div>
 
-          {/* Era labels below the track */}
-          <div className="relative h-5 mt-1 pointer-events-none">
-            {ERA_LABELS.map((era) => {
-              const pct = yearToPercent(era.year)
-              return (
-                <span
-                  key={era.label}
-                  className="absolute text-[10px] whitespace-nowrap"
-                  style={{
-                    left: `${pct}%`,
-                    transform: 'translateX(-50%)',
-                    color: 'var(--muted-foreground, rgba(255,255,255,0.45))',
-                  }}
-                >
-                  {era.label}
-                </span>
-              )
-            })}
-          </div>
+        {/* Range input */}
+        <input
+          type="range"
+          min={MIN_YEAR}
+          max={MAX_YEAR}
+          step={1}
+          value={currentYear}
+          onChange={handleChange}
+          className="globe-timeline-range relative z-10 w-full"
+          aria-label={`Timeline: ${formattedYear}`}
+          aria-valuemin={MIN_YEAR}
+          aria-valuemax={MAX_YEAR}
+          aria-valuenow={currentYear}
+          aria-valuetext={formattedYear}
+        />
+
+        {/* Era labels below the track */}
+        <div className="relative h-5 mt-1 pointer-events-none">
+          {ERA_LABELS.filter(era => era.year >= MIN_YEAR).map((era) => {
+            const pct = yearToPercent(era.year)
+            return (
+              <span
+                key={era.label}
+                className="absolute text-[10px] whitespace-nowrap"
+                style={{
+                  left: `${pct}%`,
+                  transform: 'translateX(-50%)',
+                  color: 'var(--muted-foreground, rgba(255,255,255,0.45))',
+                }}
+              >
+                {era.label}
+              </span>
+            )
+          })}
         </div>
       </div>
 
