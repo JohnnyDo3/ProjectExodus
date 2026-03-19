@@ -35,8 +35,8 @@ interface GeoJSONFeature {
 // Constants
 // ---------------------------------------------------------------------------
 
-// Earth's real rotation: 360° per 86400 seconds
-const EARTH_ROTATION_SPEED = (2 * Math.PI) / 86400 // radians per second
+// Rotation speed: full revolution every ~30 seconds (was real-time 86400s)
+const GLOBE_ROTATION_SPEED = (2 * Math.PI) / 30 // radians per second
 
 // First connection seed point (Levant)
 const SEED_LAT = 31.8
@@ -44,6 +44,9 @@ const SEED_LNG = 35.2
 
 // Snap-back duration after user interaction (ms)
 const SNAP_BACK_DURATION = 1500
+
+// Duration to smoothly rotate toward new arc centroids (ms)
+const ARC_FOLLOW_DURATION = 2000
 
 // ---------------------------------------------------------------------------
 // Component
@@ -66,6 +69,11 @@ export default function ArchitectureGlobe({
   const userRotationOffsetRef = useRef(0) // offset in radians from real-time position
   const lastRealRotationRef = useRef(0)
   const rotationBaseTimeRef = useRef(Date.now())
+
+  // Arc-following: smoothly pan to newest arc region
+  const arcFollowTargetRef = useRef<{ lat: number; lng: number } | null>(null)
+  const arcFollowStartRef = useRef(0)
+  const prevArcCountRef = useRef(0)
 
   // -------------------------------------------------------------------------
   // Materials
@@ -188,7 +196,7 @@ export default function ArchitectureGlobe({
 
       const currentY = globeMesh.rotation.y
       const elapsed = (Date.now() - rotationBaseTimeRef.current) / 1000
-      const realY = elapsed * EARTH_ROTATION_SPEED
+      const realY = elapsed * GLOBE_ROTATION_SPEED
 
       userRotationOffsetRef.current = currentY - realY
       lastRealRotationRef.current = realY
@@ -217,7 +225,7 @@ export default function ArchitectureGlobe({
     controls.addEventListener('start', onStart)
     controls.addEventListener('end', onEnd)
 
-    // Real-time rotation loop
+    // Rotation loop — faster speed + arc-following pan
     let raf: number
     const rotate = () => {
       if (!isUserDraggingRef.current && globeRef.current) {
@@ -227,8 +235,28 @@ export default function ArchitectureGlobe({
             || scene.children[0]
           if (globeMesh) {
             const elapsed = (Date.now() - rotationBaseTimeRef.current) / 1000
-            const realY = elapsed * EARTH_ROTATION_SPEED
+            const realY = elapsed * GLOBE_ROTATION_SPEED
             globeMesh.rotation.y = realY + userRotationOffsetRef.current
+          }
+        }
+
+        // Arc-following: smoothly pan to target region
+        const target = arcFollowTargetRef.current
+        if (target && arcFollowStartRef.current > 0) {
+          const t = Math.min((Date.now() - arcFollowStartRef.current) / ARC_FOLLOW_DURATION, 1)
+          if (t < 1) {
+            const eased = 1 - Math.pow(1 - t, 3) // ease-out cubic
+            const pov = globeRef.current.pointOfView()
+            if (pov) {
+              // Interpolate lat/lng toward target
+              const newLat = pov.lat + (target.lat - pov.lat) * eased * 0.05
+              const newLng = pov.lng + (target.lng - pov.lng) * eased * 0.05
+              globeRef.current.pointOfView({ lat: newLat, lng: newLng }, 0)
+            }
+          } else {
+            // Done following, clear target
+            arcFollowTargetRef.current = null
+            arcFollowStartRef.current = 0
           }
         }
       }
@@ -257,6 +285,44 @@ export default function ArchitectureGlobe({
     if (!buildComplete) return []
     return getPointsForYear(currentYear)
   }, [currentYear, buildComplete])
+
+  // -------------------------------------------------------------------------
+  // Arc-following: rotate to face newest arcs when timeline changes
+  // -------------------------------------------------------------------------
+
+  useEffect(() => {
+    if (!buildComplete || !globeRef.current) return
+    if (arcsData.length === 0) return
+
+    // Only follow when new arcs appear
+    if (arcsData.length > prevArcCountRef.current && prevArcCountRef.current > 0) {
+      // Find the newest arcs (ones not in previous set)
+      const newArcs = arcsData.slice(prevArcCountRef.current)
+      if (newArcs.length > 0) {
+        // Calculate centroid of new arc endpoints
+        let totalLat = 0, totalLng = 0, count = 0
+        for (const arc of newArcs) {
+          totalLat += arc.toLat
+          totalLng += arc.toLng
+          count++
+        }
+        const targetLat = totalLat / count
+        const targetLng = totalLng / count
+
+        // Set follow target — rotation loop will smoothly pan
+        arcFollowTargetRef.current = { lat: targetLat, lng: targetLng }
+        arcFollowStartRef.current = Date.now()
+
+        // Also do a smooth pointOfView transition
+        globeRef.current.pointOfView(
+          { lat: targetLat, lng: targetLng, altitude: 2.2 },
+          ARC_FOLLOW_DURATION
+        )
+      }
+    }
+
+    prevArcCountRef.current = arcsData.length
+  }, [arcsData, buildComplete])
 
   // -------------------------------------------------------------------------
   // Render

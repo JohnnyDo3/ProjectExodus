@@ -92,9 +92,10 @@ const FRAGMENT_SHADER = /* glsl */ `
     float edge1 = v1.y;
     float edge2 = v2.y;
 
-    // Per-shard reveal: shards near seed appear first
+    // Per-shard reveal: build from back to front (far side first, toward camera last)
     float seedDist = distToSeed(vUv);
-    float threshold = seedDist * 1.4 + cellId * 0.3;
+    float reversedDist = 1.0 - seedDist; // flip: far shards reveal first
+    float threshold = reversedDist * 1.4 + cellId * 0.3;
     threshold = clamp(threshold * 0.8, 0.0, 0.95);
 
     float fillProgress = smoothstep(threshold - 0.05, threshold + 0.05, progress);
