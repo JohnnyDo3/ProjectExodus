@@ -5,7 +5,6 @@ import dynamic from 'next/dynamic'
 import {
   getArcsForYear,
   getPointsForYear,
-  REGION_CENTROIDS,
 } from '@/data/architecture/globeConnections'
 import { useGlobeIntroMaterial } from './useShardBuildMaterial'
 import { useThemeGlobeMaterial } from './useThemeGlobeMaterial'
@@ -47,13 +46,16 @@ const SEED_LNG = 35.2
 const MESOPOTAMIA_LAT = 33.3
 const MESOPOTAMIA_LNG = 44.4
 
-// AutoRotate speeds per phase (OrbitControls units — 2.0 ≈ 30s/revolution)
-const ROTATE_SPEED: Record<IntroPhase, number> = {
-  building:  1.0,
-  revealing: 1.5,
-  pausing:   2.0,
-  sweeping:  1.5, // base — accelerated during sweep
-  idle:      3.0,
+// Rotation speeds in radians/second
+const BASE_SPEED = (2 * Math.PI) / 50    // one revolution per 50s
+const IDLE_SPEED = (2 * Math.PI) / 20    // one revolution per 20s — engaging
+
+const PHASE_SPEED: Record<IntroPhase, number> = {
+  building:  (2 * Math.PI) / 60,   // gentle during build
+  revealing: (2 * Math.PI) / 45,   // picking up
+  pausing:   (2 * Math.PI) / 35,   // a bit more
+  sweeping:  BASE_SPEED,            // base — accelerated by year
+  idle:      IDLE_SPEED,            // fast enough to notice
 }
 
 // ---------------------------------------------------------------------------
@@ -72,6 +74,15 @@ export default function ArchitectureGlobe({
 
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
   const [countries, setCountries] = useState<GeoJSONFeature[]>([])
+
+  // Refs for the animation loop (avoids re-creating the loop on prop changes)
+  const introPhaseRef = useRef<IntroPhase>(introPhase)
+  const currentYearRef = useRef(currentYear)
+  const isUserDraggingRef = useRef(false)
+  const globeInitializedRef = useRef(false)
+
+  introPhaseRef.current = introPhase
+  currentYearRef.current = currentYear
 
   // -------------------------------------------------------------------------
   // Materials
@@ -136,40 +147,80 @@ export default function ArchitectureGlobe({
   }, [])
 
   // -------------------------------------------------------------------------
-  // Globe init — face seed region, enable autoRotate
+  // Rotation loop — runs from mount, waits for globe ref, then rotates
+  // Handles: init, phase-aware speed, user drag pause
   // -------------------------------------------------------------------------
 
   useEffect(() => {
-    const globe = globeRef.current
-    if (!globe) return
+    let raf: number
+    let lastTime = performance.now()
 
-    globe.pointOfView({ lat: SEED_LAT, lng: SEED_LNG, altitude: 2.2 })
+    const tick = () => {
+      const globe = globeRef.current
+      const now = performance.now()
 
-    const controls = globe.controls()
-    if (controls) {
-      controls.autoRotate = true
-      controls.autoRotateSpeed = ROTATE_SPEED.building
-      controls.enableDamping = true
-      controls.dampingFactor = 0.1
+      if (globe) {
+        // ── First-time init (runs once when globe ref becomes available) ──
+        if (!globeInitializedRef.current) {
+          globe.pointOfView({ lat: SEED_LAT, lng: SEED_LNG, altitude: 2.5 })
+
+          const controls = globe.controls()
+          if (controls) {
+            controls.autoRotate = false // we handle rotation manually
+            controls.enableDamping = true
+            controls.dampingFactor = 0.1
+
+            // Pause rotation during user drag
+            controls.addEventListener('start', () => {
+              isUserDraggingRef.current = true
+            })
+            controls.addEventListener('end', () => {
+              isUserDraggingRef.current = false
+              lastTime = performance.now() // reset dt to avoid jump
+            })
+          }
+
+          globeInitializedRef.current = true
+          lastTime = now // avoid a big initial dt
+        }
+
+        // ── Rotate ──
+        if (!isUserDraggingRef.current) {
+          const scene = globe.scene()
+          if (scene) {
+            const globeMesh =
+              scene.children.find((c: any) => c.type === 'Group' || c.__globeObjType)
+              || scene.children[0]
+
+            if (globeMesh) {
+              const dt = Math.min((now - lastTime) / 1000, 0.1) // cap to avoid big jumps
+
+              // Phase-aware speed
+              const phase = introPhaseRef.current
+              let speed = PHASE_SPEED[phase] ?? BASE_SPEED
+
+              // During sweep: accelerate from base → idle speed
+              if (phase === 'sweeping') {
+                const progress = Math.max(0, (currentYearRef.current + 3500) / 5525)
+                speed = BASE_SPEED + (IDLE_SPEED - BASE_SPEED) * progress
+              }
+
+              globeMesh.rotation.y += speed * dt
+            }
+          }
+        }
+      }
+
+      lastTime = now
+      raf = requestAnimationFrame(tick)
+    }
+
+    raf = requestAnimationFrame(tick)
+
+    return () => {
+      cancelAnimationFrame(raf)
     }
   }, [])
-
-  // -------------------------------------------------------------------------
-  // Update autoRotate speed based on intro phase (+ sweep acceleration)
-  // -------------------------------------------------------------------------
-
-  useEffect(() => {
-    const controls = globeRef.current?.controls()
-    if (!controls) return
-
-    if (introPhase === 'sweeping') {
-      // Slight acceleration: 1.5 → 3.0 as we approach present day
-      const progress = Math.max(0, (currentYear + 3500) / (2025 + 3500))
-      controls.autoRotateSpeed = 1.5 + progress * 1.5
-    } else {
-      controls.autoRotateSpeed = ROTATE_SPEED[introPhase]
-    }
-  }, [introPhase, currentYear])
 
   // -------------------------------------------------------------------------
   // Derived data — arcs and points (only after intro reveal)

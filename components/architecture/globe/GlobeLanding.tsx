@@ -24,10 +24,10 @@ const MobileGlobeFallback = dynamic(() => import('./MobileGlobeFallback'), {
 // CONSTANTS
 // =============================================================================
 
-const SWEEP_DURATION = 33000 // 33 seconds exactly
+const SWEEP_DURATION = 42000 // 42 seconds — slower, more cinematic
 const SWEEP_START_YEAR = -3500
 const SWEEP_END_YEAR = 2025
-const PAUSE_DURATION = 1000 // 1 second pause after reveal
+const PAUSE_DURATION = 1500 // 1.5 second pause after reveal
 
 // =============================================================================
 // LOADING SKELETON

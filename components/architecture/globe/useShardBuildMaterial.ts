@@ -154,8 +154,8 @@ const FRAGMENT_SHADER = /* glsl */ `
 const NIGHT_TEXTURE_URL = '//unpkg.com/three-globe/example/img/earth-night.jpg'
 const DAY_TEXTURE_URL   = '//unpkg.com/three-globe/example/img/earth-blue-marble.jpg'
 
-const BUILD_DURATION  = 6000 // 6 seconds — golden shard assembly
-const REVEAL_DURATION = 3000 // 3 seconds — earth texture emergence
+const BUILD_DURATION  = 8000 // 8 seconds — deliberate golden shard assembly
+const REVEAL_DURATION = 3500 // 3.5 seconds — earth texture emergence
 
 function latLngToUV(lat: number, lng: number): [number, number] {
   const u = (lng + 180) / 360
