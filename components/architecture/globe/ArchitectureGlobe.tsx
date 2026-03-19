@@ -1,14 +1,13 @@
 'use client'
 
-import { useRef, useState, useEffect, useCallback, useMemo } from 'react'
+import { useRef, useState, useEffect, useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import {
   getArcsForYear,
   getPointsForYear,
   REGION_CENTROIDS,
-  type GlobeArc,
 } from '@/data/architecture/globeConnections'
-import { useShardBuildMaterial } from './useShardBuildMaterial'
+import { useGlobeIntroMaterial } from './useShardBuildMaterial'
 import { useThemeGlobeMaterial } from './useThemeGlobeMaterial'
 
 const GlobeGL = dynamic(() => import('react-globe.gl'), { ssr: false })
@@ -17,9 +16,14 @@ const GlobeGL = dynamic(() => import('react-globe.gl'), { ssr: false })
 // Types
 // ---------------------------------------------------------------------------
 
+export type IntroPhase = 'building' | 'revealing' | 'pausing' | 'sweeping' | 'idle'
+
 interface ArchitectureGlobeProps {
   currentYear: number
   isDayTheme: boolean
+  introPhase: IntroPhase
+  onBuildComplete: () => void
+  onRevealComplete: () => void
 }
 
 interface GeoJSONFeature {
@@ -35,18 +39,22 @@ interface GeoJSONFeature {
 // Constants
 // ---------------------------------------------------------------------------
 
-// Rotation speed: full revolution every ~30 seconds (was real-time 86400s)
-const GLOBE_ROTATION_SPEED = (2 * Math.PI) / 30 // radians per second
-
-// First connection seed point (Levant)
+// Camera starts facing the Levant (seed for back-to-front build)
 const SEED_LAT = 31.8
 const SEED_LNG = 35.2
 
-// Snap-back duration after user interaction (ms)
-const SNAP_BACK_DURATION = 1500
+// Earth reveal radiates from Mesopotamia (~first architectural record, 3500 BCE)
+const MESOPOTAMIA_LAT = 33.3
+const MESOPOTAMIA_LNG = 44.4
 
-// Duration to smoothly rotate toward new arc centroids (ms)
-const ARC_FOLLOW_DURATION = 2000
+// AutoRotate speeds per phase (OrbitControls units — 2.0 ≈ 30s/revolution)
+const ROTATE_SPEED: Record<IntroPhase, number> = {
+  building:  1.0,
+  revealing: 1.5,
+  pausing:   2.0,
+  sweeping:  1.5, // base — accelerated during sweep
+  idle:      3.0,
+}
 
 // ---------------------------------------------------------------------------
 // Component
@@ -55,48 +63,38 @@ const ARC_FOLLOW_DURATION = 2000
 export default function ArchitectureGlobe({
   currentYear,
   isDayTheme,
+  introPhase,
+  onBuildComplete,
+  onRevealComplete,
 }: ArchitectureGlobeProps) {
   const globeRef = useRef<any>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
   const [countries, setCountries] = useState<GeoJSONFeature[]>([])
-  const [buildComplete, setBuildComplete] = useState(false)
-
-  // User interaction tracking for snap-back
-  const isUserDraggingRef = useRef(false)
-  const snapBackAnimRef = useRef<number>(0)
-  const userRotationOffsetRef = useRef(0) // offset in radians from real-time position
-  const lastRealRotationRef = useRef(0)
-  const rotationBaseTimeRef = useRef(Date.now())
-
-  // Arc-following: smoothly pan to newest arc region
-  const arcFollowTargetRef = useRef<{ lat: number; lng: number } | null>(null)
-  const arcFollowStartRef = useRef(0)
-  const prevArcCountRef = useRef(0)
 
   // -------------------------------------------------------------------------
   // Materials
   // -------------------------------------------------------------------------
 
-  const handleBuildComplete = useCallback(() => {
-    setBuildComplete(true)
-  }, [])
-
-  const { material: shardMaterial } = useShardBuildMaterial(
+  const { material: introMaterial } = useGlobeIntroMaterial(
     SEED_LAT,
     SEED_LNG,
+    MESOPOTAMIA_LAT,
+    MESOPOTAMIA_LNG,
     isDayTheme,
-    handleBuildComplete
+    onBuildComplete,
+    onRevealComplete
   )
 
   const themeMaterial = useThemeGlobeMaterial(isDayTheme)
 
-  // Use shard material during build, theme material after
-  const globeMaterial = buildComplete ? themeMaterial : shardMaterial
+  // After reveal, switch to lightweight theme material
+  const introOver = introPhase === 'pausing' || introPhase === 'sweeping' || introPhase === 'idle'
+  const globeMaterial = introOver ? (themeMaterial || introMaterial) : introMaterial
 
   // -------------------------------------------------------------------------
-  // Container resize tracking
+  // Container resize
   // -------------------------------------------------------------------------
 
   useEffect(() => {
@@ -138,191 +136,61 @@ export default function ArchitectureGlobe({
   }, [])
 
   // -------------------------------------------------------------------------
-  // Globe init — starting view facing seed region
+  // Globe init — face seed region, enable autoRotate
   // -------------------------------------------------------------------------
 
   useEffect(() => {
     const globe = globeRef.current
     if (!globe) return
 
-    // Face the first connection region
     globe.pointOfView({ lat: SEED_LAT, lng: SEED_LNG, altitude: 2.2 })
 
-    // Disable auto-rotate (we handle rotation ourselves)
     const controls = globe.controls()
     if (controls) {
-      controls.autoRotate = false
+      controls.autoRotate = true
+      controls.autoRotateSpeed = ROTATE_SPEED.building
       controls.enableDamping = true
       controls.dampingFactor = 0.1
     }
-
-    rotationBaseTimeRef.current = Date.now()
   }, [])
 
   // -------------------------------------------------------------------------
-  // Real-time Earth rotation + user snap-back
+  // Update autoRotate speed based on intro phase (+ sweep acceleration)
   // -------------------------------------------------------------------------
 
   useEffect(() => {
-    if (!buildComplete) return
-
-    const globe = globeRef.current
-    if (!globe) return
-
-    const controls = globe.controls()
+    const controls = globeRef.current?.controls()
     if (!controls) return
 
-    // Track when user starts/stops dragging
-    const onStart = () => {
-      isUserDraggingRef.current = true
-      // Cancel any running snap-back
-      if (snapBackAnimRef.current) {
-        cancelAnimationFrame(snapBackAnimRef.current)
-        snapBackAnimRef.current = 0
-      }
+    if (introPhase === 'sweeping') {
+      // Slight acceleration: 1.5 → 3.0 as we approach present day
+      const progress = Math.max(0, (currentYear + 3500) / (2025 + 3500))
+      controls.autoRotateSpeed = 1.5 + progress * 1.5
+    } else {
+      controls.autoRotateSpeed = ROTATE_SPEED[introPhase]
     }
-
-    const onEnd = () => {
-      if (!isUserDraggingRef.current) return
-      isUserDraggingRef.current = false
-
-      // Calculate how far off the user is from real-time rotation
-      const scene = globe.scene()
-      if (!scene) return
-
-      const globeMesh = scene.children.find((c: any) => c.type === 'Group' || c.__globeObjType)
-        || scene.children[0]
-      if (!globeMesh) return
-
-      const currentY = globeMesh.rotation.y
-      const elapsed = (Date.now() - rotationBaseTimeRef.current) / 1000
-      const realY = elapsed * GLOBE_ROTATION_SPEED
-
-      userRotationOffsetRef.current = currentY - realY
-      lastRealRotationRef.current = realY
-
-      // Animate snap-back
-      const startOffset = userRotationOffsetRef.current
-      const startTime = performance.now()
-
-      const animateSnapBack = (now: number) => {
-        const t = Math.min((now - startTime) / SNAP_BACK_DURATION, 1)
-        const eased = 1 - Math.pow(1 - t, 3) // ease-out cubic
-
-        userRotationOffsetRef.current = startOffset * (1 - eased)
-
-        if (t < 1) {
-          snapBackAnimRef.current = requestAnimationFrame(animateSnapBack)
-        } else {
-          userRotationOffsetRef.current = 0
-          snapBackAnimRef.current = 0
-        }
-      }
-
-      snapBackAnimRef.current = requestAnimationFrame(animateSnapBack)
-    }
-
-    controls.addEventListener('start', onStart)
-    controls.addEventListener('end', onEnd)
-
-    // Rotation loop — faster speed + arc-following pan
-    let raf: number
-    const rotate = () => {
-      if (!isUserDraggingRef.current && globeRef.current) {
-        const scene = globeRef.current.scene()
-        if (scene) {
-          const globeMesh = scene.children.find((c: any) => c.type === 'Group' || c.__globeObjType)
-            || scene.children[0]
-          if (globeMesh) {
-            const elapsed = (Date.now() - rotationBaseTimeRef.current) / 1000
-            const realY = elapsed * GLOBE_ROTATION_SPEED
-            globeMesh.rotation.y = realY + userRotationOffsetRef.current
-          }
-        }
-
-        // Arc-following: smoothly pan to target region
-        const target = arcFollowTargetRef.current
-        if (target && arcFollowStartRef.current > 0) {
-          const t = Math.min((Date.now() - arcFollowStartRef.current) / ARC_FOLLOW_DURATION, 1)
-          if (t < 1) {
-            const eased = 1 - Math.pow(1 - t, 3) // ease-out cubic
-            const pov = globeRef.current.pointOfView()
-            if (pov) {
-              // Interpolate lat/lng toward target
-              const newLat = pov.lat + (target.lat - pov.lat) * eased * 0.05
-              const newLng = pov.lng + (target.lng - pov.lng) * eased * 0.05
-              globeRef.current.pointOfView({ lat: newLat, lng: newLng }, 0)
-            }
-          } else {
-            // Done following, clear target
-            arcFollowTargetRef.current = null
-            arcFollowStartRef.current = 0
-          }
-        }
-      }
-      raf = requestAnimationFrame(rotate)
-    }
-    raf = requestAnimationFrame(rotate)
-
-    return () => {
-      cancelAnimationFrame(raf)
-      if (snapBackAnimRef.current) cancelAnimationFrame(snapBackAnimRef.current)
-      controls.removeEventListener('start', onStart)
-      controls.removeEventListener('end', onEnd)
-    }
-  }, [buildComplete])
+  }, [introPhase, currentYear])
 
   // -------------------------------------------------------------------------
-  // Derived data — arcs and points from timeline
+  // Derived data — arcs and points (only after intro reveal)
   // -------------------------------------------------------------------------
+
+  const showArcs = introPhase === 'pausing' || introPhase === 'sweeping' || introPhase === 'idle'
 
   const arcsData = useMemo(() => {
-    if (!buildComplete) return []
+    if (!showArcs) return []
     return getArcsForYear(currentYear)
-  }, [currentYear, buildComplete])
+  }, [currentYear, showArcs])
 
   const pointsData = useMemo(() => {
-    if (!buildComplete) return []
+    if (!showArcs) return []
     return getPointsForYear(currentYear)
-  }, [currentYear, buildComplete])
+  }, [currentYear, showArcs])
 
-  // -------------------------------------------------------------------------
-  // Arc-following: rotate to face newest arcs when timeline changes
-  // -------------------------------------------------------------------------
-
-  useEffect(() => {
-    if (!buildComplete || !globeRef.current) return
-    if (arcsData.length === 0) return
-
-    // Only follow when new arcs appear
-    if (arcsData.length > prevArcCountRef.current && prevArcCountRef.current > 0) {
-      // Find the newest arcs (ones not in previous set)
-      const newArcs = arcsData.slice(prevArcCountRef.current)
-      if (newArcs.length > 0) {
-        // Calculate centroid of new arc endpoints
-        let totalLat = 0, totalLng = 0, count = 0
-        for (const arc of newArcs) {
-          totalLat += arc.toLat
-          totalLng += arc.toLng
-          count++
-        }
-        const targetLat = totalLat / count
-        const targetLng = totalLng / count
-
-        // Set follow target — rotation loop will smoothly pan
-        arcFollowTargetRef.current = { lat: targetLat, lng: targetLng }
-        arcFollowStartRef.current = Date.now()
-
-        // Also do a smooth pointOfView transition
-        globeRef.current.pointOfView(
-          { lat: targetLat, lng: targetLng, altitude: 2.2 },
-          ARC_FOLLOW_DURATION
-        )
-      }
-    }
-
-    prevArcCountRef.current = arcsData.length
-  }, [arcsData, buildComplete])
+  // Golden polygon borders — subtle during intro, prominent after reveal
+  const polygonBorderColor = showArcs
+    ? 'rgba(212, 165, 74, 0.6)'
+    : 'rgba(212, 165, 74, 0.15)'
 
   // -------------------------------------------------------------------------
   // Render
@@ -346,7 +214,7 @@ export default function ArchitectureGlobe({
           showAtmosphere={true}
           atmosphereColor="#D4A54A"
           atmosphereAltitude={0.15}
-          // Arcs layer (only after build)
+          // Arcs
           arcsData={arcsData}
           arcStartLat={(d: any) => d.fromLat}
           arcStartLng={(d: any) => d.fromLng}
@@ -359,7 +227,7 @@ export default function ArchitectureGlobe({
           arcDashGap={0.2}
           arcDashAnimateTime={2000}
           arcsTransitionDuration={1000}
-          // Points layer
+          // Points
           pointsData={pointsData}
           pointLat={(d: any) => d.lat}
           pointLng={(d: any) => d.lng}
@@ -367,11 +235,11 @@ export default function ArchitectureGlobe({
           pointAltitude={0.01}
           pointRadius={(d: any) => Math.max(0.3, Math.min(1.0, d.connectionCount * 0.08))}
           pointLabel={(d: any) => d.name}
-          // Country borders
+          // Country borders — golden remnant of the gold dissolution
           polygonsData={countries}
           polygonCapColor={() => 'rgba(0,0,0,0)'}
           polygonSideColor={() => 'rgba(0,0,0,0)'}
-          polygonStrokeColor={() => 'rgba(212, 165, 74, 0.4)'}
+          polygonStrokeColor={() => polygonBorderColor}
           polygonAltitude={0.001}
         />
       )}

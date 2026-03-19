@@ -1,14 +1,14 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import dynamic from 'next/dynamic'
 import GlobeTimeline from './GlobeTimeline'
 import { useTimeTheme } from '@/components/providers/TimeThemeProvider'
 import {
-  ALL_ARCS,
   formatYear,
   getCurrentPeriodForYear,
 } from '@/data/architecture/globeConnections'
+import type { IntroPhase } from './ArchitectureGlobe'
 
 // Dynamic imports
 const ArchitectureGlobe = dynamic(() => import('./ArchitectureGlobe'), {
@@ -19,6 +19,15 @@ const ArchitectureGlobe = dynamic(() => import('./ArchitectureGlobe'), {
 const MobileGlobeFallback = dynamic(() => import('./MobileGlobeFallback'), {
   ssr: false,
 })
+
+// =============================================================================
+// CONSTANTS
+// =============================================================================
+
+const SWEEP_DURATION = 33000 // 33 seconds exactly
+const SWEEP_START_YEAR = -3500
+const SWEEP_END_YEAR = 2025
+const PAUSE_DURATION = 1000 // 1 second pause after reveal
 
 // =============================================================================
 // LOADING SKELETON
@@ -56,7 +65,6 @@ function useIsMobile(): boolean {
   const [isMobile, setIsMobile] = useState(false)
 
   if (typeof window !== 'undefined' && !isMobile) {
-    // Check once on mount
     const check = () => {
       const narrow = window.innerWidth < 768
       const touch = 'ontouchstart' in window || navigator.maxTouchPoints > 0
@@ -82,7 +90,6 @@ function useIsMobile(): boolean {
         setIsMobile(true)
       }
     }
-    // Defer to avoid SSR issues
     if (typeof requestAnimationFrame !== 'undefined') {
       requestAnimationFrame(check)
     }
@@ -96,23 +103,84 @@ function useIsMobile(): boolean {
 // =============================================================================
 
 export default function GlobeLanding() {
-  // Default timeline to the first arc's year
-  const firstArcYear = ALL_ARCS.length > 0 ? ALL_ARCS[0].startYear : -12000
+  // ── Intro phase state machine ──
+  const [introPhase, setIntroPhase] = useState<IntroPhase>('building')
+  const [timelineYear, setTimelineYear] = useState(SWEEP_START_YEAR)
+  const sweepRafRef = useRef<number>(0)
+  const sweepStartRef = useRef(0)
+  const pauseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const [timelineYear, setTimelineYear] = useState(firstArcYear)
-
-  // Theme: day vs night
+  // Theme
   const { isDay } = useTimeTheme()
-
-  // Mobile detection
   const isMobile = useIsMobile()
 
   // Derived
   const currentPeriod = useMemo(() => getCurrentPeriodForYear(timelineYear), [timelineYear])
 
+  // ── Phase transition callbacks ──
+
+  const handleBuildComplete = useCallback(() => {
+    setIntroPhase('revealing')
+  }, [])
+
+  const handleRevealComplete = useCallback(() => {
+    setIntroPhase('pausing')
+    // After a short pause, start the sweep
+    pauseTimerRef.current = setTimeout(() => {
+      setIntroPhase('sweeping')
+    }, PAUSE_DURATION)
+  }, [])
+
+  // ── Sweep animation: -3500 → 2025 over 33s ──
+
+  useEffect(() => {
+    if (introPhase !== 'sweeping') return
+
+    sweepStartRef.current = performance.now()
+
+    const tick = () => {
+      const elapsed = performance.now() - sweepStartRef.current
+      const t = Math.min(elapsed / SWEEP_DURATION, 1)
+
+      // Mild ease-in: starts a bit slower, accelerates toward modern era
+      const eased = Math.pow(t, 1.3)
+      const year = Math.round(
+        SWEEP_START_YEAR + (SWEEP_END_YEAR - SWEEP_START_YEAR) * eased
+      )
+
+      setTimelineYear(year)
+
+      if (t >= 1) {
+        setIntroPhase('idle')
+      } else {
+        sweepRafRef.current = requestAnimationFrame(tick)
+      }
+    }
+
+    sweepRafRef.current = requestAnimationFrame(tick)
+
+    return () => {
+      cancelAnimationFrame(sweepRafRef.current)
+    }
+  }, [introPhase])
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (pauseTimerRef.current) clearTimeout(pauseTimerRef.current)
+      cancelAnimationFrame(sweepRafRef.current)
+    }
+  }, [])
+
+  // ── User timeline control (only during idle) ──
+
   const handleTimelineChange = useCallback((year: number) => {
     setTimelineYear(year)
   }, [])
+
+  // Show timeline during sweep (auto-playing, non-interactive) and idle (interactive)
+  const showTimeline = introPhase === 'sweeping' || introPhase === 'idle'
+  const timelineInteractive = introPhase === 'idle'
 
   // -------------------------------------------------------------------------
   // Render
@@ -138,6 +206,9 @@ export default function GlobeLanding() {
             <ArchitectureGlobe
               currentYear={timelineYear}
               isDayTheme={isDay}
+              introPhase={introPhase}
+              onBuildComplete={handleBuildComplete}
+              onRevealComplete={handleRevealComplete}
             />
           )}
         </div>
@@ -160,17 +231,20 @@ export default function GlobeLanding() {
           )}
         </div>
 
-        {/* Timeline — bottom */}
-        <div
-          className="absolute bottom-0 left-0 right-0 z-10 px-3 pb-3 md:px-6 md:pb-4"
-          role="group"
-          aria-label="Timeline controls"
-        >
-          <GlobeTimeline
-            currentYear={timelineYear}
-            onChange={handleTimelineChange}
-          />
-        </div>
+        {/* Timeline — visible during sweep (auto) and idle (interactive) */}
+        {showTimeline && (
+          <div
+            className="absolute bottom-0 left-0 right-0 z-10 px-3 pb-3 md:px-6 md:pb-4"
+            style={timelineInteractive ? undefined : { pointerEvents: 'none' }}
+            role="group"
+            aria-label="Timeline controls"
+          >
+            <GlobeTimeline
+              currentYear={timelineYear}
+              onChange={handleTimelineChange}
+            />
+          </div>
+        )}
       </div>
 
       {/* Spacer — pushes page content below the fixed globe area */}

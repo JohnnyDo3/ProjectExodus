@@ -1,16 +1,18 @@
 'use client'
 
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 // =============================================================================
-// Shard Build Material — Globe intro animation
+// Globe Intro Material — Two-phase cinematic intro
 //
-// The globe starts invisible. Voronoi shards appear one by one, radiating
-// outward from a seed point (the first connection's region). Each shard
-// fades in with an amber glow edge. Once fully assembled, the onComplete
-// callback fires so the parent can crossfade to the theme material.
+// Phase 1 (BUILD):  Solid golden voronoi shards assemble back-to-front.
+//                   No earth texture — just uniform gold with shard edges.
 //
-// This is a standalone intro effect — not tied to the timeline.
+// Phase 2 (REVEAL): Earth texture radiates outward from Mesopotamia (~3500 BCE
+//                   first architectural record). Gold dissolves completely.
+//                   After reveal the parent swaps to the theme MeshBasicMaterial
+//                   and the golden country borders (polygon stroke layer) become
+//                   the visible "remnant" of the gold.
 // =============================================================================
 
 const VERTEX_SHADER = /* glsl */ `
@@ -29,16 +31,18 @@ const VERTEX_SHADER = /* glsl */ `
 const FRAGMENT_SHADER = /* glsl */ `
   precision highp float;
 
+  uniform float buildProgress;    // 0 → 1  shard assembly
+  uniform float revealProgress;   // 0 → 1  earth texture emergence
+  uniform float time;             // elapsed seconds
+  uniform vec2 seedPoint;         // UV of camera-facing point (back-to-front origin)
+  uniform vec2 revealCenter;      // UV of Mesopotamia (earth reveal origin)
   uniform sampler2D earthTexture;
-  uniform float progress;           // 0 → 1 (driven by time)
-  uniform float time;               // seconds elapsed
-  uniform vec2 seedPoint;           // UV of first connection region
 
   varying vec3 vWorldNormal;
   varying vec2 vUv;
   varying vec3 vWorldPos;
 
-  // ---- Voronoi noise ----
+  // ---- Voronoi helpers ----
   vec2 hash2(vec2 p) {
     p = vec2(dot(p, vec2(127.1, 311.7)),
              dot(p, vec2(269.5, 183.3)));
@@ -72,78 +76,86 @@ const FRAGMENT_SHADER = /* glsl */ `
 
     float edge = minDist2 - minDist;
     float cellId = fract(sin(dot(closestCell, vec2(12.9898, 78.233))) * 43758.5453);
-
     return vec3(minDist, edge, cellId);
   }
 
-  // Distance from UV to seed point (wrap-aware)
-  float distToSeed(vec2 uv) {
-    vec2 delta = uv - seedPoint;
+  // Wrap-aware UV distance
+  float wrapDist(vec2 a, vec2 b) {
+    vec2 delta = a - b;
     delta.x = min(abs(delta.x), 1.0 - abs(delta.x));
     return length(delta);
   }
 
   void main() {
-    // Voronoi at two scales
     vec3 v1 = voronoi(vUv, 14.0);
     vec3 v2 = voronoi(vUv, 28.0);
 
     float cellId = v1.z;
-    float edge1 = v1.y;
-    float edge2 = v2.y;
+    float edge1  = v1.y;
+    float edge2  = v2.y;
 
-    // Per-shard reveal: build from back to front (far side first, toward camera last)
-    float seedDist = distToSeed(vUv);
-    float reversedDist = 1.0 - seedDist; // flip: far shards reveal first
-    float threshold = reversedDist * 1.4 + cellId * 0.3;
+    // ═══ PHASE 1: SHARD BUILD (back-to-front) ═══
+    float seedDist    = wrapDist(vUv, seedPoint);
+    float reversedDist = 1.0 - seedDist;           // far side first
+    float threshold   = reversedDist * 1.4 + cellId * 0.3;
     threshold = clamp(threshold * 0.8, 0.0, 0.95);
 
-    float fillProgress = smoothstep(threshold - 0.05, threshold + 0.05, progress);
+    float shardFill = smoothstep(threshold - 0.05, threshold + 0.05, buildProgress);
 
-    // Earth texture
-    vec4 earth = texture2D(earthTexture, vUv);
+    // Golden color
+    vec3 gold = vec3(0.83, 0.65, 0.29);
 
     // Shard edge glow
     float edgeLine = smoothstep(0.04, 0.0, edge1);
     float fineEdge = smoothstep(0.06, 0.0, edge2) * 0.3;
     float edgeGlow = edgeLine + fineEdge;
 
-    vec3 amberGlow = vec3(0.83, 0.65, 0.29);
+    // Pulsing on edges
+    float pulse = 0.5 + 0.3 * sin(time * 1.5 + cellId * 6.28);
 
-    // Edge brightness fades as assembly completes
-    float edgeBrightness = edgeGlow * (1.0 - progress * 0.9);
-    edgeBrightness *= 0.5 + 0.2 * sin(time * 1.5 + cellId * 6.28);
+    // Solid gold shard + edge highlights
+    vec3 goldShard = gold * 0.5;
+    goldShard += gold * edgeGlow * 0.6 * pulse;
 
-    // Unfilled: dark with amber edges
-    vec3 darkShard = amberGlow * edgeBrightness * 0.8;
-    darkShard += earth.rgb * 0.03;
+    // Flash when shard snaps in
+    float snapDist = abs(buildProgress - threshold);
+    float snap = smoothstep(0.06, 0.0, snapDist) * 0.5;
+    goldShard += gold * snap;
 
-    // Filled: earth texture with fading glow
-    vec3 filledShard = earth.rgb + amberGlow * edgeBrightness * (1.0 - fillProgress) * 0.4;
+    // ═══ PHASE 2: EARTH REVEAL (radiate from Mesopotamia) ═══
+    vec4 earth = texture2D(earthTexture, vUv);
 
-    vec3 color = mix(darkShard, filledShard, fillProgress);
+    float revealDist      = wrapDist(vUv, revealCenter);
+    float revealThreshold = revealDist * 1.3;
+    float earthFill       = smoothstep(revealThreshold - 0.08, revealThreshold + 0.02, revealProgress);
 
-    // Rim lighting
+    // Gold dissolves into earth texture
+    vec3 color = mix(goldShard, earth.rgb, earthFill);
+
+    // Gold edge glow fades as reveal progresses
+    float edgeFade = 1.0 - revealProgress;
+    color += gold * edgeGlow * 0.3 * edgeFade;
+
+    // Rim lighting (subtle, fades with reveal)
     float rim = 1.0 - max(0.0, dot(normalize(vWorldNormal), normalize(-vWorldPos)));
-    color += amberGlow * rim * rim * (0.15 + 0.1 * (1.0 - progress));
+    color += gold * rim * rim * (0.15 * (1.0 - revealProgress * 0.8));
 
-    // Flash when shard fills
-    float snapDist = abs(progress - threshold);
-    float snap = smoothstep(0.06, 0.0, snapDist) * 0.4;
-    color += amberGlow * snap;
-
-    // Alpha: fades in, filled shards fully opaque
-    float alpha = mix(0.0, 1.0, smoothstep(0.0, 0.05, progress));
-    alpha = mix(alpha * 0.6, 1.0, fillProgress);
+    // Alpha: invisible until shard fills in
+    float alpha = shardFill;
 
     gl_FragColor = vec4(color, alpha);
   }
 `
 
-const NIGHT_TEXTURE_URL = '//unpkg.com/three-globe/example/img/earth-night.jpg'
-const DAY_TEXTURE_URL = '//unpkg.com/three-globe/example/img/earth-blue-marble.jpg'
+// ---------------------------------------------------------------------------
+// Config
+// ---------------------------------------------------------------------------
 
-const BUILD_DURATION = 8000 // 8 seconds to fully assemble
+const NIGHT_TEXTURE_URL = '//unpkg.com/three-globe/example/img/earth-night.jpg'
+const DAY_TEXTURE_URL   = '//unpkg.com/three-globe/example/img/earth-blue-marble.jpg'
+
+const BUILD_DURATION  = 6000 // 6 seconds — golden shard assembly
+const REVEAL_DURATION = 3000 // 3 seconds — earth texture emergence
 
 function latLngToUV(lat: number, lng: number): [number, number] {
   const u = (lng + 180) / 360
@@ -151,31 +163,41 @@ function latLngToUV(lat: number, lng: number): [number, number] {
   return [u, v]
 }
 
+// ---------------------------------------------------------------------------
+// Hook
+// ---------------------------------------------------------------------------
+
 /**
- * Creates a shard assembly intro material.
- * Automatically animates from 0→1 over BUILD_DURATION.
- * Calls onComplete when assembly finishes.
+ * Two-phase intro material for the globe cinematic entrance.
  *
- * @param seedLat Latitude of first connection region
- * @param seedLng Longitude of first connection region
- * @param isDayTheme Whether the site theme is day (true) or night (false)
- * @param onComplete Called when shard build reaches 100%
+ * @param seedLat    Camera-facing latitude (shards build away from here → toward here)
+ * @param seedLng    Camera-facing longitude
+ * @param revealLat  Earth reveal origin latitude  (Mesopotamia ≈ 33.3)
+ * @param revealLng  Earth reveal origin longitude (Mesopotamia ≈ 44.4)
+ * @param isDayTheme Day texture vs night texture
+ * @param onBuildComplete  Called when shard assembly reaches 100%
+ * @param onRevealComplete Called when earth texture fully replaces gold
  */
-export function useShardBuildMaterial(
+export function useGlobeIntroMaterial(
   seedLat: number,
   seedLng: number,
+  revealLat: number,
+  revealLng: number,
   isDayTheme: boolean,
-  onComplete: () => void
-): { material: any | null; progress: number } {
+  onBuildComplete: () => void,
+  onRevealComplete: () => void
+): { material: any | null } {
   const materialRef = useRef<any>(null)
   const [ready, setReady] = useState(false)
-  const [progress, setProgress] = useState(0)
   const startTimeRef = useRef<number>(0)
-  const completedRef = useRef(false)
-  const onCompleteRef = useRef(onComplete)
-  onCompleteRef.current = onComplete
+  const buildDoneRef = useRef(false)
+  const revealDoneRef = useRef(false)
+  const onBuildCompleteRef = useRef(onBuildComplete)
+  const onRevealCompleteRef = useRef(onRevealComplete)
+  onBuildCompleteRef.current = onBuildComplete
+  onRevealCompleteRef.current = onRevealComplete
 
-  // Create material once
+  // Create shader material
   useEffect(() => {
     let cancelled = false
 
@@ -184,7 +206,6 @@ export function useShardBuildMaterial(
       const loader = new THREE.TextureLoader()
 
       const textureUrl = isDayTheme ? DAY_TEXTURE_URL : NIGHT_TEXTURE_URL
-
       const earthTex = await new Promise<any>((resolve, reject) =>
         loader.load(textureUrl, resolve, undefined, reject)
       )
@@ -195,13 +216,16 @@ export function useShardBuildMaterial(
       }
 
       const [seedU, seedV] = latLngToUV(seedLat, seedLng)
+      const [revealU, revealV] = latLngToUV(revealLat, revealLng)
 
       const material = new THREE.ShaderMaterial({
         uniforms: {
-          earthTexture: { value: earthTex },
-          progress: { value: 0 },
-          time: { value: 0 },
-          seedPoint: { value: new THREE.Vector2(seedU, seedV) },
+          earthTexture:   { value: earthTex },
+          buildProgress:  { value: 0 },
+          revealProgress: { value: 0 },
+          time:           { value: 0 },
+          seedPoint:      { value: new THREE.Vector2(seedU, seedV) },
+          revealCenter:   { value: new THREE.Vector2(revealU, revealV) },
         },
         vertexShader: VERTEX_SHADER,
         fragmentShader: FRAGMENT_SHADER,
@@ -210,7 +234,8 @@ export function useShardBuildMaterial(
 
       materialRef.current = material
       startTimeRef.current = performance.now()
-      completedRef.current = false
+      buildDoneRef.current = false
+      revealDoneRef.current = false
       setReady(true)
     }
 
@@ -224,37 +249,54 @@ export function useShardBuildMaterial(
       }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []) // Only init once
+  }, [])
 
-  // Animate progress 0→1
+  // Animate: build 0→1, then reveal 0→1
   useEffect(() => {
     if (!ready || !materialRef.current) return
 
     let raf: number
     const tick = () => {
       if (!materialRef.current) return
+
       const elapsed = performance.now() - startTimeRef.current
-      const t = Math.min(elapsed / BUILD_DURATION, 1)
-      const easedT = 1 - Math.pow(1 - t, 2) // ease-out quad
+      const uniforms = materialRef.current.uniforms
 
-      materialRef.current.uniforms.progress.value = easedT
-      materialRef.current.uniforms.time.value = elapsed / 1000
+      uniforms.time.value = elapsed / 1000
 
-      setProgress(easedT)
+      if (!buildDoneRef.current) {
+        // Phase 1: shard build
+        const t = Math.min(elapsed / BUILD_DURATION, 1)
+        const eased = 1 - Math.pow(1 - t, 2) // ease-out quad
+        uniforms.buildProgress.value = eased
 
-      if (easedT >= 1 && !completedRef.current) {
-        completedRef.current = true
-        onCompleteRef.current()
+        if (t >= 1) {
+          buildDoneRef.current = true
+          // Reset timer for reveal phase
+          startTimeRef.current = performance.now()
+          onBuildCompleteRef.current()
+        }
+      } else if (!revealDoneRef.current) {
+        // Phase 2: earth reveal
+        const revealElapsed = performance.now() - startTimeRef.current
+        const t = Math.min(revealElapsed / REVEAL_DURATION, 1)
+        const eased = 1 - Math.pow(1 - t, 2) // ease-out quad
+        uniforms.revealProgress.value = eased
+
+        if (t >= 1) {
+          revealDoneRef.current = true
+          onRevealCompleteRef.current()
+        }
       }
 
-      if (t < 1) {
+      if (!revealDoneRef.current) {
         raf = requestAnimationFrame(tick)
       }
     }
-    raf = requestAnimationFrame(tick)
 
+    raf = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(raf)
   }, [ready])
 
-  return { material: ready ? materialRef.current : null, progress }
+  return { material: ready ? materialRef.current : null }
 }
