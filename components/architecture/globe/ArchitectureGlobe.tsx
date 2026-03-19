@@ -50,12 +50,15 @@ const MESOPOTAMIA_LNG = 44.4
 const BASE_SPEED = (2 * Math.PI) / 50    // one revolution per 50s
 const IDLE_SPEED = (2 * Math.PI) / 20    // one revolution per 20s — engaging
 
+// No rotation during build/reveal — the shader uses fixed UV coords and
+// rotating the mesh underneath causes the build pattern to drift & glitch.
+// Rotation begins at pause and ramps up through sweep to idle.
 const PHASE_SPEED: Record<IntroPhase, number> = {
-  building:  (2 * Math.PI) / 60,   // gentle during build
-  revealing: (2 * Math.PI) / 45,   // picking up
-  pausing:   (2 * Math.PI) / 35,   // a bit more
-  sweeping:  BASE_SPEED,            // base — accelerated by year
-  idle:      IDLE_SPEED,            // fast enough to notice
+  building:  0,                    // shader needs a stable globe
+  revealing: 0,                    // shader needs a stable globe
+  pausing:   (2 * Math.PI) / 40,  // rotation begins — earth is alive
+  sweeping:  BASE_SPEED,           // base — accelerated by year
+  idle:      IDLE_SPEED,           // fast enough to notice
 }
 
 // ---------------------------------------------------------------------------
