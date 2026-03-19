@@ -10,7 +10,7 @@ import {
   ChevronRight, Layers, Globe, Search, Shuffle, Clock,
   Target, Zap, Award, Map, GraduationCap, Columns3,
   ChurchIcon, Castle, ArrowRight, Play, Sparkles, Brain,
-  HardHat, Hammer, Wrench
+  HardHat, Hammer, Wrench, Mic, CalendarDays, Users, MapPin
 } from 'lucide-react'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
@@ -22,6 +22,39 @@ import { CATEGORIES } from '@/data/architecture/categories'
 const GlobeLanding = dynamic(() => import('@/components/architecture/globe/GlobeLanding'), {
   ssr: false,
 })
+
+// Decorative section divider component
+function SectionDivider({ variant = 'default' }: { variant?: 'default' | 'ornate' | 'subtle' }) {
+  if (variant === 'ornate') {
+    return (
+      <div className="flex items-center justify-center gap-4 py-2">
+        <div className="h-px w-16 bg-gradient-to-r from-transparent to-amber-500/40" />
+        <div className="flex items-center gap-1.5">
+          <div className="w-1 h-1 rounded-full bg-amber-500/40" />
+          <div className="w-1.5 h-1.5 rounded-full bg-amber-500/60" />
+          <div className="w-2 h-2 rounded-full bg-gradient-to-br from-amber-500 to-teal-500" />
+          <div className="w-1.5 h-1.5 rounded-full bg-teal-500/60" />
+          <div className="w-1 h-1 rounded-full bg-teal-500/40" />
+        </div>
+        <div className="h-px w-16 bg-gradient-to-l from-transparent to-teal-500/40" />
+      </div>
+    )
+  }
+  if (variant === 'subtle') {
+    return (
+      <div className="flex items-center justify-center py-1">
+        <div className="h-px w-24 bg-gradient-to-r from-transparent via-[var(--border)] to-transparent" />
+      </div>
+    )
+  }
+  return (
+    <div className="flex items-center justify-center gap-3 py-2">
+      <div className="h-px flex-1 max-w-[80px] bg-gradient-to-r from-transparent to-[var(--border)]" />
+      <div className="w-1.5 h-1.5 rotate-45 bg-[var(--border)]" />
+      <div className="h-px flex-1 max-w-[80px] bg-gradient-to-l from-transparent to-[var(--border)]" />
+    </div>
+  )
+}
 
 // Learning level definitions
 const learningLevels = [
@@ -101,6 +134,42 @@ const structuralEngineeringSets = [
   { id: 'truss-types', name: 'Truss Types', description: 'King post to lattice - all major trusses', count: 12 },
   { id: 'foundation-types', name: 'Foundation Types', description: 'Spread footings to micropiles', count: 11 },
   { id: 'load-types', name: 'Load Types', description: 'Dead, live, wind, seismic, and environmental loads', count: 11 },
+]
+
+// Guest speaker series data
+const guestSpeakers = [
+  {
+    name: 'Dr. Amara Okafor',
+    title: 'African Vernacular & Colonial Resistance',
+    institution: 'University of Lagos',
+    date: 'April 12, 2026',
+    topic: 'How indigenous building traditions survived and evolved under colonialism across West Africa.',
+    accent: 'amber',
+  },
+  {
+    name: 'Prof. Kenji Tanaka',
+    title: 'Sacred Geometry in Japanese Temple Design',
+    institution: 'Kyoto Institute of Technology',
+    date: 'April 26, 2026',
+    topic: 'The mathematical principles behind centuries of Japanese temple architecture and garden design.',
+    accent: 'teal',
+  },
+  {
+    name: 'Dr. Elena Vasquez',
+    title: 'Brutalism Reimagined: Latin American Modernism',
+    institution: 'Universidad de Buenos Aires',
+    date: 'May 10, 2026',
+    topic: 'Exploring how Latin American architects transformed Brutalist principles into a regional language.',
+    accent: 'purple',
+  },
+  {
+    name: 'Sir David Alderton',
+    title: 'Gothic Revival & the Politics of Style',
+    institution: 'Royal Institute of British Architects',
+    date: 'May 24, 2026',
+    topic: 'Why Victorian England looked backward to build forward, and what it means for preservation today.',
+    accent: 'rose',
+  },
 ]
 
 export default function ArchitecturePage() {
