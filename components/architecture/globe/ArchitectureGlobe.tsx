@@ -83,6 +83,10 @@ export default function ArchitectureGlobe({
   const currentYearRef = useRef(currentYear)
   const isUserDraggingRef = useRef(false)
   const globeInitializedRef = useRef(false)
+  const globeMeshRef = useRef<any>(null) // cached reference to the actual globe mesh
+  const dragStartHandlerRef = useRef<(() => void) | null>(null)
+  const dragEndHandlerRef = useRef<(() => void) | null>(null)
+  const controlsRef = useRef<any>(null)
 
   introPhaseRef.current = introPhase
   currentYearRef.current = currentYear
@@ -173,14 +177,27 @@ export default function ArchitectureGlobe({
             controls.enableDamping = true
             controls.dampingFactor = 0.1
 
-            // Pause rotation during user drag
-            controls.addEventListener('start', () => {
+            // Store references for cleanup
+            controlsRef.current = controls
+            dragStartHandlerRef.current = () => {
               isUserDraggingRef.current = true
-            })
-            controls.addEventListener('end', () => {
+            }
+            dragEndHandlerRef.current = () => {
               isUserDraggingRef.current = false
               lastTime = performance.now() // reset dt to avoid jump
-            })
+            }
+
+            controls.addEventListener('start', dragStartHandlerRef.current)
+            controls.addEventListener('end', dragEndHandlerRef.current)
+          }
+
+          // Cache the globe mesh — find the ThreeGlobe Group (not camera/lights)
+          const scene = globe.scene()
+          if (scene) {
+            const mesh = scene.children.find(
+              (c: any) => c.type === 'Group' && c.children && c.children.length > 0
+            )
+            globeMeshRef.current = mesh || null
           }
 
           globeInitializedRef.current = true
@@ -188,29 +205,20 @@ export default function ArchitectureGlobe({
         }
 
         // ── Rotate ──
-        if (!isUserDraggingRef.current) {
-          const scene = globe.scene()
-          if (scene) {
-            const globeMesh =
-              scene.children.find((c: any) => c.type === 'Group' || c.__globeObjType)
-              || scene.children[0]
+        if (!isUserDraggingRef.current && globeMeshRef.current) {
+          const dt = Math.min((now - lastTime) / 1000, 0.1) // cap to avoid big jumps
 
-            if (globeMesh) {
-              const dt = Math.min((now - lastTime) / 1000, 0.1) // cap to avoid big jumps
+          // Phase-aware speed
+          const phase = introPhaseRef.current
+          let speed = PHASE_SPEED[phase] ?? BASE_SPEED
 
-              // Phase-aware speed
-              const phase = introPhaseRef.current
-              let speed = PHASE_SPEED[phase] ?? BASE_SPEED
-
-              // During sweep: accelerate from base → idle speed
-              if (phase === 'sweeping') {
-                const progress = Math.max(0, (currentYearRef.current + 3500) / 5525)
-                speed = BASE_SPEED + (IDLE_SPEED - BASE_SPEED) * progress
-              }
-
-              globeMesh.rotation.y += speed * dt
-            }
+          // During sweep: accelerate from base → idle speed
+          if (phase === 'sweeping') {
+            const progress = Math.max(0, (currentYearRef.current + 3500) / 5525)
+            speed = BASE_SPEED + (IDLE_SPEED - BASE_SPEED) * progress
           }
+
+          globeMeshRef.current.rotation.y += speed * dt
         }
       }
 
@@ -222,6 +230,16 @@ export default function ArchitectureGlobe({
 
     return () => {
       cancelAnimationFrame(raf)
+
+      // Clean up control event listeners
+      if (controlsRef.current) {
+        if (dragStartHandlerRef.current) {
+          controlsRef.current.removeEventListener('start', dragStartHandlerRef.current)
+        }
+        if (dragEndHandlerRef.current) {
+          controlsRef.current.removeEventListener('end', dragEndHandlerRef.current)
+        }
+      }
     }
   }, [])
 

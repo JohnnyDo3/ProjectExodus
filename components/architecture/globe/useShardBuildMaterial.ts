@@ -189,7 +189,9 @@ export function useGlobeIntroMaterial(
 ): { material: any | null } {
   const materialRef = useRef<any>(null)
   const [ready, setReady] = useState(false)
-  const startTimeRef = useRef<number>(0)
+  const mountTimeRef = useRef<number>(0)    // never resets — drives shader `time`
+  const buildStartRef = useRef<number>(0)   // start of build phase
+  const revealStartRef = useRef<number>(0)  // start of reveal phase
   const buildDoneRef = useRef(false)
   const revealDoneRef = useRef(false)
   const onBuildCompleteRef = useRef(onBuildComplete)
@@ -233,7 +235,8 @@ export function useGlobeIntroMaterial(
       })
 
       materialRef.current = material
-      startTimeRef.current = performance.now()
+      mountTimeRef.current = performance.now()
+      buildStartRef.current = performance.now()
       buildDoneRef.current = false
       revealDoneRef.current = false
       setReady(true)
@@ -259,26 +262,27 @@ export function useGlobeIntroMaterial(
     const tick = () => {
       if (!materialRef.current) return
 
-      const elapsed = performance.now() - startTimeRef.current
+      const now = performance.now()
       const uniforms = materialRef.current.uniforms
 
-      uniforms.time.value = elapsed / 1000
+      // Shader time: monotonic from mount, never resets (avoids pulse animation jump)
+      uniforms.time.value = (now - mountTimeRef.current) / 1000
 
       if (!buildDoneRef.current) {
         // Phase 1: shard build
-        const t = Math.min(elapsed / BUILD_DURATION, 1)
+        const buildElapsed = now - buildStartRef.current
+        const t = Math.min(buildElapsed / BUILD_DURATION, 1)
         const eased = 1 - Math.pow(1 - t, 2) // ease-out quad
         uniforms.buildProgress.value = eased
 
         if (t >= 1) {
           buildDoneRef.current = true
-          // Reset timer for reveal phase
-          startTimeRef.current = performance.now()
+          revealStartRef.current = now
           onBuildCompleteRef.current()
         }
       } else if (!revealDoneRef.current) {
         // Phase 2: earth reveal
-        const revealElapsed = performance.now() - startTimeRef.current
+        const revealElapsed = now - revealStartRef.current
         const t = Math.min(revealElapsed / REVEAL_DURATION, 1)
         const eased = 1 - Math.pow(1 - t, 2) // ease-out quad
         uniforms.revealProgress.value = eased

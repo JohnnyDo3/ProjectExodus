@@ -131,7 +131,7 @@ export default function GlobeLanding() {
     }, PAUSE_DURATION)
   }, [])
 
-  // ── Sweep animation: -3500 → 2025 over 33s ──
+  // ── Sweep animation: -3500 → 2025 over 42s ──
 
   useEffect(() => {
     if (introPhase !== 'sweeping') return
