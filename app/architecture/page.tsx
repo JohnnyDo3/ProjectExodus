@@ -10,7 +10,7 @@ import {
   ChevronRight, Layers, Globe, Search, Shuffle, Clock,
   Target, Zap, Award, Map, GraduationCap, Columns3,
   ChurchIcon, Castle, ArrowRight, Play, Sparkles, Brain,
-  HardHat, Hammer, Wrench, Mic, CalendarDays, Users, MapPin
+  HardHat, Hammer, Wrench, Mic, CalendarDays
 } from 'lucide-react'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
@@ -137,38 +137,30 @@ const structuralEngineeringSets = [
 ]
 
 // Guest speaker series data
-const guestSpeakers = [
+const guestSpeakerTopics = [
   {
-    name: 'Dr. Amara Okafor',
-    title: 'African Vernacular & Colonial Resistance',
-    institution: 'University of Lagos',
-    date: 'April 12, 2026',
-    topic: 'How indigenous building traditions survived and evolved under colonialism across West Africa.',
+    title: 'Vernacular & Colonial Resistance',
+    description: 'How indigenous building traditions survived and evolved under colonialism.',
     accent: 'amber',
+    icon: '🏛',
   },
   {
-    name: 'Prof. Kenji Tanaka',
-    title: 'Sacred Geometry in Japanese Temple Design',
-    institution: 'Kyoto Institute of Technology',
-    date: 'April 26, 2026',
-    topic: 'The mathematical principles behind centuries of Japanese temple architecture and garden design.',
+    title: 'Sacred Geometry in Temple Design',
+    description: 'The mathematical principles behind centuries of sacred architecture.',
     accent: 'teal',
+    icon: '⛩',
   },
   {
-    name: 'Dr. Elena Vasquez',
-    title: 'Brutalism Reimagined: Latin American Modernism',
-    institution: 'Universidad de Buenos Aires',
-    date: 'May 10, 2026',
-    topic: 'Exploring how Latin American architects transformed Brutalist principles into a regional language.',
+    title: 'Brutalism Reimagined',
+    description: 'How regional architects transformed Brutalist principles into local languages.',
     accent: 'purple',
+    icon: '🏗',
   },
   {
-    name: 'Sir David Alderton',
     title: 'Gothic Revival & the Politics of Style',
-    institution: 'Royal Institute of British Architects',
-    date: 'May 24, 2026',
-    topic: 'Why Victorian England looked backward to build forward, and what it means for preservation today.',
+    description: 'Why societies look backward to build forward, and what it means for preservation.',
     accent: 'rose',
+    icon: '🏰',
   },
 ]
 
@@ -747,92 +739,92 @@ export default function ArchitecturePage() {
         </div>
       </section>
 
-      {/* Guest Speaker Series */}
-      <section className="py-24 bg-[var(--muted)]/30">
+      {/* Guest Speaker Series - Coming Soon */}
+      <section className="py-24 bg-[var(--muted)]/30 overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-xs font-medium tracking-[0.2em] uppercase text-amber-500 mb-3"
+              className="text-center mb-12"
             >
-              Coming Soon
-            </motion.p>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-3xl sm:text-4xl font-black text-[var(--foreground)] mb-3 tracking-tight"
-            >
-              Guest Speaker Series
-            </motion.h2>
-            <SectionDivider variant="ornate" />
-            <motion.p
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 mb-6">
+                <Mic className="w-4 h-4 text-amber-500" />
+                <span className="text-xs font-medium tracking-[0.15em] uppercase text-amber-500">Coming Soon</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-black text-[var(--foreground)] mb-3 tracking-tight">
+                Guest Speaker Series
+              </h2>
+              <SectionDivider variant="ornate" />
+              <p className="text-base text-[var(--muted-foreground)] max-w-lg mx-auto mt-3 font-light leading-relaxed">
+                We&apos;re bringing in scholars, architects, and historians for live talks
+                on the stories behind the world&apos;s most significant structures.
+              </p>
+            </motion.div>
+
+            {/* Topic preview grid */}
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-base text-[var(--muted-foreground)] max-w-lg mx-auto mt-3 font-light"
+              className="grid sm:grid-cols-2 gap-3 mb-10"
             >
-              World-renowned scholars share their expertise on architectural history and theory
-            </motion.p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-5 max-w-5xl mx-auto">
-            {guestSpeakers.map((speaker, index) => {
-              const accentColors: Record<string, { border: string; bg: string; text: string; gradient: string }> = {
-                amber: { border: 'border-amber-500/25', bg: 'bg-amber-500/10', text: 'text-amber-500', gradient: 'from-amber-500 to-orange-600' },
-                teal: { border: 'border-teal-500/25', bg: 'bg-teal-500/10', text: 'text-teal-500', gradient: 'from-teal-500 to-cyan-600' },
-                purple: { border: 'border-purple-500/25', bg: 'bg-purple-500/10', text: 'text-purple-500', gradient: 'from-purple-500 to-indigo-600' },
-                rose: { border: 'border-rose-500/25', bg: 'bg-rose-500/10', text: 'text-rose-500', gradient: 'from-rose-500 to-pink-600' },
-              }
-              const colors = accentColors[speaker.accent] || accentColors.amber
-              return (
-                <motion.div
-                  key={speaker.name}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.08 }}
-                >
-                  <Card className={`h-full border ${colors.border} hover:shadow-lg transition-all overflow-hidden group`}>
-                    <div className={`h-1 bg-gradient-to-r ${colors.gradient}`} />
-                    <CardContent className="p-5">
-                      <div className="flex items-start gap-4">
-                        <div className={`w-11 h-11 rounded-lg bg-gradient-to-br ${colors.gradient} flex items-center justify-center shadow-sm shrink-0`}>
-                          <Mic className="w-5 h-5 text-white" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-bold text-[var(--foreground)] truncate">{speaker.name}</h3>
-                          <p className={`text-xs font-medium ${colors.text} truncate`}>{speaker.institution}</p>
-                        </div>
+              {guestSpeakerTopics.map((topic, index) => {
+                const accentColors: Record<string, { border: string; bg: string; text: string }> = {
+                  amber: { border: 'border-amber-500/20', bg: 'bg-amber-500/10', text: 'text-amber-500' },
+                  teal: { border: 'border-teal-500/20', bg: 'bg-teal-500/10', text: 'text-teal-500' },
+                  purple: { border: 'border-purple-500/20', bg: 'bg-purple-500/10', text: 'text-purple-500' },
+                  rose: { border: 'border-rose-500/20', bg: 'bg-rose-500/10', text: 'text-rose-500' },
+                }
+                const colors = accentColors[topic.accent] || accentColors.amber
+                return (
+                  <motion.div
+                    key={topic.title}
+                    initial={{ opacity: 0, y: 15 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.15 + index * 0.06 }}
+                  >
+                    <div className={`flex items-start gap-3 p-4 rounded-xl border ${colors.border} ${colors.bg} backdrop-blur-sm`}>
+                      <span className="text-xl shrink-0 mt-0.5" role="img">{topic.icon}</span>
+                      <div className="min-w-0">
+                        <h3 className="font-semibold text-sm text-[var(--foreground)] mb-0.5 truncate">{topic.title}</h3>
+                        <p className="text-xs text-[var(--muted-foreground)] leading-relaxed line-clamp-2">{topic.description}</p>
                       </div>
+                    </div>
+                  </motion.div>
+                )
+              })}
+            </motion.div>
 
-                      <div className="mt-3 pt-3 border-t border-[var(--border)]">
-                        <h4 className="font-semibold text-sm text-[var(--foreground)] mb-1.5 line-clamp-1">
-                          {speaker.title}
-                        </h4>
-                        <p className="text-sm text-[var(--muted-foreground)] leading-relaxed line-clamp-2">
-                          {speaker.topic}
-                        </p>
-                      </div>
-
-                      <div className="flex items-center gap-3 mt-3 pt-3 border-t border-[var(--border)]">
-                        <div className="flex items-center gap-1.5">
-                          <CalendarDays className={`w-3.5 h-3.5 ${colors.text}`} />
-                          <span className="text-xs text-[var(--muted-foreground)] font-medium">{speaker.date}</span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <Users className={`w-3.5 h-3.5 ${colors.text}`} />
-                          <span className="text-xs text-[var(--muted-foreground)] font-medium">Free & Open</span>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              )
-            })}
+            {/* Notify CTA */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="text-center"
+            >
+              <Card className="inline-block border border-[var(--border)] overflow-hidden">
+                <CardContent className="px-6 py-5 flex flex-col sm:flex-row items-center gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-teal-500 flex items-center justify-center shrink-0">
+                      <CalendarDays className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="text-left">
+                      <p className="font-semibold text-sm text-[var(--foreground)]">Speakers announced soon</p>
+                      <p className="text-xs text-[var(--muted-foreground)]">Free for all community members</p>
+                    </div>
+                  </div>
+                  <Button size="sm" variant="outline" className="font-semibold text-sm whitespace-nowrap">
+                    <Sparkles className="w-3.5 h-3.5 mr-1.5" />
+                    Get Notified
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
           </div>
         </div>
       </section>
