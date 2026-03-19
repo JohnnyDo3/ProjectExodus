@@ -266,6 +266,96 @@ export default function ArchitecturePage() {
         </div>
       </section>
 
+      {/* Guest Speaker Series - Coming Soon */}
+      <section className="py-24 bg-[var(--muted)]/30 overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 mb-6">
+                <Mic className="w-4 h-4 text-amber-500" />
+                <span className="text-xs font-medium tracking-[0.15em] uppercase text-amber-500">Coming Soon</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-black text-[var(--foreground)] mb-3 tracking-tight">
+                Guest Speaker Series
+              </h2>
+              <SectionDivider variant="ornate" />
+              <p className="text-base text-[var(--muted-foreground)] max-w-lg mx-auto mt-3 font-light leading-relaxed">
+                We&apos;re bringing in scholars, architects, and historians for live talks
+                on the stories behind the world&apos;s most significant structures.
+              </p>
+            </motion.div>
+
+            {/* Topic preview grid */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="grid sm:grid-cols-2 gap-3 mb-10"
+            >
+              {guestSpeakerTopics.map((topic, index) => {
+                const accentColors: Record<string, { border: string; bg: string; text: string }> = {
+                  amber: { border: 'border-amber-500/20', bg: 'bg-amber-500/10', text: 'text-amber-500' },
+                  teal: { border: 'border-teal-500/20', bg: 'bg-teal-500/10', text: 'text-teal-500' },
+                  purple: { border: 'border-purple-500/20', bg: 'bg-purple-500/10', text: 'text-purple-500' },
+                  rose: { border: 'border-rose-500/20', bg: 'bg-rose-500/10', text: 'text-rose-500' },
+                }
+                const colors = accentColors[topic.accent] || accentColors.amber
+                return (
+                  <motion.div
+                    key={topic.title}
+                    initial={{ opacity: 0, y: 15 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.15 + index * 0.06 }}
+                  >
+                    <div className={`flex items-start gap-3 p-4 rounded-xl border ${colors.border} ${colors.bg} backdrop-blur-sm`}>
+                      <span className="text-xl shrink-0 mt-0.5" role="img">{topic.icon}</span>
+                      <div className="min-w-0">
+                        <h3 className="font-semibold text-sm text-[var(--foreground)] mb-0.5 truncate">{topic.title}</h3>
+                        <p className="text-xs text-[var(--muted-foreground)] leading-relaxed line-clamp-2">{topic.description}</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                )
+              })}
+            </motion.div>
+
+            {/* Notify CTA */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="text-center"
+            >
+              <Card className="inline-block border border-[var(--border)] overflow-hidden">
+                <CardContent className="px-6 py-5 flex flex-col sm:flex-row items-center gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-teal-500 flex items-center justify-center shrink-0">
+                      <CalendarDays className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="text-left">
+                      <p className="font-semibold text-sm text-[var(--foreground)]">Speakers announced soon</p>
+                      <p className="text-xs text-[var(--muted-foreground)]">Free for all community members</p>
+                    </div>
+                  </div>
+                  <Button size="sm" variant="outline" className="font-semibold text-sm whitespace-nowrap">
+                    <Sparkles className="w-3.5 h-3.5 mr-1.5" />
+                    Get Notified
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Quick Start Section */}
       <section className="py-10 bg-gradient-to-r from-amber-500/5 via-teal-500/5 to-purple-500/5 border-y border-[var(--border)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -735,96 +825,6 @@ export default function ArchitecturePage() {
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Guest Speaker Series - Coming Soon */}
-      <section className="py-24 bg-[var(--muted)]/30 overflow-hidden">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center mb-12"
-            >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 mb-6">
-                <Mic className="w-4 h-4 text-amber-500" />
-                <span className="text-xs font-medium tracking-[0.15em] uppercase text-amber-500">Coming Soon</span>
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-black text-[var(--foreground)] mb-3 tracking-tight">
-                Guest Speaker Series
-              </h2>
-              <SectionDivider variant="ornate" />
-              <p className="text-base text-[var(--muted-foreground)] max-w-lg mx-auto mt-3 font-light leading-relaxed">
-                We&apos;re bringing in scholars, architects, and historians for live talks
-                on the stories behind the world&apos;s most significant structures.
-              </p>
-            </motion.div>
-
-            {/* Topic preview grid */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="grid sm:grid-cols-2 gap-3 mb-10"
-            >
-              {guestSpeakerTopics.map((topic, index) => {
-                const accentColors: Record<string, { border: string; bg: string; text: string }> = {
-                  amber: { border: 'border-amber-500/20', bg: 'bg-amber-500/10', text: 'text-amber-500' },
-                  teal: { border: 'border-teal-500/20', bg: 'bg-teal-500/10', text: 'text-teal-500' },
-                  purple: { border: 'border-purple-500/20', bg: 'bg-purple-500/10', text: 'text-purple-500' },
-                  rose: { border: 'border-rose-500/20', bg: 'bg-rose-500/10', text: 'text-rose-500' },
-                }
-                const colors = accentColors[topic.accent] || accentColors.amber
-                return (
-                  <motion.div
-                    key={topic.title}
-                    initial={{ opacity: 0, y: 15 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.15 + index * 0.06 }}
-                  >
-                    <div className={`flex items-start gap-3 p-4 rounded-xl border ${colors.border} ${colors.bg} backdrop-blur-sm`}>
-                      <span className="text-xl shrink-0 mt-0.5" role="img">{topic.icon}</span>
-                      <div className="min-w-0">
-                        <h3 className="font-semibold text-sm text-[var(--foreground)] mb-0.5 truncate">{topic.title}</h3>
-                        <p className="text-xs text-[var(--muted-foreground)] leading-relaxed line-clamp-2">{topic.description}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                )
-              })}
-            </motion.div>
-
-            {/* Notify CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              className="text-center"
-            >
-              <Card className="inline-block border border-[var(--border)] overflow-hidden">
-                <CardContent className="px-6 py-5 flex flex-col sm:flex-row items-center gap-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-teal-500 flex items-center justify-center shrink-0">
-                      <CalendarDays className="w-5 h-5 text-white" />
-                    </div>
-                    <div className="text-left">
-                      <p className="font-semibold text-sm text-[var(--foreground)]">Speakers announced soon</p>
-                      <p className="text-xs text-[var(--muted-foreground)]">Free for all community members</p>
-                    </div>
-                  </div>
-                  <Button size="sm" variant="outline" className="font-semibold text-sm whitespace-nowrap">
-                    <Sparkles className="w-3.5 h-3.5 mr-1.5" />
-                    Get Notified
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
           </div>
         </div>
       </section>
