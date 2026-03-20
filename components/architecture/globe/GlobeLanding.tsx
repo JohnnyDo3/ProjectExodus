@@ -8,7 +8,6 @@ import {
   formatYear,
   getCurrentPeriodForYear,
 } from '@/data/architecture/globeConnections'
-import type { IntroPhase } from './ArchitectureGlobe'
 
 // Dynamic imports
 const ArchitectureGlobe = dynamic(() => import('./ArchitectureGlobe'), {
@@ -24,13 +23,11 @@ const MobileGlobeFallback = dynamic(() => import('./MobileGlobeFallback'), {
 // CONSTANTS
 // =============================================================================
 
-const SWEEP_DURATION = 42000 // 42 seconds — slower, more cinematic
-const SWEEP_START_YEAR = -3500
-const SWEEP_END_YEAR = 2025
-const PAUSE_DURATION = 1500 // 1.5 second pause after reveal
+const PRESENT_YEAR = 2025
+const MIN_LOADING_MS = 2000 // minimum 2 seconds of loading screen
 
 // =============================================================================
-// LOADING SKELETON
+// LOADING SKELETON (shown while JS bundle loads)
 // =============================================================================
 
 function GlobeLoadingSkeleton() {
@@ -49,10 +46,43 @@ function GlobeLoadingSkeleton() {
             <div className="w-full h-full rounded-full border border-amber-500/15" style={{ transform: 'scaleX(0.3)' }} />
           </div>
         </div>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-amber-500/60 text-sm font-mono animate-pulse">Loading globe...</span>
-        </div>
       </div>
+    </div>
+  )
+}
+
+// =============================================================================
+// LOADING OVERLAY (branded 2-second loading screen)
+// =============================================================================
+
+function LoadingOverlay({ visible }: { visible: boolean }) {
+  return (
+    <div
+      className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black"
+      style={{
+        opacity: visible ? 1 : 0,
+        pointerEvents: visible ? 'auto' : 'none',
+        transition: 'opacity 0.6s ease-out',
+      }}
+    >
+      {/* Title */}
+      <h1
+        className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight mb-4"
+        style={{ color: 'rgba(212, 165, 74, 0.9)' }}
+      >
+        Architecture
+      </h1>
+
+      {/* Subtle pulsing line */}
+      <div className="w-24 h-px bg-gradient-to-r from-transparent via-amber-500/60 to-transparent animate-pulse" />
+
+      {/* Subtext */}
+      <p
+        className="mt-4 text-sm font-medium tracking-[0.15em] uppercase animate-pulse"
+        style={{ color: 'rgba(255, 255, 255, 0.4)' }}
+      >
+        Loading globe
+      </p>
     </div>
   )
 }
@@ -103,12 +133,10 @@ function useIsMobile(): boolean {
 // =============================================================================
 
 export default function GlobeLanding() {
-  // ── Intro phase state machine ──
-  const [introPhase, setIntroPhase] = useState<IntroPhase>('building')
-  const [timelineYear, setTimelineYear] = useState(SWEEP_START_YEAR)
-  const sweepRafRef = useRef<number>(0)
-  const sweepStartRef = useRef(0)
-  const pauseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [timelineYear, setTimelineYear] = useState(PRESENT_YEAR)
+  const [isLoading, setIsLoading] = useState(true)
+  const mountTimeRef = useRef(Date.now())
+  const globeReadyRef = useRef(false)
 
   // Theme
   const { isDay } = useTimeTheme()
@@ -117,70 +145,28 @@ export default function GlobeLanding() {
   // Derived
   const currentPeriod = useMemo(() => getCurrentPeriodForYear(timelineYear), [timelineYear])
 
-  // ── Phase transition callbacks ──
-
-  const handleBuildComplete = useCallback(() => {
-    setIntroPhase('revealing')
+  // Globe signals it's ready — dismiss loading after minimum time
+  const handleGlobeReady = useCallback(() => {
+    globeReadyRef.current = true
+    const elapsed = Date.now() - mountTimeRef.current
+    const remaining = Math.max(0, MIN_LOADING_MS - elapsed)
+    setTimeout(() => setIsLoading(false), remaining)
   }, [])
 
-  const handleRevealComplete = useCallback(() => {
-    setIntroPhase('pausing')
-    // After a short pause, start the sweep
-    pauseTimerRef.current = setTimeout(() => {
-      setIntroPhase('sweeping')
-    }, PAUSE_DURATION)
-  }, [])
-
-  // ── Sweep animation: -3500 → 2025 over 42s ──
-
+  // Fallback: if globe never signals ready, dismiss after 3s
   useEffect(() => {
-    if (introPhase !== 'sweeping') return
-
-    sweepStartRef.current = performance.now()
-
-    const tick = () => {
-      const elapsed = performance.now() - sweepStartRef.current
-      const t = Math.min(elapsed / SWEEP_DURATION, 1)
-
-      // Mild ease-in: starts a bit slower, accelerates toward modern era
-      const eased = Math.pow(t, 1.3)
-      const year = Math.round(
-        SWEEP_START_YEAR + (SWEEP_END_YEAR - SWEEP_START_YEAR) * eased
-      )
-
-      setTimelineYear(year)
-
-      if (t >= 1) {
-        setIntroPhase('idle')
-      } else {
-        sweepRafRef.current = requestAnimationFrame(tick)
+    const fallback = setTimeout(() => {
+      if (!globeReadyRef.current) {
+        setIsLoading(false)
       }
-    }
-
-    sweepRafRef.current = requestAnimationFrame(tick)
-
-    return () => {
-      cancelAnimationFrame(sweepRafRef.current)
-    }
-  }, [introPhase])
-
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (pauseTimerRef.current) clearTimeout(pauseTimerRef.current)
-      cancelAnimationFrame(sweepRafRef.current)
-    }
+    }, 3000)
+    return () => clearTimeout(fallback)
   }, [])
 
-  // ── User timeline control (only during idle) ──
-
+  // Timeline control — always interactive
   const handleTimelineChange = useCallback((year: number) => {
     setTimelineYear(year)
   }, [])
-
-  // Show timeline during sweep (auto-playing, non-interactive) and idle (interactive)
-  const showTimeline = introPhase === 'sweeping' || introPhase === 'idle'
-  const timelineInteractive = introPhase === 'idle'
 
   // -------------------------------------------------------------------------
   // Render
@@ -198,6 +184,9 @@ export default function GlobeLanding() {
         {/* Dark background */}
         <div className="absolute inset-0 bg-black" />
 
+        {/* Loading overlay — sits on top, fades out after 2s */}
+        <LoadingOverlay visible={isLoading} />
+
         {/* Globe / Mobile fallback */}
         <div className="absolute inset-0" style={{ padding: '2vh 2vw 14vh 2vw' }}>
           {isMobile ? (
@@ -206,20 +195,18 @@ export default function GlobeLanding() {
             <ArchitectureGlobe
               currentYear={timelineYear}
               isDayTheme={isDay}
-              introPhase={introPhase}
-              onBuildComplete={handleBuildComplete}
-              onRevealComplete={handleRevealComplete}
+              onReady={handleGlobeReady}
             />
           )}
         </div>
 
-        {/* Title — top left, fades in gradually during pausing phase */}
+        {/* Title — top left, always visible */}
         <div
           className="absolute top-4 left-4 md:top-6 md:left-6 z-10 pointer-events-none"
           style={{
-            opacity: introPhase === 'building' || introPhase === 'revealing' ? 0 : 1,
-            transform: introPhase === 'building' || introPhase === 'revealing' ? 'translateY(12px)' : 'translateY(0)',
-            transition: 'opacity 2.5s ease-out, transform 2.5s ease-out',
+            opacity: isLoading ? 0 : 1,
+            transform: isLoading ? 'translateY(12px)' : 'translateY(0)',
+            transition: 'opacity 1s ease-out 0.3s, transform 1s ease-out 0.3s',
           }}
         >
           <h1
@@ -240,14 +227,30 @@ export default function GlobeLanding() {
           </p>
         </div>
 
-        {/* Timeline — slides in from below with gentle ease */}
+        {/* Globe explanation — bottom left, above timeline */}
+        <div
+          className="absolute bottom-16 md:bottom-20 left-4 md:left-6 z-10 pointer-events-none max-w-xs"
+          style={{
+            opacity: isLoading ? 0 : 1,
+            transition: 'opacity 1s ease-out 0.5s',
+          }}
+        >
+          <p
+            className="text-[11px] md:text-xs leading-relaxed"
+            style={{ color: 'rgba(255,255,255,0.45)' }}
+          >
+            Each arc traces how building knowledge flowed between regions across millennia.
+            Drag the timeline to see connections appear through history.
+          </p>
+        </div>
+
+        {/* Timeline — always visible and interactive */}
         <div
           className="absolute bottom-0 left-0 right-0 z-10 px-3 pb-3 md:px-6 md:pb-4"
           style={{
-            opacity: showTimeline ? 1 : 0,
-            transform: showTimeline ? 'translateY(0)' : 'translateY(24px)',
-            transition: 'opacity 2s ease-out 0.3s, transform 2s ease-out 0.3s',
-            pointerEvents: timelineInteractive ? 'auto' : 'none',
+            opacity: isLoading ? 0 : 1,
+            transform: isLoading ? 'translateY(16px)' : 'translateY(0)',
+            transition: 'opacity 0.8s ease-out 0.4s, transform 0.8s ease-out 0.4s',
           }}
           role="group"
           aria-label="Timeline controls"

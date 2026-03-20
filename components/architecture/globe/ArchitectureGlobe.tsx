@@ -6,7 +6,6 @@ import {
   getArcsForYear,
   getPointsForYear,
 } from '@/data/architecture/globeConnections'
-import { useGlobeIntroMaterial } from './useShardBuildMaterial'
 import { useThemeGlobeMaterial } from './useThemeGlobeMaterial'
 
 const GlobeGL = dynamic(() => import('react-globe.gl'), { ssr: false })
@@ -15,14 +14,10 @@ const GlobeGL = dynamic(() => import('react-globe.gl'), { ssr: false })
 // Types
 // ---------------------------------------------------------------------------
 
-export type IntroPhase = 'building' | 'revealing' | 'pausing' | 'sweeping' | 'idle'
-
 interface ArchitectureGlobeProps {
   currentYear: number
   isDayTheme: boolean
-  introPhase: IntroPhase
-  onBuildComplete: () => void
-  onRevealComplete: () => void
+  onReady?: () => void
 }
 
 interface GeoJSONFeature {
@@ -39,34 +34,17 @@ interface GeoJSONFeature {
 // ---------------------------------------------------------------------------
 
 // Levant — first architectural influence (Natufian, ~12000 BCE)
-// Seed for back-to-front shard build AND earth texture reveal origin
 const SEED_LAT = 31.8
 const SEED_LNG = 35.2
 
 // Arc "connection" threshold: arcs older than this many timeline-years become solid
 const ARC_SOLID_AGE = 300
 
-// Rotation speeds in radians/second
-const BASE_SPEED = (2 * Math.PI) / 50    // one revolution per 50s
-const IDLE_SPEED = (2 * Math.PI) / 20    // one revolution per 20s — engaging
+// Idle rotation speed — one revolution per 20s
+const IDLE_SPEED = (2 * Math.PI) / 20
 
-// Target speeds per phase — actual speed lerps toward these for smooth ramp
-const PHASE_SPEED: Record<IntroPhase, number> = {
-  building:  0,                    // shader needs a stable globe
-  revealing: 0,                    // shader needs a stable globe
-  pausing:   (2 * Math.PI) / 40,  // rotation begins — earth is alive
-  sweeping:  BASE_SPEED,           // base — accelerated by year
-  idle:      IDLE_SPEED,           // fast enough to notice
-}
-
-// Camera altitude per phase — lerps for smooth dolly
-const PHASE_ALTITUDE: Record<IntroPhase, number> = {
-  building:  3.0,   // start close — dramatic
-  revealing: 2.6,   // pull back during reveal
-  pausing:   2.3,   // continue easing out
-  sweeping:  2.2,   // standard viewing distance
-  idle:      2.2,
-}
+// Camera altitude — standard viewing distance
+const IDLE_ALTITUDE = 2.2
 
 // ---------------------------------------------------------------------------
 // Component
@@ -75,9 +53,7 @@ const PHASE_ALTITUDE: Record<IntroPhase, number> = {
 export default function ArchitectureGlobe({
   currentYear,
   isDayTheme,
-  introPhase,
-  onBuildComplete,
-  onRevealComplete,
+  onReady,
 }: ArchitectureGlobeProps) {
   const globeRef = useRef<any>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -85,36 +61,21 @@ export default function ArchitectureGlobe({
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
   const [countries, setCountries] = useState<GeoJSONFeature[]>([])
 
-  // Refs for the animation loop (avoids re-creating the loop on prop changes)
-  const introPhaseRef = useRef<IntroPhase>(introPhase)
-  const currentYearRef = useRef(currentYear)
+  // Refs for the animation loop
   const isUserDraggingRef = useRef(false)
   const globeInitializedRef = useRef(false)
-  const globeMeshRef = useRef<any>(null) // cached reference to the actual globe mesh
+  const globeMeshRef = useRef<any>(null)
   const dragStartHandlerRef = useRef<(() => void) | null>(null)
   const dragEndHandlerRef = useRef<(() => void) | null>(null)
   const controlsRef = useRef<any>(null)
-
-  introPhaseRef.current = introPhase
-  currentYearRef.current = currentYear
+  const onReadyRef = useRef(onReady)
+  onReadyRef.current = onReady
 
   // -------------------------------------------------------------------------
-  // Materials
+  // Material — always use theme material (day/night texture)
   // -------------------------------------------------------------------------
 
-  const { material: introMaterial, fadeOutComplete } = useGlobeIntroMaterial(
-    SEED_LAT,
-    SEED_LNG,
-    isDayTheme,
-    onBuildComplete,
-    onRevealComplete
-  )
-
-  const themeMaterial = useThemeGlobeMaterial(isDayTheme)
-
-  // Only swap to lightweight theme material AFTER the shader crossfade finishes
-  // This eliminates the visual jolt from an instant material swap
-  const globeMaterial = fadeOutComplete ? (themeMaterial || introMaterial) : introMaterial
+  const globeMaterial = useThemeGlobeMaterial(isDayTheme)
 
   // -------------------------------------------------------------------------
   // Container resize
@@ -159,46 +120,43 @@ export default function ArchitectureGlobe({
   }, [])
 
   // -------------------------------------------------------------------------
-  // Rotation loop — runs from mount, waits for globe ref, then rotates
-  // Handles: init, phase-aware speed, user drag pause
+  // Rotation loop — idle speed from the start
   // -------------------------------------------------------------------------
 
   useEffect(() => {
     let raf: number
     let lastTime = performance.now()
-    let currentSpeed = 0        // smoothly lerped rotation speed
-    let currentAltitude = PHASE_ALTITUDE.building
+    let currentSpeed = 0
 
     const tick = () => {
       const globe = globeRef.current
       const now = performance.now()
 
       if (globe) {
-        // ── First-time init (runs once when globe ref becomes available) ──
+        // First-time init
         if (!globeInitializedRef.current) {
-          globe.pointOfView({ lat: SEED_LAT, lng: SEED_LNG, altitude: PHASE_ALTITUDE.building })
+          globe.pointOfView({ lat: SEED_LAT, lng: SEED_LNG, altitude: IDLE_ALTITUDE })
 
           const controls = globe.controls()
           if (controls) {
-            controls.autoRotate = false // we handle rotation manually
+            controls.autoRotate = false
             controls.enableDamping = true
             controls.dampingFactor = 0.1
 
-            // Store references for cleanup
             controlsRef.current = controls
             dragStartHandlerRef.current = () => {
               isUserDraggingRef.current = true
             }
             dragEndHandlerRef.current = () => {
               isUserDraggingRef.current = false
-              lastTime = performance.now() // reset dt to avoid jump
+              lastTime = performance.now()
             }
 
             controls.addEventListener('start', dragStartHandlerRef.current)
             controls.addEventListener('end', dragEndHandlerRef.current)
           }
 
-          // Cache the globe mesh — find the ThreeGlobe Group (not camera/lights)
+          // Cache the globe mesh
           const scene = globe.scene()
           if (scene) {
             const mesh = scene.children.find(
@@ -208,37 +166,18 @@ export default function ArchitectureGlobe({
           }
 
           globeInitializedRef.current = true
-          lastTime = now // avoid a big initial dt
+          lastTime = now
+
+          // Signal ready
+          onReadyRef.current?.()
         }
 
-        const dt = Math.min((now - lastTime) / 1000, 0.1) // cap to avoid big jumps
-        const phase = introPhaseRef.current
+        const dt = Math.min((now - lastTime) / 1000, 0.1)
 
-        // ── Smooth camera dolly ──
-        const targetAltitude = PHASE_ALTITUDE[phase] ?? 2.2
-        const altitudeLerp = 1 - Math.pow(0.03, dt) // ~3% per frame at 60fps — very smooth
-        currentAltitude += (targetAltitude - currentAltitude) * altitudeLerp
-
-        if (Math.abs(currentAltitude - targetAltitude) > 0.005) {
-          const pov = globe.pointOfView()
-          globe.pointOfView({ ...pov, altitude: currentAltitude })
-        }
-
-        // ── Smooth rotation ramp ──
+        // Smooth rotation
         if (!isUserDraggingRef.current && globeMeshRef.current) {
-          // Target speed for this phase
-          let targetSpeed = PHASE_SPEED[phase] ?? BASE_SPEED
-
-          // During sweep: accelerate from base → idle speed
-          if (phase === 'sweeping') {
-            const progress = Math.max(0, (currentYearRef.current + 3500) / 5525)
-            targetSpeed = BASE_SPEED + (IDLE_SPEED - BASE_SPEED) * progress
-          }
-
-          // Lerp speed — slower ramp-up (2% per frame) for cinematic feel
           const speedLerp = 1 - Math.pow(0.02, dt)
-          currentSpeed += (targetSpeed - currentSpeed) * speedLerp
-
+          currentSpeed += (IDLE_SPEED - currentSpeed) * speedLerp
           globeMeshRef.current.rotation.y += currentSpeed * dt
         }
       }
@@ -251,8 +190,6 @@ export default function ArchitectureGlobe({
 
     return () => {
       cancelAnimationFrame(raf)
-
-      // Clean up control event listeners
       if (controlsRef.current) {
         if (dragStartHandlerRef.current) {
           controlsRef.current.removeEventListener('start', dragStartHandlerRef.current)
@@ -265,34 +202,14 @@ export default function ArchitectureGlobe({
   }, [])
 
   // -------------------------------------------------------------------------
-  // Derived data — arcs and points (only after intro reveal)
+  // Derived data — arcs and points (always visible)
   // -------------------------------------------------------------------------
 
-  const showArcs = introPhase === 'pausing' || introPhase === 'sweeping' || introPhase === 'idle'
+  const arcsData = useMemo(() => getArcsForYear(currentYear), [currentYear])
+  const pointsData = useMemo(() => getPointsForYear(currentYear), [currentYear])
 
-  const arcsData = useMemo(() => {
-    if (!showArcs) return []
-    return getArcsForYear(currentYear)
-  }, [currentYear, showArcs])
-
-  const pointsData = useMemo(() => {
-    if (!showArcs) return []
-    return getPointsForYear(currentYear)
-  }, [currentYear, showArcs])
-
-  // Golden polygon borders — smooth fade from subtle to prominent
-  // Kept as discrete targets; CSS transition on the rendered element handles smoothing
-  const borderOpacity = useMemo(() => {
-    switch (introPhase) {
-      case 'building':  return 0.05
-      case 'revealing': return 0.10
-      case 'pausing':   return 0.25
-      case 'sweeping':  return 0.45
-      case 'idle':      return 0.6
-      default:          return 0.15
-    }
-  }, [introPhase])
-  const polygonBorderColor = `rgba(212, 165, 74, ${borderOpacity})`
+  // Golden polygon borders — full opacity from the start
+  const polygonBorderColor = 'rgba(212, 165, 74, 0.6)'
 
   // -------------------------------------------------------------------------
   // Render
@@ -316,7 +233,7 @@ export default function ArchitectureGlobe({
           showAtmosphere={true}
           atmosphereColor="#D4A54A"
           atmosphereAltitude={0.15}
-          // Arcs — new arcs animate briefly, then become solid lines
+          // Arcs
           arcsData={arcsData}
           arcStartLat={(d: any) => d.fromLat}
           arcStartLng={(d: any) => d.fromLng}
@@ -346,7 +263,7 @@ export default function ArchitectureGlobe({
           pointAltitude={0.01}
           pointRadius={(d: any) => Math.max(0.3, Math.min(1.0, d.connectionCount * 0.08))}
           pointLabel={(d: any) => d.name}
-          // Country borders — golden remnant of the gold dissolution
+          // Country borders
           polygonsData={countries}
           polygonCapColor={() => 'rgba(0,0,0,0)'}
           polygonSideColor={() => 'rgba(0,0,0,0)'}
