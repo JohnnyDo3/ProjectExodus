@@ -26,10 +26,10 @@ const MobileGlobeFallback = dynamic(() => import('./MobileGlobeFallback'), {
 // =============================================================================
 
 const PRESENT_YEAR = 2025
-const MIN_LOADING_MS = 2000 // minimum 2 seconds of loading screen
+const MIN_LOADING_MS = 2200
 
 // =============================================================================
-// LOADING SKELETON (shown while JS bundle loads)
+// LOADING SKELETON (shown while JS chunk loads)
 // =============================================================================
 
 function GlobeLoadingSkeleton() {
@@ -64,24 +64,21 @@ function PageLoadingOverlay({ visible }: { visible: boolean }) {
       style={{
         opacity: visible ? 1 : 0,
         pointerEvents: visible ? 'auto' : 'none',
-        transition: 'opacity 0.8s ease-out',
+        transition: 'opacity 1s ease-out',
       }}
     >
-      {/* Title */}
       <h1
-        className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight mb-4"
-        style={{ color: 'rgba(212, 165, 74, 0.9)' }}
+        className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight mb-5"
+        style={{ color: 'rgba(212, 165, 74, 0.85)' }}
       >
         Architecture
       </h1>
 
-      {/* Subtle pulsing line */}
-      <div className="w-24 h-px bg-gradient-to-r from-transparent via-amber-500/60 to-transparent animate-pulse" />
+      <div className="w-20 h-px bg-gradient-to-r from-transparent via-amber-500/50 to-transparent animate-pulse" />
 
-      {/* Subtext */}
       <p
-        className="mt-4 text-sm font-medium tracking-[0.15em] uppercase animate-pulse"
-        style={{ color: 'rgba(255, 255, 255, 0.4)' }}
+        className="mt-5 text-[11px] font-medium tracking-[0.2em] uppercase animate-pulse"
+        style={{ color: 'rgba(255, 255, 255, 0.3)' }}
       >
         Loading globe
       </p>
@@ -140,7 +137,6 @@ export default function GlobeLanding() {
   const mountTimeRef = useRef(Date.now())
   const globeReadyRef = useRef(false)
 
-  // Theme
   const { isDay } = useTimeTheme()
   const isMobile = useIsMobile()
 
@@ -149,7 +145,7 @@ export default function GlobeLanding() {
   const arcCount = useMemo(() => getArcsForYear(timelineYear).length, [timelineYear])
   const regionCount = useMemo(() => getPointsForYear(timelineYear).length, [timelineYear])
 
-  // Globe signals it's ready — dismiss loading after minimum time
+  // Globe ready callback
   const handleGlobeReady = useCallback(() => {
     globeReadyRef.current = true
     const elapsed = Date.now() - mountTimeRef.current
@@ -157,28 +153,27 @@ export default function GlobeLanding() {
     setTimeout(() => setIsLoading(false), remaining)
   }, [])
 
-  // Fallback: if globe never signals ready, dismiss after 3s
+  // Fallback timeout
   useEffect(() => {
     const fallback = setTimeout(() => {
-      if (!globeReadyRef.current) {
-        setIsLoading(false)
-      }
-    }, 3000)
+      if (!globeReadyRef.current) setIsLoading(false)
+    }, 3500)
     return () => clearTimeout(fallback)
   }, [])
 
-  // Timeline control — always interactive
   const handleTimelineChange = useCallback((year: number) => {
     setTimelineYear(year)
   }, [])
 
-  // -------------------------------------------------------------------------
-  // Render
-  // -------------------------------------------------------------------------
+  // Shared fade style generator for staggered reveal
+  const fadeIn = (delay: number) => ({
+    opacity: isLoading ? 0 : 1,
+    transform: isLoading ? 'translateY(10px)' : 'translateY(0)',
+    transition: `opacity 1.2s cubic-bezier(0.16,1,0.3,1) ${delay}s, transform 1.2s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
+  })
 
   return (
     <>
-      {/* Page-level loading overlay — covers everything including header */}
       <PageLoadingOverlay visible={isLoading} />
 
       {/* Globe — FIXED, starts below header */}
@@ -188,11 +183,10 @@ export default function GlobeLanding() {
         aria-label="Interactive Architecture Globe"
         aria-roledescription="3D globe visualization"
       >
-        {/* Dark background */}
         <div className="absolute inset-0 bg-black" />
 
-        {/* Globe / Mobile fallback */}
-        <div className="absolute inset-0" style={{ padding: '2vh 2vw 14vh 2vw' }}>
+        {/* Globe */}
+        <div className="absolute inset-0" style={{ padding: '2vh 2vw 12vh 2vw' }}>
           {isMobile ? (
             <MobileGlobeFallback currentYear={timelineYear} />
           ) : (
@@ -204,14 +198,10 @@ export default function GlobeLanding() {
           )}
         </div>
 
-        {/* Title — top left */}
+        {/* ── Top left: Title + period ── */}
         <div
           className="absolute top-4 left-4 md:top-6 md:left-6 z-10 pointer-events-none"
-          style={{
-            opacity: isLoading ? 0 : 1,
-            transform: isLoading ? 'translateY(12px)' : 'translateY(0)',
-            transition: 'opacity 1s ease-out 0.3s, transform 1s ease-out 0.3s',
-          }}
+          style={fadeIn(0.1)}
         >
           <h1
             className="text-3xl md:text-4xl lg:text-5xl font-light tracking-tight"
@@ -220,72 +210,64 @@ export default function GlobeLanding() {
             Architecture
           </h1>
           <p
-            className="text-xs md:text-sm font-medium mt-1"
+            className="text-xs md:text-sm font-medium mt-1.5"
             style={{
-              color: 'rgba(212,165,74,0.9)',
+              color: 'rgba(212,165,74,0.85)',
               opacity: currentPeriod ? 1 : 0,
-              transition: 'opacity 1s ease-out',
+              transition: 'opacity 0.6s ease-out',
             }}
           >
             {currentPeriod ? `${currentPeriod.name} · ${formatYear(timelineYear)}` : '\u00A0'}
           </p>
         </div>
 
-        {/* Stats — top right */}
+        {/* ── Top right: Stats ── */}
         <div
           className="absolute top-4 right-4 md:top-6 md:right-6 z-10 pointer-events-none text-right"
-          style={{
-            opacity: isLoading ? 0 : 1,
-            transform: isLoading ? 'translateY(12px)' : 'translateY(0)',
-            transition: 'opacity 1s ease-out 0.4s, transform 1s ease-out 0.4s',
-          }}
+          style={fadeIn(0.25)}
         >
-          <div className="flex flex-col items-end gap-1.5">
+          <div className="flex flex-col items-end gap-1">
             <div className="flex items-center gap-2">
               <span
-                className="text-[11px] md:text-xs font-medium tracking-wide uppercase"
-                style={{ color: 'rgba(255,255,255,0.4)' }}
+                className="text-[10px] md:text-[11px] font-medium tracking-widest uppercase"
+                style={{ color: 'rgba(255,255,255,0.35)' }}
               >
                 Connections
               </span>
               <span
-                className="text-lg md:text-xl font-light tabular-nums"
-                style={{ color: 'rgba(212,165,74,0.9)' }}
+                className="text-base md:text-lg font-light tabular-nums min-w-[2ch]"
+                style={{ color: 'rgba(212,165,74,0.85)' }}
               >
                 {arcCount}
               </span>
             </div>
             <div className="flex items-center gap-2">
               <span
-                className="text-[11px] md:text-xs font-medium tracking-wide uppercase"
-                style={{ color: 'rgba(255,255,255,0.4)' }}
+                className="text-[10px] md:text-[11px] font-medium tracking-widest uppercase"
+                style={{ color: 'rgba(255,255,255,0.35)' }}
               >
                 Regions
               </span>
               <span
-                className="text-lg md:text-xl font-light tabular-nums"
-                style={{ color: 'rgba(212,165,74,0.9)' }}
+                className="text-base md:text-lg font-light tabular-nums min-w-[2ch]"
+                style={{ color: 'rgba(212,165,74,0.85)' }}
               >
                 {regionCount}
               </span>
             </div>
           </div>
           <p
-            className="text-[10px] md:text-[11px] mt-2 max-w-[200px] leading-relaxed"
-            style={{ color: 'rgba(255,255,255,0.35)' }}
+            className="text-[10px] md:text-[11px] mt-2 max-w-[180px] leading-relaxed hidden sm:block"
+            style={{ color: 'rgba(255,255,255,0.28)' }}
           >
-            Each arc traces how building knowledge flowed between civilizations.
+            Arcs show how building knowledge spread between civilizations.
           </p>
         </div>
 
-        {/* Timeline — always visible and interactive */}
+        {/* ── Timeline ── */}
         <div
-          className="absolute bottom-0 left-0 right-0 z-10 px-3 pb-3 md:px-6 md:pb-4"
-          style={{
-            opacity: isLoading ? 0 : 1,
-            transform: isLoading ? 'translateY(16px)' : 'translateY(0)',
-            transition: 'opacity 0.8s ease-out 0.4s, transform 0.8s ease-out 0.4s',
-          }}
+          className="absolute bottom-0 left-0 right-0 z-10 px-3 pb-3 md:px-5 md:pb-4"
+          style={fadeIn(0.4)}
           role="group"
           aria-label="Timeline controls"
         >
@@ -296,7 +278,7 @@ export default function GlobeLanding() {
         </div>
       </div>
 
-      {/* Spacer — pushes page content below the fixed globe area */}
+      {/* Spacer */}
       <div
         className="h-[calc(100vh-4rem)] sm:h-[calc(100vh-5rem)]"
         style={{ position: 'relative', zIndex: 0 }}

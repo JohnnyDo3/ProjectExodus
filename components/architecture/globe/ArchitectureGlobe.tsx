@@ -37,11 +37,11 @@ interface GeoJSONFeature {
 const SEED_LAT = 31.8
 const SEED_LNG = 35.2
 
-// Idle rotation speed — one revolution per 20s
-const IDLE_SPEED = (2 * Math.PI) / 20
+// Idle rotation speed — one revolution per 40s (slow, cinematic)
+const IDLE_SPEED = (2 * Math.PI) / 40
 
 // Camera altitude — standard viewing distance
-const IDLE_ALTITUDE = 2.2
+const IDLE_ALTITUDE = 2.4
 
 // ---------------------------------------------------------------------------
 // Component
@@ -175,7 +175,8 @@ export default function ArchitectureGlobe({
 
         // Smooth rotation
         if (!isUserDraggingRef.current && globeMeshRef.current) {
-          const speedLerp = 1 - Math.pow(0.02, dt)
+          // Gentle ramp — takes ~2s to reach target speed
+          const speedLerp = 1 - Math.pow(0.05, dt)
           currentSpeed += (IDLE_SPEED - currentSpeed) * speedLerp
           globeMeshRef.current.rotation.y += currentSpeed * dt
         }
@@ -207,8 +208,8 @@ export default function ArchitectureGlobe({
   const arcsData = useMemo(() => getArcsForYear(currentYear), [currentYear])
   const pointsData = useMemo(() => getPointsForYear(currentYear), [currentYear])
 
-  // Golden polygon borders — full opacity from the start
-  const polygonBorderColor = 'rgba(212, 165, 74, 0.6)'
+  // Golden polygon borders — subtle, cinematic
+  const polygonBorderColor = 'rgba(212, 165, 74, 0.3)'
 
   // -------------------------------------------------------------------------
   // Render
@@ -230,8 +231,8 @@ export default function ArchitectureGlobe({
           )}
           backgroundImageUrl={null as any}
           showAtmosphere={true}
-          atmosphereColor="#D4A54A"
-          atmosphereAltitude={0.15}
+          atmosphereColor="rgba(212, 165, 74, 0.8)"
+          atmosphereAltitude={0.18}
           // Arcs
           arcsData={arcsData}
           arcStartLat={(d: any) => d.fromLat}
@@ -240,11 +241,11 @@ export default function ArchitectureGlobe({
           arcEndLng={(d: any) => d.toLng}
           arcColor={(d: any) => d.eraColor}
           arcAltitude={(d: any) => d.eraAltitude}
-          arcStroke={0.5}
+          arcStroke={0.4}
           arcDashLength={1}
           arcDashGap={0}
           arcDashAnimateTime={0}
-          arcsTransitionDuration={800}
+          arcsTransitionDuration={500}
           // Points
           pointsData={pointsData}
           pointLat={(d: any) => d.lat}
