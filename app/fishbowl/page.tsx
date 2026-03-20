@@ -131,8 +131,8 @@ export default function FishbowlPage() {
           setFollowerIds(new Set(followersData.data.map((u: UserProfile) => u.id)))
         }
       }
-    } catch (error) {
-      console.error('Error fetching network data:', error)
+    } catch {
+      // Network error — silently handle
     } finally {
       setIsLoading(false)
     }
@@ -174,8 +174,7 @@ export default function FishbowlPage() {
       }
 
       await fetchData()
-    } catch (error) {
-      console.error('Error following/unfollowing user:', error)
+    } catch {
       toast.error('Failed to update follow status')
     } finally {
       setLoadingFollow((prev) => {

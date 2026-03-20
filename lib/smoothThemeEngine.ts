@@ -64,7 +64,7 @@ export interface SunTimes {
 /**
  * Convert hex color to HSL values
  */
-export function hexToHsl(hex: string): { h: number; s: number; l: number } {
+function hexToHsl(hex: string): { h: number; s: number; l: number } {
   // Remove # if present
   hex = hex.replace(/^#/, '')
 
@@ -96,7 +96,7 @@ export function hexToHsl(hex: string): { h: number; s: number; l: number } {
 /**
  * Convert HSL values to hex color
  */
-export function hslToHex(h: number, s: number, l: number): string {
+function hslToHex(h: number, s: number, l: number): string {
   h = h / 360
   s = s / 100
   l = l / 100
@@ -134,7 +134,7 @@ export function hslToHex(h: number, s: number, l: number): string {
  * Interpolate between two colors in HSL space
  * This produces more natural color transitions than RGB
  */
-export function interpolateColor(color1: string, color2: string, t: number): string {
+function interpolateColor(color1: string, color2: string, t: number): string {
   const hsl1 = hexToHsl(color1)
   const hsl2 = hexToHsl(color2)
 
@@ -161,7 +161,7 @@ export function interpolateColor(color1: string, color2: string, t: number): str
 /**
  * Interpolate between two ThemeColors objects
  */
-export function interpolateThemeColors(
+function interpolateThemeColors(
   colors1: ThemeColors,
   colors2: ThemeColors,
   t: number
@@ -224,7 +224,7 @@ const DARK_FG = '#1a1a1a'
  * 24 keyframes for smooth day-long color transitions
  * These represent key moments in the day cycle
  */
-export const TIME_KEYFRAMES: TimeKeyframe[] = [
+const TIME_KEYFRAMES: TimeKeyframe[] = [
   // DEEP NIGHT (12am - 3am)
   {
     hour: 0,
@@ -729,7 +729,7 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
  */
 let _sunTimesCache: { key: string; value: SunTimes } | null = null
 
-export function getSunTimes(lat: number, lon: number, date: Date = new Date()): SunTimes {
+function getSunTimes(lat: number, lon: number, date: Date = new Date()): SunTimes {
   const cacheKey = `${lat.toFixed(2)}_${lon.toFixed(2)}_${date.getFullYear()}_${date.getMonth()}_${date.getDate()}`
   if (_sunTimesCache && _sunTimesCache.key === cacheKey) {
     return _sunTimesCache.value
@@ -753,7 +753,7 @@ export function getSunTimes(lat: number, lon: number, date: Date = new Date()): 
  * Adjust keyframe hours based on actual sunrise/sunset
  * This shifts the morning/evening colors to match real sun position
  */
-export function adjustKeyframesForLocation(
+function adjustKeyframesForLocation(
   keyframes: TimeKeyframe[],
   sunTimes: SunTimes
 ): TimeKeyframe[] {
