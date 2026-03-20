@@ -113,14 +113,16 @@ const FRAGMENT_SHADER = /* glsl */ `
     // Pulsing on edges
     float pulse = 0.5 + 0.3 * sin(time * 1.5 + cellId * 6.28);
 
-    // Solid gold shard + edge highlights
-    vec3 goldShard = gold * 0.5;
+    // Depth-based shading: shards closer to camera are brighter
+    float depthShade = 0.35 + 0.65 * smoothstep(0.0, 1.0, seedDist);
+    vec3 goldShard = gold * depthShade;
     goldShard += gold * edgeGlow * 0.6 * pulse;
 
-    // Flash when shard snaps in
+    // Flash when shard snaps in — bright white-gold burst
     float snapDist = abs(buildProgress - threshold);
-    float snap = smoothstep(0.06, 0.0, snapDist) * 0.5;
-    goldShard += gold * snap;
+    float snap = smoothstep(0.08, 0.0, snapDist) * 0.8;
+    vec3 snapColor = mix(gold, vec3(1.0, 0.95, 0.7), 0.5);
+    goldShard += snapColor * snap;
 
     // ═══ PHASE 2: EARTH REVEAL (radiate from Mesopotamia) ═══
     vec4 earth = texture2D(earthTexture, vUv);
@@ -132,13 +134,21 @@ const FRAGMENT_SHADER = /* glsl */ `
     // Gold dissolves into earth texture
     vec3 color = mix(goldShard, earth.rgb, earthFill);
 
-    // Gold edge glow fades as reveal progresses
-    float edgeFade = 1.0 - revealProgress;
-    color += gold * edgeGlow * 0.3 * edgeFade;
+    // ── Leading-edge glow: bright golden arc at the reveal wavefront ──
+    float wavefrontDist = abs(revealProgress - revealThreshold);
+    float wavefrontGlow = smoothstep(0.12, 0.0, wavefrontDist) * revealProgress * (1.0 - earthFill * 0.7);
+    vec3 hotGold = vec3(1.0, 0.85, 0.4);
+    color += hotGold * wavefrontGlow * 1.2;
 
-    // Rim lighting (subtle, fades with reveal)
+    // ── Shard-edge fire: gold edges flare bright then dissolve ──
+    float edgeFade = 1.0 - revealProgress;
+    float edgeFlare = smoothstep(0.0, 0.5, revealProgress) * edgeFade;
+    color += gold * edgeGlow * (0.3 * edgeFade + 0.8 * edgeFlare);
+
+    // Rim lighting — intensifies during reveal, then fades
     float rim = 1.0 - max(0.0, dot(normalize(vWorldNormal), normalize(-vWorldPos)));
-    color += gold * rim * rim * (0.15 * (1.0 - revealProgress * 0.8));
+    float rimIntensity = 0.15 + 0.25 * sin(revealProgress * 3.14159); // peaks at revealProgress=0.5
+    color += gold * rim * rim * rimIntensity;
 
     // Alpha: invisible until shard fills in
     float alpha = shardFill;

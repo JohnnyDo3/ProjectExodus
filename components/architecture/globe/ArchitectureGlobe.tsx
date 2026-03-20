@@ -50,15 +50,22 @@ const MESOPOTAMIA_LNG = 44.4
 const BASE_SPEED = (2 * Math.PI) / 50    // one revolution per 50s
 const IDLE_SPEED = (2 * Math.PI) / 20    // one revolution per 20s — engaging
 
-// No rotation during build/reveal — the shader uses fixed UV coords and
-// rotating the mesh underneath causes the build pattern to drift & glitch.
-// Rotation begins at pause and ramps up through sweep to idle.
+// Target speeds per phase — actual speed lerps toward these for smooth ramp
 const PHASE_SPEED: Record<IntroPhase, number> = {
   building:  0,                    // shader needs a stable globe
   revealing: 0,                    // shader needs a stable globe
   pausing:   (2 * Math.PI) / 40,  // rotation begins — earth is alive
   sweeping:  BASE_SPEED,           // base — accelerated by year
   idle:      IDLE_SPEED,           // fast enough to notice
+}
+
+// Camera altitude per phase — lerps for smooth dolly
+const PHASE_ALTITUDE: Record<IntroPhase, number> = {
+  building:  3.0,   // start close — dramatic
+  revealing: 2.6,   // pull back during reveal
+  pausing:   2.3,   // continue easing out
+  sweeping:  2.2,   // standard viewing distance
+  idle:      2.2,
 }
 
 // ---------------------------------------------------------------------------
@@ -161,6 +168,8 @@ export default function ArchitectureGlobe({
   useEffect(() => {
     let raf: number
     let lastTime = performance.now()
+    let currentSpeed = 0        // smoothly lerped rotation speed
+    let currentAltitude = PHASE_ALTITUDE.building
 
     const tick = () => {
       const globe = globeRef.current
@@ -169,7 +178,7 @@ export default function ArchitectureGlobe({
       if (globe) {
         // ── First-time init (runs once when globe ref becomes available) ──
         if (!globeInitializedRef.current) {
-          globe.pointOfView({ lat: SEED_LAT, lng: SEED_LNG, altitude: 2.5 })
+          globe.pointOfView({ lat: SEED_LAT, lng: SEED_LNG, altitude: PHASE_ALTITUDE.building })
 
           const controls = globe.controls()
           if (controls) {
@@ -204,21 +213,35 @@ export default function ArchitectureGlobe({
           lastTime = now // avoid a big initial dt
         }
 
-        // ── Rotate ──
-        if (!isUserDraggingRef.current && globeMeshRef.current) {
-          const dt = Math.min((now - lastTime) / 1000, 0.1) // cap to avoid big jumps
+        const dt = Math.min((now - lastTime) / 1000, 0.1) // cap to avoid big jumps
+        const phase = introPhaseRef.current
 
-          // Phase-aware speed
-          const phase = introPhaseRef.current
-          let speed = PHASE_SPEED[phase] ?? BASE_SPEED
+        // ── Smooth camera dolly ──
+        const targetAltitude = PHASE_ALTITUDE[phase] ?? 2.2
+        const altitudeLerp = 1 - Math.pow(0.03, dt) // ~3% per frame at 60fps — very smooth
+        currentAltitude += (targetAltitude - currentAltitude) * altitudeLerp
+
+        if (Math.abs(currentAltitude - targetAltitude) > 0.005) {
+          const pov = globe.pointOfView()
+          globe.pointOfView({ ...pov, altitude: currentAltitude })
+        }
+
+        // ── Smooth rotation ramp ──
+        if (!isUserDraggingRef.current && globeMeshRef.current) {
+          // Target speed for this phase
+          let targetSpeed = PHASE_SPEED[phase] ?? BASE_SPEED
 
           // During sweep: accelerate from base → idle speed
           if (phase === 'sweeping') {
             const progress = Math.max(0, (currentYearRef.current + 3500) / 5525)
-            speed = BASE_SPEED + (IDLE_SPEED - BASE_SPEED) * progress
+            targetSpeed = BASE_SPEED + (IDLE_SPEED - BASE_SPEED) * progress
           }
 
-          globeMeshRef.current.rotation.y += speed * dt
+          // Lerp speed — slower ramp-up (2% per frame) for cinematic feel
+          const speedLerp = 1 - Math.pow(0.02, dt)
+          currentSpeed += (targetSpeed - currentSpeed) * speedLerp
+
+          globeMeshRef.current.rotation.y += currentSpeed * dt
         }
       }
 
@@ -259,10 +282,18 @@ export default function ArchitectureGlobe({
     return getPointsForYear(currentYear)
   }, [currentYear, showArcs])
 
-  // Golden polygon borders — subtle during intro, prominent after reveal
-  const polygonBorderColor = showArcs
-    ? 'rgba(212, 165, 74, 0.6)'
-    : 'rgba(212, 165, 74, 0.15)'
+  // Golden polygon borders — smooth fade from subtle to prominent
+  const borderOpacity = useMemo(() => {
+    switch (introPhase) {
+      case 'building':  return 0.08
+      case 'revealing': return 0.15
+      case 'pausing':   return 0.35
+      case 'sweeping':  return 0.5
+      case 'idle':      return 0.6
+      default:          return 0.15
+    }
+  }, [introPhase])
+  const polygonBorderColor = `rgba(212, 165, 74, ${borderOpacity})`
 
   // -------------------------------------------------------------------------
   // Render

@@ -213,38 +213,50 @@ export default function GlobeLanding() {
           )}
         </div>
 
-        {/* Title — top left */}
-        <div className="absolute top-4 left-4 md:top-6 md:left-6 z-10 pointer-events-none">
+        {/* Title — top left, fades in after reveal */}
+        <div
+          className="absolute top-4 left-4 md:top-6 md:left-6 z-10 pointer-events-none"
+          style={{
+            opacity: introPhase === 'building' ? 0 : 1,
+            transform: introPhase === 'building' ? 'translateY(8px)' : 'translateY(0)',
+            transition: 'opacity 1.5s ease-out, transform 1.5s ease-out',
+          }}
+        >
           <h1
             className="text-3xl md:text-4xl lg:text-5xl font-light tracking-tight"
             style={{ color: 'rgba(255,255,255,0.85)' }}
           >
             Architecture
           </h1>
-          {currentPeriod && (
-            <p
-              className="text-xs md:text-sm font-medium mt-1"
-              style={{ color: 'rgba(212,165,74,0.9)' }}
-            >
-              {currentPeriod.name} · {formatYear(timelineYear)}
-            </p>
-          )}
+          <p
+            className="text-xs md:text-sm font-medium mt-1"
+            style={{
+              color: 'rgba(212,165,74,0.9)',
+              opacity: currentPeriod ? 1 : 0,
+              transition: 'opacity 0.6s ease-out',
+            }}
+          >
+            {currentPeriod ? `${currentPeriod.name} · ${formatYear(timelineYear)}` : '\u00A0'}
+          </p>
         </div>
 
-        {/* Timeline — visible during sweep (auto) and idle (interactive) */}
-        {showTimeline && (
-          <div
-            className="absolute bottom-0 left-0 right-0 z-10 px-3 pb-3 md:px-6 md:pb-4"
-            style={timelineInteractive ? undefined : { pointerEvents: 'none' }}
-            role="group"
-            aria-label="Timeline controls"
-          >
-            <GlobeTimeline
-              currentYear={timelineYear}
-              onChange={handleTimelineChange}
-            />
-          </div>
-        )}
+        {/* Timeline — slides in from below, stays mounted for smooth transition */}
+        <div
+          className="absolute bottom-0 left-0 right-0 z-10 px-3 pb-3 md:px-6 md:pb-4"
+          style={{
+            opacity: showTimeline ? 1 : 0,
+            transform: showTimeline ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'opacity 1s ease-out, transform 1s ease-out',
+            pointerEvents: timelineInteractive ? 'auto' : 'none',
+          }}
+          role="group"
+          aria-label="Timeline controls"
+        >
+          <GlobeTimeline
+            currentYear={timelineYear}
+            onChange={handleTimelineChange}
+          />
+        </div>
       </div>
 
       {/* Spacer — pushes page content below the fixed globe area */}
