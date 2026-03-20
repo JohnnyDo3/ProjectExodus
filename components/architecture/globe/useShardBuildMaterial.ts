@@ -5,14 +5,13 @@ import { useEffect, useRef, useState } from 'react'
 // =============================================================================
 // Globe Intro Material — Two-phase cinematic intro
 //
-// Phase 1 (BUILD):  Solid golden voronoi shards assemble back-to-front.
-//                   No earth texture — just uniform gold with shard edges.
+// Phase 1 (BUILD):  Glass-like golden voronoi shards assemble back-to-front,
+//                   wrapping around the globe like a coat — Levant is the last shard.
 //
-// Phase 2 (REVEAL): Earth texture radiates outward from Mesopotamia (~3500 BCE
-//                   first architectural record). Gold dissolves completely.
-//                   After reveal the parent swaps to the theme MeshBasicMaterial
-//                   and the golden country borders (polygon stroke layer) become
-//                   the visible "remnant" of the gold.
+// Phase 2 (REVEAL): Earth texture ripples outward from the Levant (the last shard,
+//                   center of the first architectural influence — Natufian, ~12000 BCE).
+//                   Gold dissolves into earth. After reveal the parent swaps to the
+//                   theme MeshBasicMaterial.
 // =============================================================================
 
 const VERTEX_SHADER = /* glsl */ `
@@ -34,8 +33,7 @@ const FRAGMENT_SHADER = /* glsl */ `
   uniform float buildProgress;    // 0 → 1  shard assembly
   uniform float revealProgress;   // 0 → 1  earth texture emergence
   uniform float time;             // elapsed seconds
-  uniform vec2 seedPoint;         // UV of camera-facing point (back-to-front origin)
-  uniform vec2 revealCenter;      // UV of Mesopotamia (earth reveal origin)
+  uniform vec2 seedPoint;         // UV of Levant (back-to-front origin & reveal center)
   uniform sampler2D earthTexture;
 
   varying vec3 vWorldNormal;
@@ -88,13 +86,11 @@ const FRAGMENT_SHADER = /* glsl */ `
 
   void main() {
     vec3 v1 = voronoi(vUv, 14.0);
-    vec3 v2 = voronoi(vUv, 28.0);
 
     float cellId = v1.z;
     float edge1  = v1.y;
-    float edge2  = v2.y;
 
-    // ═══ PHASE 1: SHARD BUILD (back-to-front) ═══
+    // ═══ PHASE 1: SHARD BUILD (back-to-front, Levant last) ═══
     float seedDist    = wrapDist(vUv, seedPoint);
     float reversedDist = 1.0 - seedDist;           // far side first
     float threshold   = reversedDist * 1.4 + cellId * 0.3;
@@ -102,53 +98,27 @@ const FRAGMENT_SHADER = /* glsl */ `
 
     float shardFill = smoothstep(threshold - 0.05, threshold + 0.05, buildProgress);
 
-    // Golden color
+    // Clean glass-shard gold
     vec3 gold = vec3(0.83, 0.65, 0.29);
 
-    // Shard edge glow
+    // Subtle shard edge highlight (static, no pulse)
     float edgeLine = smoothstep(0.04, 0.0, edge1);
-    float fineEdge = smoothstep(0.06, 0.0, edge2) * 0.3;
-    float edgeGlow = edgeLine + fineEdge;
+    vec3 goldShard = gold + gold * edgeLine * 0.4;
 
-    // Pulsing on edges
-    float pulse = 0.5 + 0.3 * sin(time * 1.5 + cellId * 6.28);
-
-    // Depth-based shading: shards closer to camera are brighter
-    float depthShade = 0.35 + 0.65 * smoothstep(0.0, 1.0, seedDist);
-    vec3 goldShard = gold * depthShade;
-    goldShard += gold * edgeGlow * 0.6 * pulse;
-
-    // Flash when shard snaps in — bright white-gold burst
-    float snapDist = abs(buildProgress - threshold);
-    float snap = smoothstep(0.08, 0.0, snapDist) * 0.8;
-    vec3 snapColor = mix(gold, vec3(1.0, 0.95, 0.7), 0.5);
-    goldShard += snapColor * snap;
-
-    // ═══ PHASE 2: EARTH REVEAL (radiate from Mesopotamia) ═══
+    // ═══ PHASE 2: EARTH REVEAL (ripples from Levant — the last shard) ═══
     vec4 earth = texture2D(earthTexture, vUv);
 
-    float revealDist      = wrapDist(vUv, revealCenter);
+    float revealDist      = wrapDist(vUv, seedPoint);
     float revealThreshold = revealDist * 1.3;
     float earthFill       = smoothstep(revealThreshold - 0.08, revealThreshold + 0.02, revealProgress);
 
     // Gold dissolves into earth texture
     vec3 color = mix(goldShard, earth.rgb, earthFill);
 
-    // ── Leading-edge glow: bright golden arc at the reveal wavefront ──
+    // Subtle leading-edge glow at the reveal wavefront
     float wavefrontDist = abs(revealProgress - revealThreshold);
-    float wavefrontGlow = smoothstep(0.12, 0.0, wavefrontDist) * revealProgress * (1.0 - earthFill * 0.7);
-    vec3 hotGold = vec3(1.0, 0.85, 0.4);
-    color += hotGold * wavefrontGlow * 1.2;
-
-    // ── Shard-edge fire: gold edges flare bright then dissolve ──
-    float edgeFade = 1.0 - revealProgress;
-    float edgeFlare = smoothstep(0.0, 0.5, revealProgress) * edgeFade;
-    color += gold * edgeGlow * (0.3 * edgeFade + 0.8 * edgeFlare);
-
-    // Rim lighting — intensifies during reveal, then fades
-    float rim = 1.0 - max(0.0, dot(normalize(vWorldNormal), normalize(-vWorldPos)));
-    float rimIntensity = 0.15 + 0.25 * sin(revealProgress * 3.14159); // peaks at revealProgress=0.5
-    color += gold * rim * rim * rimIntensity;
+    float wavefrontGlow = smoothstep(0.10, 0.0, wavefrontDist) * revealProgress * (1.0 - earthFill * 0.8);
+    color += vec3(1.0, 0.85, 0.4) * wavefrontGlow * 0.6;
 
     // Alpha: invisible until shard fills in
     float alpha = shardFill;
@@ -180,10 +150,8 @@ function latLngToUV(lat: number, lng: number): [number, number] {
 /**
  * Two-phase intro material for the globe cinematic entrance.
  *
- * @param seedLat    Camera-facing latitude (shards build away from here → toward here)
+ * @param seedLat    Camera-facing latitude — Levant (last shard, reveal origin)
  * @param seedLng    Camera-facing longitude
- * @param revealLat  Earth reveal origin latitude  (Mesopotamia ≈ 33.3)
- * @param revealLng  Earth reveal origin longitude (Mesopotamia ≈ 44.4)
  * @param isDayTheme Day texture vs night texture
  * @param onBuildComplete  Called when shard assembly reaches 100%
  * @param onRevealComplete Called when earth texture fully replaces gold
@@ -191,8 +159,6 @@ function latLngToUV(lat: number, lng: number): [number, number] {
 export function useGlobeIntroMaterial(
   seedLat: number,
   seedLng: number,
-  revealLat: number,
-  revealLng: number,
   isDayTheme: boolean,
   onBuildComplete: () => void,
   onRevealComplete: () => void
@@ -228,7 +194,6 @@ export function useGlobeIntroMaterial(
       }
 
       const [seedU, seedV] = latLngToUV(seedLat, seedLng)
-      const [revealU, revealV] = latLngToUV(revealLat, revealLng)
 
       const material = new THREE.ShaderMaterial({
         uniforms: {
@@ -237,7 +202,6 @@ export function useGlobeIntroMaterial(
           revealProgress: { value: 0 },
           time:           { value: 0 },
           seedPoint:      { value: new THREE.Vector2(seedU, seedV) },
-          revealCenter:   { value: new THREE.Vector2(revealU, revealV) },
         },
         vertexShader: VERTEX_SHADER,
         fragmentShader: FRAGMENT_SHADER,

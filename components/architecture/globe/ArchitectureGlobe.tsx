@@ -38,13 +38,13 @@ interface GeoJSONFeature {
 // Constants
 // ---------------------------------------------------------------------------
 
-// Camera starts facing the Levant (seed for back-to-front build)
+// Levant — first architectural influence (Natufian, ~12000 BCE)
+// Seed for back-to-front shard build AND earth texture reveal origin
 const SEED_LAT = 31.8
 const SEED_LNG = 35.2
 
-// Earth reveal radiates from Mesopotamia (~first architectural record, 3500 BCE)
-const MESOPOTAMIA_LAT = 33.3
-const MESOPOTAMIA_LNG = 44.4
+// Arc "connection" threshold: arcs older than this many timeline-years become solid
+const ARC_SOLID_AGE = 300
 
 // Rotation speeds in radians/second
 const BASE_SPEED = (2 * Math.PI) / 50    // one revolution per 50s
@@ -105,8 +105,6 @@ export default function ArchitectureGlobe({
   const { material: introMaterial } = useGlobeIntroMaterial(
     SEED_LAT,
     SEED_LNG,
-    MESOPOTAMIA_LAT,
-    MESOPOTAMIA_LNG,
     isDayTheme,
     onBuildComplete,
     onRevealComplete
@@ -317,7 +315,7 @@ export default function ArchitectureGlobe({
           showAtmosphere={true}
           atmosphereColor="#D4A54A"
           atmosphereAltitude={0.15}
-          // Arcs
+          // Arcs — new arcs animate briefly, then become solid lines
           arcsData={arcsData}
           arcStartLat={(d: any) => d.fromLat}
           arcStartLng={(d: any) => d.fromLng}
@@ -326,9 +324,18 @@ export default function ArchitectureGlobe({
           arcColor={(d: any) => d.eraColor}
           arcAltitude={(d: any) => d.eraAltitude}
           arcStroke={0.5}
-          arcDashLength={0.4}
-          arcDashGap={0.2}
-          arcDashAnimateTime={2000}
+          arcDashLength={(d: any) => {
+            const age = currentYear - d.startYear
+            return age > ARC_SOLID_AGE ? 1 : 0.4
+          }}
+          arcDashGap={(d: any) => {
+            const age = currentYear - d.startYear
+            return age > ARC_SOLID_AGE ? 0 : 0.2
+          }}
+          arcDashAnimateTime={(d: any) => {
+            const age = currentYear - d.startYear
+            return age > ARC_SOLID_AGE ? 0 : 2000
+          }}
           arcsTransitionDuration={1000}
           // Points
           pointsData={pointsData}
