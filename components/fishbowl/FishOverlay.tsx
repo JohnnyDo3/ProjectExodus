@@ -1,9 +1,10 @@
 'use client'
 
-import { memo, useRef, useEffect, useState } from 'react'
+import { memo, useRef, useEffect, useState, useCallback } from 'react'
 import { getTierName, type FishTier } from './FishSpecies'
-import { User, MessageCircle, UserPlus, Eye } from 'lucide-react'
+import { User, MessageCircle, UserPlus, UserMinus, Eye, Loader2 } from 'lucide-react'
 import Link from 'next/link'
+import { useSession } from 'next-auth/react'
 
 interface FishOverlayProps {
   fish: {
@@ -32,6 +33,46 @@ const TIER_DESCRIPTIONS: Record<FishTier, string> = {
 export const FishOverlay = memo(({ fish, position, mode, onClose, containerRect }: FishOverlayProps) => {
   const overlayRef = useRef<HTMLDivElement>(null)
   const [adjustedPos, setAdjustedPos] = useState<{ x: number; y: number } | null>(null)
+  const { data: session } = useSession()
+
+  // Follow state
+  const [isFollowing, setIsFollowing] = useState<boolean | null>(null)
+  const [followLoading, setFollowLoading] = useState(false)
+
+  // Fetch follow status when click modal opens for a fish
+  useEffect(() => {
+    if (!fish || mode !== 'click' || !session?.user?.id || fish.userId === session.user.id) return
+    setIsFollowing(null)
+
+    const controller = new AbortController()
+    fetch(`/api/users/${fish.userId}/follow`, { signal: controller.signal })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) setIsFollowing(data.data.isFollowing)
+      })
+      .catch(() => {})
+
+    return () => controller.abort()
+  }, [fish?.userId, mode, session?.user?.id])
+
+  const handleFollowToggle = useCallback(async () => {
+    if (!fish || followLoading || isFollowing === null) return
+    setFollowLoading(true)
+
+    try {
+      const res = await fetch(`/api/users/${fish.userId}/follow`, {
+        method: isFollowing ? 'DELETE' : 'POST',
+      })
+      const data = await res.json()
+      if (data.success) {
+        setIsFollowing(!isFollowing)
+      }
+    } catch {
+      // silently fail
+    } finally {
+      setFollowLoading(false)
+    }
+  }, [fish, isFollowing, followLoading])
 
   useEffect(() => {
     if (!position || !containerRect || !overlayRef.current) {
@@ -150,14 +191,26 @@ export const FishOverlay = memo(({ fish, position, mode, onClose, containerRect 
               <MessageCircle className="w-3.5 h-3.5" />
               Send Message
             </Link>
-            <Link
-              href={`/network?connect=${fish.userId}`}
-              className="flex items-center gap-2 w-full px-3 py-2 bg-cyan-800/30 hover:bg-cyan-700/40 rounded-lg text-xs font-bold text-cyan-200 transition-colors"
-              onClick={onClose}
-            >
-              <UserPlus className="w-3.5 h-3.5" />
-              Connect
-            </Link>
+            {session?.user?.id && fish.userId !== session.user.id && (
+              <button
+                onClick={handleFollowToggle}
+                disabled={followLoading || isFollowing === null}
+                className={`flex items-center gap-2 w-full px-3 py-2 rounded-lg text-xs font-bold transition-colors ${
+                  isFollowing
+                    ? 'bg-cyan-800/30 hover:bg-red-900/40 text-cyan-200 hover:text-red-300'
+                    : 'bg-cyan-800/30 hover:bg-cyan-700/40 text-cyan-200'
+                }`}
+              >
+                {followLoading ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : isFollowing ? (
+                  <UserMinus className="w-3.5 h-3.5" />
+                ) : (
+                  <UserPlus className="w-3.5 h-3.5" />
+                )}
+                {followLoading ? 'Loading...' : isFollowing ? 'Unfollow' : 'Follow'}
+              </button>
+            )}
           </div>
         </div>
       </div>
