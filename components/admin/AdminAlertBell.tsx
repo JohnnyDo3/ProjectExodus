@@ -46,8 +46,8 @@ export function AdminAlertBell() {
         const data = await res.json()
         setAlerts(data.alerts || [])
       }
-    } catch (error) {
-      console.error('Failed to fetch admin alerts:', error)
+    } catch {
+      // silently handle fetch error
     } finally {
       setLoading(false)
     }
@@ -68,8 +68,8 @@ export function AdminAlertBell() {
       setAlerts(prev =>
         prev.map(a => (a.id === alertId ? { ...a, read: true } : a))
       )
-    } catch (error) {
-      console.error('Failed to mark alert as read:', error)
+    } catch {
+      // silently handle error
     }
   }
 
@@ -77,8 +77,8 @@ export function AdminAlertBell() {
     try {
       await fetch('/api/admin/alerts/read-all', { method: 'POST' })
       setAlerts(prev => prev.map(a => ({ ...a, read: true })))
-    } catch (error) {
-      console.error('Failed to mark all as read:', error)
+    } catch {
+      // silently handle error
     }
   }
 

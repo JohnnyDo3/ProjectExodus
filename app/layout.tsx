@@ -3,16 +3,35 @@ import "./globals.css";
 import { SessionProvider } from "@/components/providers/SessionProvider";
 import { TimeThemeProvider } from "@/components/providers/TimeThemeProvider";
 import { SkyThemeProvider } from "@/components/theme/SkyThemeProvider";
-import { SkyBackground } from "@/components/theme/SkyBackground";
-import { ProjectExodusAI } from "@/components/ai/ProjectExodusAI";
-import { DecorativeBranches } from "@/components/decorative/DecorativeBranches";
 import { generateMetadata, siteConfig } from "@/lib/metadata";
 import { auth } from "@/auth";
 import { Toaster } from "react-hot-toast";
-import { headers } from "next/headers";
 import { MainLayoutWrapper } from "@/components/layout/MainLayoutWrapper";
 import { DigitalScrollProvider } from "@/components/learning/DigitalScroll/DigitalScrollContext";
 import { SageProvider } from "@/components/ai/SageContext";
+
+// Toaster config extracted as static constant to avoid re-creating on every render
+const toasterOptions = {
+  duration: 4000,
+  style: {
+    background: 'var(--card)',
+    color: 'var(--foreground)',
+    border: '2px solid var(--border)',
+    fontWeight: '600' as const,
+  },
+  success: {
+    iconTheme: {
+      primary: 'var(--primary)',
+      secondary: 'white',
+    },
+  },
+  error: {
+    iconTheme: {
+      primary: 'var(--destructive)',
+      secondary: 'white',
+    },
+  },
+};
 
 // Viewport configuration for mobile responsiveness
 export const viewport: Viewport = {
@@ -112,39 +131,12 @@ export default async function RootLayout({
             <SkyThemeProvider>
               <DigitalScrollProvider>
                 <SageProvider>
-                  <MainLayoutWrapper
-                    skyBackground={<SkyBackground />}
-                    decorativeBranches={<DecorativeBranches />}
-                    aiAssistant={<ProjectExodusAI />}
-                  >
+                  <MainLayoutWrapper>
                     {children}
                   </MainLayoutWrapper>
                 </SageProvider>
                 {/* Toast Notifications */}
-                <Toaster
-                  position="top-right"
-                  toastOptions={{
-                    duration: 4000,
-                    style: {
-                      background: 'var(--card)',
-                      color: 'var(--foreground)',
-                      border: '2px solid var(--border)',
-                      fontWeight: '600',
-                    },
-                    success: {
-                      iconTheme: {
-                        primary: 'var(--primary)',
-                        secondary: 'white',
-                      },
-                    },
-                    error: {
-                      iconTheme: {
-                        primary: 'var(--destructive)',
-                        secondary: 'white',
-                      },
-                    },
-                  }}
-                />
+                <Toaster position="top-right" toastOptions={toasterOptions} />
               </DigitalScrollProvider>
             </SkyThemeProvider>
           </TimeThemeProvider>

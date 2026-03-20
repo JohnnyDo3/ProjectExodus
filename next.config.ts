@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   // Image optimization
   images: {
     formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 31536000, // 1 year - leverage browser/CDN caching
     remotePatterns: [
       {
         protocol: 'https',
@@ -17,6 +18,19 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'avatars.githubusercontent.com',
       },
+    ],
+  },
+  // Tree-shake heavy libraries - only bundle what's actually imported
+  experimental: {
+    optimizePackageImports: [
+      'lucide-react',
+      '@tiptap/react',
+      '@tiptap/starter-kit',
+      '@tiptap/extension-collaboration',
+      'recharts',
+      'framer-motion',
+      'date-fns',
+      'suncalc',
     ],
   },
   // Security headers configuration

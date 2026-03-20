@@ -27,8 +27,8 @@ export function ThemeToggle() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ themePreference: newMode }),
         })
-      } catch (error) {
-        console.error('[Theme] Failed to save preference to database:', error)
+      } catch {
+        // silently handle save error
       }
     }
   }

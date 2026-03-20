@@ -122,8 +122,7 @@ export function SageInsightsPanel({
       ]
 
       setInsights(mockInsights)
-    } catch (err) {
-      console.error('Failed to fetch insights:', err)
+    } catch {
       setError('Unable to load insights')
     } finally {
       setLoading(false)

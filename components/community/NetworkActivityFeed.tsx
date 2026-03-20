@@ -146,8 +146,8 @@ export function NetworkActivityFeed() {
           }
         }
       }
-    } catch (error) {
-      console.error('Error fetching activities:', error)
+    } catch {
+      // silently handle fetch error
     } finally {
       setIsLoading(false)
       setIsRefreshing(false)

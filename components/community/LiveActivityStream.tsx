@@ -86,8 +86,8 @@ export function LiveActivityStream() {
           )
           setActivities(sorted)
         }
-      } catch (error) {
-        console.error('Error fetching activity:', error)
+      } catch {
+        // silently handle fetch error
       } finally {
         setIsLoading(false)
       }

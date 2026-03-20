@@ -57,8 +57,8 @@ export function FeaturedGuardiansCarousel() {
         if (data.success && data.data?.leaderboard) {
           setUsers(data.data.leaderboard)
         }
-      } catch (error) {
-        console.error('Error fetching leaderboard:', error)
+      } catch {
+        // silently handle fetch error
       } finally {
         setIsLoading(false)
       }

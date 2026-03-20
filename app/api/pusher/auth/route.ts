@@ -52,9 +52,6 @@ export async function POST(request: NextRequest) {
 
       const adminRoles = ['ADMIN', 'SUPER_ADMIN', 'MODERATOR']
       if (!user || !adminRoles.includes(user.role)) {
-        console.warn(
-          `[Pusher Auth] Non-admin user ${session.user.id} attempted to subscribe to admin channel`
-        )
         return NextResponse.json(
           { error: 'Forbidden - Admin access required' },
           { status: 403 }
@@ -62,9 +59,6 @@ export async function POST(request: NextRequest) {
       }
       // Admin is allowed to subscribe to admin channel
     } else if (!allowedChannels.includes(channel)) {
-      console.warn(
-        `[Pusher Auth] User ${session.user.id} attempted to subscribe to unauthorized channel: ${channel}`
-      )
       return NextResponse.json(
         { error: 'Forbidden - Cannot subscribe to this channel' },
         { status: 403 }
@@ -75,8 +69,7 @@ export async function POST(request: NextRequest) {
     const authResponse = pusherServer.authorizeChannel(socketId, channel)
 
     return NextResponse.json(authResponse)
-  } catch (error) {
-    console.error('[Pusher Auth] Error:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

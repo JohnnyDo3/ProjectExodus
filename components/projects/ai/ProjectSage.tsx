@@ -147,8 +147,7 @@ export function ProjectSage({
         data.suggestions.forEach((s: string) => onSuggestion(s))
       }
 
-    } catch (error) {
-      console.error('Sage error:', error)
+    } catch {
       setMessages(prev => [...prev, {
         id: `error-${Date.now()}`,
         role: 'assistant',

@@ -119,8 +119,7 @@ export function ResearchForm({
         router.push(`/community/projects/${projectSlug}/research`)
         router.refresh()
       }
-    } catch (err) {
-      console.error('Save error:', err)
+    } catch {
       setError('Failed to save. Please try again.')
     } finally {
       setSaving(false)

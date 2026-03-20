@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
+import { createContext, useContext, useEffect, useState, useMemo, useCallback, ReactNode } from 'react'
 
 type SkyPhase = 'dawn' | 'morning' | 'day' | 'afternoon' | 'dusk' | 'evening' | 'night' | 'midnight'
 
@@ -191,26 +191,30 @@ export function SkyThemeProvider({ children }: { children: ReactNode }) {
     return () => clearInterval(interval)
   }, [currentPhase, manualMode])
 
-  // Apply theme colors to CSS variables
+  // Apply sky gradient CSS variable
   useEffect(() => {
-    const root = document.documentElement
-
-    // Apply sky background if it's a gradient string
     if (theme.colors.sky.startsWith('linear-gradient')) {
-      root.style.setProperty('--sky-gradient', theme.colors.sky)
+      document.documentElement.style.setProperty('--sky-gradient', theme.colors.sky)
     }
-
-    // Smooth transition between themes
-    root.style.transition = 'all 2s ease-in-out'
+    // Note: removed `transition: 'all 2s'` — it was transitioning ALL CSS
+    // properties on every theme change, causing major layout thrashing.
+    // Theme transitions are already handled by globals.css targeted transitions.
   }, [theme])
 
-  const setPhase = (phase: SkyPhase) => {
+  const setPhase = useCallback((phase: SkyPhase) => {
     setCurrentPhase(phase)
     setTheme(skyThemes[phase])
-  }
+  }, [])
+
+  // Memoize context value to prevent unnecessary re-renders of consumers
+  const contextValue = useMemo(() => ({
+    currentPhase,
+    theme,
+    setPhase,
+  }), [currentPhase, theme, setPhase])
 
   return (
-    <SkyThemeContext.Provider value={{ currentPhase, theme, setPhase }}>
+    <SkyThemeContext.Provider value={contextValue}>
       {children}
     </SkyThemeContext.Provider>
   )

@@ -101,8 +101,7 @@ export function AnimatedStatsBar() {
         if (data.success && data.data) {
           setStats(data.data)
         }
-      } catch (error) {
-        console.error('Error fetching stats:', error)
+      } catch {
         // Keep default stats on error
       } finally {
         setHasLoaded(true)

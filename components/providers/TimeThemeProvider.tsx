@@ -1,8 +1,7 @@
 'use client'
 
-import { useEffect, useState, useCallback, useMemo, createContext, useContext } from 'react'
+import { useEffect, useState, useCallback, useMemo, useRef, createContext, useContext } from 'react'
 import { useSession } from 'next-auth/react'
-import * as SunCalc from 'suncalc'
 import {
   getCurrentThemeColors,
   applyThemeColors,
@@ -72,7 +71,6 @@ export function TimeThemeProvider({ children }: { children: React.ReactNode }) {
     // Use stored coordinates if available
     if (prefs.latitude !== null && prefs.longitude !== null) {
       setCoords({ latitude: prefs.latitude, longitude: prefs.longitude })
-      console.log('[Theme] Using stored location:', prefs.latitude.toFixed(2), prefs.longitude.toFixed(2))
     }
 
     // Request fresh geolocation (will update storage if successful)
@@ -90,10 +88,9 @@ export function TimeThemeProvider({ children }: { children: React.ReactNode }) {
             latitude: newCoords.latitude,
             longitude: newCoords.longitude,
           })
-          console.log('[Theme] Location updated and saved permanently')
         },
-        (error) => {
-          console.log('[Theme] Geolocation not available, using stored or default')
+        () => {
+          // Geolocation not available, use stored or default
         },
         {
           enableHighAccuracy: false,
@@ -120,7 +117,7 @@ export function TimeThemeProvider({ children }: { children: React.ReactNode }) {
             }
           }
         })
-        .catch(err => console.error('[Theme] Failed to load preference from database:', err))
+        .catch(() => { /* Failed to load preference from database */ })
     }
   }, [status, session?.user])
 
@@ -133,12 +130,18 @@ export function TimeThemeProvider({ children }: { children: React.ReactNode }) {
     window.dispatchEvent(new CustomEvent('theme-mode-change', { detail: { mode: newMode } }))
   }, [])
 
+  // Track last phase to skip redundant state updates
+  const lastPhaseRef = useRef<string>('')
+  const lastClassRef = useRef<string>('')
+
   // Main theme update effect
   useEffect(() => {
     if (!mounted) return
 
     const themeClasses = ['day', 'night', 'sunrise', 'sunset', 'dusk', 'evening']
     const setThemeClass = (cls: string) => {
+      if (cls === lastClassRef.current) return // Skip if unchanged
+      lastClassRef.current = cls
       const el = document.documentElement
       themeClasses.forEach(c => el.classList.remove(c))
       el.classList.add(cls)
@@ -152,13 +155,14 @@ export function TimeThemeProvider({ children }: { children: React.ReactNode }) {
         const { colors, phase: fixedPhase, className } = getFixedModeColors(mode as 'light' | 'dark')
         setThemeClass(className)
         applyThemeColors(colors)
-        setPhase(fixedPhase)
-
-        // Set appropriate values for fixed modes
-        const isLightMode = mode === 'light'
-        setIsDay(isLightMode)
-        setTwilightProgress(isLightMode ? 0 : 1)
-        setSunAltitude(isLightMode ? 60 : -30)
+        if (fixedPhase !== lastPhaseRef.current) {
+          lastPhaseRef.current = fixedPhase
+          setPhase(fixedPhase)
+          const isLightMode = mode === 'light'
+          setIsDay(isLightMode)
+          setTwilightProgress(isLightMode ? 0 : 1)
+          setSunAltitude(isLightMode ? 60 : -30)
+        }
         return
       }
 
@@ -170,13 +174,16 @@ export function TimeThemeProvider({ children }: { children: React.ReactNode }) {
       const sunPos = getSunPosition(now, coords)
       const twilight = getTwilightProgress(now, coords)
 
-      setPhase(currentPhase)
-      setIsDay(sunPos.isDay)
-      setTwilightProgress(twilight)
-      setSunAltitude(sunPos.sunAltitude)
+      // Only trigger React re-renders when phase actually changes
+      if (currentPhase !== lastPhaseRef.current) {
+        lastPhaseRef.current = currentPhase
+        setPhase(currentPhase)
+        setIsDay(sunPos.isDay)
+        setTwilightProgress(twilight)
+        setSunAltitude(sunPos.sunAltitude)
+      }
 
       // Set appropriate class for day-only/night-only CSS visibility
-      // Use a smooth threshold with hysteresis
       if (twilight < 0.3) {
         setThemeClass('day')
       } else if (twilight > 0.7) {
@@ -191,9 +198,9 @@ export function TimeThemeProvider({ children }: { children: React.ReactNode }) {
     // Update immediately
     updateTheme()
 
-    // Update every 30 seconds for smooth transitions
-    // This is frequent enough to appear continuous but efficient on resources
-    const interval = setInterval(updateTheme, 30000)
+    // Update every 2 minutes — color changes are imperceptible at shorter intervals
+    // CSS variables are updated directly on the DOM, so React doesn't re-render
+    const interval = setInterval(updateTheme, 120000)
 
     // Listen for manual theme mode changes
     const handleModeChange = (e: CustomEvent<{ mode: ThemeMode }>) => {
@@ -227,90 +234,3 @@ export function TimeThemeProvider({ children }: { children: React.ReactNode }) {
   )
 }
 
-/**
- * Calculate the appropriate theme based on current time and location
- * Uses 8 granular time phases for natural transitions
- * @deprecated Use smooth interpolation via useTimeTheme() instead
- */
-function calculateTimeTheme(coords: GeolocationCoords | null): TimeTheme {
-  const now = new Date()
-  const hour = now.getHours()
-
-  if (coords) {
-    // Calculate actual sunrise/sunset times for user's location
-    const times = SunCalc.getTimes(now, coords.latitude, coords.longitude)
-    const sunriseHour = times.sunrise.getHours()
-    const sunsetHour = times.sunset.getHours()
-
-    // Map to 8 granular phases based on sunrise/sunset
-    // Dawn: 1 hour before sunrise (but not earlier than 5am)
-    const dawnEnd = Math.max(5, sunriseHour - 1)
-    if (hour >= 5 && hour < dawnEnd) return 'dawn'
-
-    // Sunrise: Always include actual sunrise hour, then extend period
-    if (hour === sunriseHour) return 'sunrise'
-    const sunriseEnd = Math.min(10, sunriseHour + 2)
-    if (hour >= dawnEnd && hour < sunriseEnd) return 'sunrise'
-
-    // Morning: After sunrise period until 10am (only if there's a gap)
-    if (sunriseEnd < 10 && hour >= sunriseEnd && hour < 10) return 'morning'
-
-    // Day: 10am to 3pm
-    if (hour >= 10 && hour < 15) return 'day'
-
-    // Afternoon: 3pm until 2 hours before sunset
-    const duskStart = Math.max(15, sunsetHour - 2)
-    if (hour >= 15 && hour < duskStart) return 'afternoon'
-
-    // Dusk: 2 hours before sunset
-    if (hour >= duskStart && hour < sunsetHour) return 'dusk'
-
-    // Sunset: Always include actual sunset hour, then extend period
-    if (hour === sunsetHour) return 'sunset'
-    const sunsetEnd = Math.min(22, sunsetHour + 2)
-    if (hour > sunsetHour && hour < sunsetEnd) return 'sunset'
-
-    // Evening: After sunset period until 10pm (only if there's a gap)
-    if (sunsetEnd < 22 && hour >= sunsetEnd && hour < 22) return 'evening'
-
-    // Night: 10pm to 2am
-    if (hour >= 22 || hour < 2) return 'night'
-
-    // Midnight: 2am to 5am
-    return 'midnight'
-  } else {
-    // Fallback: Use fixed times based on local timezone (8 phases)
-    if (hour >= 5 && hour < 7) return 'dawn'
-    if (hour >= 7 && hour < 10) return 'sunrise'
-    if (hour >= 10 && hour < 11) return 'morning'
-    if (hour >= 11 && hour < 15) return 'day'
-    if (hour >= 15 && hour < 18) return 'afternoon'
-    if (hour >= 18 && hour < 19) return 'dusk'
-    if (hour >= 19 && hour < 21) return 'sunset'
-    if (hour >= 21 && hour < 22) return 'evening'
-    if (hour >= 22 || hour < 2) return 'night'
-    return 'midnight'
-  }
-}
-
-/**
- * Get human-readable description of current time period
- */
-export function getTimeDescription(coords: GeolocationCoords | null): string {
-  const theme = calculateTimeTheme(coords)
-
-  const descriptions: Record<TimeTheme, string> = {
-    dawn: '🌄 Early dawn awakens',
-    sunrise: '🌅 Dawn is breaking',
-    morning: '🌤️ Morning has arrived',
-    day: '☀️ It\'s a beautiful day',
-    afternoon: '🌞 Warm afternoon light',
-    dusk: '🌆 Dusk settles in',
-    sunset: '🌇 Golden hour approaches',
-    evening: '🌃 Evening descends',
-    night: '🌙 Night has fallen',
-    midnight: '🌌 Deep night silence',
-  }
-
-  return descriptions[theme]
-}

@@ -570,8 +570,8 @@ export function EnhancedInfiniteCanvasWorkspace({
       await onSave(nodes, connections)
       setHasUnsavedChanges(false)
       setLastSaved(new Date())
-    } catch (error) {
-      console.error('Failed to save:', error)
+    } catch {
+      // silently handle save error
     } finally {
       setIsSaving(false)
     }
@@ -598,8 +598,7 @@ export function EnhancedInfiniteCanvasWorkspace({
         title: 'Mind Map Export',
         includeTitle: true
       })
-    } catch (error) {
-      console.error('Failed to export SVG:', error)
+    } catch {
       alert('Failed to export SVG. Please try again.')
     } finally {
       setIsExporting(false)
@@ -614,8 +613,7 @@ export function EnhancedInfiniteCanvasWorkspace({
         title: 'Mind Map Export',
         includeTitle: true
       }, 2) // 2x scale for higher resolution
-    } catch (error) {
-      console.error('Failed to export PNG:', error)
+    } catch {
       alert('Failed to export PNG. Please try again.')
     } finally {
       setIsExporting(false)
@@ -630,8 +628,7 @@ export function EnhancedInfiniteCanvasWorkspace({
         title: 'Mind Map Export',
         includeTitle: true
       })
-    } catch (error) {
-      console.error('Failed to export PDF:', error)
+    } catch {
       alert('Failed to export PDF. Please allow popups and try again.')
     } finally {
       setIsExporting(false)
@@ -654,8 +651,7 @@ export function EnhancedInfiniteCanvasWorkspace({
       setNodes(layoutedNodes)
       setCurrentLayout(layoutType)
       saveToHistory(layoutedNodes, connections)
-    } catch (error) {
-      console.error('Failed to apply layout:', error)
+    } catch {
       alert('Failed to apply layout. Please try again.')
     } finally {
       setIsApplyingLayout(false)
@@ -686,7 +682,6 @@ export function EnhancedInfiniteCanvasWorkspace({
           alert('No nodes found in the imported file')
         }
       } catch (err) {
-        console.error('Failed to import file:', err)
         alert(`Failed to import file: ${err instanceof Error ? err.message : 'Unknown error'}`)
       }
     }

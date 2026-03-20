@@ -104,8 +104,7 @@ export function ProjectExodusAI() {
         timestamp: new Date()
       }
       setMessages(prev => [...prev, aiResponse])
-    } catch (error) {
-      console.error('AI API Error:', error)
+    } catch {
       // Fallback to keyword matching if API fails
       const aiResponse: Message = {
         role: 'assistant',
