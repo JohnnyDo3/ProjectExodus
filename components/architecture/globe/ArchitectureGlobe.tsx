@@ -102,7 +102,7 @@ export default function ArchitectureGlobe({
   // Materials
   // -------------------------------------------------------------------------
 
-  const { material: introMaterial } = useGlobeIntroMaterial(
+  const { material: introMaterial, fadeOutComplete } = useGlobeIntroMaterial(
     SEED_LAT,
     SEED_LNG,
     isDayTheme,
@@ -112,9 +112,9 @@ export default function ArchitectureGlobe({
 
   const themeMaterial = useThemeGlobeMaterial(isDayTheme)
 
-  // After reveal, switch to lightweight theme material
-  const introOver = introPhase === 'pausing' || introPhase === 'sweeping' || introPhase === 'idle'
-  const globeMaterial = introOver ? (themeMaterial || introMaterial) : introMaterial
+  // Only swap to lightweight theme material AFTER the shader crossfade finishes
+  // This eliminates the visual jolt from an instant material swap
+  const globeMaterial = fadeOutComplete ? (themeMaterial || introMaterial) : introMaterial
 
   // -------------------------------------------------------------------------
   // Container resize
@@ -281,12 +281,13 @@ export default function ArchitectureGlobe({
   }, [currentYear, showArcs])
 
   // Golden polygon borders — smooth fade from subtle to prominent
+  // Kept as discrete targets; CSS transition on the rendered element handles smoothing
   const borderOpacity = useMemo(() => {
     switch (introPhase) {
-      case 'building':  return 0.08
-      case 'revealing': return 0.15
-      case 'pausing':   return 0.35
-      case 'sweeping':  return 0.5
+      case 'building':  return 0.05
+      case 'revealing': return 0.10
+      case 'pausing':   return 0.25
+      case 'sweeping':  return 0.45
       case 'idle':      return 0.6
       default:          return 0.15
     }

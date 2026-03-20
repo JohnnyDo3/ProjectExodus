@@ -213,13 +213,13 @@ export default function GlobeLanding() {
           )}
         </div>
 
-        {/* Title — top left, fades in after reveal */}
+        {/* Title — top left, fades in gradually during pausing phase */}
         <div
           className="absolute top-4 left-4 md:top-6 md:left-6 z-10 pointer-events-none"
           style={{
-            opacity: introPhase === 'building' ? 0 : 1,
-            transform: introPhase === 'building' ? 'translateY(8px)' : 'translateY(0)',
-            transition: 'opacity 1.5s ease-out, transform 1.5s ease-out',
+            opacity: introPhase === 'building' || introPhase === 'revealing' ? 0 : 1,
+            transform: introPhase === 'building' || introPhase === 'revealing' ? 'translateY(12px)' : 'translateY(0)',
+            transition: 'opacity 2.5s ease-out, transform 2.5s ease-out',
           }}
         >
           <h1
@@ -233,20 +233,20 @@ export default function GlobeLanding() {
             style={{
               color: 'rgba(212,165,74,0.9)',
               opacity: currentPeriod ? 1 : 0,
-              transition: 'opacity 0.6s ease-out',
+              transition: 'opacity 1s ease-out',
             }}
           >
             {currentPeriod ? `${currentPeriod.name} · ${formatYear(timelineYear)}` : '\u00A0'}
           </p>
         </div>
 
-        {/* Timeline — slides in from below, stays mounted for smooth transition */}
+        {/* Timeline — slides in from below with gentle ease */}
         <div
           className="absolute bottom-0 left-0 right-0 z-10 px-3 pb-3 md:px-6 md:pb-4"
           style={{
             opacity: showTimeline ? 1 : 0,
-            transform: showTimeline ? 'translateY(0)' : 'translateY(20px)',
-            transition: 'opacity 1s ease-out, transform 1s ease-out',
+            transform: showTimeline ? 'translateY(0)' : 'translateY(24px)',
+            transition: 'opacity 2s ease-out 0.3s, transform 2s ease-out 0.3s',
             pointerEvents: timelineInteractive ? 'auto' : 'none',
           }}
           role="group"

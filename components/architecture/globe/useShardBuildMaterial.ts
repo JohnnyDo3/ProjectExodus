@@ -32,6 +32,7 @@ const FRAGMENT_SHADER = /* glsl */ `
 
   uniform float buildProgress;    // 0 → 1  shard assembly
   uniform float revealProgress;   // 0 → 1  earth texture emergence
+  uniform float fadeOut;          // 0 → 1  smooth crossfade to basic material
   uniform float time;             // elapsed seconds
   uniform vec2 seedPoint;         // UV of Levant (back-to-front origin & reveal center)
   uniform sampler2D earthTexture;
@@ -91,19 +92,21 @@ const FRAGMENT_SHADER = /* glsl */ `
     float edge1  = v1.y;
 
     // ═══ PHASE 1: SHARD BUILD (back-to-front, Levant last) ═══
+    // Each shard appears as a discrete solid piece — no gold-fill expansion
     float seedDist    = wrapDist(vUv, seedPoint);
     float reversedDist = 1.0 - seedDist;           // far side first
     float threshold   = reversedDist * 1.4 + cellId * 0.3;
     threshold = clamp(threshold * 0.8, 0.0, 0.95);
 
-    float shardFill = smoothstep(threshold - 0.05, threshold + 0.05, buildProgress);
+    // Tight step: shard snaps in as a solid piece (0.005 range vs old 0.10)
+    float shardFill = smoothstep(threshold - 0.005, threshold + 0.005, buildProgress);
 
     // Clean glass-shard gold
     vec3 gold = vec3(0.83, 0.65, 0.29);
 
-    // Subtle shard edge highlight (static, no pulse)
-    float edgeLine = smoothstep(0.04, 0.0, edge1);
-    vec3 goldShard = gold + gold * edgeLine * 0.4;
+    // Crisp shard edge line for faceted look
+    float edgeLine = smoothstep(0.03, 0.0, edge1);
+    vec3 goldShard = gold + gold * edgeLine * 0.5;
 
     // ═══ PHASE 2: EARTH REVEAL (ripples from Levant — the last shard) ═══
     vec4 earth = texture2D(earthTexture, vUv);
@@ -123,7 +126,11 @@ const FRAGMENT_SHADER = /* glsl */ `
     // Alpha: invisible until shard fills in
     float alpha = shardFill;
 
-    gl_FragColor = vec4(color, alpha);
+    // Crossfade: blend toward raw earth texture for seamless material swap
+    vec3 finalColor = mix(color, earth.rgb, fadeOut);
+    float finalAlpha = mix(alpha, 1.0, fadeOut);
+
+    gl_FragColor = vec4(finalColor, finalAlpha);
   }
 `
 
@@ -134,8 +141,9 @@ const FRAGMENT_SHADER = /* glsl */ `
 const NIGHT_TEXTURE_URL = '//unpkg.com/three-globe/example/img/earth-night.jpg'
 const DAY_TEXTURE_URL   = '//unpkg.com/three-globe/example/img/earth-blue-marble.jpg'
 
-const BUILD_DURATION  = 8000 // 8 seconds — deliberate golden shard assembly
-const REVEAL_DURATION = 3500 // 3.5 seconds — earth texture emergence
+const BUILD_DURATION   = 8000 // 8 seconds — deliberate golden shard assembly
+const REVEAL_DURATION  = 3500 // 3.5 seconds — earth texture emergence
+const FADEOUT_DURATION = 1500 // 1.5 seconds — smooth crossfade to basic material
 
 function latLngToUV(lat: number, lng: number): [number, number] {
   const u = (lng + 180) / 360
@@ -162,14 +170,17 @@ export function useGlobeIntroMaterial(
   isDayTheme: boolean,
   onBuildComplete: () => void,
   onRevealComplete: () => void
-): { material: any | null } {
+): { material: any | null; fadeOutComplete: boolean } {
   const materialRef = useRef<any>(null)
   const [ready, setReady] = useState(false)
+  const [fadeOutComplete, setFadeOutComplete] = useState(false)
   const mountTimeRef = useRef<number>(0)    // never resets — drives shader `time`
   const buildStartRef = useRef<number>(0)   // start of build phase
   const revealStartRef = useRef<number>(0)  // start of reveal phase
+  const fadeOutStartRef = useRef<number>(0) // start of crossfade to basic material
   const buildDoneRef = useRef(false)
   const revealDoneRef = useRef(false)
+  const fadeOutDoneRef = useRef(false)
   const onBuildCompleteRef = useRef(onBuildComplete)
   const onRevealCompleteRef = useRef(onRevealComplete)
   onBuildCompleteRef.current = onBuildComplete
@@ -200,6 +211,7 @@ export function useGlobeIntroMaterial(
           earthTexture:   { value: earthTex },
           buildProgress:  { value: 0 },
           revealProgress: { value: 0 },
+          fadeOut:         { value: 0 },
           time:           { value: 0 },
           seedPoint:      { value: new THREE.Vector2(seedU, seedV) },
         },
@@ -263,11 +275,23 @@ export function useGlobeIntroMaterial(
 
         if (t >= 1) {
           revealDoneRef.current = true
+          fadeOutStartRef.current = now
           onRevealCompleteRef.current()
+        }
+      } else if (!fadeOutDoneRef.current) {
+        // Phase 3: crossfade shader → basic material (eliminates jolt)
+        const fadeElapsed = now - fadeOutStartRef.current
+        const t = Math.min(fadeElapsed / FADEOUT_DURATION, 1)
+        const eased = t * t // ease-in — starts gentle
+        uniforms.fadeOut.value = eased
+
+        if (t >= 1) {
+          fadeOutDoneRef.current = true
+          setFadeOutComplete(true)
         }
       }
 
-      if (!revealDoneRef.current) {
+      if (!fadeOutDoneRef.current) {
         raf = requestAnimationFrame(tick)
       }
     }
@@ -276,5 +300,5 @@ export function useGlobeIntroMaterial(
     return () => cancelAnimationFrame(raf)
   }, [ready])
 
-  return { material: ready ? materialRef.current : null }
+  return { material: ready ? materialRef.current : null, fadeOutComplete }
 }
