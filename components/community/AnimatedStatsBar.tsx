@@ -93,9 +93,11 @@ export function AnimatedStatsBar() {
   const [hasLoaded, setHasLoaded] = useState(false)
 
   useEffect(() => {
+    const controller = new AbortController()
+
     async function fetchStats() {
       try {
-        const res = await fetch('/api/community/public-stats')
+        const res = await fetch('/api/community/public-stats', { signal: controller.signal })
         const data = await res.json()
 
         if (data.success && data.data) {
@@ -112,7 +114,10 @@ export function AnimatedStatsBar() {
 
     // Refresh stats every 5 minutes
     const interval = setInterval(fetchStats, 5 * 60 * 1000)
-    return () => clearInterval(interval)
+    return () => {
+      controller.abort()
+      clearInterval(interval)
+    }
   }, [])
 
   const statItems = [

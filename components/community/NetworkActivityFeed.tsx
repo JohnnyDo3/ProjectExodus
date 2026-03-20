@@ -116,6 +116,8 @@ export function NetworkActivityFeed() {
   const lastFetchRef = useRef<string | null>(null)
   const scrollContainerRef = useRef<HTMLDivElement>(null)
 
+  const abortControllerRef = useRef<AbortController | null>(null)
+
   const fetchActivities = async (isAutoRefresh = false) => {
     if (isAutoRefresh) {
       setIsRefreshing(true)
@@ -124,7 +126,9 @@ export function NetworkActivityFeed() {
     }
 
     try {
-      const res = await fetch('/api/activity/feed?limit=30')
+      abortControllerRef.current?.abort()
+      abortControllerRef.current = new AbortController()
+      const res = await fetch('/api/activity/feed?limit=30', { signal: abortControllerRef.current.signal })
       if (res.ok) {
         const data = await res.json()
         if (data.success) {
@@ -162,7 +166,10 @@ export function NetworkActivityFeed() {
       fetchActivities(true)
     }, 30000)
 
-    return () => clearInterval(interval)
+    return () => {
+      abortControllerRef.current?.abort()
+      clearInterval(interval)
+    }
   }, [])
 
   const handleRefresh = () => {

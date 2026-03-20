@@ -5,7 +5,6 @@ import { useSession } from 'next-auth/react'
 import {
   getCurrentThemeColors,
   applyThemeColors,
-  clearThemeColors,
   savePreferences,
   loadPreferences,
   getSunPosition,

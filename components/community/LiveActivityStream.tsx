@@ -74,9 +74,11 @@ export function LiveActivityStream() {
 
   // Fetch activity data
   useEffect(() => {
+    const controller = new AbortController()
+
     async function fetchActivity() {
       try {
-        const res = await fetch('/api/activity/feed?limit=10')
+        const res = await fetch('/api/activity/feed?limit=10', { signal: controller.signal })
         const data = await res.json()
 
         if (data.success && data.data) {
@@ -96,7 +98,10 @@ export function LiveActivityStream() {
     fetchActivity()
     // Refresh every 30 seconds to get new updates
     const interval = setInterval(fetchActivity, 30000)
-    return () => clearInterval(interval)
+    return () => {
+      controller.abort()
+      clearInterval(interval)
+    }
   }, [])
 
   if (isLoading) {
