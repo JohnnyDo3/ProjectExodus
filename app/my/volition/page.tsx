@@ -820,7 +820,7 @@ export default function MyVolitionPage() {
     projects: { icon: Briefcase, message: 'No projects yet', action: 'Start a Project', href: '/community/projects/new' },
     articles: { icon: FileText, message: 'No articles yet', action: 'Write an Article', href: '/articles/write' },
     learning: { icon: BookOpen, message: 'Start learning', action: 'Browse Courses', href: '/learn' },
-    network: { icon: Users, message: 'Grow your network', action: 'Find People', href: '/network/browse' },
+    network: { icon: Users, message: 'Grow your network', action: 'Find People', href: '/fishbowl?view=directory' },
     feed: { icon: MessageCircle, message: 'No posts yet', action: 'Start a Discussion', href: '/community/forum/new' },
     impact: { icon: Leaf, message: 'Track your impact' },
   }

@@ -38,7 +38,7 @@ const actions = [
     id: 'network',
     label: 'Browse Network',
     icon: Users,
-    href: '/network/browse',
+    href: '/fishbowl?view=directory',
     bgColor: 'var(--foreground)',
   },
 ]

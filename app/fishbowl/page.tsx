@@ -8,6 +8,26 @@ import { Button } from '@/components/ui/Button'
 import { SkeletonUserCard } from '@/components/ui/SkeletonUserCard'
 import { UserPreviewCard } from '@/components/network/UserPreviewCard'
 import { CommunityFishbowl } from '@/components/fishbowl/CommunityFishbowl'
+import dynamic from 'next/dynamic'
+
+const MemberDirectory = dynamic(() => import('@/components/fishbowl/MemberDirectory'), {
+  ssr: false,
+  loading: () => (
+    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {[...Array(6)].map((_, i) => (
+        <div key={i} className="bg-[var(--card)] rounded-xl border border-[var(--border)] p-5 animate-pulse">
+          <div className="flex items-start gap-3 mb-4">
+            <div className="w-12 h-12 rounded-full bg-[var(--muted)]" />
+            <div className="flex-1 space-y-2">
+              <div className="h-4 bg-[var(--muted)] rounded w-2/3" />
+              <div className="h-3 bg-[var(--muted)] rounded w-1/2" />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  ),
+})
 import '@/components/fishbowl/fishbowl.css'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
@@ -73,7 +93,7 @@ interface UserProfile {
   isFollowing?: boolean
 }
 
-type ViewMode = 'feed' | 'following' | 'followers' | 'discover' | 'tree'
+type ViewMode = 'feed' | 'following' | 'followers' | 'discover' | 'tree' | 'directory'
 
 export default function FishbowlPage() {
   const { data: session, status } = useSession()
@@ -308,6 +328,7 @@ export default function FishbowlPage() {
                 { id: 'following' as ViewMode, label: 'Walking With', icon: Footprints, count: followingUsers.length },
                 { id: 'followers' as ViewMode, label: 'Fellow Travelers', icon: Heart, count: followers.length },
                 { id: 'discover' as ViewMode, label: 'Seek New Paths', icon: Compass },
+                { id: 'directory' as ViewMode, label: 'Directory', icon: Search },
                 { id: 'tree' as ViewMode, label: 'Constellation', icon: Orbit },
               ].map((tab) => (
                 <button
@@ -622,6 +643,9 @@ export default function FishbowlPage() {
                   )}
                 </div>
               </div>
+            ) : activeView === 'directory' ? (
+              /* Member Directory — search, filter, paginated grid */
+              <MemberDirectory />
             ) : activeView === 'tree' ? (
               /* Tree Map View */
               <NetworkTreeMap
