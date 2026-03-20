@@ -150,6 +150,7 @@ export function Header() {
   ]
 
   const learnMenuItems = [
+    { label: 'Sustainability', href: '/learn', requiresAuth: false },
     { label: 'Exodology', href: '/exodology', requiresAuth: true },
     { label: 'Architecture', href: '/architecture', requiresAuth: true },
     { label: 'Structural Engineering', href: '/architecture/structural', requiresAuth: true },
@@ -242,9 +243,8 @@ export function Header() {
                     onMouseEnter={handleLearnMouseEnter}
                     onMouseLeave={handleLearnMouseLeave}
                   >
-                    <Link
-                      href="/learn"
-                      className={`font-bold text-sm xl:text-base transition-all uppercase tracking-wide flex items-center gap-1 ${
+                    <span
+                      className={`font-bold text-sm xl:text-base transition-all uppercase tracking-wide flex items-center gap-1 cursor-default select-none ${
                         isActive || learnMenuOpen
                           ? 'text-theme-primary'
                           : 'text-[var(--foreground)] hover:text-theme-primary'
@@ -256,7 +256,7 @@ export function Header() {
                     >
                       {item.name}
                       <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${learnMenuOpen ? 'rotate-180' : ''}`} />
-                    </Link>
+                    </span>
 
                     {/* Learn Dropdown menu - centered, matching Community dropdown */}
                     <div
