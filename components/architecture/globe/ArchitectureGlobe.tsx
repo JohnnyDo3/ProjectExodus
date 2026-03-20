@@ -37,9 +37,6 @@ interface GeoJSONFeature {
 const SEED_LAT = 31.8
 const SEED_LNG = 35.2
 
-// Arc "connection" threshold: arcs older than this many timeline-years become solid
-const ARC_SOLID_AGE = 300
-
 // Idle rotation speed — one revolution per 20s
 const IDLE_SPEED = (2 * Math.PI) / 20
 
@@ -156,20 +153,22 @@ export default function ArchitectureGlobe({
             controls.addEventListener('end', dragEndHandlerRef.current)
           }
 
-          // Cache the globe mesh
-          const scene = globe.scene()
-          if (scene) {
-            const mesh = scene.children.find(
-              (c: any) => c.type === 'Group' && c.children && c.children.length > 0
-            )
-            globeMeshRef.current = mesh || null
-          }
-
           globeInitializedRef.current = true
           lastTime = now
 
           // Signal ready
           onReadyRef.current?.()
+        }
+
+        // Lazy-find the globe mesh (may not exist on first frame)
+        if (!globeMeshRef.current) {
+          const scene = globe.scene()
+          if (scene) {
+            const mesh = scene.children.find(
+              (c: any) => c.type === 'Group' && c.children && c.children.length > 0
+            )
+            if (mesh) globeMeshRef.current = mesh
+          }
         }
 
         const dt = Math.min((now - lastTime) / 1000, 0.1)
@@ -242,19 +241,10 @@ export default function ArchitectureGlobe({
           arcColor={(d: any) => d.eraColor}
           arcAltitude={(d: any) => d.eraAltitude}
           arcStroke={0.5}
-          arcDashLength={(d: any) => {
-            const age = currentYear - d.startYear
-            return age > ARC_SOLID_AGE ? 1 : 0.4
-          }}
-          arcDashGap={(d: any) => {
-            const age = currentYear - d.startYear
-            return age > ARC_SOLID_AGE ? 0 : 0.2
-          }}
-          arcDashAnimateTime={(d: any) => {
-            const age = currentYear - d.startYear
-            return age > ARC_SOLID_AGE ? 0 : 2000
-          }}
-          arcsTransitionDuration={1000}
+          arcDashLength={1}
+          arcDashGap={0}
+          arcDashAnimateTime={0}
+          arcsTransitionDuration={800}
           // Points
           pointsData={pointsData}
           pointLat={(d: any) => d.lat}

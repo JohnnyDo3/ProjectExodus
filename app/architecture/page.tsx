@@ -242,17 +242,6 @@ export default function ArchitecturePage() {
               ))}
             </motion.div>
 
-            {/* Globe explanation */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.35 }}
-              className="text-sm text-[var(--muted-foreground)] max-w-lg mx-auto mb-10 font-light leading-relaxed"
-            >
-              The globe above maps how architectural knowledge flowed between civilizations — each arc is an influence
-              connection between regions. Use the timeline slider to watch these connections emerge through history.
-            </motion.p>
-
             {/* CTAs */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}

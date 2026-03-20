@@ -7,6 +7,8 @@ import { useTimeTheme } from '@/components/providers/TimeThemeProvider'
 import {
   formatYear,
   getCurrentPeriodForYear,
+  getArcsForYear,
+  getPointsForYear,
 } from '@/data/architecture/globeConnections'
 
 // Dynamic imports
@@ -52,17 +54,17 @@ function GlobeLoadingSkeleton() {
 }
 
 // =============================================================================
-// LOADING OVERLAY (branded 2-second loading screen)
+// PAGE-LEVEL LOADING OVERLAY
 // =============================================================================
 
-function LoadingOverlay({ visible }: { visible: boolean }) {
+function PageLoadingOverlay({ visible }: { visible: boolean }) {
   return (
     <div
-      className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black"
+      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black"
       style={{
         opacity: visible ? 1 : 0,
         pointerEvents: visible ? 'auto' : 'none',
-        transition: 'opacity 0.6s ease-out',
+        transition: 'opacity 0.8s ease-out',
       }}
     >
       {/* Title */}
@@ -144,6 +146,8 @@ export default function GlobeLanding() {
 
   // Derived
   const currentPeriod = useMemo(() => getCurrentPeriodForYear(timelineYear), [timelineYear])
+  const arcCount = useMemo(() => getArcsForYear(timelineYear).length, [timelineYear])
+  const regionCount = useMemo(() => getPointsForYear(timelineYear).length, [timelineYear])
 
   // Globe signals it's ready — dismiss loading after minimum time
   const handleGlobeReady = useCallback(() => {
@@ -174,6 +178,9 @@ export default function GlobeLanding() {
 
   return (
     <>
+      {/* Page-level loading overlay — covers everything including header */}
+      <PageLoadingOverlay visible={isLoading} />
+
       {/* Globe — FIXED, starts below header */}
       <div
         className="fixed top-16 sm:top-20 left-0 right-0 bottom-0 overflow-hidden"
@@ -183,9 +190,6 @@ export default function GlobeLanding() {
       >
         {/* Dark background */}
         <div className="absolute inset-0 bg-black" />
-
-        {/* Loading overlay — sits on top, fades out after 2s */}
-        <LoadingOverlay visible={isLoading} />
 
         {/* Globe / Mobile fallback */}
         <div className="absolute inset-0" style={{ padding: '2vh 2vw 14vh 2vw' }}>
@@ -200,7 +204,7 @@ export default function GlobeLanding() {
           )}
         </div>
 
-        {/* Title — top left, always visible */}
+        {/* Title — top left */}
         <div
           className="absolute top-4 left-4 md:top-6 md:left-6 z-10 pointer-events-none"
           style={{
@@ -227,20 +231,50 @@ export default function GlobeLanding() {
           </p>
         </div>
 
-        {/* Globe explanation — bottom left, above timeline */}
+        {/* Stats — top right */}
         <div
-          className="absolute bottom-16 md:bottom-20 left-4 md:left-6 z-10 pointer-events-none max-w-xs"
+          className="absolute top-4 right-4 md:top-6 md:right-6 z-10 pointer-events-none text-right"
           style={{
             opacity: isLoading ? 0 : 1,
-            transition: 'opacity 1s ease-out 0.5s',
+            transform: isLoading ? 'translateY(12px)' : 'translateY(0)',
+            transition: 'opacity 1s ease-out 0.4s, transform 1s ease-out 0.4s',
           }}
         >
+          <div className="flex flex-col items-end gap-1.5">
+            <div className="flex items-center gap-2">
+              <span
+                className="text-[11px] md:text-xs font-medium tracking-wide uppercase"
+                style={{ color: 'rgba(255,255,255,0.4)' }}
+              >
+                Connections
+              </span>
+              <span
+                className="text-lg md:text-xl font-light tabular-nums"
+                style={{ color: 'rgba(212,165,74,0.9)' }}
+              >
+                {arcCount}
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span
+                className="text-[11px] md:text-xs font-medium tracking-wide uppercase"
+                style={{ color: 'rgba(255,255,255,0.4)' }}
+              >
+                Regions
+              </span>
+              <span
+                className="text-lg md:text-xl font-light tabular-nums"
+                style={{ color: 'rgba(212,165,74,0.9)' }}
+              >
+                {regionCount}
+              </span>
+            </div>
+          </div>
           <p
-            className="text-[11px] md:text-xs leading-relaxed"
-            style={{ color: 'rgba(255,255,255,0.45)' }}
+            className="text-[10px] md:text-[11px] mt-2 max-w-[200px] leading-relaxed"
+            style={{ color: 'rgba(255,255,255,0.35)' }}
           >
-            Each arc traces how building knowledge flowed between regions across millennia.
-            Drag the timeline to see connections appear through history.
+            Each arc traces how building knowledge flowed between civilizations.
           </p>
         </div>
 
