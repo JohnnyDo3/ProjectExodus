@@ -1,109 +1,70 @@
-# Globe Rebuild Plan
+# Plan: Simplify Architecture Globe — Instant Load + Loading Screen
 
-## Vision
-Blank space → shards appear one-by-one forming the globe (starting near first connection region) → once built, first arcs appear → globe rotates at real Earth's 24h rate → user can drag freely, snaps back in 1-2s → timeline slider controls which arcs/connections are visible by year.
+## Current State
+- **55-second cinematic intro**: 8s shard build → 3.5s earth reveal → 1.5s crossfade → 1.5s pause → 42s timeline sweep
+- 4 animation phases managed across GlobeLanding, ArchitectureGlobe, and useShardBuildMaterial
+- Globe starts at year -3500 and sweeps to 2025 over 42 seconds
+- Timeline slider locked until sweep finishes
 
----
-
-## Phase 1: Strip Down
-
-### Remove completely:
-- `GlobeInfoPanel.tsx` — stats panel, region cards, tooltips gone
-- Play/pause/speed controls from GlobeLanding
-- Region camera cycling system
-- Logarithmic time pacing / animation frame playback
-- Keyboard scrubbing (Space, arrows, +/-)
-- Era-based material switching logic
-
-### Keep as-is:
-- `useTerminatorMaterial.ts` — real sun position day/night shader
-- `globeConnections.ts` — arc data, region centroids, era tiers
-- `MobileGlobeFallback.tsx` — mobile SVG fallback
-- `countries.geojson` — country borders
-- Earth textures (blue marble, night lights)
+## Goal
+Replace the entire animation sequence with:
+1. A 2-second branded loading overlay (while globe textures load)
+2. Globe appears instantly with earth texture, all arcs (year = 2025), auto-rotating
+3. Explanatory text near the stats section describing what the globe/connections represent
+4. Timeline slider immediately interactive so users can explore history
 
 ---
 
-## Phase 2: Shard Build Animation
+## Changes
 
-### Rework `usePrehistoryMaterial.ts` → `useShardBuildMaterial.ts`
-- **Purpose**: Intro-only animation (not tied to timeline)
-- **Behavior**:
-  - Globe starts invisible (alpha 0)
-  - Voronoi shards appear one by one over ~8-10 seconds
-  - Shards nearest the first connection's region appear FIRST
-  - Shards radiate outward from that region
-  - Each shard fades in with a subtle glow edge effect
-  - Once all shards filled → transition to terminator material
-- **Uniforms**: `progress` (0→1 driven by time), `seedPoint` (first connection region UV), `time` (for glow pulse)
-- No dependency on timeline year — purely an entrance animation
+### 1. `GlobeLanding.tsx` — Gut the phase state machine
+- Remove `introPhase` state and all phase transition callbacks (`onBuildComplete`, `onRevealComplete`, pause timer, sweep rAF loop)
+- Remove `SWEEP_DURATION`, `SWEEP_START_YEAR`, `SWEEP_END_YEAR`, `PAUSE_DURATION` constants
+- Add a simple `isReady` boolean state (default false)
+- Start `currentYear` at **2025** (present day, all arcs visible)
+- Add a 2-second loading overlay:
+  - Dark bg, centered "ARCHITECTURE" title in golden tones, subtle pulsing spinner
+  - After globe textures load OR 2s timer (whichever is later), fade out the overlay
+- Pass NO `introPhase` to ArchitectureGlobe — globe renders in idle mode immediately
+- Timeline slider visible and interactive from the start (no slide-up animation delay)
+- Add small descriptive text block below the timeline or near the stats section
 
----
+### 2. `ArchitectureGlobe.tsx` — Remove all phase-dependent logic
+- Remove `introPhase` and `onBuildComplete`/`onRevealComplete` props
+- Remove phase-dependent camera altitude lerping (just use idle altitude: 2.2)
+- Remove phase-dependent rotation speed logic (just use idle speed)
+- Remove shard build material usage entirely — always use `useThemeGlobeMaterial`
+- Remove polygon border opacity ramping (just use final value: 0.6)
+- Simplify to: load globe → apply theme material → render arcs/points for currentYear → auto-rotate
+- Fire an `onReady` callback once the globe ref is available (signals textures loaded)
 
-## Phase 3: Real-Time Earth Rotation
+### 3. `useShardBuildMaterial.ts` — Delete entirely
+- No longer needed — the cinematic shard/reveal/crossfade shader is removed
+- This removes ~300 lines of GLSL shader code
 
-### In rebuilt `ArchitectureGlobe.tsx`:
-- **Rotation rate**: 360° / 86400s = 0.00417°/s (Earth's actual sidereal rate)
-- **Starting position**: Globe faces the first connection's region after build completes
-- **Implementation**:
-  - Track a `baseRotation` from real UTC time
-  - On each frame: `globe.rotation.y = baseRotation + (Date.now() / 86400000) * 2π`
-  - This means the globe's orientation always reflects real Earth time
+### 4. `GlobeTimeline.tsx` — Minor cleanup
+- Remove the `introPhase` conditional that disables pointer events during sweep
+- Timeline is always interactive
+- No other changes needed (era styling, slider UI stays the same)
 
-### User Interaction + Snap-back:
-- On pointer down: pause real rotation, let user drag freely
-- On pointer up: record `userOffset` (difference between current rotation and real-time rotation)
-- Animate `userOffset → 0` over 1-2 seconds using ease-out
-- During snap-back: `rotation = realTimeRotation + userOffset * (1 - t)`
-- Result: globe smoothly returns to real-time position
+### 5. `app/architecture/page.tsx` — Add globe explanation text
+- Add a small text section near the existing stats/hero area explaining:
+  - "The globe shows the flow of architectural knowledge across civilizations..."
+  - "Each arc represents influence between regions. Adjust the timeline to explore how building techniques spread through history."
+- Keep it concise — 2-3 sentences max
 
----
-
-## Phase 4: Timeline-Controlled Arcs
-
-### Simplified `GlobeLanding.tsx`:
-- State: just `timelineYear` (number)
-- Default: year of first arc in data (earliest `startYear` from globeConnections)
-- Pass `timelineYear` to ArchitectureGlobe
-- No play/pause, no speed controls, no animation loop
-
-### Simplified `GlobeTimeline.tsx`:
-- Range slider: min = first arc year, max = 2025
-- Displays current year and era name
-- Era-colored gradient background (keep this — it's useful context)
-- No play/pause buttons, no speed buttons
-
-### In `ArchitectureGlobe.tsx`:
-- `getArcsForYear(timelineYear)` → render these arcs
-- `getPointsForYear(timelineYear)` → render these points
-- Arcs appear with a brief grow animation when timeline changes
-- Points pulse briefly when they first appear
-
----
-
-## Phase 5: Sequence of Events (User Experience)
-
-1. Page loads → blank dark space
-2. ~0.5s pause → first shard appears near Levant region (first connection)
-3. Shards radiate outward, filling globe over ~8 seconds
-4. Shard material crossfades to day/night terminator material (~1s)
-5. First arcs appear (for the default timeline year), centered on screen
-6. Globe begins real-time rotation (matching Earth)
-7. User can drag globe freely, it snaps back in 1-2s
-8. User slides timeline → arcs update to show that era's connections
-
----
-
-## File Changes Summary
-
+### 6. Files touched summary
 | File | Action |
 |------|--------|
-| `ArchitectureGlobe.tsx` | **Rewrite** — shard intro, real rotation, snap-back, timeline arcs |
-| `GlobeLanding.tsx` | **Rewrite** — minimal orchestrator, just timeline year state |
-| `GlobeTimeline.tsx` | **Simplify** — slider only, no play/pause/speed |
-| `usePrehistoryMaterial.ts` | **Rework** → `useShardBuildMaterial.ts` — intro-only shard effect |
-| `useTerminatorMaterial.ts` | **Keep** — untouched |
-| `globeConnections.ts` | **Keep** — untouched |
-| `MobileGlobeFallback.tsx` | **Keep** — untouched |
-| `GlobeInfoPanel.tsx` | **Delete** |
-| `app/architecture/page.tsx` | **Minor update** — remove GlobeInfoPanel import if present |
+| `components/architecture/globe/GlobeLanding.tsx` | Major rewrite — loading overlay, remove phases |
+| `components/architecture/globe/ArchitectureGlobe.tsx` | Simplify — remove phases, always idle mode |
+| `components/architecture/globe/useShardBuildMaterial.ts` | **Delete** |
+| `components/architecture/globe/GlobeTimeline.tsx` | Minor — remove introPhase guard |
+| `app/architecture/page.tsx` | Add explanatory text section |
+
+### What stays the same
+- `useThemeGlobeMaterial.ts` — unchanged, still handles day/night texture
+- `MobileGlobeFallback.tsx` — unchanged, still handles weak GPU/mobile
+- `globeConnections.ts` — unchanged, arc/point data untouched
+- All arc rendering, era colors, region centroids, timeline slider styling
+- Auto-rotation behavior in idle mode
