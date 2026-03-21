@@ -67,25 +67,36 @@ interface PeriodLabel {
   color: string
 }
 
-const MIN_LABEL_GAP_PCT = 5.5 // minimum % gap between labels
+const MIN_ROW_GAP_PCT = 4.0 // minimum % gap between labels on the SAME row
 
 function buildLabels(): PeriodLabel[] {
   const sorted = [...ARCHITECTURAL_PERIODS].sort((a, b) => a.startYear - b.startYear)
   const labels: PeriodLabel[] = []
-  let lastPct = -Infinity
-  let above = true
+  let lastAbovePct = -Infinity
+  let lastBelowPct = -Infinity
 
   for (const p of sorted) {
     const pct = yearToPercent(p.startYear)
-    if (pct - lastPct < MIN_LABEL_GAP_PCT) continue
+    // Try to place on whichever row has more room; prefer above first
+    const aboveOk = pct - lastAbovePct >= MIN_ROW_GAP_PCT
+    const belowOk = pct - lastBelowPct >= MIN_ROW_GAP_PCT
+
+    if (!aboveOk && !belowOk) continue
+
+    // Pick the row with the most available gap
+    const above = aboveOk && belowOk
+      ? (pct - lastAbovePct) >= (pct - lastBelowPct)
+      : aboveOk
+
     labels.push({
       period: p,
       pct,
       above,
       color: getEraColor(p.startYear),
     })
-    above = !above
-    lastPct = pct
+
+    if (above) lastAbovePct = pct
+    else lastBelowPct = pct
   }
   return labels
 }
