@@ -139,7 +139,7 @@ export default function GlobeTimeline({
         borderRight: '1px solid rgba(212,165,74,0.1)',
         borderBottom: '1px solid rgba(212,165,74,0.05)',
         clipPath: 'polygon(0 0, 100% 0, 100% 100%, 2% 100%, 0 85%)',
-        paddingTop: '48px',
+        paddingTop: '32px',
       }}
     >
       <style jsx>{`
