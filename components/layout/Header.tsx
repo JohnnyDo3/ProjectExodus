@@ -157,6 +157,7 @@ export function Header() {
   ]
 
   const communityMenuItems = [
+    { label: 'Current Events', href: '/community', myLabel: 'Current Events' },
     { label: 'Discussions', href: '/community/discussions', myLabel: 'Discussions' },
     { label: 'Initiatives', href: '/community/projects', myLabel: 'Initiatives' },
     { label: 'Fish Tank', href: '/fishbowl', myLabel: 'Fish Tank' },
@@ -311,8 +312,7 @@ export function Header() {
                     onMouseEnter={handleCommunityMouseEnter}
                     onMouseLeave={handleCommunityMouseLeave}
                   >
-                    <Link
-                      href="/community"
+                    <button
                       className={`font-bold text-sm xl:text-base transition-all uppercase tracking-wide flex items-center gap-1 ${
                         isActive || communityMenuOpen
                           ? 'text-theme-primary'
@@ -325,7 +325,7 @@ export function Header() {
                     >
                       {item.name}
                       <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${communityMenuOpen ? 'rotate-180' : ''}`} />
-                    </Link>
+                    </button>
 
                     {/* Dropdown menu - centered */}
                     <div
@@ -626,7 +626,7 @@ export function Header() {
               {/* Community Quick Links */}
               <div className="space-y-2">
                 <p className="text-xs font-semibold text-[var(--muted-foreground)] uppercase tracking-wide px-2">Community Features</p>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 gap-2">
                   {communityMenuItems.map((menuItem) => {
                     const isLocked = !session // All items locked for non-users
 
