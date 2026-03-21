@@ -27,6 +27,7 @@ interface ArchitectureGlobeProps {
   isDayTheme: boolean
   onReady?: () => void
   selectedPeriod?: PeriodDefinition | null
+  onPointClick?: (point: { region: string; name: string; lat: number; lng: number }) => void
 }
 
 interface GeoJSONFeature {
@@ -58,6 +59,7 @@ export default function ArchitectureGlobe({
   isDayTheme,
   onReady,
   selectedPeriod,
+  onPointClick,
 }: ArchitectureGlobeProps) {
   const globeRef = useRef<any>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -290,6 +292,11 @@ export default function ArchitectureGlobe({
             : Math.max(0.3, Math.min(1.0, d.connectionCount * 0.08))
           }
           pointLabel={(d: any) => d.name}
+          onPointClick={onPointClick ? (point: any) => {
+            if (point && point.region && point.region !== 'building') {
+              onPointClick({ region: point.region, name: point.name, lat: point.lat, lng: point.lng })
+            }
+          } : undefined}
           // Country borders
           polygonsData={countries}
           polygonCapColor={() => 'rgba(0,0,0,0)'}

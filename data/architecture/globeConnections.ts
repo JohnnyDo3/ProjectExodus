@@ -414,3 +414,13 @@ export function getArcsForPeriod(periodId: string): GlobeArc[] {
     arc => arc.sourcePeriodId === periodId || arc.targetPeriodId === periodId
   )
 }
+
+/**
+ * Returns all arcs connected to a specific region, filtered by year.
+ * Sorted chronologically (earliest first).
+ */
+export function getArcsForRegion(regionId: string, maxYear: number): GlobeArc[] {
+  return ALL_ARCS.filter(
+    arc => arc.startYear <= maxYear && (arc.sourceRegion === regionId || arc.targetRegion === regionId)
+  )
+}

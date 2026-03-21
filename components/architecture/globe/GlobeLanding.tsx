@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import dynamic from 'next/dynamic'
 import GlobeTimeline from './GlobeTimeline'
 import { PeriodDetailPanel } from './PeriodDetailPanel'
+import { ConnectionInfoPanel } from './ConnectionInfoPanel'
 import { useTimeTheme } from '@/components/providers/TimeThemeProvider'
 import { ARCHITECTURAL_PERIODS, type PeriodDefinition } from '@/data/architecture/periods'
 import {
@@ -94,6 +95,7 @@ export default function GlobeLanding() {
   const [isLoading, setIsLoading] = useState(true)
   const [showHints, setShowHints] = useState(true)
   const [selectedPeriod, setSelectedPeriod] = useState<PeriodDefinition | null>(null)
+  const [selectedRegion, setSelectedRegion] = useState<string | null>(null)
   const mountTimeRef = useRef(Date.now())
   const globeReadyRef = useRef(false)
 
@@ -154,6 +156,11 @@ export default function GlobeLanding() {
     }
   }, [])
 
+  const handlePointClick = useCallback((point: { region: string; name: string; lat: number; lng: number }) => {
+    // Toggle: clicking the same region closes the panel
+    setSelectedRegion(prev => prev === point.region ? null : point.region)
+  }, [])
+
   // Shared fade style generator for staggered reveal
   const fadeIn = (delay: number) => ({
     opacity: isLoading ? 0 : 1,
@@ -189,6 +196,7 @@ export default function GlobeLanding() {
             isDayTheme={isDay}
             onReady={handleGlobeReady}
             selectedPeriod={selectedPeriod}
+            onPointClick={handlePointClick}
           />
         </div>
 
@@ -252,50 +260,58 @@ export default function GlobeLanding() {
           )}
         </div>
 
-        {/* ── Top right: Stats ── */}
-        <div
-          className="absolute top-4 right-4 md:top-6 md:right-6 z-10 pointer-events-none text-right"
-          style={fadeIn(0.25)}
-        >
-          <div className="flex flex-col items-end gap-1">
-            <div className="flex items-center gap-2">
-              <span
-                className="text-[10px] md:text-[11px] font-medium tracking-widest uppercase"
-                style={{ color: 'rgba(255,255,255,0.35)' }}
-              >
-                Connections
-              </span>
-              <span
-                className="text-base md:text-lg font-light tabular-nums min-w-[2ch]"
-                style={{ color: 'rgba(212,165,74,0.85)' }}
-              >
-                {arcCount}
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span
-                className="text-[10px] md:text-[11px] font-medium tracking-widest uppercase"
-                style={{ color: 'rgba(255,255,255,0.35)' }}
-              >
-                Regions
-              </span>
-              <span
-                className="text-base md:text-lg font-light tabular-nums min-w-[2ch]"
-                style={{ color: 'rgba(212,165,74,0.85)' }}
-              >
-                {regionCount}
-              </span>
-            </div>
-          </div>
-          <p
-            className="text-[10px] md:text-[11px] mt-2 max-w-[180px] leading-relaxed hidden sm:block"
-            style={{ color: 'rgba(255,255,255,0.28)' }}
+        {/* ── Top right: Stats or Connection Panel ── */}
+        {selectedRegion ? (
+          <ConnectionInfoPanel
+            regionId={selectedRegion}
+            currentYear={timelineYear}
+            onClose={() => setSelectedRegion(null)}
+          />
+        ) : (
+          <div
+            className="absolute top-4 right-4 md:top-6 md:right-6 z-10 pointer-events-none text-right"
+            style={fadeIn(0.25)}
           >
-            {selectedPeriod
-              ? 'Showing connections for this period only.'
-              : 'Arcs show how building knowledge spread between civilizations.'}
-          </p>
-        </div>
+            <div className="flex flex-col items-end gap-1">
+              <div className="flex items-center gap-2">
+                <span
+                  className="text-[10px] md:text-[11px] font-medium tracking-widest uppercase"
+                  style={{ color: 'rgba(255,255,255,0.35)' }}
+                >
+                  Connections
+                </span>
+                <span
+                  className="text-base md:text-lg font-light tabular-nums min-w-[2ch]"
+                  style={{ color: 'rgba(212,165,74,0.85)' }}
+                >
+                  {arcCount}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span
+                  className="text-[10px] md:text-[11px] font-medium tracking-widest uppercase"
+                  style={{ color: 'rgba(255,255,255,0.35)' }}
+                >
+                  Regions
+                </span>
+                <span
+                  className="text-base md:text-lg font-light tabular-nums min-w-[2ch]"
+                  style={{ color: 'rgba(212,165,74,0.85)' }}
+                >
+                  {regionCount}
+                </span>
+              </div>
+            </div>
+            <p
+              className="text-[10px] md:text-[11px] mt-2 max-w-[180px] leading-relaxed hidden sm:block"
+              style={{ color: 'rgba(255,255,255,0.28)' }}
+            >
+              {selectedPeriod
+                ? 'Showing connections for this period only.'
+                : 'Arcs show how building knowledge spread between civilizations.'}
+            </p>
+          </div>
+        )}
 
         {/* ── Timeline ── */}
         <div

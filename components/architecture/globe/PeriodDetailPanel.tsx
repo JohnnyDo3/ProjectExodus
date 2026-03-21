@@ -20,7 +20,7 @@ export function PeriodDetailPanel({ period, onClose, onNavigate }: PeriodDetailP
         background: 'rgba(0,0,0,0.8)',
         border: `1px solid ${eraColor}40`,
         boxShadow: `0 0 20px ${eraColor}15, inset 0 0 20px ${eraColor}05`,
-        animation: 'panelReveal 0.4s ease-out',
+        /* CSS animation removed — Turbopack compat */
       }}
     >
       {/* Scan line overlay */}
@@ -198,18 +198,6 @@ export function PeriodDetailPanel({ period, onClose, onNavigate }: PeriodDetailP
         </div>
       </div>
 
-      <style jsx>{`
-        @keyframes panelReveal {
-          from {
-            opacity: 0;
-            transform: translateY(8px) scale(0.97);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-          }
-        }
-      `}</style>
     </div>
   )
 }
