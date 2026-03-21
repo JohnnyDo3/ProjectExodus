@@ -40,6 +40,10 @@ export const REGION_CENTROIDS: Record<string, RegionCentroid> = {
   'oceania':        { lat: -17.7, lng: -149.4, name: 'Oceania' },           // Polynesia
   'mesoamerica':    { lat: 19.4, lng: -99.1, name: 'Mesoamerica' },         // Mexico City area
   'sw-north-america': { lat: 36.0, lng: -108.7, name: 'SW North America' }, // Pueblo region
+  // Modern architectural hubs
+  'gulf-states':    { lat: 25.2, lng: 55.3, name: 'Gulf States' },          // Dubai/Abu Dhabi
+  'australia':      { lat: -33.9, lng: 151.2, name: 'Australia' },          // Sydney
+  'brazil':         { lat: -15.8, lng: -47.9, name: 'Brazil' },             // Brasília
 }
 
 // =============================================================================

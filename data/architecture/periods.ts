@@ -1490,7 +1490,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     shortName: 'Art Deco',
     startYear: 1920,
     endYear: 1940,
-    primaryRegions: ['north-america', 'western-europe', 'global'],
+    primaryRegions: ['north-america', 'western-europe', 'south-america', 'south-asia', 'australia'],
     color: '#C9A959',
     icon: '🌆',
     description: {
@@ -1527,7 +1527,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     shortName: 'Modernism',
     startYear: 1920,
     endYear: 1970,
-    primaryRegions: ['global'],
+    primaryRegions: ['western-europe', 'north-america', 'south-america', 'east-asia', 'brazil'],
     color: '#FFFFFF',
     icon: '🏢',
     description: {
@@ -1553,8 +1553,8 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
       { name: 'Seagram Building', location: 'New York City, USA', year: '1954-1958', lat: 40.76, lng: -73.97 },
       { name: 'Farnsworth House', location: 'Plano, Illinois, USA', year: '1945-1951', lat: 41.63, lng: -88.53 },
     ],
-    influencedBy: ['art-nouveau', 'chicago-school'],
-    influenced: ['brutalism', 'high-tech', 'postmodernism'],
+    influencedBy: ['art-nouveau', 'chicago-school', 'arts-and-crafts'],
+    influenced: ['brutalism', 'high-tech', 'postmodernism', 'metabolism', 'sustainable'],
     funFact: 'Le Corbusier\'s Villa Savoye was nearly demolished for a school - it was saved and is now a French national monument!',
   },
 
@@ -1564,7 +1564,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     shortName: 'Brutalism',
     startYear: 1950,
     endYear: 1980,
-    primaryRegions: ['global'],
+    primaryRegions: ['western-europe', 'eastern-europe', 'north-america', 'south-asia', 'brazil', 'japan'],
     color: '#808080',
     icon: '🏗️',
     description: {
@@ -1591,7 +1591,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
       { name: 'National Theatre', location: 'London, UK', year: '1976', lat: 51.51, lng: -0.11 },
     ],
     influencedBy: ['international-style'],
-    influenced: ['postmodernism', 'deconstructivism', 'metabolism'],
+    influenced: ['postmodernism', 'deconstructivism', 'metabolism', 'contemporary'],
     funFact: 'Brutalism comes from the French "béton brut" meaning "raw concrete" - not from "brutal" as many people think!',
   },
 
@@ -1628,7 +1628,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
       { name: 'Hillside Terrace', location: 'Tokyo, Japan', year: '1969-1992', lat: 35.65, lng: 139.70 },
     ],
     influencedBy: ['brutalism', 'international-style'],
-    influenced: ['high-tech', 'parametricism'],
+    influenced: ['high-tech', 'parametricism', 'contemporary'],
     funFact: 'The Nakagin Capsule Tower\'s 140 capsules were each prefabricated in a factory and craned into place in just 30 days \u2014 they were meant to be replaced every 25 years but never were!',
   },
 
@@ -1665,7 +1665,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
       { name: 'Hong Kong and Shanghai Bank', location: 'Hong Kong', year: '1979-1986', lat: 22.28, lng: 114.16 },
     ],
     influencedBy: ['international-style', 'metabolism'],
-    influenced: ['sustainable', 'parametricism'],
+    influenced: ['sustainable', 'parametricism', 'contemporary'],
     funFact: 'The Centre Pompidou\'s exterior pipes are color-coded: blue for air, green for water, yellow for electricity, and red for elevators and escalators!',
   },
 
@@ -1675,7 +1675,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     shortName: 'Postmodern',
     startYear: 1970,
     endYear: 2000,
-    primaryRegions: ['global'],
+    primaryRegions: ['north-america', 'western-europe', 'east-asia', 'japan', 'gulf-states'],
     color: '#FF69B4',
     icon: '🎭',
     description: {
@@ -1702,7 +1702,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
       { name: 'Portland Building', location: 'Portland, Oregon, USA', year: '1980-1982', lat: 45.52, lng: -122.68 },
     ],
     influencedBy: ['brutalism', 'international-style', 'art-deco'],
-    influenced: ['deconstructivism', 'parametricism'],
+    influenced: ['deconstructivism', 'parametricism', 'contemporary'],
     funFact: 'Philip Johnson\'s AT&T Building (now 550 Madison) has a top shaped like a Chippendale dresser - a piece of furniture!',
   },
 
@@ -1713,7 +1713,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     startYear: 1980,
     endYear: 2025,
     ongoing: true,
-    primaryRegions: ['global'],
+    primaryRegions: ['north-america', 'western-europe', 'east-asia', 'gulf-states', 'australia'],
     color: '#9932CC',
     icon: '💥',
     description: {
@@ -1754,7 +1754,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     startYear: 2000,
     endYear: 2025,
     ongoing: true,
-    primaryRegions: ['global'],
+    primaryRegions: ['western-europe', 'scandinavia', 'east-asia', 'north-america', 'australia', 'south-asia'],
     color: '#228B22',
     icon: '🌱',
     description: {
@@ -1792,7 +1792,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     startYear: 2000,
     endYear: 2025,
     ongoing: true,
-    primaryRegions: ['global'],
+    primaryRegions: ['gulf-states', 'east-asia', 'western-europe', 'north-america', 'japan', 'south-asia'],
     color: '#00CED1',
     icon: '🌊',
     description: {
@@ -1833,7 +1833,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     startYear: 2000,
     endYear: 2025,
     ongoing: true,
-    primaryRegions: ['global'],
+    primaryRegions: ['north-america', 'western-europe', 'east-asia', 'gulf-states', 'scandinavia', 'japan', 'australia', 'south-america', 'south-asia', 'west-africa'],
     color: '#20B2AA',
     icon: '🌿',
     description: {
@@ -1859,7 +1859,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
       { name: 'Heydar Aliyev Center', location: 'Baku, Azerbaijan', year: '2012', lat: 40.40, lng: 49.87 },
       { name: 'CopenHill', location: 'Copenhagen, Denmark', year: '2019', lat: 55.69, lng: 12.61 },
     ],
-    influencedBy: ['sustainable', 'parametricism', 'deconstructivism'],
+    influencedBy: ['sustainable', 'parametricism', 'deconstructivism', 'high-tech', 'brutalism', 'postmodernism', 'metabolism'],
     influenced: [],
     funFact: 'CopenHill in Copenhagen is a waste-to-energy plant with a ski slope on its roof and a climbing wall on its facade — turning infrastructure into public recreation!',
   },
