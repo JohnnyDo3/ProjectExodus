@@ -141,7 +141,7 @@ export default function GlobeLanding() {
       {/* Globe — FIXED, starts below header */}
       <div
         className="fixed top-16 sm:top-20 left-0 right-0 bottom-0 overflow-hidden"
-        style={{ zIndex: 0, touchAction: 'none' }}
+        style={{ zIndex: 11, touchAction: 'none' }}
         aria-label="Interactive Architecture Globe"
         aria-roledescription="3D globe visualization"
       >
@@ -291,7 +291,6 @@ export default function GlobeLanding() {
       {/* Spacer — pointer-events-none so it doesn't block the fixed globe underneath */}
       <div
         className="h-[calc(100vh-4rem)] sm:h-[calc(100vh-5rem)] pointer-events-none"
-        style={{ position: 'relative', zIndex: 0 }}
         aria-hidden="true"
       />
     </>

@@ -175,7 +175,7 @@ export default function ArchitecturePage() {
       <GlobeLanding />
 
       {/* ═══ EXISTING CONTENT — scrolls over the fixed globe ═══ */}
-      <div className="relative bg-[var(--background)]" style={{ zIndex: 10 }}>
+      <div className="relative bg-[var(--background)]" style={{ zIndex: 20 }}>
 
       {/* Hero Section */}
       <section className="relative py-24 lg:py-36 overflow-hidden">
