@@ -451,7 +451,9 @@ model Article {
   title           String
   slug            String           @unique
   excerpt         String?          @db.Text
-  content         String           @db.Text
+  content         String           @db.Text              // Fallback/legacy — new articles store content in cloud
+  contentUrl      String?                                 // Cloud CDN URL for article HTML content
+  contentPublicId String?                                 // Cloudinary public ID for cleanup
   coverImage      String?
   readTime        Int?             // minutes
   views           Int              @default(0)

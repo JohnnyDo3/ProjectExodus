@@ -9,6 +9,10 @@ import {
   isValidUrl,
   CONTENT_LIMITS,
 } from '@/lib/article/contentSecurity'
+import {
+  isCloudStorageAvailable,
+  uploadArticleContent,
+} from '@/lib/article/contentStorage'
 
 /** Strip HTML tags from plain-text fields to prevent stored XSS */
 function stripHtml(text: string): string {
@@ -139,6 +143,12 @@ export async function GET(request: NextRequest) {
       Promise.all([
         prisma.article.findMany({
           where,
+          // Omit heavy content fields from listing — only needed on detail page
+          omit: {
+            content: true,
+            contentUrl: true,
+            contentPublicId: true,
+          },
           include: {
             category: true,
             author: {
@@ -399,12 +409,33 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Upload content to cloud storage if available, otherwise store in DB
+    let contentUrl: string | null = null
+    let contentPublicId: string | null = null
+    let dbContent = sanitizedContent // Fallback: full content in DB
+
+    if (isCloudStorageAvailable()) {
+      try {
+        const cloudResult = await uploadArticleContent(slug, sanitizedContent)
+        contentUrl = cloudResult.contentUrl
+        contentPublicId = cloudResult.publicId
+        // Store a truncated preview in DB (first 500 chars) for search/SEO,
+        // full content lives in cloud
+        dbContent = sanitizedContent.slice(0, 500)
+      } catch (cloudErr) {
+        console.warn('Cloud storage upload failed, falling back to DB:', cloudErr)
+        // Fallback: store full content in DB
+      }
+    }
+
     const article = await prisma.article.create({
       data: {
         title,
         slug,
         excerpt: excerpt || sanitizedContent.replace(/<[^>]*>/g, '').substring(0, 200) + '...',
-        content: sanitizedContent, // Use sanitized content
+        content: dbContent,
+        contentUrl,
+        contentPublicId,
         coverImage: body.coverImage ? sanitizeUrl(String(body.coverImage)) || null : null,
         readTime,
         status: body.status || 'PUBLISHED',

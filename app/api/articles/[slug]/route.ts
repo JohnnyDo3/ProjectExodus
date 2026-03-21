@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
 import { sanitizeHtml, isValidUrl } from '@/lib/article/contentSecurity'
+import {
+  resolveArticleContent,
+  isCloudStorageAvailable,
+  updateArticleContent,
+  deleteArticleContent,
+} from '@/lib/article/contentStorage'
 import { incrementStockScore, STOCK_POINTS } from '@/lib/stockScore'
 
 /** Strip HTML tags from plain-text fields */
@@ -201,9 +207,13 @@ export async function GET(
       _count: undefined
     }))
 
+    // Resolve content from cloud storage (CDN) or fall back to DB content
+    const resolvedContent = await resolveArticleContent(article)
+
     // Filter author's private data based on privacy settings
     const filteredArticle = {
       ...article,
+      content: resolvedContent, // Always return full content from best source
       peerReviews: processedPeerReviews,
       author: {
         ...article.author,
@@ -247,13 +257,13 @@ export async function PUT(
     // Find article by slug or ID
     let article = await prisma.article.findUnique({
       where: { id: slug },
-      select: { id: true, authorId: true }
+      select: { id: true, slug: true, authorId: true, contentPublicId: true }
     }).catch(() => null)
 
     if (!article) {
       article = await prisma.article.findUnique({
         where: { slug: slug },
-        select: { id: true, authorId: true }
+        select: { id: true, slug: true, authorId: true, contentPublicId: true }
       })
     }
 
@@ -279,12 +289,39 @@ export async function PUT(
       readTime = Math.max(1, Math.ceil(wordCount / 200))
     }
 
+    // If content changed, update cloud storage
+    let contentUrl: string | undefined
+    let contentPublicId: string | undefined
+    let dbContent: string | undefined
+
+    if (body.content) {
+      const sanitized = sanitizeHtml(body.content)
+      if (isCloudStorageAvailable()) {
+        try {
+          const cloudResult = await updateArticleContent(
+            article.slug,
+            sanitized,
+            article.contentPublicId
+          )
+          contentUrl = cloudResult.contentUrl
+          contentPublicId = cloudResult.publicId
+          dbContent = sanitized.slice(0, 500) // Truncated preview in DB
+        } catch {
+          dbContent = sanitized // Fallback to DB
+        }
+      } else {
+        dbContent = sanitized
+      }
+    }
+
     const updatedArticle = await prisma.article.update({
       where: { id: article.id },
       data: {
         title: body.title ? stripHtml(body.title) : undefined,
         excerpt: body.excerpt ? stripHtml(body.excerpt) : undefined,
-        content: body.content ? sanitizeHtml(body.content) : undefined,
+        content: dbContent,
+        contentUrl,
+        contentPublicId,
         coverImage: body.coverImage ? (isValidUrl(body.coverImage) ? body.coverImage : null) : undefined,
         readTime,
         status: body.status,
@@ -337,13 +374,13 @@ export async function DELETE(
     // Try to find by ID first, then by slug
     let article = await prisma.article.findUnique({
       where: { id: slug },
-      select: { id: true, authorId: true }
+      select: { id: true, authorId: true, contentPublicId: true }
     }).catch(() => null)
 
     if (!article) {
       article = await prisma.article.findUnique({
         where: { slug: slug },
-        select: { id: true, authorId: true }
+        select: { id: true, authorId: true, contentPublicId: true }
       })
     }
 
@@ -359,6 +396,13 @@ export async function DELETE(
         { success: false, error: 'Unauthorized - You can only delete your own articles' },
         { status: 403 }
       )
+    }
+
+    // Delete cloud content if it exists
+    if (article.contentPublicId) {
+      deleteArticleContent(article.contentPublicId).catch((err) => {
+        console.warn('Failed to delete cloud content:', err.message)
+      })
     }
 
     // Delete the article
