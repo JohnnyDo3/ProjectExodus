@@ -291,7 +291,9 @@ export default function WriteArticlePage() {
   // Upload progress state
   const [uploadProgress, setUploadProgress] = useState<{ phase: string; percent: number } | null>(null)
 
-  // Handle file upload — supports all document types, uses chunked upload for large files
+  // Handle file upload — supports all document types
+  // Uses direct single-request endpoints for PDFs and DOCX (serverless-safe),
+  // falls back to chunked upload only for very large files.
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
@@ -310,14 +312,53 @@ export default function WriteArticlePage() {
     }
 
     const fileType = fileValidation.fileType!
-    const useChunked = file.size > CONTENT_LIMITS.CHUNKED_UPLOAD_THRESHOLD
 
     try {
-      // Files that need server-side parsing (binary formats or large files)
-      const serverParsedTypes: ArticleFileType[] = ['pdf', 'docx', 'doc', 'odt']
-      const needsServerParse = serverParsedTypes.includes(fileType) || useChunked
+      // Direct single-request upload for PDF and DOCX (works on serverless)
+      if (fileType === 'pdf' && file.size <= CONTENT_LIMITS.MAX_PDF_FILE_SIZE) {
+        const sizeStr = formatFileSize(file.size)
+        toast(`Processing ${file.name} (${sizeStr})...`, { duration: 6000 })
+        setUploadProgress({ phase: 'uploading', percent: 10 })
 
-      if (needsServerParse) {
+        const formData = new FormData()
+        formData.append('pdf', file)
+        const res = await fetch('/api/articles/parse-pdf', { method: 'POST', body: formData })
+        const data = await res.json()
+        setUploadProgress(null)
+
+        if (!data.success) {
+          toast.error(data.error || 'Failed to process PDF. Try pasting your content directly.')
+          e.target.value = ''
+          return
+        }
+
+        setPastedContent(data.data.text)
+        const pages = data.data.numPages
+        const successMsg = pages
+          ? `${file.name} loaded! ${pages} page(s) extracted.`
+          : `${file.name} loaded!`
+        toast.success(`${successMsg} Click "Parse & Preview" to continue.`)
+      } else if (fileType === 'docx' && file.size <= CONTENT_LIMITS.MAX_DOCX_FILE_SIZE) {
+        const sizeStr = formatFileSize(file.size)
+        toast(`Processing ${file.name} (${sizeStr})...`, { duration: 6000 })
+        setUploadProgress({ phase: 'uploading', percent: 10 })
+
+        const formData = new FormData()
+        formData.append('docx', file)
+        const res = await fetch('/api/articles/parse-docx', { method: 'POST', body: formData })
+        const data = await res.json()
+        setUploadProgress(null)
+
+        if (!data.success) {
+          toast.error(data.error || 'Failed to process document. Try pasting your content directly.')
+          e.target.value = ''
+          return
+        }
+
+        setPastedContent(data.data.text)
+        toast.success(`${file.name} loaded! Click "Parse & Preview" to continue.`)
+      } else if (['doc', 'odt'].includes(fileType) || file.size > CONTENT_LIMITS.CHUNKED_UPLOAD_THRESHOLD) {
+        // Chunked upload for .doc, .odt, or oversized files
         const sizeStr = formatFileSize(file.size)
         toast(`Processing ${file.name} (${sizeStr})...`, { duration: 6000 })
         setUploadProgress({ phase: 'uploading', percent: 0 })

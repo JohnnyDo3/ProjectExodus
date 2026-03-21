@@ -21,6 +21,9 @@ const nextConfig: NextConfig = {
     ],
   },
   // Tree-shake heavy libraries - only bundle what's actually imported
+  // Packages with native bindings or complex CJS that must stay out of the
+  // serverless bundle and be resolved at runtime from node_modules
+  serverExternalPackages: ['pdf-parse', 'mammoth'],
   experimental: {
     optimizePackageImports: [
       'lucide-react',
