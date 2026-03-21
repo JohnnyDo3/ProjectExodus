@@ -463,7 +463,7 @@ export function CommunityNewspaper({
                       { day: '2024', event: 'Solar Foods Factory 01 Opens', detail: 'Vantaa, Finland — Solein production', icon: Sun },
                       { day: '2024', event: 'EU Hemp Building Code Updated', detail: 'Hempcrete approved in 12 nations', icon: Home },
                       { day: '2023', event: '$1.4T Climate Tech Investment', detail: 'Record global investment', icon: TrendingUp },
-                      { day: '2023', event: 'Seabin Reaches 900+ Units', detail: 'Deployed across 52 countries', icon: Waves },
+                      { day: '2023', event: 'Seabin Reaches 860+ Units', detail: '3,250+ tons marine litter removed', icon: Waves },
                     ].map((item, i) => {
                       const Icon = item.icon
                       return (

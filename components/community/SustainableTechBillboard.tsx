@@ -97,11 +97,11 @@ const SLIDES: BillboardSlide[] = [
     title: 'Solein — Protein From Air',
     subtitle: 'Solar Foods, Finland',
     description:
-      'Solar Foods produces Solein, a single-cell protein made by feeding hydrogen-oxidizing bacteria with CO₂, water, and renewable electricity. The result is a protein-rich powder (65-70% protein) that uses 100× less land than soy and 10× less water. Solein received regulatory approval in Singapore (2022) and has been submitted for EU Novel Food approval. Solar Foods\' Factory 01 in Vantaa, Finland began commercial production in 2024.',
+      'Solar Foods produces Solein by feeding hydrogen-oxidizing bacteria (Xanthobacter sp.) a gas mix of CO₂, O₂, and H₂ inside bioreactors. The result: a 65-78% protein powder with complete amino acids, naturally occurring B12, and a PDCAAS of 1.0 matching whey. Uses ~10L water/kg vs 2,500L for soy. Factory 01 in Vantaa hit full capacity (160 tons/year) in late 2025. Approved in Singapore (2022), US GRAS (2024), EU approval expected 2026. Factory 02 targeting 6,400 tons/year by 2029.',
     stat: '100×',
     statLabel: 'less land than soy protein',
     source: 'Solar Foods Ltd.',
-    sourceUrl: 'https://solarfoods.com',
+    sourceUrl: 'https://solarfoods.com/solein/',
     gradient: 'from-orange-500 via-amber-600 to-yellow-700',
     accentColor: 'orange',
     icon: Utensils,
@@ -113,11 +113,11 @@ const SLIDES: BillboardSlide[] = [
     title: 'Seabin Project',
     subtitle: 'Floating trash collectors for marinas',
     description:
-      'The Seabin is a floating debris interception device designed for marinas, yacht clubs, and ports. Each unit operates 24/7, filtering up to 25,000 liters of water per hour, capturing floating debris, microplastics down to 2mm, and even surface oils. A single Seabin removes approximately 1.4 tons of marine debris per year. Founded in 2015 by Australian surfers Andrew Turton and Pete Ceglinski, there are now 900+ units deployed across 52 countries.',
-    stat: '900+',
-    statLabel: 'units in 52 countries',
-    source: 'Seabin Project Pty Ltd',
-    sourceUrl: 'https://seabinproject.com',
+      'Founded in 2015 by Australian surfer Andrew Turton and designer Pete Ceglinski, the Seabin is a floating trash skimmer for marinas and ports. A 500W submersible pump filters up to 600,000 liters/day, catching debris, microplastics down to 2mm (microfibres to 0.3mm with add-on filter), and surface oils. Each unit captures ~3.9 kg/day (~1.4 tons/year). Over 860 units across 52+ countries have collectively removed 3,250+ tons of marine litter — 4.7 million plastic items in 2023 alone.',
+    stat: '860+',
+    statLabel: 'units in 52+ countries',
+    source: 'Seabin Project',
+    sourceUrl: 'https://seabin.io/how',
     gradient: 'from-blue-600 via-sky-700 to-teal-800',
     accentColor: 'blue',
     icon: Waves,
@@ -265,9 +265,15 @@ export function SustainableTechBillboard() {
 
             {/* Source + CTA */}
             <div className="mt-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-              <p className="text-[10px] sm:text-xs text-[var(--muted-foreground)] font-mono">
+              <a
+                href={slide.sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[10px] sm:text-xs text-[var(--muted-foreground)] font-mono hover:text-[var(--primary)] transition-colors underline decoration-dotted underline-offset-2"
+                onClick={haptic}
+              >
                 Source: {slide.source}
-              </p>
+              </a>
               <a
                 href={slide.sourceUrl}
                 target="_blank"
