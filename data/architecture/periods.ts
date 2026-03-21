@@ -255,7 +255,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     shortName: 'Mesoamerican',
     startYear: -1500,
     endYear: 900,
-    primaryRegions: ['south-america'],
+    primaryRegions: ['mesoamerica'],
     color: '#8B4513',
     icon: '🏯',
     description: {
@@ -467,7 +467,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
       { name: 'Tomb of Cyrus', location: 'Pasargadae, Iran', year: 'c. 530 BCE' },
     ],
     influencedBy: ['mesopotamian', 'ancient-egyptian'],
-    influenced: ['early-islamic', 'ottoman-classical'],
+    influenced: ['early-islamic', 'ottoman-classical', 'timurid'],
     funFact: 'Persepolis was so cosmopolitan that workers from Egypt, Babylon, Greece, and India all contributed their techniques — it was architecture\'s first truly international project!',
   },
 
@@ -655,7 +655,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
       { name: 'Bulguksa Temple', location: 'Gyeongju, South Korea', year: '751 CE' },
     ],
     influencedBy: [],
-    influenced: ['southeast-asian-classical'],
+    influenced: ['southeast-asian-classical', 'korean-classical', 'japanese-classical'],
     funFact: 'The Forbidden City has 9,999 rooms \u2014 one fewer than the mythological palace of heaven, out of respect for the gods!',
   },
 
@@ -951,7 +951,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
       { name: 'Great Mosque of Córdoba', location: 'Córdoba, Spain', year: '784-987 CE' },
     ],
     influencedBy: ['byzantine', 'ancient-persian', 'roman'],
-    influenced: ['moorish', 'ottoman-classical', 'mughal'],
+    influenced: ['moorish', 'ottoman-classical', 'mughal', 'timurid', 'west-african-kingdoms'],
     funFact: 'The Great Mosque of Córdoba has over 850 columns - many recycled from Roman and Visigothic buildings!',
   },
 
@@ -1176,7 +1176,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
       { name: 'Karlskirche', location: 'Vienna, Austria', year: '1716-1737' },
     ],
     influencedBy: ['renaissance', 'mannerism'],
-    influenced: ['rococo', 'neoclassical', 'colonial-american'],
+    influenced: ['rococo', 'neoclassical', 'colonial-american', 'colonial-spanish', 'colonial-portuguese'],
     funFact: 'The Palace of Versailles has 2,300 rooms, 67 staircases, and 2,153 windows - it took 36,000 workers to build!',
   },
 
@@ -1401,7 +1401,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
       { name: 'Standen House', location: 'East Grinstead, England', year: '1891-1894' },
     ],
     influencedBy: ['gothic-revival'],
-    influenced: ['art-nouveau', 'international-style'],
+    influenced: ['art-nouveau', 'international-style', 'scandinavian-modernism'],
     funFact: 'William Morris famously said "Have nothing in your houses that you do not know to be useful or believe to be beautiful" \u2014 a principle that still inspires designers today!',
   },
 

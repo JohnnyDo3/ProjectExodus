@@ -14,10 +14,10 @@ export interface RegionCentroid {
 }
 
 export const REGION_CENTROIDS: Record<string, RegionCentroid> = {
-  // Prehistoric regions (new)
+  // Prehistoric regions
   'levant':         { lat: 31.8, lng: 35.2, name: 'Levant' },
   'anatolia':       { lat: 37.2, lng: 38.9, name: 'Anatolia' },
-  // Existing regions
+  // Major regions
   'north-africa':   { lat: 31.0, lng: 2.0, name: 'North Africa' },
   'middle-east':    { lat: 33.3, lng: 44.4, name: 'Middle East' },
   'mediterranean':  { lat: 41.9, lng: 12.5, name: 'Mediterranean' },
@@ -30,6 +30,16 @@ export const REGION_CENTROIDS: Record<string, RegionCentroid> = {
   'iberia':         { lat: 40.4, lng: -3.7, name: 'Iberia' },
   'north-america':  { lat: 40.7, lng: -74.0, name: 'North America' },
   'south-america':  { lat: -23.5, lng: -46.6, name: 'South America' },
+  // New regions
+  'central-asia':   { lat: 39.6, lng: 66.9, name: 'Central Asia' },        // Samarkand area
+  'korea':          { lat: 37.6, lng: 127.0, name: 'Korea' },
+  'japan':          { lat: 35.0, lng: 135.8, name: 'Japan' },               // Kyoto area
+  'west-africa':    { lat: 12.0, lng: -1.5, name: 'West Africa' },          // Sahel/Timbuktu
+  'southern-africa':{ lat: -20.3, lng: 30.9, name: 'Southern Africa' },     // Great Zimbabwe
+  'scandinavia':    { lat: 59.9, lng: 10.7, name: 'Scandinavia' },          // Oslo area
+  'oceania':        { lat: -17.7, lng: -149.4, name: 'Oceania' },           // Polynesia
+  'mesoamerica':    { lat: 19.4, lng: -99.1, name: 'Mesoamerica' },         // Mexico City area
+  'sw-north-america': { lat: 36.0, lng: -108.7, name: 'SW North America' }, // Pueblo region
 }
 
 // =============================================================================

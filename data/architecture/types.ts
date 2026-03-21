@@ -60,6 +60,8 @@ export type ArchitecturalPeriod =
   | 'roman'
   | 'mesoamerican-classic'
   | 'andean-ancient'
+  | 'ancient-chinese'
+  | 'pueblo-ancestral'
   // Medieval
   | 'byzantine'
   | 'early-islamic'
@@ -72,6 +74,13 @@ export type ArchitecturalPeriod =
   | 'southeast-asian-classical'
   | 'east-asian-classical'
   | 'african-kingdoms'
+  | 'korean-classical'
+  | 'japanese-classical'
+  | 'west-african-kingdoms'
+  | 'norse-stave'
+  | 'timurid'
+  | 'great-zimbabwe'
+  | 'polynesian'
   // Renaissance to Early Modern
   | 'renaissance'
   | 'mannerism'
@@ -84,6 +93,8 @@ export type ArchitecturalPeriod =
   | 'rococo'
   | 'ottoman-baroque'
   | 'colonial-american'
+  | 'colonial-spanish'
+  | 'colonial-portuguese'
   | 'neoclassical'
   // 19th Century
   | 'gothic-revival'
@@ -91,6 +102,7 @@ export type ArchitecturalPeriod =
   | 'arts-and-crafts'
   | 'art-nouveau'
   | 'chicago-school'
+  | 'meiji-western'
   // 20th Century
   | 'art-deco'
   | 'international-style'
@@ -99,6 +111,7 @@ export type ArchitecturalPeriod =
   | 'postmodernism'
   | 'deconstructivism'
   | 'high-tech'
+  | 'scandinavian-modernism'
   // 21st Century
   | 'parametricism'
   | 'sustainable'
