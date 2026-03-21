@@ -7,10 +7,11 @@ import {
   Zap, Activity, Calendar, MapPin, Award, Eye, Flame,
   Target, Shield, Sparkles, Globe, Compass, AlertCircle, PenTool,
   Leaf, Sprout, Wind, Waves, Sun, Moon, Star, Hexagon, Network,
-  Wifi, RefreshCw, TreePine, Sunrise
+  Wifi, RefreshCw, TreePine, Sunrise, Home
 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { GuitarHeroFeed } from '@/components/discussions/GuitarHeroFeed'
+import { SustainableTechBillboard } from '@/components/community/SustainableTechBillboard'
 import { useEffect, useState } from 'react'
 
 // Guardian archetype icons - Exodology's Seven Virtues
@@ -332,6 +333,13 @@ export function CommunityNewspaper({
         <GuitarHeroFeed />
 
         {/* ============================================ */}
+        {/* SUSTAINABLE TECH BILLBOARD */}
+        {/* ============================================ */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SustainableTechBillboard />
+        </div>
+
+        {/* ============================================ */}
         {/* LIVING ARCHIVES & FOOTER */}
         {/* ============================================ */}
         <div className="flex-1 relative">
@@ -363,7 +371,13 @@ export function CommunityNewspaper({
                   </div>
 
                   <div className="p-4 space-y-2.5">
-                    {['Regenerative Systems', 'Circular Economy', 'Community Resilience', 'Bio-Integration', 'Future Ethics'].map((topic, i) => (
+                    {[
+                      { topic: 'Direct Air Capture', tag: 'Carbon removal tech scaling globally' },
+                      { topic: 'Hempcrete Building', tag: 'Carbon-negative construction materials' },
+                      { topic: 'Regenerative Agriculture', tag: 'Soil health & carbon sequestration' },
+                      { topic: 'Circular Economy', tag: 'Zero-waste product lifecycles' },
+                      { topic: 'Ocean Cleanup Tech', tag: 'Microplastics & debris interception' },
+                    ].map((item, i) => (
                       <div key={i} className="group relative p-3 rounded-lg bg-gradient-to-br from-emerald-500/5 to-teal-500/5 border border-emerald-500/20 hover:border-emerald-500/40 transition-all">
                         <div className="flex items-center gap-3">
                           <div className="relative flex-shrink-0">
@@ -374,10 +388,10 @@ export function CommunityNewspaper({
                           </div>
                           <div className="flex-1 min-w-0 space-y-0.5">
                             <p className="text-xs font-bold text-[var(--foreground)] truncate">
-                              #{topic}
+                              #{item.topic}
                             </p>
                             <p className="text-[9px] text-theme-muted font-mono">
-                              {Math.floor(Math.random() * 500) + 100} active
+                              {item.tag}
                             </p>
                           </div>
                           <Sparkles className="w-4 h-4 text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -400,11 +414,11 @@ export function CommunityNewspaper({
 
                   <div className="p-4 space-y-2.5">
                     {[
-                      { badge: 'First Light', user: 'New Guardians', count: 12, icon: Sunrise },
-                      { badge: 'Collective Force', user: 'Contributors', count: 8, icon: Users },
-                      { badge: 'Wisdom Keeper', user: 'Authors', count: 5, icon: Eye },
-                      { badge: 'Catalyst', user: 'Innovators', count: 3, icon: Zap },
-                      { badge: 'Pillar', user: 'Leaders', count: 2, icon: Shield }
+                      { badge: 'Community Members', user: 'total registered', count: communityStats.totalMembers, icon: Users },
+                      { badge: 'Published Articles', user: 'knowledge pieces', count: communityStats.totalArticles, icon: Eye },
+                      { badge: 'Active Initiatives', user: 'projects underway', count: communityStats.activeProjects, icon: Rocket },
+                      { badge: 'Learning Modules', user: 'courses available', count: communityStats.knowledgeArticles, icon: BookOpen },
+                      { badge: 'Total Projects', user: 'created to date', count: communityStats.totalProjects, icon: Zap },
                     ].map((achievement, i) => {
                       const Icon = achievement.icon
                       return (
@@ -445,11 +459,11 @@ export function CommunityNewspaper({
 
                   <div className="p-4 space-y-2.5">
                     {[
-                      { day: 'MON', event: 'Community Convergence', time: '2:00 PM', icon: Users },
-                      { day: 'TUE', event: 'Initiative Launch', time: '4:00 PM', icon: Rocket },
-                      { day: 'WED', event: 'Wisdom Circle', time: '3:00 PM', icon: BookOpen },
-                      { day: 'THU', event: 'Regeneration Forum', time: '5:00 PM', icon: RefreshCw },
-                      { day: 'FRI', event: 'Reflection & Recognition', time: '6:00 PM', icon: Star }
+                      { day: '2025', event: 'Climeworks Mammoth Goes Live', detail: 'Iceland — 36K tons CO₂/yr', icon: Wind },
+                      { day: '2024', event: 'Solar Foods Factory 01 Opens', detail: 'Vantaa, Finland — Solein production', icon: Sun },
+                      { day: '2024', event: 'EU Hemp Building Code Updated', detail: 'Hempcrete approved in 12 nations', icon: Home },
+                      { day: '2023', event: '$1.4T Climate Tech Investment', detail: 'Record global investment', icon: TrendingUp },
+                      { day: '2023', event: 'Seabin Reaches 900+ Units', detail: 'Deployed across 52 countries', icon: Waves },
                     ].map((item, i) => {
                       const Icon = item.icon
                       return (
@@ -468,7 +482,7 @@ export function CommunityNewspaper({
                               </p>
                               <p className="text-[9px] text-theme-muted flex items-center gap-1 font-mono">
                                 <Clock className="w-2.5 h-2.5" />
-                                {item.time}
+                                {item.detail}
                               </p>
                             </div>
                           </div>
