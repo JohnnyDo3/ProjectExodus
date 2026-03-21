@@ -313,86 +313,74 @@ export default function WriteArticlePage() {
 
     const fileType = fileValidation.fileType!
 
+    const sizeStr = formatFileSize(file.size)
+
     try {
-      // Direct single-request upload for PDF and DOCX (works on serverless)
-      if (fileType === 'pdf' && file.size <= CONTENT_LIMITS.MAX_PDF_FILE_SIZE) {
-        const sizeStr = formatFileSize(file.size)
-        toast(`Processing ${file.name} (${sizeStr})...`, { duration: 6000 })
-        setUploadProgress({ phase: 'uploading', percent: 10 })
+      const useChunked = file.size > CONTENT_LIMITS.CHUNKED_UPLOAD_THRESHOLD
 
-        const formData = new FormData()
-        formData.append('pdf', file)
-        const res = await fetch('/api/articles/parse-pdf', { method: 'POST', body: formData })
-        const data = await res.json()
-        setUploadProgress(null)
+      // ── Binary formats that need server-side parsing ──
+      if (fileType === 'pdf' || fileType === 'docx' || fileType === 'doc' || fileType === 'odt') {
+        // Small PDF/DOCX: direct single-request upload (fast, serverless-safe)
+        // Large or .doc/.odt: chunked upload (handles any size reliably)
+        if (!useChunked && fileType === 'pdf') {
+          toast(`Processing ${file.name} (${sizeStr})...`, { duration: 6000 })
+          setUploadProgress({ phase: 'uploading', percent: 10 })
 
-        if (!data.success) {
-          toast.error(data.error || 'Failed to process PDF. Try pasting your content directly.')
-          e.target.value = ''
-          return
+          const formData = new FormData()
+          formData.append('pdf', file)
+          const res = await fetch('/api/articles/parse-pdf', { method: 'POST', body: formData })
+
+          if (!res.ok && res.status === 413) {
+            // Body too large for serverless — fall through to chunked
+            throw new Error('__USE_CHUNKED__')
+          }
+
+          const data = await res.json()
+          setUploadProgress(null)
+
+          if (!data.success) {
+            toast.error(data.error || 'Failed to process PDF. Try pasting your content directly.')
+            e.target.value = ''
+            return
+          }
+
+          setPastedContent(data.data.text)
+          const pages = data.data.numPages
+          const successMsg = pages
+            ? `${file.name} loaded! ${pages} page(s) extracted.`
+            : `${file.name} loaded!`
+          toast.success(`${successMsg} Click "Parse & Preview" to continue.`)
+        } else if (!useChunked && fileType === 'docx') {
+          toast(`Processing ${file.name} (${sizeStr})...`, { duration: 6000 })
+          setUploadProgress({ phase: 'uploading', percent: 10 })
+
+          const formData = new FormData()
+          formData.append('docx', file)
+          const res = await fetch('/api/articles/parse-docx', { method: 'POST', body: formData })
+
+          if (!res.ok && res.status === 413) {
+            throw new Error('__USE_CHUNKED__')
+          }
+
+          const data = await res.json()
+          setUploadProgress(null)
+
+          if (!data.success) {
+            toast.error(data.error || 'Failed to process document. Try pasting your content directly.')
+            e.target.value = ''
+            return
+          }
+
+          setPastedContent(data.data.text)
+          toast.success(`${file.name} loaded! Click "Parse & Preview" to continue.`)
+        } else {
+          // Chunked upload for large files and .doc/.odt
+          throw new Error('__USE_CHUNKED__')
         }
-
-        setPastedContent(data.data.text)
-        const pages = data.data.numPages
-        const successMsg = pages
-          ? `${file.name} loaded! ${pages} page(s) extracted.`
-          : `${file.name} loaded!`
-        toast.success(`${successMsg} Click "Parse & Preview" to continue.`)
-      } else if (fileType === 'docx' && file.size <= CONTENT_LIMITS.MAX_DOCX_FILE_SIZE) {
-        const sizeStr = formatFileSize(file.size)
-        toast(`Processing ${file.name} (${sizeStr})...`, { duration: 6000 })
-        setUploadProgress({ phase: 'uploading', percent: 10 })
-
-        const formData = new FormData()
-        formData.append('docx', file)
-        const res = await fetch('/api/articles/parse-docx', { method: 'POST', body: formData })
-        const data = await res.json()
-        setUploadProgress(null)
-
-        if (!data.success) {
-          toast.error(data.error || 'Failed to process document. Try pasting your content directly.')
-          e.target.value = ''
-          return
-        }
-
-        setPastedContent(data.data.text)
-        toast.success(`${file.name} loaded! Click "Parse & Preview" to continue.`)
-      } else if (['doc', 'odt'].includes(fileType) || file.size > CONTENT_LIMITS.CHUNKED_UPLOAD_THRESHOLD) {
-        // Chunked upload for .doc, .odt, or oversized files
-        const sizeStr = formatFileSize(file.size)
-        toast(`Processing ${file.name} (${sizeStr})...`, { duration: 6000 })
-        setUploadProgress({ phase: 'uploading', percent: 0 })
-
-        const result = await chunkedUpload({
-          file,
-          onProgress: (progress) => {
-            setUploadProgress({
-              phase: progress.phase,
-              percent: progress.percent,
-            })
-          },
-        })
-
-        setUploadProgress(null)
-
-        if (!result.success) {
-          toast.error(result.error || 'Failed to process file. Try pasting your content directly.')
-          e.target.value = ''
-          return
-        }
-
-        setPastedContent(result.data!.text)
-
-        const pages = result.data!.numPages
-        const successMsg = pages
-          ? `${file.name} loaded! ${pages} page(s) extracted.`
-          : `${file.name} loaded!`
-        toast.success(`${successMsg} Click "Parse & Preview" to continue.`)
-      } else {
-        // Client-readable text-based formats (txt, md, html, rtf, tex)
+      } else if (!useChunked) {
+        // Small text-based formats (txt, md, html, rtf, tex) — read client-side
         const text = await file.text()
 
-        // Quick security check on file contents
         const contentCheck = quickValidatePastedContent(text)
         if (!contentCheck.isValid) {
           toast.error(contentCheck.error || 'File contains invalid content')
@@ -402,8 +390,56 @@ export default function WriteArticlePage() {
 
         setPastedContent(text)
         toast.success(`${file.name} loaded! Click "Parse & Preview" to continue.`)
+      } else {
+        // Large text files go through chunked upload too
+        throw new Error('__USE_CHUNKED__')
       }
     } catch (error: any) {
+      // Sentinel: fall through to chunked upload for large files or 413 errors
+      if (error?.message === '__USE_CHUNKED__') {
+        try {
+          toast(`Processing ${file.name} (${sizeStr})...`, { duration: 8000 })
+          setUploadProgress({ phase: 'uploading', percent: 0 })
+
+          const result = await chunkedUpload({
+            file,
+            onProgress: (progress) => {
+              setUploadProgress({
+                phase: progress.phase,
+                percent: progress.percent,
+              })
+            },
+          })
+
+          setUploadProgress(null)
+
+          if (!result.success) {
+            toast.error(result.error || 'Failed to process file. Try pasting your content directly.')
+            e.target.value = ''
+            return
+          }
+
+          setPastedContent(result.data!.text)
+
+          const pages = result.data!.numPages
+          const successMsg = pages
+            ? `${file.name} loaded! ${pages} page(s) extracted.`
+            : `${file.name} loaded!`
+          toast.success(`${successMsg} Click "Parse & Preview" to continue.`)
+          e.target.value = ''
+          return
+        } catch (chunkedErr: any) {
+          console.error('Chunked upload error:', chunkedErr)
+          setUploadProgress(null)
+          const msg = chunkedErr.name === 'AbortError'
+            ? 'Upload cancelled.'
+            : 'Failed to process file. Try pasting your content directly.'
+          toast.error(msg)
+          e.target.value = ''
+          return
+        }
+      }
+
       console.error('File upload error:', error)
       setUploadProgress(null)
       const msg = error.name === 'AbortError'
