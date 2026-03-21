@@ -1,7 +1,16 @@
 'use client'
 
 import React, { useCallback, useMemo, useRef, useState } from 'react'
-import { formatYear, ALL_ARCS, getEraColor } from '@/data/architecture/globeConnections'
+import {
+  formatYear,
+  ALL_ARCS,
+  getEraColor,
+  ERA_TIERS,
+  getEraTier,
+  getArcsForYear,
+  getPointsForYear,
+  getCurrentPeriodForYear,
+} from '@/data/architecture/globeConnections'
 import { ARCHITECTURAL_PERIODS, type PeriodDefinition } from '@/data/architecture/periods'
 
 interface GlobeTimelineProps {
@@ -35,7 +44,6 @@ function labelTransform(pct: number): string {
 
 // =============================================================================
 // Build chapter segments from architectural periods
-// Periods become clickable chapters on the track (like YouTube chapters)
 // =============================================================================
 
 interface Chapter {
@@ -57,17 +65,16 @@ function buildChapters(): Chapter[] {
 
 // =============================================================================
 // Build period labels for above/below alternating display
-// Filter to avoid overlap — minimum gap between labels
 // =============================================================================
 
 interface PeriodLabel {
   period: PeriodDefinition
   pct: number
-  above: boolean // true = above track, false = below
+  above: boolean
   color: string
 }
 
-const MIN_ROW_GAP_PCT = 4.0 // minimum % gap between labels on the SAME row
+const MIN_ROW_GAP_PCT = 4.0
 
 function buildLabels(): PeriodLabel[] {
   const sorted = [...ARCHITECTURAL_PERIODS].sort((a, b) => a.startYear - b.startYear)
@@ -77,28 +84,49 @@ function buildLabels(): PeriodLabel[] {
 
   for (const p of sorted) {
     const pct = yearToPercent(p.startYear)
-    // Try to place on whichever row has more room; prefer above first
     const aboveOk = pct - lastAbovePct >= MIN_ROW_GAP_PCT
     const belowOk = pct - lastBelowPct >= MIN_ROW_GAP_PCT
 
     if (!aboveOk && !belowOk) continue
 
-    // Pick the row with the most available gap
     const above = aboveOk && belowOk
       ? (pct - lastAbovePct) >= (pct - lastBelowPct)
       : aboveOk
 
-    labels.push({
-      period: p,
-      pct,
-      above,
-      color: getEraColor(p.startYear),
-    })
+    labels.push({ period: p, pct, above, color: getEraColor(p.startYear) })
 
     if (above) lastAbovePct = pct
     else lastBelowPct = pct
   }
   return labels
+}
+
+// =============================================================================
+// Build era segments for the material bar
+// =============================================================================
+
+interface EraSegment {
+  name: string
+  material: string
+  color: string
+  startPct: number
+  endPct: number
+  labelPct: number
+}
+
+function buildEraSegments(): EraSegment[] {
+  return ERA_TIERS.map((t) => {
+    const startPct = yearToPercent(Math.max(t.minYear, MIN_YEAR))
+    const endPct = yearToPercent(Math.min(t.maxYear, MAX_YEAR))
+    return {
+      name: t.name,
+      material: t.material,
+      color: t.color,
+      startPct,
+      endPct,
+      labelPct: (startPct + endPct) / 2,
+    }
+  })
 }
 
 // =============================================================================
@@ -118,6 +146,13 @@ export default function GlobeTimeline({
   const formattedYear = useMemo(() => formatYear(currentYear), [currentYear])
   const chapters = useMemo(() => buildChapters(), [])
   const labels = useMemo(() => buildLabels(), [])
+  const eraSegments = useMemo(() => buildEraSegments(), [])
+
+  // Live stats for the current year
+  const activePeriod = useMemo(() => getCurrentPeriodForYear(currentYear), [currentYear])
+  const currentEra = useMemo(() => getEraTier(currentYear), [currentYear])
+  const arcCount = useMemo(() => getArcsForYear(currentYear).length, [currentYear])
+  const regionCount = useMemo(() => getPointsForYear(currentYear).length, [currentYear])
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -133,9 +168,7 @@ export default function GlobeTimeline({
   const handleChapterClick = useCallback(
     (period: PeriodDefinition) => {
       if (!onPeriodSelect) return
-      // Toggle: click same period to deselect
       onPeriodSelect(selectedPeriod?.id === period.id ? null : period)
-      // Jump slider to the start of the period
       onChange(period.startYear)
     },
     [onPeriodSelect, selectedPeriod, onChange],
@@ -150,7 +183,7 @@ export default function GlobeTimeline({
         borderRight: '1px solid rgba(212,165,74,0.1)',
         borderBottom: '1px solid rgba(212,165,74,0.05)',
         clipPath: 'polygon(0 0, 100% 0, 100% 100%, 2% 100%, 0 85%)',
-        paddingTop: '32px',
+        paddingTop: '10px',
       }}
     >
       <style jsx>{`
@@ -219,8 +252,127 @@ export default function GlobeTimeline({
         }
       `}</style>
 
+      {/* ── ACTIVE PERIOD STRIP ── */}
+      <div className="flex items-center justify-between gap-3 mb-2 px-1 min-h-[24px]">
+        {/* Left: Active period info */}
+        <div className="flex items-center gap-2 min-w-0 flex-1">
+          {activePeriod ? (
+            <>
+              <span className="text-sm md:text-base flex-shrink-0">{activePeriod.icon}</span>
+              <div className="min-w-0">
+                <div className="flex items-center gap-1.5">
+                  <span
+                    className="text-[11px] md:text-xs font-bold truncate"
+                    style={{ color: activePeriod.color }}
+                  >
+                    {activePeriod.name}
+                  </span>
+                  <span
+                    className="text-[9px] font-medium flex-shrink-0"
+                    style={{ color: 'rgba(255,255,255,0.35)' }}
+                  >
+                    {formatYear(activePeriod.startYear)} – {activePeriod.ongoing ? 'Present' : formatYear(activePeriod.endYear)}
+                  </span>
+                </div>
+                <p
+                  className="text-[9px] leading-tight truncate hidden sm:block"
+                  style={{ color: 'rgba(255,255,255,0.4)' }}
+                >
+                  {activePeriod.funFact.slice(0, 90)}{activePeriod.funFact.length > 90 ? '…' : ''}
+                </p>
+              </div>
+            </>
+          ) : (
+            <span
+              className="text-[10px] font-medium tracking-wider uppercase"
+              style={{ color: 'rgba(255,255,255,0.3)' }}
+            >
+              Slide to explore
+            </span>
+          )}
+        </div>
+
+        {/* Right: Live stats */}
+        <div className="flex items-center gap-3 flex-shrink-0">
+          <div className="text-right">
+            <div className="flex items-center gap-1">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(212,165,74,0.6)" strokeWidth="2">
+                <path d="M22 12c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2s10 4.48 10 10z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              <span className="text-[10px] font-bold tabular-nums" style={{ color: 'rgba(212,165,74,0.8)' }}>
+                {regionCount}
+              </span>
+            </div>
+          </div>
+          <div className="text-right">
+            <div className="flex items-center gap-1">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(212,165,74,0.6)" strokeWidth="2">
+                <path d="M4 12h16M12 4l8 8-8 8" />
+              </svg>
+              <span className="text-[10px] font-bold tabular-nums" style={{ color: 'rgba(212,165,74,0.8)' }}>
+                {arcCount}
+              </span>
+            </div>
+          </div>
+          <div
+            className="px-1.5 py-0.5 rounded text-[8px] font-bold tracking-wide uppercase"
+            style={{
+              color: currentEra.color,
+              background: `${currentEra.color}15`,
+              border: `1px solid ${currentEra.color}30`,
+            }}
+          >
+            {currentEra.material}
+          </div>
+        </div>
+      </div>
+
+      {/* ── ERA MATERIAL BAR ── */}
+      <div className="relative h-[14px] mb-1 rounded-full overflow-hidden flex">
+        {eraSegments.map((seg) => {
+          const widthPct = seg.endPct - seg.startPct
+          if (widthPct <= 0) return null
+          const isCurrent = currentYear >= ERA_TIERS.find(t => t.material === seg.material)!.minYear &&
+                           currentYear <= ERA_TIERS.find(t => t.material === seg.material)!.maxYear
+          return (
+            <div
+              key={seg.material}
+              className="relative h-full flex items-center justify-center overflow-hidden"
+              style={{
+                width: `${widthPct}%`,
+                background: isCurrent ? `${seg.color}30` : `${seg.color}12`,
+                borderRight: '1px solid rgba(0,0,0,0.3)',
+                transition: 'background 0.3s ease',
+              }}
+            >
+              {widthPct > 6 && (
+                <span
+                  className="text-[7px] md:text-[8px] font-bold tracking-wider uppercase whitespace-nowrap"
+                  style={{
+                    color: isCurrent ? `${seg.color}` : `${seg.color}60`,
+                    transition: 'color 0.3s ease',
+                  }}
+                >
+                  {seg.material}
+                </span>
+              )}
+            </div>
+          )
+        })}
+        {/* Playhead line on era bar */}
+        <div
+          className="absolute top-0 bottom-0 w-px z-10"
+          style={{
+            left: `${thumbPercent}%`,
+            background: 'rgba(255,255,255,0.6)',
+            transition: 'left 0.08s ease-out',
+          }}
+        />
+      </div>
+
       {/* ── LABELS ABOVE TRACK ── */}
-      <div className="relative h-[38px] pointer-events-none mb-1">
+      <div className="relative h-[28px] pointer-events-none mb-0.5">
         {labels.filter(l => l.above).map((l) => (
           <div
             key={l.period.id}
@@ -231,26 +383,25 @@ export default function GlobeTimeline({
               transform: 'translateX(-50%)',
             }}
           >
-            {/* Tick line down to track */}
             <div
               className="absolute left-1/2 -translate-x-1/2"
               style={{
                 bottom: '-4px',
                 width: '1px',
-                height: '10px',
+                height: '8px',
                 background: `${l.color}60`,
               }}
             />
             <div className="text-center whitespace-nowrap">
               <span
-                className="text-[9px] md:text-[10px] font-bold block leading-tight"
+                className="text-[8px] md:text-[9px] font-bold block leading-tight"
                 style={{ color: l.color }}
               >
                 {l.period.shortName}
               </span>
               <span
-                className="text-[7px] md:text-[8px] font-medium block leading-tight"
-                style={{ color: 'rgba(255,255,255,0.35)' }}
+                className="text-[6px] md:text-[7px] font-medium block leading-tight"
+                style={{ color: 'rgba(255,255,255,0.3)' }}
               >
                 {formatYear(l.period.startYear)}
               </span>
@@ -268,15 +419,16 @@ export default function GlobeTimeline({
             left: clampedLabelLeft(thumbPercent),
             transform: labelTransform(thumbPercent),
             transition: 'left 0.08s ease-out',
-            top: '-22px',
+            top: '-18px',
           }}
         >
           <span
-            className="inline-block px-2.5 py-0.5 text-xs font-semibold rounded-md whitespace-nowrap backdrop-blur-sm border"
+            className="inline-block px-2 py-0.5 text-[11px] font-bold rounded-md whitespace-nowrap backdrop-blur-sm border tabular-nums"
             style={{
               color: 'rgba(255,220,160,1)',
-              background: 'rgba(0,0,0,0.8)',
-              borderColor: 'rgba(212,165,74,0.3)',
+              background: 'rgba(0,0,0,0.85)',
+              borderColor: 'rgba(212,165,74,0.4)',
+              boxShadow: '0 0 8px rgba(212,165,74,0.15)',
             }}
           >
             {formattedYear}
@@ -290,6 +442,7 @@ export default function GlobeTimeline({
             if (widthPct <= 0) return null
             const isSelected = selectedPeriod?.id === ch.period.id
             const isHovered = hoveredChapter === ch.period.id
+            const isActive = activePeriod?.id === ch.period.id && !selectedPeriod
 
             return (
               <button
@@ -297,17 +450,17 @@ export default function GlobeTimeline({
                 className="relative h-full transition-all duration-150"
                 style={{
                   width: `${widthPct}%`,
-                  marginLeft: ch.startPct === yearToPercent(Math.max(ch.period.startYear, MIN_YEAR))
-                    ? undefined : undefined,
                   left: `${ch.startPct}%`,
                   position: 'absolute',
                   background: isSelected
                     ? `${ch.color}`
-                    : isHovered
-                      ? `${ch.color}90`
-                      : `${ch.color}55`,
+                    : isActive
+                      ? `${ch.color}A0`
+                      : isHovered
+                        ? `${ch.color}90`
+                        : `${ch.color}55`,
                   borderRight: '1px solid rgba(0,0,0,0.4)',
-                  opacity: isSelected ? 1 : isHovered ? 0.95 : 0.7,
+                  opacity: isSelected ? 1 : isActive ? 0.95 : isHovered ? 0.9 : 0.7,
                 }}
                 onClick={() => handleChapterClick(ch.period)}
                 onMouseEnter={() => setHoveredChapter(ch.period.id)}
@@ -315,7 +468,6 @@ export default function GlobeTimeline({
                 title={`${ch.period.name} (${formatYear(ch.period.startYear)} – ${ch.period.ongoing ? 'Present' : formatYear(ch.period.endYear)})`}
                 aria-label={`Select ${ch.period.name}`}
               >
-                {/* Selected highlight bar */}
                 {isSelected && (
                   <div
                     className="absolute inset-0"
@@ -329,7 +481,7 @@ export default function GlobeTimeline({
           })}
         </div>
 
-        {/* Hover tooltip for chapters */}
+        {/* Enhanced hover tooltip for chapters */}
         {hoveredChapter && (() => {
           const ch = chapters.find(c => c.period.id === hoveredChapter)
           if (!ch) return null
@@ -340,28 +492,41 @@ export default function GlobeTimeline({
               style={{
                 left: clampedLabelLeft(centerPct),
                 transform: labelTransform(centerPct),
-                top: '-44px',
+                top: '-68px',
               }}
             >
               <div
-                className="px-2.5 py-1 rounded-md backdrop-blur-md whitespace-nowrap"
+                className="px-3 py-2 rounded-lg backdrop-blur-md whitespace-nowrap"
                 style={{
-                  background: 'rgba(0,0,0,0.85)',
-                  border: `1px solid ${ch.color}60`,
+                  background: 'rgba(0,0,0,0.9)',
+                  border: `1px solid ${ch.color}50`,
+                  boxShadow: `0 0 15px ${ch.color}15`,
                 }}
               >
-                <span className="text-[10px] font-bold" style={{ color: ch.color }}>
-                  {ch.period.icon} {ch.period.shortName}
-                </span>
-                <span className="text-[9px] font-medium ml-1.5" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                  {formatYear(ch.period.startYear)}
-                </span>
+                <div className="flex items-center gap-1.5 mb-0.5">
+                  <span className="text-xs">{ch.period.icon}</span>
+                  <span className="text-[11px] font-bold" style={{ color: ch.color }}>
+                    {ch.period.shortName}
+                  </span>
+                  <span className="text-[9px] font-medium" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                    {formatYear(ch.period.startYear)} – {ch.period.ongoing ? 'Present' : formatYear(ch.period.endYear)}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[8px]" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                    {ch.period.primaryRegions.filter(r => r !== 'global').length} regions
+                  </span>
+                  <span className="text-[8px]" style={{ color: 'rgba(255,255,255,0.2)' }}>·</span>
+                  <span className="text-[8px]" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                    {ch.period.keyCharacteristics[0]}
+                  </span>
+                </div>
               </div>
             </div>
           )
         })()}
 
-        {/* Range input (sits on top of chapters) */}
+        {/* Range input */}
         <input
           type="range"
           min={MIN_YEAR}
@@ -381,7 +546,7 @@ export default function GlobeTimeline({
       </div>
 
       {/* ── LABELS BELOW TRACK ── */}
-      <div className="relative h-[34px] mt-1 pointer-events-none">
+      <div className="relative h-[26px] mt-0.5 pointer-events-none">
         {labels.filter(l => !l.above).map((l) => (
           <div
             key={l.period.id}
@@ -392,26 +557,25 @@ export default function GlobeTimeline({
               transform: 'translateX(-50%)',
             }}
           >
-            {/* Tick line up to track */}
             <div
               className="absolute left-1/2 -translate-x-1/2"
               style={{
                 top: '-4px',
                 width: '1px',
-                height: '10px',
+                height: '8px',
                 background: `${l.color}60`,
               }}
             />
-            <div className="text-center whitespace-nowrap pt-1.5">
+            <div className="text-center whitespace-nowrap pt-1">
               <span
-                className="text-[9px] md:text-[10px] font-bold block leading-tight"
+                className="text-[8px] md:text-[9px] font-bold block leading-tight"
                 style={{ color: l.color }}
               >
                 {l.period.shortName}
               </span>
               <span
-                className="text-[7px] md:text-[8px] font-medium block leading-tight"
-                style={{ color: 'rgba(255,255,255,0.35)' }}
+                className="text-[6px] md:text-[7px] font-medium block leading-tight"
+                style={{ color: 'rgba(255,255,255,0.3)' }}
               >
                 {formatYear(l.period.startYear)}
               </span>
