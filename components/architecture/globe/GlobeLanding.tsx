@@ -195,8 +195,8 @@ export default function GlobeLanding() {
       >
         <div className="absolute inset-0 bg-black" />
 
-        {/* Globe */}
-        <div className="absolute inset-0" style={{ padding: '2vh 2vw 12vh 2vw' }}>
+        {/* Globe — touch-action:none lets Three.js OrbitControls handle touch gestures */}
+        <div className="absolute inset-0" style={{ padding: '2vh 2vw 12vh 2vw', touchAction: 'none' }}>
           {isMobile ? (
             <MobileGlobeFallback currentYear={timelineYear} />
           ) : (

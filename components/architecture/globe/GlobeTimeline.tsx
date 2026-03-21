@@ -80,6 +80,11 @@ export default function GlobeTimeline({
     [onChange]
   )
 
+  // Haptic on thumb grab (touch start on the range input)
+  const handleTouchStart = useCallback(() => {
+    try { navigator.vibrate?.(8) } catch {}
+  }, [])
+
   return (
     <div
       className="relative w-full bg-black/60 backdrop-blur-md px-4 pt-8 pb-2 md:px-5 select-none"
@@ -102,6 +107,7 @@ export default function GlobeTimeline({
           position: relative;
           z-index: 10;
           margin: 0;
+          touch-action: pan-x;
         }
 
         .globe-timeline-range::-webkit-slider-runnable-track {
@@ -120,20 +126,20 @@ export default function GlobeTimeline({
         .globe-timeline-range::-webkit-slider-thumb {
           -webkit-appearance: none;
           appearance: none;
-          width: 18px;
-          height: 18px;
+          width: 22px;
+          height: 22px;
           border-radius: 50%;
           background: #D4A54A;
           border: 2px solid rgba(255,255,255,0.9);
           box-shadow: 0 0 10px rgba(212, 165, 74, 0.7), 0 0 20px rgba(212, 165, 74, 0.3);
-          margin-top: -4px;
+          margin-top: -6px;
           cursor: grab;
           transition: box-shadow 0.2s ease, transform 0.2s ease;
         }
 
         .globe-timeline-range::-moz-range-thumb {
-          width: 18px;
-          height: 18px;
+          width: 22px;
+          height: 22px;
           border-radius: 50%;
           background: #D4A54A;
           border: 2px solid rgba(255,255,255,0.9);
@@ -221,6 +227,8 @@ export default function GlobeTimeline({
           step={STEP}
           value={currentYear}
           onChange={handleChange}
+          onInput={handleChange as any}
+          onTouchStart={handleTouchStart}
           className="globe-timeline-range relative z-10 w-full"
           aria-label={`Timeline: ${formattedYear}`}
           aria-valuemin={MIN_YEAR}

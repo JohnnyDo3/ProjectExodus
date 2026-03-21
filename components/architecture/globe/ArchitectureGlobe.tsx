@@ -126,6 +126,15 @@ export default function ArchitectureGlobe({
         controls.autoRotate = false
         controls.enableDamping = true
         controls.dampingFactor = 0.1
+        controls.enableRotate = true
+        controls.enableZoom = true
+        controls.enablePan = false
+        // Touch: one finger rotates, two fingers zoom
+        controls.touches = { ONE: 0, TWO: 1 } // ROTATE=0, DOLLY=1
+        controls.rotateSpeed = 0.8
+        controls.zoomSpeed = 0.6
+        controls.minDistance = 1.2
+        controls.maxDistance = 5.0
       }
 
       globeInitializedRef.current = true
@@ -160,7 +169,7 @@ export default function ArchitectureGlobe({
   // -------------------------------------------------------------------------
 
   return (
-    <div ref={containerRef} className="w-full h-full">
+    <div ref={containerRef} className="w-full h-full" style={{ touchAction: 'none' }}>
       {dimensions.width > 0 && dimensions.height > 0 && (
         <GlobeGL
           ref={globeRef}
