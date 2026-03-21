@@ -133,8 +133,8 @@ export default function ArchitectureGlobe({
         controls.touches = { ONE: 0, TWO: 1 } // ROTATE=0, DOLLY=1
         controls.rotateSpeed = 0.8
         controls.zoomSpeed = 0.6
-        controls.minDistance = 1.2
-        controls.maxDistance = 5.0
+        controls.minDistance = 120
+        controls.maxDistance = 600
       }
 
       globeInitializedRef.current = true
