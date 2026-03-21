@@ -1,55 +1,121 @@
-# Plan: Netflix Billboard + Real-Content Living Archives on Exodus Chronicle
+# Globe Timeline Sections & Detailed Locations Plan
 
-## What We're Doing
+## Overview
+Enhance the architecture globe with clickable period markers on the timeline, sub-region/iconic building locations, and auto-zoom-to-fit when a period is selected.
 
-Add a **Netflix-style auto-switching billboard** below the Guitar Hero feed on the Community page (Exodus Chronicle) showing real sustainable technology innovations. Keep the Living Archives section below it but update it to show real site content and real sustainability trends.
+---
 
-## Billboard Design (Split Layout)
+## 1. Add Sub-Regions & Iconic Building Locations
 
-Each slide is a full-width card with:
-- **Left side**: Gradient visual/illustration with tech category icon
-- **Right side**: Title, description (2-3 sentences of real info), source/credit, "Learn More" or "Read Article" CTA
-- **Auto-rotates every 6 seconds** with progress indicator dots at bottom
-- **Manual navigation**: dots clickable, swipe on touch
-- **Smooth crossfade transition** between slides
+**File: `data/architecture/globeConnections.ts`**
 
-## Content (Real Sustainable Tech — Starter Set)
+- Expand `REGION_CENTROIDS` with ~30-40 sub-region entries for specific cities/sites:
+  - `'levant-jericho': { lat: 31.87, lng: 35.44, name: 'Jericho' }`
+  - `'mediterranean-athens': { lat: 37.97, lng: 23.72, name: 'Athens' }`
+  - `'mediterranean-rome': { lat: 41.9, lng: 12.5, name: 'Rome' }`
+  - `'western-europe-paris': { lat: 48.86, lng: 2.35, name: 'Paris' }`
+  - `'east-asia-beijing': { lat: 39.9, lng: 116.4, name: 'Beijing' }`
+  - etc.
+- Keep existing broad region centroids (arc generation still uses `primaryRegions`)
+- Add a new `BuildingPoint` interface and `getBuildingPointsForPeriod(periodId)` / `getBuildingPointsForYear(year)` helpers
+- Add `getRegionBoundsForPeriod(periodId)` helper that collects all lat/lng from the period's regions + buildings and returns bounding box + computed camera altitude
 
-Research-backed content for the initial billboard slides:
+**File: `data/architecture/periods.ts`**
 
-1. **BioCarbon Engineering / Artificial Trees** — Mechanical trees that capture CO₂ 1,000x faster than real trees. Arizona State University's Klaus Lackner developed these using sorbent material that absorbs CO₂ from ambient air.
+- Add `lat`/`lng` coordinates to each `iconicBuildings` entry (currently has `name`, `location`, `year`)
+- This gives us ~150+ precise pin locations for iconic buildings across all periods
 
-2. **System 3E (Poland)** — Modular building system using hemp-lime bio-composite walls, achieving near-zero energy certification. Polish company pioneering affordable passive housing with natural materials.
+---
 
-3. **Hemp Insulation (HempWool / Hempitecture)** — R-3.5 per inch, carbon-negative insulation. Absorbs 1.62 tons of CO₂ per ton of hemp grown. Fire-resistant, mold-resistant, breathable. Already used in commercial buildings.
+## 2. Period Selection State & Filtered Data
 
-4. **Climeworks (Direct Air Capture)** — World's largest DAC plant "Mammoth" in Iceland. Captures 36,000 tons CO₂/year, stores it underground as rock via Carbfix process. Operational since 2024.
+**File: `components/architecture/globe/GlobeLanding.tsx`**
 
-5. **Solein (Solar Foods, Finland)** — Protein powder made from air, water, and electricity via microbial fermentation. Uses 100x less land than soy, 10x less water. EU approved for human consumption 2024.
+- Add state: `selectedPeriod: PeriodDefinition | null`
+- When a period is selected:
+  - Filter arcs to show ONLY that period's connections (not cumulative)
+  - Compute bounding box of all involved regions + iconic buildings
+  - Pass filtered data + building points to ArchitectureGlobe
+- When deselected (click again or "Show All"), revert to cumulative arc view at slider year
+- Pass `selectedPeriod` + callbacks to both ArchitectureGlobe and GlobeTimeline
 
-6. **Seabin Project** — Floating trash collectors for marinas and ports. Each unit removes 1.4 tons of debris/year including microplastics. 900+ units deployed in 52 countries.
+---
 
-## Living Archives Update
+## 3. Globe Zoom-to-Fit Logic
 
-Keep the 3-column grid but make content dynamic/real:
+**File: `components/architecture/globe/ArchitectureGlobe.tsx`**
 
-1. **Trending Streams** → Show actual trending topics from site articles/discussions (or curated sustainability news topics with real stats)
-2. **Recent Milestones** → Show actual site metrics (real user count, article count, project count) instead of static placeholder badges
-3. **This Cycle** → Show curated upcoming real-world sustainability events or link to recent site activity
+- New props: `selectedPeriod`, `buildingPoints`
+- When `selectedPeriod` changes:
+  - Animate `pointOfView()` to fit all related regions (center lat/lng + altitude calculated from geographic span)
+  - Use `globe.pointOfView({ lat, lng, altitude }, 1500)` for smooth 1.5s transition
+  - Show building points as a secondary points layer (smaller golden dots with name labels)
+- When deselected, animate back to density center or previous position
 
-## Changes
+---
 
-### New File: `components/community/SustainableTechBillboard.tsx`
-- Self-contained billboard component
-- Hardcoded initial content (user will add more later)
-- Auto-rotation with pause on hover
-- Split layout: visual left, text right
-- Progress dots navigation
-- Touch swipe support
-- Responsive (stacks on mobile)
+## 4. Holographic Period Markers on Timeline
 
-### Modified: `components/community/CommunityNewspaper.tsx`
-- Import and render `SustainableTechBillboard` between Guitar Hero feed and Living Archives
-- Update Living Archives to show real content where possible
+**File: `components/architecture/globe/GlobeTimeline.tsx`**
 
-### No route changes, no new dependencies needed
+- New props: `onPeriodSelect(period | null)`, `selectedPeriod`
+- Render period markers ABOVE the slider track at each period's `startYear` position:
+  - Small diamond/dot shapes colored by era
+  - On hover: expand to holographic tooltip showing period name + icon
+  - On click: select that period
+  - Selected: glows brighter, name stays visible, thin vertical line connects to track
+- Clustering: periods too close together show a grouped marker, expand on hover
+- Holographic style:
+  - Semi-transparent `backdrop-blur` background
+  - Golden border glow (`rgba(212,165,74,...)`)
+  - Subtle CSS scan-line gradient overlay
+  - Gentle floating animation (translateY oscillation)
+
+**New file: `components/architecture/globe/PeriodMarker.tsx`**
+
+- Individual holographic marker component with hover/select states
+- Shows: icon, shortName, year range
+- Connected to timeline track via thin golden vertical line
+
+---
+
+## 5. Period Detail Panel (when selected)
+
+**New file: `components/architecture/globe/PeriodDetailPanel.tsx`**
+
+- Compact holographic info panel in top-left (replaces simple title when period selected)
+- Contents:
+  - Period name, icon, year range
+  - Key characteristics (2-3 bullets)
+  - Regions involved (with sub-region names)
+  - "Influenced by" / "Influenced" links (clickable → navigates to those periods)
+  - Iconic buildings list (clickable → zooms globe to that building)
+- Close/deselect button
+- Holographic styling matching the markers
+
+---
+
+## 6. File Changes Summary
+
+| File | Action |
+|------|--------|
+| `data/architecture/periods.ts` | Add lat/lng to iconicBuildings entries |
+| `data/architecture/globeConnections.ts` | Add sub-regions, building point helpers, bounds calculation |
+| `components/architecture/globe/GlobeLanding.tsx` | Add selectedPeriod state, filtered data logic |
+| `components/architecture/globe/ArchitectureGlobe.tsx` | Camera fit logic, building points layer, selectedPeriod prop |
+| `components/architecture/globe/GlobeTimeline.tsx` | Period markers above slider, selection callbacks |
+| `components/architecture/globe/PeriodMarker.tsx` | **NEW** - Holographic marker component |
+| `components/architecture/globe/PeriodDetailPanel.tsx` | **NEW** - Period detail overlay |
+| `components/architecture/globe/MobileGlobeFallback.tsx` | Update for period selection + building points |
+
+---
+
+## 7. Implementation Order
+
+1. **Data layer** — Add coords to iconicBuildings, add sub-regions + helpers to globeConnections
+2. **Globe zoom** — Implement fitBounds and camera animation in ArchitectureGlobe
+3. **Period selection** — State management in GlobeLanding, filtered arcs/points
+4. **Timeline markers** — PeriodMarker component, integrate into GlobeTimeline
+5. **Detail panel** — PeriodDetailPanel component, integrate into GlobeLanding
+6. **Mobile fallback** — Update MobileGlobeFallback for period selection
+7. **Polish** — Transitions, holographic effects, clustering, edge cases
