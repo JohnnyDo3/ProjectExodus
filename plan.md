@@ -1,61 +1,55 @@
-# Plan: Move Community Page to "Current Events" in Dropdown
+# Plan: Netflix Billboard + Real-Content Living Archives on Exodus Chronicle
 
 ## What We're Doing
 
-The `/community` page (the "Exodus Chronicle" — the newspaper-style community dashboard) currently has two access points:
-1. Clicking the "Community" text in the header navigates directly to `/community`
-2. The Community dropdown shows: Discussions, Initiatives, Fish Tank
+Add a **Netflix-style auto-switching billboard** below the Guitar Hero feed on the Community page (Exodus Chronicle) showing real sustainable technology innovations. Keep the Living Archives section below it but update it to show real site content and real sustainability trends.
 
-**Goal:** Make the "Community" header link NOT navigate directly to `/community`. Instead, add the Chronicle page as the **first item** in the Community dropdown, titled **"Current Events"**. The "Community" text in the header should only open the dropdown (not navigate anywhere on click).
+## Billboard Design (Split Layout)
 
-This mirrors how the Learn dropdown works — "Learn" in the header is a dropdown trigger with "Sustainability" as the first item linking to `/learn`.
+Each slide is a full-width card with:
+- **Left side**: Gradient visual/illustration with tech category icon
+- **Right side**: Title, description (2-3 sentences of real info), source/credit, "Learn More" or "Read Article" CTA
+- **Auto-rotates every 6 seconds** with progress indicator dots at bottom
+- **Manual navigation**: dots clickable, swipe on touch
+- **Smooth crossfade transition** between slides
+
+## Content (Real Sustainable Tech — Starter Set)
+
+Research-backed content for the initial billboard slides:
+
+1. **BioCarbon Engineering / Artificial Trees** — Mechanical trees that capture CO₂ 1,000x faster than real trees. Arizona State University's Klaus Lackner developed these using sorbent material that absorbs CO₂ from ambient air.
+
+2. **System 3E (Poland)** — Modular building system using hemp-lime bio-composite walls, achieving near-zero energy certification. Polish company pioneering affordable passive housing with natural materials.
+
+3. **Hemp Insulation (HempWool / Hempitecture)** — R-3.5 per inch, carbon-negative insulation. Absorbs 1.62 tons of CO₂ per ton of hemp grown. Fire-resistant, mold-resistant, breathable. Already used in commercial buildings.
+
+4. **Climeworks (Direct Air Capture)** — World's largest DAC plant "Mammoth" in Iceland. Captures 36,000 tons CO₂/year, stores it underground as rock via Carbfix process. Operational since 2024.
+
+5. **Solein (Solar Foods, Finland)** — Protein powder made from air, water, and electricity via microbial fermentation. Uses 100x less land than soy, 10x less water. EU approved for human consumption 2024.
+
+6. **Seabin Project** — Floating trash collectors for marinas and ports. Each unit removes 1.4 tons of debris/year including microplastics. 900+ units deployed in 52 countries.
+
+## Living Archives Update
+
+Keep the 3-column grid but make content dynamic/real:
+
+1. **Trending Streams** → Show actual trending topics from site articles/discussions (or curated sustainability news topics with real stats)
+2. **Recent Milestones** → Show actual site metrics (real user count, article count, project count) instead of static placeholder badges
+3. **This Cycle** → Show curated upcoming real-world sustainability events or link to recent site activity
 
 ## Changes
 
-### File: `components/layout/Header.tsx`
+### New File: `components/community/SustainableTechBillboard.tsx`
+- Self-contained billboard component
+- Hardcoded initial content (user will add more later)
+- Auto-rotation with pause on hover
+- Split layout: visual left, text right
+- Progress dots navigation
+- Touch swipe support
+- Responsive (stacks on mobile)
 
-#### 1. Update `communityMenuItems` array (line 159-163)
-Add "Current Events" as the **first item**, pointing to `/community`:
+### Modified: `components/community/CommunityNewspaper.tsx`
+- Import and render `SustainableTechBillboard` between Guitar Hero feed and Living Archives
+- Update Living Archives to show real content where possible
 
-```ts
-const communityMenuItems = [
-  { label: 'Current Events', href: '/community', myLabel: 'Current Events' },
-  { label: 'Discussions', href: '/community/discussions', myLabel: 'Discussions' },
-  { label: 'Initiatives', href: '/community/projects', myLabel: 'Initiatives' },
-  { label: 'Fish Tank', href: '/fishbowl', myLabel: 'Fish Tank' },
-]
-```
-
-#### 2. Change desktop Community link behavior (lines 314-315)
-Currently it's `<Link href="/community">` which navigates on click. Change it to a `<button>` that only toggles the dropdown — just like Learn works as a dropdown-only trigger.
-
-Before:
-```tsx
-<Link href="/community" className="...">
-  Community
-  <ChevronDown ... />
-</Link>
-```
-
-After:
-```tsx
-<button onClick={() => setCommunityMenuOpen(!communityMenuOpen)} className="...">
-  Community
-  <ChevronDown ... />
-</button>
-```
-
-#### 3. Update mobile menu (around line 626-656)
-The mobile "Community Features" section already maps over `communityMenuItems` — adding "Current Events" to the array means it will automatically appear there as the first item too. No extra changes needed.
-
-## What Does NOT Change
-- The `/community` page itself — it stays as-is (the Exodus Chronicle)
-- The route `/community` still works if navigated to directly
-- All other dropdown items stay the same
-- The Learn dropdown stays the same
-- The top 10 leaderboard in the Community dropdown stays
-
-## Summary
-- **1 file changed:** `components/layout/Header.tsx`
-- Add "Current Events" → `/community` as first community dropdown item
-- Make "Community" header text a hover-only dropdown trigger (no direct navigation on click)
+### No route changes, no new dependencies needed
