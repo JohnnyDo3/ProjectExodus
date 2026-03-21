@@ -214,6 +214,29 @@ export interface GlobePoint {
   connectionCount: number
 }
 
+/**
+ * Returns the weighted centroid of all active arcs for a given year.
+ * Weights each region by its connection count so the camera centers
+ * on the most architecturally dense area.
+ */
+export function getDensityCenterForYear(year: number): { lat: number; lng: number } | null {
+  const points = getPointsForYear(year)
+  if (points.length === 0) return null
+
+  let totalWeight = 0
+  let wLat = 0
+  let wLng = 0
+
+  for (const p of points) {
+    const w = p.connectionCount
+    wLat += p.lat * w
+    wLng += p.lng * w
+    totalWeight += w
+  }
+
+  return { lat: wLat / totalWeight, lng: wLng / totalWeight }
+}
+
 export function getPointsForYear(year: number): GlobePoint[] {
   const arcs = getArcsForYear(year)
   const regionCounts = new Map<string, number>()

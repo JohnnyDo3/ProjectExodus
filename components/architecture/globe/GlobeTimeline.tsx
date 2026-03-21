@@ -81,7 +81,16 @@ export default function GlobeTimeline({
   )
 
   return (
-    <div className="relative w-full rounded-xl bg-black/50 backdrop-blur-md border border-white/[0.06] px-4 pt-8 pb-2 md:px-5 select-none">
+    <div
+      className="relative w-full bg-black/60 backdrop-blur-md px-4 pt-8 pb-2 md:px-5 select-none"
+      style={{
+        borderTop: '1px solid rgba(212,165,74,0.3)',
+        borderLeft: '1px solid rgba(212,165,74,0.1)',
+        borderRight: '1px solid rgba(212,165,74,0.1)',
+        borderBottom: '1px solid rgba(212,165,74,0.05)',
+        clipPath: 'polygon(0 0, 100% 0, 100% 100%, 2% 100%, 0 85%)',
+      }}
+    >
       <style jsx>{`
         .globe-timeline-range {
           -webkit-appearance: none;

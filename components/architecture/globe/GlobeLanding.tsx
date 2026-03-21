@@ -67,20 +67,30 @@ function PageLoadingOverlay({ visible }: { visible: boolean }) {
         transition: 'opacity 1s ease-out',
       }}
     >
+      <p
+        className="text-[10px] font-mono font-medium tracking-[0.4em] uppercase mb-3"
+        style={{ color: 'rgba(212, 165, 74, 0.4)' }}
+      >
+        SYS::ARCH.NAV
+      </p>
+
       <h1
-        className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight mb-5"
-        style={{ color: 'rgba(212, 165, 74, 0.85)' }}
+        className="text-3xl md:text-4xl lg:text-5xl font-light tracking-[0.1em] uppercase mb-4"
+        style={{
+          color: 'rgba(212, 165, 74, 0.85)',
+          textShadow: '0 0 30px rgba(212, 165, 74, 0.2)',
+        }}
       >
         Architecture
       </h1>
 
-      <div className="w-20 h-px bg-gradient-to-r from-transparent via-amber-500/50 to-transparent animate-pulse" />
+      <div className="w-24 h-px bg-gradient-to-r from-transparent via-amber-500/50 to-transparent animate-pulse" />
 
       <p
-        className="mt-5 text-[11px] font-medium tracking-[0.2em] uppercase animate-pulse"
-        style={{ color: 'rgba(255, 255, 255, 0.3)' }}
+        className="mt-4 text-[10px] font-mono tracking-[0.3em] uppercase animate-pulse"
+        style={{ color: 'rgba(255, 255, 255, 0.25)' }}
       >
-        Loading globe
+        INITIALIZING GLOBE
       </p>
     </div>
   )
@@ -198,70 +208,135 @@ export default function GlobeLanding() {
           )}
         </div>
 
-        {/* ── Top left: Title + period ── */}
+        {/* ── Top left: HUD Title + period ── */}
         <div
           className="absolute top-4 left-4 md:top-6 md:left-6 z-10 pointer-events-none"
           style={fadeIn(0.1)}
         >
-          <h1
-            className="text-3xl md:text-4xl lg:text-5xl font-light tracking-tight"
-            style={{ color: 'rgba(255,255,255,0.85)' }}
-          >
-            Architecture
-          </h1>
-          <p
-            className="text-xs md:text-sm font-medium mt-1.5"
+          {/* HUD bracket frame */}
+          <div
+            className="relative pl-3 py-2"
             style={{
-              color: 'rgba(212,165,74,0.85)',
-              opacity: currentPeriod ? 1 : 0,
-              transition: 'opacity 0.6s ease-out',
+              borderLeft: '2px solid rgba(212,165,74,0.5)',
+              borderTop: '1px solid rgba(212,165,74,0.2)',
             }}
           >
-            {currentPeriod ? `${currentPeriod.name} · ${formatYear(timelineYear)}` : '\u00A0'}
-          </p>
+            {/* Corner accent */}
+            <div className="absolute -top-px -left-px w-3 h-3" style={{
+              borderTop: '2px solid rgba(212,165,74,0.8)',
+              borderLeft: '2px solid rgba(212,165,74,0.8)',
+            }} />
+
+            <p
+              className="text-[9px] md:text-[10px] font-mono font-medium tracking-[0.3em] uppercase mb-1"
+              style={{ color: 'rgba(212,165,74,0.5)' }}
+            >
+              SYS::ARCH.NAV
+            </p>
+            <h1
+              className="text-2xl md:text-3xl lg:text-4xl font-light tracking-[0.08em] uppercase"
+              style={{
+                color: 'rgba(255,255,255,0.9)',
+                textShadow: '0 0 20px rgba(212,165,74,0.15)',
+              }}
+            >
+              Architecture
+            </h1>
+            <div
+              className="w-full h-px mt-2 mb-1.5"
+              style={{ background: 'linear-gradient(to right, rgba(212,165,74,0.4), transparent 80%)' }}
+            />
+            <p
+              className="text-[10px] md:text-xs font-mono"
+              style={{
+                color: 'rgba(212,165,74,0.85)',
+                opacity: currentPeriod ? 1 : 0,
+                transition: 'opacity 0.6s ease-out',
+                textShadow: '0 0 8px rgba(212,165,74,0.3)',
+              }}
+            >
+              {currentPeriod ? `${currentPeriod.name} // ${formatYear(timelineYear)}` : '\u00A0'}
+            </p>
+          </div>
         </div>
 
-        {/* ── Top right: Stats ── */}
+        {/* ── Top right: HUD Stats panel ── */}
         <div
           className="absolute top-4 right-4 md:top-6 md:right-6 z-10 pointer-events-none text-right"
           style={fadeIn(0.25)}
         >
-          <div className="flex flex-col items-end gap-1">
-            <div className="flex items-center gap-2">
-              <span
-                className="text-[10px] md:text-[11px] font-medium tracking-widest uppercase"
-                style={{ color: 'rgba(255,255,255,0.35)' }}
-              >
-                Connections
-              </span>
-              <span
-                className="text-base md:text-lg font-light tabular-nums min-w-[2ch]"
-                style={{ color: 'rgba(212,165,74,0.85)' }}
-              >
-                {arcCount}
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span
-                className="text-[10px] md:text-[11px] font-medium tracking-widest uppercase"
-                style={{ color: 'rgba(255,255,255,0.35)' }}
-              >
-                Regions
-              </span>
-              <span
-                className="text-base md:text-lg font-light tabular-nums min-w-[2ch]"
-                style={{ color: 'rgba(212,165,74,0.85)' }}
-              >
-                {regionCount}
-              </span>
-            </div>
-          </div>
-          <p
-            className="text-[10px] md:text-[11px] mt-2 max-w-[180px] leading-relaxed hidden sm:block"
-            style={{ color: 'rgba(255,255,255,0.28)' }}
+          <div
+            className="relative pr-3 py-2"
+            style={{
+              borderRight: '2px solid rgba(212,165,74,0.5)',
+              borderTop: '1px solid rgba(212,165,74,0.2)',
+            }}
           >
-            Arcs show how building knowledge spread between civilizations.
-          </p>
+            {/* Corner accent */}
+            <div className="absolute -top-px -right-px w-3 h-3" style={{
+              borderTop: '2px solid rgba(212,165,74,0.8)',
+              borderRight: '2px solid rgba(212,165,74,0.8)',
+            }} />
+
+            <p
+              className="text-[9px] md:text-[10px] font-mono font-medium tracking-[0.3em] uppercase mb-2"
+              style={{ color: 'rgba(212,165,74,0.5)' }}
+            >
+              TELEMETRY
+            </p>
+
+            <div className="flex flex-col items-end gap-1.5">
+              {/* Connections stat */}
+              <div className="flex items-center gap-2.5">
+                <span
+                  className="text-[9px] md:text-[10px] font-mono tracking-[0.2em] uppercase"
+                  style={{ color: 'rgba(255,255,255,0.4)' }}
+                >
+                  ARC.LINK
+                </span>
+                <span className="w-px h-3" style={{ background: 'rgba(212,165,74,0.3)' }} />
+                <span
+                  className="text-sm md:text-base font-mono tabular-nums min-w-[2ch]"
+                  style={{
+                    color: 'rgba(212,165,74,0.9)',
+                    textShadow: '0 0 10px rgba(212,165,74,0.4)',
+                  }}
+                >
+                  {String(arcCount).padStart(3, '0')}
+                </span>
+              </div>
+              {/* Regions stat */}
+              <div className="flex items-center gap-2.5">
+                <span
+                  className="text-[9px] md:text-[10px] font-mono tracking-[0.2em] uppercase"
+                  style={{ color: 'rgba(255,255,255,0.4)' }}
+                >
+                  RGN.NODE
+                </span>
+                <span className="w-px h-3" style={{ background: 'rgba(212,165,74,0.3)' }} />
+                <span
+                  className="text-sm md:text-base font-mono tabular-nums min-w-[2ch]"
+                  style={{
+                    color: 'rgba(212,165,74,0.9)',
+                    textShadow: '0 0 10px rgba(212,165,74,0.4)',
+                  }}
+                >
+                  {String(regionCount).padStart(2, '0')}
+                </span>
+              </div>
+            </div>
+
+            <div
+              className="w-full h-px mt-2 mb-1.5"
+              style={{ background: 'linear-gradient(to left, rgba(212,165,74,0.4), transparent 80%)' }}
+            />
+            <p
+              className="text-[9px] md:text-[10px] font-mono max-w-[200px] leading-relaxed hidden sm:block ml-auto"
+              style={{ color: 'rgba(255,255,255,0.25)' }}
+            >
+              Influence propagation between civilizations
+            </p>
+          </div>
         </div>
 
         {/* ── Timeline ── */}
