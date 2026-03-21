@@ -28,6 +28,14 @@ const MemberDirectory = dynamic(() => import('@/components/fishbowl/MemberDirect
     </div>
   ),
 })
+const EventsTab = dynamic(() => import('@/components/fishbowl/EventsTab'), {
+  ssr: false,
+  loading: () => (
+    <div className="flex items-center justify-center py-16">
+      <div className="w-12 h-12 border-4 border-theme-primary border-t-transparent rounded-full animate-spin" />
+    </div>
+  ),
+})
 import '@/components/fishbowl/fishbowl.css'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
@@ -49,6 +57,7 @@ import {
   Link2,
   Footprints,
   Flame,
+  Calendar,
 } from 'lucide-react'
 
 // ============================================
@@ -93,7 +102,7 @@ interface UserProfile {
   isFollowing?: boolean
 }
 
-type ViewMode = 'feed' | 'following' | 'followers' | 'discover' | 'tree' | 'directory'
+type ViewMode = 'feed' | 'following' | 'followers' | 'discover' | 'tree' | 'directory' | 'events'
 
 export default function FishbowlPage() {
   const { data: session, status } = useSession()
@@ -329,6 +338,7 @@ export default function FishbowlPage() {
                 { id: 'followers' as ViewMode, label: 'Fellow Travelers', icon: Heart, count: followers.length },
                 { id: 'discover' as ViewMode, label: 'Seek New Paths', icon: Compass },
                 { id: 'directory' as ViewMode, label: 'Directory', icon: Search },
+                { id: 'events' as ViewMode, label: 'Events', icon: Calendar },
                 { id: 'tree' as ViewMode, label: 'Constellation', icon: Orbit },
               ].map((tab) => (
                 <button
@@ -646,6 +656,9 @@ export default function FishbowlPage() {
             ) : activeView === 'directory' ? (
               /* Member Directory — search, filter, paginated grid */
               <MemberDirectory />
+            ) : activeView === 'events' ? (
+              /* Events — full gatherings view */
+              <EventsTab />
             ) : activeView === 'tree' ? (
               /* Tree Map View */
               <NetworkTreeMap
