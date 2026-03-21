@@ -1,70 +1,61 @@
-# Plan: Simplify Architecture Globe — Instant Load + Loading Screen
+# Plan: Move Community Page to "Current Events" in Dropdown
 
-## Current State
-- **55-second cinematic intro**: 8s shard build → 3.5s earth reveal → 1.5s crossfade → 1.5s pause → 42s timeline sweep
-- 4 animation phases managed across GlobeLanding, ArchitectureGlobe, and useShardBuildMaterial
-- Globe starts at year -3500 and sweeps to 2025 over 42 seconds
-- Timeline slider locked until sweep finishes
+## What We're Doing
 
-## Goal
-Replace the entire animation sequence with:
-1. A 2-second branded loading overlay (while globe textures load)
-2. Globe appears instantly with earth texture, all arcs (year = 2025), auto-rotating
-3. Explanatory text near the stats section describing what the globe/connections represent
-4. Timeline slider immediately interactive so users can explore history
+The `/community` page (the "Exodus Chronicle" — the newspaper-style community dashboard) currently has two access points:
+1. Clicking the "Community" text in the header navigates directly to `/community`
+2. The Community dropdown shows: Discussions, Initiatives, Fish Tank
 
----
+**Goal:** Make the "Community" header link NOT navigate directly to `/community`. Instead, add the Chronicle page as the **first item** in the Community dropdown, titled **"Current Events"**. The "Community" text in the header should only open the dropdown (not navigate anywhere on click).
+
+This mirrors how the Learn dropdown works — "Learn" in the header is a dropdown trigger with "Sustainability" as the first item linking to `/learn`.
 
 ## Changes
 
-### 1. `GlobeLanding.tsx` — Gut the phase state machine
-- Remove `introPhase` state and all phase transition callbacks (`onBuildComplete`, `onRevealComplete`, pause timer, sweep rAF loop)
-- Remove `SWEEP_DURATION`, `SWEEP_START_YEAR`, `SWEEP_END_YEAR`, `PAUSE_DURATION` constants
-- Add a simple `isReady` boolean state (default false)
-- Start `currentYear` at **2025** (present day, all arcs visible)
-- Add a 2-second loading overlay:
-  - Dark bg, centered "ARCHITECTURE" title in golden tones, subtle pulsing spinner
-  - After globe textures load OR 2s timer (whichever is later), fade out the overlay
-- Pass NO `introPhase` to ArchitectureGlobe — globe renders in idle mode immediately
-- Timeline slider visible and interactive from the start (no slide-up animation delay)
-- Add small descriptive text block below the timeline or near the stats section
+### File: `components/layout/Header.tsx`
 
-### 2. `ArchitectureGlobe.tsx` — Remove all phase-dependent logic
-- Remove `introPhase` and `onBuildComplete`/`onRevealComplete` props
-- Remove phase-dependent camera altitude lerping (just use idle altitude: 2.2)
-- Remove phase-dependent rotation speed logic (just use idle speed)
-- Remove shard build material usage entirely — always use `useThemeGlobeMaterial`
-- Remove polygon border opacity ramping (just use final value: 0.6)
-- Simplify to: load globe → apply theme material → render arcs/points for currentYear → auto-rotate
-- Fire an `onReady` callback once the globe ref is available (signals textures loaded)
+#### 1. Update `communityMenuItems` array (line 159-163)
+Add "Current Events" as the **first item**, pointing to `/community`:
 
-### 3. `useShardBuildMaterial.ts` — Delete entirely
-- No longer needed — the cinematic shard/reveal/crossfade shader is removed
-- This removes ~300 lines of GLSL shader code
+```ts
+const communityMenuItems = [
+  { label: 'Current Events', href: '/community', myLabel: 'Current Events' },
+  { label: 'Discussions', href: '/community/discussions', myLabel: 'Discussions' },
+  { label: 'Initiatives', href: '/community/projects', myLabel: 'Initiatives' },
+  { label: 'Fish Tank', href: '/fishbowl', myLabel: 'Fish Tank' },
+]
+```
 
-### 4. `GlobeTimeline.tsx` — Minor cleanup
-- Remove the `introPhase` conditional that disables pointer events during sweep
-- Timeline is always interactive
-- No other changes needed (era styling, slider UI stays the same)
+#### 2. Change desktop Community link behavior (lines 314-315)
+Currently it's `<Link href="/community">` which navigates on click. Change it to a `<button>` that only toggles the dropdown — just like Learn works as a dropdown-only trigger.
 
-### 5. `app/architecture/page.tsx` — Add globe explanation text
-- Add a small text section near the existing stats/hero area explaining:
-  - "The globe shows the flow of architectural knowledge across civilizations..."
-  - "Each arc represents influence between regions. Adjust the timeline to explore how building techniques spread through history."
-- Keep it concise — 2-3 sentences max
+Before:
+```tsx
+<Link href="/community" className="...">
+  Community
+  <ChevronDown ... />
+</Link>
+```
 
-### 6. Files touched summary
-| File | Action |
-|------|--------|
-| `components/architecture/globe/GlobeLanding.tsx` | Major rewrite — loading overlay, remove phases |
-| `components/architecture/globe/ArchitectureGlobe.tsx` | Simplify — remove phases, always idle mode |
-| `components/architecture/globe/useShardBuildMaterial.ts` | **Delete** |
-| `components/architecture/globe/GlobeTimeline.tsx` | Minor — remove introPhase guard |
-| `app/architecture/page.tsx` | Add explanatory text section |
+After:
+```tsx
+<button onClick={() => setCommunityMenuOpen(!communityMenuOpen)} className="...">
+  Community
+  <ChevronDown ... />
+</button>
+```
 
-### What stays the same
-- `useThemeGlobeMaterial.ts` — unchanged, still handles day/night texture
-- `MobileGlobeFallback.tsx` — unchanged, still handles weak GPU/mobile
-- `globeConnections.ts` — unchanged, arc/point data untouched
-- All arc rendering, era colors, region centroids, timeline slider styling
-- Auto-rotation behavior in idle mode
+#### 3. Update mobile menu (around line 626-656)
+The mobile "Community Features" section already maps over `communityMenuItems` — adding "Current Events" to the array means it will automatically appear there as the first item too. No extra changes needed.
+
+## What Does NOT Change
+- The `/community` page itself — it stays as-is (the Exodus Chronicle)
+- The route `/community` still works if navigated to directly
+- All other dropdown items stay the same
+- The Learn dropdown stays the same
+- The top 10 leaderboard in the Community dropdown stays
+
+## Summary
+- **1 file changed:** `components/layout/Header.tsx`
+- Add "Current Events" → `/community` as first community dropdown item
+- Make "Community" header text a hover-only dropdown trigger (no direct navigation on click)
