@@ -89,10 +89,17 @@ function PageLoadingOverlay({ visible }: { visible: boolean }) {
 export default function GlobeLanding() {
   const [timelineYear, setTimelineYear] = useState(PRESENT_YEAR)
   const [isLoading, setIsLoading] = useState(true)
+  const [showHints, setShowHints] = useState(true)
   const mountTimeRef = useRef(Date.now())
   const globeReadyRef = useRef(false)
 
   const { isDay } = useTimeTheme()
+
+  // Auto-dismiss hints after 5 seconds, or on first globe interaction
+  useEffect(() => {
+    const timer = setTimeout(() => setShowHints(false), 5000)
+    return () => clearTimeout(timer)
+  }, [])
 
   // Derived
   const currentPeriod = useMemo(() => getCurrentPeriodForYear(timelineYear), [timelineYear])
@@ -117,6 +124,7 @@ export default function GlobeLanding() {
 
   const handleTimelineChange = useCallback((year: number) => {
     setTimelineYear(year)
+    setShowHints(false)
   }, [])
 
   // Shared fade style generator for staggered reveal
@@ -140,13 +148,44 @@ export default function GlobeLanding() {
         <div className="absolute inset-0 bg-black" />
 
         {/* Globe */}
-        <div className="absolute inset-0" style={{ padding: '2vh 2vw 12vh 2vw' }}>
+        <div
+          className="absolute inset-0"
+          style={{ padding: '2vh 2vw 12vh 2vw' }}
+          onPointerDown={() => setShowHints(false)}
+        >
           <ArchitectureGlobe
             currentYear={timelineYear}
             isDayTheme={isDay}
             onReady={handleGlobeReady}
           />
         </div>
+
+        {/* Drag hint — centered on globe, fades out */}
+        {!isLoading && (
+          <div
+            className="absolute inset-0 flex items-center justify-center pointer-events-none z-10"
+            style={{
+              opacity: showHints ? 1 : 0,
+              transition: 'opacity 1s ease-out',
+            }}
+          >
+            <div
+              className="flex flex-col items-center gap-2 px-5 py-3 rounded-xl backdrop-blur-sm"
+              style={{ background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(212,165,74,0.2)' }}
+            >
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(212,165,74,0.8)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M8 12h8M12 8l4 4-4 4" />
+                <path d="M16 12H8M12 16l-4-4 4-4" opacity="0.4" />
+              </svg>
+              <span
+                className="text-[11px] font-medium tracking-[0.15em] uppercase"
+                style={{ color: 'rgba(255,255,255,0.6)' }}
+              >
+                Drag to explore
+              </span>
+            </div>
+          </div>
+        )}
 
         {/* ── Top left: Title + period ── */}
         <div
@@ -221,6 +260,27 @@ export default function GlobeLanding() {
           role="group"
           aria-label="Timeline controls"
         >
+          {/* Timeline hint */}
+          {!isLoading && (
+            <div
+              className="flex justify-center mb-1.5 pointer-events-none"
+              style={{
+                opacity: showHints ? 1 : 0,
+                transition: 'opacity 1s ease-out',
+              }}
+            >
+              <span
+                className="text-[10px] font-medium tracking-[0.12em] uppercase px-3 py-1 rounded-full backdrop-blur-sm"
+                style={{
+                  color: 'rgba(212,165,74,0.8)',
+                  background: 'rgba(0,0,0,0.4)',
+                  border: '1px solid rgba(212,165,74,0.15)',
+                }}
+              >
+                Slide to reveal connections through time
+              </span>
+            </div>
+          )}
           <GlobeTimeline
             currentYear={timelineYear}
             onChange={handleTimelineChange}

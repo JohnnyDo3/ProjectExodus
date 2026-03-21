@@ -159,7 +159,7 @@ export default function ArchitectureGlobe({
   // -------------------------------------------------------------------------
 
   return (
-    <div ref={containerRef} className="w-full h-full">
+    <div ref={containerRef} className="w-full h-full" style={{ touchAction: 'none' }}>
       {dimensions.width > 0 && dimensions.height > 0 && (
         <GlobeGL
           ref={globeRef}
