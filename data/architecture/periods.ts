@@ -294,7 +294,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     shortName: 'Andean',
     startYear: -3000,
     endYear: 1533,
-    primaryRegions: ['south-america'],
+    primaryRegions: ['andean', 'south-america'],
     color: '#CD853F',
     icon: '🏔️',
     description: {
@@ -331,7 +331,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     shortName: 'Egyptian',
     startYear: -3100,
     endYear: -30,
-    primaryRegions: ['north-africa', 'middle-east'],
+    primaryRegions: ['nile-valley', 'north-africa', 'middle-east'],
     color: '#D4A574',
     icon: '🏺',
     description: {
@@ -593,7 +593,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     shortName: 'Byzantine',
     startYear: 330,
     endYear: 1453,
-    primaryRegions: ['eastern-europe', 'middle-east', 'mediterranean'],
+    primaryRegions: ['eastern-europe', 'middle-east', 'mediterranean', 'nile-valley', 'caucasus'],
     color: '#FFD700',
     icon: '☦️',
     description: {
@@ -630,7 +630,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     shortName: 'East Asian',
     startYear: -500,
     endYear: 1400,
-    primaryRegions: ['east-asia'],
+    primaryRegions: ['east-asia', 'korea', 'tibet'],
     color: '#B22222',
     icon: '\u{1F3EF}',
     description: {
@@ -704,7 +704,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     shortName: 'SE Asian',
     startYear: 800,
     endYear: 1500,
-    primaryRegions: ['southeast-asia'],
+    primaryRegions: ['southeast-asia', 'indonesia'],
     color: '#8B6914',
     icon: '\u{1F6D5}',
     description: {
@@ -741,7 +741,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     shortName: 'African',
     startYear: 1000,
     endYear: 1600,
-    primaryRegions: ['east-africa', 'north-africa'],
+    primaryRegions: ['east-africa', 'north-africa', 'west-africa', 'southern-africa'],
     color: '#B8860B',
     icon: '\u{1F3F0}',
     description: {
@@ -815,7 +815,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     shortName: 'Romanesque',
     startYear: 1000,
     endYear: 1200,
-    primaryRegions: ['western-europe'],
+    primaryRegions: ['western-europe', 'british-isles'],
     color: '#8B4513',
     icon: '⛪',
     description: {
@@ -852,7 +852,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     shortName: 'Gothic',
     startYear: 1150,
     endYear: 1500,
-    primaryRegions: ['western-europe'],
+    primaryRegions: ['western-europe', 'british-isles'],
     color: '#4A4A4A',
     icon: '⛪',
     description: {
@@ -926,7 +926,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     shortName: 'Islamic',
     startYear: 650,
     endYear: 1000,
-    primaryRegions: ['middle-east', 'north-africa'],
+    primaryRegions: ['middle-east', 'north-africa', 'central-asia'],
     color: '#006400',
     icon: '🕌',
     description: {
@@ -1000,7 +1000,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     shortName: 'Ottoman',
     startYear: 1453,
     endYear: 1703,
-    primaryRegions: ['middle-east', 'eastern-europe', 'north-africa'],
+    primaryRegions: ['middle-east', 'eastern-europe', 'north-africa', 'central-asia', 'caucasus'],
     color: '#8B0000',
     icon: '🕌',
     description: {
@@ -1037,7 +1037,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     shortName: 'Mughal',
     startYear: 1526,
     endYear: 1707,
-    primaryRegions: ['south-asia'],
+    primaryRegions: ['south-asia', 'central-asia'],
     color: '#E8E8E8',
     icon: '\u{1F54C}',
     description: {
@@ -1225,7 +1225,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     shortName: 'Colonial',
     startYear: 1600,
     endYear: 1780,
-    primaryRegions: ['north-america'],
+    primaryRegions: ['north-america', 'caribbean', 'sw-north-america'],
     color: '#8B4513',
     icon: '\u{1F3E0}',
     description: {
@@ -1302,7 +1302,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     shortName: 'Gothic Revival',
     startYear: 1750,
     endYear: 1900,
-    primaryRegions: ['western-europe', 'north-america'],
+    primaryRegions: ['western-europe', 'british-isles', 'north-america'],
     color: '#696969',
     icon: '\u26EA',
     description: {
@@ -1376,7 +1376,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     shortName: 'Arts & Crafts',
     startYear: 1860,
     endYear: 1910,
-    primaryRegions: ['western-europe', 'north-america'],
+    primaryRegions: ['british-isles', 'western-europe', 'north-america'],
     color: '#A0522D',
     icon: '\u{1F528}',
     description: {
@@ -1564,7 +1564,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     shortName: 'Brutalism',
     startYear: 1950,
     endYear: 1980,
-    primaryRegions: ['western-europe', 'eastern-europe', 'north-america', 'south-asia', 'brazil', 'japan'],
+    primaryRegions: ['western-europe', 'eastern-europe', 'north-america', 'south-asia', 'brazil', 'japan', 'british-isles', 'caribbean', 'australia'],
     color: '#808080',
     icon: '🏗️',
     description: {
@@ -1638,7 +1638,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     shortName: 'High-Tech',
     startYear: 1970,
     endYear: 2000,
-    primaryRegions: ['western-europe', 'east-asia'],
+    primaryRegions: ['western-europe', 'east-asia', 'british-isles', 'japan', 'pacific-nw'],
     color: '#C0C0C0',
     icon: '\u{1F527}',
     description: {
@@ -1675,7 +1675,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     shortName: 'Postmodern',
     startYear: 1970,
     endYear: 2000,
-    primaryRegions: ['north-america', 'western-europe', 'east-asia', 'japan', 'gulf-states'],
+    primaryRegions: ['north-america', 'western-europe', 'east-asia', 'japan', 'gulf-states', 'korea', 'south-america'],
     color: '#FF69B4',
     icon: '🎭',
     description: {
@@ -1713,7 +1713,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     startYear: 1980,
     endYear: 2025,
     ongoing: true,
-    primaryRegions: ['north-america', 'western-europe', 'east-asia', 'gulf-states', 'australia'],
+    primaryRegions: ['north-america', 'western-europe', 'east-asia', 'gulf-states', 'australia', 'japan', 'korea'],
     color: '#9932CC',
     icon: '💥',
     description: {
@@ -1754,7 +1754,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     startYear: 2000,
     endYear: 2025,
     ongoing: true,
-    primaryRegions: ['western-europe', 'scandinavia', 'east-asia', 'north-america', 'australia', 'south-asia'],
+    primaryRegions: ['western-europe', 'scandinavia', 'east-asia', 'north-america', 'australia', 'south-asia', 'brazil', 'japan', 'british-isles', 'indonesia'],
     color: '#228B22',
     icon: '🌱',
     description: {
@@ -1833,7 +1833,7 @@ export const ARCHITECTURAL_PERIODS: PeriodDefinition[] = [
     startYear: 2000,
     endYear: 2025,
     ongoing: true,
-    primaryRegions: ['north-america', 'western-europe', 'east-asia', 'gulf-states', 'scandinavia', 'japan', 'australia', 'south-america', 'south-asia', 'west-africa'],
+    primaryRegions: ['north-america', 'western-europe', 'east-asia', 'gulf-states', 'scandinavia', 'japan', 'australia', 'south-america', 'south-asia', 'west-africa', 'oceania', 'korea', 'brazil', 'indonesia', 'british-isles', 'pacific-nw', 'caribbean'],
     color: '#20B2AA',
     icon: '🌿',
     description: {

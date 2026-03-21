@@ -44,6 +44,15 @@ export const REGION_CENTROIDS: Record<string, RegionCentroid> = {
   'gulf-states':    { lat: 25.2, lng: 55.3, name: 'Gulf States' },          // Dubai/Abu Dhabi
   'australia':      { lat: -33.9, lng: 151.2, name: 'Australia' },          // Sydney
   'brazil':         { lat: -15.8, lng: -47.9, name: 'Brazil' },             // Brasília
+  // Additional regions
+  'british-isles':  { lat: 51.5, lng: -0.1, name: 'British Isles' },       // London
+  'andean':         { lat: -13.5, lng: -72.0, name: 'Andean' },            // Cusco/Machu Picchu
+  'caribbean':      { lat: 18.5, lng: -72.3, name: 'Caribbean' },          // Haiti
+  'caucasus':       { lat: 41.7, lng: 44.8, name: 'Caucasus' },            // Tbilisi, Georgia
+  'indonesia':      { lat: -7.6, lng: 110.4, name: 'Indonesia' },          // Java/Borobudur
+  'nile-valley':    { lat: 25.7, lng: 32.6, name: 'Nile Valley' },         // Luxor
+  'pacific-nw':     { lat: 47.6, lng: -122.3, name: 'Pacific Northwest' }, // Seattle
+  'tibet':          { lat: 29.6, lng: 91.1, name: 'Tibet' },               // Lhasa
 }
 
 // =============================================================================
