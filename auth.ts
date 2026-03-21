@@ -3,6 +3,8 @@ import { prisma } from "@/lib/db"
 import Credentials from "next-auth/providers/credentials"
 import Google from "next-auth/providers/google"
 import GitHub from "next-auth/providers/github"
+import Facebook from "next-auth/providers/facebook"
+import Apple from "next-auth/providers/apple"
 import bcrypt from "bcryptjs"
 import { authConfig } from "./auth.config"
 
@@ -22,6 +24,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       ? [GitHub({
           clientId: process.env.GITHUB_CLIENT_ID,
           clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        })]
+      : []
+    ),
+    // Facebook OAuth (optional - only enabled if credentials are set)
+    ...(process.env.FACEBOOK_CLIENT_ID && process.env.FACEBOOK_CLIENT_SECRET
+      ? [Facebook({
+          clientId: process.env.FACEBOOK_CLIENT_ID,
+          clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+        })]
+      : []
+    ),
+    // Apple OAuth (optional - only enabled if credentials are set)
+    ...(process.env.APPLE_ID && process.env.APPLE_SECRET
+      ? [Apple({
+          clientId: process.env.APPLE_ID,
+          clientSecret: process.env.APPLE_SECRET,
         })]
       : []
     ),

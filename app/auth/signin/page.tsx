@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { ArrowLeft } from 'lucide-react'
+import SocialLoginButtons from '@/components/auth/SocialLoginButtons'
 
 function SignInForm() {
   const searchParams = useSearchParams()
@@ -85,6 +86,19 @@ function SignInForm() {
             </CardDescription>
           </CardHeader>
           <CardContent>
+            <SocialLoginButtons callbackUrl={callbackUrl} mode="signin" />
+
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-[var(--border)]" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-[var(--card)] px-3 text-[var(--muted-foreground)] font-medium">
+                  or continue with email
+                </span>
+              </div>
+            </div>
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <Input
                 label="Email"
