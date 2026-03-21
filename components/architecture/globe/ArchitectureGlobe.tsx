@@ -37,9 +37,6 @@ interface GeoJSONFeature {
 const SEED_LAT = 31.8
 const SEED_LNG = 35.2
 
-// Idle rotation speed — one revolution per 40s (slow, cinematic)
-const IDLE_SPEED = (2 * Math.PI) / 40
-
 // Camera altitude — standard viewing distance
 const IDLE_ALTITUDE = 2.4
 
@@ -58,13 +55,7 @@ export default function ArchitectureGlobe({
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
   const [countries, setCountries] = useState<GeoJSONFeature[]>([])
 
-  // Refs for the animation loop
-  const isUserDraggingRef = useRef(false)
   const globeInitializedRef = useRef(false)
-  const globeMeshRef = useRef<any>(null)
-  const dragStartHandlerRef = useRef<(() => void) | null>(null)
-  const dragEndHandlerRef = useRef<(() => void) | null>(null)
-  const controlsRef = useRef<any>(null)
   const onReadyRef = useRef(onReady)
   onReadyRef.current = onReady
 
@@ -117,88 +108,40 @@ export default function ArchitectureGlobe({
   }, [])
 
   // -------------------------------------------------------------------------
-  // Rotation loop — idle speed from the start
+  // Globe init — set camera + enable user rotation (no auto-spin)
   // -------------------------------------------------------------------------
 
   useEffect(() => {
     let raf: number
-    let lastTime = performance.now()
-    let currentSpeed = 0
 
-    const tick = () => {
+    const tryInit = () => {
       const globe = globeRef.current
-      const now = performance.now()
+      if (!globe || globeInitializedRef.current) return
 
-      if (globe) {
-        // First-time init
-        if (!globeInitializedRef.current) {
-          globe.pointOfView({ lat: SEED_LAT, lng: SEED_LNG, altitude: IDLE_ALTITUDE })
+      globe.pointOfView({ lat: SEED_LAT, lng: SEED_LNG, altitude: IDLE_ALTITUDE })
 
-          const controls = globe.controls()
-          if (controls) {
-            controls.autoRotate = false
-            controls.enableDamping = true
-            controls.dampingFactor = 0.1
-
-            controlsRef.current = controls
-            dragStartHandlerRef.current = () => {
-              isUserDraggingRef.current = true
-            }
-            dragEndHandlerRef.current = () => {
-              isUserDraggingRef.current = false
-              lastTime = performance.now()
-            }
-
-            controls.addEventListener('start', dragStartHandlerRef.current)
-            controls.addEventListener('end', dragEndHandlerRef.current)
-          }
-
-          globeInitializedRef.current = true
-          lastTime = now
-
-          // Signal ready
-          onReadyRef.current?.()
-        }
-
-        // Lazy-find the globe mesh (may not exist on first frame)
-        if (!globeMeshRef.current) {
-          const scene = globe.scene()
-          if (scene) {
-            const mesh = scene.children.find(
-              (c: any) => c.type === 'Group' && c.children && c.children.length > 0
-            )
-            if (mesh) globeMeshRef.current = mesh
-          }
-        }
-
-        const dt = Math.min((now - lastTime) / 1000, 0.1)
-
-        // Smooth rotation
-        if (!isUserDraggingRef.current && globeMeshRef.current) {
-          // Gentle ramp — takes ~2s to reach target speed
-          const speedLerp = 1 - Math.pow(0.05, dt)
-          currentSpeed += (IDLE_SPEED - currentSpeed) * speedLerp
-          globeMeshRef.current.rotation.y += currentSpeed * dt
-        }
+      const controls = globe.controls()
+      if (controls) {
+        controls.enableDamping = true
+        controls.dampingFactor = 0.1
+        controls.autoRotate = false
+        controls.enableRotate = true
+        controls.enableZoom = true
       }
 
-      lastTime = now
-      raf = requestAnimationFrame(tick)
+      globeInitializedRef.current = true
+      onReadyRef.current?.()
     }
 
-    raf = requestAnimationFrame(tick)
-
-    return () => {
-      cancelAnimationFrame(raf)
-      if (controlsRef.current) {
-        if (dragStartHandlerRef.current) {
-          controlsRef.current.removeEventListener('start', dragStartHandlerRef.current)
-        }
-        if (dragEndHandlerRef.current) {
-          controlsRef.current.removeEventListener('end', dragEndHandlerRef.current)
-        }
+    const poll = () => {
+      if (!globeInitializedRef.current) {
+        tryInit()
+        raf = requestAnimationFrame(poll)
       }
     }
+
+    raf = requestAnimationFrame(poll)
+    return () => cancelAnimationFrame(raf)
   }, [])
 
   // -------------------------------------------------------------------------

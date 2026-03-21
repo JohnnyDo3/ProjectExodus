@@ -17,10 +17,6 @@ const ArchitectureGlobe = dynamic(() => import('./ArchitectureGlobe'), {
   loading: () => <GlobeLoadingSkeleton />,
 })
 
-const MobileGlobeFallback = dynamic(() => import('./MobileGlobeFallback'), {
-  ssr: false,
-})
-
 // =============================================================================
 // CONSTANTS
 // =============================================================================
@@ -87,47 +83,6 @@ function PageLoadingOverlay({ visible }: { visible: boolean }) {
 }
 
 // =============================================================================
-// MOBILE DETECTION HOOK
-// =============================================================================
-
-function useIsMobile(): boolean {
-  const [isMobile, setIsMobile] = useState(false)
-
-  if (typeof window !== 'undefined' && !isMobile) {
-    const check = () => {
-      const narrow = window.innerWidth < 768
-      const touch = 'ontouchstart' in window || navigator.maxTouchPoints > 0
-      let weakGPU = false
-      try {
-        const canvas = document.createElement('canvas')
-        const gl = canvas.getContext('webgl2') || canvas.getContext('webgl')
-        if (!gl) {
-          weakGPU = true
-        } else {
-          const debugInfo = (gl as WebGLRenderingContext).getExtension('WEBGL_debug_renderer_info')
-          if (debugInfo) {
-            const renderer = (gl as WebGLRenderingContext).getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
-            if (/swiftshader|llvmpipe|software/i.test(renderer)) {
-              weakGPU = true
-            }
-          }
-        }
-      } catch {
-        weakGPU = true
-      }
-      if ((narrow && touch) || weakGPU) {
-        setIsMobile(true)
-      }
-    }
-    if (typeof requestAnimationFrame !== 'undefined') {
-      requestAnimationFrame(check)
-    }
-  }
-
-  return isMobile
-}
-
-// =============================================================================
 // MAIN COMPONENT
 // =============================================================================
 
@@ -138,7 +93,6 @@ export default function GlobeLanding() {
   const globeReadyRef = useRef(false)
 
   const { isDay } = useTimeTheme()
-  const isMobile = useIsMobile()
 
   // Derived
   const currentPeriod = useMemo(() => getCurrentPeriodForYear(timelineYear), [timelineYear])
@@ -187,15 +141,11 @@ export default function GlobeLanding() {
 
         {/* Globe */}
         <div className="absolute inset-0" style={{ padding: '2vh 2vw 12vh 2vw' }}>
-          {isMobile ? (
-            <MobileGlobeFallback currentYear={timelineYear} />
-          ) : (
-            <ArchitectureGlobe
-              currentYear={timelineYear}
-              isDayTheme={isDay}
-              onReady={handleGlobeReady}
-            />
-          )}
+          <ArchitectureGlobe
+            currentYear={timelineYear}
+            isDayTheme={isDay}
+            onReady={handleGlobeReady}
+          />
         </div>
 
         {/* ── Top left: Title + period ── */}
