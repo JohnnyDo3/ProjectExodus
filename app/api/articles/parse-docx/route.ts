@@ -3,6 +3,9 @@ import { auth } from '@/auth'
 import { CONTENT_LIMITS } from '@/lib/article/contentSecurity'
 import mammoth from 'mammoth'
 
+export const runtime = 'nodejs'
+export const maxDuration = 120 // 2 minutes for large documents
+
 export async function POST(request: NextRequest) {
   try {
     const session = await auth()

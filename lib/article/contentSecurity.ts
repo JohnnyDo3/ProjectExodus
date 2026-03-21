@@ -23,9 +23,12 @@ export const CONTENT_LIMITS = {
   MAX_REFERENCES: 100,
 
   // File upload limits
-  MAX_TEXT_FILE_SIZE: 1024 * 1024,       // 1MB for .txt/.md
-  MAX_PDF_FILE_SIZE: 20 * 1024 * 1024,   // 20MB for .pdf
-  MAX_DOCX_FILE_SIZE: 20 * 1024 * 1024,  // 20MB for .docx
+  MAX_TEXT_FILE_SIZE: 10 * 1024 * 1024,   // 10MB for .txt/.md/.rtf/.html/.tex
+  MAX_PDF_FILE_SIZE: 20 * 1024 * 1024,    // 20MB for .pdf
+  MAX_DOCX_FILE_SIZE: 20 * 1024 * 1024,   // 20MB for .docx/.doc/.odt
+
+  // Chunked upload threshold — files above this use chunked upload
+  CHUNKED_UPLOAD_THRESHOLD: 4 * 1024 * 1024, // 4MB
 
   // Rate limiting hints (implement in API)
   MAX_ARTICLES_PER_DAY: 10,
@@ -578,54 +581,62 @@ export function sanitizeFilename(filename: string): string {
 }
 
 /**
- * Validate file upload
+ * Recognized file type categories for article uploads
+ */
+export type ArticleFileType = 'pdf' | 'docx' | 'doc' | 'odt' | 'rtf' | 'html' | 'text' | 'latex'
+
+/**
+ * Validate file upload — supports a wide range of document formats
  */
 export function validateFileUpload(file: {
   name: string
   size: number
   type: string
-}): { isValid: boolean; error?: string; isPdf?: boolean; isDocx?: boolean } {
+}): { isValid: boolean; error?: string; fileType?: ArticleFileType } {
   const lowerName = file.name.toLowerCase()
 
-  // PDF files
-  if (lowerName.endsWith('.pdf')) {
-    if (file.size > CONTENT_LIMITS.MAX_PDF_FILE_SIZE) {
-      return {
-        isValid: false,
-        error: `PDF is too large (max ${CONTENT_LIMITS.MAX_PDF_FILE_SIZE / (1024 * 1024)}MB).`,
-      }
-    }
-    return { isValid: true, isPdf: true }
+  // Map extensions to file types and their size limits
+  const extensionMap: Record<string, { type: ArticleFileType; maxSize: number }> = {
+    '.pdf':   { type: 'pdf',   maxSize: CONTENT_LIMITS.MAX_PDF_FILE_SIZE },
+    '.docx':  { type: 'docx',  maxSize: CONTENT_LIMITS.MAX_DOCX_FILE_SIZE },
+    '.doc':   { type: 'doc',   maxSize: CONTENT_LIMITS.MAX_DOCX_FILE_SIZE },
+    '.odt':   { type: 'odt',   maxSize: CONTENT_LIMITS.MAX_DOCX_FILE_SIZE },
+    '.rtf':   { type: 'rtf',   maxSize: CONTENT_LIMITS.MAX_TEXT_FILE_SIZE },
+    '.html':  { type: 'html',  maxSize: CONTENT_LIMITS.MAX_TEXT_FILE_SIZE },
+    '.htm':   { type: 'html',  maxSize: CONTENT_LIMITS.MAX_TEXT_FILE_SIZE },
+    '.txt':   { type: 'text',  maxSize: CONTENT_LIMITS.MAX_TEXT_FILE_SIZE },
+    '.md':    { type: 'text',  maxSize: CONTENT_LIMITS.MAX_TEXT_FILE_SIZE },
+    '.tex':   { type: 'latex', maxSize: CONTENT_LIMITS.MAX_TEXT_FILE_SIZE },
+    '.latex': { type: 'latex', maxSize: CONTENT_LIMITS.MAX_TEXT_FILE_SIZE },
   }
 
-  // DOCX files
-  if (lowerName.endsWith('.docx')) {
-    if (file.size > CONTENT_LIMITS.MAX_DOCX_FILE_SIZE) {
-      return {
-        isValid: false,
-        error: `Document is too large (max ${CONTENT_LIMITS.MAX_DOCX_FILE_SIZE / (1024 * 1024)}MB).`,
-      }
-    }
-    return { isValid: true, isDocx: true }
-  }
+  // Find matching extension
+  const matchedExt = Object.keys(extensionMap).find(ext => lowerName.endsWith(ext))
 
-  // Text/Markdown files
-  const allowedExtensions = ['.txt', '.md']
-  const hasValidExtension = allowedExtensions.some(ext => lowerName.endsWith(ext))
-
-  if (!hasValidExtension) {
+  if (!matchedExt) {
+    const supported = Object.keys(extensionMap).join(', ')
     return {
       isValid: false,
-      error: 'Only .txt, .md, .docx, and .pdf files are allowed.',
+      error: `This file type isn't supported yet. Supported formats: ${supported}. You can also copy and paste your content directly.`,
     }
   }
 
-  if (file.size > CONTENT_LIMITS.MAX_TEXT_FILE_SIZE) {
+  const { type, maxSize } = extensionMap[matchedExt]
+  const maxMB = Math.round(maxSize / (1024 * 1024))
+
+  if (file.size > maxSize) {
     return {
       isValid: false,
-      error: `File is too large (max ${CONTENT_LIMITS.MAX_TEXT_FILE_SIZE / (1024 * 1024)}MB). Please copy and paste your content instead.`,
+      error: `File is too large (${Math.round(file.size / (1024 * 1024))}MB, max ${maxMB}MB). Try a shorter document or paste your content directly.`,
     }
   }
 
-  return { isValid: true, isPdf: false, isDocx: false }
+  if (file.size === 0) {
+    return {
+      isValid: false,
+      error: 'File appears to be empty. Please check and try again.',
+    }
+  }
+
+  return { isValid: true, fileType: type }
 }

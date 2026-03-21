@@ -3,6 +3,9 @@ import { auth } from '@/auth'
 import { CONTENT_LIMITS } from '@/lib/article/contentSecurity'
 import { PDFParse } from 'pdf-parse'
 
+export const runtime = 'nodejs'
+export const maxDuration = 120 // 2 minutes for large PDFs
+
 export async function POST(request: NextRequest) {
   let parser: PDFParse | null = null
 

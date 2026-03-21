@@ -13,7 +13,9 @@ import {
   validateFileUpload,
   sanitizeHtml,
   CONTENT_LIMITS,
+  type ArticleFileType,
 } from '@/lib/article/contentSecurity'
+import { chunkedUpload, formatFileSize } from '@/lib/article/chunkedUpload'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -286,7 +288,10 @@ export default function WriteArticlePage() {
     }, 500)
   }, [pastedContent])
 
-  // Handle file upload with security validation (supports .txt, .md, .pdf)
+  // Upload progress state
+  const [uploadProgress, setUploadProgress] = useState<{ phase: string; percent: number } | null>(null)
+
+  // Handle file upload — supports all document types, uses chunked upload for large files
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
@@ -304,59 +309,46 @@ export default function WriteArticlePage() {
       return
     }
 
+    const fileType = fileValidation.fileType!
+    const useChunked = file.size > CONTENT_LIMITS.CHUNKED_UPLOAD_THRESHOLD
+
     try {
-      // PDF files need server-side parsing
-      if (fileValidation.isPdf) {
-        toast('Extracting text from PDF...', { icon: '📄', duration: 4000 })
-        const formData = new FormData()
-        formData.append('pdf', file)
+      // Files that need server-side parsing (binary formats or large files)
+      const serverParsedTypes: ArticleFileType[] = ['pdf', 'docx', 'doc', 'odt']
+      const needsServerParse = serverParsedTypes.includes(fileType) || useChunked
 
-        const res = await fetch('/api/articles/parse-pdf', {
-          method: 'POST',
-          body: formData,
+      if (needsServerParse) {
+        const sizeStr = formatFileSize(file.size)
+        toast(`Processing ${file.name} (${sizeStr})...`, { duration: 6000 })
+        setUploadProgress({ phase: 'uploading', percent: 0 })
+
+        const result = await chunkedUpload({
+          file,
+          onProgress: (progress) => {
+            setUploadProgress({
+              phase: progress.phase,
+              percent: progress.percent,
+            })
+          },
         })
 
-        const data = await res.json()
-        if (!data.success) {
-          toast.error(data.error || 'Failed to parse PDF')
+        setUploadProgress(null)
+
+        if (!result.success) {
+          toast.error(result.error || 'Failed to process file. Try pasting your content directly.')
           e.target.value = ''
           return
         }
 
-        setPastedContent(data.data.text)
-        toast.success(
-          `PDF loaded! ${data.data.numPages} page(s) extracted. Click "Parse & Preview" to continue.`
-        )
-        if (data.data.numPages > 5) {
-          setTimeout(() => {
-            toast(
-              'Tip: If your paper has images, you can add them in the editor after parsing using the image button.',
-              { icon: '🖼️', duration: 8000 }
-            )
-          }, 1500)
-        }
-      } else if (fileValidation.isDocx) {
-        // DOCX files need server-side parsing
-        toast('Extracting text from document...', { icon: '📝', duration: 4000 })
-        const formData = new FormData()
-        formData.append('docx', file)
+        setPastedContent(result.data!.text)
 
-        const res = await fetch('/api/articles/parse-docx', {
-          method: 'POST',
-          body: formData,
-        })
-
-        const data = await res.json()
-        if (!data.success) {
-          toast.error(data.error || 'Failed to parse document')
-          e.target.value = ''
-          return
-        }
-
-        setPastedContent(data.data.text)
-        toast.success('Document loaded! Click "Parse & Preview" to continue.')
+        const pages = result.data!.numPages
+        const successMsg = pages
+          ? `${file.name} loaded! ${pages} page(s) extracted.`
+          : `${file.name} loaded!`
+        toast.success(`${successMsg} Click "Parse & Preview" to continue.`)
       } else {
-        // Text/Markdown files
+        // Client-readable text-based formats (txt, md, html, rtf, tex)
         const text = await file.text()
 
         // Quick security check on file contents
@@ -368,11 +360,15 @@ export default function WriteArticlePage() {
         }
 
         setPastedContent(text)
-        toast.success('File loaded! Click "Parse & Preview" to continue.')
+        toast.success(`${file.name} loaded! Click "Parse & Preview" to continue.`)
       }
-    } catch (error) {
-      console.error('File read error:', error)
-      toast.error('Failed to read file. Please try copying and pasting instead.')
+    } catch (error: any) {
+      console.error('File upload error:', error)
+      setUploadProgress(null)
+      const msg = error.name === 'AbortError'
+        ? 'Upload cancelled.'
+        : 'Failed to process file. Try pasting your content directly.'
+      toast.error(msg)
     }
 
     // Clear the input for re-upload
@@ -575,6 +571,7 @@ export default function WriteArticlePage() {
                 </h2>
                 <p className="text-lg text-[var(--muted-foreground)] max-w-2xl mx-auto">
                   Copy and paste your research paper, essay, or article below, or upload a file.
+                  We support PDF, Word, RTF, HTML, Markdown, LaTeX, and more.
                   We'll automatically detect your title, content, and works cited section.
                 </p>
               </div>
@@ -630,11 +627,29 @@ We support MLA, APA, and Chicago citation formats."
                 <input
                   ref={fileInputRef}
                   type="file"
-                  accept=".txt,.md,.pdf,.docx"
+                  accept=".txt,.md,.pdf,.docx,.doc,.odt,.rtf,.html,.htm,.tex,.latex"
                   onChange={handleFileUpload}
                   className="hidden"
                 />
               </div>
+
+              {/* Upload Progress */}
+              {uploadProgress && (
+                <div className="mt-6 p-4 bg-[var(--muted)]/50 rounded-xl">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium text-[var(--foreground)]">
+                      {uploadProgress.phase === 'uploading' ? 'Uploading...' : 'Processing document...'}
+                    </span>
+                    <span className="text-sm text-[var(--muted-foreground)]">{uploadProgress.percent}%</span>
+                  </div>
+                  <div className="w-full h-2 bg-[var(--border)] rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full transition-all duration-300"
+                      style={{ width: `${uploadProgress.percent}%` }}
+                    />
+                  </div>
+                </div>
+              )}
 
               {/* Supported Formats */}
               <div className="mt-12 p-6 bg-[var(--muted)]/50 rounded-xl">
@@ -644,19 +659,25 @@ We support MLA, APA, and Chicago citation formats."
                 </h3>
                 <div className="grid sm:grid-cols-2 gap-4 mb-4">
                   <div className="p-4 bg-[var(--background)] rounded-lg">
-                    <h4 className="font-bold text-[var(--foreground)] mb-2">File Uploads</h4>
+                    <h4 className="font-bold text-[var(--foreground)] mb-2">Documents (up to 20MB)</h4>
                     <p className="text-sm text-[var(--muted-foreground)]">
-                      PDF, Word (.docx), TXT, and Markdown (.md) files. PDFs and DOCX up to 20MB with text extraction.
+                      PDF, Word (.doc, .docx), OpenDocument (.odt) — full text extraction with formatting preserved.
                     </p>
                   </div>
                   <div className="p-4 bg-[var(--background)] rounded-lg">
-                    <h4 className="font-bold text-[var(--foreground)] mb-2">Images</h4>
+                    <h4 className="font-bold text-[var(--foreground)] mb-2">Text Files (up to 10MB)</h4>
                     <p className="text-sm text-[var(--muted-foreground)]">
-                      Add images in the editor via upload or URL. JPEG, PNG, and WebP supported.
+                      Plain Text (.txt), Markdown (.md), HTML (.html), Rich Text (.rtf), LaTeX (.tex).
                     </p>
                   </div>
                 </div>
-                <h4 className="font-semibold text-[var(--foreground)] mb-3 text-sm">Citation Formats</h4>
+                <div className="p-4 bg-[var(--background)] rounded-lg mb-4">
+                  <h4 className="font-bold text-[var(--foreground)] mb-2">Images</h4>
+                  <p className="text-sm text-[var(--muted-foreground)]">
+                    Add images in the editor after parsing via upload or URL. JPEG, PNG, and WebP supported.
+                  </p>
+                </div>
+                <h4 className="font-semibold text-[var(--foreground)] mb-3 text-sm">Citation Formats (auto-detected)</h4>
                 <div className="grid sm:grid-cols-3 gap-4">
                   <div className="p-4 bg-[var(--background)] rounded-lg">
                     <h4 className="font-bold text-[var(--foreground)] mb-2">MLA</h4>

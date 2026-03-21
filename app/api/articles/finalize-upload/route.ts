@@ -12,6 +12,111 @@ export const maxDuration = 300 // 5 minutes for processing large files
 
 const UPLOAD_DIR = join(tmpdir(), 'article-uploads')
 
+// ---------------------------------------------------------------------------
+// File type detection
+// ---------------------------------------------------------------------------
+
+type FileType = 'pdf' | 'docx' | 'doc' | 'odt' | 'rtf' | 'html' | 'text' | 'latex'
+
+function getFileType(lowerName: string): FileType | null {
+  const map: Record<string, FileType> = {
+    '.pdf': 'pdf',
+    '.docx': 'docx',
+    '.doc': 'doc',
+    '.odt': 'odt',
+    '.rtf': 'rtf',
+    '.html': 'html',
+    '.htm': 'html',
+    '.txt': 'text',
+    '.md': 'text',
+    '.tex': 'latex',
+    '.latex': 'latex',
+  }
+  for (const [ext, type] of Object.entries(map)) {
+    if (lowerName.endsWith(ext)) return type
+  }
+  return null
+}
+
+// ---------------------------------------------------------------------------
+// Text format strippers
+// ---------------------------------------------------------------------------
+
+/** Strip HTML tags, keep text content */
+function stripHtmlToText(html: string): string {
+  return html
+    // Remove script/style blocks entirely
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+    // Convert block elements to newlines
+    .replace(/<\/(?:p|div|h[1-6]|li|tr|br|hr)[^>]*>/gi, '\n')
+    .replace(/<br\s*\/?>/gi, '\n')
+    // Strip remaining tags
+    .replace(/<[^>]+>/g, '')
+    // Decode common HTML entities
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&nbsp;/g, ' ')
+    // Clean up whitespace
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+}
+
+/** Strip RTF control words, keep text content */
+function stripRtf(rtf: string): string {
+  return rtf
+    // Remove RTF header/groups
+    .replace(/\{\\[^{}]*\}/g, '')
+    // Remove control words (e.g., \par, \b, \fs24)
+    .replace(/\\[a-z]+[0-9]*\s?/gi, ' ')
+    // Remove escaped special chars
+    .replace(/\\\{/g, '{')
+    .replace(/\\\}/g, '}')
+    .replace(/\\\\/g, '\\')
+    // Remove remaining braces
+    .replace(/[{}]/g, '')
+    // Convert \par to newlines
+    .replace(/\\par\s*/gi, '\n')
+    // Clean up whitespace
+    .replace(/[ \t]+/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+}
+
+/** Strip LaTeX commands, keep text content */
+function stripLatex(latex: string): string {
+  return latex
+    // Remove comments
+    .replace(/%.*$/gm, '')
+    // Remove common preamble commands
+    .replace(/\\(?:documentclass|usepackage|begin|end|maketitle|tableofcontents|newcommand|renewcommand|setlength|pagestyle|thispagestyle|bibliographystyle|bibliography)\b[^]*?(?:\n|$)/g, '\n')
+    // Remove \begin{...} and \end{...} but keep content between
+    .replace(/\\(?:begin|end)\{[^}]+\}/g, '')
+    // Convert sectioning commands to plain text
+    .replace(/\\(?:section|subsection|subsubsection|chapter|part)\*?\{([^}]+)\}/g, '\n\n$1\n\n')
+    // Convert \title, \author, \date
+    .replace(/\\(?:title|author|date)\{([^}]+)\}/g, '$1\n')
+    // Convert formatting commands — keep content
+    .replace(/\\(?:textbf|textit|emph|underline|textsc|texttt)\{([^}]+)\}/g, '$1')
+    // Remove simple commands like \newpage, \clearpage, \noindent
+    .replace(/\\(?:newpage|clearpage|noindent|bigskip|medskip|smallskip|hfill|vfill|centering|raggedright|raggedleft)\b/g, '')
+    // Remove \label, \ref, \cite
+    .replace(/\\(?:label|ref|cite|pageref|eqref)\{[^}]+\}/g, '')
+    // Remove remaining unknown commands but keep content in braces
+    .replace(/\\[a-zA-Z]+\{([^}]*)\}/g, '$1')
+    // Remove remaining backslash commands
+    .replace(/\\[a-zA-Z]+/g, '')
+    // Remove math delimiters
+    .replace(/\$\$?/g, '')
+    // Clean up
+    .replace(/[{}]/g, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+}
+
 interface FinalizeRequest {
   uploadId: string
   fileName: string
@@ -207,13 +312,11 @@ export async function POST(request: NextRequest) {
 
     // Determine file type
     const lowerName = fileName.toLowerCase()
-    const isPdf = lowerName.endsWith('.pdf')
-    const isDocx = lowerName.endsWith('.docx')
-    const isText = lowerName.endsWith('.txt') || lowerName.endsWith('.md')
+    const fileType = getFileType(lowerName)
 
-    if (!isPdf && !isDocx && !isText) {
+    if (!fileType) {
       return NextResponse.json(
-        { success: false, error: 'Unsupported file type' },
+        { success: false, error: 'Unsupported file type. Supported: PDF, Word (.doc/.docx), RTF, HTML, TXT, Markdown, LaTeX, ODT.' },
         { status: 400 }
       )
     }
@@ -226,7 +329,7 @@ export async function POST(request: NextRequest) {
     // Process based on file type
     let result: any
 
-    if (isText) {
+    if (fileType === 'text' || fileType === 'latex') {
       const { text } = await processTextFile(assembledPath)
       if (!text.trim()) {
         return NextResponse.json(
@@ -234,21 +337,43 @@ export async function POST(request: NextRequest) {
           { status: 400 }
         )
       }
-      result = { text }
-    } else if (isPdf) {
+      // Strip LaTeX commands for cleaner text
+      const finalText = fileType === 'latex' ? stripLatex(text) : text
+      result = { text: finalText }
+    } else if (fileType === 'html') {
+      const { text } = await processTextFile(assembledPath)
+      if (!text.trim()) {
+        return NextResponse.json(
+          { success: false, error: 'File appears to be empty' },
+          { status: 400 }
+        )
+      }
+      const plainText = stripHtmlToText(text)
+      result = { text: plainText, html: text }
+    } else if (fileType === 'rtf') {
+      const { text } = await processTextFile(assembledPath)
+      if (!text.trim()) {
+        return NextResponse.json(
+          { success: false, error: 'File appears to be empty' },
+          { status: 400 }
+        )
+      }
+      const plainText = stripRtf(text)
+      result = { text: plainText }
+    } else if (fileType === 'pdf') {
       const { text, numPages, info } = await processPdfFile(assembledPath)
       if (!text.trim()) {
         return NextResponse.json(
-          { success: false, error: 'Could not extract text from PDF. The file may be image-only or corrupted.' },
+          { success: false, error: 'Could not extract text from PDF. The file may be image-only or corrupted. Try copying and pasting your content directly.' },
           { status: 400 }
         )
       }
       result = { text, numPages, info }
-    } else if (isDocx) {
+    } else if (fileType === 'docx' || fileType === 'doc' || fileType === 'odt') {
       const { text, html, warnings } = await processDocxFile(assembledPath)
       if (!text.trim()) {
         return NextResponse.json(
-          { success: false, error: 'Could not extract text from document. The file may be empty or corrupted.' },
+          { success: false, error: 'Could not extract text from document. The file may be empty or corrupted. Try saving as .docx or pasting content directly.' },
           { status: 400 }
         )
       }

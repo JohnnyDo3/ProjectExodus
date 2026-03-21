@@ -11,7 +11,7 @@ export const maxDuration = 60
 
 const UPLOAD_DIR = join(tmpdir(), 'article-uploads')
 const MAX_CHUNK_SIZE = 12 * 1024 * 1024 // 12MB
-const ALLOWED_EXTENSIONS = ['.pdf', '.docx', '.txt', '.md']
+const ALLOWED_EXTENSIONS = ['.pdf', '.docx', '.doc', '.odt', '.rtf', '.html', '.htm', '.txt', '.md', '.tex', '.latex']
 
 export async function POST(request: NextRequest) {
   try {
@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
     const hasValidExtension = ALLOWED_EXTENSIONS.some(ext => lowerName.endsWith(ext))
     if (!hasValidExtension) {
       return NextResponse.json(
-        { success: false, error: 'Only .txt, .md, .docx, and .pdf files are allowed' },
+        { success: false, error: 'Unsupported file type. Supported: PDF, Word, RTF, HTML, TXT, Markdown, LaTeX, ODT.' },
         { status: 400 }
       )
     }
