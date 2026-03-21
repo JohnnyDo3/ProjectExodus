@@ -2,10 +2,14 @@
 
 import React, { useCallback, useMemo, useRef } from 'react'
 import { formatYear, getCurrentPeriodForYear, ALL_ARCS } from '@/data/architecture/globeConnections'
+import { ARCHITECTURAL_PERIODS, type PeriodDefinition } from '@/data/architecture/periods'
+import { PeriodMarker } from './PeriodMarker'
 
 interface GlobeTimelineProps {
   currentYear: number
   onChange: (year: number) => void
+  selectedPeriod?: PeriodDefinition | null
+  onPeriodSelect?: (period: PeriodDefinition | null) => void
 }
 
 // Timeline range: from first arc year to 2025
@@ -63,15 +67,53 @@ function buildTrackGradient(): string {
   return `linear-gradient(to right, ${stops.join(', ')})`
 }
 
+// Minimum pixel distance between markers before we consider them clustered
+const MIN_MARKER_GAP_PCT = 1.5
+
+/**
+ * Filter periods to avoid overlapping markers. We keep all periods but only
+ * show markers for those that are visually distinct on the timeline.
+ */
+function getVisibleMarkers(periods: PeriodDefinition[]): PeriodDefinition[] {
+  const sorted = [...periods].sort((a, b) => a.startYear - b.startYear)
+  const visible: PeriodDefinition[] = []
+  let lastPct = -Infinity
+
+  for (const p of sorted) {
+    const pct = yearToPercent(p.startYear)
+    if (pct - lastPct >= MIN_MARKER_GAP_PCT) {
+      visible.push(p)
+      lastPct = pct
+    }
+  }
+  return visible
+}
+
 export default function GlobeTimeline({
   currentYear,
   onChange,
+  selectedPeriod,
+  onPeriodSelect,
 }: GlobeTimelineProps) {
   const trackRef = useRef<HTMLDivElement>(null)
 
   const thumbPercent = useMemo(() => yearToPercent(currentYear), [currentYear])
   const trackGradient = useMemo(() => buildTrackGradient(), [])
   const formattedYear = useMemo(() => formatYear(currentYear), [currentYear])
+
+  // Filter visible markers to avoid overlap
+  const visibleMarkers = useMemo(
+    () => getVisibleMarkers(ARCHITECTURAL_PERIODS),
+    []
+  )
+
+  // Always include the selected period even if it was filtered out
+  const markersToShow = useMemo(() => {
+    if (!selectedPeriod || visibleMarkers.find(m => m.id === selectedPeriod.id)) {
+      return visibleMarkers
+    }
+    return [...visibleMarkers, selectedPeriod].sort((a, b) => a.startYear - b.startYear)
+  }, [visibleMarkers, selectedPeriod])
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,7 +129,7 @@ export default function GlobeTimeline({
 
   return (
     <div
-      className="relative w-full bg-black/60 backdrop-blur-md px-4 pt-8 pb-2 md:px-5 select-none"
+      className="relative w-full bg-black/60 backdrop-blur-md px-4 pt-12 pb-2 md:px-5 select-none"
       style={{
         borderTop: '1px solid rgba(212,165,74,0.3)',
         borderLeft: '1px solid rgba(212,165,74,0.1)',
@@ -183,6 +225,27 @@ export default function GlobeTimeline({
 
       {/* Slider area */}
       <div className="relative" ref={trackRef}>
+        {/* Period markers above the track */}
+        {onPeriodSelect && (
+          <div className="absolute left-0 right-0 bottom-full" style={{ height: '40px' }}>
+            {markersToShow.map((period) => {
+              const pct = yearToPercent(period.startYear)
+              if (pct < 0 || pct > 100) return null
+              return (
+                <PeriodMarker
+                  key={period.id}
+                  period={period}
+                  leftPercent={pct}
+                  isSelected={selectedPeriod?.id === period.id}
+                  onClick={() => onPeriodSelect(
+                    selectedPeriod?.id === period.id ? null : period
+                  )}
+                />
+              )
+            })}
+          </div>
+        )}
+
         {/* Floating year label — pinned inside track bounds */}
         <div
           className="absolute -top-6 pointer-events-none"

@@ -5,11 +5,14 @@ import {
   formatYear,
   getCurrentPeriodForYear,
   getArcsForYear,
+  getArcsForPeriod,
   getPointsForYear,
+  getBuildingPointsForPeriod,
   REGION_CENTROIDS,
   ERA_TIERS,
   getEraTier,
 } from '@/data/architecture/globeConnections'
+import type { PeriodDefinition } from '@/data/architecture/periods'
 
 // =============================================================================
 // Simple Mercator projection helpers
@@ -30,14 +33,23 @@ function toY(lat: number, height: number): number {
 interface MobileGlobeFallbackProps {
   currentYear: number
   onRegionClick?: (region: string) => void
+  selectedPeriod?: PeriodDefinition | null
 }
 
 export default function MobileGlobeFallback({
   currentYear,
   onRegionClick,
+  selectedPeriod,
 }: MobileGlobeFallbackProps) {
-  const arcs = useMemo(() => getArcsForYear(currentYear), [currentYear])
+  const arcs = useMemo(() => {
+    if (selectedPeriod) return getArcsForPeriod(selectedPeriod.id)
+    return getArcsForYear(currentYear)
+  }, [currentYear, selectedPeriod])
   const points = useMemo(() => getPointsForYear(currentYear), [currentYear])
+  const buildingPoints = useMemo(() => {
+    if (!selectedPeriod) return []
+    return getBuildingPointsForPeriod(selectedPeriod.id)
+  }, [selectedPeriod])
   const period = useMemo(() => getCurrentPeriodForYear(currentYear), [currentYear])
   const eraTier = useMemo(() => getEraTier(currentYear), [currentYear])
 
@@ -127,6 +139,18 @@ export default function MobileGlobeFallback({
                 onClick={() => onRegionClick?.(point.region)}
               />
             </g>
+          ))}
+
+          {/* Building points (when period selected) */}
+          {buildingPoints.map((bp, i) => (
+            <circle
+              key={`bp-${i}`}
+              cx={toX(bp.lng, W)}
+              cy={toY(bp.lat, H)}
+              r={1.5}
+              fill="#FFFFFF"
+              fillOpacity={0.8}
+            />
           ))}
         </svg>
 

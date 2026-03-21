@@ -272,3 +272,145 @@ export function getPointsForYear(year: number): GlobePoint[] {
 
   return points
 }
+
+// =============================================================================
+// BUILDING POINTS (from iconicBuildings with lat/lng in periods.ts)
+// =============================================================================
+
+export interface BuildingPoint {
+  name: string
+  location: string
+  lat: number
+  lng: number
+  periodId: string
+  periodName: string
+  year: string
+}
+
+export function getBuildingPointsForPeriod(periodId: string): BuildingPoint[] {
+  const period = ARCHITECTURAL_PERIODS.find(p => p.id === periodId)
+  if (!period) return []
+
+  return period.iconicBuildings.map(b => ({
+    name: b.name,
+    location: b.location,
+    lat: b.lat,
+    lng: b.lng,
+    periodId: period.id,
+    periodName: period.name,
+    year: b.year,
+  }))
+}
+
+export function getBuildingPointsForYear(year: number): BuildingPoint[] {
+  const activePeriods = ARCHITECTURAL_PERIODS.filter(p =>
+    p.startYear <= year && p.endYear >= year
+  )
+  const points: BuildingPoint[] = []
+  for (const period of activePeriods) {
+    for (const b of period.iconicBuildings) {
+      points.push({
+        name: b.name,
+        location: b.location,
+        lat: b.lat,
+        lng: b.lng,
+        periodId: period.id,
+        periodName: period.name,
+        year: b.year,
+      })
+    }
+  }
+  return points
+}
+
+// =============================================================================
+// PERIOD BOUNDS (for camera fit-to-bounds)
+// =============================================================================
+
+export interface RegionBounds {
+  minLat: number
+  maxLat: number
+  minLng: number
+  maxLng: number
+  center: { lat: number; lng: number }
+  altitude: number
+}
+
+/**
+ * Collects all coordinates relevant to a period (primary regions, influence
+ * source regions, and iconic buildings) and returns a bounding box + a camera
+ * altitude that fits them all.
+ */
+export function getRegionBoundsForPeriod(periodId: string): RegionBounds | null {
+  const periodMap = getPeriodMap()
+  const period = periodMap.get(periodId)
+  if (!period) return null
+
+  const points: { lat: number; lng: number }[] = []
+
+  // Add primary region centroids
+  for (const regionId of period.primaryRegions) {
+    if (regionId === 'global') continue
+    const c = REGION_CENTROIDS[regionId]
+    if (c) points.push({ lat: c.lat, lng: c.lng })
+  }
+
+  // Add influencedBy region centroids
+  for (const srcId of period.influencedBy) {
+    const src = periodMap.get(srcId)
+    if (!src) continue
+    for (const regionId of src.primaryRegions) {
+      if (regionId === 'global') continue
+      const c = REGION_CENTROIDS[regionId]
+      if (c) points.push({ lat: c.lat, lng: c.lng })
+    }
+  }
+
+  // Add influenced region centroids
+  for (const tgtId of period.influenced) {
+    const tgt = periodMap.get(tgtId)
+    if (!tgt) continue
+    for (const regionId of tgt.primaryRegions) {
+      if (regionId === 'global') continue
+      const c = REGION_CENTROIDS[regionId]
+      if (c) points.push({ lat: c.lat, lng: c.lng })
+    }
+  }
+
+  // Add iconic building locations
+  for (const b of period.iconicBuildings) {
+    points.push({ lat: b.lat, lng: b.lng })
+  }
+
+  if (points.length === 0) return null
+
+  let minLat = 90, maxLat = -90, minLng = 180, maxLng = -180
+  for (const p of points) {
+    if (p.lat < minLat) minLat = p.lat
+    if (p.lat > maxLat) maxLat = p.lat
+    if (p.lng < minLng) minLng = p.lng
+    if (p.lng > maxLng) maxLng = p.lng
+  }
+
+  const centerLat = (minLat + maxLat) / 2
+  const centerLng = (minLng + maxLng) / 2
+
+  // Calculate altitude based on geographic span
+  const latSpan = maxLat - minLat
+  const lngSpan = maxLng - minLng
+  const maxSpan = Math.max(latSpan, lngSpan)
+
+  // Map span to altitude: small span (< 10°) → close (0.8), large span (> 120°) → far (3.0)
+  const altitude = Math.min(3.5, Math.max(0.6, maxSpan * 0.025 + 0.5))
+
+  return { minLat, maxLat, minLng, maxLng, center: { lat: centerLat, lng: centerLng }, altitude }
+}
+
+/**
+ * Returns arcs for a specific period only (not cumulative by year).
+ */
+export function getArcsForPeriod(periodId: string): GlobeArc[] {
+  return ALL_ARCS.filter(
+    arc => arc.sourcePeriodId === periodId || arc.targetPeriodId === periodId
+  )
+}

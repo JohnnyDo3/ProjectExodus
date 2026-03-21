@@ -3,11 +3,14 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import dynamic from 'next/dynamic'
 import GlobeTimeline from './GlobeTimeline'
+import { PeriodDetailPanel } from './PeriodDetailPanel'
 import { useTimeTheme } from '@/components/providers/TimeThemeProvider'
+import { ARCHITECTURAL_PERIODS, type PeriodDefinition } from '@/data/architecture/periods'
 import {
   formatYear,
   getCurrentPeriodForYear,
   getArcsForYear,
+  getArcsForPeriod,
   getPointsForYear,
 } from '@/data/architecture/globeConnections'
 
@@ -90,6 +93,7 @@ export default function GlobeLanding() {
   const [timelineYear, setTimelineYear] = useState(PRESENT_YEAR)
   const [isLoading, setIsLoading] = useState(true)
   const [showHints, setShowHints] = useState(true)
+  const [selectedPeriod, setSelectedPeriod] = useState<PeriodDefinition | null>(null)
   const mountTimeRef = useRef(Date.now())
   const globeReadyRef = useRef(false)
 
@@ -103,7 +107,10 @@ export default function GlobeLanding() {
 
   // Derived
   const currentPeriod = useMemo(() => getCurrentPeriodForYear(timelineYear), [timelineYear])
-  const arcCount = useMemo(() => getArcsForYear(timelineYear).length, [timelineYear])
+  const arcCount = useMemo(() => {
+    if (selectedPeriod) return getArcsForPeriod(selectedPeriod.id).length
+    return getArcsForYear(timelineYear).length
+  }, [timelineYear, selectedPeriod])
   const regionCount = useMemo(() => getPointsForYear(timelineYear).length, [timelineYear])
 
   // Globe ready callback
@@ -125,6 +132,26 @@ export default function GlobeLanding() {
   const handleTimelineChange = useCallback((year: number) => {
     setTimelineYear(year)
     setShowHints(false)
+    // Clear period selection when manually sliding
+    if (selectedPeriod) setSelectedPeriod(null)
+  }, [selectedPeriod])
+
+  const handlePeriodSelect = useCallback((period: PeriodDefinition | null) => {
+    setSelectedPeriod(prev => {
+      // Toggle: clicking the same period deselects
+      if (prev?.id === period?.id) return null
+      return period
+    })
+    setShowHints(false)
+  }, [])
+
+  // Navigate to a period by ID (from detail panel influence links)
+  const handleNavigateToPeriod = useCallback((periodId: string) => {
+    const period = ARCHITECTURAL_PERIODS.find((p) => p.id === periodId)
+    if (period) {
+      setSelectedPeriod(period)
+      setTimelineYear(period.startYear)
+    }
   }, [])
 
   // Shared fade style generator for staggered reveal
@@ -133,6 +160,10 @@ export default function GlobeLanding() {
     transform: isLoading ? 'translateY(10px)' : 'translateY(0)',
     transition: `opacity 1.2s cubic-bezier(0.16,1,0.3,1) ${delay}s, transform 1.2s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
   })
+
+  // Display name: selected period or current timeline period
+  const displayPeriod = selectedPeriod || currentPeriod
+  const displayYear = selectedPeriod ? selectedPeriod.startYear : timelineYear
 
   return (
     <>
@@ -157,6 +188,7 @@ export default function GlobeLanding() {
             currentYear={timelineYear}
             isDayTheme={isDay}
             onReady={handleGlobeReady}
+            selectedPeriod={selectedPeriod}
           />
         </div>
 
@@ -187,27 +219,37 @@ export default function GlobeLanding() {
           </div>
         )}
 
-        {/* ── Top left: Title + period ── */}
+        {/* ── Top left: Title + period (or detail panel when selected) ── */}
         <div
-          className="absolute top-4 left-4 md:top-6 md:left-6 z-10 pointer-events-none"
+          className="absolute top-4 left-4 md:top-6 md:left-6 z-10"
           style={fadeIn(0.1)}
         >
-          <h1
-            className="text-3xl md:text-4xl lg:text-5xl font-light tracking-tight"
-            style={{ color: 'rgba(255,255,255,0.85)' }}
-          >
-            Architecture
-          </h1>
-          <p
-            className="text-xs md:text-sm font-medium mt-1.5"
-            style={{
-              color: 'rgba(212,165,74,0.85)',
-              opacity: currentPeriod ? 1 : 0,
-              transition: 'opacity 0.6s ease-out',
-            }}
-          >
-            {currentPeriod ? `${currentPeriod.name} · ${formatYear(timelineYear)}` : '\u00A0'}
-          </p>
+          {selectedPeriod ? (
+            <PeriodDetailPanel
+              period={selectedPeriod}
+              onClose={() => setSelectedPeriod(null)}
+              onNavigate={handleNavigateToPeriod}
+            />
+          ) : (
+            <div className="pointer-events-none">
+              <h1
+                className="text-3xl md:text-4xl lg:text-5xl font-light tracking-tight"
+                style={{ color: 'rgba(255,255,255,0.85)' }}
+              >
+                Architecture
+              </h1>
+              <p
+                className="text-xs md:text-sm font-medium mt-1.5"
+                style={{
+                  color: 'rgba(212,165,74,0.85)',
+                  opacity: currentPeriod ? 1 : 0,
+                  transition: 'opacity 0.6s ease-out',
+                }}
+              >
+                {currentPeriod ? `${currentPeriod.name} · ${formatYear(timelineYear)}` : '\u00A0'}
+              </p>
+            </div>
+          )}
         </div>
 
         {/* ── Top right: Stats ── */}
@@ -249,7 +291,9 @@ export default function GlobeLanding() {
             className="text-[10px] md:text-[11px] mt-2 max-w-[180px] leading-relaxed hidden sm:block"
             style={{ color: 'rgba(255,255,255,0.28)' }}
           >
-            Arcs show how building knowledge spread between civilizations.
+            {selectedPeriod
+              ? 'Showing connections for this period only.'
+              : 'Arcs show how building knowledge spread between civilizations.'}
           </p>
         </div>
 
@@ -270,7 +314,7 @@ export default function GlobeLanding() {
               }}
             >
               <span
-                className="text-[10px] font-medium tracking-[0.12em] uppercase px-3 py-1 rounded-full backdrop-blur-sm"
+                className="text-[10px] font-medium tracking-[0.12em] uppercase px-3 py-1 rounded-full backdrop-blur-sm border"
                 style={{
                   color: 'rgba(212,165,74,0.8)',
                   background: 'rgba(0,0,0,0.4)',
@@ -284,6 +328,8 @@ export default function GlobeLanding() {
           <GlobeTimeline
             currentYear={timelineYear}
             onChange={handleTimelineChange}
+            selectedPeriod={selectedPeriod}
+            onPeriodSelect={handlePeriodSelect}
           />
         </div>
       </div>
