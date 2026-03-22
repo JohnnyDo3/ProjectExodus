@@ -4,7 +4,7 @@
 import { ARCHITECTURAL_PERIODS, type PeriodDefinition } from './periods'
 
 // =============================================================================
-// REGION CENTROIDS (14 regions)
+// REGION CENTROIDS (33 regions)
 // =============================================================================
 
 export interface RegionCentroid {

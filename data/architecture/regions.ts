@@ -348,6 +348,58 @@ export const REGION_DEFINITIONS: Record<GeographicRegion, RegionDefinition> = {
     funFact: 'Traditional Polynesian navigation houses were oriented to the stars, with their construction encoding astronomical knowledge used for ocean voyaging!',
   },
 
+  CENTRAL_ASIA: {
+    id: 'CENTRAL_ASIA',
+    name: 'Central Asia',
+    shortName: 'Central Asia',
+    continent: 'Asia',
+    subRegions: ['Uzbekistan', 'Kazakhstan', 'Turkmenistan', 'Tajikistan', 'Kyrgyzstan', 'Afghanistan'],
+    color: '#4169E1',
+    icon: '\u{1F54C}',
+    description: {
+      ELEMENTARY: 'Central Asia is home to the Silk Road, ancient trade routes where beautiful cities like Samarkand were built with dazzling blue tiles and massive domes!',
+      MIDDLE_SCHOOL: 'Central Asian architecture features stunning tilework, massive domes, and minarets along the ancient Silk Road. Cities like Samarkand and Bukhara were crossroads of world cultures and trade.',
+      HIGH_SCHOOL: 'Central Asian architecture represents the intersection of Persian, Turkish, Chinese, and nomadic traditions along Silk Road trade routes, producing distinctive forms including the Timurid double-shell dome and elaborate geometric tilework.',
+      UNDERGRADUATE: 'Central Asian architectural traditions reflect the region\'s role as a cultural crossroads, with nomadic tent traditions, Silk Road caravanserais, and imperial building programs producing distinctive syntheses of diverse building cultures.',
+      GRADUATE: 'The architecture of Central Asia embodies complex processes of cultural exchange along Silk Road networks, with building traditions mediating between nomadic and sedentary cultures, and between Persian, Turkish, Chinese, and Mongol political influences.',
+      PHD: 'Central Asian architectural studies engage questions of cultural transmission, nomadic-sedentary interaction, and imperial patronage, examining how building traditions facilitated commercial and cultural exchange across the continental interior.',
+    },
+    architecturalIdentity: ['Timurid domes', 'Polychrome tilework', 'Silk Road caravanserais', 'Minaret towers', 'Madrasa courtyards', 'Nomadic yurt traditions'],
+    climateInfluences: ['Continental extremes', 'Desert heat', 'Cold winters', 'Arid conditions'],
+    keyMaterials: ['Fired brick', 'Glazed tiles', 'Mud brick', 'Timber', 'Felt (yurts)'],
+    notableArchitects: [
+      { name: 'Qavam al-Din Shirazi', era: '15th century', contribution: 'Timurid court architect, Gur-e-Amir' },
+      { name: 'Muhammad ibn Mahmud Isfahani', era: '15th century', contribution: 'Timurid tilework master' },
+    ],
+    funFact: 'The Registan in Samarkand means "Sandy Place" — but it became one of the most magnificent public squares in the Islamic world, with three madrasas covered in millions of individual tiles!',
+  },
+
+  CAUCASUS: {
+    id: 'CAUCASUS',
+    name: 'Caucasus',
+    shortName: 'Caucasus',
+    continent: 'Asia',
+    subRegions: ['Georgia', 'Armenia', 'Azerbaijan', 'Northern Caucasus'],
+    color: '#8B4513',
+    icon: '\u26EA',
+    description: {
+      ELEMENTARY: 'The Caucasus mountains have some of the oldest churches in the world! Armenian and Georgian builders carved beautiful stone churches that have survived earthquakes for over 1,500 years.',
+      MIDDLE_SCHOOL: 'Caucasus architecture includes some of Christianity\'s earliest churches, with Armenia and Georgia developing distinctive stone construction traditions. Tower houses and fortress churches dot the mountainous landscape.',
+      HIGH_SCHOOL: 'Caucasian architectural traditions developed distinctive early Christian building forms including the Armenian cross-dome church, Georgian polyhedral domes, and defensive tower houses adapted to mountainous terrain.',
+      UNDERGRADUATE: 'Caucasian architecture represents an independent development of Christian building traditions, with Armenian and Georgian churches pioneering pointed arch and dome-on-squinch construction centuries before their adoption in Western Europe.',
+      GRADUATE: 'The architecture of the Caucasus reveals the region\'s role as a cultural bridge between Byzantine, Persian, and Islamic building traditions, with indigenous innovations in stone construction and seismic engineering.',
+      PHD: 'Current scholarship examines Caucasian architecture\'s contribution to questions of architectural transmission between East and West, analyzing possible Armenian and Georgian influences on Romanesque and Gothic structural innovations.',
+    },
+    architecturalIdentity: ['Cross-dome churches', 'Stone construction', 'Defensive towers', 'Monastery complexes', 'Carved stone relief', 'Conical domes'],
+    climateInfluences: ['Mountain conditions', 'Seismic activity', 'Cold winters', 'Variable altitude'],
+    keyMaterials: ['Tufa stone', 'Basalt', 'Limestone', 'Timber', 'Slate roofing'],
+    notableArchitects: [
+      { name: 'Trdat', era: '10th century', contribution: 'Armenian architect, rebuilt Hagia Sophia dome' },
+      { name: 'Momik', era: '14th century', contribution: 'Armenian master sculptor and architect' },
+    ],
+    funFact: 'The Armenian architect Trdat was summoned to Constantinople in 989 CE to repair the dome of Hagia Sophia after an earthquake — proving Armenian engineering was respected even by the Byzantine emperors!',
+  },
+
   GLOBAL: {
     id: 'GLOBAL',
     name: 'Global / International',
@@ -409,7 +461,7 @@ export function searchRegions(query: string): RegionDefinition[] {
 // Region groupings for UI organization
 export const REGION_GROUPS = {
   EUROPE: ['MEDITERRANEAN', 'NORTHERN_EUROPE', 'CENTRAL_EUROPE', 'EASTERN_EUROPE'] as GeographicRegion[],
-  ASIA: ['MIDDLE_EAST', 'EAST_ASIA', 'SOUTH_ASIA', 'SOUTHEAST_ASIA'] as GeographicRegion[],
+  ASIA: ['MIDDLE_EAST', 'EAST_ASIA', 'SOUTH_ASIA', 'SOUTHEAST_ASIA', 'CENTRAL_ASIA', 'CAUCASUS'] as GeographicRegion[],
   AMERICAS: ['NORTH_AMERICA', 'SOUTH_AMERICA'] as GeographicRegion[],
   OTHER: ['AFRICA', 'OCEANIA', 'GLOBAL'] as GeographicRegion[],
 };

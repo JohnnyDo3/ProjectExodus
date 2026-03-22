@@ -112,10 +112,21 @@ export type ArchitecturalPeriod =
   | 'deconstructivism'
   | 'high-tech'
   | 'scandinavian-modernism'
+  // Additional Ancient
+  | 'nubian'
+  | 'sassanid'
+  // Additional Medieval
+  | 'seljuk'
+  // Additional Early Modern
+  | 'safavid'
+  // Additional 20th Century
+  | 'constructivism'
+  | 'expressionism-arch'
   // 21st Century
   | 'parametricism'
   | 'sustainable'
   | 'neo-futurism'
+  | 'critical-regionalism'
   | 'contemporary';
 
 export type ArchitecturalStyle =
