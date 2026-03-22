@@ -115,8 +115,14 @@ export type ArchitecturalPeriod =
   // Additional Ancient
   | 'nubian'
   | 'sassanid'
+  | 'phoenician'
+  | 'nabataean'
+  | 'herodian'
+  // Additional Late Ancient / Transition
+  | 'early-christian'
   // Additional Medieval
   | 'seljuk'
+  | 'crusader'
   // Additional Early Modern
   | 'safavid'
   // Additional 20th Century
