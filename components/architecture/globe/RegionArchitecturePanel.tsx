@@ -5,7 +5,6 @@ import {
   formatYear,
   getArcsForRegion,
   REGION_CENTROIDS,
-  type GlobeArc,
 } from '@/data/architecture/globeConnections'
 import { ARCHITECTURAL_PERIODS, type PeriodDefinition } from '@/data/architecture/periods'
 
@@ -16,7 +15,7 @@ interface RegionArchitecturePanelProps {
 }
 
 // ---------------------------------------------------------------------------
-// Helpers — extract real architectural influence examples for a region
+// Types
 // ---------------------------------------------------------------------------
 
 interface ArchitecturalInfluence {
@@ -25,10 +24,76 @@ interface ArchitecturalInfluence {
   fromRegion: string
   toRegion: string
   direction: 'incoming' | 'outgoing'
+  // Buildings filtered to be relevant to the arc's regions
   fromBuildings: { name: string; location: string; year: string }[]
   toBuildings: { name: string; location: string; year: string }[]
-  sharedCharacteristics: string[]
 }
+
+// ---------------------------------------------------------------------------
+// Geography — map region IDs to country/location substrings for filtering
+// ---------------------------------------------------------------------------
+
+const REGION_LOCATION_TERMS: Record<string, string[]> = {
+  'levant':         ['Israel', 'Palestine', 'Jordan', 'Lebanon', 'Syria', 'Jerusalem', 'Jericho', 'Petra'],
+  'anatolia':       ['Turkey', 'Anatolia'],
+  'north-africa':   ['Egypt', 'Tunisia', 'Libya', 'Morocco', 'Algeria', 'Carthage'],
+  'middle-east':    ['Iraq', 'Iran', 'Syria', 'Kuwait', 'Babylon', 'Mesopotamia', 'Ctesiphon', 'Isfahan', 'Pasargadae', 'Persepolis', 'Susa'],
+  'mediterranean':  ['Greece', 'Italy', 'Rome', 'Crete', 'Mycenae', 'Athens', 'Ravenna', 'Cyprus', 'Malta', 'Sicily', 'Mallorca'],
+  'western-europe': ['France', 'Germany', 'Netherlands', 'Belgium', 'Austria', 'Switzerland', 'Paris', 'Berlin', 'Vienna', 'Amsterdam', 'Brussels', 'Versailles'],
+  'eastern-europe': ['Russia', 'Moscow', 'Poland', 'Ukraine', 'Hungary', 'Romania', 'Czech'],
+  'east-asia':      ['China', 'Beijing', 'Shanghai', 'Hong Kong', 'Taiwan', 'Henan', 'Anyang', 'Hebei'],
+  'south-asia':     ['India', 'Pakistan', 'Sri Lanka', 'Bangladesh', 'Nepal', 'Agra', 'Delhi', 'Maharashtra', 'Khajuraho', 'Balochistan', 'Goa'],
+  'southeast-asia': ['Cambodia', 'Thailand', 'Vietnam', 'Myanmar', 'Laos', 'Philippines', 'Angkor', 'Bagan', 'Siem Reap'],
+  'east-africa':    ['Ethiopia', 'Kenya', 'Tanzania', 'Somalia', 'Lalibela', 'Mombasa', 'Kilwa'],
+  'iberia':         ['Spain', 'Portugal', 'Salamanca', 'Toledo', 'Granada', 'Seville', 'Bilbao', 'Valladolid', 'Barcelona', 'León', 'Cáceres', 'Escorial'],
+  'north-america':  ['USA', 'United States', 'New York', 'Chicago', 'Washington', 'Boston', 'Philadelphia', 'Portland', 'Charleston', 'Montreal', 'Canada'],
+  'south-america':  ['Brazil', 'Argentina', 'Chile', 'Colombia', 'Venezuela', 'São Paulo'],
+  'central-asia':   ['Uzbekistan', 'Samarkand', 'Turkmenistan', 'Kazakhstan', 'Tajikistan', 'Kyrgyzstan'],
+  'korea':          ['Korea', 'Seoul', 'Gyeongju'],
+  'japan':          ['Japan', 'Tokyo', 'Kyoto', 'Nara', 'Osaka', 'Himeji'],
+  'west-africa':    ['Mali', 'Nigeria', 'Ghana', 'Senegal', 'Timbuktu', 'Benin', 'Burkina Faso', 'Gando', 'Djenne'],
+  'southern-africa':['Zimbabwe', 'Masvingo', 'South Africa'],
+  'scandinavia':    ['Norway', 'Sweden', 'Finland', 'Denmark', 'Copenhagen', 'Stockholm', 'Oslo', 'Paimio', 'Malmö'],
+  'oceania':        ['Polynesia', 'Raiatea', 'Easter Island', 'Rapa Nui', 'Samoa', 'Tonga'],
+  'mesoamerica':    ['Mexico', 'Guatemala', 'Honduras', 'Belize', 'Teotihuacan', 'Chichen Itza', 'Oaxaca'],
+  'sw-north-america': ['Mesa Verde', 'Chaco Canyon', 'Arizona', 'New Mexico', 'Colorado', 'Pueblo'],
+  'gulf-states':    ['UAE', 'Dubai', 'Abu Dhabi', 'Qatar', 'Bahrain', 'Doha', 'Azerbaijan', 'Baku'],
+  'australia':      ['Australia', 'Sydney', 'Melbourne'],
+  'brazil':         ['Brazil', 'Brasília', 'São Paulo', 'Rio', 'Ouro Preto'],
+  'british-isles':  ['England', 'UK', 'London', 'Scotland', 'Ireland', 'Wales', 'Durham', 'Bexleyheath', 'East Grinstead'],
+  'andean':         ['Peru', 'Bolivia', 'Ecuador', 'Cusco', 'Machu Picchu'],
+  'caribbean':      ['Haiti', 'Cuba', 'Jamaica', 'Puerto Rico', 'Dominican', 'Trinidad'],
+  'caucasus':       ['Georgia', 'Armenia', 'Tbilisi', 'Yerevan'],
+  'indonesia':      ['Indonesia', 'Java', 'Borobudur', 'Bali'],
+  'nile-valley':    ['Luxor', 'Aswan', 'Giza', 'Egypt', 'Sudan', 'Meroe', 'Karnak', 'Karima'],
+  'pacific-nw':     ['Seattle', 'Pacific Northwest', 'Portland', 'Vancouver'],
+  'tibet':          ['Tibet', 'Lhasa'],
+}
+
+/**
+ * Filter a period's iconic buildings to those geographically relevant to a region.
+ * Falls back to all buildings if none match (the buildings ARE the period's examples).
+ */
+function filterBuildingsForRegion(
+  buildings: PeriodDefinition['iconicBuildings'],
+  regionId: string,
+): { name: string; location: string; year: string }[] {
+  const terms = REGION_LOCATION_TERMS[regionId]
+  if (!terms || terms.length === 0) return buildings
+
+  const filtered = buildings.filter(b => {
+    const loc = b.location.toLowerCase()
+    return terms.some(t => loc.includes(t.toLowerCase()))
+  })
+
+  // If we found region-specific buildings, return those.
+  // Otherwise return all — the period's buildings are still historically relevant examples.
+  return filtered.length > 0 ? filtered : buildings
+}
+
+// ---------------------------------------------------------------------------
+// Data extraction
+// ---------------------------------------------------------------------------
 
 function getInfluencesForRegion(regionId: string, maxYear: number): ArchitecturalInfluence[] {
   const periodMap = new Map<string, PeriodDefinition>()
@@ -49,22 +114,10 @@ function getInfluencesForRegion(regionId: string, maxYear: number): Architectura
     if (!fromPeriod || !toPeriod) continue
 
     const isIncoming = arc.targetRegion === regionId
-    const fromBuildings = fromPeriod.iconicBuildings.slice(0, 2)
-    const toBuildings = toPeriod.iconicBuildings.slice(0, 2)
 
-    // Find shared characteristics between source and target
-    const fromChars = new Set(fromPeriod.keyCharacteristics.map(c => c.toLowerCase()))
-    const shared = toPeriod.keyCharacteristics.filter(c => {
-      const lower = c.toLowerCase()
-      for (const fc of fromChars) {
-        // Check for significant word overlap (3+ chars)
-        const words = lower.split(/\s+/)
-        for (const word of words) {
-          if (word.length >= 4 && fc.includes(word)) return true
-        }
-      }
-      return false
-    })
+    // Filter buildings to show those in/near the relevant regions
+    const fromBuildings = filterBuildingsForRegion(fromPeriod.iconicBuildings, arc.sourceRegion)
+    const toBuildings = filterBuildingsForRegion(toPeriod.iconicBuildings, arc.targetRegion)
 
     influences.push({
       fromPeriod,
@@ -74,7 +127,6 @@ function getInfluencesForRegion(regionId: string, maxYear: number): Architectura
       direction: isIncoming ? 'incoming' : 'outgoing',
       fromBuildings,
       toBuildings,
-      sharedCharacteristics: shared,
     })
   }
 
@@ -146,7 +198,7 @@ export function RegionArchitecturePanel({
             className="text-[10px] font-medium tracking-wider uppercase mt-0.5"
             style={{ color: 'rgba(255,255,255,0.4)' }}
           >
-            Architectural Influences
+            Architectural Heritage &amp; Influences
           </p>
         </div>
 
@@ -204,7 +256,7 @@ export function RegionArchitecturePanel({
             </p>
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-4">
             {influences.map((inf, i) => {
               const otherRegionId = inf.direction === 'incoming' ? inf.fromRegion : inf.toRegion
               const otherRegionName = REGION_CENTROIDS[otherRegionId]?.name || otherRegionId
@@ -218,94 +270,109 @@ export function RegionArchitecturePanel({
                     background: 'rgba(255,255,255,0.02)',
                   }}
                 >
-                  {/* Influence header */}
+                  {/* Influence header — period names, direction, date */}
                   <div className="px-3 py-2" style={{ borderBottom: '1px solid rgba(212,165,74,0.08)' }}>
                     <div className="flex items-center gap-1.5 text-[11px] font-medium">
                       <span style={{ color: inf.fromPeriod.color }}>{inf.fromPeriod.icon}</span>
-                      <span style={{ color: 'rgba(255,255,255,0.75)' }}>{inf.fromPeriod.shortName}</span>
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(212,165,74,0.6)" strokeWidth="2" strokeLinecap="round">
+                      <span style={{ color: 'rgba(255,255,255,0.75)' }}>{inf.fromPeriod.name}</span>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(212,165,74,0.6)" strokeWidth="2" strokeLinecap="round" className="flex-shrink-0">
                         <path d="M5 12h14M12 5l7 7-7 7" />
                       </svg>
                       <span style={{ color: inf.toPeriod.color }}>{inf.toPeriod.icon}</span>
-                      <span style={{ color: 'rgba(255,255,255,0.75)' }}>{inf.toPeriod.shortName}</span>
+                      <span style={{ color: 'rgba(255,255,255,0.75)' }}>{inf.toPeriod.name}</span>
                     </div>
                     <p className="text-[9px] mt-0.5" style={{ color: 'rgba(255,255,255,0.3)' }}>
                       {inf.direction === 'incoming' ? 'Received from' : 'Spread to'}{' '}
                       <span style={{ color: 'rgba(212,165,74,0.6)' }}>{otherRegionName}</span>
-                      {' · '}{formatYear(inf.toPeriod.startYear)}
+                      {' · '}{formatYear(inf.toPeriod.startYear)}{inf.toPeriod.ongoing ? ' – present' : ` – ${formatYear(inf.toPeriod.endYear)}`}
                     </p>
                   </div>
 
-                  {/* Building examples */}
-                  <div className="px-3 py-2 space-y-1.5">
-                    {/* Source buildings */}
-                    {inf.fromBuildings.length > 0 && (
-                      <div>
-                        <p className="text-[8px] font-bold tracking-wider uppercase mb-1" style={{ color: 'rgba(255,255,255,0.25)' }}>
-                          Source — {inf.fromPeriod.shortName}
-                        </p>
-                        {inf.fromBuildings.map((b, bi) => (
-                          <div key={bi} className="flex items-start gap-1.5 mb-0.5">
-                            <div className="w-1 h-1 rounded-full mt-1 flex-shrink-0" style={{ background: inf.fromPeriod.color }} />
-                            <div>
-                              <p className="text-[10px] font-medium" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                                {b.name}
-                              </p>
-                              <p className="text-[9px]" style={{ color: 'rgba(255,255,255,0.3)' }}>
-                                {b.location} · {b.year}
-                              </p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Target buildings */}
-                    {inf.toBuildings.length > 0 && (
-                      <div>
-                        <p className="text-[8px] font-bold tracking-wider uppercase mb-1" style={{ color: 'rgba(255,255,255,0.25)' }}>
-                          Influenced — {inf.toPeriod.shortName}
-                        </p>
-                        {inf.toBuildings.map((b, bi) => (
-                          <div key={bi} className="flex items-start gap-1.5 mb-0.5">
-                            <div className="w-1 h-1 rounded-full mt-1 flex-shrink-0" style={{ background: inf.toPeriod.color }} />
-                            <div>
-                              <p className="text-[10px] font-medium" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                                {b.name}
-                              </p>
-                              <p className="text-[9px]" style={{ color: 'rgba(255,255,255,0.3)' }}>
-                                {b.location} · {b.year}
-                              </p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Shared characteristics */}
-                    {inf.sharedCharacteristics.length > 0 && (
-                      <div className="pt-1" style={{ borderTop: '1px solid rgba(212,165,74,0.06)' }}>
-                        <p className="text-[8px] font-bold tracking-wider uppercase mb-1" style={{ color: 'rgba(212,165,74,0.4)' }}>
-                          Shared techniques
-                        </p>
-                        <div className="flex flex-wrap gap-1">
-                          {inf.sharedCharacteristics.map((c, ci) => (
-                            <span
-                              key={ci}
-                              className="text-[9px] px-1.5 py-0.5 rounded"
-                              style={{
-                                background: 'rgba(212,165,74,0.08)',
-                                color: 'rgba(212,165,74,0.7)',
-                                border: '1px solid rgba(212,165,74,0.12)',
-                              }}
-                            >
-                              {c}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                  {/* How the influence manifested — from period descriptions */}
+                  <div className="px-3 py-2" style={{ borderBottom: '1px solid rgba(212,165,74,0.06)' }}>
+                    <p className="text-[10px] leading-relaxed" style={{ color: 'rgba(255,255,255,0.55)' }}>
+                      {inf.toPeriod.description.MIDDLE_SCHOOL}
+                    </p>
                   </div>
+
+                  {/* Key innovations — what the influenced period introduced */}
+                  <div className="px-3 py-2" style={{ borderBottom: '1px solid rgba(212,165,74,0.06)' }}>
+                    <p className="text-[8px] font-bold tracking-wider uppercase mb-1.5" style={{ color: 'rgba(212,165,74,0.4)' }}>
+                      Key Innovations
+                    </p>
+                    <div className="flex flex-wrap gap-1">
+                      {inf.toPeriod.keyCharacteristics.map((c, ci) => (
+                        <span
+                          key={ci}
+                          className="text-[9px] px-1.5 py-0.5 rounded"
+                          style={{
+                            background: 'rgba(212,165,74,0.06)',
+                            color: 'rgba(212,165,74,0.65)',
+                            border: '1px solid rgba(212,165,74,0.1)',
+                          }}
+                        >
+                          {c}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Building examples — source period */}
+                  <div className="px-3 py-2 space-y-2">
+                    <div>
+                      <p className="text-[8px] font-bold tracking-wider uppercase mb-1" style={{ color: 'rgba(255,255,255,0.25)' }}>
+                        {inf.fromPeriod.icon} Origin — {inf.fromPeriod.name} ({formatYear(inf.fromPeriod.startYear)} – {inf.fromPeriod.ongoing ? 'present' : formatYear(inf.fromPeriod.endYear)})
+                      </p>
+                      {inf.fromBuildings.map((b, bi) => (
+                        <div key={bi} className="flex items-start gap-1.5 mb-1">
+                          <div className="w-1.5 h-1.5 rounded-full mt-0.5 flex-shrink-0" style={{ background: inf.fromPeriod.color }} />
+                          <div>
+                            <p className="text-[10px] font-medium" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                              {b.name}
+                            </p>
+                            <p className="text-[9px]" style={{ color: 'rgba(255,255,255,0.3)' }}>
+                              {b.location} · {b.year}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Building examples — influenced period */}
+                    <div>
+                      <p className="text-[8px] font-bold tracking-wider uppercase mb-1" style={{ color: 'rgba(255,255,255,0.25)' }}>
+                        {inf.toPeriod.icon} Result — {inf.toPeriod.name} ({formatYear(inf.toPeriod.startYear)} – {inf.toPeriod.ongoing ? 'present' : formatYear(inf.toPeriod.endYear)})
+                      </p>
+                      {inf.toBuildings.map((b, bi) => (
+                        <div key={bi} className="flex items-start gap-1.5 mb-1">
+                          <div className="w-1.5 h-1.5 rounded-full mt-0.5 flex-shrink-0" style={{ background: inf.toPeriod.color }} />
+                          <div>
+                            <p className="text-[10px] font-medium" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                              {b.name}
+                            </p>
+                            <p className="text-[9px]" style={{ color: 'rgba(255,255,255,0.3)' }}>
+                              {b.location} · {b.year}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Fun fact */}
+                  {inf.toPeriod.funFact && (
+                    <div
+                      className="px-3 py-2"
+                      style={{
+                        borderTop: '1px solid rgba(212,165,74,0.08)',
+                        background: 'rgba(212,165,74,0.03)',
+                      }}
+                    >
+                      <p className="text-[9px] leading-relaxed italic" style={{ color: 'rgba(212,165,74,0.6)' }}>
+                        {inf.toPeriod.funFact}
+                      </p>
+                    </div>
+                  )}
                 </div>
               )
             })}
@@ -313,7 +380,7 @@ export function RegionArchitecturePanel({
         )}
       </div>
 
-      {/* Footer hint */}
+      {/* Footer */}
       <div
         className="relative flex-shrink-0 px-4 py-2.5"
         style={{
