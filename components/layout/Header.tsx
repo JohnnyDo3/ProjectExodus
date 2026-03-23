@@ -279,7 +279,7 @@ export function Header() {
                             return isLocked ? (
                               <div
                                 key={menuItem.label}
-                                className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-[var(--muted-foreground)] opacity-60 cursor-not-allowed"
+                                className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-[var(--muted-foreground)] opacity-60 cursor-not-allowed whitespace-nowrap"
                                 title="Sign in to access"
                               >
                                 <Lock className="w-3.5 h-3.5 flex-shrink-0" />
@@ -329,7 +329,7 @@ export function Header() {
 
                     {/* Dropdown menu - centered */}
                     <div
-                      className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 rounded-xl overflow-hidden z-[201] transition-all duration-200 origin-top ${
+                      className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 min-w-[200px] w-auto rounded-xl overflow-hidden z-[201] transition-all duration-200 origin-top ${
                         communityMenuOpen
                           ? 'opacity-100 scale-100 translate-y-0'
                           : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'
@@ -347,7 +347,7 @@ export function Header() {
                             return isLocked ? (
                               <div
                                 key={menuItem.label}
-                                className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-[var(--muted-foreground)] opacity-60 cursor-not-allowed"
+                                className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-[var(--muted-foreground)] opacity-60 cursor-not-allowed whitespace-nowrap"
                               >
                                 <Lock className="w-3.5 h-3.5 flex-shrink-0" />
                                 <span className="text-sm font-medium">{menuItem.label}</span>
@@ -356,7 +356,7 @@ export function Header() {
                               <Link
                                 key={menuItem.label}
                                 href={menuItem.href}
-                                className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-[var(--foreground)] hover:bg-[var(--muted)]/50 hover:text-[var(--primary)] transition-colors"
+                                className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-[var(--foreground)] hover:bg-[var(--muted)]/50 hover:text-[var(--primary)] transition-colors whitespace-nowrap"
                                 onClick={() => setCommunityMenuOpen(false)}
                               >
                                 <span>{menuItem.myLabel}</span>
