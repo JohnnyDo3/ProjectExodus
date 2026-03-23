@@ -435,22 +435,6 @@ export function Header() {
           {/* Desktop Auth Section */}
           <div className="hidden lg:flex items-center gap-3 xl:gap-4">
             <ThemeToggle />
-            <Link
-              href="/explore"
-              className="relative p-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
-              title="Search & Explore"
-            >
-              <Search className="w-5 h-5 text-[var(--foreground)]" />
-            </Link>
-            {session && (
-              <Link
-                href="/my/volition"
-                className="relative p-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
-                title="My Tank"
-              >
-                <Fish className="w-5 h-5 text-[var(--foreground)]" />
-              </Link>
-            )}
             {session && (
               <Link
                 href="/messages"
@@ -492,6 +476,26 @@ export function Header() {
                           {session.user?.email}
                         </p>
                       </div>
+                      <div className="flex items-center gap-2 px-3 py-2 border-b-2 border-[var(--border)]">
+                        <Link
+                          href="/explore"
+                          className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
+                          onClick={() => setUserMenuOpen(false)}
+                          title="Search & Explore"
+                        >
+                          <Search className="w-4 h-4 text-theme-muted" />
+                          <span className="text-sm font-medium text-[var(--foreground)]">Search</span>
+                        </Link>
+                        <Link
+                          href="/my/volition"
+                          className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
+                          onClick={() => setUserMenuOpen(false)}
+                          title="My Tank"
+                        >
+                          <Fish className="w-4 h-4 text-theme-muted" />
+                          <span className="text-sm font-medium text-[var(--foreground)]">My Tank</span>
+                        </Link>
+                      </div>
                       <div className="p-2">
                         <Link
                           href="/settings"
@@ -515,6 +519,13 @@ export function Header() {
               </div>
             ) : (
               <>
+                <Link
+                  href="/explore"
+                  className="relative p-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
+                  title="Search & Explore"
+                >
+                  <Search className="w-5 h-5 text-[var(--foreground)]" />
+                </Link>
                 <Link
                   href="/auth/signin"
                   className="inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 px-3 py-1.5 text-sm border-2 border-[var(--primary)] text-[var(--primary)] hover:bg-[var(--muted)] bg-transparent"

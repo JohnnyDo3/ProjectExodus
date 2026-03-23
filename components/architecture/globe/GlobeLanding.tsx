@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 import GlobeTimeline from './GlobeTimeline'
 import { PeriodDetailPanel } from './PeriodDetailPanel'
 import { ConnectionInfoPanel } from './ConnectionInfoPanel'
+import { RegionArchitecturePanel } from './RegionArchitecturePanel'
 import { useTimeTheme } from '@/components/providers/TimeThemeProvider'
 import { ARCHITECTURAL_PERIODS, type PeriodDefinition } from '@/data/architecture/periods'
 import {
@@ -96,6 +97,7 @@ export default function GlobeLanding() {
   const [showHints, setShowHints] = useState(true)
   const [selectedPeriod, setSelectedPeriod] = useState<PeriodDefinition | null>(null)
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null)
+  const [showArcs, setShowArcs] = useState(true)
   const mountTimeRef = useRef(Date.now())
   const globeReadyRef = useRef(false)
 
@@ -197,6 +199,7 @@ export default function GlobeLanding() {
             onReady={handleGlobeReady}
             selectedPeriod={selectedPeriod}
             onPointClick={handlePointClick}
+            showArcs={showArcs}
           />
         </div>
 
@@ -260,8 +263,14 @@ export default function GlobeLanding() {
           )}
         </div>
 
-        {/* ── Top right: Stats or Connection Panel ── */}
-        {selectedRegion ? (
+        {/* ── Top right: Stats / Connection Panel / Region Architecture Panel ── */}
+        {selectedRegion && !showArcs ? (
+          <RegionArchitecturePanel
+            regionId={selectedRegion}
+            currentYear={timelineYear}
+            onClose={() => setSelectedRegion(null)}
+          />
+        ) : selectedRegion && showArcs ? (
           <ConnectionInfoPanel
             regionId={selectedRegion}
             currentYear={timelineYear}
@@ -269,47 +278,86 @@ export default function GlobeLanding() {
           />
         ) : (
           <div
-            className="absolute top-4 right-4 md:top-6 md:right-6 z-10 pointer-events-none text-right"
+            className="absolute top-4 right-4 md:top-6 md:right-6 z-10 text-right"
             style={fadeIn(0.25)}
           >
-            <div className="flex flex-col items-end gap-1">
-              <div className="flex items-center gap-2">
-                <span
-                  className="text-[10px] md:text-[11px] font-medium tracking-widest uppercase"
-                  style={{ color: 'rgba(255,255,255,0.35)' }}
-                >
-                  Connections
-                </span>
-                <span
-                  className="text-base md:text-lg font-light tabular-nums min-w-[2ch]"
-                  style={{ color: 'rgba(212,165,74,0.85)' }}
-                >
-                  {arcCount}
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span
-                  className="text-[10px] md:text-[11px] font-medium tracking-widest uppercase"
-                  style={{ color: 'rgba(255,255,255,0.35)' }}
-                >
-                  Regions
-                </span>
-                <span
-                  className="text-base md:text-lg font-light tabular-nums min-w-[2ch]"
-                  style={{ color: 'rgba(212,165,74,0.85)' }}
-                >
-                  {regionCount}
-                </span>
-              </div>
-            </div>
-            <p
-              className="text-[10px] md:text-[11px] mt-2 max-w-[180px] leading-relaxed hidden sm:block"
-              style={{ color: 'rgba(255,255,255,0.28)' }}
+            {/* View toggle button */}
+            <button
+              onClick={() => {
+                setShowArcs(prev => !prev)
+                setSelectedRegion(null)
+              }}
+              className="mb-3 px-3 py-1.5 rounded-full text-[10px] font-medium tracking-wider uppercase transition-all pointer-events-auto"
+              style={{
+                background: showArcs ? 'rgba(212,165,74,0.15)' : 'rgba(212,165,74,0.3)',
+                border: '1px solid rgba(212,165,74,0.3)',
+                color: showArcs ? 'rgba(212,165,74,0.8)' : 'rgba(212,165,74,1)',
+                backdropFilter: 'blur(8px)',
+              }}
+              title={showArcs ? 'Switch to Regions view — hide arcs and click regions to explore' : 'Switch to Connections view — show influence arcs'}
             >
-              {selectedPeriod
-                ? 'Showing connections for this period only.'
-                : 'Arcs show how building knowledge spread between civilizations.'}
-            </p>
+              {showArcs ? (
+                <span className="flex items-center gap-1.5">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                  Regions View
+                </span>
+              ) : (
+                <span className="flex items-center gap-1.5">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                  Connections View
+                </span>
+              )}
+            </button>
+
+            <div className="pointer-events-none">
+              <div className="flex flex-col items-end gap-1">
+                {showArcs && (
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="text-[10px] md:text-[11px] font-medium tracking-widest uppercase"
+                      style={{ color: 'rgba(255,255,255,0.35)' }}
+                    >
+                      Connections
+                    </span>
+                    <span
+                      className="text-base md:text-lg font-light tabular-nums min-w-[2ch]"
+                      style={{ color: 'rgba(212,165,74,0.85)' }}
+                    >
+                      {arcCount}
+                    </span>
+                  </div>
+                )}
+                <div className="flex items-center gap-2">
+                  <span
+                    className="text-[10px] md:text-[11px] font-medium tracking-widest uppercase"
+                    style={{ color: 'rgba(255,255,255,0.35)' }}
+                  >
+                    Regions
+                  </span>
+                  <span
+                    className="text-base md:text-lg font-light tabular-nums min-w-[2ch]"
+                    style={{ color: 'rgba(212,165,74,0.85)' }}
+                  >
+                    {regionCount}
+                  </span>
+                </div>
+              </div>
+              <p
+                className="text-[10px] md:text-[11px] mt-2 max-w-[200px] leading-relaxed hidden sm:block"
+                style={{ color: 'rgba(255,255,255,0.28)' }}
+              >
+                {!showArcs
+                  ? 'Click any region to explore its architectural heritage and the real buildings that connected civilizations.'
+                  : selectedPeriod
+                    ? 'Showing connections for this period only.'
+                    : 'Arcs show how building knowledge spread between civilizations.'}
+              </p>
+            </div>
           </div>
         )}
 

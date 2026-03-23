@@ -28,6 +28,7 @@ interface ArchitectureGlobeProps {
   onReady?: () => void
   selectedPeriod?: PeriodDefinition | null
   onPointClick?: (point: { region: string; name: string; lat: number; lng: number }) => void
+  showArcs?: boolean
 }
 
 interface GeoJSONFeature {
@@ -60,6 +61,7 @@ export default function ArchitectureGlobe({
   onReady,
   selectedPeriod,
   onPointClick,
+  showArcs = true,
 }: ArchitectureGlobeProps) {
   const globeRef = useRef<any>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -197,11 +199,29 @@ export default function ArchitectureGlobe({
   // -------------------------------------------------------------------------
 
   const arcsData = useMemo(() => {
+    if (!showArcs) return []
     if (selectedPeriod) return getArcsForPeriod(selectedPeriod.id)
     return getArcsForYear(currentYear)
-  }, [currentYear, selectedPeriod])
+  }, [currentYear, selectedPeriod, showArcs])
 
   const pointsData = useMemo(() => {
+    // When arcs are hidden, show all regions that have any connection up to the current year
+    if (!showArcs) {
+      const allArcs = getArcsForYear(currentYear)
+      const regionCounts = new Map<string, number>()
+      for (const arc of allArcs) {
+        regionCounts.set(arc.sourceRegion, (regionCounts.get(arc.sourceRegion) || 0) + 1)
+        regionCounts.set(arc.targetRegion, (regionCounts.get(arc.targetRegion) || 0) + 1)
+      }
+      const points: any[] = []
+      for (const [region, count] of regionCounts) {
+        const centroid = REGION_CENTROIDS[region]
+        if (centroid) {
+          points.push({ lat: centroid.lat, lng: centroid.lng, region, name: centroid.name, connectionCount: count })
+        }
+      }
+      return points
+    }
     if (selectedPeriod) {
       // Build points from arcs for selected period
       const regionCounts = new Map<string, number>()
@@ -219,7 +239,7 @@ export default function ArchitectureGlobe({
       return points
     }
     return getPointsForYear(currentYear)
-  }, [currentYear, selectedPeriod, arcsData])
+  }, [currentYear, selectedPeriod, arcsData, showArcs])
 
   const buildingPointsData = useMemo(() => {
     if (!selectedPeriod) return []
@@ -289,7 +309,9 @@ export default function ArchitectureGlobe({
           pointAltitude={(d: any) => d.isBuilding ? 0.015 : 0.01}
           pointRadius={(d: any) => d.isBuilding
             ? 0.25
-            : Math.max(0.3, Math.min(1.0, d.connectionCount * 0.08))
+            : !showArcs
+              ? Math.max(0.5, Math.min(1.2, d.connectionCount * 0.1))
+              : Math.max(0.3, Math.min(1.0, d.connectionCount * 0.08))
           }
           pointLabel={(d: any) => d.name}
           onPointClick={onPointClick ? (point: any) => {
