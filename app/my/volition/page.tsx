@@ -40,6 +40,7 @@ import {
   Landmark,
   Waves,
   Skull,
+  BarChart3,
 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -443,6 +444,9 @@ export default function MyVolitionPage() {
 
   // Lane picker modal
   const [showLanePicker, setShowLanePicker] = useState(false)
+
+  // Volition content tab (activity vs analytics)
+  const [volitionTab, setVolitionTab] = useState<'activity' | 'analytics'>('activity')
 
   // Business card modal
   const [showBusinessCardModal, setShowBusinessCardModal] = useState(false)
@@ -1335,27 +1339,54 @@ export default function MyVolitionPage() {
         )
       )}
 
-      {/* ═══ ACTIVITY FEED & ANALYTICS ═══ */}
+      {/* ═══ ACTIVITY FEED & ANALYTICS (Tabbed) ═══ */}
       <section className="py-6 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto space-y-6">
-          {/* Analytics Dashboard */}
-          <AnalyticsDashboard />
-
-          {/* Activity Feed */}
-          <div className="bg-[var(--card)] rounded-2xl border-2 border-[var(--border)] overflow-hidden">
-            <div className="flex items-center gap-2.5 p-4 border-b border-[var(--border)]">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center">
-                <Zap className="w-4 h-4 text-white" />
-              </div>
-              <div>
-                <h2 className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wide">Network Activity</h2>
-                <p className="text-[11px] text-[var(--foreground)]/50">Latest from people you follow</p>
-              </div>
-            </div>
-            <div className="p-4">
-              <ActivityFeed />
-            </div>
+        <div className="max-w-7xl mx-auto">
+          {/* Tab Bar */}
+          <div className="flex items-center gap-1 mb-4 bg-[var(--muted)] rounded-xl p-1 w-fit">
+            <button
+              onClick={() => setVolitionTab('activity')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all ${
+                volitionTab === 'activity'
+                  ? 'bg-[var(--card)] text-[var(--foreground)] shadow-sm border border-[var(--border)]'
+                  : 'text-[var(--foreground)]/50 hover:text-[var(--foreground)]/70'
+              }`}
+            >
+              <Zap className="w-3.5 h-3.5" />
+              Activity
+            </button>
+            <button
+              onClick={() => setVolitionTab('analytics')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all ${
+                volitionTab === 'analytics'
+                  ? 'bg-[var(--card)] text-[var(--foreground)] shadow-sm border border-[var(--border)]'
+                  : 'text-[var(--foreground)]/50 hover:text-[var(--foreground)]/70'
+              }`}
+            >
+              <BarChart3 className="w-3.5 h-3.5" />
+              Analytics
+            </button>
           </div>
+
+          {/* Tab Content */}
+          {volitionTab === 'activity' ? (
+            <div className="bg-[var(--card)] rounded-2xl border-2 border-[var(--border)] overflow-hidden">
+              <div className="flex items-center gap-2.5 p-4 border-b border-[var(--border)]">
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center">
+                  <Zap className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wide">Network Activity</h2>
+                  <p className="text-[11px] text-[var(--foreground)]/50">Latest from people you follow</p>
+                </div>
+              </div>
+              <div className="p-4">
+                <ActivityFeed />
+              </div>
+            </div>
+          ) : (
+            <AnalyticsDashboard />
+          )}
         </div>
       </section>
 
