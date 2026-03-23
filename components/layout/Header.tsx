@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
-import { Menu, X, Leaf, User, LogOut, Settings, Users, ChevronRight, MessageCircle, Bell, ChevronDown, Lock, Crown, GraduationCap, Fish } from 'lucide-react'
+import { Menu, X, Leaf, User, LogOut, Settings, Users, ChevronRight, MessageCircle, Bell, ChevronDown, Lock, Crown, GraduationCap, Fish, Search } from 'lucide-react'
 import NotificationBell from '@/components/notifications/NotificationBell'
 import { useDigitalScrollContext } from '@/components/learning/DigitalScroll/DigitalScrollContext'
 import { useSageContextSafe } from '@/components/ai/SageContext'
@@ -435,6 +435,13 @@ export function Header() {
           {/* Desktop Auth Section */}
           <div className="hidden lg:flex items-center gap-3 xl:gap-4">
             <ThemeToggle />
+            <Link
+              href="/explore"
+              className="relative p-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
+              title="Search & Explore"
+            >
+              <Search className="w-5 h-5 text-[var(--foreground)]" />
+            </Link>
             {session && (
               <Link
                 href="/my/volition"
@@ -672,6 +679,15 @@ export function Header() {
                   </div>
 
                   {/* User Menu Links */}
+                  <Link href="/explore" onClick={() => setMobileMenuOpen(false)}>
+                    <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-[var(--muted)] hover:bg-theme-primary/10 transition-colors">
+                      <div className="flex items-center gap-3">
+                        <Search className="w-5 h-5 text-theme-primary" />
+                        <span className="font-bold text-[var(--foreground)]">Search & Explore</span>
+                      </div>
+                      <ChevronRight className="w-5 h-5 text-theme-muted" />
+                    </div>
+                  </Link>
                   <Link href="/messages" onClick={() => setMobileMenuOpen(false)}>
                     <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-[var(--muted)] hover:bg-theme-primary/10 transition-colors">
                       <div className="flex items-center gap-3">

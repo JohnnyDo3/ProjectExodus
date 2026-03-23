@@ -22,11 +22,11 @@ export interface LaneDefinition {
 
 export const DEFAULT_LANES: LaneDefinition[] = [
   { id: 'profile', title: 'Identity', icon: 'User', gradient: 'from-[var(--primary)] to-[var(--accent)]', enabled: true },
-  { id: 'projects', title: 'Projects', icon: 'Rocket', gradient: 'from-violet-500 to-purple-600', enabled: true }, // Distinct branch - collaboration hub
+  { id: 'feed', title: 'Feed', icon: 'MessageCircle', gradient: 'from-[var(--secondary)] to-[var(--accent)]', enabled: true },
+  { id: 'projects', title: 'Projects', icon: 'Rocket', gradient: 'from-violet-500 to-purple-600', enabled: true },
   { id: 'articles', title: 'Articles', icon: 'FileText', gradient: 'from-[var(--accent)] to-[var(--secondary)]', enabled: true },
   { id: 'learning', title: 'Learning', icon: 'BookOpen', gradient: 'from-[var(--primary)] to-[var(--secondary)]', enabled: true },
   { id: 'network', title: 'Network', icon: 'Users', gradient: 'from-[var(--accent)] to-[var(--primary)]', enabled: true },
-  { id: 'feed', title: 'Feed', icon: 'MessageCircle', gradient: 'from-[var(--secondary)] to-[var(--accent)]', enabled: true },
   { id: 'impact', title: 'Impact', icon: 'Leaf', gradient: 'from-green-500 to-emerald-500', enabled: true },
 ]
 

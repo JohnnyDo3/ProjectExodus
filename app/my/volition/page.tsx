@@ -53,6 +53,8 @@ import '@/components/fishbowl/fishbowl.css'
 
 import { DynamicSpotlight } from '@/components/volition/DynamicSpotlight'
 import { QuickActionsBar } from '@/components/volition/QuickActionsBar'
+import { ActivityFeed } from '@/components/volition/ActivityFeed'
+import AnalyticsDashboard from '@/components/volition/AnalyticsDashboard'
 
 import { ProfileCard } from '@/components/volition/cards/ProfileCard'
 import { ProfileBusinessCard } from '@/components/profile/ProfileBusinessCard'
@@ -355,24 +357,29 @@ function LaneScroller({ children, viewMode = 'expanded' }: { children: React.Rea
 function LaneEmptyState({
   icon: Icon,
   message,
+  description,
   action,
   href,
 }: {
   icon: any
   message: string
+  description?: string
   action?: string
   href?: string
 }) {
   return (
-    <div className="flex flex-col items-center justify-center py-8 px-4 text-center bg-[var(--muted)]/30 rounded-xl border-2 border-dashed border-[var(--border)]">
-      <div className="w-10 h-10 rounded-xl bg-[var(--muted)] flex items-center justify-center mb-2">
-        <Icon className="w-5 h-5 text-[var(--foreground)]/30" />
+    <div className="flex flex-col items-center justify-center py-10 px-5 text-center bg-gradient-to-b from-[var(--muted)]/20 to-[var(--muted)]/40 rounded-2xl border-2 border-dashed border-[var(--border)]/60">
+      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[var(--primary)]/20 to-[var(--accent)]/20 flex items-center justify-center mb-3 shadow-sm">
+        <Icon className="w-7 h-7 text-[var(--primary)]/60" />
       </div>
-      <p className="text-sm font-medium text-[var(--foreground)]/50 mb-2">{message}</p>
+      <p className="text-sm font-bold text-[var(--foreground)]/60 mb-1">{message}</p>
+      {description && (
+        <p className="text-xs text-[var(--foreground)]/40 mb-3 max-w-[200px]">{description}</p>
+      )}
       {action && href && (
         <a
           href={href}
-          className="px-3 py-1.5 rounded-lg bg-[var(--primary)]/10 text-[var(--primary)] text-xs font-bold hover:bg-[var(--primary)]/20 transition-colors"
+          className="px-4 py-2 rounded-xl bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white text-xs font-bold hover:shadow-lg hover:scale-105 transition-all"
         >
           {action}
         </a>
@@ -815,14 +822,14 @@ export default function MyVolitionPage() {
   }
 
   // Get lane empty state config
-  const emptyStates: Record<LaneId, { icon: any; message: string; action?: string; href?: string }> = {
-    profile: { icon: User, message: 'Complete your profile' },
-    projects: { icon: Briefcase, message: 'No projects yet', action: 'Start a Project', href: '/community/projects/new' },
-    articles: { icon: FileText, message: 'No articles yet', action: 'Write an Article', href: '/articles/write' },
-    learning: { icon: BookOpen, message: 'Start learning', action: 'Browse Courses', href: '/learn' },
-    network: { icon: Users, message: 'Grow your network', action: 'Find People', href: '/fishbowl?view=directory' },
-    feed: { icon: MessageCircle, message: 'No posts yet', action: 'Start a Discussion', href: '/community/forum/new' },
-    impact: { icon: Leaf, message: 'Track your impact' },
+  const emptyStates: Record<LaneId, { icon: any; message: string; description?: string; action?: string; href?: string }> = {
+    profile: { icon: User, message: 'Complete your profile', description: 'Add your bio, skills, and interests to connect with the community' },
+    projects: { icon: Briefcase, message: 'No projects yet', description: 'Collaborate with others on sustainability initiatives', action: 'Start a Project', href: '/community/projects/new' },
+    articles: { icon: FileText, message: 'No articles yet', description: 'Share your knowledge and insights with the community', action: 'Write an Article', href: '/articles/write' },
+    learning: { icon: BookOpen, message: 'Start learning', description: 'Explore sustainability courses and track your progress', action: 'Browse Courses', href: '/learn' },
+    network: { icon: Users, message: 'Grow your network', description: 'Connect with sustainability advocates and experts', action: 'Find People', href: '/fishbowl?view=directory' },
+    feed: { icon: MessageCircle, message: 'No posts yet', description: 'Join discussions and share your thoughts', action: 'Start a Discussion', href: '/community/forum/new' },
+    impact: { icon: Leaf, message: 'Track your impact', description: 'See how your actions contribute to sustainability goals' },
   }
 
   // Get add config per lane
@@ -1328,6 +1335,30 @@ export default function MyVolitionPage() {
         )
       )}
 
+      {/* ═══ ACTIVITY FEED & ANALYTICS ═══ */}
+      <section className="py-6 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto space-y-6">
+          {/* Analytics Dashboard */}
+          <AnalyticsDashboard />
+
+          {/* Activity Feed */}
+          <div className="bg-[var(--card)] rounded-2xl border-2 border-[var(--border)] overflow-hidden">
+            <div className="flex items-center gap-2.5 p-4 border-b border-[var(--border)]">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center">
+                <Zap className="w-4 h-4 text-white" />
+              </div>
+              <div>
+                <h2 className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wide">Network Activity</h2>
+                <p className="text-[11px] text-[var(--foreground)]/50">Latest from people you follow</p>
+              </div>
+            </div>
+            <div className="p-4">
+              <ActivityFeed />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ═══ CONTENT LANES ═══ */}
       <LaneScroller viewMode={viewMode}>
         {orderedLanes
@@ -1335,6 +1366,8 @@ export default function MyVolitionPage() {
           .map((lane) => {
             const Icon = iconMap[lane.icon as keyof typeof iconMap] || User
             const addConfig = getAddConfig(lane.id)
+
+            const emptyConfig = emptyStates[lane.id]
 
             return (
               <ColumnLane
@@ -1348,6 +1381,17 @@ export default function MyVolitionPage() {
                 isCustomizing={isCustomizing}
                 onRemove={() => toggleLane(lane.id)}
                 viewMode={viewMode}
+                emptyState={
+                  emptyConfig ? (
+                    <LaneEmptyState
+                      icon={emptyConfig.icon}
+                      message={emptyConfig.message}
+                      description={emptyConfig.description}
+                      action={emptyConfig.action}
+                      href={emptyConfig.href}
+                    />
+                  ) : undefined
+                }
               >
                 {renderLaneContent(lane.id)}
               </ColumnLane>
