@@ -402,7 +402,7 @@ export default function NetworkPage() {
                                 const trait = getArchetypeTrait(follower.guardianArchetype)
                                 return (
                                   <div key={follower.id} className="flex items-center gap-3 p-3 bg-[var(--muted)] rounded-xl border border-[var(--border)]">
-                                    <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${trait.gradient} flex items-center justify-center overflow-hidden ring-2 ring-white/20`}>
+                                    <div className={`relative w-10 h-10 rounded-full bg-gradient-to-br ${trait.gradient} flex items-center justify-center overflow-hidden ring-2 ring-white/20`}>
                                       {follower.image ? (
                                         <Image src={follower.image} alt="" fill unoptimized sizes="100%" className="object-cover" />
                                       ) : (
@@ -470,7 +470,7 @@ export default function NetworkPage() {
                                 return (
                                   <div key={user.id} className="flex items-center gap-3 p-3 bg-[var(--muted)] rounded-xl border border-[var(--border)]">
                                     <Link href={`/profile/${user.id}`}>
-                                      <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${trait.gradient} flex items-center justify-center overflow-hidden cursor-pointer hover:ring-2 ring-theme-primary transition-all`}>
+                                      <div className={`relative w-12 h-12 rounded-full bg-gradient-to-br ${trait.gradient} flex items-center justify-center overflow-hidden cursor-pointer hover:ring-2 ring-theme-primary transition-all`}>
                                         {user.image ? (
                                           <Image src={user.image} alt="" fill unoptimized sizes="100%" className="object-cover" />
                                         ) : (
@@ -537,7 +537,7 @@ export default function NetworkPage() {
                                 return (
                                   <div key={user.id} className="flex items-center gap-3 p-3 bg-[var(--muted)] rounded-xl border border-[var(--border)]">
                                     <Link href={`/profile/${user.id}`}>
-                                      <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${trait.gradient} flex items-center justify-center overflow-hidden cursor-pointer hover:ring-2 ring-theme-primary transition-all`}>
+                                      <div className={`relative w-10 h-10 rounded-full bg-gradient-to-br ${trait.gradient} flex items-center justify-center overflow-hidden cursor-pointer hover:ring-2 ring-theme-primary transition-all`}>
                                         {user.image ? (
                                           <Image src={user.image} alt="" fill unoptimized sizes="100%" className="object-cover" />
                                         ) : (
@@ -926,7 +926,7 @@ function TreeNode({
       onClick={onViewProfile}
     >
       {/* Avatar with archetype gradient */}
-      <div className={`w-11 h-11 rounded-full bg-gradient-to-br ${trait.gradient} flex items-center justify-center overflow-hidden flex-shrink-0 ring-2 ring-white/20`}>
+      <div className={`relative w-11 h-11 rounded-full bg-gradient-to-br ${trait.gradient} flex items-center justify-center overflow-hidden flex-shrink-0 ring-2 ring-white/20`}>
         {user.image ? (
           <Image src={user.image} alt="" fill unoptimized sizes="100%" className="object-cover" />
         ) : (
