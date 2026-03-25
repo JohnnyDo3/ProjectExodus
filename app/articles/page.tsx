@@ -4188,7 +4188,7 @@ export default function ArticlesPage() {
 
                       {/* Author section */}
                       <div className="flex items-center justify-center gap-3 mb-4 py-3 border-y border-amber-700/20">
-                        <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${getAuthorTheme(article.author.guardianArchetype).gradient} flex items-center justify-center shadow-lg`}>
+                        <div className={`relative w-10 h-10 rounded-full bg-gradient-to-br ${getAuthorTheme(article.author.guardianArchetype).gradient} flex items-center justify-center shadow-lg`}>
                           {article.author.image ? (
                             <Image src={article.author.image} alt={article.author.name} fill unoptimized sizes="100%" className="rounded-full object-cover" />
                           ) : (
@@ -4445,7 +4445,7 @@ export default function ArticlesPage() {
 
                     {/* Author attribution - manuscript style - compact */}
                     <div className="flex items-center justify-center gap-3 mb-4 py-3 border-y border-amber-600/30">
-                      <div className="w-10 h-10 rounded-full bg-amber-200 border-2 border-amber-600/50 flex items-center justify-center shadow-md overflow-hidden">
+                      <div className="relative w-10 h-10 rounded-full bg-amber-200 border-2 border-amber-600/50 flex items-center justify-center shadow-md overflow-hidden">
                         {previewArticle.author?.image ? (
                           <Image src={previewArticle.author.image} alt={previewArticle.author.name} fill unoptimized sizes="100%" className="rounded-full object-cover sepia-[15%]" />
                         ) : (
