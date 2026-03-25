@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { User, MessageSquare, FileText, Briefcase, Heart, Calendar, UserPlus, Repeat } from 'lucide-react'
 
 export interface ActivityItem {
@@ -110,9 +111,9 @@ export function ActivityCard({ item, index, featured = false }: ActivityCardProp
         {/* Footer: user + engagement */}
         <div className="flex items-center justify-between mt-3 pt-2 border-t border-[var(--border)]">
           <div className="flex items-center gap-1.5">
-            <div className="w-5 h-5 rounded-full bg-[var(--muted)] flex items-center justify-center overflow-hidden">
+            <div className="relative w-5 h-5 rounded-full bg-[var(--muted)] flex items-center justify-center overflow-hidden">
               {item.userImage ? (
-                <img src={item.userImage} alt={item.userName} className="w-full h-full object-cover" />
+                <Image src={item.userImage} alt={item.userName} fill unoptimized sizes="100%" className="object-cover" />
               ) : (
                 <User className="w-3 h-3 text-[var(--muted-foreground)]" />
               )}

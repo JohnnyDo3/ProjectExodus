@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import {
@@ -249,9 +250,9 @@ export default function MessagesPage() {
                     className="w-full p-4 border-b border-[var(--border)] hover:bg-[var(--primary)]/10 transition-colors text-left group"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
+                      <div className="relative w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
                         {contact.image ? (
-                          <img src={contact.image} alt={contact.name} className="w-full h-full rounded-full object-cover" />
+                          <Image src={contact.image} alt={contact.name} fill unoptimized sizes="100%" className="rounded-full object-cover" />
                         ) : (
                           <User className="w-5 h-5 text-white" />
                         )}
@@ -289,9 +290,9 @@ export default function MessagesPage() {
                   >
                     <div className="flex items-center gap-3">
                       <div className="relative">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
+                        <div className="relative w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
                           {conv.partner.image ? (
-                            <img src={conv.partner.image} alt={conv.partner.name || ''} className="w-full h-full rounded-full object-cover" />
+                            <Image src={conv.partner.image} alt={conv.partner.name || ''} fill unoptimized sizes="100%" className="rounded-full object-cover" />
                           ) : (
                             <User className="w-5 h-5 text-white" />
                           )}

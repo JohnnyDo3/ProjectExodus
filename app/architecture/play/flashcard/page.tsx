@@ -30,7 +30,6 @@ function FlashcardGameWrapper() {
 
   const handleComplete = (results: any) => {
     // Could save results to database here
-    console.log('Game completed:', results)
   }
 
   return (

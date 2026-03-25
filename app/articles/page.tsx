@@ -13,6 +13,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -531,7 +532,6 @@ export default function ArticlesPage() {
   }, [])
 
   const fetchArticles = useCallback(async (reset = false) => {
-    console.log('[Articles] fetchArticles called, reset:', reset)
     try {
       setError(null)
       const currentOffset = reset ? 0 : offsetRef.current
@@ -546,9 +546,7 @@ export default function ArticlesPage() {
         params.set('search', searchQuery)
       }
 
-      console.log('[Articles] Fetching:', `/api/articles?${params}`)
       const res = await fetch(`/api/articles?${params}`)
-      console.log('[Articles] Response status:', res.status)
 
       // Check response status
       if (!res.ok) {
@@ -558,7 +556,6 @@ export default function ArticlesPage() {
       }
 
       const data = await res.json()
-      console.log('[Articles] Data received, success:', data.success, 'count:', data.data?.length)
 
       if (data.success) {
         if (reset) {
@@ -588,7 +585,6 @@ export default function ArticlesPage() {
       const message = err instanceof Error ? err.message : 'Failed to load articles'
       setError(message)
     } finally {
-      console.log('[Articles] Finally block, setting isLoading to false')
       setIsLoading(false)
     }
   }, [activeSort, searchQuery])
@@ -4194,7 +4190,7 @@ export default function ArticlesPage() {
                       <div className="flex items-center justify-center gap-3 mb-4 py-3 border-y border-amber-700/20">
                         <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${getAuthorTheme(article.author.guardianArchetype).gradient} flex items-center justify-center shadow-lg`}>
                           {article.author.image ? (
-                            <img src={article.author.image} alt={article.author.name} className="w-full h-full rounded-full object-cover" />
+                            <Image src={article.author.image} alt={article.author.name} fill unoptimized sizes="100%" className="rounded-full object-cover" />
                           ) : (
                             <User className="w-5 h-5 text-white" />
                           )}
@@ -4451,7 +4447,7 @@ export default function ArticlesPage() {
                     <div className="flex items-center justify-center gap-3 mb-4 py-3 border-y border-amber-600/30">
                       <div className="w-10 h-10 rounded-full bg-amber-200 border-2 border-amber-600/50 flex items-center justify-center shadow-md overflow-hidden">
                         {previewArticle.author?.image ? (
-                          <img src={previewArticle.author.image} alt={previewArticle.author.name} className="w-full h-full rounded-full object-cover sepia-[15%]" />
+                          <Image src={previewArticle.author.image} alt={previewArticle.author.name} fill unoptimized sizes="100%" className="rounded-full object-cover sepia-[15%]" />
                         ) : (
                           <User className="w-6 h-6 text-amber-700" />
                         )}
@@ -4797,7 +4793,7 @@ export default function ArticlesPage() {
                         {/* Cover Image */}
                         <div className="relative h-36 overflow-hidden bg-stone-800">
                           {article.coverImage ? (
-                            <img src={article.coverImage} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                            <Image src={article.coverImage} alt={article.title} fill unoptimized sizes="100%" className="object-cover group-hover:scale-105 transition-transform duration-300" />
                           ) : (
                             <div className={`w-full h-full bg-gradient-to-br ${category?.color || 'from-emerald-500 to-emerald-700'} flex items-center justify-center`}>
                               {category && <category.icon className="w-10 h-10 text-white/20" />}

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import Image from 'next/image'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -455,9 +456,9 @@ export default function UsersManagementPage() {
                 >
                   <div className="flex items-center gap-4 flex-1 min-w-0">
                     {/* Avatar */}
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-theme-primary to-theme-accent flex items-center justify-center flex-shrink-0">
+                    <div className="relative w-12 h-12 rounded-full bg-gradient-to-br from-theme-primary to-theme-accent flex items-center justify-center flex-shrink-0">
                       {user.image ? (
-                        <img src={user.image} alt="" className="w-full h-full rounded-full object-cover" />
+                        <Image src={user.image} alt="" fill unoptimized sizes="100%" className="rounded-full object-cover" />
                       ) : (
                         <span className="text-white font-bold">
                           {(user.name || user.email).charAt(0).toUpperCase()}

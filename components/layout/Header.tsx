@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react'
 import { useSession, signOut } from 'next-auth/react'
@@ -385,9 +386,9 @@ export function Header() {
                                     <span className={`w-5 text-xs font-bold ${user.rank <= 3 ? 'text-amber-500' : 'text-[var(--muted-foreground)]'}`}>
                                       #{user.rank}
                                     </span>
-                                    <div className="w-5 h-5 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
+                                    <div className="relative w-5 h-5 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
                                       {user.image ? (
-                                        <img src={user.image} alt="" className="w-full h-full rounded-full object-cover" />
+                                        <Image src={user.image} alt="" fill unoptimized sizes="100%" className="rounded-full object-cover" />
                                       ) : (
                                         <span className="text-[10px] font-bold text-white">
                                           {user.name?.[0]?.toUpperCase() || '?'}

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
+import Image from 'next/image'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import {
@@ -238,9 +239,9 @@ export function PeerReviewWidget({ articleId, peerReviews: initialReviews, onRev
         <div className="py-3">
           {/* Header */}
           <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
+            <div className="relative w-8 h-8 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
               {item.user.image ? (
-                <img src={item.user.image} alt="" className="w-8 h-8 rounded-full" />
+                <Image src={item.user.image} alt="" fill unoptimized sizes="100%" className="rounded-full object-cover" />
               ) : (
                 <User className="w-4 h-4 text-white" />
               )}

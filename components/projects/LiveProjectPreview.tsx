@@ -1,6 +1,7 @@
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
+import Image from 'next/image'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import {
@@ -369,7 +370,7 @@ function PreviewCard(props: any) {
       <Card className="overflow-hidden border-2 border-[var(--border)] hover:border-[var(--primary)] transition-all cursor-pointer">
         {coverImage ? (
           <div className="relative h-32 bg-[var(--muted)]">
-            <img src={coverImage} alt={name} className="w-full h-full object-cover"/>
+            <Image src={coverImage} alt={name} fill unoptimized sizes="100%" className="object-cover"/>
           </div>
         ) : (
           <div

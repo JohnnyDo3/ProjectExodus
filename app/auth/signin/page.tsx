@@ -25,21 +25,17 @@ function SignInForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Sign in form submitted', { email: formData.email })
     setLoading(true)
     setError(null)
 
     try {
-      console.log('Calling signIn...')
       const result = await signIn('credentials', {
         email: formData.email,
         password: formData.password,
         redirect: false,
       })
 
-      console.log('SignIn result:', result)
       if (result?.error) {
-        console.log('SignIn error:', result.error)
         setError('Invalid email or password')
       } else if (result?.ok) {
         setSuccess(true)

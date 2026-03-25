@@ -4,6 +4,7 @@ import { memo, useRef, useEffect, useState, useCallback } from 'react'
 import { getTierName, type FishTier } from './FishSpecies'
 import { User, MessageCircle, UserPlus, UserMinus, Eye, Loader2 } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 
 interface FishOverlayProps {
@@ -112,7 +113,7 @@ export const FishOverlay = memo(({ fish, position, mode, onClose, containerRect 
         <div className="bg-[#0A1628]/90 backdrop-blur-sm border border-cyan-500/30 rounded-lg px-3 py-2 shadow-lg shadow-cyan-900/20">
           <div className="flex items-center gap-2">
             {fish.image ? (
-              <img src={fish.image} alt="" className="w-6 h-6 rounded-full object-cover border border-cyan-400/50" />
+              <div className="relative w-6 h-6 flex-shrink-0"><Image src={fish.image} alt="" fill unoptimized sizes="100%" className="rounded-full object-cover border border-cyan-400/50" /></div>
             ) : (
               <div className="w-6 h-6 rounded-full bg-cyan-800 flex items-center justify-center">
                 <User className="w-3 h-3 text-cyan-300" />
@@ -148,7 +149,7 @@ export const FishOverlay = memo(({ fish, position, mode, onClose, containerRect 
           {/* Header */}
           <div className="flex items-center gap-3 mb-3 pb-3 border-b border-cyan-800/50">
             {fish.image ? (
-              <img src={fish.image} alt="" className="w-10 h-10 rounded-full object-cover border-2 border-cyan-400/50" />
+              <div className="relative w-10 h-10 flex-shrink-0"><Image src={fish.image} alt="" fill unoptimized sizes="100%" className="rounded-full object-cover border-2 border-cyan-400/50" /></div>
             ) : (
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-700 to-blue-800 flex items-center justify-center">
                 <User className="w-5 h-5 text-cyan-300" />

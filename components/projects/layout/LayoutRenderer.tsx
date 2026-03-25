@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import {
   MessageSquare,
   FileText,
@@ -401,11 +402,11 @@ function MembersPreview({
         {members.slice(0, 8).map((m, i) => (
           <div
             key={m.id}
-            className="w-10 h-10 rounded-full border-2 border-[var(--card)] bg-[var(--muted)] flex items-center justify-center overflow-hidden"
+            className="relative w-10 h-10 rounded-full border-2 border-[var(--card)] bg-[var(--muted)] flex items-center justify-center overflow-hidden"
             style={{ zIndex: 10 - i }}
           >
             {m.user.image ? (
-              <img src={m.user.image} alt={m.user.name || ''} className="w-full h-full object-cover" />
+              <Image src={m.user.image} alt={m.user.name || ''} fill unoptimized sizes="100%" className="object-cover" />
             ) : (
               <span className="text-sm font-medium">
                 {(m.user.name || 'U').charAt(0).toUpperCase()}

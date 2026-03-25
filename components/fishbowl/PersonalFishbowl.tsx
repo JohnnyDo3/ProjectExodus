@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Fish, Users, X, Sparkles, Plus, Minus } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Fishbowl } from './Fishbowl'
 import { FishSVG, getTierFromScore, getTierName, type FishCustomization } from './FishSpecies'
 import { FishCustomizer } from './FishCustomizer'
@@ -324,10 +325,10 @@ export function PersonalFishbowl() {
                           <Link
                             href={`/profile/${conn.id}`}
                             onClick={() => setIsOpen(false)}
-                            className="flex-shrink-0 w-6 h-6 rounded-full overflow-hidden bg-cyan-900/40"
+                            className="relative flex-shrink-0 w-6 h-6 rounded-full overflow-hidden bg-cyan-900/40"
                           >
                             {conn.image ? (
-                              <img src={conn.image} alt="" className="w-full h-full object-cover" />
+                              <Image src={conn.image} alt="" fill unoptimized sizes="100%" className="object-cover" />
                             ) : (
                               <div className="w-full h-full flex items-center justify-center">
                                 <span className="text-[9px] font-black text-cyan-400">

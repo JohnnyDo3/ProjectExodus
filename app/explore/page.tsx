@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import {
   Search,
   FileText,
@@ -105,9 +106,9 @@ function ResultCard({ result }: { result: SearchResult }) {
         <div className="flex items-start gap-4">
           {/* Icon / avatar area */}
           {result.type === 'people' ? (
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0 overflow-hidden">
+            <div className="relative w-12 h-12 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0 overflow-hidden">
               {result.image ? (
-                <img src={result.image} alt="" className="w-full h-full object-cover" />
+                <Image src={result.image} alt="" fill unoptimized sizes="100%" className="object-cover" />
               ) : (
                 <Users className="w-5 h-5 text-[var(--primary-foreground)]" />
               )}

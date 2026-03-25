@@ -6,6 +6,7 @@ import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Search, MapPin, Briefcase, Sparkles, Filter, X, ChevronLeft, ChevronRight, Users } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 import FollowConnectButtons from '@/components/network/FollowConnectButtons'
 
 interface DirectoryUser {
@@ -282,9 +283,9 @@ export default function MemberDirectory() {
               >
                 {/* Avatar & Name */}
                 <div className="flex items-start gap-3 mb-3">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--primary)] to-cyan-600 flex items-center justify-center flex-shrink-0">
+                  <div className="relative w-12 h-12 rounded-full bg-gradient-to-br from-[var(--primary)] to-cyan-600 flex items-center justify-center flex-shrink-0">
                     {user.image ? (
-                      <img src={user.image} alt={user.name} className="w-full h-full rounded-full object-cover" />
+                      <Image src={user.image} alt={user.name} fill unoptimized sizes="100%" className="rounded-full object-cover" />
                     ) : (
                       <Users className="w-6 h-6 text-white" />
                     )}

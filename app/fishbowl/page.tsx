@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Card, CardContent } from '@/components/ui/Card'
@@ -421,7 +422,7 @@ export default function FishbowlPage() {
                                   <div key={follower.id} className="flex items-center gap-3 p-3 bg-[var(--muted)] rounded-xl border border-[var(--border)]">
                                     <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${trait.gradient} flex items-center justify-center overflow-hidden ring-2 ring-white/20`}>
                                       {follower.image ? (
-                                        <img src={follower.image} alt="" className="w-full h-full object-cover" />
+                                        <Image src={follower.image} alt="" fill unoptimized sizes="100%" className="object-cover" />
                                       ) : (
                                         <span className="text-white font-bold">{(follower.name || 'U')[0]}</span>
                                       )}
@@ -489,7 +490,7 @@ export default function FishbowlPage() {
                                     <Link href={`/profile/${user.id}`}>
                                       <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${trait.gradient} flex items-center justify-center overflow-hidden cursor-pointer hover:ring-2 ring-theme-primary transition-all`}>
                                         {user.image ? (
-                                          <img src={user.image} alt="" className="w-full h-full object-cover" />
+                                          <Image src={user.image} alt="" fill unoptimized sizes="100%" className="object-cover" />
                                         ) : (
                                           <span className="text-white font-bold text-lg">{(user.name || 'U')[0]}</span>
                                         )}
@@ -556,7 +557,7 @@ export default function FishbowlPage() {
                                     <Link href={`/profile/${user.id}`}>
                                       <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${trait.gradient} flex items-center justify-center overflow-hidden cursor-pointer hover:ring-2 ring-theme-primary transition-all`}>
                                         {user.image ? (
-                                          <img src={user.image} alt="" className="w-full h-full object-cover" />
+                                          <Image src={user.image} alt="" fill unoptimized sizes="100%" className="object-cover" />
                                         ) : (
                                           <span className="text-white font-bold">{(user.name || 'U')[0]}</span>
                                         )}
@@ -950,7 +951,7 @@ function TreeNode({
       {/* Avatar with archetype gradient */}
       <div className={`w-11 h-11 rounded-full bg-gradient-to-br ${trait.gradient} flex items-center justify-center overflow-hidden flex-shrink-0 ring-2 ring-white/20`}>
         {user.image ? (
-          <img src={user.image} alt="" className="w-full h-full object-cover" />
+          <Image src={user.image} alt="" fill unoptimized sizes="100%" className="object-cover" />
         ) : (
           <span className="text-white font-bold text-lg">{(user.name || 'U')[0]}</span>
         )}

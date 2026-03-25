@@ -2,6 +2,7 @@
 
 import { Heart, MessageCircle, Share2, MoreHorizontal, Trash2, Eye, User } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 import { ViewMode } from '@/hooks/useVolitionLayout'
 
@@ -99,9 +100,9 @@ export function FeedPostCard({
       <div className="p-4 pb-3 flex items-start justify-between">
         <div className="flex items-center gap-3">
           <Link href={`/profile/${post.user?.id || post.userId}`} className="flex-shrink-0">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center overflow-hidden">
+            <div className="relative w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center overflow-hidden">
               {post.user?.image ? (
-                <img src={post.user.image} alt={post.user.name || ''} className="w-full h-full object-cover" />
+                <Image src={post.user.image} alt={post.user.name || ''} fill unoptimized sizes="100%" className="object-cover" />
               ) : (
                 <User className="w-5 h-5 text-white" />
               )}
@@ -175,7 +176,7 @@ export function FeedPostCard({
                 key={idx}
                 className="relative aspect-video rounded-lg overflow-hidden bg-[var(--background)]"
               >
-                <img src={img} alt="" className="w-full h-full object-cover" />
+                <Image src={img} alt="" fill unoptimized sizes="100%" className="object-cover" />
               </div>
             ))}
           </div>

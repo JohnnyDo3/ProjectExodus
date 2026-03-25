@@ -1132,7 +1132,7 @@ export function InteractiveTextbook({
             <div className="bg-[var(--card)] rounded-xl p-4 max-w-lg w-full max-h-[80vh] overflow-auto">
               <FlashcardStudy
                 deck={lessonFlashcards}
-                onComplete={(results) => console.log('Flashcard study complete:', results)}
+                onComplete={() => setShowFlashcards(false)}
                 onClose={() => setShowFlashcards(false)}
               />
             </div>

@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/Button'
 import {
   Sword,
@@ -182,9 +183,9 @@ export function UserPreviewCard({
           <div className="flex items-start gap-3">
             {/* Avatar */}
             <Link href={`/profile/${user.id}`} className="flex-shrink-0">
-              <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br ${archetype.gradient} p-0.5 hover:scale-105 transition-transform`}>
+              <div className={`relative w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br ${archetype.gradient} p-0.5 hover:scale-105 transition-transform`}>
                 {user.image ? (
-                  <img src={user.image} alt={user.name || 'User'} className="w-full h-full rounded-[10px] object-cover" />
+                  <Image src={user.image} alt={user.name || 'User'} fill unoptimized sizes="100%" className="rounded-[10px] object-cover" />
                 ) : (
                   <div className="w-full h-full rounded-[10px] bg-white/20 flex items-center justify-center">
                     <Users className="w-6 h-6 text-white" />
@@ -305,9 +306,9 @@ export function UserPreviewCard({
       {/* Avatar overlapping header */}
       <div className="relative -mt-10 sm:-mt-12 px-4 sm:px-6">
         <Link href={`/profile/${user.id}`}>
-          <div className={`w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br ${archetype.gradient} p-1 hover:scale-105 transition-transform shadow-lg`}>
+          <div className={`relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br ${archetype.gradient} p-1 hover:scale-105 transition-transform shadow-lg`}>
             {user.image ? (
-              <img src={user.image} alt={user.name || 'User'} className="w-full h-full rounded-xl object-cover" />
+              <Image src={user.image} alt={user.name || 'User'} fill unoptimized sizes="100%" className="rounded-xl object-cover" />
             ) : (
               <div className="w-full h-full rounded-xl bg-white/20 flex items-center justify-center">
                 <Users className="w-10 h-10 text-white" />
