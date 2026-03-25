@@ -11,7 +11,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { LearningLevel, LEARNING_LEVELS } from '@/types/learning'
-import { Module } from '@/data/modules'
+import type { Module } from '@/types/modules'
 import { Founder } from '@/components/learning/FounderCard'
 import { detectPioneersInContent } from '@/data/sustainabilityPioneers'
 import { PioneerModal } from '@/components/learning/PioneerModal'

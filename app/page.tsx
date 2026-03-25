@@ -1,11 +1,15 @@
 import Link from 'next/link'
+import { Suspense } from 'react'
+import dynamic from 'next/dynamic'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Leaf, Droplet, Zap, Users, Heart, BookOpen, Award, Sprout } from 'lucide-react'
-import { TreeBranches } from '@/components/decorative/TreeBranches'
-import { FlyingBirds } from '@/components/decorative/FlyingBirds'
-import { CircularCarousel } from '@/components/carousel/CircularCarousel'
-import { ProgressiveSkyline } from '@/components/decorative/ProgressiveSkyline'
+
+// Lazy-load heavy decorative components
+const TreeBranches = dynamic(() => import('@/components/decorative/TreeBranches').then(mod => ({ default: mod.TreeBranches })))
+const FlyingBirds = dynamic(() => import('@/components/decorative/FlyingBirds').then(mod => ({ default: mod.FlyingBirds })))
+const CircularCarousel = dynamic(() => import('@/components/carousel/CircularCarousel').then(mod => ({ default: mod.CircularCarousel })))
+const ProgressiveSkyline = dynamic(() => import('@/components/decorative/ProgressiveSkyline').then(mod => ({ default: mod.ProgressiveSkyline })))
 
 export default function Home() {
   const commandments = [
@@ -83,9 +87,13 @@ export default function Home() {
 
   return (
     <div className="min-h-screen overflow-hidden relative">
-      {/* Decorative Elements */}
-      <TreeBranches />
-      <FlyingBirds />
+      {/* Decorative Elements - loaded after main content */}
+      <Suspense fallback={null}>
+        <TreeBranches />
+      </Suspense>
+      <Suspense fallback={null}>
+        <FlyingBirds />
+      </Suspense>
 
       {/* Hero Section - BOLD & EXPERIMENTAL */}
       <section className="relative min-h-[60vh] h-[85vh] md:h-[85vh] flex items-start justify-center overflow-hidden pt-5">
@@ -195,7 +203,9 @@ export default function Home() {
         </div>
 
         {/* Progressive Skyline - Fixed to bottom of hero page */}
-        <ProgressiveSkyline />
+        <Suspense fallback={null}>
+          <ProgressiveSkyline />
+        </Suspense>
       </section>
 
       {/* Mission Section - Asymmetric Layout */}
@@ -366,7 +376,9 @@ export default function Home() {
               <p className="text-lg md:text-xl font-bold text-[var(--primary-foreground)]">OF SUSTAINABLE AGRICULTURE</p>
             </div>
 
-            <CircularCarousel items={commandments} />
+            <Suspense fallback={<div className="h-96" />}>
+              <CircularCarousel items={commandments} />
+            </Suspense>
           </div>
         </div>
       </section>

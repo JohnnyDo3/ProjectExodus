@@ -9,14 +9,8 @@ import {
   Folder, FolderOpen
 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/Card'
-import {
-  Module,
-  Classroom,
-  CoreTopic,
-  getModulesByClassroom,
-  getTopicClassrooms,
-  DEFAULT_CLASSROOMS
-} from '@/data/modules'
+import type { Module, Classroom, CoreTopic } from '@/types/modules'
+import { DEFAULT_CLASSROOMS } from '@/types/modules'
 import { LearningLevel, LEARNING_LEVELS } from '@/types/learning'
 
 // Icon mapping for classrooms
@@ -28,9 +22,29 @@ const CLASSROOM_ICONS: Record<string, React.ComponentType<{ className?: string }
   'projects': Hammer,
 }
 
+// Helper: group modules by classroom (avoids importing data/modules)
+function groupModulesByClassroom(modules: Module[]): Record<string, Module[]> {
+  const grouped: Record<string, Module[]> = {}
+  modules.forEach(module => {
+    const classroomId = module.classroom || 'fundamentals'
+    if (!grouped[classroomId]) grouped[classroomId] = []
+    grouped[classroomId].push(module)
+  })
+  return grouped
+}
+
+function getClassroomsWithModules(modules: Module[]): Classroom[] {
+  const modulesByClassroom = groupModulesByClassroom(modules)
+  const classroomIds = Object.keys(modulesByClassroom)
+  return DEFAULT_CLASSROOMS
+    .filter(c => classroomIds.includes(c.id))
+    .sort((a, b) => a.order - b.order)
+}
+
 interface ClassroomBrowserProps {
   topicSlug: CoreTopic
   topicTitle: string
+  modules: Module[]
   selectedLevel: LearningLevel
   completedModules?: Set<string>
 }
@@ -38,13 +52,14 @@ interface ClassroomBrowserProps {
 export function ClassroomBrowser({
   topicSlug,
   topicTitle,
+  modules,
   selectedLevel,
   completedModules = new Set()
 }: ClassroomBrowserProps) {
   const [expandedClassroom, setExpandedClassroom] = useState<string | null>('fundamentals')
 
-  const classrooms = getTopicClassrooms(topicSlug)
-  const modulesByClassroom = getModulesByClassroom(topicSlug)
+  const classrooms = getClassroomsWithModules(modules)
+  const modulesByClassroom = groupModulesByClassroom(modules)
 
   // If no classrooms with modules, show all modules flat
   if (classrooms.length === 0) {
@@ -202,15 +217,17 @@ export function ClassroomBrowser({
 // Compact version for sidebar or widget use
 export function ClassroomQuickNav({
   topicSlug,
+  modules,
   selectedLevel,
   currentModuleSlug
 }: {
   topicSlug: CoreTopic
+  modules: Module[]
   selectedLevel: LearningLevel
   currentModuleSlug?: string
 }) {
-  const classrooms = getTopicClassrooms(topicSlug)
-  const modulesByClassroom = getModulesByClassroom(topicSlug)
+  const classrooms = getClassroomsWithModules(modules)
+  const modulesByClassroom = groupModulesByClassroom(modules)
 
   if (classrooms.length === 0) return null
 

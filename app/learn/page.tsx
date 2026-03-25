@@ -1,12 +1,15 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSession } from 'next-auth/react'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
-import { CompactLiveImpactStats } from '@/components/learn/CompactLiveImpactStats'
-import { TreeBranches } from '@/components/decorative/TreeBranches'
-import { FlyingBirds } from '@/components/decorative/FlyingBirds'
+import dynamic from 'next/dynamic'
+
+// Lazy-load heavy decorative components
+const CompactLiveImpactStats = dynamic(() => import('@/components/learn/CompactLiveImpactStats').then(mod => ({ default: mod.CompactLiveImpactStats })))
+const TreeBranches = dynamic(() => import('@/components/decorative/TreeBranches').then(mod => ({ default: mod.TreeBranches })), { ssr: false })
+const FlyingBirds = dynamic(() => import('@/components/decorative/FlyingBirds').then(mod => ({ default: mod.FlyingBirds })), { ssr: false })
 import { LearningLevel, LEARNING_LEVELS, LEARNING_LEVEL_ORDER } from '@/types/learning'
 import {
   BookOpen, Calculator, Download, Zap, Leaf,
@@ -16,7 +19,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import type { TopicProgress } from '@/app/api/learn/topic-progress/route'
-import type { CoreTopic } from '@/data/modules'
+import type { CoreTopic } from '@/types/modules'
 
 export default function LearnPage() {
   const { data: session, status } = useSession()
@@ -117,9 +120,13 @@ export default function LearnPage() {
 
   return (
     <div className="min-h-screen relative">
-      {/* Decorative Elements */}
-      <TreeBranches />
-      <FlyingBirds />
+      {/* Decorative Elements - lazy loaded */}
+      <Suspense fallback={null}>
+        <TreeBranches />
+      </Suspense>
+      <Suspense fallback={null}>
+        <FlyingBirds />
+      </Suspense>
 
       {/* Hero Section - Full Viewport, buttons below fold */}
       <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[color-mix(in_srgb,var(--accent)_15%,var(--background))] via-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[var(--muted)] relative overflow-hidden">
@@ -296,7 +303,9 @@ export default function LearnPage() {
               </p>
             </div>
 
-            <CompactLiveImpactStats />
+            <Suspense fallback={<div className="h-48 animate-pulse bg-[var(--muted)] rounded-xl" />}>
+              <CompactLiveImpactStats />
+            </Suspense>
           </div>
         </div>
       </section>

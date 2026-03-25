@@ -5,7 +5,7 @@
 // ============================================
 
 import type { LearningLevel } from '@/types/learning'
-import type { Module } from '@/data/modules'
+import type { Module } from '@/types/modules'
 
 export interface ExtractedTerm {
   id: string

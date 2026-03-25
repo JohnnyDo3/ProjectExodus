@@ -7,8 +7,12 @@ import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { SkeletonUserCard } from '@/components/ui/SkeletonUserCard'
 import { UserPreviewCard } from '@/components/network/UserPreviewCard'
-import { CommunityFishbowl } from '@/components/fishbowl/CommunityFishbowl'
 import dynamic from 'next/dynamic'
+
+const CommunityFishbowl = dynamic(
+  () => import('@/components/fishbowl/CommunityFishbowl').then(mod => ({ default: mod.CommunityFishbowl })),
+  { ssr: false, loading: () => <div className="w-full h-[500px] bg-[var(--muted)] rounded-xl animate-pulse" /> }
+)
 
 const MemberDirectory = dynamic(() => import('@/components/fishbowl/MemberDirectory'), {
   ssr: false,

@@ -41,7 +41,7 @@ import {
 } from './scrollConstants'
 
 // Learning data
-import type { Module, TopicDefinition, CoreTopic } from '@/data/modules'
+import type { Module, TopicDefinition, CoreTopic } from '@/types/modules'
 import type { LearningLevel } from '@/types/learning'
 
 // ============================================

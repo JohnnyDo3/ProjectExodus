@@ -3,8 +3,11 @@ import { Button } from '@/components/ui/Button'
 import { Package, ExternalLink, Heart, User } from 'lucide-react'
 import Link from 'next/link'
 import { prisma } from '@/lib/db'
-import { TreeBranches } from '@/components/decorative/TreeBranches'
-import { FlyingBirds } from '@/components/decorative/FlyingBirds'
+import { Suspense } from 'react'
+import dynamic from 'next/dynamic'
+
+const TreeBranches = dynamic(() => import('@/components/decorative/TreeBranches').then(mod => ({ default: mod.TreeBranches })))
+const FlyingBirds = dynamic(() => import('@/components/decorative/FlyingBirds').then(mod => ({ default: mod.FlyingBirds })))
 
 async function getApprovedProducts() {
   try {
@@ -50,9 +53,13 @@ export default async function MarketplacePage() {
 
   return (
     <div className="min-h-screen relative">
-      {/* Decorative Elements */}
-      <TreeBranches />
-      <FlyingBirds />
+      {/* Decorative Elements - lazy loaded */}
+      <Suspense fallback={null}>
+        <TreeBranches />
+      </Suspense>
+      <Suspense fallback={null}>
+        <FlyingBirds />
+      </Suspense>
 
       {/* Hero */}
       <section className="py-24 bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] via-[color-mix(in_srgb,var(--accent)_15%,var(--background))] to-[var(--muted)] relative overflow-hidden">
