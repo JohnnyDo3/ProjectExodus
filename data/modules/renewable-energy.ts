@@ -2405,8 +2405,256 @@ export const renewableEnergyModules: Module[] = [
           ELEMENTARY: `<div class="lesson-content"><h2>🌋 Hot Earth!</h2><p>Deep underground, our Earth is super hot! We can use this heat to make electricity.</p><h3>Where's the Heat?</h3><ul><li>🌍 Earth's core is hotter than the sun's surface!</li><li>♨️ Hot springs and geysers show this heat</li><li>🔥 We can drill down to reach it</li><li>⚡ Steam from underground spins turbines</li></ul></div>`,
           MIDDLE_SCHOOL: `<div class="lesson-content"><h2>Geothermal Basics</h2><h3>Earth's Heat Engine</h3><p>Earth's core is about 5,400°C! This heat flows outward. In some places, hot water and steam are close to the surface.</p><h3>Using Geothermal</h3><ul><li><strong>Power plants:</strong> Steam spins turbines</li><li><strong>Direct use:</strong> Heating buildings</li><li><strong>Heat pumps:</strong> Use stable ground temps</li></ul></div>`,
           HIGH_SCHOOL: `<div class="lesson-content"><h2>Geothermal Technology</h2><h3>Power Plant Types</h3><ul><li><strong>Dry steam:</strong> Direct steam to turbine</li><li><strong>Flash steam:</strong> Hot water flashes to steam</li><li><strong>Binary cycle:</strong> Heat transfer fluid for lower temps</li></ul><h3>Resource Types</h3><p>Hydrothermal (natural), Enhanced Geothermal Systems (engineered).</p></div>`,
-          UNDERGRADUATE: `<div class="lesson-content"><h2>Geothermal Systems</h2><h3>Enhanced Geothermal (EGS)</h3><p>Creating reservoirs in hot dry rock by hydraulic stimulation. Potential to expand geothermal beyond volcanic areas.</p><h3>Binary Cycle Plants</h3><p>Work with lower temperatures (100-180°C) using secondary working fluid.</p></div>`,
-          GRADUATE: `<div class="lesson-content"><h2>Advanced Geothermal</h2><h3>Reservoir Engineering</h3><ul><li>Sustainable extraction rates</li><li>Reinjection strategies</li><li>Tracer testing</li></ul><h3>Induced Seismicity</h3><p>Managing seismic risk from fluid injection and extraction.</p></div>`,
+          UNDERGRADUATE: `<div class="lesson-content">
+<h2>Geothermal Energy Systems: Resource Engineering, Power Conversion, and Direct-Use Applications</h2>
+
+<p>Geothermal energy provides approximately 15.9 GW of installed electricity generation capacity worldwide, with a remarkable capacity factor exceeding 90%—making it one of the most reliable baseload renewable resources available. The United States leads with approximately 3.7 GW of installed capacity, primarily concentrated at The Geysers in California, the world's largest geothermal complex.</p>
+
+<h3>Geothermal Resource Classification</h3>
+
+<p>Geothermal resources are classified by reservoir temperature, which determines the appropriate conversion technology:</p>
+
+<table class="technical-table">
+<thead>
+<tr><th>Resource Class</th><th>Temperature Range</th><th>Enthalpy Classification</th><th>Conversion Technology</th><th>Primary Applications</th></tr>
+</thead>
+<tbody>
+<tr><td>High-enthalpy</td><td>>220 C</td><td>High</td><td>Flash steam, dry steam</td><td>Electricity generation</td></tr>
+<tr><td>Medium-enthalpy</td><td>150-220 C</td><td>Medium</td><td>Flash or binary cycle</td><td>Electricity, combined heat-power</td></tr>
+<tr><td>Low-enthalpy</td><td>90-150 C</td><td>Low</td><td>Binary cycle (ORC)</td><td>Electricity, direct use</td></tr>
+<tr><td>Very low-enthalpy</td><td><90 C</td><td>Very low</td><td>Heat exchangers, heat pumps</td><td>District heating, aquaculture</td></tr>
+</tbody>
+</table>
+
+<blockquote class="scavenger-quote" data-quote-id="re-geo-undergrad-q1">
+<p>"Geothermal energy provides continuous, weather-independent baseload power with capacity factors of 90-95%, higher than any other renewable energy technology. A single geothermal well can produce 5-10 MW of electricity for 30+ years with proper reservoir management."</p>
+<cite>— U.S. Department of Energy, Geothermal Technologies Office, GeoVision Report, 2019</cite>
+</blockquote>
+
+<h3>Power Plant Technologies</h3>
+
+<h4>Dry Steam Plants</h4>
+<p>The simplest configuration, used where the reservoir produces dry steam directly (rare, e.g., The Geysers, Larderello). Steam flows directly to the turbine, achieving conversion efficiencies of 50-70% of theoretical Carnot efficiency.</p>
+
+<h4>Flash Steam Plants</h4>
+<p>The most common type globally. High-pressure geothermal brine is flashed to steam in a separator vessel:</p>
+<ul>
+<li><strong>Single-flash:</strong> One-stage separation; suitable for resources >180 C; 10-15% of brine mass converts to steam</li>
+<li><strong>Double-flash:</strong> Two-stage separation captures additional energy from remaining brine; 15-25% higher output than single-flash</li>
+<li><strong>Typical efficiency:</strong> 10-18% thermal-to-electric conversion (limited by moderate source temperatures)</li>
+</ul>
+
+<h4>Binary Cycle Plants (ORC/Kalina)</h4>
+<p>The key technology for expanding geothermal to lower-temperature resources:</p>
+<ul>
+<li><strong>Working fluids:</strong> Isobutane, isopentane, or ammonia-water mixtures (Kalina cycle)</li>
+<li><strong>Temperature range:</strong> 100-180 C resource temperatures</li>
+<li><strong>Efficiency:</strong> 8-13% thermal-to-electric (lower temperatures limit Carnot efficiency)</li>
+<li><strong>Environmental advantage:</strong> Closed-loop system with zero emissions and full reinjection</li>
+</ul>
+
+<div class="image-placeholder" data-caption="Schematic comparison of dry steam, flash steam, and binary cycle geothermal power plants">
+[Image: Three-panel diagram showing the flow paths and key components of each geothermal plant type]
+</div>
+
+<h3>Enhanced Geothermal Systems (EGS)</h3>
+
+<p>EGS technology extends geothermal potential to regions lacking natural hydrothermal reservoirs by engineering permeability in hot dry rock:</p>
+
+<blockquote class="scavenger-quote" data-quote-id="re-geo-undergrad-q2">
+<p>"Enhanced Geothermal Systems represent a transformative technology that could increase U.S. geothermal potential from 3.7 GW to over 100 GW by accessing the vast thermal energy stored in hot dry rock formations across the western states and beyond."</p>
+<cite>— Stanford Geothermal Workshop Proceedings, "EGS Development Pathways," 2023</cite>
+</blockquote>
+
+<h4>EGS Engineering Process</h4>
+<ul>
+<li><strong>Site characterization:</strong> Temperature gradient drilling, stress field measurement, and rock mechanics testing</li>
+<li><strong>Stimulation design:</strong> Hydraulic fracturing or hydroshearing to create permeable fracture networks at 3-6 km depth</li>
+<li><strong>Reservoir creation:</strong> Circulating fluid between injection and production wells through engineered fracture network</li>
+<li><strong>Monitoring:</strong> Microseismic arrays, distributed temperature sensing (DTS), and tracer testing to characterize flow paths</li>
+<li><strong>Thermal management:</strong> Optimizing extraction rates to prevent premature thermal drawdown over 20-30 year project life</li>
+</ul>
+
+<h3>Heat Flow Measurements and Well Logging</h3>
+
+<p>Resource assessment relies on subsurface temperature data:</p>
+
+<code>Q = k × dT/dz</code>
+
+<p>Where Q is heat flow (mW/m2), k is thermal conductivity (W/m-K), and dT/dz is the geothermal gradient (C/km). Average continental heat flow is ~65 mW/m2; geothermal development targets areas exceeding 80-100 mW/m2.</p>
+
+<h3>Direct-Use Applications</h3>
+
+<table class="technical-table">
+<thead>
+<tr><th>Application</th><th>Temperature Range</th><th>Installed Capacity (Global)</th><th>Efficiency</th></tr>
+</thead>
+<tbody>
+<tr><td>District heating</td><td>60-120 C</td><td>~12 GWth</td><td>80-95% thermal</td></tr>
+<tr><td>Greenhouse heating</td><td>40-100 C</td><td>~4 GWth</td><td>70-85% thermal</td></tr>
+<tr><td>Aquaculture</td><td>20-45 C</td><td>~1 GWth</td><td>60-80% thermal</td></tr>
+<tr><td>Industrial process heat</td><td>100-200 C</td><td>~3 GWth</td><td>50-80% thermal</td></tr>
+</tbody>
+</table>
+
+<h3>Ground-Source Heat Pumps vs. Deep Geothermal</h3>
+
+<ul>
+<li><strong>Ground-source heat pumps (GSHP):</strong> Exploit shallow earth temperature (10-20 C at 2-100m depth); COP of 3-5; applicable virtually everywhere; residential and commercial scale</li>
+<li><strong>Deep geothermal:</strong> Access high-temperature resources (>150 C at 1-5 km depth); limited to geologically favorable regions; utility-scale power generation</li>
+<li><strong>Medium-depth systems:</strong> Emerging category (300-2000m depth, 40-90 C); suitable for district heating without power generation</li>
+</ul>
+
+<h3>LCOE and Drilling Cost Analysis</h3>
+
+<blockquote class="scavenger-quote" data-quote-id="re-geo-undergrad-q3">
+<p>"Drilling accounts for 30-50% of total geothermal project costs, with deep wells (>3 km) costing $5-20 million each. Reducing drilling costs through advanced technologies is the single most impactful pathway to making geothermal competitive across broader resource grades."</p>
+<cite>— Geothermal Energy Association, Annual U.S. and Global Geothermal Power Production Report, 2023</cite>
+</blockquote>
+
+<table class="technical-table">
+<thead>
+<tr><th>Cost Component</th><th>Conventional Hydrothermal</th><th>Enhanced Geothermal (EGS)</th></tr>
+</thead>
+<tbody>
+<tr><td>Exploration and confirmation</td><td>$5-15M</td><td>$10-30M</td></tr>
+<tr><td>Well drilling (per well)</td><td>$3-8M</td><td>$5-20M</td></tr>
+<tr><td>Power plant construction</td><td>$1500-2500/kW</td><td>$2000-4000/kW</td></tr>
+<tr><td>LCOE range</td><td>$40-80/MWh</td><td>$80-150/MWh (current)</td></tr>
+<tr><td>Capacity factor</td><td>90-95%</td><td>80-90% (target)</td></tr>
+</tbody>
+</table>
+
+<div class="key-concept">
+<h4>Engineering Perspective</h4>
+<p>Geothermal energy is unique among renewables for providing continuous, weather-independent baseload power with minimal land footprint and near-zero operational emissions. The primary engineering challenge is subsurface uncertainty—resource characterization requires expensive drilling, and reservoir performance cannot be fully predicted from surface data alone. EGS technology has the potential to transform geothermal from a niche resource confined to volcanic regions into a broadly deployable baseload technology, but achieving cost-competitive drilling at scale remains the critical barrier.</p>
+</div>
+</div>`,
+          GRADUATE: `<div class="lesson-content">
+<h2>Advanced Geothermal Systems: Frontier Technologies, Risk Management, and Grid Decarbonization</h2>
+
+<p>Geothermal energy research is advancing rapidly along multiple fronts—from supercritical resource exploitation to closed-loop systems that eliminate subsurface uncertainty. Graduate-level analysis requires understanding the geophysical, engineering, and policy dimensions of next-generation geothermal development and its role in decarbonizing both electricity and heat sectors.</p>
+
+<h3>Induced Seismicity Risk Assessment and Mitigation</h3>
+
+<p>Induced seismicity is the primary environmental and social risk for geothermal operations, particularly EGS projects:</p>
+
+<blockquote class="scavenger-quote" data-quote-id="re-geo-grad-q1">
+<p>"The 2017 Pohang earthquake (M5.5) in South Korea, triggered by an EGS stimulation project, fundamentally changed the geothermal industry's approach to induced seismicity risk. Probabilistic seismic hazard assessment and adaptive traffic-light protocols are now essential components of any EGS development plan."</p>
+<cite>— Nature Geoscience, "Induced Seismicity and Geothermal Energy: Lessons from Pohang," 2019</cite>
+</blockquote>
+
+<h4>Traffic Light Protocol (TLP)</h4>
+<table class="technical-table">
+<thead>
+<tr><th>Level</th><th>Magnitude Threshold</th><th>Operational Response</th><th>Monitoring Requirement</th></tr>
+</thead>
+<tbody>
+<tr><td>Green</td><td>M < 1.0</td><td>Continue operations normally</td><td>Routine microseismic monitoring</td></tr>
+<tr><td>Yellow</td><td>M 1.0-2.0</td><td>Reduce injection rate and pressure</td><td>Enhanced monitoring, hourly review</td></tr>
+<tr><td>Orange</td><td>M 2.0-3.0</td><td>Suspend injection; controlled bleed-off</td><td>Continuous analysis, stakeholder notification</td></tr>
+<tr><td>Red</td><td>M > 3.0</td><td>Immediate shut-in; incident investigation</td><td>Full post-event assessment required</td></tr>
+</tbody>
+</table>
+
+<h4>Advanced Mitigation Strategies</h4>
+<ul>
+<li><strong>Cyclic soft stimulation:</strong> Alternating injection and rest periods to limit stress accumulation on faults</li>
+<li><strong>Multi-well sequential stimulation:</strong> Distributing pressure across multiple injection points</li>
+<li><strong>Pre-stimulation fault mapping:</strong> 3D seismic imaging and stress analysis to identify and avoid critically stressed faults</li>
+<li><strong>Real-time adaptive control:</strong> Machine learning algorithms adjusting injection parameters based on microseismic feedback</li>
+</ul>
+
+<h3>Supercritical Geothermal Resources</h3>
+
+<p>Supercritical water (>374 C, >22.1 MPa) offers dramatically higher energy content per unit mass, potentially enabling 5-10x more power per well:</p>
+
+<blockquote class="scavenger-quote" data-quote-id="re-geo-grad-q2">
+<p>"The Iceland Deep Drilling Project (IDDP) demonstrated that supercritical geothermal wells can produce up to 36 MW of thermal power—approximately ten times that of a conventional geothermal well. IDDP-1 encountered magma at 2.1 km depth, producing superheated steam at 452 C."</p>
+<cite>— Geothermics, "Results from the IDDP: Accessing Supercritical Geothermal Resources," 2020</cite>
+</blockquote>
+
+<h4>Research Challenges for Supercritical Systems</h4>
+<ul>
+<li><strong>Extreme conditions:</strong> Temperatures >400 C and pressures >25 MPa require specialized drilling fluids, cements, and casing materials</li>
+<li><strong>Corrosion:</strong> Supercritical fluids are highly corrosive; titanium and nickel alloy wellbore components required</li>
+<li><strong>Permeability:</strong> Brittle-ductile transition zone may limit natural permeability; novel stimulation approaches needed</li>
+<li><strong>Economic potential:</strong> If technically mastered, could reduce LCOE to $20-40/MWh through dramatically higher per-well output</li>
+</ul>
+
+<h3>Reservoir Modeling and Tracer Testing</h3>
+
+<p>Geothermal reservoir management relies on numerical modeling validated by field data:</p>
+
+<table class="technical-table">
+<thead>
+<tr><th>Modeling Approach</th><th>Application</th><th>Key Software</th></tr>
+</thead>
+<tbody>
+<tr><td>TOUGH2/TOUGH3</td><td>Multiphase, multicomponent flow and heat transport</td><td>LBNL (industry standard)</td></tr>
+<tr><td>FEHM</td><td>Coupled thermal-hydrological-mechanical modeling</td><td>LANL</td></tr>
+<tr><td>COMSOL Multiphysics</td><td>Coupled physics simulation</td><td>Commercial FEM platform</td></tr>
+<tr><td>Discrete fracture networks</td><td>EGS fracture flow modeling</td><td>FracMan, GEOS</td></tr>
+</tbody>
+</table>
+
+<h4>Tracer Testing Methods</h4>
+<ul>
+<li><strong>Conservative tracers:</strong> Fluorescein, naphthalene sulfonates for flow path mapping and residence time distribution</li>
+<li><strong>Reactive tracers:</strong> Temperature-sensitive compounds for thermal breakthrough prediction</li>
+<li><strong>Interpretation:</strong> Mean residence time, swept volume, and fracture surface area estimation from tracer return curves</li>
+</ul>
+
+<h3>Advanced Drilling Technologies</h3>
+
+<ul>
+<li><strong>Millimeter-wave drilling:</strong> MIT/Quaise Energy concept using high-power gyrotrons to vaporize rock; could reach 20 km depth</li>
+<li><strong>Plasma drilling:</strong> GA Drilling's Plasmabit technology using plasma pulses for contact-free rock destruction</li>
+<li><strong>Closed-loop drilling:</strong> Directional drilling technology enabling U-tube configurations without fracture stimulation</li>
+<li><strong>Automated drilling:</strong> AI-guided drill-bit steering and real-time formation evaluation to reduce non-productive time</li>
+</ul>
+
+<h3>Closed-Loop Geothermal Systems</h3>
+
+<p>Closed-loop designs circulate working fluid through sealed wellbore systems without fluid contact with the reservoir:</p>
+
+<blockquote class="scavenger-quote" data-quote-id="re-geo-grad-q3">
+<p>"Eavor Technologies' Eavor-Loop closed-loop geothermal system eliminates the need for permeable reservoirs, induced seismicity risk, and water consumption by circulating fluid through a sealed multilateral wellbore system. The thermosiphon effect drives circulation without pumping energy in suitable configurations."</p>
+<cite>— Nature Energy, "Closed-Loop Geothermal: A New Paradigm for Geothermal Energy," 2023</cite>
+</blockquote>
+
+<h4>Closed-Loop Advantages and Limitations</h4>
+<ul>
+<li><strong>Advantages:</strong> No induced seismicity, no water consumption, no subsurface uncertainty, deployable in any thermal gradient</li>
+<li><strong>Limitations:</strong> Heat transfer limited by conduction through wellbore wall; lower power per well than open-loop systems</li>
+<li><strong>Optimization:</strong> Multilateral designs maximize heat exchange surface area; spacing prevents thermal interference</li>
+</ul>
+
+<h3>Geothermal in Grid Decarbonization Pathways</h3>
+
+<ul>
+<li><strong>Firm clean power:</strong> Geothermal provides 24/7 dispatchable generation without storage or fuel cost volatility</li>
+<li><strong>Complementarity:</strong> Pairs with variable renewables—geothermal baseload reduces storage requirements</li>
+<li><strong>Heat decarbonization:</strong> Direct-use geothermal for district heating displaces fossil fuel boilers in cold climates</li>
+<li><strong>Industrial heat:</strong> Process heat at 150-300 C for food processing, chemicals, and materials manufacturing</li>
+</ul>
+
+<h3>Mineral Extraction from Geothermal Brines</h3>
+
+<p>Geothermal brines contain dissolved minerals that represent significant co-production revenue potential:</p>
+
+<ul>
+<li><strong>Lithium recovery:</strong> Salton Sea geothermal brines contain 200-400 ppm lithium; direct lithium extraction (DLE) technologies could produce 90,000+ tonnes/year of lithium carbonate equivalent</li>
+<li><strong>Rare earth elements:</strong> Some brines contain extractable concentrations of Ce, La, and Nd</li>
+<li><strong>Silica and zinc:</strong> Already commercially extracted at some geothermal facilities</li>
+<li><strong>Economic impact:</strong> Mineral co-production could reduce net LCOE by $10-30/MWh, fundamentally changing project economics</li>
+</ul>
+
+<div class="key-concept">
+<h4>Graduate Research Perspective</h4>
+<p>Next-generation geothermal technologies—EGS, supercritical resources, and closed-loop systems—have the potential to transform geothermal from a geographically constrained niche resource into a globally deployable firm clean energy source. The research frontier spans drilling engineering, geomechanics, materials science, and mineral processing, requiring truly interdisciplinary approaches. As grid decarbonization progresses, the value of firm, dispatchable, zero-carbon generation increases, making the geothermal innovation pipeline increasingly important for achieving climate targets.</p>
+</div>
+</div>`,
           PHD: `<div class="lesson-content"><h2>Research Frontiers</h2><h3>Supercritical Systems</h3><p>Accessing supercritical fluids (>374°C) for dramatically higher power output per well.</p><h3>Advanced Drilling</h3><p>Millimeter-wave drilling, plasma drilling, and other technologies to reduce costs.</p></div>`
         }
       }
