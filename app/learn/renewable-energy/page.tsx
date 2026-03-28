@@ -2,7 +2,7 @@ import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Citation } from '@/components/learn/Citation'
 import { BackButton } from '@/components/navigation/BackButton'
-import { Zap, Sun, Wind, Battery, TrendingUp, DollarSign, Leaf, Home, Factory, CheckCircle } from 'lucide-react'
+import { Zap, Sun, Wind, Battery, TrendingUp, DollarSign, Leaf, Home, Factory, CheckCircle, GraduationCap, BookOpen, Award, Clock, Target, FileText, Users, Shield } from 'lucide-react'
 import Link from 'next/link'
 
 export default function RenewableEnergyPage() {
@@ -90,6 +90,261 @@ export default function RenewableEnergyPage() {
               }
             ]}
           />
+        </div>
+      </section>
+
+      {/* ACE Accreditation & Course Information */}
+      <section className="py-20 bg-gradient-to-br from-[color-mix(in_srgb,var(--secondary)_8%,var(--background))] to-[var(--background)]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[color-mix(in_srgb,var(--primary)_15%,var(--background))] border-2 border-theme-primary mb-6">
+                <GraduationCap className="w-5 h-5 text-theme-primary" />
+                <span className="text-sm font-bold text-theme-primary uppercase tracking-wider">ACE Credit Recommended Course</span>
+              </div>
+              <h2 className="text-4xl font-black text-[var(--foreground)] mb-4">
+                Renewable Energy Systems: Technology, Policy, and Integration
+              </h2>
+              <p className="text-lg text-theme-muted max-w-3xl mx-auto">
+                A comprehensive upper-division course designed for ACE (American Council on Education) credit recommendation in partnership with the Golisano Institute for Sustainability at Rochester Institute of Technology.
+              </p>
+            </div>
+
+            {/* Course Metadata Cards */}
+            <div className="grid md:grid-cols-4 gap-4 mb-10">
+              <Card className="border-2 border-theme-primary">
+                <CardContent className="p-5 text-center">
+                  <Award className="w-8 h-8 text-theme-primary mx-auto mb-2" />
+                  <div className="text-3xl font-black text-theme-primary">3</div>
+                  <p className="text-sm font-bold text-[var(--foreground)]">Credit Hours</p>
+                  <p className="text-xs text-theme-muted">ACE Recommended</p>
+                </CardContent>
+              </Card>
+              <Card className="border-2 border-theme-accent">
+                <CardContent className="p-5 text-center">
+                  <Clock className="w-8 h-8 text-theme-accent mx-auto mb-2" />
+                  <div className="text-3xl font-black text-theme-accent">45</div>
+                  <p className="text-sm font-bold text-[var(--foreground)]">Learning Hours</p>
+                  <p className="text-xs text-theme-muted">Contact + Independent Study</p>
+                </CardContent>
+              </Card>
+              <Card className="border-2 border-theme-secondary">
+                <CardContent className="p-5 text-center">
+                  <BookOpen className="w-8 h-8 text-theme-secondary mx-auto mb-2" />
+                  <div className="text-3xl font-black text-theme-secondary">30</div>
+                  <p className="text-sm font-bold text-[var(--foreground)]">Modules</p>
+                  <p className="text-xs text-theme-muted">6 Thematic Units</p>
+                </CardContent>
+              </Card>
+              <Card className="border-2 border-theme-primary">
+                <CardContent className="p-5 text-center">
+                  <Target className="w-8 h-8 text-theme-primary mx-auto mb-2" />
+                  <div className="text-3xl font-black text-theme-primary">70%</div>
+                  <p className="text-sm font-bold text-[var(--foreground)]">Pass Threshold</p>
+                  <p className="text-xs text-theme-muted">For Credit Recommendation</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Course Description */}
+            <Card className="border-4 border-theme-primary mb-8">
+              <CardContent className="p-10">
+                <div className="flex items-center gap-3 mb-6">
+                  <FileText className="w-8 h-8 text-theme-primary" />
+                  <h3 className="text-2xl font-black text-theme-primary">Course Description</h3>
+                </div>
+                <div className="prose prose-lg max-w-none">
+                  <p className="text-[var(--foreground)] leading-relaxed mb-4">
+                    A comprehensive examination of renewable energy technologies, grid integration strategies, and the socioeconomic forces driving the global energy transition. Students analyze photovoltaic and concentrated solar systems, onshore and offshore wind engineering, hydropower modernization, geothermal resource development, and advanced energy storage architectures.
+                  </p>
+                  <p className="text-[var(--foreground)] leading-relaxed mb-4">
+                    The course emphasizes quantitative analysis of system performance metrics including levelized cost of energy (LCOE), capacity factors, and grid reliability contributions. Students evaluate policy frameworks such as renewable portfolio standards, carbon pricing mechanisms, and federal tax incentives that shape deployment trajectories.
+                  </p>
+                  <p className="text-[var(--foreground)] leading-relaxed">
+                    Through applied projects, learners design renewable energy systems for real-world scenarios, conduct resource assessments, and model grid integration challenges at high penetration levels. The course integrates environmental justice perspectives, examining equitable access to clean energy and community ownership models.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Learning Outcomes */}
+            <Card className="border-4 border-theme-accent mb-8">
+              <CardContent className="p-10">
+                <div className="flex items-center gap-3 mb-6">
+                  <Target className="w-8 h-8 text-theme-accent" />
+                  <h3 className="text-2xl font-black text-theme-accent">Program Learning Outcomes</h3>
+                </div>
+                <p className="text-sm text-theme-muted mb-6 italic">
+                  Upon successful completion of this course, students will be able to:
+                </p>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {[
+                    'Analyze the physics, engineering principles, and performance characteristics of solar, wind, hydro, geothermal, and storage technologies',
+                    'Evaluate the economic viability of renewable energy projects using LCOE, net present value, and internal rate of return methodologies',
+                    'Apply quantitative methods to conduct site-specific renewable energy resource assessments',
+                    'Synthesize grid integration challenges and solutions for high-penetration renewable energy scenarios',
+                    'Assess the environmental, social, and equity dimensions of energy transition policies',
+                    'Design a renewable energy system proposal incorporating technical, economic, and regulatory constraints',
+                    'Critically evaluate emerging technologies and their potential to disrupt current energy paradigms',
+                    'Communicate technical findings through professional reports and data-driven presentations'
+                  ].map((outcome, idx) => (
+                    <div key={idx} className="flex items-start gap-3 p-3 rounded-lg bg-[color-mix(in_srgb,var(--accent)_8%,var(--background))]">
+                      <div className="w-7 h-7 rounded-full bg-[var(--accent)] flex items-center justify-center text-white text-xs font-bold shrink-0 mt-0.5">
+                        {idx + 1}
+                      </div>
+                      <p className="text-sm text-[var(--foreground)] leading-relaxed">{outcome}</p>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Course Structure & Assessment */}
+            <div className="grid md:grid-cols-2 gap-8 mb-8">
+              <Card className="border-4 border-theme-secondary">
+                <CardContent className="p-8">
+                  <div className="flex items-center gap-3 mb-6">
+                    <BookOpen className="w-8 h-8 text-theme-secondary" />
+                    <h3 className="text-xl font-black text-theme-secondary">Course Structure</h3>
+                  </div>
+                  <div className="space-y-4">
+                    {[
+                      { unit: 'Unit 1', title: 'Solar Energy Systems', weeks: 'Weeks 1-3' },
+                      { unit: 'Unit 2', title: 'Wind Energy Engineering', weeks: 'Weeks 4-6' },
+                      { unit: 'Unit 3', title: 'Hydropower & Geothermal', weeks: 'Weeks 7-9' },
+                      { unit: 'Unit 4', title: 'Energy Storage & Grid Integration', weeks: 'Weeks 10-11' },
+                      { unit: 'Unit 5', title: 'Policy, Markets & Energy Justice', weeks: 'Weeks 12-13' },
+                      { unit: 'Unit 6', title: 'Capstone & Comprehensive Assessment', weeks: 'Weeks 14-15' }
+                    ].map((unit, idx) => (
+                      <div key={idx} className="flex items-center gap-3 py-2 border-b border-[var(--border)]/30 last:border-0">
+                        <div className="w-8 h-8 rounded-full bg-[var(--secondary)] flex items-center justify-center text-white text-xs font-bold shrink-0">
+                          {idx + 1}
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-bold text-sm text-[var(--foreground)]">{unit.title}</p>
+                          <p className="text-xs text-theme-muted">{unit.weeks}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-4 border-theme-primary">
+                <CardContent className="p-8">
+                  <div className="flex items-center gap-3 mb-6">
+                    <Shield className="w-8 h-8 text-theme-primary" />
+                    <h3 className="text-xl font-black text-theme-primary">Assessment & Grading</h3>
+                  </div>
+                  <div className="space-y-4 mb-6">
+                    {[
+                      { component: 'Module Assessments (10 per module)', weight: '25%' },
+                      { component: 'Reflection & Scenario Exercises', weight: '10%' },
+                      { component: 'Applied Mini-Projects', weight: '10%' },
+                      { component: 'Comprehensive Final Exam (Proctored)', weight: '25%' },
+                      { component: 'Capstone Project', weight: '30%' }
+                    ].map((item, idx) => (
+                      <div key={idx} className="flex items-center justify-between py-2 border-b border-[var(--border)]/30 last:border-0">
+                        <p className="text-sm text-[var(--foreground)]">{item.component}</p>
+                        <span className="text-sm font-black text-theme-primary">{item.weight}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="bg-[color-mix(in_srgb,var(--primary)_10%,var(--background))] p-4 rounded-lg">
+                    <p className="text-xs font-bold text-theme-primary mb-2">Grading Scale</p>
+                    <div className="grid grid-cols-5 gap-2 text-center text-xs">
+                      <div><span className="font-black">A</span><br/><span className="text-theme-muted">90-100%</span></div>
+                      <div><span className="font-black">B</span><br/><span className="text-theme-muted">80-89%</span></div>
+                      <div><span className="font-black">C</span><br/><span className="text-theme-muted">70-79%</span></div>
+                      <div><span className="font-black">D</span><br/><span className="text-theme-muted">60-69%</span></div>
+                      <div><span className="font-black">F</span><br/><span className="text-theme-muted">&lt;60%</span></div>
+                    </div>
+                    <p className="text-[10px] text-theme-muted mt-2 italic">Minimum C (70%) required for ACE credit recommendation</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Capstone Project & Institutional Partner */}
+            <div className="grid md:grid-cols-2 gap-8">
+              <Card className="border-4 border-theme-accent">
+                <CardContent className="p-8">
+                  <h3 className="text-xl font-black text-theme-accent mb-4">Capstone Project</h3>
+                  <p className="font-bold text-lg text-[var(--foreground)] mb-3">Community Renewable Energy Transition Plan</p>
+                  <p className="text-sm text-theme-muted mb-4">
+                    Develop a comprehensive renewable energy transition plan for a real or simulated community integrating resource assessment, technology selection, system sizing, economic analysis, and equity considerations.
+                  </p>
+                  <p className="text-xs font-bold text-theme-accent mb-2">Deliverables:</p>
+                  <ul className="space-y-1">
+                    {[
+                      'Executive summary for municipal decision-makers',
+                      'Technical resource assessment with site analysis',
+                      'System design with equipment specifications',
+                      'Financial pro forma (LCOE, NPV, IRR)',
+                      'Grid integration and storage plan',
+                      'Environmental and social impact assessment',
+                      'Professional presentation with data visualizations'
+                    ].map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-2 text-xs text-[var(--foreground)]">
+                        <CheckCircle className="w-3 h-3 text-theme-accent mt-0.5 shrink-0" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="border-4 border-theme-secondary bg-gradient-to-br from-[color-mix(in_srgb,var(--secondary)_5%,var(--background))] to-[var(--background)]">
+                <CardContent className="p-8">
+                  <div className="flex items-center gap-3 mb-4">
+                    <Users className="w-8 h-8 text-theme-secondary" />
+                    <h3 className="text-xl font-black text-theme-secondary">Accreditation & Partnership</h3>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="p-4 rounded-lg bg-[var(--background)] border-2 border-theme-secondary">
+                      <p className="text-sm font-black text-[var(--foreground)] mb-1">Institutional Partner</p>
+                      <p className="text-sm text-theme-muted">Golisano Institute for Sustainability</p>
+                      <p className="text-sm text-theme-muted">Rochester Institute of Technology</p>
+                    </div>
+                    <div className="p-4 rounded-lg bg-[var(--background)] border-2 border-theme-primary">
+                      <p className="text-sm font-black text-[var(--foreground)] mb-1">Credit Recommendation</p>
+                      <p className="text-sm text-theme-muted">ACE (American Council on Education)</p>
+                      <p className="text-xs text-theme-muted mt-1">3 semester hours, upper-division baccalaureate</p>
+                    </div>
+                    <div className="p-4 rounded-lg bg-[var(--background)] border-2 border-theme-accent">
+                      <p className="text-sm font-black text-[var(--foreground)] mb-1">Quality Assurance</p>
+                      <ul className="text-xs text-theme-muted space-y-1 mt-1">
+                        <li>• Identity-verified proctored assessments</li>
+                        <li>• SME-reviewed content and rubrics</li>
+                        <li>• Regular substantive interaction (RSI)</li>
+                        <li>• Bloom&apos;s taxonomy-aligned outcomes</li>
+                      </ul>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Citation
+              statistic="Accreditation framework and standards"
+              sources={[
+                {
+                  title: "ACE Credit Recommendation Service",
+                  author: "American Council on Education",
+                  organization: "ACE",
+                  year: 2024,
+                  url: "https://www.acenet.edu/Programs-Services/Pages/Credit-Transcripts/Credit-Recommendation.aspx"
+                },
+                {
+                  title: "Golisano Institute for Sustainability",
+                  author: "Rochester Institute of Technology",
+                  organization: "RIT",
+                  year: 2024,
+                  url: "https://www.rit.edu/sustainabilityinstitute/"
+                }
+              ]}
+            />
+          </div>
         </div>
       </section>
 

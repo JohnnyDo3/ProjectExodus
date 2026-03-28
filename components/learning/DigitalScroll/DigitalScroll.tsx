@@ -819,7 +819,7 @@ export function DigitalScroll({
         )
 
       case 'chapter-intro':
-        // Right side of chapter spread - shows COMPLETE curriculum outline
+        // Right side of chapter spread - shows COMPLETE curriculum outline with accreditation info
         const introRibbon = page.chapterIndex !== undefined && RIBBON_ORDER[page.chapterIndex]
           ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex]]
           : null
@@ -829,21 +829,50 @@ export function DigitalScroll({
         const allActivities = chapterModule?.activities || []
         const chapterGame = chapterModule?.game
         const chapterQuiz = chapterModule?.quiz
+        const chapterAccreditation = chapterModule?.accreditation
         const totalDuration = chapterModule?.duration?.[selectedLevel] ||
           allLessons.reduce((sum, l) => sum + (l.duration || 0), 0)
+        const showAccreditation = chapterAccreditation && (selectedLevel === 'UNDERGRADUATE' || selectedLevel === 'GRADUATE' || selectedLevel === 'PHD')
 
         return (
           <div className="w-full h-full flex flex-col relative px-3 py-2">
             <AncientBorder />
 
-            {/* Header */}
+            {/* Header with Accreditation Badge */}
             <div className="text-center pb-2 shrink-0">
-              <h3 className="text-lg font-serif font-bold text-[var(--book-text,var(--foreground))]">
-                Chapter {(page.chapterIndex ?? 0) + 1} Outline
-              </h3>
-              <p className="text-sm text-[var(--muted-foreground)]">
-                {totalDuration} min • {allLessons.length} lessons
-              </p>
+              {showAccreditation ? (
+                <>
+                  <h3 className="text-sm font-serif font-bold text-[var(--book-text,var(--foreground))] leading-tight">
+                    {chapterAccreditation.courseTitle}
+                  </h3>
+                  <div className="flex items-center justify-center gap-2 mt-1">
+                    <span
+                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold text-white"
+                      style={{ background: introColor }}
+                    >
+                      {chapterAccreditation.creditHours} Credit Hrs
+                    </span>
+                    <span className="text-[10px] text-[var(--muted-foreground)]">
+                      {chapterAccreditation.totalLearningHours}h total
+                    </span>
+                    <span
+                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold border"
+                      style={{ borderColor: introColor, color: introColor }}
+                    >
+                      {chapterAccreditation.academicLevel === 'graduate' ? 'Graduate' : 'Upper-Division'}
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <h3 className="text-lg font-serif font-bold text-[var(--book-text,var(--foreground))]">
+                    Chapter {(page.chapterIndex ?? 0) + 1} Outline
+                  </h3>
+                  <p className="text-sm text-[var(--muted-foreground)]">
+                    {totalDuration} min • {allLessons.length} lessons
+                  </p>
+                </>
+              )}
               <div
                 className="w-16 h-0.5 mx-auto mt-2"
                 style={{
@@ -853,7 +882,35 @@ export function DigitalScroll({
             </div>
 
             {/* Full Curriculum Outline - fills available space */}
-            <div className="flex-1 min-h-0 flex flex-col justify-evenly overflow-hidden">
+            <div className="flex-1 min-h-0 flex flex-col justify-evenly overflow-hidden gap-1">
+
+              {/* LEARNING OBJECTIVES - shown for undergrad/graduate levels */}
+              {showAccreditation && chapterAccreditation.learningObjectives.length > 0 && (
+                <div>
+                  <p className="text-xs font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                    <span className="text-sm">🎯</span> Learning Objectives
+                  </p>
+                  <div className="space-y-0.5 max-h-[120px] overflow-y-auto pr-1">
+                    {chapterAccreditation.learningObjectives.slice(0, 6).map((objective, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-start gap-1.5 py-0.5 px-1.5 rounded text-[10px] leading-tight"
+                      >
+                        <span
+                          className="w-3.5 h-3.5 rounded-full flex items-center justify-center text-white text-[8px] font-bold shrink-0 mt-0.5"
+                          style={{ background: introColor }}
+                        >
+                          {idx + 1}
+                        </span>
+                        <p className="text-[var(--book-text,var(--foreground))]">
+                          {objective}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* LESSONS SECTION */}
               <div>
                 <p className="text-xs font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-2 flex items-center gap-1.5">
@@ -885,35 +942,70 @@ export function DigitalScroll({
                 </div>
               </div>
 
-              {/* GAME & QUIZ ROW */}
-              <div className="flex gap-3">
-                {/* Game */}
-                {chapterGame && (
-                  <div className="flex-1 p-3 rounded-lg bg-[var(--muted)]/20">
-                    <p className="text-xs font-bold text-[var(--muted-foreground)] uppercase flex items-center gap-1 mb-1">
-                      <span className="text-base">🎮</span> Game
+              {/* ASSESSMENT ROW - replaces game/quiz for accredited levels */}
+              {showAccreditation ? (
+                <div className="flex gap-2">
+                  <div className="flex-1 p-2 rounded-lg bg-[var(--muted)]/20">
+                    <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase flex items-center gap-1 mb-0.5">
+                      <span className="text-xs">📝</span> Assessment
                     </p>
-                    <p className="text-sm font-medium text-[var(--book-text,var(--foreground))]">
-                      {chapterGame.title}
-                    </p>
-                  </div>
-                )}
-
-                {/* Quiz */}
-                {chapterQuiz && (
-                  <div className="flex-1 p-3 rounded-lg bg-[var(--muted)]/20">
-                    <p className="text-xs font-bold text-[var(--muted-foreground)] uppercase flex items-center gap-1 mb-1">
-                      <span className="text-base">✅</span> Quiz
-                    </p>
-                    <p className="text-sm font-medium text-[var(--book-text,var(--foreground))]">
-                      {chapterQuiz.questions?.length || 0} questions
+                    <p className="text-[10px] text-[var(--book-text,var(--foreground))]">
+                      {chapterQuiz?.questions?.length || 10} questions • {chapterAccreditation.assessmentFramework.passingThreshold}% to pass
                     </p>
                   </div>
-                )}
-              </div>
+                  <div className="flex-1 p-2 rounded-lg bg-[var(--muted)]/20">
+                    <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase flex items-center gap-1 mb-0.5">
+                      <span className="text-xs">🔬</span> Project
+                    </p>
+                    <p className="text-[10px] text-[var(--book-text,var(--foreground))] truncate">
+                      {chapterAccreditation.finalProject.title}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex gap-3">
+                  {/* Game */}
+                  {chapterGame && (
+                    <div className="flex-1 p-3 rounded-lg bg-[var(--muted)]/20">
+                      <p className="text-xs font-bold text-[var(--muted-foreground)] uppercase flex items-center gap-1 mb-1">
+                        <span className="text-base">🎮</span> Game
+                      </p>
+                      <p className="text-sm font-medium text-[var(--book-text,var(--foreground))]">
+                        {chapterGame.title}
+                      </p>
+                    </div>
+                  )}
 
-              {/* Module Description */}
-              {chapterModule?.description && (
+                  {/* Quiz */}
+                  {chapterQuiz && (
+                    <div className="flex-1 p-3 rounded-lg bg-[var(--muted)]/20">
+                      <p className="text-xs font-bold text-[var(--muted-foreground)] uppercase flex items-center gap-1 mb-1">
+                        <span className="text-base">✅</span> Quiz
+                      </p>
+                      <p className="text-sm font-medium text-[var(--book-text,var(--foreground))]">
+                        {chapterQuiz.questions?.length || 0} questions
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Module Description / Course Info */}
+              {showAccreditation ? (
+                <div className="p-2 rounded-lg bg-[var(--muted)]/10 border-l-3" style={{ borderColor: introColor }}>
+                  <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-0.5">
+                    {chapterAccreditation.discipline}
+                  </p>
+                  <p className="text-[10px] italic text-[var(--muted-foreground)] leading-relaxed line-clamp-3">
+                    {chapterAccreditation.courseDescription.slice(0, 200)}...
+                  </p>
+                  {chapterAccreditation.institutionalPartner && (
+                    <p className="text-[9px] font-semibold mt-1" style={{ color: introColor }}>
+                      Partner: {chapterAccreditation.institutionalPartner}
+                    </p>
+                  )}
+                </div>
+              ) : chapterModule?.description ? (
                 <div className="p-3 rounded-lg bg-[var(--muted)]/10 border-l-3" style={{ borderColor: introColor }}>
                   <p className="text-sm italic text-[var(--muted-foreground)] leading-relaxed">
                     {typeof chapterModule.description === 'string'
@@ -921,13 +1013,13 @@ export function DigitalScroll({
                       : chapterModule.description[selectedLevel] || chapterModule.description.HIGH_SCHOOL}
                   </p>
                 </div>
-              )}
+              ) : null}
             </div>
 
             {/* Footer */}
             <div className="shrink-0 text-center pt-2 border-t border-[var(--border)]/20">
               <p className="text-xs text-[var(--muted-foreground)]">
-                Turn the page to begin →
+                {showAccreditation ? 'ACE Credit Recommended • Turn the page to begin →' : 'Turn the page to begin →'}
               </p>
             </div>
           </div>
@@ -1126,10 +1218,16 @@ export function DigitalScroll({
 
       case 'chapter-review':
         // Combined Chapter Review: Key Terms + Fun Facts + Summary on ONE page
+        // For accredited levels: shows learning objectives achieved + assessment info
         const reviewRibbon = page.chapterIndex !== undefined && RIBBON_ORDER[page.chapterIndex]
           ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex]]
           : null
         const reviewColor = reviewRibbon?.colors.from || 'var(--primary)'
+        const reviewModule = page.chapterIndex !== undefined && page.chapterIndex < modules.length
+          ? modules[page.chapterIndex]
+          : null
+        const reviewAccreditation = reviewModule?.accreditation
+        const showAccreditedReview = reviewAccreditation && (selectedLevel === 'UNDERGRADUATE' || selectedLevel === 'GRADUATE' || selectedLevel === 'PHD')
         return (
           <div className="w-full h-full flex flex-col relative px-3 py-2">
             <AncientBorder />
@@ -1137,7 +1235,8 @@ export function DigitalScroll({
             {/* Header */}
             <div className="text-center pb-2 shrink-0">
               <h3 className="text-lg font-serif font-bold text-[var(--book-text,var(--foreground))] flex items-center justify-center gap-2">
-                <span className="text-xl">📚</span> Chapter Review
+                <span className="text-xl">{showAccreditedReview ? '🎓' : '📚'}</span>
+                {showAccreditedReview ? 'Module Assessment' : 'Chapter Review'}
               </h3>
               <div
                 className="w-16 h-0.5 mx-auto mt-2"
@@ -1147,68 +1246,156 @@ export function DigitalScroll({
 
             {/* Content fills available space evenly */}
             <div className="flex-1 min-h-0 flex flex-col justify-evenly overflow-hidden">
-              {/* Key Terms Section */}
-              <div>
-                <p className="text-xs font-bold text-[var(--muted-foreground)] mb-2 flex items-center gap-1.5 uppercase tracking-wider">
-                  <span className="text-sm">📖</span> Key Terms
-                </p>
-                <div className="grid grid-cols-2 gap-2">
-                  {(page.keyTerms || []).slice(0, 4).map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="p-2 rounded-lg bg-[var(--muted)]/20"
-                    >
-                      <p className="text-sm font-bold text-[var(--book-text,var(--foreground))]">{item.term}</p>
-                      <p className="text-xs text-[var(--muted-foreground)] line-clamp-2">{item.definition}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
 
-              {/* Fun Facts Section */}
-              <div>
-                <p className="text-xs font-bold text-[var(--muted-foreground)] mb-2 flex items-center gap-1.5 uppercase tracking-wider">
-                  <span className="text-sm">💡</span> Did You Know?
-                </p>
-                <div className="space-y-2">
-                  {(page.funFacts || []).slice(0, 2).map((fact, idx) => (
-                    <div
-                      key={idx}
-                      className="p-2 rounded-lg border-l-3 text-sm text-[var(--book-text,var(--foreground))] leading-relaxed"
-                      style={{ borderColor: reviewColor, background: `${reviewColor}10` }}
-                    >
-                      {fact}
+              {/* Accredited Review: Learning Objectives Achieved */}
+              {showAccreditedReview ? (
+                <>
+                  {/* Objectives Checklist */}
+                  <div>
+                    <p className="text-xs font-bold text-[var(--muted-foreground)] mb-1.5 flex items-center gap-1.5 uppercase tracking-wider">
+                      <span className="text-sm">🎯</span> Learning Objectives Demonstrated
+                    </p>
+                    <div className="space-y-1 max-h-[100px] overflow-y-auto pr-1">
+                      {reviewAccreditation.learningObjectives.slice(0, 4).map((objective, idx) => (
+                        <div key={idx} className="flex items-start gap-1.5 py-0.5">
+                          <span
+                            className="w-4 h-4 rounded-full flex items-center justify-center text-white text-[8px] shrink-0 mt-0.5"
+                            style={{ background: reviewColor }}
+                          >
+                            ✓
+                          </span>
+                          <p className="text-[10px] text-[var(--book-text,var(--foreground))] leading-tight">{objective}</p>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </div>
+                  </div>
 
-              {/* Summary Section */}
-              <div>
-                <p className="text-xs font-bold text-[var(--muted-foreground)] mb-2 flex items-center gap-1.5 uppercase tracking-wider">
-                  <span className="text-sm">✓</span> Key Takeaways
-                </p>
-                <div className="space-y-2">
-                  {(page.summaryPoints || []).slice(0, 2).map((point, idx) => (
-                    <div key={idx} className="flex items-start gap-2">
-                      <span
-                        className="w-5 h-5 rounded-full flex items-center justify-center text-white text-xs shrink-0 mt-0.5"
-                        style={{ background: reviewColor }}
-                      >
-                        ✓
-                      </span>
-                      <p className="text-sm text-[var(--book-text,var(--foreground))] leading-relaxed">{point}</p>
+                  {/* Assessment Requirements */}
+                  <div>
+                    <p className="text-xs font-bold text-[var(--muted-foreground)] mb-1.5 flex items-center gap-1.5 uppercase tracking-wider">
+                      <span className="text-sm">📝</span> Assessment Requirements
+                    </p>
+                    <div className="space-y-1.5">
+                      {reviewAccreditation.assessmentFramework.summativeAssessments.map((assessment, idx) => (
+                        <div
+                          key={idx}
+                          className="p-2 rounded-lg border-l-3 text-[10px] text-[var(--book-text,var(--foreground))] leading-relaxed"
+                          style={{ borderColor: reviewColor, background: `${reviewColor}10` }}
+                        >
+                          {assessment}
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </div>
+                  </div>
+
+                  {/* Final Project Preview */}
+                  <div>
+                    <p className="text-xs font-bold text-[var(--muted-foreground)] mb-1.5 flex items-center gap-1.5 uppercase tracking-wider">
+                      <span className="text-sm">🔬</span> Applied Project
+                    </p>
+                    <div className="p-2 rounded-lg bg-[var(--muted)]/20">
+                      <p className="text-xs font-bold text-[var(--book-text,var(--foreground))]">
+                        {reviewAccreditation.finalProject.title}
+                      </p>
+                      <p className="text-[10px] text-[var(--muted-foreground)] mt-0.5 line-clamp-2">
+                        {reviewAccreditation.finalProject.description}
+                      </p>
+                      <p className="text-[9px] font-semibold mt-1" style={{ color: reviewColor }}>
+                        {reviewAccreditation.finalProject.deliverables.length} deliverables required
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Credit Info */}
+                  <div className="flex gap-2">
+                    <div className="flex-1 p-2 rounded-lg bg-[var(--muted)]/15 text-center">
+                      <p className="text-[10px] text-[var(--muted-foreground)]">Credit Hours</p>
+                      <p className="text-sm font-bold" style={{ color: reviewColor }}>{reviewAccreditation.creditHours}</p>
+                    </div>
+                    <div className="flex-1 p-2 rounded-lg bg-[var(--muted)]/15 text-center">
+                      <p className="text-[10px] text-[var(--muted-foreground)]">Pass Threshold</p>
+                      <p className="text-sm font-bold" style={{ color: reviewColor }}>{reviewAccreditation.assessmentFramework.passingThreshold}%</p>
+                    </div>
+                    <div className="flex-1 p-2 rounded-lg bg-[var(--muted)]/15 text-center">
+                      <p className="text-[10px] text-[var(--muted-foreground)]">Level</p>
+                      <p className="text-[10px] font-bold" style={{ color: reviewColor }}>
+                        {reviewAccreditation.academicLevel === 'graduate' ? 'Grad' : 'Upper-Div'}
+                      </p>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  {/* Key Terms Section */}
+                  <div>
+                    <p className="text-xs font-bold text-[var(--muted-foreground)] mb-2 flex items-center gap-1.5 uppercase tracking-wider">
+                      <span className="text-sm">📖</span> Key Terms
+                    </p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {(page.keyTerms || []).slice(0, 4).map((item, idx) => (
+                        <div
+                          key={idx}
+                          className="p-2 rounded-lg bg-[var(--muted)]/20"
+                        >
+                          <p className="text-sm font-bold text-[var(--book-text,var(--foreground))]">{item.term}</p>
+                          <p className="text-xs text-[var(--muted-foreground)] line-clamp-2">{item.definition}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Fun Facts Section */}
+                  <div>
+                    <p className="text-xs font-bold text-[var(--muted-foreground)] mb-2 flex items-center gap-1.5 uppercase tracking-wider">
+                      <span className="text-sm">💡</span> Did You Know?
+                    </p>
+                    <div className="space-y-2">
+                      {(page.funFacts || []).slice(0, 2).map((fact, idx) => (
+                        <div
+                          key={idx}
+                          className="p-2 rounded-lg border-l-3 text-sm text-[var(--book-text,var(--foreground))] leading-relaxed"
+                          style={{ borderColor: reviewColor, background: `${reviewColor}10` }}
+                        >
+                          {fact}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Summary Section */}
+                  <div>
+                    <p className="text-xs font-bold text-[var(--muted-foreground)] mb-2 flex items-center gap-1.5 uppercase tracking-wider">
+                      <span className="text-sm">✓</span> Key Takeaways
+                    </p>
+                    <div className="space-y-2">
+                      {(page.summaryPoints || []).slice(0, 2).map((point, idx) => (
+                        <div key={idx} className="flex items-start gap-2">
+                          <span
+                            className="w-5 h-5 rounded-full flex items-center justify-center text-white text-xs shrink-0 mt-0.5"
+                            style={{ background: reviewColor }}
+                          >
+                            ✓
+                          </span>
+                          <p className="text-sm text-[var(--book-text,var(--foreground))] leading-relaxed">{point}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
 
-            {/* Footer Quote */}
+            {/* Footer */}
             <div className="shrink-0 px-3 pt-2 border-t border-[var(--border)]/20">
-              <p className="text-xs text-[var(--muted-foreground)] italic text-center leading-relaxed">
-                &ldquo;{getGuardianQuote(page.chapterIndex ?? 0)}&rdquo;
-              </p>
+              {showAccreditedReview ? (
+                <p className="text-[9px] text-[var(--muted-foreground)] text-center">
+                  ACE Credit Recommended • {reviewAccreditation.institutionalPartner || 'Institutional Review Pending'}
+                </p>
+              ) : (
+                <p className="text-xs text-[var(--muted-foreground)] italic text-center leading-relaxed">
+                  &ldquo;{getGuardianQuote(page.chapterIndex ?? 0)}&rdquo;
+                </p>
+              )}
             </div>
           </div>
         )
