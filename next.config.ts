@@ -1,6 +1,41 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Image optimization
+  images: {
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 31536000, // 1 year - leverage browser/CDN caching
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+      },
+    ],
+  },
+  // Tree-shake heavy libraries - only bundle what's actually imported
+  // Packages with native bindings or complex CJS that must stay out of the
+  // serverless bundle and be resolved at runtime from node_modules
+  serverExternalPackages: ['pdf-parse', 'mammoth'],
+  experimental: {
+    optimizePackageImports: [
+      'lucide-react',
+      '@tiptap/react',
+      '@tiptap/starter-kit',
+      '@tiptap/extension-collaboration',
+      'recharts',
+      'framer-motion',
+      'date-fns',
+      'suncalc',
+    ],
+  },
   // Security headers configuration
   async headers() {
     return [

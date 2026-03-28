@@ -1,12 +1,15 @@
 import Link from 'next/link'
+import { Suspense } from 'react'
+import dynamic from 'next/dynamic'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Leaf, Droplet, Zap, Users, Heart, BookOpen, Award, Sprout } from 'lucide-react'
-import { NightSkyConstellations } from '@/components/theme/NightSkyConstellations'
-import { TreeBranches } from '@/components/decorative/TreeBranches'
-import { FlyingBirds } from '@/components/decorative/FlyingBirds'
-import { CircularCarousel } from '@/components/carousel/CircularCarousel'
-import { ProgressiveSkyline } from '@/components/decorative/ProgressiveSkyline'
+
+// Lazy-load heavy decorative components
+const TreeBranches = dynamic(() => import('@/components/decorative/TreeBranches').then(mod => ({ default: mod.TreeBranches })))
+const FlyingBirds = dynamic(() => import('@/components/decorative/FlyingBirds').then(mod => ({ default: mod.FlyingBirds })))
+const CircularCarousel = dynamic(() => import('@/components/carousel/CircularCarousel').then(mod => ({ default: mod.CircularCarousel })))
+const ProgressiveSkyline = dynamic(() => import('@/components/decorative/ProgressiveSkyline').then(mod => ({ default: mod.ProgressiveSkyline })))
 
 export default function Home() {
   const commandments = [
@@ -84,9 +87,13 @@ export default function Home() {
 
   return (
     <div className="min-h-screen overflow-hidden relative">
-      {/* Decorative Elements */}
-      <TreeBranches />
-      <FlyingBirds />
+      {/* Decorative Elements - loaded after main content */}
+      <Suspense fallback={null}>
+        <TreeBranches />
+      </Suspense>
+      <Suspense fallback={null}>
+        <FlyingBirds />
+      </Suspense>
 
       {/* Hero Section - BOLD & EXPERIMENTAL */}
       <section className="relative min-h-[60vh] h-[85vh] md:h-[85vh] flex items-start justify-center overflow-hidden pt-5">
@@ -144,11 +151,6 @@ export default function Home() {
                style={{ transform: 'translateZ(0)' }} />
         </div>
 
-        {/* Night Sky Constellations - Only at night */}
-        <div className="absolute inset-0 z-[1]">
-          <NightSkyConstellations starCount={1400} />
-        </div>
-
         {/* Main Hero Content - pointer-events-none allows constellation hover through text */}
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-4 pointer-events-none">
           <div className="max-w-6xl mx-auto">
@@ -201,7 +203,9 @@ export default function Home() {
         </div>
 
         {/* Progressive Skyline - Fixed to bottom of hero page */}
-        <ProgressiveSkyline />
+        <Suspense fallback={null}>
+          <ProgressiveSkyline />
+        </Suspense>
       </section>
 
       {/* Mission Section - Asymmetric Layout */}
@@ -372,7 +376,9 @@ export default function Home() {
               <p className="text-lg md:text-xl font-bold text-[var(--primary-foreground)]">OF SUSTAINABLE AGRICULTURE</p>
             </div>
 
-            <CircularCarousel items={commandments} />
+            <Suspense fallback={<div className="h-96" />}>
+              <CircularCarousel items={commandments} />
+            </Suspense>
           </div>
         </div>
       </section>
@@ -442,50 +448,92 @@ export default function Home() {
       </section>
 
       {/* Business Philosophy */}
-      <section className="py-32 bg-[var(--muted)]">
+      <section className="scroll-mt-24 py-32 bg-gradient-to-b from-[var(--background)] to-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-black mb-6 text-[var(--foreground)]">OUR PHILOSOPHY</h2>
-              <p className="text-xl font-semibold text-theme-muted">
-                Every action we take today becomes the foundation for tomorrow
-              </p>
+            {/* Sacred divider */}
+            <div className="flex items-center justify-center gap-4 mb-8">
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[var(--primary)] to-transparent" />
+              <span className="text-2xl text-[var(--primary)]">☥</span>
+              <div className="flex-1 h-px bg-gradient-to-l from-transparent via-[var(--primary)] to-transparent" />
             </div>
 
-            <Card className="border-4 border-theme-primary shadow-theme-2xl">
-              <CardContent className="p-12">
-                <div className="space-y-8">
-                  <div className="text-center mb-8">
-                    <Sprout className="w-16 h-16 text-theme-primary mx-auto" />
-                  </div>
-                  <blockquote className="text-xl font-bold leading-relaxed text-center space-y-6 text-[var(--foreground)]">
-                    <p>
-                      When you <span style={{
-                        background: 'linear-gradient(135deg, #36763d, #357777)',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        fontWeight: 900
-                      }}>plant a seed</span>, it grows into a tree.
-                    </p>
-                    <p className="text-theme-muted">
-                      Everyone who encounters that tree interacts with it differently.
-                    </p>
-                    <p className="text-theme-muted">
-                      Some find shade. Others find fruit. Some find shelter.
-                    </p>
-                    <p className="font-black text-theme-primary">
-                      But the tree stands as a testament to the seed that was planted with intention.
-                    </p>
-                  </blockquote>
-                </div>
-              </CardContent>
-            </Card>
+            <h2 className="text-3xl sm:text-4xl font-black text-center mb-8 text-[var(--foreground)]">OUR PHILOSOPHY</h2>
 
-            <div className="mt-12 text-center">
-              <p className="text-lg font-bold text-theme-muted">
-                This is how we build at Project Exodus. Every innovation, every partnership, every decision—
-                <span className="font-black text-theme-primary"> planted with purpose, grown with care, shared with all.</span>
-              </p>
+            {/* Decorative framed content */}
+            <div className="relative">
+              {/* Decorative corners */}
+              <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[var(--primary)]/30" />
+              <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-[var(--primary)]/30" />
+              <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-[var(--primary)]/30" />
+              <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[var(--primary)]/30" />
+
+              <div className="px-8 py-12 text-center space-y-6">
+                {/* Core message */}
+                <p className="text-xl sm:text-2xl font-serif italic text-[var(--foreground)] leading-relaxed">
+                  "Every action we take today becomes the foundation for tomorrow."
+                </p>
+
+                {/* The seed metaphor */}
+                <p className="text-lg text-[var(--muted-foreground)] leading-relaxed max-w-2xl mx-auto">
+                  When you <span className="font-bold text-[var(--foreground)]" style={{
+                    background: 'linear-gradient(135deg, #36763d, #357777)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    fontWeight: 900
+                  }}>plant a seed</span>, it grows into a tree.
+                  Everyone who encounters that tree interacts with it differently.
+                </p>
+
+                <p className="text-lg text-[var(--muted-foreground)] leading-relaxed max-w-2xl mx-auto">
+                  Some find shade. Others find fruit. Some find shelter.
+                  But the tree stands as a testament to <span className="font-bold text-[var(--foreground)]">the seed that was planted with intention</span>.
+                </p>
+
+                {/* The Covenant */}
+                <div className="pt-6 space-y-4">
+                  <h3 className="text-lg font-black text-[var(--primary)] uppercase tracking-wider">
+                    Our Covenant
+                  </h3>
+
+                  <div className="grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto text-left">
+                    <div className="p-4 bg-[var(--card)] rounded-xl border border-[var(--border)]">
+                      <p className="font-bold text-[var(--foreground)] mb-1">We Build With:</p>
+                      <ul className="text-sm text-[var(--muted-foreground)] space-y-1">
+                        <li>• Purpose in every innovation</li>
+                        <li>• Care in every partnership</li>
+                        <li>• Intention in every decision</li>
+                      </ul>
+                    </div>
+
+                    <div className="p-4 bg-[var(--card)] rounded-xl border border-[var(--border)]">
+                      <p className="font-bold text-[var(--foreground)] mb-1">We Share With:</p>
+                      <ul className="text-sm text-[var(--muted-foreground)] space-y-1">
+                        <li>• Transparency in every action</li>
+                        <li>• Generosity in every harvest</li>
+                        <li>• Vision for every tomorrow</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Final statement */}
+                <p className="text-base text-[var(--muted-foreground)] italic pt-4">
+                  Planted with purpose, grown with care, shared with all.
+                </p>
+
+                {/* Attribution */}
+                <p className="text-xs text-[var(--muted-foreground)]/60 tracking-widest uppercase pt-4">
+                  — The Project Exodus Vision
+                </p>
+              </div>
+            </div>
+
+            {/* Sacred divider */}
+            <div className="flex items-center justify-center gap-4 mt-8">
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[var(--primary)] to-transparent" />
+              <span className="text-2xl text-[var(--primary)]">✦</span>
+              <div className="flex-1 h-px bg-gradient-to-l from-transparent via-[var(--primary)] to-transparent" />
             </div>
           </div>
         </div>

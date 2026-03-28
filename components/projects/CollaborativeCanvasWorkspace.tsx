@@ -103,12 +103,10 @@ export function CollaborativeCanvasWorkspace({
     // Connection status
     channel.bind('pusher:subscription_succeeded', () => {
       setIsConnected(true)
-      console.log('✅ Connected to collaborative canvas')
     })
 
     channel.bind('pusher:subscription_error', () => {
       setIsConnected(false)
-      console.error('❌ Failed to connect to collaborative canvas')
     })
 
     // Presence events

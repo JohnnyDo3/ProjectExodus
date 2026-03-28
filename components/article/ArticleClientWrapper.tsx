@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { User, MessageCircle, Tag, Star, Users, Edit, Trash2, AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { formatDistanceToNow } from 'date-fns'
 import { MarkdownContent } from '@/components/article/MarkdownContent'
 import { ReferencesWidget } from '@/components/article/ReferencesWidget'
@@ -247,9 +248,9 @@ export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
                       {/* Main item */}
                       <div className="flex gap-4">
                         <div className="flex-shrink-0">
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center">
+                          <div className="relative w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center">
                             {item.user?.image ? (
-                              <img src={item.user.image} alt="" className="w-10 h-10 rounded-full" />
+                              <Image src={item.user.image} alt="" fill unoptimized sizes="100%" className="rounded-full object-cover" />
                             ) : (
                               <User className="w-5 h-5 text-white" />
                             )}
@@ -332,9 +333,9 @@ export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
                           {replies.map((reply: any) => (
                             <div key={reply.id} className="flex gap-4">
                               <div className="flex-shrink-0">
-                                <div className="w-8 h-8 rounded-full bg-[var(--muted)] flex items-center justify-center">
+                                <div className="relative w-8 h-8 rounded-full bg-[var(--muted)] flex items-center justify-center">
                                   {reply.user?.image ? (
-                                    <img src={reply.user.image} alt="" className="w-8 h-8 rounded-full" />
+                                    <Image src={reply.user.image} alt="" fill unoptimized sizes="100%" className="rounded-full object-cover" />
                                   ) : (
                                     <User className="w-4 h-4 text-[var(--foreground)]/60" />
                                   )}

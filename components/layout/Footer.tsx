@@ -5,6 +5,53 @@ import { useState } from 'react'
 import { Facebook, Twitter, Instagram, Linkedin, Youtube, Mail, Send, Leaf } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 
+// Static data extracted to module scope — avoids re-creating on every render
+const footerSections = {
+  company: [
+    { name: 'About Us', href: '/about' },
+    { name: 'Our Mission', href: '/about#mission' },
+    { name: 'Team', href: '/about#team' },
+    { name: 'Careers', href: '/careers' },
+    { name: 'Press', href: '/press' },
+  ],
+  products: [
+    { name: 'Browse Products', href: '/products' },
+    { name: 'Categories', href: '/products#categories' },
+    { name: 'Vendors', href: '/vendors' },
+    { name: 'New Arrivals', href: '/products?filter=new' },
+    { name: 'Best Sellers', href: '/products?filter=popular' },
+  ],
+  resources: [
+    { name: 'Learn Hub', href: '/learn' },
+    { name: 'Sustainability Guide', href: '/learn/guide' },
+    { name: 'Community Forum', href: '/community/forum' },
+    { name: 'Projects', href: '/community/projects' },
+    { name: 'Blog', href: '/learn#articles' },
+  ],
+  support: [
+    { name: 'Help Center', href: '/support' },
+    { name: 'Contact Us', href: '/contact' },
+    { name: 'Shipping Info', href: '/shipping' },
+    { name: 'Returns', href: '/returns' },
+    { name: 'FAQ', href: '/faq' },
+  ],
+}
+
+const socialLinks = [
+  { name: 'Facebook', href: 'https://facebook.com/projectexodus' },
+  { name: 'Twitter', href: 'https://twitter.com/projectexodus' },
+  { name: 'Instagram', href: 'https://instagram.com/projectexodus' },
+  { name: 'LinkedIn', href: 'https://linkedin.com/company/projectexodus' },
+  { name: 'YouTube', href: 'https://youtube.com/@projectexodus' },
+]
+
+const legalLinks = [
+  { name: 'Privacy Policy', href: '/privacy' },
+  { name: 'Terms of Service', href: '/terms' },
+  { name: 'Cookie Policy', href: '/cookies' },
+  { name: 'Accessibility', href: '/accessibility' },
+]
+
 export function Footer() {
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
@@ -47,45 +94,6 @@ export function Footer() {
     }
   }
 
-  const footerSections = {
-    company: [
-      { name: 'About Us', href: '/about' },
-      { name: 'Our Mission', href: '/about#mission' },
-      { name: 'Team', href: '/about#team' },
-      { name: 'Careers', href: '/careers' },
-      { name: 'Press', href: '/press' },
-    ],
-    products: [
-      { name: 'Browse Products', href: '/products' },
-      { name: 'Categories', href: '/products#categories' },
-      { name: 'Vendors', href: '/vendors' },
-      { name: 'New Arrivals', href: '/products?filter=new' },
-      { name: 'Best Sellers', href: '/products?filter=popular' },
-    ],
-    resources: [
-      { name: 'Learn Hub', href: '/learn' },
-      { name: 'Sustainability Guide', href: '/learn/guide' },
-      { name: 'Community Forum', href: '/community/forum' },
-      { name: 'Projects', href: '/community/projects' },
-      { name: 'Blog', href: '/learn#articles' },
-    ],
-    support: [
-      { name: 'Help Center', href: '/support' },
-      { name: 'Contact Us', href: '/contact' },
-      { name: 'Shipping Info', href: '/shipping' },
-      { name: 'Returns', href: '/returns' },
-      { name: 'FAQ', href: '/faq' },
-    ],
-  }
-
-  const socialLinks = [
-    { name: 'Facebook', href: 'https://facebook.com/projectexodus' },
-    { name: 'Twitter', href: 'https://twitter.com/projectexodus' },
-    { name: 'Instagram', href: 'https://instagram.com/projectexodus' },
-    { name: 'LinkedIn', href: 'https://linkedin.com/company/projectexodus' },
-    { name: 'YouTube', href: 'https://youtube.com/@projectexodus' },
-  ]
-
   const getSocialIcon = (name: string) => {
     const iconProps = { className: "w-6 h-6 text-theme-accent group-hover:text-[var(--primary-foreground)] transition-colors" }
     switch (name) {
@@ -97,13 +105,6 @@ export function Footer() {
       default: return null
     }
   }
-
-  const legalLinks = [
-    { name: 'Privacy Policy', href: '/privacy' },
-    { name: 'Terms of Service', href: '/terms' },
-    { name: 'Cookie Policy', href: '/cookies' },
-    { name: 'Accessibility', href: '/accessibility' },
-  ]
 
   return (
     <footer className="bg-[var(--card)] text-[var(--card-foreground)] border-t-8 border-theme-primary">

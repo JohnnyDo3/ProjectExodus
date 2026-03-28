@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/Button'
 import {
   Search, Filter, Grid, List, Bookmark, BookmarkCheck,
   ChevronRight, Clock, MapPin, Info, X, Star, Home,
-  Columns, ArrowUpDown, Calendar, Globe, Tag, BookOpen
+  Columns, ArrowUpDown, Calendar, Globe, Tag, BookOpen, Eye, EyeOff
 } from 'lucide-react'
 import type { ArchitecturalElement } from '@/data/architecture/types'
 import { ALL_ELEMENTS } from '@/data/architecture/elements'
@@ -72,6 +72,7 @@ export function ExploreGame({ onExit }: ExploreGameProps) {
     selectedElement: null,
     bookmarks: [],
   })
+  const [isolatedView, setIsolatedView] = useState(true)
 
   // Load bookmarks from localStorage
   useEffect(() => {
@@ -146,7 +147,7 @@ export function ExploreGame({ onExit }: ExploreGameProps) {
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.9 }}
         whileHover={{ y: -4 }}
-        onClick={() => setState(prev => ({ ...prev, selectedElement: element }))}
+        onClick={() => { setState(prev => ({ ...prev, selectedElement: element })); setIsolatedView(true) }}
         className={`
           relative bg-[var(--card)] rounded-xl border border-[var(--border)]
           cursor-pointer overflow-hidden shadow-lg hover:shadow-xl transition-all
@@ -254,7 +255,16 @@ export function ExploreGame({ onExit }: ExploreGameProps) {
               elementId={state.selectedElement.id}
               size={140}
               showHalo
+              isolated={isolatedView}
             />
+            {/* Context toggle */}
+            <button
+              onClick={() => setIsolatedView(v => !v)}
+              className="absolute top-3 left-3 p-2 rounded-full bg-black/20 hover:bg-black/40 text-white transition-colors z-10"
+              title={isolatedView ? 'Show surroundings' : 'Isolate element'}
+            >
+              {isolatedView ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
+            </button>
           </div>
 
           {/* Content */}

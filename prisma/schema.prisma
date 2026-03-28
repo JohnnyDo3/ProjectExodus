@@ -68,6 +68,9 @@ model User {
   // Reputation / contribution score (computed from projects, articles, modules, followers, connections)
   stockScore    Int       @default(0)
 
+  // Fish Tank Customization (JSON: { species, colors: { body, fin, accent, eye }, pattern })
+  fishCustomization Json?
+
   role          UserRole  @default(USER)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -448,7 +451,9 @@ model Article {
   title           String
   slug            String           @unique
   excerpt         String?          @db.Text
-  content         String           @db.Text
+  content         String           @db.Text              // Fallback/legacy — new articles store content in cloud
+  contentUrl      String?                                 // Cloud CDN URL for article HTML content
+  contentPublicId String?                                 // Cloudinary public ID for cleanup
   coverImage      String?
   readTime        Int?             // minutes
   views           Int              @default(0)
@@ -492,6 +497,9 @@ model Article {
   // Recommendations
   recommendations     ArticleRecommendation[]  @relation("ArticleRecommendations")
 
+  // References / Works Cited
+  references          ArticleReference[]
+
   @@index([slug])
   @@index([authorId])
   @@index([categoryId])
@@ -522,6 +530,22 @@ model ArticleCategory {
   updatedAt   DateTime  @updatedAt
 
   @@index([slug])
+}
+
+model ArticleReference {
+  id          String   @id @default(cuid())
+  articleId   String
+  article     Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  title       String
+  authors     String?
+  year        String?
+  url         String?
+  publisher   String?
+  format      String?  // MLA, APA, Chicago, Unknown
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  @@index([articleId])
 }
 
 model ArticleTag {

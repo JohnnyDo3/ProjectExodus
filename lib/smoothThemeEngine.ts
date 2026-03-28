@@ -41,7 +41,7 @@ export interface TimeKeyframe {
 }
 
 export interface UserPreferences {
-  mode: 'auto' | 'light' | 'dark' | 'sunrise' | 'sunset' | 'dusk'
+  mode: 'auto' | 'light' | 'dark'
   latitude: number | null
   longitude: number | null
   lastUpdated: number // timestamp
@@ -64,7 +64,7 @@ export interface SunTimes {
 /**
  * Convert hex color to HSL values
  */
-export function hexToHsl(hex: string): { h: number; s: number; l: number } {
+function hexToHsl(hex: string): { h: number; s: number; l: number } {
   // Remove # if present
   hex = hex.replace(/^#/, '')
 
@@ -96,7 +96,7 @@ export function hexToHsl(hex: string): { h: number; s: number; l: number } {
 /**
  * Convert HSL values to hex color
  */
-export function hslToHex(h: number, s: number, l: number): string {
+function hslToHex(h: number, s: number, l: number): string {
   h = h / 360
   s = s / 100
   l = l / 100
@@ -134,7 +134,7 @@ export function hslToHex(h: number, s: number, l: number): string {
  * Interpolate between two colors in HSL space
  * This produces more natural color transitions than RGB
  */
-export function interpolateColor(color1: string, color2: string, t: number): string {
+function interpolateColor(color1: string, color2: string, t: number): string {
   const hsl1 = hexToHsl(color1)
   const hsl2 = hexToHsl(color2)
 
@@ -161,7 +161,7 @@ export function interpolateColor(color1: string, color2: string, t: number): str
 /**
  * Interpolate between two ThemeColors objects
  */
-export function interpolateThemeColors(
+function interpolateThemeColors(
   colors1: ThemeColors,
   colors2: ThemeColors,
   t: number
@@ -224,7 +224,7 @@ const DARK_FG = '#1a1a1a'
  * 24 keyframes for smooth day-long color transitions
  * These represent key moments in the day cycle
  */
-export const TIME_KEYFRAMES: TimeKeyframe[] = [
+const TIME_KEYFRAMES: TimeKeyframe[] = [
   // DEEP NIGHT (12am - 3am)
   {
     hour: 0,
@@ -724,11 +724,19 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
 // ============================================
 
 /**
- * Get sun times for a given location and date
+ * Get sun times for a given location and date.
+ * Results are cached per day since sun times only change once daily.
  */
-export function getSunTimes(lat: number, lon: number, date: Date = new Date()): SunTimes {
+let _sunTimesCache: { key: string; value: SunTimes } | null = null
+
+function getSunTimes(lat: number, lon: number, date: Date = new Date()): SunTimes {
+  const cacheKey = `${lat.toFixed(2)}_${lon.toFixed(2)}_${date.getFullYear()}_${date.getMonth()}_${date.getDate()}`
+  if (_sunTimesCache && _sunTimesCache.key === cacheKey) {
+    return _sunTimesCache.value
+  }
+
   const times = SunCalc.getTimes(date, lat, lon)
-  return {
+  const result: SunTimes = {
     sunrise: times.sunrise,
     sunset: times.sunset,
     solarNoon: times.solarNoon,
@@ -737,13 +745,15 @@ export function getSunTimes(lat: number, lon: number, date: Date = new Date()): 
     nauticalDawn: times.nauticalDawn,
     nauticalDusk: times.nauticalDusk,
   }
+  _sunTimesCache = { key: cacheKey, value: result }
+  return result
 }
 
 /**
  * Adjust keyframe hours based on actual sunrise/sunset
  * This shifts the morning/evening colors to match real sun position
  */
-export function adjustKeyframesForLocation(
+function adjustKeyframesForLocation(
   keyframes: TimeKeyframe[],
   sunTimes: SunTimes
 ): TimeKeyframe[] {
@@ -922,9 +932,10 @@ export function loadPreferences(): UserPreferences {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored) {
       const parsed = JSON.parse(stored)
-      // Migrate old 'morning' to 'light' and 'night' to 'dark'
+      // Migrate old modes to simplified set
       if (parsed.mode === 'morning') parsed.mode = 'light'
       if (parsed.mode === 'night') parsed.mode = 'dark'
+      if (parsed.mode === 'sunrise' || parsed.mode === 'sunset' || parsed.mode === 'dusk') parsed.mode = 'auto'
       return { ...defaults, ...parsed }
     }
   } catch (e) {
@@ -985,29 +996,21 @@ export function getTwilightProgress(
 /**
  * Get theme colors for a specific fixed mode
  */
-export function getFixedModeColors(mode: 'light' | 'dark' | 'sunrise' | 'sunset' | 'dusk'): {
+export function getFixedModeColors(mode: 'light' | 'dark'): {
   colors: ThemeColors
   phase: string
   className: string
 } {
-  // Map modes to specific keyframes
   const modeMapping = {
     light: TIME_KEYFRAMES.find(kf => kf.hour === 12), // Midday
     dark: TIME_KEYFRAMES.find(kf => kf.hour === 0), // Midnight
-    sunrise: TIME_KEYFRAMES.find(kf => kf.hour === 6), // Sunrise
-    sunset: TIME_KEYFRAMES.find(kf => kf.hour === 19.5), // Sunset Peak
-    dusk: TIME_KEYFRAMES.find(kf => kf.hour === 20.3), // Twilight
   }
 
   const keyframe = modeMapping[mode] || modeMapping.light!
 
-  // Map modes to HTML class names for visibility toggles
   const classMapping = {
     light: 'day',
     dark: 'night',
-    sunrise: 'day',
-    sunset: 'dusk',
-    dusk: 'evening',
   }
 
   return {

@@ -5,6 +5,19 @@
 }
 
 /*
+  Architecture SVG isolation mode
+  Hides context (dashed) layers, showing only the primary element.
+  Triggered by .arch-isolated wrapper class on ArchitectureSVG.
+*/
+.arch-isolated svg [stroke-dasharray] {
+  opacity: 0 !important;
+  transition: opacity 0.4s ease;
+}
+.arch-isolated svg :not([stroke-dasharray]) {
+  transition: opacity 0.4s ease;
+}
+
+/*
   Project Exodus Design System
   By Sage - Earthy, Organic, Alive
   🌱 Let's grow something beautiful
@@ -289,32 +302,8 @@
   --book-text: #2d2d2d;
 }
 
-/* 🌙 NIGHT - Midnight galaxy, cosmic darkness (10pm-2am) */
-.night, .dark {
-  --background: #020208;      /* Pure black space */
-  --foreground: #f0f0ff;      /* Starlight white */
-  --primary: #6eb5ff;         /* Bright star blue */
-  --primary-foreground: #020208;
-  --secondary: #d4a0ff;       /* Nebula purple */
-  --secondary-foreground: #020208;
-  --accent: #7fdbca;          /* Aurora cyan */
-  --accent-foreground: #020208;
-  --muted: #1a1a2e;           /* Deep purple-black */
-  --muted-foreground: #8888aa; /* Muted starlight */
-  --card: #0a0a18;            /* Near-black panel */
-  --card-foreground: #e8e8ff; /* Light starlight */
-  --border: #2a2a4a;          /* Subtle cosmic edge */
-  --input: #1a1a2e;           /* Same as muted */
-  --ring: #6eb5ff;            /* Same as primary for focus rings */
-  --destructive: #ff6b6b;     /* Bright red for visibility */
-  --destructive-foreground: #020208;
-  /* Digital Scroll book colors - warm parchment for readability */
-  --book-paper: #2a2825;
-  --book-text: #e8e4df;
-}
-
-/* 🌌 MIDNIGHT - Deepest cosmic void (2am-5am) */
-.midnight {
+/* 🌙 NIGHT & MIDNIGHT - Cosmic darkness (10pm-5am) */
+.night, .dark, .midnight {
   --background: #020208;      /* Pure black space */
   --foreground: #f0f0ff;      /* Starlight white */
   --primary: #6eb5ff;         /* Bright star blue */
@@ -374,25 +363,25 @@
   visibility: visible !important;
 }
 
-/* Fallback for system preference - midnight galaxy */
+/* Fallback for system dark preference — applies night theme when no class is set */
 @media (prefers-color-scheme: dark) {
-  :root:not(.light):not(.day):not(.sunrise):not(.sunset):not(.night) {
-    --background: #020208;      /* Pure black space */
-    --foreground: #f0f0ff;      /* Starlight white */
-    --primary: #6eb5ff;         /* Bright star blue */
+  :root:not(.light):not(.day):not(.sunrise):not(.sunset):not(.night):not(.dusk):not(.evening) {
+    --background: #020208;
+    --foreground: #f0f0ff;
+    --primary: #6eb5ff;
     --primary-foreground: #020208;
-    --secondary: #d4a0ff;       /* Nebula purple */
+    --secondary: #d4a0ff;
     --secondary-foreground: #020208;
-    --accent: #7fdbca;          /* Aurora cyan */
+    --accent: #7fdbca;
     --accent-foreground: #020208;
-    --muted: #1a1a2e;           /* Deep purple-black */
-    --muted-foreground: #8888aa; /* Muted starlight */
-    --card: #0a0a18;            /* Near-black panel */
-    --card-foreground: #e8e8ff; /* Light starlight */
-    --border: #2a2a4a;          /* Subtle cosmic edge */
-    --input: #1a1a2e;           /* Same as muted */
-    --ring: #6eb5ff;            /* Same as primary for focus rings */
-    --destructive: #ff6b6b;     /* Bright red for visibility */
+    --muted: #1a1a2e;
+    --muted-foreground: #8888aa;
+    --card: #0a0a18;
+    --card-foreground: #e8e8ff;
+    --border: #2a2a4a;
+    --input: #1a1a2e;
+    --ring: #6eb5ff;
+    --destructive: #ff6b6b;
     --destructive-foreground: #020208;
   }
 }
@@ -408,12 +397,6 @@
  * every 30 seconds with interpolated color values. This creates a gradual,
  * continuous transition that mimics natural light changes throughout the day.
  */
-html {
-  /* Smooth transition for any remaining CSS property changes */
-  transition: background-color 800ms cubic-bezier(0.4, 0, 0.2, 1),
-              color 800ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
 body {
   background-color: var(--background);
   color: var(--foreground);
@@ -421,7 +404,7 @@ body {
   font-feature-settings: "rlig" 1, "calt" 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Slightly faster transitions since JS handles gradual changes */
+  /* Smooth transition for theme changes — JS handles gradual color var updates */
   transition: background-color 800ms cubic-bezier(0.4, 0, 0.2, 1),
               color 800ms cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -594,6 +577,24 @@ a:hover {
 
 .animate-fade-in-up {
   animation: fade-in-up 0.4s ease-out forwards;
+}
+
+/* Hero fade-in animation for landing page */
+@keyframes hero-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-fade-in {
+  opacity: 0;
+  animation: hero-fade-in 0.8s ease-out forwards;
+  animation-delay: var(--fade-delay, 0s);
 }
 
 /* Theme-aware utility classes - these adapt to ALL time periods! */
@@ -941,6 +942,339 @@ main, section, article, aside, header, footer, nav, div {
 /* Handwritten font for organic feel */
 .font-handwritten {
   font-family: 'Caveat', cursive;
+}
+
+/* ========================================
+   Newspaper / Broadsheet Typography
+   Editorial display and body fonts
+   ======================================== */
+
+.font-headline {
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+}
+
+.font-body-serif {
+  font-family: 'Lora', Georgia, 'Times New Roman', serif;
+}
+
+/* Newspaper justified text with hyphenation */
+.newspaper-justify {
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+/* Column rule for newspaper grid gutters */
+.col-rule {
+  border-right: 1px solid var(--border);
+}
+
+/* Daily Prophet photo frame — Ken Burns hover */
+.prophet-frame {
+  overflow: hidden;
+}
+
+.prophet-frame img,
+.prophet-frame video {
+  transition: transform 6s ease;
+}
+
+.prophet-frame:hover img,
+.prophet-frame:hover video {
+  transform: scale(1.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prophet-frame img,
+  .prophet-frame video,
+  .prophet-frame:hover img,
+  .prophet-frame:hover video {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* ========================================
+   Discussions Hub: "The Living Pulse"
+   Curvilinear animations & organic shapes
+   ======================================== */
+
+/* Blob morph — organic shape cycling */
+@keyframes blob-morph {
+  0%, 100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+  25%      { border-radius: 58% 42% 46% 54% / 54% 60% 40% 46%; }
+  50%      { border-radius: 50% 50% 36% 64% / 44% 54% 46% 56%; }
+  75%      { border-radius: 42% 58% 60% 40% / 60% 34% 66% 40%; }
+}
+
+.blob-shape {
+  animation: blob-morph 10s ease-in-out infinite;
+}
+
+/* Island float — subtle vertical drift */
+@keyframes island-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+
+.island-float {
+  animation: island-float 8s ease-in-out infinite;
+}
+
+/* Breathing idle — imperceptible scale pulse */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.005); }
+}
+
+.card-breathe {
+  animation: breathe 6s ease-in-out infinite;
+}
+
+/* Yin-Yang ribbon gradient rotation — replaces JS setInterval */
+@property --yinyang-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes yinyang-rotate {
+  to { --yinyang-angle: 360deg; }
+}
+
+/* Pulse ring — expanding outward */
+@keyframes pulse-ring {
+  0%   { transform: scale(0.9); opacity: 0.8; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+.pulse-ring {
+  animation: pulse-ring 3s ease-out infinite;
+}
+
+.pulse-ring-fast {
+  animation: pulse-ring 1.5s ease-out infinite;
+}
+
+/* Ripple — for new activity arrival */
+@keyframes ripple {
+  0%   { transform: scale(1); opacity: 0.4; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+.activity-ripple {
+  animation: ripple 1.5s ease-out forwards;
+}
+
+/* Ticker scroll — continuous horizontal */
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.ticker-scroll {
+  animation: ticker-scroll 40s linear infinite;
+}
+
+.ticker-scroll:hover {
+  animation-play-state: paused;
+}
+
+/* Stagger entrance — slides up with fade */
+@keyframes stagger-in {
+  0%   { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.stagger-in {
+  opacity: 0;
+  animation: stagger-in 0.5s ease-out forwards;
+}
+
+/* Slide in from right — new items */
+@keyframes slide-in-right {
+  0%   { opacity: 0; transform: translateX(40px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+.slide-in-right {
+  animation: slide-in-right 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Constellation node glow (night theme) */
+@keyframes node-glow {
+  0%, 100% { filter: drop-shadow(0 0 2px currentColor); }
+  50%      { filter: drop-shadow(0 0 8px currentColor); }
+}
+
+.night .constellation-node {
+  animation: node-glow 4s ease-in-out infinite;
+}
+
+/* Curved bento card radius variations */
+.bento-card-a { border-radius: 1.5rem 0.5rem 1.5rem 0.5rem; }
+.bento-card-b { border-radius: 0.5rem 1.5rem 0.5rem 1.5rem; }
+.bento-card-c { border-radius: 1rem 1rem 2rem 0.25rem; }
+.bento-card-d { border-radius: 2rem 0.25rem 1rem 1rem; }
+
+/* Wave clip path for section dividers */
+.wave-top {
+  clip-path: polygon(0% 15%, 3% 12%, 8% 8%, 15% 5%, 25% 8%, 35% 12%, 45% 10%, 55% 6%, 65% 3%, 75% 6%, 85% 10%, 92% 8%, 97% 5%, 100% 8%, 100% 100%, 0% 100%);
+}
+
+.wave-bottom {
+  clip-path: polygon(0% 0%, 100% 0%, 100% 85%, 97% 90%, 92% 95%, 85% 92%, 75% 88%, 65% 92%, 55% 96%, 45% 93%, 35% 88%, 25% 92%, 15% 95%, 8% 92%, 3% 88%, 0% 90%);
+}
+
+/* Disable all hub animations for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .blob-shape,
+  .island-float,
+  .card-breathe,
+  .pulse-ring,
+  .pulse-ring-fast,
+  .ticker-scroll,
+  .stagger-in,
+  .slide-in-right,
+  .night .constellation-node {
+    animation: none;
+  }
+  .stagger-in {
+    opacity: 1;
+  }
+}
+
+/* ═══ Guitar Hero Feed Animations ═══ */
+
+/* Note falling animation — top to beyond bottom */
+@keyframes gh-note-fall {
+  0% {
+    top: -140px;
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  5% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  90% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    top: calc(100% - 20px);
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+/* Hit bar pulse */
+.gh-hit-bar {
+  animation: gh-hit-pulse 2s ease-in-out infinite;
+}
+
+@keyframes gh-hit-pulse {
+  0%, 100% { opacity: 0.6; transform: scaleX(0.95); }
+  50% { opacity: 1; transform: scaleX(1); }
+}
+
+/* Hit zone glow breathing */
+.gh-hit-zone-glow {
+  animation: gh-zone-breathe 3s ease-in-out infinite;
+}
+
+@keyframes gh-zone-breathe {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+/* Splash central flash */
+.gh-splash-flash {
+  animation: gh-flash 0.6s ease-out forwards;
+}
+
+@keyframes gh-flash {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+/* Splash particles radiating outward */
+.gh-splash-particle {
+  animation: gh-particle-fly 0.7s ease-out forwards;
+}
+
+@keyframes gh-particle-fly {
+  0% {
+    transform: rotate(var(--particle-angle)) translateX(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(var(--particle-angle)) translateX(40px) scale(0);
+    opacity: 0;
+  }
+}
+
+/* Background grid */
+.gh-grid-bg {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Freeze all note animations when overlay is open */
+.gh-frozen .gh-note {
+  animation-play-state: paused !important;
+}
+
+/* Hit feedback text float-up */
+@keyframes gh-hit-feedback-float {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-30px) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-60px) scale(0.8);
+  }
+}
+
+.gh-hit-feedback {
+  animation: gh-hit-feedback-float 0.6s ease-out forwards;
+}
+
+/* Countdown number pulse */
+@keyframes gh-countdown-pulse {
+  0% {
+    opacity: 0;
+    transform: scale(2);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  80% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+.gh-countdown-number {
+  animation: gh-countdown-pulse 1s ease-out forwards;
+  text-shadow: 0 0 40px rgba(255,255,255,0.5), 0 0 80px rgba(100,200,255,0.3);
+}
+
+/* Note hover glow boost */
+.gh-note:hover > div {
+  filter: brightness(1.3);
 }
 
 /* Cork board texture background */

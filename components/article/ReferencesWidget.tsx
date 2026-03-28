@@ -7,8 +7,12 @@ import { ChevronDown, ChevronUp, ExternalLink, Link as LinkIcon, BookOpen } from
 interface Reference {
   id: string
   title: string
-  url: string
+  url?: string | null
   description?: string
+  authors?: string | null
+  year?: string | null
+  publisher?: string | null
+  format?: string | null
 }
 
 interface ReferencesWidgetProps {
@@ -103,7 +107,7 @@ export function ReferencesWidget({ references = [], articleContent }: References
     const extractedLinks = articleContent ? extractLinksFromContent(articleContent) : []
 
     // Filter out extracted links that match manual references
-    const manualUrls = new Set(manualRefs.map(r => r.url))
+    const manualUrls = new Set(manualRefs.map(r => r.url).filter(Boolean))
     const uniqueExtracted = extractedLinks.filter(link => !manualUrls.has(link.url))
 
     return [...manualRefs, ...uniqueExtracted]
@@ -129,44 +133,70 @@ export function ReferencesWidget({ references = [], articleContent }: References
           Sources and references used in this article
         </p>
 
-        {displayedRefs.map((ref, index) => (
-          <a
-            key={ref.id || index}
-            href={ref.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-start gap-3 p-3 bg-[var(--muted)] hover:bg-[var(--primary)]/10 rounded-lg transition-colors group"
-          >
-            {/* Favicon */}
-            <div className="w-6 h-6 rounded bg-[var(--background)] flex items-center justify-center flex-shrink-0 mt-0.5">
-              <img
-                src={getFaviconUrl(ref.url)}
-                alt=""
-                className="w-4 h-4"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).style.display = 'none'
-                }}
-              />
-              <LinkIcon className="w-3 h-3 text-theme-muted absolute" />
-            </div>
+        {displayedRefs.map((ref, index) => {
+          // Only allow http/https URLs — block javascript:, data:, vbscript: etc.
+          const isSafeUrl = ref.url && ref.url.trim().length > 0 && /^https?:\/\//i.test(ref.url.trim())
+          const Wrapper = isSafeUrl ? 'a' : 'div'
+          const wrapperProps = isSafeUrl
+            ? { href: ref.url!, target: '_blank', rel: 'noopener noreferrer' }
+            : {}
 
-            <div className="flex-1 min-w-0">
-              <p className="font-bold text-sm text-[var(--foreground)] group-hover:text-theme-primary line-clamp-1">
-                {ref.title}
-              </p>
-              <p className="text-xs text-theme-muted truncate mt-0.5">
-                {new URL(ref.url).hostname.replace('www.', '')}
-              </p>
-              {ref.description && (
-                <p className="text-xs text-theme-muted mt-1 line-clamp-2">
-                  {ref.description}
+          // Build description from structured fields if no description provided
+          const description = ref.description
+            || [ref.authors, ref.year ? `(${ref.year})` : '', ref.publisher].filter(Boolean).join(' ') || ''
+
+          return (
+            <Wrapper
+              key={ref.id || index}
+              {...wrapperProps}
+              className="flex items-start gap-3 p-3 bg-[var(--muted)] hover:bg-[var(--primary)]/10 rounded-lg transition-colors group"
+            >
+              {/* Icon */}
+              <div className="w-6 h-6 rounded bg-[var(--background)] flex items-center justify-center flex-shrink-0 mt-0.5">
+                {isSafeUrl ? (
+                  <>
+                    <img
+                      src={getFaviconUrl(ref.url!)}
+                      alt=""
+                      className="w-4 h-4"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).style.display = 'none'
+                      }}
+                    />
+                    <LinkIcon className="w-3 h-3 text-theme-muted absolute" />
+                  </>
+                ) : (
+                  <BookOpen className="w-3 h-3 text-theme-muted" />
+                )}
+              </div>
+
+              <div className="flex-1 min-w-0">
+                <p className="font-bold text-sm text-[var(--foreground)] group-hover:text-theme-primary line-clamp-1">
+                  {ref.title}
                 </p>
-              )}
-            </div>
+                {isSafeUrl && (
+                  <p className="text-xs text-theme-muted truncate mt-0.5">
+                    {getDomainFromUrl(ref.url!)}
+                  </p>
+                )}
+                {description && (
+                  <p className="text-xs text-theme-muted mt-1 line-clamp-2">
+                    {description}
+                  </p>
+                )}
+                {ref.format && (
+                  <span className="inline-block text-xs px-1.5 py-0.5 bg-[var(--primary)]/20 text-[var(--primary)] rounded mt-1">
+                    {ref.format}
+                  </span>
+                )}
+              </div>
 
-            <ExternalLink className="w-4 h-4 text-theme-muted group-hover:text-theme-primary flex-shrink-0 mt-1 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </a>
-        ))}
+              {isSafeUrl && (
+                <ExternalLink className="w-4 h-4 text-theme-muted group-hover:text-theme-primary flex-shrink-0 mt-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+              )}
+            </Wrapper>
+          )
+        })}
 
         {hasMore && (
           <button

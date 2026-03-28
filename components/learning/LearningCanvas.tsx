@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
+import Image from 'next/image'
 import {
   ArrowLeft, Play, ChevronLeft, ChevronRight, X,
   Lightbulb, Sparkles, Pin, Paperclip, BookOpen, Pencil,
@@ -11,7 +12,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { LearningLevel, LEARNING_LEVELS } from '@/types/learning'
-import { Module } from '@/data/modules'
+import type { Module } from '@/types/modules'
 import { Founder } from '@/components/learning/FounderCard'
 import { detectPioneersInContent } from '@/data/sustainabilityPioneers'
 import { PioneerModal } from '@/components/learning/PioneerModal'
@@ -709,9 +710,9 @@ function CanvasPageView({
                   style={{ transform: `rotate(${(i % 3 - 1) * 1}deg)` }}
                 >
                   <div className="flex items-center gap-2 sm:gap-3 mb-1.5 sm:mb-2">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-pink-100 to-purple-100 flex items-center justify-center overflow-hidden border-2 border-white shadow-inner flex-shrink-0">
+                    <div className="relative w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-pink-100 to-purple-100 flex items-center justify-center overflow-hidden border-2 border-white shadow-inner flex-shrink-0">
                       {pioneer.portrait ? (
-                        <img src={pioneer.portrait} alt={pioneer.name} className="w-full h-full object-cover" />
+                        <Image src={pioneer.portrait} alt={pioneer.name} fill unoptimized sizes="100%" className="object-cover" />
                       ) : (
                         <span className={`${handwritten} text-sm sm:text-base md:text-lg text-gray-600`}>
                           {pioneer.name.split(' ').map(n => n[0]).join('')}

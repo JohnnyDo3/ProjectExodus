@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Plus, X, Save, Loader2, User, Briefcase, Sparkles, Link as LinkIcon, Award, Target, TrendingUp, Lock, Bell, Shield, Trash2, AlertCircle } from 'lucide-react'
+import Image from 'next/image'
 
 interface User {
   id: string
@@ -849,7 +850,7 @@ export function ProfileEditForm({ user }: ProfileEditFormProps) {
                     />
                     {formData.image && (
                       <div className="mt-3">
-                        <img src={formData.image} alt="Preview" className="w-32 h-32 rounded-full object-cover border-4 border-theme-primary" />
+                        <Image src={formData.image} alt="Preview" width={128} height={128} unoptimized className="rounded-full object-cover border-4 border-theme-primary" />
                       </div>
                     )}
                   </div>
@@ -867,8 +868,8 @@ export function ProfileEditForm({ user }: ProfileEditFormProps) {
                       placeholder="https://example.com/your-banner.jpg"
                     />
                     {formData.banner && (
-                      <div className="mt-3">
-                        <img src={formData.banner} alt="Banner Preview" className="w-full h-40 rounded-lg object-cover border-4 border-theme-secondary" />
+                      <div className="relative mt-3 w-full h-40">
+                        <Image src={formData.banner} alt="Banner Preview" fill unoptimized sizes="100%" className="rounded-lg object-cover border-4 border-theme-secondary" />
                       </div>
                     )}
                   </div>

@@ -95,8 +95,7 @@ export function SageWaiverAnalysis({
       const analysisResult = parseAnalysisResponse(data.message, waiverRequest)
       setAnalysis(analysisResult)
 
-    } catch (err) {
-      console.error('Waiver analysis failed:', err)
+    } catch {
       setError('Unable to analyze waiver request')
 
       // Provide a basic fallback analysis

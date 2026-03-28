@@ -1,40 +1,52 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
+import { incrementStockScore, STOCK_POINTS } from '@/lib/stockScore'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const projects = await prisma.project.findMany({
-      include: {
-        creator: {
-          select: {
-            id: true,
-            name: true,
-            image: true
-          }
-        },
-        members: {
-          include: {
-            user: {
-              select: {
-                id: true,
-                name: true,
-                image: true
-              }
+    const { searchParams } = new URL(request.url)
+    const page = parseInt(searchParams.get('page') || '1')
+    const limit = Math.min(parseInt(searchParams.get('limit') || '20'), 50)
+    const skip = (page - 1) * limit
+
+    const [projects, total] = await Promise.all([
+      prisma.project.findMany({
+        include: {
+          creator: {
+            select: {
+              id: true,
+              name: true,
+              image: true
             }
           },
-          take: 5
+          members: {
+            include: {
+              user: {
+                select: {
+                  id: true,
+                  name: true,
+                  image: true
+                }
+              }
+            },
+            take: 5
+          },
+          _count: {
+            select: { members: true }
+          }
         },
-        _count: {
-          select: { members: true }
-        }
-      },
-      orderBy: { createdAt: 'desc' }
-    })
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: limit,
+      }),
+      prisma.project.count(),
+    ])
 
     return NextResponse.json({
       success: true,
-      data: projects
+      data: projects,
+      pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
     })
   } catch (error) {
     console.error('Error fetching projects:', error)
@@ -220,6 +232,9 @@ export async function POST(request: NextRequest) {
         },
       })
     }
+
+    // Award stock points for creating a project
+    incrementStockScore(session.user.id, STOCK_POINTS.PROJECT).catch(() => {})
 
     return NextResponse.json({
       success: true,

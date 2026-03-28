@@ -39,16 +39,15 @@ export function LearningCard({
   const isInProgress = progress > 0 && !isCompleted
   const moduleId = module.moduleId || module.module?.id || module.id
 
-  // Minimal view - just title header
+  // Minimal view - compact one-liner with progress bar
   if (isMinimal) {
     return (
-      <div className={`rounded-lg overflow-hidden ${className}`}>
-        <div className="p-2 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)]">
-          <div className="flex items-center gap-2">
-            <BookOpen className="w-4 h-4 text-white flex-shrink-0" />
-            <h3 className="text-xs font-bold text-white truncate">{title}</h3>
-          </div>
-        </div>
+      <div className={`flex items-center gap-2 px-2 py-1.5 rounded-lg bg-[var(--muted)]/50 hover:bg-[var(--muted)] transition-colors ${className}`}>
+        <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${isCompleted ? 'bg-green-500' : isInProgress ? 'bg-blue-500' : 'bg-gray-400'}`} />
+        <span className="text-[11px] font-medium text-[var(--foreground)] truncate flex-1">{title}</span>
+        <span className={`text-[9px] font-bold flex-shrink-0 tabular-nums ${isCompleted ? 'text-green-500' : 'text-[var(--foreground)]/40'}`}>
+          {isCompleted ? '100%' : `${progress}%`}
+        </span>
       </div>
     )
   }

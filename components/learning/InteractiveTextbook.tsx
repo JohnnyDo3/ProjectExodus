@@ -15,7 +15,7 @@ import { sanitizeHtml } from '@/lib/utils/sanitize'
 import { LevelSelector } from '@/components/learn/levels/LevelSelector'
 import { ModuleDiscussions } from '@/components/learn/discussions/ModuleDiscussions'
 import { LearningLevel, LEARNING_LEVELS } from '@/types/learning'
-import { Module, CoreTopic } from '@/data/modules'
+import type { Module, CoreTopic } from '@/types/modules'
 import dynamic from 'next/dynamic'
 import { FounderCard, Founder } from '@/components/learning/FounderCard'
 import { detectPioneersInContent, SUSTAINABILITY_PIONEERS, findPioneerByName } from '@/data/sustainabilityPioneers'
@@ -1132,7 +1132,7 @@ export function InteractiveTextbook({
             <div className="bg-[var(--card)] rounded-xl p-4 max-w-lg w-full max-h-[80vh] overflow-auto">
               <FlashcardStudy
                 deck={lessonFlashcards}
-                onComplete={(results) => console.log('Flashcard study complete:', results)}
+                onComplete={() => setShowFlashcards(false)}
                 onClose={() => setShowFlashcards(false)}
               />
             </div>

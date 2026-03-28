@@ -7,6 +7,17 @@ import { Button } from '@/components/ui/Button'
 import { useSageContextSafe } from './SageContext'
 import { SageNapAnimation } from './SageNapAnimation'
 
+/** Trigger haptic feedback on supported devices (iPad, iPhone, Android) */
+function triggerHaptic(duration: number = 10) {
+  try {
+    if (navigator.vibrate) {
+      navigator.vibrate(duration)
+    }
+  } catch {
+    // Vibration API not available — silently ignore
+  }
+}
+
 interface Message {
   role: 'user' | 'assistant'
   content: string
@@ -104,8 +115,7 @@ export function ProjectExodusAI() {
         timestamp: new Date()
       }
       setMessages(prev => [...prev, aiResponse])
-    } catch (error) {
-      console.error('AI API Error:', error)
+    } catch {
       // Fallback to keyword matching if API fails
       const aiResponse: Message = {
         role: 'assistant',
@@ -184,6 +194,22 @@ export function ProjectExodusAI() {
 
   return (
     <>
+      {/* Sleep button visibility: hover on desktop, always visible on touch/coarse pointer */}
+      <style jsx global>{`
+        .sage-sleep-btn {
+          opacity: 0;
+          transition: opacity 0.2s;
+        }
+        .group:hover .sage-sleep-btn {
+          opacity: 1;
+        }
+        @media (pointer: coarse) {
+          .sage-sleep-btn {
+            opacity: 0.85;
+          }
+        }
+      `}</style>
+
       {/* Nap Animation Overlay */}
       <SageNapAnimation />
 
@@ -209,25 +235,26 @@ export function ProjectExodusAI() {
               </div>
             )}
 
-            {/* Sleep button - appears on hover, opposite corner from notification */}
+            {/* Sleep button - visible on hover (desktop) or always visible (touch devices via @media) */}
             {sageContext && (
               <div
                 onClick={(e) => {
                   e.stopPropagation()
+                  triggerHaptic()
                   handleStartNap()
                 }}
-                className="absolute -top-1 -left-1 w-5 h-5 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:scale-110"
+                className="absolute -top-1 -left-1 w-6 h-6 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg sage-sleep-btn transition-opacity cursor-pointer hover:scale-110"
                 title="Let Sage nap"
               >
-                <Moon className="w-2.5 h-2.5 text-white" />
+                <Moon className="w-3 h-3 text-white" />
               </div>
             )}
           </div>
 
           {/* Tooltip - only show on actual hover, not close proximity */}
-          <div className="absolute bottom-full right-0 mb-2 px-4 py-2 bg-[var(--card)] border-2 border-theme-primary rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
-            <p className="text-sm font-bold text-[var(--foreground)]">Sage - Your Sustainability Guide</p>
-            <div className="absolute bottom-0 right-6 transform translate-y-1/2 rotate-45 w-3 h-3 bg-[var(--card)] border-r-2 border-b-2 border-theme-primary" />
+          <div className="absolute bottom-full right-0 mb-2 px-3 py-1.5 bg-[var(--card)] border-2 border-theme-primary rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+            <p className="text-sm font-bold text-[var(--foreground)]">Sage</p>
+            <div className="absolute bottom-0 right-4 transform translate-y-1/2 rotate-45 w-2.5 h-2.5 bg-[var(--card)] border-r-2 border-b-2 border-theme-primary" />
           </div>
         </button>
       )}
@@ -249,13 +276,29 @@ export function ProjectExodusAI() {
                 </p>
               </div>
             </div>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="w-10 h-10 sm:w-8 sm:h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors flex-shrink-0 ml-2"
-              aria-label="Close chat"
-            >
-              <X className="w-6 h-6 sm:w-5 sm:h-5 text-white" />
-            </button>
+            <div className="flex items-center gap-1.5 flex-shrink-0 ml-2">
+              {/* Sleep button inside chat header */}
+              {sageContext && (
+                <button
+                  onClick={() => {
+                    triggerHaptic()
+                    handleStartNap()
+                  }}
+                  className="w-10 h-10 sm:w-8 sm:h-8 rounded-full bg-white/20 hover:bg-indigo-500/50 flex items-center justify-center transition-colors"
+                  aria-label="Put Sage to sleep"
+                  title="Nap mode"
+                >
+                  <Moon className="w-5 h-5 sm:w-4 sm:h-4 text-white" />
+                </button>
+              )}
+              <button
+                onClick={() => setIsOpen(false)}
+                className="w-10 h-10 sm:w-8 sm:h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
+                aria-label="Close chat"
+              >
+                <X className="w-6 h-6 sm:w-5 sm:h-5 text-white" />
+              </button>
+            </div>
           </div>
 
           {/* Messages */}

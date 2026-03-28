@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import { useState } from 'react'
 import { ExternalLink, Quote, Award, Calendar, MapPin, BookOpen } from 'lucide-react'
 
@@ -77,9 +78,9 @@ export function FounderCard({ founder, variant = 'compact', className = '' }: Fo
         className="inline-flex items-center gap-2 px-2 py-1 rounded-lg bg-[color-mix(in_srgb,var(--primary)_10%,var(--background))] border border-[var(--border)] cursor-pointer hover:bg-[color-mix(in_srgb,var(--primary)_15%,var(--background))] transition-colors"
         title={`${founder.name} - ${founder.title}`}
       >
-        <div className="w-5 h-5 rounded-full overflow-hidden bg-[var(--muted)]">
+        <div className="relative w-5 h-5 rounded-full overflow-hidden bg-[var(--muted)]">
           {founder.portrait ? (
-            <img src={founder.portrait} alt={founder.name} className="w-full h-full object-cover" />
+            <Image src={founder.portrait} alt={founder.name} fill unoptimized sizes="100%" className="object-cover" />
           ) : (
             <span className="text-xs font-bold">{founder.name[0]}</span>
           )}

@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { S } from './svgStyleTokens'
 
 const HaloFilter = () => (
   <defs>
@@ -18,385 +19,403 @@ const HaloFilter = () => (
 interface SVGProps { showHalo?: boolean }
 
 // ============================================================================
-// GABLE - Triangular portion of wall between sloping roof edges
-// Reference: Classic house form, Greek temples - the iconic triangular end wall
+// GABLE - 3/4 bird's-eye isometric view showing two sloping planes
+// meeting at a ridge, with the triangular gable end wall visible
 // ============================================================================
 export const GableSVG = ({ showHalo = false }: SVGProps) => (
-  <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
+  <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT: Building walls and ground - dashed blueprint */}
-    <g strokeDasharray="3 2" opacity="0.4">
-      <path d="M 12 95 L 12 58" strokeWidth="1.2" fill="none" />
-      <path d="M 88 95 L 88 58" strokeWidth="1.2" fill="none" />
-      <path d="M 10 95 L 90 95" strokeWidth="0.8" fill="none" />
-      {/* Wall below eave */}
-      <path d="M 12 58 L 88 58" strokeWidth="1" fill="none" />
+    {/* CONTEXT (near): Building walls visible below roof in 3/4 view */}
+    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+      {/* Front wall */}
+      <path d="M 8 88 L 8 55" strokeWidth={S.P.strokeWidthLight} />
+      <path d="M 68 88 L 68 55" strokeWidth={S.P.strokeWidthLight} />
+      <path d="M 8 88 L 68 88" strokeWidth={S.D.strokeWidth} />
+      {/* Right side wall (3/4 perspective) */}
+      <path d="M 68 88 L 92 76" strokeWidth={S.P.strokeWidthLight} />
+      <path d="M 68 55 L 92 43" strokeWidth={S.P.strokeWidthLight} />
+      <path d="M 92 76 L 92 43" strokeWidth={S.P.strokeWidthLight} />
+      {/* Gable end wall triangle (right side) */}
+      <path d="M 92 43 L 80 28" strokeWidth={S.CN.strokeWidthFine} />
+      <path d="M 68 55 L 80 28" strokeWidth={S.CN.strokeWidthFine} />
     </g>
 
-    {/* CONTEXT: Roof slopes extending from gable - WITH SHINGLE TEXTURE */}
-    <g strokeDasharray="3 2" opacity="0.3">
-      <path d="M 50 12 L 92 58" strokeWidth="0.8" fill="none" />
-      <path d="M 50 12 L 8 58" strokeWidth="0.8" fill="none" />
-      {/* Wood shingle rows on left slope */}
-      <path d="M 12 56 L 51 15" strokeWidth="0.4" opacity="0.5" />
-      <path d="M 15 52 L 52 18" strokeWidth="0.4" opacity="0.5" />
-      <path d="M 18 48 L 53 21" strokeWidth="0.4" opacity="0.5" />
-      <path d="M 22 44 L 54 24" strokeWidth="0.4" opacity="0.5" />
-      {/* Wood shingle rows on right slope */}
-      <path d="M 88 56 L 49 15" strokeWidth="0.4" opacity="0.5" />
-      <path d="M 85 52 L 48 18" strokeWidth="0.4" opacity="0.5" />
-      <path d="M 82 48 L 47 21" strokeWidth="0.4" opacity="0.5" />
-      <path d="M 78 44 L 46 24" strokeWidth="0.4" opacity="0.5" />
-      {/* Individual shingle gaps/edges */}
-      <path d="M 25 50 L 26 49" strokeWidth="0.25" opacity="0.4" />
-      <path d="M 35 42 L 36 41" strokeWidth="0.25" opacity="0.4" />
-      <path d="M 65 42 L 64 41" strokeWidth="0.25" opacity="0.4" />
-      <path d="M 75 50 L 74 49" strokeWidth="0.25" opacity="0.4" />
-    </g>
-
-    {/* PRIMARY: THE GABLE - triangular wall end */}
+    {/* PRIMARY: THE GABLE ROOF — 3/4 bird's-eye isometric */}
     <g filter={showHalo ? "url(#roof-halo)" : undefined}>
-      {/* Triangular gable shape - the wall filling the triangle */}
-      <path d="M 12 58 L 50 14 L 88 58" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      {/* Left (front-facing) roof slope — lighter fill, sun-facing */}
+      <path d="M 5 58 L 38 18 L 77 30 L 65 58 Z" fill="currentColor" opacity={0.06} />
+      {/* Right (side-facing) roof slope — darker, shadow side */}
+      <path d="M 77 30 L 38 18 L 62 6 L 95 18 Z" fill="currentColor" opacity={0.11} />
 
-      {/* Rake/verge boards (trim along roof edge) */}
-      <path d="M 9 60 L 50 10 L 91 60" strokeWidth="1.8" fill="none" opacity="0.7" />
+      {/* Ridge line */}
+      <path d="M 38 18 L 77 30" strokeWidth={S.P.strokeWidthHeavy} strokeLinecap={S.P.strokeLinecap} />
+      {/* Alternate ridge: from front-left apex to back-right apex */}
+      <path d="M 38 18 L 62 6" strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} opacity={S.D.opacityStrong} />
 
-      {/* Horizontal courses/siding on gable face */}
-      <path d="M 20 50 L 80 50" strokeWidth="0.7" fill="none" opacity="0.4" />
-      <path d="M 26 42 L 74 42" strokeWidth="0.7" fill="none" opacity="0.4" />
-      <path d="M 32 34 L 68 34" strokeWidth="0.7" fill="none" opacity="0.4" />
-      <path d="M 40 26 L 60 26" strokeWidth="0.6" fill="none" opacity="0.35" />
+      {/* Front slope edges */}
+      <path d="M 5 58 L 38 18" strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
+      <path d="M 65 58 L 77 30" strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
+      <path d="M 5 58 L 65 58" strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
+
+      {/* Right slope edges */}
+      <path d="M 62 6 L 95 18" strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
+      <path d="M 95 18 L 77 30" strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
+
+      {/* Back edge (partially visible) */}
+      <path d="M 62 6 L 5 58" strokeWidth={S.P.strokeWidthLight} opacity={S.D.opacitySubtle} strokeDasharray={S.CN.dash} />
+
+      {/* DETAIL: Shingle rows on front slope */}
+      <path d="M 10 54 L 66 54" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 15 48 L 68 50" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 20 42 L 70 45" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 25 36 L 72 40" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 30 30 L 74 35" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 35 24 L 76 32" strokeWidth={S.E.strokeWidth} opacity={S.D.opacitySubtle} />
+
+      {/* DETAIL: Shingle rows on right slope (darker side) */}
+      <path d="M 65 8 L 93 16" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 68 11 L 92 19" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 71 14 L 90 21" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 74 17 L 88 23" strokeWidth={S.D.strokeWidthFine} opacity={S.CF.opacity} />
+
+      {/* Ridge tiles highlight */}
+      <path d="M 40 18 L 44 19" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+      <path d="M 48 20 L 52 21" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+      <path d="M 56 22 L 60 23" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+      <path d="M 64 24 L 68 25" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+      <path d="M 72 27 L 75 28" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
     </g>
 
-    {/* Gable window (typical feature) */}
-    <g opacity="0.55">
-      <circle cx="50" cy="40" r="7" strokeWidth="1.3" fill="none" />
-      <path d="M 50 33 L 50 47" strokeWidth="0.7" fill="none" />
-      <path d="M 43 40 L 57 40" strokeWidth="0.7" fill="none" />
+    {/* Gable end triangle visible on right side */}
+    <g opacity={S.D.opacity}>
+      <path d="M 68 55 L 80 28 L 92 43" strokeWidth={S.P.strokeWidthLight} strokeLinejoin="round" />
+      {/* Gable window */}
+      <circle cx="80" cy="40" r="4" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+      <path d="M 80 36 L 80 44" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 76 40 L 84 40" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
     </g>
-
-    {/* Finial at apex */}
-    <path d="M 50 14 L 50 6" strokeWidth="1.8" fill="none" opacity="0.7" />
   </svg>
 )
 
 // ============================================================================
-// HIP ROOF - Sloped on all four sides, no gable ends
-// Reference: Georgian houses, prairie style - slopes down to eaves on all sides
+// HIP ROOF - 3/4 bird's-eye. ALL four sides slope inward, NO vertical gable
+// walls. Ridge shorter than building length. Trapezoidal front, triangular hips.
 // ============================================================================
 export const HipRoofSVG = ({ showHalo = false }: SVGProps) => (
-  <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
+  <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT: Building walls - dashed blueprint */}
-    <g strokeDasharray="3 2" opacity="0.4">
-      <path d="M 12 92 L 12 58" strokeWidth="1.2" fill="none" />
-      <path d="M 88 92 L 88 58" strokeWidth="1.2" fill="none" />
-      <path d="M 12 58 L 88 58" strokeWidth="1" fill="none" />
-      <path d="M 10 92 L 90 92" strokeWidth="0.8" fill="none" />
+    {/* CONTEXT (near): Building walls in 3/4 perspective */}
+    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+      {/* Front wall */}
+      <path d="M 6 86 L 6 56" strokeWidth={S.P.strokeWidthLight} />
+      <path d="M 72 86 L 72 56" strokeWidth={S.P.strokeWidthLight} />
+      <path d="M 6 86 L 72 86" strokeWidth={S.D.strokeWidth} />
+      {/* Right side wall */}
+      <path d="M 72 86 L 94 74" strokeWidth={S.P.strokeWidthLight} />
+      <path d="M 72 56 L 94 44" strokeWidth={S.P.strokeWidthLight} />
+      <path d="M 94 74 L 94 44" strokeWidth={S.P.strokeWidthLight} />
     </g>
 
-    {/* PRIMARY: THE HIP ROOF - slopes on all sides, no gable */}
+    {/* PRIMARY: THE HIP ROOF — all four sides slope, no gable walls */}
     <g filter={showHalo ? "url(#roof-halo)" : undefined}>
-      {/* Ridge line (shorter than building width) */}
-      <path d="M 34 20 L 66 20" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      {/* Front slope (trapezoidal face) — lighter, sun-facing */}
+      <path d="M 3 58 L 30 26 L 60 30 L 75 58 Z" fill="currentColor" opacity={0.06} />
+      {/* Right slope (triangular hip face) — medium shadow */}
+      <path d="M 75 58 L 60 30 L 97 42 Z" fill="currentColor" opacity={0.10} />
+      {/* Top/back slope visible — darkest */}
+      <path d="M 30 26 L 60 30 L 97 42 L 55 14 Z" fill="currentColor" opacity={0.12} />
 
-      {/* Front slope - from eave to ridge */}
-      <path d="M 12 58 L 34 20" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-      <path d="M 88 58 L 66 20" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      {/* Ridge line (shorter than building — key hip roof feature) */}
+      <path d="M 30 26 L 60 30" strokeWidth={S.P.strokeWidthHeavy} strokeLinecap={S.P.strokeLinecap} />
 
-      {/* Eave line */}
-      <path d="M 10 58 L 90 58" strokeWidth="2" fill="none" strokeLinecap="round" />
+      {/* Front slope: left hip edge */}
+      <path d="M 3 58 L 30 26" strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
+      {/* Front slope: right hip edge */}
+      <path d="M 75 58 L 60 30" strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
+      {/* Front eave */}
+      <path d="M 3 58 L 75 58" strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
 
-      {/* Hip edges (diagonal from corners to ridge ends) */}
-      <path d="M 12 58 L 34 20" strokeWidth="1.8" fill="none" opacity="0.8" />
-      <path d="M 88 58 L 66 20" strokeWidth="1.8" fill="none" opacity="0.8" />
+      {/* Right slope: front hip edge to right eave corner */}
+      <path d="M 97 42 L 75 58" strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
+      {/* Right hip: ridge to back-right eave */}
+      <path d="M 60 30 L 97 42" strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
 
-      {/* CLAY TILE TEXTURE - horizontal rows following roof slope */}
-      <path d="M 15 54 L 85 54" strokeWidth="0.5" fill="none" opacity="0.35" />
-      <path d="M 18 50 L 82 50" strokeWidth="0.5" fill="none" opacity="0.35" />
-      <path d="M 21 46 L 79 46" strokeWidth="0.5" fill="none" opacity="0.35" />
-      <path d="M 24 42 L 76 42" strokeWidth="0.5" fill="none" opacity="0.35" />
-      <path d="M 27 38 L 73 38" strokeWidth="0.5" fill="none" opacity="0.3" />
-      <path d="M 30 34 L 70 34" strokeWidth="0.5" fill="none" opacity="0.3" />
-      <path d="M 34 30 L 66 30" strokeWidth="0.5" fill="none" opacity="0.3" />
-      <path d="M 38 26 L 62 26" strokeWidth="0.5" fill="none" opacity="0.25" />
-      <path d="M 43 22 L 57 22" strokeWidth="0.5" fill="none" opacity="0.25" />
-      {/* Individual tile edges/shadows */}
-      <path d="M 30 48 L 31 47" strokeWidth="0.25" opacity="0.3" />
-      <path d="M 50 44 L 51 43" strokeWidth="0.25" opacity="0.3" />
-      <path d="M 70 48 L 69 47" strokeWidth="0.25" opacity="0.3" />
-      <path d="M 45 30 L 46 29" strokeWidth="0.25" opacity="0.25" />
-      <path d="M 55 30 L 54 29" strokeWidth="0.25" opacity="0.25" />
+      {/* Back ridge extension to back-left hip point */}
+      <path d="M 30 26 L 55 14" strokeWidth={S.P.strokeWidth} strokeLinecap={S.P.strokeLinecap} opacity={S.D.opacityStrong} />
+      {/* Back-right hip edge */}
+      <path d="M 55 14 L 97 42" strokeWidth={S.P.strokeWidth} strokeLinecap={S.P.strokeLinecap} opacity={S.D.opacityStrong} />
+      {/* Back-left hip edge (partially hidden) */}
+      <path d="M 55 14 L 22 44" strokeWidth={S.P.strokeWidthLight} opacity={S.D.opacitySubtle} strokeDasharray={S.CN.dash} />
+
+      {/* DETAIL: Tile rows on front slope */}
+      <path d="M 7 54 L 73 54" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 11 50 L 72 50" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 15 46 L 70 47" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 19 42 L 68 44" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 23 38 L 66 40" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 27 34 L 64 36" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 31 30 L 58 32" strokeWidth={S.E.strokeWidth} opacity={S.CF.opacity} />
+
+      {/* DETAIL: Tile rows on right hip slope */}
+      <path d="M 77 54 L 94 44" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 76 50 L 92 42" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 74 46 L 90 39" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 72 42 L 88 36" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 70 38 L 84 33" strokeWidth={S.D.strokeWidthFine} opacity={S.CF.opacity} />
+
+      {/* Ridge tiles */}
+      <path d="M 32 26 L 36 27" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+      <path d="M 40 27 L 44 28" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+      <path d="M 48 28 L 52 29" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+      <path d="M 56 29 L 59 30" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
     </g>
   </svg>
 )
 
 // ============================================================================
-// MANSARD - Four-sided roof with double slope (steep lower, shallow upper)
-// Reference: French Second Empire style - distinctive Paris roofscape
+// MANSARD - 3/4 bird's-eye. Double slope: steep near-vertical lower with
+// dormers, shallow almost-flat upper. The break line is the defining feature.
 // ============================================================================
 export const MansardSVG = ({ showHalo = false }: SVGProps) => (
-  <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
+  <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT: Building walls - dashed blueprint */}
-    <g strokeDasharray="3 2" opacity="0.4">
-      <path d="M 8 93 L 8 58" strokeWidth="1.2" fill="none" />
-      <path d="M 92 93 L 92 58" strokeWidth="1.2" fill="none" />
-      <path d="M 8 93 L 92 93" strokeWidth="0.8" fill="none" />
+    {/* CONTEXT (near): Building walls */}
+    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+      {/* Front wall */}
+      <path d="M 6 90 L 6 58" strokeWidth={S.P.strokeWidthLight} />
+      <path d="M 68 90 L 68 58" strokeWidth={S.P.strokeWidthLight} />
+      <path d="M 6 90 L 68 90" strokeWidth={S.D.strokeWidth} />
+      {/* Right side wall (3/4 perspective) */}
+      <path d="M 68 90 L 92 78" strokeWidth={S.P.strokeWidthLight} />
+      <path d="M 68 58 L 92 46" strokeWidth={S.P.strokeWidthLight} />
+      <path d="M 92 78 L 92 46" strokeWidth={S.P.strokeWidthLight} />
     </g>
 
-    {/* PRIMARY: THE MANSARD ROOF - steep lower slope, shallow upper */}
+    {/* PRIMARY: THE MANSARD ROOF — double slope, steep lower + flat upper */}
     <g filter={showHalo ? "url(#roof-halo)" : undefined}>
-      {/* STEEP LOWER SLOPE (nearly vertical) - the defining feature */}
-      <path d="M 8 58 L 18 26" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-      <path d="M 92 58 L 82 26" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      {/* STEEP LOWER SLOPE fills — front face (lighter) */}
+      <path d="M 4 60 L 14 34 L 62 38 L 70 60 Z" fill="currentColor" opacity={0.07} />
+      {/* STEEP LOWER SLOPE — right face (darker shadow) */}
+      <path d="M 70 60 L 62 38 L 88 26 L 94 46 Z" fill="currentColor" opacity={0.11} />
 
-      {/* SHALLOW UPPER SLOPE (nearly flat) */}
-      <path d="M 18 26 L 50 16 L 82 26" strokeWidth="2.2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      {/* SHALLOW UPPER SLOPE fill — nearly flat top seen from above */}
+      <path d="M 14 34 L 38 22 L 88 26 L 62 38 Z" fill="currentColor" opacity={0.09} />
 
-      {/* Break line between slopes (key Mansard detail) */}
-      <path d="M 18 26 L 82 26" strokeWidth="1.8" fill="none" opacity="0.7" />
+      {/* Front eave line */}
+      <path d="M 4 60 L 70 60" strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
+      {/* Right eave */}
+      <path d="M 70 60 L 94 46" strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
 
-      {/* Eave line */}
-      <path d="M 6 58 L 94 58" strokeWidth="2" fill="none" strokeLinecap="round" />
+      {/* BREAK LINE — the defining Mansard feature (front) */}
+      <path d="M 14 34 L 62 38" strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
+      {/* Break line (right side) */}
+      <path d="M 62 38 L 88 26" strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
 
-      {/* Dormers in steep lower slope (very typical) */}
+      {/* STEEP LOWER SLOPE edges — front */}
+      <path d="M 4 60 L 14 34" strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
+      <path d="M 70 60 L 62 38" strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
+
+      {/* STEEP LOWER SLOPE edges — right */}
+      <path d="M 94 46 L 88 26" strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
+
+      {/* SHALLOW UPPER SLOPE edges */}
+      <path d="M 14 34 L 38 22" strokeWidth={S.P.strokeWidth} strokeLinecap={S.P.strokeLinecap} />
+      <path d="M 88 26 L 38 22" strokeWidth={S.P.strokeWidth} strokeLinecap={S.P.strokeLinecap} opacity={S.D.opacityStrong} />
+
+      {/* Ridge line along top */}
+      <path d="M 38 22 L 62 24" strokeWidth={S.P.strokeWidthLight} opacity={S.D.opacityStrong} strokeDasharray={S.CN.dash} />
+
+      {/* DORMERS on front steep slope — with their own small roofs */}
       <g>
-        <path d="M 28 48 L 28 34 L 36 30 L 44 34 L 44 48" strokeWidth="1.4" fill="none" opacity="0.65" />
-        <path d="M 56 48 L 56 34 L 64 30 L 72 34 L 72 48" strokeWidth="1.4" fill="none" opacity="0.65" />
-        {/* Dormer windows */}
-        <path d="M 32 46 L 32 36" strokeWidth="0.6" fill="none" opacity="0.45" />
-        <path d="M 40 46 L 40 36" strokeWidth="0.6" fill="none" opacity="0.45" />
-        <path d="M 60 46 L 60 36" strokeWidth="0.6" fill="none" opacity="0.45" />
-        <path d="M 68 46 L 68 36" strokeWidth="0.6" fill="none" opacity="0.45" />
+        {/* Dormer 1 */}
+        <path d="M 20 50 L 20 40 L 26 37 L 32 40 L 32 50" strokeWidth={S.P.strokeWidth} />
+        <path d="M 20 40 L 32 40" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        {/* Dormer 1 window */}
+        <rect x="23" y="42" width="6" height="7" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        <path d="M 26 42 L 26 49" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        {/* Dormer 1 shadow on roof */}
+        <path d="M 32 50 L 34 48 L 34 40 L 32 40" fill="currentColor" opacity={0.08} stroke="none" />
+
+        {/* Dormer 2 */}
+        <path d="M 40 51 L 40 41 L 46 38 L 52 41 L 52 51" strokeWidth={S.P.strokeWidth} />
+        <path d="M 40 41 L 52 41" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        {/* Dormer 2 window */}
+        <rect x="43" y="43" width="6" height="7" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+        <path d="M 46 43 L 46 50" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+        {/* Dormer 2 shadow */}
+        <path d="M 52 51 L 54 49 L 54 41 L 52 41" fill="currentColor" opacity={0.08} stroke="none" />
       </g>
 
-      {/* FRENCH SLATE TEXTURE - Rows on steep lower slope */}
-      <path d="M 9 56 L 91 56" strokeWidth="0.5" fill="none" opacity="0.35" />
-      <path d="M 10 52 L 90 52" strokeWidth="0.5" fill="none" opacity="0.35" />
-      <path d="M 11 48 L 89 48" strokeWidth="0.5" fill="none" opacity="0.35" />
-      <path d="M 12 44 L 88 44" strokeWidth="0.5" fill="none" opacity="0.35" />
-      <path d="M 13 40 L 87 40" strokeWidth="0.5" fill="none" opacity="0.3" />
-      <path d="M 14 36 L 86 36" strokeWidth="0.5" fill="none" opacity="0.3" />
-      <path d="M 15 32 L 85 32" strokeWidth="0.5" fill="none" opacity="0.3" />
-      <path d="M 16 28 L 84 28" strokeWidth="0.5" fill="none" opacity="0.25" />
-      {/* Slate on shallow upper slope */}
-      <path d="M 22 24 L 78 24" strokeWidth="0.4" fill="none" opacity="0.25" />
-      <path d="M 28 21 L 72 21" strokeWidth="0.4" fill="none" opacity="0.25" />
-      <path d="M 34 19 L 66 19" strokeWidth="0.4" fill="none" opacity="0.2" />
-      {/* Individual slate edges */}
-      <path d="M 25 50 L 26 49" strokeWidth="0.25" opacity="0.3" />
-      <path d="M 45 42 L 46 41" strokeWidth="0.25" opacity="0.3" />
-      <path d="M 55 42 L 54 41" strokeWidth="0.25" opacity="0.3" />
-      <path d="M 75 50 L 74 49" strokeWidth="0.25" opacity="0.3" />
-      <path d="M 40 23 L 41 22" strokeWidth="0.2" opacity="0.25" />
-      <path d="M 60 23 L 59 22" strokeWidth="0.2" opacity="0.25" />
+      {/* DETAIL: Slate texture rows on steep front slope */}
+      <path d="M 6 57 L 69 57" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 8 53 L 67 54" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 10 49 L 65 51" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 12 45 L 63 48" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 13 41 L 61 44" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 14 37 L 60 41" strokeWidth={S.E.strokeWidth} opacity={S.CF.opacity} />
+
+      {/* Slate rows on steep right slope */}
+      <path d="M 72 57 L 93 44" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 70 53 L 92 40" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 68 48 L 91 36" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 66 43 L 90 32" strokeWidth={S.D.strokeWidthFine} opacity={S.CF.opacity} />
     </g>
   </svg>
 )
 
 // ============================================================================
-// BUTTRESS - Projecting masonry support against a wall
-// Reference: Romanesque/Gothic churches - exterior mass resisting thrust
-// ============================================================================
-export const ButtressSVG = ({ showHalo = false }: SVGProps) => (
-  <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
-    <HaloFilter />
-
-    {/* CONTEXT: Main wall being supported - dashed blueprint */}
-    <g strokeDasharray="3 2" opacity="0.4">
-      <path d="M 62 92 L 62 12" strokeWidth="1.8" fill="none" />
-      <path d="M 66 92 L 66 12" strokeWidth="0.8" fill="none" />
-      {/* Wall section above */}
-      <path d="M 62 12 L 92 12" strokeWidth="0.8" fill="none" />
-    </g>
-
-    {/* Ground line */}
-    <path d="M 5 92 L 95 92" strokeWidth="0.8" fill="none" opacity="0.4" strokeDasharray="4 2" />
-
-    {/* PRIMARY: THE BUTTRESS - projecting masonry support */}
-    <g filter={showHalo ? "url(#roof-halo)" : undefined}>
-      {/* Main buttress body */}
-      <path d="M 14 92 L 14 24" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-
-      {/* Base spread on ground */}
-      <path d="M 14 92 L 62 92" strokeWidth="2" fill="none" strokeLinecap="round" />
-
-      {/* Stepped/tapered profile (buttress gets narrower going up) */}
-      {/* First setback */}
-      <path d="M 14 24 L 26 22 L 62 22" strokeWidth="1.8" fill="none" strokeLinejoin="round" />
-
-      {/* Second step */}
-      <path d="M 14 48 L 32 44" strokeWidth="1.6" fill="none" />
-      <path d="M 32 92 L 32 44" strokeWidth="1.6" fill="none" />
-      <path d="M 32 44 L 62 40" strokeWidth="1.4" fill="none" />
-
-      {/* Third step */}
-      <path d="M 32 68 L 46 64" strokeWidth="1.4" fill="none" />
-      <path d="M 46 92 L 46 64" strokeWidth="1.3" fill="none" />
-      <path d="M 46 64 L 62 60" strokeWidth="1.2" fill="none" />
-
-      {/* Weathering/coping on top */}
-      <path d="M 11 24 L 28 18" strokeWidth="1.4" fill="none" />
-
-      {/* Stone course lines */}
-      <path d="M 14 55 L 50 55" strokeWidth="0.5" fill="none" opacity="0.35" />
-      <path d="M 14 72 L 55 72" strokeWidth="0.5" fill="none" opacity="0.35" />
-    </g>
-  </svg>
-)
-
-// ============================================================================
-// FLYING BUTTRESS - Exterior arched support transmitting thrust to pier
-// Reference: Gothic cathedrals (Notre-Dame, Chartres) - iconic flying arches
-// ============================================================================
-export const FlyingButtressSVG = ({ showHalo = false }: SVGProps) => (
-  <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
-    <HaloFilter />
-
-    {/* CONTEXT: Main wall (clerestory) being supported - dashed blueprint */}
-    <g strokeDasharray="3 2" opacity="0.4">
-      <path d="M 78 92 L 78 8" strokeWidth="2" fill="none" />
-      <path d="M 82 92 L 82 8" strokeWidth="0.8" fill="none" />
-      {/* Clerestory window suggestion */}
-      <path d="M 80 38 Q 88 28, 80 18" strokeWidth="0.7" fill="none" opacity="0.6" />
-    </g>
-
-    {/* CONTEXT: Outer pier base - dashed blueprint */}
-    <g strokeDasharray="3 2" opacity="0.4">
-      <path d="M 12 92 L 12 38" strokeWidth="1.8" fill="none" />
-      <path d="M 16 92 L 16 40" strokeWidth="0.9" fill="none" />
-    </g>
-
-    {/* CONTEXT: Aisle roof below - dashed */}
-    <path d="M 18 72 L 52 62 L 78 72" strokeWidth="0.8" fill="none" opacity="0.3" strokeDasharray="3 2" />
-
-    {/* Ground */}
-    <path d="M 5 92 L 95 92" strokeWidth="0.8" fill="none" opacity="0.4" strokeDasharray="4 2" />
-
-    {/* PRIMARY: THE FLYING BUTTRESS - the "flying" arched struts */}
-    <g filter={showHalo ? "url(#roof-halo)" : undefined}>
-      {/* UPPER FLYER - main structural arch */}
-      <path d="M 16 38 Q 46 26, 78 26" strokeWidth="2.8" fill="none" strokeLinecap="round" />
-
-      {/* LOWER FLYER (double-tier flying buttress) */}
-      <path d="M 18 56 Q 46 48, 78 52" strokeWidth="2.4" fill="none" strokeLinecap="round" />
-
-      {/* Inner edges of flyers */}
-      <path d="M 18 40 Q 46 30, 78 30" strokeWidth="1.3" fill="none" opacity="0.55" />
-      <path d="M 20 58 Q 46 52, 78 54" strokeWidth="1.1" fill="none" opacity="0.5" />
-
-      {/* PINNACLE on outer pier (adds weight for stability) */}
-      <path d="M 12 38 L 12 18" strokeWidth="1.8" fill="none" />
-      <path d="M 8 20 L 12 8 L 16 20" strokeWidth="1.4" fill="none" strokeLinejoin="round" />
-      <path d="M 12 8 L 12 3" strokeWidth="1.4" fill="none" />
-
-      {/* Crockets on pinnacle */}
-      <circle cx="9" cy="16" r="1.5" strokeWidth="0.7" fill="none" opacity="0.5" />
-      <circle cx="15" cy="16" r="1.5" strokeWidth="0.7" fill="none" opacity="0.5" />
-    </g>
-  </svg>
-)
-
-// ============================================================================
-// CUPOLA - Small dome or tower on a roof for light/ventilation
-// Reference: Colonial American, Italian villas - crowning roof feature
+// CUPOLA - Small domed/polygonal turret sitting ON TOP of a roof for
+// ventilation/light. Shows the base roof for context.
 // ============================================================================
 export const CupolaSVG = ({ showHalo = false }: SVGProps) => (
-  <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
+  <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT: Main roof below - dashed blueprint */}
-    <g strokeDasharray="3 2" opacity="0.4">
-      <path d="M 5 78 L 50 58 L 95 78" strokeWidth="1.2" fill="none" />
-      <path d="M 5 82 L 95 82" strokeWidth="1" fill="none" />
-      {/* Roof continuing behind cupola */}
-      <path d="M 28 68 L 28 58" strokeWidth="0.6" fill="none" opacity="0.6" />
-      <path d="M 72 68 L 72 58" strokeWidth="0.6" fill="none" opacity="0.6" />
+    {/* CONTEXT (near): Base roof the cupola sits on — 3/4 bird's-eye hip roof */}
+    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+      {/* Front roof slope */}
+      <path d="M 2 82 L 50 60 L 98 82" strokeWidth={S.P.strokeWidthLight} />
+      {/* Back edge of roof visible */}
+      <path d="M 50 60 L 75 48" strokeWidth={S.CN.strokeWidthFine} />
+      <path d="M 98 82 L 75 48" strokeWidth={S.CN.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      {/* Left back edge */}
+      <path d="M 2 82 L 25 48" strokeWidth={S.CN.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 25 48 L 75 48" strokeWidth={S.CN.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      {/* Roof surface fill */}
+      <path d="M 2 82 L 50 60 L 98 82 L 75 48 L 25 48 Z" fill="currentColor" opacity={0.04} stroke="none" />
+      {/* Ridge line */}
+      <path d="M 25 48 L 50 60" strokeWidth={S.D.strokeWidth} />
+      <path d="M 75 48 L 50 60" strokeWidth={S.D.strokeWidth} />
     </g>
 
-    {/* PRIMARY: THE CUPOLA - small dome structure on roof */}
+    {/* PRIMARY: THE CUPOLA — small domed structure perched on ridge */}
     <g filter={showHalo ? "url(#roof-halo)" : undefined}>
-      {/* Base/drum of cupola sitting on roof */}
-      <path d="M 30 58 L 30 44" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <path d="M 70 58 L 70 44" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <path d="M 30 44 L 70 44" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <path d="M 30 58 L 70 58" strokeWidth="1.6" fill="none" opacity="0.7" />
+      {/* Octagonal base/drum sitting on the roof ridge */}
+      {/* Front face of drum */}
+      <path d="M 36 62 L 36 48 L 64 48 L 64 62" strokeWidth={S.P.strokeWidth} strokeLinecap={S.P.strokeLinecap} />
+      {/* Right face of drum (3/4 view) */}
+      <path d="M 64 62 L 72 56 L 72 42 L 64 48" strokeWidth={S.P.strokeWidth} strokeLinecap={S.P.strokeLinecap} />
+      {/* Top of drum */}
+      <path d="M 36 48 L 44 42 L 72 42 L 64 48" strokeWidth={S.P.strokeWidth} strokeLinecap={S.P.strokeLinecap} />
+      {/* Base of drum sits on roof */}
+      <path d="M 36 62 L 44 56 L 72 56" strokeWidth={S.P.strokeWidthLight} opacity={S.D.opacityStrong} />
+      {/* Drum fill for depth */}
+      <path d="M 64 62 L 72 56 L 72 42 L 64 48 Z" fill="currentColor" opacity={0.09} stroke="none" />
 
-      {/* Windows/openings in drum */}
-      <path d="M 36 54 L 36 46" strokeWidth="0.9" fill="none" opacity="0.55" />
-      <path d="M 50 54 L 50 46" strokeWidth="0.9" fill="none" opacity="0.55" />
-      <path d="M 64 54 L 64 46" strokeWidth="0.9" fill="none" opacity="0.55" />
+      {/* DETAIL: Louvered openings in drum (ventilation slats) */}
+      <g opacity={S.D.opacity}>
+        {/* Front face openings */}
+        <path d="M 40 52 L 40 58" strokeWidth={S.D.strokeWidth} />
+        <path d="M 44 52 L 44 58" strokeWidth={S.D.strokeWidth} />
+        <path d="M 50 52 L 50 58" strokeWidth={S.D.strokeWidth} />
+        <path d="M 56 52 L 56 58" strokeWidth={S.D.strokeWidth} />
+        <path d="M 60 52 L 60 58" strokeWidth={S.D.strokeWidth} />
+        {/* Right face openings */}
+        <path d="M 66 50 L 66 55" strokeWidth={S.D.strokeWidthFine} />
+        <path d="M 69 48 L 69 53" strokeWidth={S.D.strokeWidthFine} />
+      </g>
 
-      {/* Cupola dome */}
-      <path d="M 30 44 Q 30 24, 50 18 Q 70 24, 70 44" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-
-      {/* Inner dome line */}
-      <path d="M 34 42 Q 34 28, 50 22 Q 66 28, 66 42" strokeWidth="1.3" fill="none" opacity="0.55" />
+      {/* Cupola dome (small, polygonal/rounded cap) */}
+      <path d="M 36 48 Q 36 32, 50 26 Q 64 32, 64 48" strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
+      {/* Right side of dome cap (3/4 view) */}
+      <path d="M 64 48 Q 68 36, 58 28" strokeWidth={S.P.strokeWidth} strokeLinecap={S.P.strokeLinecap} opacity={S.D.opacityStrong} />
+      {/* Dome shadow side fill */}
+      <path d="M 64 48 Q 68 36, 58 28 Q 64 32, 64 48" fill="currentColor" opacity={0.08} stroke="none" />
 
       {/* Dome ribs */}
-      <path d="M 50 18 L 50 42" strokeWidth="0.7" fill="none" opacity="0.4" />
-      <path d="M 38 26 L 36 42" strokeWidth="0.5" fill="none" opacity="0.3" />
-      <path d="M 62 26 L 64 42" strokeWidth="0.5" fill="none" opacity="0.3" />
+      <path d="M 50 26 L 50 46" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 42 32 L 40 46" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 58 32 L 60 46" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
     </g>
 
     {/* Finial at apex */}
-    <g opacity="0.8">
-      <path d="M 50 18 L 50 10" strokeWidth="1.8" fill="none" />
-      <circle cx="50" cy="8" r="2.5" strokeWidth="1.3" fill="none" />
+    <g opacity={S.D.opacityStrong}>
+      <path d="M 52 26 L 54 16" strokeWidth={S.P.strokeWidth} />
+      <circle cx="54" cy="14" r="2.5" strokeWidth={S.P.strokeWidthLight} />
     </g>
   </svg>
 )
 
 // ============================================================================
-// LANTERN - Windowed structure atop a dome admitting light
-// Reference: Renaissance domes (Florence Cathedral) - crown of the dome
+// LANTERN - Windowed tower/turret on a roof with glazed panels for light.
+// Distinguished from cupola by emphasized openness and glass panels.
 // ============================================================================
 export const LanternSVG = ({ showHalo = false }: SVGProps) => (
-  <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
+  <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT: Dome below lantern - dashed blueprint */}
-    <g strokeDasharray="3 2" opacity="0.4">
-      <path d="M 8 88 Q 8 58, 50 52 Q 92 58, 92 88" strokeWidth="1.2" fill="none" />
-      <path d="M 18 84 Q 18 62, 50 56 Q 82 62, 82 84" strokeWidth="0.9" fill="none" />
+    {/* CONTEXT (near): Dome below the lantern in 3/4 bird's-eye */}
+    <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+      <path d="M 6 92 Q 6 64, 50 56 Q 94 64, 94 92" strokeWidth={S.P.strokeWidthLight} />
+      <path d="M 16 88 Q 16 68, 50 60 Q 84 68, 84 88" strokeWidth={S.D.strokeWidth} />
+      {/* Dome surface fill */}
+      <path d="M 6 92 Q 6 64, 50 56 Q 94 64, 94 92 Z" fill="currentColor" opacity={0.04} stroke="none" />
       {/* Dome ribs */}
-      <path d="M 50 52 L 50 88" strokeWidth="0.6" fill="none" opacity="0.5" />
-      <path d="M 30 60 L 25 88" strokeWidth="0.5" fill="none" opacity="0.4" />
-      <path d="M 70 60 L 75 88" strokeWidth="0.5" fill="none" opacity="0.4" />
+      <path d="M 50 56 L 50 92" strokeWidth={S.D.strokeWidth} opacity={S.D.opacity} />
+      <path d="M 30 62 L 24 92" strokeWidth={S.D.strokeWidthFine} opacity={S.CN.opacity} />
+      <path d="M 70 62 L 76 92" strokeWidth={S.D.strokeWidthFine} opacity={S.CN.opacity} />
     </g>
 
-    {/* PRIMARY: THE LANTERN - windowed crown structure */}
+    {/* PRIMARY: THE LANTERN — open, windowed crown structure */}
     <g filter={showHalo ? "url(#roof-halo)" : undefined}>
-      {/* Lantern base/ring on dome */}
-      <ellipse cx="50" cy="52" rx="20" ry="5" strokeWidth="1.8" fill="none" />
+      {/* Base ring sitting on dome — elliptical in perspective */}
+      <ellipse cx="50" cy="56" rx="22" ry="6" strokeWidth={S.P.strokeWidth} />
 
-      {/* Lantern walls with window bays */}
-      <path d="M 30 52 L 30 28" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <path d="M 70 52 L 70 28" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      {/* Lantern walls — front face */}
+      <path d="M 28 56 L 28 30" strokeWidth={S.P.strokeWidth} strokeLinecap={S.P.strokeLinecap} />
+      <path d="M 72 56 L 72 30" strokeWidth={S.P.strokeWidth} strokeLinecap={S.P.strokeLinecap} />
+      {/* Right face wall (3/4 perspective) */}
+      <path d="M 72 56 L 78 52" strokeWidth={S.P.strokeWidthLight} strokeLinecap={S.P.strokeLinecap} />
+      <path d="M 72 30 L 78 26" strokeWidth={S.P.strokeWidthLight} strokeLinecap={S.P.strokeLinecap} />
+      <path d="M 78 52 L 78 26" strokeWidth={S.P.strokeWidthLight} strokeLinecap={S.P.strokeLinecap} />
+      {/* Right face shadow fill */}
+      <path d="M 72 56 L 78 52 L 78 26 L 72 30 Z" fill="currentColor" opacity={0.08} stroke="none" />
 
-      {/* Window arches (open bays) */}
-      <path d="M 34 50 L 34 32 Q 42 26, 50 32 L 50 50" strokeWidth="1.4" fill="none" />
-      <path d="M 50 50 L 50 32 Q 58 26, 66 32 L 66 50" strokeWidth="1.4" fill="none" />
+      {/* GLAZED WINDOW BAYS — the defining open/light feature */}
+      {/* Front bay 1 (arched) */}
+      <path d="M 32 54 L 32 34 Q 40 28, 48 34 L 48 54" strokeWidth={S.P.strokeWidth} />
+      {/* Front bay 2 (arched) */}
+      <path d="M 52 54 L 52 34 Q 60 28, 68 34 L 68 54" strokeWidth={S.P.strokeWidth} />
 
-      {/* Mullions dividing windows */}
-      <path d="M 38 48 L 38 34" strokeWidth="0.7" fill="none" opacity="0.55" />
-      <path d="M 46 48 L 46 32" strokeWidth="0.7" fill="none" opacity="0.55" />
-      <path d="M 54 48 L 54 32" strokeWidth="0.7" fill="none" opacity="0.55" />
-      <path d="M 62 48 L 62 34" strokeWidth="0.7" fill="none" opacity="0.55" />
+      {/* EFFECTS: Light streaming through glazed panels */}
+      <path d="M 34 52 L 34 36" strokeWidth={S.E.strokeWidth} opacity={S.E.opacityModerate} strokeDasharray={S.E.dash} />
+      <path d="M 38 50 L 38 34" strokeWidth={S.E.strokeWidth} opacity={S.E.opacityModerate} strokeDasharray={S.E.dash} />
+      <path d="M 42 50 L 42 32" strokeWidth={S.E.strokeWidth} opacity={S.E.opacityModerate} strokeDasharray={S.E.dash} />
+      <path d="M 46 50 L 46 34" strokeWidth={S.E.strokeWidth} opacity={S.E.opacityModerate} strokeDasharray={S.E.dash} />
+      <path d="M 54 52 L 54 36" strokeWidth={S.E.strokeWidth} opacity={S.E.opacityModerate} strokeDasharray={S.E.dash} />
+      <path d="M 58 50 L 58 34" strokeWidth={S.E.strokeWidth} opacity={S.E.opacityModerate} strokeDasharray={S.E.dash} />
+      <path d="M 62 50 L 62 32" strokeWidth={S.E.strokeWidth} opacity={S.E.opacityModerate} strokeDasharray={S.E.dash} />
+      <path d="M 66 50 L 66 34" strokeWidth={S.E.strokeWidth} opacity={S.E.opacityModerate} strokeDasharray={S.E.dash} />
 
-      {/* Lantern dome/cap */}
-      <path d="M 30 28 Q 30 14, 50 10 Q 70 14, 70 28" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <ellipse cx="50" cy="28" rx="20" ry="4" strokeWidth="1.4" fill="none" opacity="0.65" />
+      {/* Glass panel fill (light passing through) */}
+      <path d="M 32 54 L 32 34 Q 40 28, 48 34 L 48 54 Z" fill="currentColor" opacity={S.E.fillOpacity} stroke="none" />
+      <path d="M 52 54 L 52 34 Q 60 28, 68 34 L 68 54 Z" fill="currentColor" opacity={S.E.fillOpacity} stroke="none" />
+
+      {/* DETAIL: Mullions dividing windows */}
+      <path d="M 40 52 L 40 30" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+      <path d="M 60 52 L 60 30" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacity} />
+      {/* Horizontal transoms */}
+      <path d="M 32 44 L 48 44" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+      <path d="M 52 44 L 68 44" strokeWidth={S.D.strokeWidthFine} opacity={S.D.opacitySubtle} />
+
+      {/* Lantern dome/cap — in 3/4 perspective */}
+      <path d="M 28 30 Q 28 16, 50 10 Q 72 16, 72 30" strokeWidth={S.P.strokeWidthBold} strokeLinecap={S.P.strokeLinecap} />
+      {/* Right side of cap */}
+      <path d="M 72 30 Q 78 20, 62 12" strokeWidth={S.P.strokeWidthLight} opacity={S.D.opacityStrong} />
+      {/* Cap shadow fill */}
+      <path d="M 72 30 Q 78 20, 62 12 Q 72 16, 72 30" fill="currentColor" opacity={0.08} stroke="none" />
+      {/* Cornice ring at cap base */}
+      <ellipse cx="50" cy="30" rx="22" ry="5" strokeWidth={S.P.strokeWidthLight} opacity={S.D.opacityStrong} />
     </g>
 
     {/* Finial */}
-    <path d="M 50 10 L 50 4" strokeWidth="1.8" fill="none" opacity="0.8" />
-    <circle cx="50" cy="3" r="2" strokeWidth="1.3" fill="none" opacity="0.8" />
+    <g opacity={S.D.opacityStrong}>
+      <path d="M 52 10 L 54 4" strokeWidth={S.P.strokeWidth} />
+      <circle cx="54" cy="3" r="2" strokeWidth={S.P.strokeWidthLight} />
+    </g>
   </svg>
 )
 
@@ -404,8 +423,6 @@ export const ROOF_ELEMENTS: Record<string, React.FC<SVGProps>> = {
   'gable': GableSVG,
   'hip-roof': HipRoofSVG,
   'mansard': MansardSVG,
-  'buttress': ButtressSVG,
-  'flying-buttress': FlyingButtressSVG,
   'cupola': CupolaSVG,
   'lantern': LanternSVG,
 }

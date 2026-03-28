@@ -43,6 +43,13 @@ export type ElementCategory =
 export type GeographicRegion = string;
 
 export type ArchitecturalPeriod =
+  // Prehistoric
+  | 'natufian'
+  | 'ppna'
+  | 'ppnb'
+  | 'catalhoyuk'
+  | 'early-indus'
+  | 'megalithic'
   // Ancient
   | 'ancient-egyptian'
   | 'mesopotamian'
@@ -53,6 +60,8 @@ export type ArchitecturalPeriod =
   | 'roman'
   | 'mesoamerican-classic'
   | 'andean-ancient'
+  | 'ancient-chinese'
+  | 'pueblo-ancestral'
   // Medieval
   | 'byzantine'
   | 'early-islamic'
@@ -65,6 +74,13 @@ export type ArchitecturalPeriod =
   | 'southeast-asian-classical'
   | 'east-asian-classical'
   | 'african-kingdoms'
+  | 'korean-classical'
+  | 'japanese-classical'
+  | 'west-african-kingdoms'
+  | 'norse-stave'
+  | 'timurid'
+  | 'great-zimbabwe'
+  | 'polynesian'
   // Renaissance to Early Modern
   | 'renaissance'
   | 'mannerism'
@@ -77,6 +93,8 @@ export type ArchitecturalPeriod =
   | 'rococo'
   | 'ottoman-baroque'
   | 'colonial-american'
+  | 'colonial-spanish'
+  | 'colonial-portuguese'
   | 'neoclassical'
   // 19th Century
   | 'gothic-revival'
@@ -84,6 +102,7 @@ export type ArchitecturalPeriod =
   | 'arts-and-crafts'
   | 'art-nouveau'
   | 'chicago-school'
+  | 'meiji-western'
   // 20th Century
   | 'art-deco'
   | 'international-style'
@@ -92,10 +111,29 @@ export type ArchitecturalPeriod =
   | 'postmodernism'
   | 'deconstructivism'
   | 'high-tech'
+  | 'scandinavian-modernism'
+  // Additional Ancient
+  | 'nubian'
+  | 'sassanid'
+  | 'phoenician'
+  | 'nabataean'
+  | 'herodian'
+  // Additional Late Ancient / Transition
+  | 'early-christian'
+  // Additional Medieval
+  | 'seljuk'
+  | 'crusader'
+  // Additional Early Modern
+  | 'safavid'
+  // Additional 20th Century
+  | 'constructivism'
+  | 'expressionism-arch'
   // 21st Century
   | 'parametricism'
   | 'sustainable'
-  | 'neo-futurism';
+  | 'neo-futurism'
+  | 'critical-regionalism'
+  | 'contemporary';
 
 export type ArchitecturalStyle =
   | 'classical'

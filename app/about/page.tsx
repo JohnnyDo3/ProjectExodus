@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
-import { Leaf, Droplet, Zap, Users, Heart, Shield, Sprout, BookOpen, Scale, Eye, Handshake, Award } from 'lucide-react'
+import { Leaf, Droplet, Zap, Users, Heart, Shield, Sprout, BookOpen, Scale, Eye, Handshake, Award, Building2 } from 'lucide-react'
 
 export default function AboutPage() {
   const commandments = [
@@ -269,9 +269,9 @@ export default function AboutPage() {
       </section>
 
       {/* Business Philosophy */}
-      <section className="py-32 bg-sand-50">
+      <section className="pt-20 pb-32 bg-sand-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-4xl mx-auto flex flex-col items-center justify-center">
             <div className="text-center mb-16">
               <h2 className="text-6xl font-black mb-6 text-[var(--foreground)]">OUR PHILOSOPHY</h2>
               <p className="text-xl font-semibold text-[var(--muted-foreground)]">
@@ -279,11 +279,11 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <Card className="border-4 border-moss-300 shadow-2xl">
+            <Card className="border-4 border-moss-300 shadow-2xl w-full">
               <CardContent className="p-12">
                 <div className="space-y-8">
                   <div className="text-center mb-8">
-                    <Sprout className="w-16 h-16 text-moss-600 mx-auto" />
+                    <Building2 className="w-16 h-16 text-moss-600 mx-auto" />
                   </div>
                   <blockquote className="text-xl font-bold leading-relaxed text-center space-y-6 text-[var(--foreground)]">
                     <p>
@@ -292,16 +292,16 @@ export default function AboutPage() {
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         fontWeight: 900
-                      }}>plant a seed</span>, it grows into a tree.
+                      }}>build a foundation</span>, it grows into an enterprise.
                     </p>
                     <p className="text-[var(--muted-foreground)]">
-                      Everyone who encounters that tree interacts with it differently.
+                      Every stakeholder who engages with that enterprise experiences it differently.
                     </p>
                     <p className="text-[var(--muted-foreground)]">
-                      Some find shade. Others find fruit. Some find shelter.
+                      Some find opportunity. Others find value. Some find purpose.
                     </p>
                     <p className="font-black text-[var(--primary)]">
-                      But the tree stands as a testament to the seed that was planted with intention.
+                      But the enterprise stands as a testament to the vision that was built with intention.
                     </p>
                   </blockquote>
                 </div>
@@ -311,7 +311,7 @@ export default function AboutPage() {
             <div className="mt-12 text-center">
               <p className="text-lg font-bold text-[var(--muted-foreground)]">
                 This is how we build at Project Exodus. Every innovation, every partnership, every decision—
-                <span className="font-black text-[var(--primary)]"> planted with purpose, grown with care, shared with all.</span>
+                <span className="font-black text-[var(--primary)]"> crafted with purpose, developed with care, shared with all.</span>
               </p>
             </div>
           </div>

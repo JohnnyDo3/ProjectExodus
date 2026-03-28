@@ -251,27 +251,18 @@ function isValidPlacement(
       return false
     }
 
-    // Check adjacent cells (no parallel words)
-    if (direction === 'across') {
-      // Check above and below
-      if (cell.isBlank) {
-        if (r > 0 && !grid[r - 1][c].isBlank && !grid[r - 1][c].wordIds.some(id => grid[r][c].wordIds.includes(id))) {
-          // Allow if it's an intersection
-          if (cell.letter !== answer[i]) return false
-        }
-        if (r < gridSize - 1 && !grid[r + 1][c].isBlank && cell.letter !== answer[i]) {
-          return false
-        }
-      }
-    } else {
-      // Check left and right
-      if (cell.isBlank) {
-        if (c > 0 && !grid[r][c - 1].isBlank && cell.letter !== answer[i]) {
-          return false
-        }
-        if (c < gridSize - 1 && !grid[r][c + 1].isBlank && cell.letter !== answer[i]) {
-          return false
-        }
+    // Check adjacent cells — prevent parallel words running alongside each other
+    // Only check adjacency for cells that are currently blank (not intersections)
+    if (cell.isBlank) {
+      if (direction === 'across') {
+        // A blank cell that will become part of an across word shouldn't
+        // have non-blank neighbors above or below (that would form accidental adjacency)
+        if (r > 0 && !grid[r - 1][c].isBlank) return false
+        if (r < gridSize - 1 && !grid[r + 1][c].isBlank) return false
+      } else {
+        // Same for down words — no non-blank neighbors to left or right
+        if (c > 0 && !grid[r][c - 1].isBlank) return false
+        if (c < gridSize - 1 && !grid[r][c + 1].isBlank) return false
       }
     }
   }
@@ -321,6 +312,18 @@ export function CrosswordPuzzle({
   const [selectedDirection, setSelectedDirection] = useState<'across' | 'down'>('across')
   const [completedWords, setCompletedWords] = useState<string[]>([])
   const [revealedCells, setRevealedCells] = useState<Set<string>>(new Set())
+  const [hasNotifiedComplete, setHasNotifiedComplete] = useState(false)
+
+  // Reset userGrid when words/level change
+  useEffect(() => {
+    setUserGrid(Array(settings.gridSize).fill(null).map(() =>
+      Array(settings.gridSize).fill('')
+    ))
+    setCompletedWords([])
+    setRevealedCells(new Set())
+    setSelectedCell(null)
+    setHasNotifiedComplete(false)
+  }, [words, settings.gridSize])
 
   // Check if word is complete
   const checkWordComplete = useCallback((wordId: string) => {
@@ -348,11 +351,12 @@ export function CrosswordPuzzle({
     }
     setCompletedWords(newCompleted)
 
-    if (newCompleted.length === placedWords.length && placedWords.length > 0) {
+    if (newCompleted.length === placedWords.length && placedWords.length > 0 && !hasNotifiedComplete) {
+      setHasNotifiedComplete(true)
       const score = Math.round((1 - revealedCells.size / (placedWords.reduce((acc, pw) => acc + pw.word.answer.length, 0))) * 100)
       onComplete?.(Math.max(0, score))
     }
-  }, [userGrid, placedWords, checkWordComplete, revealedCells.size, onComplete])
+  }, [userGrid, placedWords, checkWordComplete, revealedCells.size, onComplete, hasNotifiedComplete])
 
   // Handle cell input
   const handleCellInput = (row: number, col: number, value: string) => {
@@ -453,6 +457,7 @@ export function CrosswordPuzzle({
     setCompletedWords([])
     setRevealedCells(new Set())
     setSelectedCell(null)
+    setHasNotifiedComplete(false)
   }
 
   // Calculate visible grid bounds
@@ -546,6 +551,7 @@ export function CrosswordPuzzle({
                       }}
                       type="text"
                       maxLength={1}
+                      aria-label={`Cell row ${row + 1} column ${col + 1}${cell.number ? `, clue ${cell.number}` : ''}`}
                       value={userGrid[row][col]}
                       onChange={(e) => handleCellInput(row, col, e.target.value)}
                       onKeyDown={(e) => handleKeyDown(e, row, col)}

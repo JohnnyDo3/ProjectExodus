@@ -3,6 +3,7 @@ import { auth } from '@/auth'
 import { prisma } from '@/lib/db'
 import { rateLimit, rateLimitResponse } from '@/lib/rate-limit'
 import { z } from 'zod'
+import { incrementStockScore, STOCK_POINTS } from '@/lib/stockScore'
 
 // Schema for social post creation with proper validation
 const mediaSchema = z.object({
@@ -87,6 +88,9 @@ export async function POST(request: NextRequest) {
         }
       }
     })
+
+    // Award stock points for creating a social post
+    incrementStockScore(session.user.id, STOCK_POINTS.SOCIAL_POST).catch(() => {})
 
     return NextResponse.json({
       success: true,

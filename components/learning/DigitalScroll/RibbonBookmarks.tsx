@@ -35,6 +35,7 @@ interface RibbonBookmarksProps {
     page: number
   }
   isExpanded?: boolean
+  isFlipping?: boolean
   className?: string
 }
 
@@ -49,6 +50,7 @@ export function RibbonBookmarks({
   onContinueClick,
   continuePosition,
   isExpanded = false,
+  isFlipping = false,
   className,
 }: RibbonBookmarksProps) {
   const [deviceType, setDeviceType] = useState<'desktop' | 'tablet' | 'mobile'>('desktop')
@@ -75,9 +77,7 @@ export function RibbonBookmarks({
       className={cn(
         'z-40',
         // Desktop: ribbons at top of book, extending upward
-        isDesktop && !isExpanded && 'absolute top-0 left-8 flex flex-row gap-1.5',
-        // Desktop expanded: same positioning relative to book
-        isDesktop && isExpanded && 'absolute top-0 left-8 flex flex-row gap-1.5',
+        isDesktop && 'absolute top-0 left-8 flex flex-row gap-1.5',
         // Tablet: horizontal strip at top
         deviceType === 'tablet' && 'flex flex-row justify-center gap-1 py-2 bg-[var(--muted)]',
         // Mobile: compact horizontal strip
@@ -87,7 +87,7 @@ export function RibbonBookmarks({
       style={isDesktop ? {
         // Position ribbons so they extend upward from the top edge of the book
         // -75% means 75% sticks out above, 25% is "inside" the book
-        transform: isExpanded ? 'translateY(-75%)' : 'translateY(-75%)',
+        transform: isExpanded ? 'translateY(-85%)' : 'translateY(-75%)',
       } : undefined}
       role="navigation"
       aria-label="Chapter bookmarks"
@@ -110,6 +110,7 @@ export function RibbonBookmarks({
             onMouseEnter={() => setHoveredRibbon(ribbon.id)}
             onMouseLeave={() => setHoveredRibbon(null)}
             isExpanded={isExpanded}
+            isFlipping={isFlipping}
           />
         )
       })}
@@ -124,6 +125,7 @@ export function RibbonBookmarks({
         onMouseLeave={() => setHoveredRibbon(null)}
         isHovered={hoveredRibbon === 'continue'}
         isExpanded={isExpanded}
+        isFlipping={isFlipping}
       />
     </div>
   )
@@ -143,6 +145,7 @@ interface RibbonProps {
   onMouseEnter: () => void
   onMouseLeave: () => void
   isExpanded?: boolean
+  isFlipping?: boolean
 }
 
 function Ribbon({
@@ -155,6 +158,7 @@ function Ribbon({
   onMouseEnter,
   onMouseLeave,
   isExpanded = false,
+  isFlipping = false,
 }: RibbonProps) {
   const Icon = ribbon.icon
   const isDesktop = deviceType === 'desktop'
@@ -192,22 +196,18 @@ function Ribbon({
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      whileHover={isDesktop ? { y: isExpanded ? 35 : 20, scale: 1.05 } : { scale: 1.15 }}
+      whileHover={isDesktop ? { y: isExpanded ? 12 : 8 } : { scale: 1.08 }}
       whileTap={{ scale: 0.95 }}
       animate={
-        isActive
+        isActive && !isFlipping
           ? {
-              y: isDesktop ? [0, 6, 0] : 0,
-            }
-          : {}
-      }
-      transition={
-        isActive
-          ? {
-              y: {
-                duration: 2,
-                repeat: Infinity,
-                ease: 'easeInOut',
+              y: isDesktop ? [0, 4, 0] : 0,
+              transition: {
+                y: {
+                  duration: 1.2,
+                  repeat: 0,
+                  ease: 'easeOut',
+                },
               },
             }
           : {}
@@ -248,10 +248,10 @@ function Ribbon({
         {isHovered && isDesktop && (
           <motion.div
             className="absolute left-full ml-3 top-1/2 -translate-y-1/2 z-50"
-            initial={{ opacity: 0, x: -15, scale: 0.9 }}
+            initial={{ opacity: 0, x: -8, scale: 0.95 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: -15, scale: 0.9 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+            exit={{ opacity: 0, x: -8, scale: 0.95 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
           >
             {/* Archetype Card with Logo */}
             <div
@@ -319,6 +319,7 @@ interface YinYangRibbonProps {
   onMouseLeave: () => void
   isHovered: boolean
   isExpanded?: boolean
+  isFlipping?: boolean
 }
 
 function YinYangRibbon({
@@ -330,19 +331,10 @@ function YinYangRibbon({
   onMouseLeave,
   isHovered,
   isExpanded = false,
+  isFlipping = false,
 }: YinYangRibbonProps) {
   const dimensions = SCROLL_DIMENSIONS[deviceType]
   const isDesktop = deviceType === 'desktop'
-
-  // Animated gradient for yin-yang effect
-  const [gradientPhase, setGradientPhase] = useState(0)
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setGradientPhase((prev) => (prev + 1) % 360)
-    }, 50)
-    return () => clearInterval(interval)
-  }, [])
 
   return (
     <motion.button
@@ -352,13 +344,15 @@ function YinYangRibbon({
         'focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-black',
         // Separator before yin-yang
         isDesktop && 'ml-4',
-        !isDesktop && 'ml-2 rounded-md'
+        !isDesktop && 'ml-2 rounded-md',
+        // CSS-based gradient animation instead of JS interval (was 20 re-renders/sec)
+        'animate-[yinyang-rotate_7s_linear_infinite]'
       )}
       style={{
         width: dimensions.ribbonWidth,
         height: dimensions.ribbonHeight,
-        // Animated gradient
-        background: `linear-gradient(${gradientPhase}deg, #000000, #ffffff, #000000)`,
+        // Use CSS custom property for the animated gradient
+        background: 'linear-gradient(var(--yinyang-angle, 0deg), #000000, #ffffff, #000000)',
         // Desktop: pointed ribbon shape
         ...(isDesktop && {
           clipPath: 'polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%)',
@@ -370,19 +364,8 @@ function YinYangRibbon({
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      whileHover={isDesktop ? { y: 10 } : { scale: 1.1 }}
+      whileHover={isDesktop ? { y: 8 } : { scale: 1.06 }}
       whileTap={{ scale: 0.95 }}
-      animate={{
-        // Gentle pulse
-        scale: [1, 1.02, 1],
-      }}
-      transition={{
-        scale: {
-          duration: 2,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        },
-      }}
       aria-label={A11Y_CONFIG.ariaLabels.continueRibbon}
       title={
         continuePosition

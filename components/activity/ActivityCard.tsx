@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/Button'
 import {
   User,
@@ -212,9 +213,9 @@ export function ActivityCard({ activity, currentUserId }: ActivityCardProps) {
     <div className={`flex gap-3 p-3 rounded-lg border-2 ${getActivityColor()} hover:shadow-md transition-all`}>
       {/* User Avatar */}
       <Link href={`/profile/${user.id}`} className="flex-shrink-0">
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center overflow-hidden hover:scale-105 transition-transform">
+        <div className="relative w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center overflow-hidden hover:scale-105 transition-transform">
           {user.image ? (
-            <img src={user.image} alt={user.name || 'User'} className="w-full h-full object-cover" />
+            <Image src={user.image} alt={user.name || 'User'} fill unoptimized sizes="100%" className="object-cover" />
           ) : (
             <User className="w-5 h-5 text-[var(--primary-foreground)]" />
           )}

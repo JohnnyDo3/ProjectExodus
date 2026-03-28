@@ -53,8 +53,7 @@ export function AdminPusherProvider({ children }: { children: ReactNode }) {
       setChannel(adminChannel)
     })
 
-    adminChannel.bind('pusher:subscription_error', (error: any) => {
-      console.error('[AdminPusher] Subscription error:', error)
+    adminChannel.bind('pusher:subscription_error', () => {
       setIsConnected(false)
     })
 

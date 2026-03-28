@@ -79,21 +79,6 @@ export function ImpactCard({
 }: ImpactCardProps) {
   const isCompact = viewMode === 'compact'
   const isMinimal = viewMode === 'minimal'
-
-  // Minimal view - just title header
-  if (isMinimal) {
-    return (
-      <div className={`rounded-lg overflow-hidden ${className}`}>
-        <div className="p-2 bg-gradient-to-r from-green-500 to-emerald-500">
-          <div className="flex items-center gap-2">
-            <Leaf className="w-4 h-4 text-white flex-shrink-0" />
-            <h3 className="text-xs font-bold text-white truncate">Impact</h3>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
   const [badgeProgress, setBadgeProgress] = useState<BadgeProgress[]>([])
   const [badgeStats, setBadgeStats] = useState<BadgeStats>({
     badgesEarned: 0,
@@ -128,6 +113,27 @@ export function ImpactCard({
 
     fetchBadgeData()
   }, [])
+
+  // Minimal view - compact stats summary for dashboard tile
+  if (isMinimal) {
+    const totalImpactVal = Object.values(stats).reduce((a, b) => (a || 0) + (b || 0), 0)
+    return (
+      <div className={`space-y-1.5 ${className}`}>
+        <div className="flex items-center justify-between px-2 py-1.5 rounded-lg bg-green-500/10">
+          <span className="text-[11px] font-medium text-[var(--foreground)]">Impact Score</span>
+          <span className="text-[11px] font-bold text-green-500 tabular-nums">{totalImpactVal.toFixed(0)}</span>
+        </div>
+        <div className="flex items-center justify-between px-2 py-1.5 rounded-lg bg-amber-500/10">
+          <span className="text-[11px] font-medium text-[var(--foreground)]">Badges Earned</span>
+          <span className="text-[11px] font-bold text-amber-500 tabular-nums">{badgeStats.badgesEarned}</span>
+        </div>
+        <div className="flex items-center justify-between px-2 py-1.5 rounded-lg bg-blue-500/10">
+          <span className="text-[11px] font-medium text-[var(--foreground)]">Profile</span>
+          <span className="text-[11px] font-bold text-blue-500 tabular-nums">{badgeStats.profileCompletion}%</span>
+        </div>
+      </div>
+    )
+  }
 
   const getStatValue = (id: string): number => {
     switch (id) {

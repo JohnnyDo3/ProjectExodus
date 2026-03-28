@@ -7,7 +7,7 @@ import {
   BookOpen, ChevronRight, ChevronDown, Clock,
   CheckCircle2, Bookmark, GraduationCap, BookMarked, Layers
 } from 'lucide-react'
-import { Module, CoreTopic, getTopic } from '@/data/modules'
+import type { Module, CoreTopic, TopicDefinition } from '@/types/modules'
 import { LearningLevel, LEARNING_LEVELS } from '@/types/learning'
 
 // Handwritten font
@@ -26,6 +26,7 @@ const MODULE_COLORS = [
 
 interface TopicBookProps {
   topicSlug: CoreTopic
+  topic: TopicDefinition
   selectedLevel: LearningLevel
   completedModules?: string[]
   onOpenDigitalScroll?: (chapterIndex: number) => void
@@ -318,10 +319,9 @@ function LearningModuleSection({
 }
 
 // Main Topic Book Browser
-export function TopicBookBrowser({ topicSlug, selectedLevel, completedModules = [], onOpenDigitalScroll }: TopicBookProps) {
+export function TopicBookBrowser({ topicSlug, topic, selectedLevel, completedModules = [], onOpenDigitalScroll }: TopicBookProps) {
   const [expandedModule, setExpandedModule] = useState<string | null>(null)
 
-  const topic = getTopic(topicSlug)
   if (!topic) return null
 
   const learningModules = groupLessonsIntoLearningModules(topic.modules, topicSlug)

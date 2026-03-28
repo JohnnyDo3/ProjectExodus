@@ -137,7 +137,7 @@ export async function POST(
       moduleOrder = (maxOrder._max.order || 0) + 1
     }
 
-    const module = await prisma.projectLearningModule.create({
+    const learningModule = await prisma.projectLearningModule.create({
       data: {
         projectId,
         title: title.trim(),
@@ -151,7 +151,7 @@ export async function POST(
 
     return NextResponse.json({
       success: true,
-      data: module,
+      data: learningModule,
     })
   } catch (error) {
     console.error('Error creating learning module:', error)

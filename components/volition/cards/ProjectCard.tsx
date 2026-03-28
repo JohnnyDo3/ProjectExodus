@@ -80,23 +80,20 @@ export function ProjectCard({
 }: ProjectCardProps) {
   const isCompact = viewMode === 'compact'
   const isMinimal = viewMode === 'minimal'
+  const [showMenu, setShowMenu] = useState(false)
+  const isOwner = project.creatorId === userId
 
-  // Minimal view - just title header
+  // Minimal view - compact one-liner row for dashboard tile
   if (isMinimal) {
+    const colors = statusColors[project.status] || statusColors.PLANNING
     return (
-      <div className={`rounded-lg overflow-hidden ${className}`}>
-        <div className="p-2 bg-gradient-to-r from-violet-500 to-purple-600">
-          <div className="flex items-center gap-2">
-            <Rocket className="w-4 h-4 text-white flex-shrink-0" />
-            <h3 className="text-xs font-bold text-white truncate">{project.name}</h3>
-          </div>
-        </div>
+      <div className={`flex items-center gap-2 px-2 py-1.5 rounded-lg bg-[var(--muted)]/50 hover:bg-[var(--muted)] transition-colors ${className}`}>
+        <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 bg-violet-500" />
+        <span className="text-[11px] font-medium text-[var(--foreground)] truncate flex-1">{project.name}</span>
+        <span className={`text-[9px] font-bold uppercase ${colors.text} flex-shrink-0`}>{project.status}</span>
       </div>
     )
   }
-
-  const [showMenu, setShowMenu] = useState(false)
-  const isOwner = project.creatorId === userId
   const colors = statusColors[project.status] || statusColors.PLANNING
   const membership = project.membership
   const role = membership?.role || (isOwner ? 'OWNER' : undefined)

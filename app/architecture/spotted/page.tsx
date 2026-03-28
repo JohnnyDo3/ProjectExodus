@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
+import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -362,8 +363,8 @@ export default function SpottedPage() {
                     >
                       {/* Preview */}
                       {previewUrl && (
-                        <div className="aspect-video rounded-xl overflow-hidden bg-[var(--muted)]">
-                          <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
+                        <div className="relative aspect-video rounded-xl overflow-hidden bg-[var(--muted)]">
+                          <Image src={previewUrl} alt="Preview" fill unoptimized sizes="100%" className="object-cover" />
                         </div>
                       )}
 

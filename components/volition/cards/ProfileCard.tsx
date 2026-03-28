@@ -2,6 +2,7 @@
 
 import { User, MapPin, Mail, Edit2, Sword, MessageCircle, Stethoscope, Lightbulb, HeartHandshake, Flower2, Scale, Phone, Briefcase, Building2, FileText, Sparkles, Heart } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { LucideIcon } from 'lucide-react'
 import { ViewMode } from '@/hooks/useVolitionLayout'
 
@@ -156,9 +157,9 @@ export function ProfileCard({
       <div className={`rounded-xl overflow-hidden ${className}`}>
         <div className="p-3" style={{ background: gradientStyle }}>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center flex-shrink-0">
+            <div className="relative w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center flex-shrink-0">
               {user.image ? (
-                <img src={user.image} alt={user.name || ''} className="w-full h-full rounded-lg object-cover" />
+                <Image src={user.image} alt={user.name || ''} fill unoptimized sizes="100%" className="rounded-lg object-cover" />
               ) : (
                 <ArchetypeIcon className="w-5 h-5 text-white" />
               )}
@@ -207,9 +208,9 @@ export function ProfileCard({
 
         {/* Top section - Icon and title */}
         <div className="flex items-start gap-4 mb-4">
-          <div className="w-16 h-16 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
+          <div className="relative w-16 h-16 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
             {user.image ? (
-              <img src={user.image} alt={user.name || ''} className="w-full h-full rounded-xl object-cover" />
+              <Image src={user.image} alt={user.name || ''} fill unoptimized sizes="100%" className="rounded-xl object-cover" />
             ) : (
               <ArchetypeIcon className="w-8 h-8 text-white" />
             )}

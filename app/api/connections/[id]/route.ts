@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { prisma } from '@/lib/db'
 import { handlePrismaError } from '@/lib/utils/prisma-errors'
+import { incrementStockScore, STOCK_POINTS } from '@/lib/stockScore'
 
 // PATCH /api/connections/[id] - Accept or reject connection request
 export async function PATCH(
@@ -79,6 +80,10 @@ export async function PATCH(
           },
         },
       })
+
+      // Award stock points to both users for the accepted connection
+      incrementStockScore(connection.userId, STOCK_POINTS.CONNECTION).catch(() => {})
+      incrementStockScore(currentUserId, STOCK_POINTS.CONNECTION).catch(() => {})
 
       return NextResponse.json({
         success: true,

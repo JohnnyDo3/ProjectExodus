@@ -203,7 +203,7 @@ function useNotes(pathId: string, lessonId: string) {
 // ============================================================================
 
 // The curriculum data uses flexible content structures
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 type LessonData = {
   id: string
   title: string
@@ -1112,7 +1112,7 @@ export default function LessonPage() {
   const lessonId = params.lessonId as string
 
   // Get the correct lesson data based on path
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const lessonData: LessonData | undefined = pathId === 'foundations'
     ? (foundationsLessons as any)[lessonId]
     : pathId === 'applied'
@@ -1133,6 +1133,53 @@ export default function LessonPage() {
       markStarted()
     }
   }, [session, progressLoading, markStarted])
+
+  // Get prev/next lesson navigation
+  const { prevLesson, nextLesson, currentIndex, totalLessons } = getLessonNavigation(pathId, lessonId)
+
+  // State for showing keyboard shortcuts hint
+  const [showKeyboardHint, setShowKeyboardHint] = useState(true)
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't trigger if user is typing in an input/textarea
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+        return
+      }
+
+      switch (e.key) {
+        case 'ArrowLeft':
+          if (prevLesson) {
+            router.push(`/exodology/paths/${pathId}/lessons/${prevLesson.id}`)
+          }
+          break
+        case 'ArrowRight':
+          if (nextLesson) {
+            router.push(`/exodology/paths/${pathId}/lessons/${nextLesson.id}`)
+          }
+          break
+        case ' ': // Space key
+          e.preventDefault()
+          if (progress?.status !== 'COMPLETED' && !saving) {
+            markCompleted()
+          }
+          break
+        case 'Escape':
+          router.push(`/exodology/paths/${pathId}`)
+          break
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [prevLesson, nextLesson, pathId, router, progress, saving, markCompleted])
+
+  // Hide keyboard hint after 5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => setShowKeyboardHint(false), 5000)
+    return () => clearTimeout(timer)
+  }, [])
 
   if (!lessonData || !meta) {
     notFound()
@@ -1250,53 +1297,6 @@ export default function LessonPage() {
   }
 
   const TypeIcon = getLessonTypeIcon(lessonData.type)
-
-  // Get prev/next lesson navigation
-  const { prevLesson, nextLesson, currentIndex, totalLessons } = getLessonNavigation(pathId, lessonId)
-
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Don't trigger if user is typing in an input/textarea
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
-        return
-      }
-
-      switch (e.key) {
-        case 'ArrowLeft':
-          if (prevLesson) {
-            router.push(`/exodology/paths/${pathId}/lessons/${prevLesson.id}`)
-          }
-          break
-        case 'ArrowRight':
-          if (nextLesson) {
-            router.push(`/exodology/paths/${pathId}/lessons/${nextLesson.id}`)
-          }
-          break
-        case ' ': // Space key
-          e.preventDefault()
-          if (progress?.status !== 'COMPLETED' && !saving) {
-            markCompleted()
-          }
-          break
-        case 'Escape':
-          router.push(`/exodology/paths/${pathId}`)
-          break
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [prevLesson, nextLesson, pathId, router, progress, saving, markCompleted])
-
-  // State for showing keyboard shortcuts hint
-  const [showKeyboardHint, setShowKeyboardHint] = useState(true)
-
-  // Hide keyboard hint after 5 seconds
-  useEffect(() => {
-    const timer = setTimeout(() => setShowKeyboardHint(false), 5000)
-    return () => clearTimeout(timer)
-  }, [])
 
   return (
     <div className="min-h-screen bg-[var(--background)]">

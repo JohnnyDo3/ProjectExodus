@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react'
 import { DragDropConfig, DragDropItem, DragDropZone } from '@/types/learning'
 import { cn } from '@/lib/utils/cn'
+import Image from 'next/image'
 
 interface DragDropActivityProps {
   config: DragDropConfig['config']
@@ -125,7 +126,7 @@ export function DragDropActivity({
                 )}
               >
                 {item.image && (
-                  <img src={item.image} alt={item.label} className="w-8 h-8 mb-1 mx-auto" />
+                  <div className="relative w-8 h-8 mb-1 mx-auto"><Image src={item.image} alt={item.label} fill unoptimized sizes="100%" className="object-cover" /></div>
                 )}
                 <span className="text-sm font-medium">{item.label}</span>
               </div>

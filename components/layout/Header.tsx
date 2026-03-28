@@ -1,11 +1,12 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
-import { Menu, X, Leaf, User, LogOut, Settings, Users, Calendar, LayoutDashboard, ChevronRight, MessageCircle, Bell, ChevronDown, Lock, Crown, GraduationCap } from 'lucide-react'
+import { Menu, X, Leaf, User, LogOut, Settings, Users, ChevronRight, MessageCircle, Bell, ChevronDown, Lock, Crown, GraduationCap, Fish, Search } from 'lucide-react'
 import NotificationBell from '@/components/notifications/NotificationBell'
 import { useDigitalScrollContext } from '@/components/learning/DigitalScroll/DigitalScrollContext'
 import { useSageContextSafe } from '@/components/ai/SageContext'
@@ -35,18 +36,20 @@ export function Header() {
 
   // Fetch top users for dropdown
   useEffect(() => {
+    const controller = new AbortController()
     async function fetchTopUsers() {
       try {
-        const res = await fetch('/api/gamification/leaderboard?type=all-time&limit=10')
+        const res = await fetch('/api/gamification/leaderboard?type=all-time&limit=10', { signal: controller.signal })
         const data = await res.json()
         if (data.success && data.data?.leaderboard) {
           setTopUsers(data.data.leaderboard)
         }
-      } catch (error) {
-        console.error('Error fetching leaderboard:', error)
+      } catch {
+        // Silently handle abort or network errors
       }
     }
     fetchTopUsers()
+    return () => controller.abort()
   }, [])
 
   // Community dropdown hover handlers
@@ -148,15 +151,17 @@ export function Header() {
   ]
 
   const learnMenuItems = [
+    { label: 'Sustainability', href: '/learn', requiresAuth: false },
     { label: 'Exodology', href: '/exodology', requiresAuth: true },
     { label: 'Architecture', href: '/architecture', requiresAuth: true },
     { label: 'Structural Engineering', href: '/architecture/structural', requiresAuth: true },
   ]
 
   const communityMenuItems = [
-    { label: 'Discussions', href: '/community/feed', myLabel: 'Discussions' },
-    { label: 'Projects', href: '/community/projects', myLabel: 'Projects' },
-    { label: 'Network', href: '/network', myLabel: 'Network' },
+    { label: 'Current Events', href: '/community', myLabel: 'Current Events' },
+    { label: 'Discussions', href: '/community/discussions', myLabel: 'Discussions' },
+    { label: 'Initiatives', href: '/community/projects', myLabel: 'Initiatives' },
+    { label: 'Fish Tank', href: '/fishbowl', myLabel: 'Fish Tank' },
   ]
 
   const handleSignOut = async () => {
@@ -228,7 +233,7 @@ export function Header() {
           <div className="hidden lg:flex items-center gap-4 xl:gap-6">
             {navigation.map((item) => {
               const isActive = pathname === item.href ||
-                (item.name === 'Community' && pathname.startsWith('/community')) ||
+                (item.name === 'Community' && (pathname.startsWith('/community') || pathname === '/fishbowl')) ||
                 (item.name === 'Learn' && (pathname.startsWith('/learn') || pathname.startsWith('/exodology')))
 
               // Learn gets a hover dropdown with Exodology for logged-in users
@@ -240,9 +245,8 @@ export function Header() {
                     onMouseEnter={handleLearnMouseEnter}
                     onMouseLeave={handleLearnMouseLeave}
                   >
-                    <Link
-                      href="/learn"
-                      className={`font-bold text-sm xl:text-base transition-all uppercase tracking-wide flex items-center gap-1 ${
+                    <span
+                      className={`font-bold text-sm xl:text-base transition-all uppercase tracking-wide flex items-center gap-1 cursor-default select-none ${
                         isActive || learnMenuOpen
                           ? 'text-theme-primary'
                           : 'text-[var(--foreground)] hover:text-theme-primary'
@@ -254,7 +258,7 @@ export function Header() {
                     >
                       {item.name}
                       <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${learnMenuOpen ? 'rotate-180' : ''}`} />
-                    </Link>
+                    </span>
 
                     {/* Learn Dropdown menu - centered, matching Community dropdown */}
                     <div
@@ -276,7 +280,7 @@ export function Header() {
                             return isLocked ? (
                               <div
                                 key={menuItem.label}
-                                className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-[var(--muted-foreground)] opacity-60 cursor-not-allowed"
+                                className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-[var(--muted-foreground)] opacity-60 cursor-not-allowed whitespace-nowrap"
                                 title="Sign in to access"
                               >
                                 <Lock className="w-3.5 h-3.5 flex-shrink-0" />
@@ -309,8 +313,7 @@ export function Header() {
                     onMouseEnter={handleCommunityMouseEnter}
                     onMouseLeave={handleCommunityMouseLeave}
                   >
-                    <Link
-                      href="/community"
+                    <button
                       className={`font-bold text-sm xl:text-base transition-all uppercase tracking-wide flex items-center gap-1 ${
                         isActive || communityMenuOpen
                           ? 'text-theme-primary'
@@ -323,11 +326,11 @@ export function Header() {
                     >
                       {item.name}
                       <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${communityMenuOpen ? 'rotate-180' : ''}`} />
-                    </Link>
+                    </button>
 
                     {/* Dropdown menu - centered */}
                     <div
-                      className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 rounded-xl overflow-hidden z-[201] transition-all duration-200 origin-top ${
+                      className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 min-w-[200px] w-auto rounded-xl overflow-hidden z-[201] transition-all duration-200 origin-top ${
                         communityMenuOpen
                           ? 'opacity-100 scale-100 translate-y-0'
                           : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'
@@ -345,7 +348,7 @@ export function Header() {
                             return isLocked ? (
                               <div
                                 key={menuItem.label}
-                                className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-[var(--muted-foreground)] opacity-60 cursor-not-allowed"
+                                className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-[var(--muted-foreground)] opacity-60 cursor-not-allowed whitespace-nowrap"
                               >
                                 <Lock className="w-3.5 h-3.5 flex-shrink-0" />
                                 <span className="text-sm font-medium">{menuItem.label}</span>
@@ -354,7 +357,7 @@ export function Header() {
                               <Link
                                 key={menuItem.label}
                                 href={menuItem.href}
-                                className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-[var(--foreground)] hover:bg-[var(--muted)]/50 hover:text-[var(--primary)] transition-colors"
+                                className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-[var(--foreground)] hover:bg-[var(--muted)]/50 hover:text-[var(--primary)] transition-colors whitespace-nowrap"
                                 onClick={() => setCommunityMenuOpen(false)}
                               >
                                 <span>{menuItem.myLabel}</span>
@@ -383,9 +386,9 @@ export function Header() {
                                     <span className={`w-5 text-xs font-bold ${user.rank <= 3 ? 'text-amber-500' : 'text-[var(--muted-foreground)]'}`}>
                                       #{user.rank}
                                     </span>
-                                    <div className="w-5 h-5 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
+                                    <div className="relative w-5 h-5 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
                                       {user.image ? (
-                                        <img src={user.image} alt="" className="w-full h-full rounded-full object-cover" />
+                                        <Image src={user.image} alt="" fill unoptimized sizes="100%" className="rounded-full object-cover" />
                                       ) : (
                                         <span className="text-[10px] font-bold text-white">
                                           {user.name?.[0]?.toUpperCase() || '?'}
@@ -474,40 +477,42 @@ export function Header() {
                           {session.user?.email}
                         </p>
                       </div>
-                      <div className="p-2">
+                      <div className="flex items-center gap-2 px-3 py-2 border-b-2 border-[var(--border)]">
+                        <Link
+                          href="/explore"
+                          className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
+                          onClick={() => setUserMenuOpen(false)}
+                          title="Search & Explore"
+                        >
+                          <Search className="w-4 h-4 text-theme-muted" />
+                          <span className="text-sm font-medium text-[var(--foreground)]">Search</span>
+                        </Link>
                         <Link
                           href="/my/volition"
-                          className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors group"
+                          className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
                           onClick={() => setUserMenuOpen(false)}
+                          title="My Tank"
                         >
-                          <LayoutDashboard className="w-4 h-4 text-theme-primary" />
-                          <span className="font-bold text-[var(--foreground)] group-hover:text-theme-primary">My Volition</span>
+                          <Fish className="w-4 h-4 text-theme-muted" />
+                          <span className="text-sm font-medium text-[var(--foreground)]">My Tank</span>
                         </Link>
+                      </div>
+                      <div className="p-2">
                         <Link
-                          href="/events"
+                          href="/settings"
                           className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors group"
                           onClick={() => setUserMenuOpen(false)}
                         >
-                          <Calendar className="w-4 h-4 text-theme-secondary" />
-                          <span className="font-bold text-[var(--foreground)] group-hover:text-theme-secondary">My Events</span>
+                          <Settings className="w-4 h-4 text-theme-muted" />
+                          <span className="font-medium text-[var(--foreground)]">Settings</span>
                         </Link>
-                        <div className="border-t-2 border-[var(--border)] mt-2 pt-2">
-                          <Link
-                            href="/settings"
-                            className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors group"
-                            onClick={() => setUserMenuOpen(false)}
-                          >
-                            <Settings className="w-4 h-4 text-theme-muted" />
-                            <span className="font-medium text-[var(--foreground)]">Settings</span>
-                          </Link>
-                          <button
-                            onClick={handleSignOut}
-                            className="w-full flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors text-left group"
-                          >
-                            <LogOut className="w-4 h-4 text-theme-secondary" />
-                            <span className="font-medium text-theme-secondary">Sign Out</span>
-                          </button>
-                        </div>
+                        <button
+                          onClick={handleSignOut}
+                          className="w-full flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors text-left group"
+                        >
+                          <LogOut className="w-4 h-4 text-theme-secondary" />
+                          <span className="font-medium text-theme-secondary">Sign Out</span>
+                        </button>
                       </div>
                     </div>
                   </>
@@ -515,6 +520,13 @@ export function Header() {
               </div>
             ) : (
               <>
+                <Link
+                  href="/explore"
+                  className="relative p-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
+                  title="Search & Explore"
+                >
+                  <Search className="w-5 h-5 text-[var(--foreground)]" />
+                </Link>
                 <Link
                   href="/auth/signin"
                   className="inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 px-3 py-1.5 text-sm border-2 border-[var(--primary)] text-[var(--primary)] hover:bg-[var(--muted)] bg-transparent"
@@ -565,7 +577,7 @@ export function Header() {
               <div className="space-y-2">
                 {navigation.map((item) => {
                   const isActive = pathname === item.href ||
-                    (item.name === 'Community' && pathname.startsWith('/community')) ||
+                    (item.name === 'Community' && (pathname.startsWith('/community') || pathname === '/fishbowl')) ||
                     (item.name === 'Learn' && (pathname.startsWith('/learn') || pathname.startsWith('/exodology')))
                   return (
                     <Link
@@ -623,7 +635,7 @@ export function Header() {
               {/* Community Quick Links */}
               <div className="space-y-2">
                 <p className="text-xs font-semibold text-[var(--muted-foreground)] uppercase tracking-wide px-2">Community Features</p>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 gap-2">
                   {communityMenuItems.map((menuItem) => {
                     const isLocked = !session // All items locked for non-users
 
@@ -679,20 +691,11 @@ export function Header() {
                   </div>
 
                   {/* User Menu Links */}
-                  <Link href="/my/volition" onClick={() => setMobileMenuOpen(false)}>
+                  <Link href="/explore" onClick={() => setMobileMenuOpen(false)}>
                     <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-[var(--muted)] hover:bg-theme-primary/10 transition-colors">
                       <div className="flex items-center gap-3">
-                        <LayoutDashboard className="w-5 h-5 text-theme-primary" />
-                        <span className="font-bold text-[var(--foreground)]">My Volition</span>
-                      </div>
-                      <ChevronRight className="w-5 h-5 text-theme-muted" />
-                    </div>
-                  </Link>
-                  <Link href="/events" onClick={() => setMobileMenuOpen(false)}>
-                    <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-[var(--muted)] hover:bg-theme-primary/10 transition-colors">
-                      <div className="flex items-center gap-3">
-                        <Calendar className="w-5 h-5 text-theme-secondary" />
-                        <span className="font-bold text-[var(--foreground)]">My Events</span>
+                        <Search className="w-5 h-5 text-theme-primary" />
+                        <span className="font-bold text-[var(--foreground)]">Search & Explore</span>
                       </div>
                       <ChevronRight className="w-5 h-5 text-theme-muted" />
                     </div>
@@ -702,6 +705,15 @@ export function Header() {
                       <div className="flex items-center gap-3">
                         <MessageCircle className="w-5 h-5 text-theme-primary" />
                         <span className="font-bold text-[var(--foreground)]">Messages</span>
+                      </div>
+                      <ChevronRight className="w-5 h-5 text-theme-muted" />
+                    </div>
+                  </Link>
+                  <Link href="/my/volition" onClick={() => setMobileMenuOpen(false)}>
+                    <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-[var(--muted)] hover:bg-theme-primary/10 transition-colors">
+                      <div className="flex items-center gap-3">
+                        <Fish className="w-5 h-5 text-cyan-500" />
+                        <span className="font-bold text-[var(--foreground)]">My Tank</span>
                       </div>
                       <ChevronRight className="w-5 h-5 text-theme-muted" />
                     </div>

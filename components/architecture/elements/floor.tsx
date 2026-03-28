@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { S } from './svgStyleTokens'
 
 // Reusable HaloFilter for golden glow effect
 const HaloFilter = ({ id, intensity = 1 }: { id: string; intensity?: number }) => (
@@ -39,8 +40,8 @@ const AccessibilityRampSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="ramp-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#ramp-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Building entrance and ground */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (near): Building entrance and ground */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M85 25 L95 25 L95 75 L85 75" />
         <path d="M88 30 L92 30 L92 45 L88 45" />
         <path d="M0 75 L15 75" />
@@ -111,8 +112,8 @@ const BalusterSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="baluster-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#baluster-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Adjacent balusters and rail */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (near): Adjacent balusters and rail */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M15 10 L15 15 L85 15 L85 10" />
         <path d="M15 85 L85 85" />
         <path d="M20 15 Q22 45, 20 50 Q18 55, 20 85" />
@@ -176,11 +177,32 @@ const CantileveredStairSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="cantilever-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#cantilever-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Wall surface */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT FAR: Room beyond wall and upper floor */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Upper floor level outline */}
+        <path d="M5 5 L88 5" />
+        {/* Floor level at bottom */}
+        <path d="M5 95 L88 95" />
+        {/* Room behind the wall */}
+        <path d="M96 5 L100 5 L100 95 L96 95" />
+        {/* Furniture in room beyond - table outline */}
+        <path d="M97 40 L100 40 L100 55 L97 55" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Wall thickness, floor lines, glass balustrade base */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Wall surface and thickness */}
         <path d="M90 5 L90 95" />
         <path d="M92 10 L92 90" />
         <path d="M95 5 L95 95" />
+        {/* Floor plane at bottom */}
+        <path d="M5 92 L88 92" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Upper landing/floor connection */}
+        <path d="M5 8 L88 8" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Side wall at left edge */}
+        <path d="M8 5 L8 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Window reveal in left wall */}
+        <path d="M5 30 L8 30 L8 50 L5 50" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY - Cantilevered treads floating from wall */}
@@ -215,7 +237,7 @@ const CantileveredStairSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M45 18 L45 12 L47 12" strokeWidth="1" />
 
         {/* Glass balustrade (minimal) */}
-        <path d="M20 82 L20 10" strokeWidth="0.8" strokeDasharray="4 2" opacity="0.5" />
+        <path d="M20 82 L20 10" strokeWidth={S.D.strokeWidth} strokeDasharray="4 2" opacity={S.D.opacity} />
         <path d="M20 10 L90 10" strokeWidth="1.5" />
 
         {/* Hidden steel insert suggestion in wall */}
@@ -237,8 +259,8 @@ const FlagstoneSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="flagstone-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#flagstone-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Garden border plants */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (far): Garden border plants */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
         <path d="M5 20 Q10 15, 15 20 Q20 25, 15 30" />
         <path d="M85 15 Q90 10, 95 18" />
         <path d="M3 70 Q8 65, 10 72" />
@@ -303,8 +325,8 @@ const GrandStaircaseSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="grand-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#grand-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Upper gallery and chandelier */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (near): Upper gallery and chandelier */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M20 5 L80 5 L80 15 L20 15 Z" />
         <path d="M50 5 L50 0" />
         <ellipse cx="50" cy="25" rx="8" ry="3" />
@@ -312,46 +334,42 @@ const GrandStaircaseSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M53 25 L53 28" />
       </g>
 
-      {/* PRIMARY - Grand sweeping staircase */}
+      {/* PRIMARY - Grand sweeping double staircase */}
       <g strokeWidth="1.2">
         {/* Upper landing / gallery level */}
         <path d="M15 18 L85 18 L88 22 L12 22 Z" strokeWidth="1.8" />
 
-        {/* Left stair flight descending */}
-        <path d="M12 22 L12 35 L5 45 L5 95 L35 95 L35 65" strokeWidth="1.5" />
-        {/* Left treads */}
-        <path d="M12 28 L30 28" strokeWidth="1.2" />
-        <path d="M10 35 L28 35" strokeWidth="1.2" />
-        <path d="M8 42 L26 42" strokeWidth="1.2" />
-        <path d="M6 50 L24 50" strokeWidth="1.1" />
-        <path d="M5 58 L22 58" strokeWidth="1.1" />
-        <path d="M5 66 L20 66" strokeWidth="1" />
-        <path d="M5 74 L18 74" strokeWidth="1" />
-        <path d="M5 82 L35 82" strokeWidth="1" />
+        {/* Left stair flight - sweeping curve descending with stepped profile */}
+        <path d="M12 22 Q8 32, 5 45 Q4 58, 5 70 L5 95 L35 95 L35 65" strokeWidth="1.5" />
+        {/* Left treads - stepped profile connecting to stair curve */}
+        <path d="M12 22 L12 28 L28 28 L28 22" strokeWidth="1" />
+        <path d="M10 28 L10 35 L26 35 L26 28" strokeWidth="1" />
+        <path d="M8 35 L8 42 L24 42 L24 35" strokeWidth="1" />
+        <path d="M6 42 L6 50 L22 50 L22 42" strokeWidth="0.9" />
+        <path d="M5 50 L5 58 L20 58 L20 50" strokeWidth="0.9" />
+        <path d="M5 58 L5 66 L18 66 L18 58" strokeWidth="0.9" />
+        <path d="M5 66 L5 74 L16 74 L16 66" strokeWidth="0.8" />
 
-        {/* Right stair flight descending */}
-        <path d="M88 22 L88 35 L95 45 L95 95 L65 95 L65 65" strokeWidth="1.5" />
+        {/* Right stair flight - sweeping curve descending with stepped profile */}
+        <path d="M88 22 Q92 32, 95 45 Q96 58, 95 70 L95 95 L65 95 L65 65" strokeWidth="1.5" />
         {/* Right treads */}
-        <path d="M70 28 L88 28" strokeWidth="1.2" />
-        <path d="M72 35 L90 35" strokeWidth="1.2" />
-        <path d="M74 42 L92 42" strokeWidth="1.2" />
-        <path d="M76 50 L94 50" strokeWidth="1.1" />
-        <path d="M78 58 L95 58" strokeWidth="1.1" />
-        <path d="M80 66 L95 66" strokeWidth="1" />
-        <path d="M82 74 L95 74" strokeWidth="1" />
-        <path d="M65 82 L95 82" strokeWidth="1" />
+        <path d="M88 22 L88 28 L72 28 L72 22" strokeWidth="1" />
+        <path d="M90 28 L90 35 L74 35 L74 28" strokeWidth="1" />
+        <path d="M92 35 L92 42 L76 42 L76 35" strokeWidth="1" />
+        <path d="M94 42 L94 50 L78 50 L78 42" strokeWidth="0.9" />
+        <path d="M95 50 L95 58 L80 58 L80 50" strokeWidth="0.9" />
+        <path d="M95 58 L95 66 L82 66 L82 58" strokeWidth="0.9" />
+        <path d="M95 66 L95 74 L84 74 L84 66" strokeWidth="0.8" />
 
         {/* Central landing platform */}
         <path d="M35 65 L65 65 L65 95 L35 95 Z" strokeWidth="1.6" />
         <path d="M40 75 L60 75 L60 90 L40 90 Z" strokeWidth="0.8" opacity="0.4" />
 
-        {/* Left balustrade rail */}
-        <path d="M12 15 L5 40 L5 60" strokeWidth="1.8" />
-        <path d="M35 60 L35 95" strokeWidth="1.5" />
-
-        {/* Right balustrade rail */}
-        <path d="M88 15 L95 40 L95 60" strokeWidth="1.8" />
-        <path d="M65 60 L65 95" strokeWidth="1.5" />
+        {/* Sweeping balustrade rails */}
+        <path d="M12 15 Q8 28, 5 42 Q4 55, 5 65" strokeWidth="1.8" />
+        <path d="M35 65 L35 95" strokeWidth="1.5" />
+        <path d="M88 15 Q92 28, 95 42 Q96 55, 95 65" strokeWidth="1.8" />
+        <path d="M65 65 L65 95" strokeWidth="1.5" />
 
         {/* Newel posts */}
         <circle cx="12" cy="15" r="3" strokeWidth="1.5" />
@@ -359,15 +377,15 @@ const GrandStaircaseSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <circle cx="35" cy="65" r="2.5" strokeWidth="1.3" />
         <circle cx="65" cy="65" r="2.5" strokeWidth="1.3" />
 
-        {/* Balusters suggestion */}
-        <path d="M10 20 L7 35" strokeWidth="0.7" />
-        <path d="M8 25 L6 40" strokeWidth="0.7" />
-        <path d="M90 20 L93 35" strokeWidth="0.7" />
-        <path d="M92 25 L94 40" strokeWidth="0.7" />
+        {/* Balusters */}
+        <path d="M10 22 Q7 30, 6 38" strokeWidth="0.7" />
+        <path d="M8 30 Q6 38, 5 46" strokeWidth="0.7" />
+        <path d="M90 22 Q93 30, 94 38" strokeWidth="0.7" />
+        <path d="M92 30 Q94 38, 95 46" strokeWidth="0.7" />
 
-        {/* Carpet runner */}
-        <path d="M18 22 L18 35 L12 48" strokeWidth="0.6" strokeDasharray="2 2" opacity="0.4" />
-        <path d="M82 22 L82 35 L88 48" strokeWidth="0.6" strokeDasharray="2 2" opacity="0.4" />
+        {/* DETAIL: Carpet runner */}
+        <path d="M18 22 Q14 32, 12 48" strokeWidth={S.D.strokeWidthFine} strokeDasharray={S.E.dash} opacity={S.D.opacitySubtle} />
+        <path d="M82 22 Q86 32, 88 48" strokeWidth={S.D.strokeWidthFine} strokeDasharray={S.E.dash} opacity={S.D.opacitySubtle} />
       </g>
     </g>
   </svg>
@@ -383,10 +401,31 @@ const HandrailSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="handrail-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#handrail-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Wall surface */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT FAR: Stairwell and adjacent landing */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Stair flight suggestion below */}
+        <path d="M5 95 L75 95" />
+        <path d="M10 92 L70 92" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Upper landing beyond */}
+        <path d="M5 5 L75 5" />
+        {/* Opposite wall far side of stairwell */}
+        <path d="M5 5 L5 95" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Wall surface, stair treads, baseboard */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Wall surface */}
         <path d="M95 5 L95 95" />
         <path d="M92 10 L92 90" />
+        {/* Wall thickness */}
+        <path d="M97 5 L97 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Stair tread edges below the rail */}
+        <path d="M10 20 L80 20" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M10 28 L80 28" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Baseboard along wall */}
+        <path d="M92 92 L92 95 L95 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Light switch plate on wall */}
+        <path d="M93 50 L95 50 L95 56 L93 56 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY - Handrail with brackets in perspective */}
@@ -447,14 +486,38 @@ const HelicalRampSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="helical-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#helical-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Skylight at top */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT FAR: Skylight at top and surrounding city context */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Skylight overhead */}
         <circle cx="50" cy="50" r="8" />
         <path d="M45 50 L55 50" />
         <path d="M50 45 L50 55" />
+        {/* Adjacent building outline */}
+        <path d="M0 0 L0 40" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M0 0 L15 0" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Street/sidewalk beyond */}
+        <path d="M0 98 L40 100" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M60 100 L100 98" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
       </g>
 
-      {/* PRIMARY - Helical ramp spiraling upward */}
+      {/* CONTEXT NEAR: Exterior wall thickness, entry vestibule, gallery bays */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Outer wall thickness of the rotunda */}
+        <circle cx="50" cy="50" r="48" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Entry vestibule at base */}
+        <path d="M44 95 L44 100 L56 100 L56 95" />
+        {/* Threshold at entry */}
+        <path d="M44 95 L56 95" strokeWidth={S.CN.strokeWidthFine} />
+        {/* Gallery partition bays along outer wall */}
+        <path d="M95 50 L98 50" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M5 50 L2 50" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M50 5 L50 2" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Elevator shaft adjacent to ramp */}
+        <path d="M0 50 L0 65 L5 65" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M0 50 L5 50" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+      </g>
+
+      {/* PRIMARY - Helical ramp spiraling upward (Guggenheim-style plan view) */}
       <g strokeWidth="1.2">
         {/* Outer wall of spiral */}
         <circle cx="50" cy="50" r="45" strokeWidth="1.8" />
@@ -462,30 +525,29 @@ const HelicalRampSVG: React.FC<SVGProps> = ({ showHalo }) => (
         {/* Inner edge of ramp (central void) */}
         <circle cx="50" cy="50" r="15" strokeWidth="1.5" />
 
-        {/* Spiral ramp levels - showing the continuous rise */}
-        {/* Level 1 - bottom (closest, widest stroke) */}
-        <path d="M50 95 Q95 95, 95 50 Q95 20, 70 10" strokeWidth="2" />
-        <path d="M50 80 Q80 80, 80 50 Q80 30, 65 20" strokeWidth="1.2" opacity="0.7" />
+        {/* Continuous spiral ramp - outer edge ascending clockwise */}
+        {/* One continuous path spiraling from bottom entry to top */}
+        <path d="M50 95 Q95 92, 95 50 Q95 8, 50 5 Q5 8, 5 50 Q5 88, 45 90"
+              strokeWidth="2.2" />
+        {/* Continue spiral inward (second revolution, slightly tighter) */}
+        <path d="M45 90 Q82 85, 85 50 Q85 18, 50 15 Q18 18, 15 50 Q15 78, 42 80"
+              strokeWidth="1.8" />
+        {/* Third revolution approaching center */}
+        <path d="M42 80 Q68 76, 72 50 Q72 28, 50 25 Q30 28, 28 50 Q28 68, 40 70"
+              strokeWidth="1.4" opacity="0.8" />
 
-        {/* Level 2 */}
-        <path d="M70 10 Q30 5, 10 40 Q5 70, 30 85" strokeWidth="1.8" />
-        <path d="M65 20 Q35 15, 20 40 Q15 60, 35 72" strokeWidth="1.1" opacity="0.7" />
+        {/* Inner edge of ramp (parallel to outer, showing ramp width) */}
+        <path d="M50 80 Q80 78, 80 50 Q80 22, 50 20 Q20 22, 20 50 Q20 75, 42 76"
+              strokeWidth="1" opacity="0.6" />
+        <path d="M42 76 Q62 72, 65 50 Q65 32, 50 30 Q35 32, 35 50 Q35 65, 42 66"
+              strokeWidth="0.8" opacity="0.5" />
 
-        {/* Level 3 */}
-        <path d="M30 85 Q60 95, 85 70 Q95 45, 75 25" strokeWidth="1.6" />
-        <path d="M35 72 Q55 80, 72 62 Q82 45, 68 32" strokeWidth="1" opacity="0.7" />
+        {/* Entry point at ground level */}
+        <path d="M50 95 L50 80" strokeWidth="1.5" opacity="0.7" />
 
-        {/* Level 4 */}
-        <path d="M75 25 Q50 10, 25 30 Q10 50, 25 70" strokeWidth="1.4" />
-        <path d="M68 32 Q50 20, 35 35 Q22 50, 35 62" strokeWidth="0.9" opacity="0.7" />
-
-        {/* Level 5 - top (farthest, thinnest) */}
-        <path d="M25 70 Q45 85, 70 65 Q85 50, 70 35" strokeWidth="1.2" />
-        <path d="M35 62 Q48 72, 62 58 Q72 48, 62 40" strokeWidth="0.8" opacity="0.6" />
-
-        {/* Ramp edge shadow lines */}
-        <path d="M92 60 Q90 75, 75 85" strokeWidth="0.6" opacity="0.4" />
-        <path d="M15 35 Q20 20, 40 12" strokeWidth="0.6" opacity="0.4" />
+        {/* Direction of ascent arrow */}
+        <path d="M88 58 Q90 50, 88 42" strokeWidth="0.8" opacity="0.6" />
+        <path d="M86 44 L88 42 L90 44" strokeWidth="0.7" opacity="0.6" />
 
         {/* People suggestion on ramp (scale) */}
         <path d="M75 70 L75 67 L76 65 L75 67 L74 65" strokeWidth="0.5" opacity="0.3" />
@@ -505,8 +567,8 @@ const LandingSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="landing-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#landing-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Walls at corner */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (near): Walls at corner */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 5 L5 45" />
         <path d="M5 5 L45 5" />
         <path d="M8 10 L8 42" />
@@ -571,8 +633,8 @@ const MosaicFloorSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="mosaic-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#mosaic-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Room edges */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (near): Room edges */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 5 L95 5" />
         <path d="M5 95 L95 95" />
         <path d="M5 5 L5 95" />
@@ -643,8 +705,8 @@ const NewelPostSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="newel-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#newel-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Handrail meeting newel and floor */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (near): Handrail meeting newel and floor */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M60 25 L95 25" />
         <path d="M60 28 L95 28" />
         <path d="M5 95 L95 95" />
@@ -710,9 +772,40 @@ const OpusSectileSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="opus-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#opus-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Room border */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT FAR: Adjacent rooms and garden court */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Adjacent room to the left */}
+        <path d="M0 10 L0 90" />
+        {/* Furniture outline in adjacent room - bench */}
+        <path d="M0 40 L3 40 L3 60 L0 60" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Adjacent room to the right */}
+        <path d="M100 10 L100 90" />
+        {/* Courtyard/garden beyond top wall */}
+        <path d="M20 0 L80 0" />
+        <path d="M35 0 L35 3" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M65 0 L65 3" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Room walls with thickness, columns, door openings */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Room walls - outer */}
         <path d="M5 5 L95 5 L95 95 L5 95 Z" />
+        {/* Wall thickness - inner */}
+        <path d="M3 3 L97 3 L97 97 L3 97 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Door opening in bottom wall */}
+        <path d="M40 95 L40 97" />
+        <path d="M60 95 L60 97" />
+        {/* Door swing */}
+        <path d="M40 97 Q50 88, 60 97" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Column bases at corners */}
+        <circle cx="8" cy="8" r="2" strokeWidth={S.CN.strokeWidthFine} />
+        <circle cx="92" cy="8" r="2" strokeWidth={S.CN.strokeWidthFine} />
+        <circle cx="8" cy="92" r="2" strokeWidth={S.CN.strokeWidthFine} />
+        <circle cx="92" cy="92" r="2" strokeWidth={S.CN.strokeWidthFine} />
+        {/* Window reveal in left wall */}
+        <path d="M5 30 L3 30 L3 45 L5 45" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Window reveal in right wall */}
+        <path d="M95 55 L97 55 L97 70 L95 70" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY - Opus sectile marble inlay */}
@@ -772,10 +865,37 @@ const ParquetSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="parquet-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#parquet-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Room corner */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT FAR: Adjacent rooms beyond walls */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Room beyond top wall */}
+        <path d="M10 0 L90 0" />
+        {/* Room beyond left wall */}
+        <path d="M0 10 L0 90" />
+        {/* Hallway beyond right side */}
+        <path d="M98 20 L98 80" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Garden/exterior below */}
+        <path d="M15 100 L85 100" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Room corner walls, door, baseboard, fireplace */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Room walls */}
         <path d="M5 5 L5 95" />
         <path d="M5 5 L95 5" />
+        {/* Wall thickness */}
+        <path d="M3 3 L3 97" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M3 3 L97 3" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Right wall */}
+        <path d="M95 5 L95 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Bottom wall */}
+        <path d="M5 95 L95 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Door opening in right wall */}
+        <path d="M95 35 L97 35" strokeWidth={S.CN.strokeWidthFine} />
+        <path d="M95 55 L97 55" strokeWidth={S.CN.strokeWidthFine} />
+        {/* Door swing */}
+        <path d="M95 35 Q88 42, 95 55" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Fireplace recess in top wall */}
+        <path d="M40 5 L40 2 L60 2 L60 5" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY - Parquet de Versailles pattern */}
@@ -833,8 +953,8 @@ const PerronSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="perron-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#perron-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Building facade behind */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (near): Building facade behind */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M20 5 L80 5 L80 45 L20 45 Z" />
         <path d="M35 10 L65 10 L65 42 L35 42 Z" />
         <path d="M40 15 L60 15 L60 40 L40 40 Z" />
@@ -901,10 +1021,34 @@ const RiserSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="riser-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#riser-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Stair structure */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT FAR: Rooms above and below stair */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Upper floor level */}
+        <path d="M15 5 L95 5" />
+        {/* Ceiling of lower room */}
+        <path d="M0 0 L5 0 L5 5" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Floor of lower room */}
+        <path d="M0 98 L100 98" />
+        {/* Furniture in upper room - chair outline */}
+        <path d="M80 5 L85 5 L85 15 L80 15" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Stair stringers, wall surface, handrail */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Left stringer wall */}
         <path d="M5 5 L5 95" />
+        {/* Right stringer wall */}
         <path d="M95 25 L95 95" />
+        {/* Wall thickness on left */}
+        <path d="M3 5 L3 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Handrail profile along stair */}
+        <path d="M0 15 L5 15" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M0 42 L5 42" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Baseboard at stringer base */}
+        <path d="M5 93 L95 93" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Carpet runner edge suggestion */}
+        <path d="M20 5 L20 18" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M80 25 L80 38" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY - Stair risers and treads in section */}
@@ -961,12 +1105,38 @@ const SpiralStairSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="spiral-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#spiral-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Surrounding walls */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
-        <circle cx="50" cy="50" r="47" />
+      {/* CONTEXT FAR: Adjacent rooms and corridor beyond */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Hallway corridor to the right */}
+        <path d="M98 30 L98 70" />
+        <path d="M100 30 L100 70" />
+        {/* Room outline upper-right */}
+        <path d="M98 5 L98 28 L100 28 L100 5 Z" />
+        {/* Room outline lower-right */}
+        <path d="M98 72 L98 98 L100 98 L100 72 Z" />
+        {/* Garden/exterior area to the left */}
+        <path d="M0 20 Q2 15, 0 10" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M0 80 Q2 75, 0 70" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
       </g>
 
-      {/* PRIMARY - Spiral stair from below */}
+      {/* CONTEXT NEAR: Surrounding walls, door opening, threshold */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        <circle cx="50" cy="50" r="47" />
+        {/* Wall thickness shown as double line */}
+        <circle cx="50" cy="50" r="49" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Door opening in surrounding wall - entry to stair */}
+        <path d="M50 97 L50 100" />
+        <path d="M42 97 L42 100" />
+        {/* Door swing arc */}
+        <path d="M42 97 Q46 93, 50 97" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Threshold at door */}
+        <path d="M42 97 L50 97" strokeWidth={S.CN.strokeWidthFine} />
+        {/* Adjacent wall segments meeting the circular stair enclosure */}
+        <path d="M3 50 L0 50" />
+        <path d="M3 48 L0 48" />
+      </g>
+
+      {/* PRIMARY - Spiral stair plan view - consistent pie-slice wedge treads */}
       <g strokeWidth="1.2">
         {/* Central newel pole */}
         <circle cx="50" cy="50" r="5" strokeWidth="2" />
@@ -976,43 +1146,34 @@ const SpiralStairSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <circle cx="50" cy="50" r="42" strokeWidth="1.8" />
         <circle cx="50" cy="50" r="40" strokeWidth="1" opacity="0.6" />
 
-        {/* Wedge treads radiating from center */}
-        {/* Tread 1 - at bottom */}
-        <path d="M50 55 L50 92 M50 55 L85 70" strokeWidth="1.5" />
-        <path d="M55 60 L80 72" strokeWidth="0.8" opacity="0.6" />
+        {/* 12 wedge treads radiating from newel to outer wall, evenly spaced at 30° */}
+        {/* Each tread is two radial lines from center to outer circle */}
+        {/* Tread edges at 0°, 30°, 60°, 90°, 120°, 150°, 180°, 210°, 240°, 270°, 300°, 330° */}
+        <path d="M55 50 L92 50" strokeWidth="1.5" />
+        <path d="M53 45 L86 29" strokeWidth="1.5" />
+        <path d="M50 45 L68 12" strokeWidth="1.5" />
+        <path d="M47 45 L50 8" strokeWidth="1.4" />
+        <path d="M45 47 L32 12" strokeWidth="1.4" />
+        <path d="M45 50 L14 29" strokeWidth="1.4" />
+        <path d="M45 52 L8 50" strokeWidth="1.3" />
+        <path d="M47 55 L14 71" strokeWidth="1.3" />
+        <path d="M50 55 L32 88" strokeWidth="1.3" />
+        <path d="M53 55 L50 92" strokeWidth="1.2" />
+        <path d="M55 53 L68 88" strokeWidth="1.2" />
+        <path d="M55 50 L86 71" strokeWidth="1.2" />
 
-        {/* Tread 2 */}
-        <path d="M55 50 L92 50 M55 50 L75 20" strokeWidth="1.5" />
-        <path d="M60 48 L78 28" strokeWidth="0.8" opacity="0.6" />
+        {/* Nosing arcs on select treads (curved front edge of each step) */}
+        <path d="M92 50 Q90 42, 86 29" strokeWidth="0.8" opacity="0.6" />
+        <path d="M68 12 Q58 10, 50 8" strokeWidth="0.8" opacity="0.6" />
+        <path d="M14 29 Q10 38, 8 50" strokeWidth="0.8" opacity="0.6" />
+        <path d="M32 88 Q42 92, 50 92" strokeWidth="0.8" opacity="0.6" />
 
-        {/* Tread 3 */}
-        <path d="M50 45 L50 8 M50 45 L20 25" strokeWidth="1.4" />
-        <path d="M48 40 L25 22" strokeWidth="0.8" opacity="0.6" />
+        {/* DETAIL: Handrail spiral suggestion */}
+        <path d="M50 8 Q78 10, 92 38 Q96 58, 86 78 Q70 94, 50 92" strokeWidth={S.P.strokeWidthLight} strokeDasharray={S.CN.dash} opacity={S.D.opacity} />
 
-        {/* Tread 4 */}
-        <path d="M45 50 L8 50 M45 50 L25 80" strokeWidth="1.4" />
-        <path d="M42 55 L22 75" strokeWidth="0.8" opacity="0.6" />
-
-        {/* Tread 5 */}
-        <path d="M50 55 L35 88 M55 55 L70 85" strokeWidth="1.3" />
-
-        {/* Additional treads visible through */}
-        <path d="M55 45 L72 15" strokeWidth="1.2" />
-        <path d="M45 45 L28 15" strokeWidth="1.2" />
-        <path d="M45 55 L15 65" strokeWidth="1.2" />
-
-        {/* Riser edges (showing vertical faces) */}
-        <path d="M50 55 L50 58 L82 73 L85 70" strokeWidth="0.8" opacity="0.5" />
-        <path d="M55 50 L58 50 L78 22 L75 20" strokeWidth="0.8" opacity="0.5" />
-        <path d="M50 45 L50 42 L22 23 L20 25" strokeWidth="0.8" opacity="0.5" />
-        <path d="M45 50 L42 50 L23 78 L25 80" strokeWidth="0.8" opacity="0.5" />
-
-        {/* Underside visible (looking up) */}
-        <path d="M55 55 Q60 60, 58 65" strokeWidth="0.6" opacity="0.4" />
-        <path d="M55 45 Q62 42, 65 48" strokeWidth="0.6" opacity="0.4" />
-
-        {/* Handrail spiral suggestion */}
-        <path d="M50 8 Q75 10, 90 35 Q95 55, 85 75 Q70 92, 50 92" strokeWidth="1" strokeDasharray="3 3" opacity="0.5" />
+        {/* Direction of ascent arrow */}
+        <path d="M82 58 Q84 52, 84 46" strokeWidth="0.8" opacity="0.5" />
+        <path d="M82 48 L84 46 L86 48" strokeWidth="0.6" opacity="0.5" />
       </g>
     </g>
   </svg>
@@ -1028,10 +1189,31 @@ const StringerSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="stringer-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#stringer-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Wall and floor */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT FAR: Adjacent rooms and ceiling */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Ceiling/upper floor */}
+        <path d="M5 2 L95 2" />
+        {/* Room to the right */}
+        <path d="M98 50 L98 95 L95 95" />
+        {/* Furniture outline in upper room */}
+        <path d="M10 2 L25 2 L25 5" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Wall, floor, parallel stringer, joist pockets */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Supporting wall */}
         <path d="M5 5 L5 95" />
+        {/* Wall thickness */}
+        <path d="M3 5 L3 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Floor level */}
         <path d="M5 95 L95 95" />
+        {/* Floor thickness */}
+        <path d="M5 97 L95 97" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Joist pockets in wall */}
+        <path d="M3 28 L5 28 L5 32 L3 32" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M3 56 L5 56 L5 60 L3 60" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Parallel stringer ghost (the other side of the stair) */}
+        <path d="M15 20 L90 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY - Stringer beam with notches */}
@@ -1089,8 +1271,8 @@ const TatamiSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="tatami-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#tatami-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Japanese room elements */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT (near): Japanese room elements */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
         <path d="M5 5 L5 95" />
         <path d="M5 5 L95 5" />
         <path d="M8 10 L8 40" />
@@ -1169,9 +1351,38 @@ const TerrazzoSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="terrazzo-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#terrazzo-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Room edge */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT FAR: Hallway and adjacent spaces */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Corridor beyond top wall */}
+        <path d="M10 0 L90 0" />
+        <path d="M10 2 L90 2" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Adjacent room lower-left */}
+        <path d="M0 60 L0 100 L4 100" />
+        {/* Adjacent room lower-right */}
+        <path d="M100 60 L100 100 L96 100" />
+        {/* Furniture in corridor - bench outline */}
+        <path d="M40 0 L60 0 L60 2 L40 2" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Room walls, door, threshold, column */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Room walls */}
         <path d="M5 5 L95 5 L95 95 L5 95 Z" />
+        {/* Wall thickness */}
+        <path d="M3 3 L97 3 L97 97 L3 97 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Door opening in top wall */}
+        <path d="M35 5 L35 3" />
+        <path d="M50 5 L50 3" />
+        {/* Door swing arc */}
+        <path d="M35 5 Q42 12, 50 5" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Threshold strip */}
+        <path d="M35 5 L50 5" strokeWidth={S.CN.strokeWidthFine} />
+        {/* Column base near entrance */}
+        <circle cx="50" cy="8" r="2" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Baseboard along left wall */}
+        <path d="M5 10 L7 10 L7 90 L5 90" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Baseboard along right wall */}
+        <path d="M95 10 L93 10 L93 90 L95 90" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY - Terrazzo floor with brass dividers */}
@@ -1239,11 +1450,36 @@ const TreadSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="tread-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#tread-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Stair structure */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT FAR: Upper and lower floors */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Upper floor level */}
+        <path d="M15 5 L85 5" />
+        {/* Room beyond at upper level */}
+        <path d="M85 5 L85 12" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        <path d="M15 5 L15 12" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Lower room beyond */}
+        <path d="M0 98 L100 98" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Stair walls, handrail, landing */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Left stringer wall */}
         <path d="M5 35 L5 95" />
+        {/* Right stringer wall */}
         <path d="M95 35 L95 95" />
+        {/* Floor at base */}
         <path d="M5 95 L95 95" />
+        {/* Wall thickness */}
+        <path d="M3 35 L3 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M97 35 L97 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Handrail along left wall */}
+        <path d="M8 32 L8 90" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Handrail along right wall */}
+        <path d="M92 32 L92 90" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Upper landing surface */}
+        <path d="M5 12 L95 12" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Baseboard at stringer */}
+        <path d="M5 93 L95 93" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY - Stair treads in 3D perspective */}
@@ -1307,12 +1543,39 @@ const WaffleSlabSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="waffle-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#waffle-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Support columns */}
-      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+      {/* CONTEXT FAR: Building structure beyond slab */}
+      <g strokeDasharray={S.CF.dash} opacity={S.CF.opacity} strokeWidth={S.CF.strokeWidth}>
+        {/* Far wall of the space */}
+        <path d="M2 5 L2 95" />
+        {/* Opposite far wall */}
+        <path d="M98 5 L98 95" />
+        {/* Adjacent bay continuation */}
+        <path d="M5 2 L95 2" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+        {/* Floor level below */}
+        <path d="M5 100 L95 100" strokeWidth={S.CF.strokeWidthFine} opacity={S.CF.opacitySubtle} />
+      </g>
+
+      {/* CONTEXT NEAR: Support columns, beams, ductwork */}
+      <g strokeDasharray={S.CN.dash} opacity={S.CN.opacity} strokeWidth={S.CN.strokeWidth}>
+        {/* Left column */}
         <path d="M10 90 L10 98" />
         <path d="M8 90 L12 90" />
+        {/* Left column base/capital detail */}
+        <path d="M7 90 L13 90 L13 92 L7 92 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Right column */}
         <path d="M90 90 L90 98" />
         <path d="M88 90 L92 90" />
+        {/* Right column base/capital detail */}
+        <path d="M87 90 L93 90 L93 92 L87 92 Z" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Center column */}
+        <path d="M50 90 L50 98" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M48 90 L52 90" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Edge beam along perimeter */}
+        <path d="M5 10 L5 90" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M95 10 L95 90" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        {/* Mechanical duct run */}
+        <path d="M15 95 L85 95" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
+        <path d="M15 97 L85 97" strokeWidth={S.CN.strokeWidthFine} opacity={S.CN.opacitySubtle} />
       </g>
 
       {/* PRIMARY - Waffle slab from below */}

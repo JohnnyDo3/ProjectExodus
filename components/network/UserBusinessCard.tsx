@@ -2,6 +2,7 @@
 
 import { useRef } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent } from '@/components/ui/Card'
 import {
@@ -312,9 +313,9 @@ export function UserBusinessCard({
 
               <div className="relative z-10 flex items-center gap-3">
                 {/* Mini Avatar */}
-                <div className="w-10 h-10 rounded-full border-2 border-white/50 overflow-hidden bg-white/20 flex items-center justify-center">
+                <div className="relative w-10 h-10 rounded-full border-2 border-white/50 overflow-hidden bg-white/20 flex items-center justify-center">
                   {user.image ? (
-                    <img src={user.image} alt={user.name || 'User'} className="w-full h-full object-cover" />
+                    <Image src={user.image} alt={user.name || 'User'} fill unoptimized sizes="100%" className="object-cover" />
                   ) : (
                     <Users className="w-5 h-5 text-white" />
                   )}

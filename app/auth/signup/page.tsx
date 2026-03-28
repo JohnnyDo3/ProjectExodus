@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { ArrowLeft, CheckCircle2 } from 'lucide-react'
+import SocialLoginButtons from '@/components/auth/SocialLoginButtons'
 
 export default function SignUpPage() {
   const router = useRouter()
@@ -169,6 +170,19 @@ export default function SignUpPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
+            <SocialLoginButtons callbackUrl="/" mode="signup" />
+
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-[var(--border)]" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-[var(--card)] px-3 text-[var(--muted-foreground)] font-medium">
+                  or create account with email
+                </span>
+              </div>
+            </div>
+
             <form onSubmit={handleSubmit} className="space-y-5">
               <Input
                 label="Full Name"

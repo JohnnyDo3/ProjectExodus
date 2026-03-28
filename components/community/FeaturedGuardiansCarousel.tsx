@@ -49,22 +49,25 @@ export function FeaturedGuardiansCarousel() {
 
   // Fetch leaderboard data
   useEffect(() => {
+    const controller = new AbortController()
+
     async function fetchLeaderboard() {
       try {
-        const res = await fetch('/api/gamification/leaderboard?type=all-time&limit=10')
+        const res = await fetch('/api/gamification/leaderboard?type=all-time&limit=10', { signal: controller.signal })
         const data = await res.json()
 
         if (data.success && data.data?.leaderboard) {
           setUsers(data.data.leaderboard)
         }
-      } catch (error) {
-        console.error('Error fetching leaderboard:', error)
+      } catch {
+        // silently handle fetch error
       } finally {
         setIsLoading(false)
       }
     }
 
     fetchLeaderboard()
+    return () => controller.abort()
   }, [])
 
   if (isLoading) {

@@ -7,7 +7,8 @@ export async function GET() {
     const badges = await prisma.badge.findMany({
       orderBy: {
         createdAt: 'asc'
-      }
+      },
+      take: 100,
     })
     return NextResponse.json({ badges })
   } catch (error) {

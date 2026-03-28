@@ -74,7 +74,7 @@ export function importFromMarkdown(markdown: string): { nodes: CanvasNode[], con
   const connections: CanvasConnection[] = []
 
   let currentY = 100
-  let lastNodeByLevel: { [level: number]: CanvasNode } = {}
+  const lastNodeByLevel: { [level: number]: CanvasNode } = {}
 
   lines.forEach((line, index) => {
     const trimmed = line.trim()

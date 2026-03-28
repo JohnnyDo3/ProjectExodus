@@ -2,6 +2,7 @@
 
 import { User, UserPlus, MessageCircle, Check, Users } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 import { ViewMode } from '@/hooks/useVolitionLayout'
 
@@ -47,16 +48,21 @@ export function NetworkCard({
     }
   }
 
-  // Minimal view - just title header
+  // Minimal view - compact one-liner with type indicator
   if (isMinimal) {
     return (
-      <div className={`rounded-lg overflow-hidden ${className}`}>
-        <div className="p-2 bg-gradient-to-r from-[var(--accent)] to-[var(--primary)]">
-          <div className="flex items-center gap-2">
-            <Users className="w-4 h-4 text-white flex-shrink-0" />
-            <h3 className="text-xs font-bold text-white truncate">{user.name || 'Network'}</h3>
-          </div>
+      <div className={`flex items-center gap-2 px-2 py-1.5 rounded-lg bg-[var(--muted)]/50 hover:bg-[var(--muted)] transition-colors ${className}`}>
+        <div className="relative w-4 h-4 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0 overflow-hidden">
+          {user.image ? (
+            <Image src={user.image} alt="" fill unoptimized sizes="100%" className="object-cover" />
+          ) : (
+            <Users className="w-2 h-2 text-white" />
+          )}
         </div>
+        <span className="text-[11px] font-medium text-[var(--foreground)] truncate flex-1">{user.name || 'User'}</span>
+        <span className={`text-[9px] font-bold uppercase flex-shrink-0 ${type === 'following' ? 'text-blue-500' : 'text-[var(--foreground)]/40'}`}>
+          {type === 'following' ? 'Following' : 'Suggested'}
+        </span>
       </div>
     )
   }
@@ -66,9 +72,9 @@ export function NetworkCard({
       <div className={`bg-[var(--muted)] rounded-xl p-3 ${className}`}>
         <div className="flex items-center gap-3">
           <Link href={`/profile/${user.id}`} className="flex-shrink-0">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center overflow-hidden">
+            <div className="relative w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center overflow-hidden">
               {user.image ? (
-                <img src={user.image} alt={user.name || ''} className="w-full h-full object-cover" />
+                <Image src={user.image} alt={user.name || ''} fill unoptimized sizes="100%" className="object-cover" />
               ) : (
                 <User className="w-5 h-5 text-white" />
               )}
@@ -103,9 +109,9 @@ export function NetworkCard({
       {/* Avatar and basic info */}
       <div className="flex items-start gap-3 mb-3">
         <Link href={`/profile/${user.id}`} className="flex-shrink-0">
-          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center overflow-hidden">
+          <div className="relative w-14 h-14 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center overflow-hidden">
             {user.image ? (
-              <img src={user.image} alt={user.name || ''} className="w-full h-full object-cover" />
+              <Image src={user.image} alt={user.name || ''} fill unoptimized sizes="100%" className="object-cover" />
             ) : (
               <User className="w-7 h-7 text-white" />
             )}

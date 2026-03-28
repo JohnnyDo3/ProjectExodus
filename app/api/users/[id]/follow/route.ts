@@ -8,6 +8,7 @@ import {
   isValidUUID,
   detectBot,
 } from '@/lib/security'
+import { incrementStockScore, STOCK_POINTS } from '@/lib/stockScore'
 
 // POST /api/users/[id]/follow - Follow a user
 export async function POST(
@@ -95,6 +96,9 @@ export async function POST(
         followingId: targetUserId,
       },
     })
+
+    // Award stock points to the user being followed (they gained a follower)
+    incrementStockScore(targetUserId, STOCK_POINTS.FOLLOWER).catch(() => {})
 
     return NextResponse.json({
       success: true,

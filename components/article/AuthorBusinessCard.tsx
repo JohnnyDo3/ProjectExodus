@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent } from '@/components/ui/Card'
 import {
@@ -342,9 +343,9 @@ export function AuthorBusinessCard({ author }: AuthorBusinessCardProps) {
 
               <div className="relative z-10 flex items-center gap-3">
                 {/* Mini Avatar */}
-                <div className="w-10 h-10 rounded-full border-2 border-white/50 overflow-hidden bg-white/20 flex items-center justify-center">
+                <div className="relative w-10 h-10 rounded-full border-2 border-white/50 overflow-hidden bg-white/20 flex items-center justify-center">
                   {author.image ? (
-                    <img src={author.image} alt={author.name || 'Author'} className="w-full h-full object-cover" />
+                    <Image src={author.image} alt={author.name || 'Author'} fill unoptimized sizes="100%" className="object-cover" />
                   ) : (
                     <Users className="w-5 h-5 text-white" />
                   )}

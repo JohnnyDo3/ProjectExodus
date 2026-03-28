@@ -7,6 +7,7 @@
 // ============================================
 
 import { useState, useEffect, useCallback } from 'react'
+import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -14,6 +15,12 @@ import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { SkeletonUserCard } from '@/components/ui/SkeletonUserCard'
 import { UserPreviewCard } from '@/components/network/UserPreviewCard'
+import dynamic from 'next/dynamic'
+const CommunityFishbowl = dynamic(
+  () => import('@/components/fishbowl/CommunityFishbowl').then(mod => ({ default: mod.CommunityFishbowl })),
+  { ssr: false, loading: () => <div className="w-full h-[500px] bg-[var(--muted)] rounded-xl animate-pulse" /> }
+)
+import '@/components/fishbowl/fishbowl.css'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
 import {
@@ -101,11 +108,24 @@ export default function NetworkPage() {
   const [followerIds, setFollowerIds] = useState<Set<string>>(new Set())
   const [loadingFollow, setLoadingFollow] = useState<Set<string>>(new Set())
 
-  // Fetch all data
+  // Fetch all data in parallel (avoid waterfall)
   const fetchData = useCallback(async () => {
     setIsLoading(true)
     try {
-      const usersRes = await fetch('/api/users', { cache: 'no-store' })
+      // Fire all requests in parallel instead of sequentially
+      const fetches: Promise<Response>[] = [
+        fetch('/api/users'),
+      ]
+      if (session?.user?.id) {
+        fetches.push(
+          fetch('/api/users/following'),
+          fetch('/api/users/followers'),
+        )
+      }
+
+      const results = await Promise.all(fetches)
+      const [usersRes, followingRes, followersRes] = results
+
       if (usersRes.ok) {
         const usersData = await usersRes.json()
         if (usersData.success) {
@@ -113,26 +133,19 @@ export default function NetworkPage() {
         }
       }
 
-      if (session?.user?.id) {
-        const [followingRes, followersRes] = await Promise.all([
-          fetch('/api/users/following', { cache: 'no-store' }),
-          fetch('/api/users/followers', { cache: 'no-store' }),
-        ])
-
-        if (followingRes.ok) {
-          const followingData = await followingRes.json()
-          if (followingData.success) {
-            setFollowingUsers(followingData.data)
-            setFollowingIds(new Set(followingData.data.map((u: UserProfile) => u.id)))
-          }
+      if (followingRes?.ok) {
+        const followingData = await followingRes.json()
+        if (followingData.success) {
+          setFollowingUsers(followingData.data)
+          setFollowingIds(new Set(followingData.data.map((u: UserProfile) => u.id)))
         }
+      }
 
-        if (followersRes.ok) {
-          const followersData = await followersRes.json()
-          if (followersData.success) {
-            setFollowers(followersData.data)
-            setFollowerIds(new Set(followersData.data.map((u: UserProfile) => u.id)))
-          }
+      if (followersRes?.ok) {
+        const followersData = await followersRes.json()
+        if (followersData.success) {
+          setFollowers(followersData.data)
+          setFollowerIds(new Set(followersData.data.map((u: UserProfile) => u.id)))
         }
       }
     } catch (error) {
@@ -246,81 +259,62 @@ export default function NetworkPage() {
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
-      {/* Sacred Header - The Tapestry */}
-      <section className="relative py-8 sm:py-12 overflow-hidden bg-gradient-to-br from-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] via-[var(--background)] to-[color-mix(in_srgb,var(--accent)_10%,var(--background))] border-b border-[var(--border)]">
-        {/* Decorative Thread Pattern */}
-        <div className="absolute inset-0 opacity-5 pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-[var(--primary)] to-transparent" />
-          <div className="absolute top-0 left-1/2 w-px h-full bg-gradient-to-b from-transparent via-[var(--accent)] to-transparent" />
-          <div className="absolute top-0 left-3/4 w-px h-full bg-gradient-to-b from-transparent via-[var(--secondary)] to-transparent" />
-        </div>
+      {/* Community Fishbowl Landing */}
+      <CommunityFishbowl />
 
-        <div className="container mx-auto px-4 relative">
-          <div className="max-w-6xl mx-auto">
-            {/* Sacred Title */}
-            <div className="text-center mb-6 sm:mb-8">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--muted)] mb-4">
-                <Orbit className="w-4 h-4 text-[var(--primary)]" />
-                <span className="text-xs font-bold text-[var(--foreground)]/70 uppercase tracking-wider">The Sacred Tapestry</span>
-              </div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-[var(--foreground)] mb-2">
-                {session?.user ? 'Your Constellation' : 'The Path of Connection'}
-              </h1>
-              <p className="text-sm sm:text-base text-theme-muted font-medium max-w-lg mx-auto italic">
-                "A network is not a number. It is a constellation of souls walking the same path."
-              </p>
-            </div>
-
-            {/* Sacred Stats - Thread Counts */}
-            {session?.user && (
-              <div className="flex justify-center gap-4 sm:gap-8">
+      {/* Stats Bar */}
+      {session?.user && (
+        <section className="bg-[var(--card)] border-b border-[var(--border)]">
+          <div className="container mx-auto px-4">
+            <div className="max-w-6xl mx-auto">
+              <div className="flex justify-center gap-4 sm:gap-8 py-3">
                 <button
                   onClick={() => setActiveView('following')}
-                  className={`group text-center px-4 py-3 rounded-xl transition-all border-2 ${
+                  className={`group text-center px-4 py-2 rounded-xl transition-all border-2 ${
                     activeView === 'following'
                       ? 'border-blue-500/50 bg-blue-500/10'
                       : 'border-transparent hover:border-[var(--border)] hover:bg-[var(--muted)]'
                   }`}
                 >
-                  <div className="flex items-center justify-center gap-1.5 mb-1">
+                  <div className="flex items-center justify-center gap-1.5 mb-0.5">
                     <Footprints className="w-4 h-4 text-blue-500" />
-                    <p className="text-xl sm:text-2xl font-black text-blue-500">{followingUsers.length}</p>
+                    <p className="text-lg sm:text-xl font-black text-blue-500">{followingUsers.length}</p>
                   </div>
                   <p className="text-[10px] sm:text-xs font-bold text-theme-muted">Walking With</p>
                 </button>
                 <button
                   onClick={() => setActiveView('followers')}
-                  className={`group text-center px-4 py-3 rounded-xl transition-all border-2 ${
+                  className={`group text-center px-4 py-2 rounded-xl transition-all border-2 ${
                     activeView === 'followers'
                       ? 'border-pink-500/50 bg-pink-500/10'
                       : 'border-transparent hover:border-[var(--border)] hover:bg-[var(--muted)]'
                   }`}
                 >
-                  <div className="flex items-center justify-center gap-1.5 mb-1">
+                  <div className="flex items-center justify-center gap-1.5 mb-0.5">
                     <Heart className="w-4 h-4 text-pink-500" />
-                    <p className="text-xl sm:text-2xl font-black text-pink-500">{followers.length}</p>
+                    <p className="text-lg sm:text-xl font-black text-pink-500">{followers.length}</p>
                   </div>
                   <p className="text-[10px] sm:text-xs font-bold text-theme-muted">Fellow Travelers</p>
                 </button>
                 <button
                   onClick={() => setActiveView('tree')}
-                  className={`group text-center px-4 py-3 rounded-xl transition-all border-2 ${
+                  className={`group text-center px-4 py-2 rounded-xl transition-all border-2 ${
                     activeView === 'tree'
                       ? 'border-emerald-500/50 bg-emerald-500/10'
                       : 'border-transparent hover:border-[var(--border)] hover:bg-[var(--muted)]'
                   }`}
                 >
-                  <div className="flex items-center justify-center gap-1.5 mb-1">
+                  <div className="flex items-center justify-center gap-1.5 mb-0.5">
                     <Link2 className="w-4 h-4 text-emerald-500" />
-                    <p className="text-xl sm:text-2xl font-black text-emerald-500">{mutualCount}</p>
+                    <p className="text-lg sm:text-xl font-black text-emerald-500">{mutualCount}</p>
                   </div>
                   <p className="text-[10px] sm:text-xs font-bold text-theme-muted">Kindred Spirits</p>
                 </button>
               </div>
-            )}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Navigation Tabs - Sacred Paths */}
       <section className="sticky top-16 z-40 bg-[var(--card)] border-b border-[var(--border)]">
@@ -408,9 +402,9 @@ export default function NetworkPage() {
                                 const trait = getArchetypeTrait(follower.guardianArchetype)
                                 return (
                                   <div key={follower.id} className="flex items-center gap-3 p-3 bg-[var(--muted)] rounded-xl border border-[var(--border)]">
-                                    <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${trait.gradient} flex items-center justify-center overflow-hidden ring-2 ring-white/20`}>
+                                    <div className={`relative w-10 h-10 rounded-full bg-gradient-to-br ${trait.gradient} flex items-center justify-center overflow-hidden ring-2 ring-white/20`}>
                                       {follower.image ? (
-                                        <img src={follower.image} alt="" className="w-full h-full object-cover" />
+                                        <Image src={follower.image} alt="" fill unoptimized sizes="100%" className="object-cover" />
                                       ) : (
                                         <span className="text-white font-bold">{(follower.name || 'U')[0]}</span>
                                       )}
@@ -476,9 +470,9 @@ export default function NetworkPage() {
                                 return (
                                   <div key={user.id} className="flex items-center gap-3 p-3 bg-[var(--muted)] rounded-xl border border-[var(--border)]">
                                     <Link href={`/profile/${user.id}`}>
-                                      <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${trait.gradient} flex items-center justify-center overflow-hidden cursor-pointer hover:ring-2 ring-theme-primary transition-all`}>
+                                      <div className={`relative w-12 h-12 rounded-full bg-gradient-to-br ${trait.gradient} flex items-center justify-center overflow-hidden cursor-pointer hover:ring-2 ring-theme-primary transition-all`}>
                                         {user.image ? (
-                                          <img src={user.image} alt="" className="w-full h-full object-cover" />
+                                          <Image src={user.image} alt="" fill unoptimized sizes="100%" className="object-cover" />
                                         ) : (
                                           <span className="text-white font-bold text-lg">{(user.name || 'U')[0]}</span>
                                         )}
@@ -543,9 +537,9 @@ export default function NetworkPage() {
                                 return (
                                   <div key={user.id} className="flex items-center gap-3 p-3 bg-[var(--muted)] rounded-xl border border-[var(--border)]">
                                     <Link href={`/profile/${user.id}`}>
-                                      <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${trait.gradient} flex items-center justify-center overflow-hidden cursor-pointer hover:ring-2 ring-theme-primary transition-all`}>
+                                      <div className={`relative w-10 h-10 rounded-full bg-gradient-to-br ${trait.gradient} flex items-center justify-center overflow-hidden cursor-pointer hover:ring-2 ring-theme-primary transition-all`}>
                                         {user.image ? (
-                                          <img src={user.image} alt="" className="w-full h-full object-cover" />
+                                          <Image src={user.image} alt="" fill unoptimized sizes="100%" className="object-cover" />
                                         ) : (
                                           <span className="text-white font-bold">{(user.name || 'U')[0]}</span>
                                         )}
@@ -932,9 +926,9 @@ function TreeNode({
       onClick={onViewProfile}
     >
       {/* Avatar with archetype gradient */}
-      <div className={`w-11 h-11 rounded-full bg-gradient-to-br ${trait.gradient} flex items-center justify-center overflow-hidden flex-shrink-0 ring-2 ring-white/20`}>
+      <div className={`relative w-11 h-11 rounded-full bg-gradient-to-br ${trait.gradient} flex items-center justify-center overflow-hidden flex-shrink-0 ring-2 ring-white/20`}>
         {user.image ? (
-          <img src={user.image} alt="" className="w-full h-full object-cover" />
+          <Image src={user.image} alt="" fill unoptimized sizes="100%" className="object-cover" />
         ) : (
           <span className="text-white font-bold text-lg">{(user.name || 'U')[0]}</span>
         )}

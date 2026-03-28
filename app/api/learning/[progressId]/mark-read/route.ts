@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { prisma } from '@/lib/db'
+import { incrementStockScore, STOCK_POINTS } from '@/lib/stockScore'
 
 /**
  * PATCH /api/learning/[progressId]/mark-read
@@ -73,6 +74,9 @@ export async function PATCH(
         },
       },
     })
+
+    // Award stock points for completing a learning module
+    incrementStockScore(session.user.id, STOCK_POINTS.MODULE_COMPLETED).catch(() => {})
 
     return NextResponse.json({
       success: true,

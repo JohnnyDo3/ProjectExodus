@@ -25,7 +25,7 @@ function DiagramGameWrapper() {
   }
 
   const handleComplete = (results: any) => {
-    console.log('Diagram completed:', results)
+    // Could save results to database here
   }
 
   return (

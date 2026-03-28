@@ -165,7 +165,7 @@ export function generateSVG(
       <!-- Metadata -->
 `
 
-    let metaY = y + node.height - 25
+    const metaY = y + node.height - 25
     if (node.metadata?.priority) {
       const priorityColor = node.metadata.priority === 'high' ? '#EF4444' :
                            node.metadata.priority === 'medium' ? '#F59E0B' : '#6B7280'

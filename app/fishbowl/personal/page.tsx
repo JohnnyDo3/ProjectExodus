@@ -1,0 +1,440 @@
+'use client'
+
+import { useState, useEffect, useCallback, useRef } from 'react'
+import { Fish, Users, Info, Sparkles, Palette, Shell, Anchor, Flame, Castle, Pyramid, Landmark, Waves, Sailboat, Ship, UserPlus, Plus, Minus, Skull } from 'lucide-react'
+import Link from 'next/link'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import { Fishbowl } from '@/components/fishbowl/Fishbowl'
+import { FishSVG, getTierFromScore, getTierName, type FishCustomization, type FishTier } from '@/components/fishbowl/FishSpecies'
+import { FishCustomizer } from '@/components/fishbowl/FishCustomizer'
+import '@/components/fishbowl/fishbowl.css'
+
+interface FishbowlUser {
+  id: string
+  name: string | null
+  stockScore: number
+  image: string | null
+  fishCustomization?: FishCustomization | null
+  isMutual?: boolean
+  isFollowing?: boolean
+  isFollower?: boolean
+}
+
+interface PersonalFishbowlData {
+  user: FishbowlUser | null
+  connections: FishbowlUser[]
+  stats: {
+    following: number
+    followers: number
+    mutual: number
+  }
+}
+
+const DECOR_THEMES = [
+  { id: 'ocean', name: 'Ocean Reef', icon: Shell, description: 'Coral reef with ocean plants' },
+  { id: 'volcano', name: 'Volcano', icon: Flame, description: 'Volcanic reef with lava vents' },
+  { id: 'shipwreck', name: 'Shipwreck', icon: Anchor, description: 'Sunken ship vibes' },
+  { id: 'sailboat', name: 'Sailboat', icon: Sailboat, description: 'Sunken sailboat wreck' },
+  { id: 'submarine', name: 'Submarine', icon: Ship, description: 'Sunken submarine base' },
+  { id: 'castle', name: 'Castle', icon: Castle, description: 'Sunken medieval fortress' },
+  { id: 'pyramid', name: 'Pyramid', icon: Pyramid, description: 'Ancient Egyptian ruins' },
+  { id: 'temple', name: 'Temple', icon: Landmark, description: 'Japanese torii and pagoda' },
+  { id: 'atlantis', name: 'Atlantis', icon: Waves, description: 'Lost city of Atlantis' },
+  { id: 'minimal', name: 'Minimal', icon: Fish, description: 'Clean, simple look' },
+  { id: 'stagnant', name: 'Stagnant', icon: Skull, description: 'Deer skull with willow vines' },
+] as const
+
+export default function PersonalFishbowlPage() {
+  const { data: session, status } = useSession()
+  const router = useRouter()
+  const [data, setData] = useState<PersonalFishbowlData | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [showInfo, setShowInfo] = useState(false)
+  const [showCustomizer, setShowCustomizer] = useState(false)
+  const [activeDecor, setActiveDecor] = useState<string>(() => {
+    if (typeof window === 'undefined') return 'ocean'
+    try {
+      return localStorage.getItem('personal-tank-theme') || 'ocean'
+    } catch { return 'ocean' }
+  })
+  const [showDecorPanel, setShowDecorPanel] = useState(false)
+  const [showFriendPanel, setShowFriendPanel] = useState(false)
+  const decorPanelRef = useRef<HTMLDivElement>(null)
+  const infoPanelRef = useRef<HTMLDivElement>(null)
+  const friendPanelRef = useRef<HTMLDivElement>(null)
+  const decorBtnRef = useRef<HTMLButtonElement>(null)
+  const infoBtnRef = useRef<HTMLButtonElement>(null)
+  const friendBtnRef = useRef<HTMLButtonElement>(null)
+  const [tankFriendIds, setTankFriendIds] = useState<Set<string>>(() => {
+    if (typeof window === 'undefined') return new Set()
+    try {
+      const saved = localStorage.getItem('personal-tank-friends')
+      return saved ? new Set(JSON.parse(saved)) : new Set()
+    } catch { return new Set() }
+  })
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/auth/signin?callbackUrl=/fishbowl/personal')
+      return
+    }
+  }, [status, router])
+
+  useEffect(() => {
+    if (status !== 'authenticated') return
+    async function fetchData() {
+      try {
+        const res = await fetch('/api/fishbowl/personal')
+        const json = await res.json()
+        if (json.success) {
+          setData(json.data)
+        }
+      } catch (error) {
+        console.error('Error fetching fishbowl:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    fetchData()
+  }, [status])
+
+  // Close overlay panels on click outside (exclude toggle buttons to avoid reopen race)
+  useEffect(() => {
+    if (!showDecorPanel && !showInfo && !showFriendPanel) return
+    const handler = (e: MouseEvent) => {
+      const target = e.target as Node
+      if (showDecorPanel && decorPanelRef.current && !decorPanelRef.current.contains(target) && !decorBtnRef.current?.contains(target)) {
+        setShowDecorPanel(false)
+      }
+      if (showInfo && infoPanelRef.current && !infoPanelRef.current.contains(target) && !infoBtnRef.current?.contains(target)) {
+        setShowInfo(false)
+      }
+      if (showFriendPanel && friendPanelRef.current && !friendPanelRef.current.contains(target) && !friendBtnRef.current?.contains(target)) {
+        setShowFriendPanel(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [showDecorPanel, showInfo, showFriendPanel])
+
+  // Toggle a friend in/out of the tank
+  const toggleFriendInTank = useCallback((friendId: string) => {
+    setTankFriendIds(prev => {
+      const next = new Set(prev)
+      if (next.has(friendId)) {
+        next.delete(friendId)
+      } else {
+        next.add(friendId)
+      }
+      localStorage.setItem('personal-tank-friends', JSON.stringify([...next]))
+      return next
+    })
+  }, [])
+
+  const handleSaveCustomization = useCallback(async (customization: FishCustomization) => {
+    const res = await fetch('/api/fishbowl/personal/customize', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(customization),
+    })
+    const json = await res.json()
+    if (!json.success) throw new Error(json.error)
+
+    setData(prev => prev ? {
+      ...prev,
+      user: prev.user ? { ...prev.user, fishCustomization: customization } : null,
+    } : null)
+
+    setShowCustomizer(false)
+  }, [])
+
+  if (status === 'loading' || isLoading) {
+    return (
+      <div className="h-full flex items-center justify-center bg-[#0A1628]">
+        <div className="text-center space-y-4">
+          <div className="w-16 h-16 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto" />
+          <p className="text-lg font-bold text-cyan-400">Filling your fishbowl...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!session || !data) return null
+
+  // Personal tank shows user's fish + selected friends' fish
+  // Only mutual follows (friends) can be added
+  const mutualFriends = data.connections?.filter(c => c.isMutual) || []
+  const fishbowlUsers = data.user
+    ? [data.user, ...mutualFriends.filter(c => tankFriendIds.has(c.id))]
+    : []
+
+  const userTier = data.user ? getTierFromScore(data.user.stockScore) : 0
+  const userTierName = data.user ? getTierName(userTier) : 'Guppy'
+  const userCustomization = (data.user?.fishCustomization as FishCustomization | null) || null
+
+  // Available species based on stock score
+  const availableSpecies = [
+    { tier: 0 as FishTier, name: 'Guppy', unlockScore: 0 },
+    { tier: 1 as FishTier, name: 'Tetra', unlockScore: 10 },
+    { tier: 2 as FishTier, name: 'Angelfish', unlockScore: 25 },
+    { tier: 3 as FishTier, name: 'Clownfish', unlockScore: 50 },
+    { tier: 4 as FishTier, name: 'Blue Tang', unlockScore: 100 },
+    { tier: 5 as FishTier, name: 'Royal Betta', unlockScore: 200 },
+  ]
+
+  return (
+    <div className="h-full flex flex-col overflow-hidden bg-[#0A1628]">
+      {/* Header */}
+      <div className="flex-shrink-0 bg-gradient-to-r from-[#0D2137]/95 via-[#123855]/95 to-[#0D2137]/95 backdrop-blur-sm border-b-2 border-cyan-800/50 relative z-30">
+        <div className="container mx-auto px-6 py-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-cyan-900/50 flex items-center justify-center border border-cyan-700/50">
+                <Fish className="w-5 h-5 text-cyan-400" />
+              </div>
+              <div>
+                <h1 className="text-xl font-black text-cyan-100">MY TANK</h1>
+                <p className="text-xs font-medium text-cyan-500/80">
+                  Your personal aquarium
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              {/* Your fish info */}
+              {data.user && (
+                <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-cyan-900/30 border border-cyan-800/40">
+                  <FishSVG tier={userTier} size={24} customization={userCustomization} id="header-my-fish" />
+                  <div>
+                    <p className="text-[10px] text-cyan-500 font-medium">YOUR FISH</p>
+                    <p className="text-xs font-bold text-cyan-200">{userTierName} · {data.user.stockScore} STOCK</p>
+                  </div>
+                </div>
+              )}
+              {/* Customize fish button */}
+              <button
+                onClick={() => setShowCustomizer(true)}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-purple-600/80 to-pink-600/80 text-white hover:from-purple-500/80 hover:to-pink-500/80 transition-all border border-purple-500/30"
+                title="Customize your fish"
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Customize</span>
+              </button>
+              {/* Decor toggle */}
+              <button
+                ref={decorBtnRef}
+                onClick={() => { setShowDecorPanel(!showDecorPanel); setShowInfo(false); setShowFriendPanel(false) }}
+                className={`p-2 rounded-lg border transition-colors ${
+                  showDecorPanel
+                    ? 'bg-cyan-600/30 border-cyan-500/50 text-cyan-300'
+                    : 'bg-cyan-900/30 border-cyan-800/40 text-cyan-500 hover:border-cyan-600/60'
+                }`}
+                title="Tank decor"
+              >
+                <Palette className="w-4 h-4" />
+              </button>
+              {/* Info toggle */}
+              <button
+                ref={infoBtnRef}
+                onClick={() => { setShowInfo(!showInfo); setShowDecorPanel(false); setShowFriendPanel(false) }}
+                className={`p-2 rounded-lg border transition-colors ${
+                  showInfo
+                    ? 'bg-cyan-600/30 border-cyan-500/50 text-cyan-300'
+                    : 'bg-cyan-900/30 border-cyan-800/40 text-cyan-500 hover:border-cyan-600/60'
+                }`}
+                title="Fish species guide"
+              >
+                <Info className="w-4 h-4" />
+              </button>
+              {/* Add friend fish toggle */}
+              <button
+                ref={friendBtnRef}
+                onClick={() => { setShowFriendPanel(!showFriendPanel); setShowDecorPanel(false); setShowInfo(false) }}
+                className={`p-2 rounded-lg border transition-colors ${
+                  showFriendPanel
+                    ? 'bg-teal-600/30 border-teal-500/50 text-teal-300'
+                    : 'bg-cyan-900/30 border-cyan-800/40 text-cyan-500 hover:border-cyan-600/60'
+                }`}
+                title="Add friend's fish to tank"
+              >
+                <UserPlus className="w-4 h-4" />
+              </button>
+              {/* Community fishbowl link */}
+              <Link
+                href="/fishbowl"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-teal-600 to-emerald-600 text-white hover:from-teal-500 hover:to-emerald-500 transition-all"
+              >
+                <Fish className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Community</span>
+              </Link>
+              {/* Network link */}
+              <Link
+                href="/network"
+                className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-cyan-600 to-blue-600 text-white hover:from-cyan-500 hover:to-blue-500 transition-all"
+              >
+                <Users className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Network</span>
+              </Link>
+            </div>
+          </div>
+
+          {/* Overlay panels — rendered with click-outside-to-close via refs */}
+          {showDecorPanel && (
+            <div ref={decorPanelRef} className="absolute left-0 right-0 top-full mt-0 mx-4 p-3 rounded-xl bg-[#0A1628]/95 border border-cyan-800/30 animate-in slide-in-from-top duration-200 backdrop-blur-sm shadow-xl shadow-black/40 z-40">
+              <p className="text-[10px] text-cyan-500 font-bold uppercase mb-2">Tank Theme</p>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                {DECOR_THEMES.map(theme => (
+                  <button
+                    key={theme.id}
+                    onClick={() => { setActiveDecor(theme.id); try { localStorage.setItem('personal-tank-theme', theme.id) } catch {} }}
+                    className={`flex items-center gap-2 p-2.5 rounded-lg border transition-all ${
+                      activeDecor === theme.id
+                        ? 'border-cyan-400 bg-cyan-900/40 shadow-lg shadow-cyan-900/20'
+                        : 'border-cyan-800/30 bg-cyan-900/10 hover:border-cyan-600/50'
+                    }`}
+                  >
+                    <theme.icon className={`w-4 h-4 ${activeDecor === theme.id ? 'text-cyan-300' : 'text-cyan-600'}`} />
+                    <div className="text-left">
+                      <p className={`text-[10px] font-bold ${activeDecor === theme.id ? 'text-cyan-200' : 'text-cyan-400'}`}>
+                        {theme.name}
+                      </p>
+                      <p className="text-[8px] text-cyan-600">{theme.description}</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {showInfo && (
+            <div ref={infoPanelRef} className="absolute left-0 right-0 top-full mt-0 mx-4 p-3 rounded-xl bg-[#0A1628]/95 border border-cyan-800/30 animate-in slide-in-from-top duration-200 backdrop-blur-sm shadow-xl shadow-black/40 z-40">
+              <p className="text-[10px] text-cyan-500 font-bold uppercase mb-2">Fish Species & Stock Levels</p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
+                {availableSpecies.map(sp => {
+                  const isUnlocked = (data.user?.stockScore || 0) >= sp.unlockScore
+                  return (
+                    <div
+                      key={sp.tier}
+                      className={`flex items-center gap-2 p-2 rounded-lg ${
+                        isUnlocked ? 'bg-cyan-900/30 border border-cyan-700/30' : 'bg-cyan-950/30 border border-cyan-900/20 opacity-50'
+                      }`}
+                    >
+                      <FishSVG tier={sp.tier} size={20} />
+                      <div>
+                        <p className="text-[9px] text-cyan-500 font-medium">{sp.name}</p>
+                        <p className="text-[9px] text-cyan-600">
+                          {sp.unlockScore === 0 ? '0-9' :
+                           sp.unlockScore === 10 ? '10-24' :
+                           sp.unlockScore === 25 ? '25-49' :
+                           sp.unlockScore === 50 ? '50-99' :
+                           sp.unlockScore === 100 ? '100-199' : '200+'
+                          } STOCK
+                        </p>
+                        {!isUnlocked && (
+                          <p className="text-[8px] text-amber-500/70 font-bold">LOCKED</p>
+                        )}
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+              <p className="mt-2 text-[10px] text-cyan-600 text-center">
+                Your stock score unlocks higher-tier species. Each tier adds new skins, colors, and patterns!
+              </p>
+            </div>
+          )}
+
+          {showFriendPanel && (
+            <div ref={friendPanelRef} className="absolute left-0 right-0 top-full mt-0 mx-4 p-3 rounded-xl bg-[#0A1628]/95 border border-teal-800/30 animate-in slide-in-from-top duration-200 backdrop-blur-sm shadow-xl shadow-black/40 z-40">
+              <p className="text-[10px] text-teal-500 font-bold uppercase mb-2">
+                Add Friend&apos;s Fish to Tank
+              </p>
+              {mutualFriends.length > 0 ? (
+                <div className="max-h-[160px] overflow-y-auto space-y-1">
+                  {mutualFriends.map(friend => {
+                    const friendTier = getTierFromScore(friend.stockScore)
+                    const isInTank = tankFriendIds.has(friend.id)
+                    return (
+                      <div
+                        key={friend.id}
+                        className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-cyan-900/30 transition-colors"
+                      >
+                        <button
+                          onClick={() => toggleFriendInTank(friend.id)}
+                          className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center transition-all ${
+                            isInTank
+                              ? 'bg-teal-500/25 border border-teal-500/50 text-teal-400 hover:bg-red-500/20 hover:border-red-500/50 hover:text-red-400'
+                              : 'bg-cyan-900/30 border border-cyan-800/40 text-cyan-700 hover:bg-teal-500/20 hover:border-teal-500/40 hover:text-teal-400'
+                          }`}
+                          title={isInTank ? 'Remove from tank' : 'Add to tank'}
+                        >
+                          {isInTank ? <Minus className="w-3 h-3" /> : <Plus className="w-3 h-3" />}
+                        </button>
+                        <FishSVG tier={friendTier} size={18} id={`pf-page-${friend.id}`} />
+                        <span className="flex-1 text-xs font-medium text-cyan-200 truncate">
+                          {friend.name}
+                        </span>
+                        <span className="px-1.5 py-0.5 rounded-full text-[8px] font-black bg-teal-500/20 text-teal-400 border border-teal-500/30">
+                          MUTUAL
+                        </span>
+                        <span className="text-[9px] text-cyan-600 font-bold">
+                          {friend.stockScore} STOCK
+                        </span>
+                      </div>
+                    )
+                  })}
+                </div>
+              ) : (
+                <div className="text-center py-4">
+                  <Users className="w-6 h-6 text-cyan-700 mx-auto mb-2" />
+                  <p className="text-[10px] text-cyan-600">No mutual friends yet.</p>
+                  <p className="text-[9px] text-cyan-700 mt-1">Follow people who follow you back to add their fish!</p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Fishbowl tank - fills remaining space */}
+      <div className="flex-1 p-3 sm:p-4 overflow-hidden min-h-0">
+        {fishbowlUsers.length > 0 ? (
+          <div className="w-full h-full rounded-2xl border-2 border-cyan-800/40 shadow-lg shadow-cyan-900/20 overflow-hidden">
+            <Fishbowl
+              users={fishbowlUsers}
+              ownerCustomization={userCustomization}
+              ownerId={data.user?.id}
+              contained
+              theme={activeDecor}
+            />
+          </div>
+        ) : (
+          <div className="w-full h-full rounded-2xl border-2 border-cyan-800/40 shadow-lg shadow-cyan-900/20 overflow-hidden flex items-center justify-center" style={{ background: 'linear-gradient(180deg, #0A1628 0%, #0D2137 40%, #123855 100%)' }}>
+            <div className="text-center space-y-4">
+              <Fish className="w-16 h-16 text-cyan-700 mx-auto" />
+              <p className="text-lg font-bold text-cyan-500">Your fishbowl is empty</p>
+              <p className="text-sm text-cyan-600">Follow people to add fish to your tank!</p>
+              <Link
+                href="/network"
+                className="inline-flex items-center gap-2 mt-2 px-5 py-2.5 rounded-xl text-sm font-bold bg-gradient-to-r from-cyan-600 to-blue-600 text-white hover:from-cyan-500 hover:to-blue-500 transition-all"
+              >
+                <Users className="w-4 h-4" />
+                Find People
+              </Link>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Fish Customizer Modal */}
+      {showCustomizer && data.user && (
+        <FishCustomizer
+          stockScore={data.user.stockScore}
+          currentCustomization={userCustomization}
+          onSave={handleSaveCustomization}
+          onClose={() => setShowCustomizer(false)}
+        />
+      )}
+    </div>
+  )
+}

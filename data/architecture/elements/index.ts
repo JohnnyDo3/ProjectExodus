@@ -116,12 +116,13 @@ export { TERRAZZO } from './floor/terrazzo';
 export { TREAD } from './floor/tread';
 export { WAFFLE_SLAB } from './floor/waffle-slab';
 
-// Fortification (5)
+// Fortification (6)
 export { BATTLEMENT } from './fortification/battlement';
 export { CRENEL } from './fortification/crenel';
 export { MACHICOLATION } from './fortification/machicolation';
 export { MERLON } from './fortification/merlon';
 export { PORTCULLIS } from './fortification/portcullis';
+export { TOWER } from './fortification/tower';
 
 // Garden (14)
 export { ALLEE } from './garden/allee';
@@ -151,8 +152,9 @@ export { KUBBEALTI_DOMED_CHAMBER } from './interior/kubbealti-domed-chamber';
 export { MANTELPIECE } from './interior/mantelpiece';
 export { SHOJI_SCREEN } from './interior/shoji-screen';
 
-// Religious (17)
+// Religious (18)
 export { ALTAR } from './religious/altar';
+export { AMBULATORY } from './religious/ambulatory';
 export { APSE } from './religious/apse';
 export { BAPTISTERY } from './religious/baptistery';
 export { BELL_TOWER } from './religious/bell-tower';
@@ -170,7 +172,7 @@ export { STUPA } from './religious/stupa';
 export { TORII_GATE } from './religious/torii-gate';
 export { TRANSEPT } from './religious/transept';
 
-// Roofs (7)
+// Roofs (9)
 export { BUTTRESS } from './roofs/buttress';
 export { CUPOLA } from './roofs/cupola';
 export { FLYING_BUTTRESS } from './roofs/flying-buttress';
@@ -178,6 +180,8 @@ export { GABLE } from './roofs/gable';
 export { HIP_ROOF } from './roofs/hip-roof';
 export { LANTERN } from './roofs/lantern';
 export { MANSARD } from './roofs/mansard';
+export { RAFTER } from './roofs/rafter';
+export { RIDGEPOLE } from './roofs/ridgepole';
 
 // Specialized - Art Deco (6)
 export { DECORATIVE_SPANDREL } from './specialized/art-deco/decorative-spandrel';
@@ -239,8 +243,9 @@ export { TRULLO } from './specialized/vernacular/trullo';
 export { WINDCATCHER } from './specialized/vernacular/windcatcher';
 export { YURT } from './specialized/vernacular/yurt';
 
-// Structural (8 - including new engineering elements)
+// Structural (9 - including new engineering elements)
 export { HERRINGBONE_BRICK_PATTERN } from './structural/herringbone-brick-pattern';
+export { JOIST } from './structural/joist';
 export { STONE_AND_CHAIN_HOOPS } from './structural/stone-and-chain-hoops';
 export { TRIPLE_STEPPED_PLATFORM } from './structural/triple-stepped-platform';
 // Structural Engineering - Bracing
@@ -275,11 +280,12 @@ export { FAN_VAULT } from './vaults/fan-vault';
 export { GROIN_VAULT } from './vaults/groin-vault';
 export { RIB_VAULT } from './vaults/rib-vault';
 
-// Wall (8)
+// Wall (9)
 export { ALCOVE } from './wall/alcove';
 export { COPING } from './wall/coping';
 export { CURTAIN_WALL } from './wall/curtain-wall';
 export { DADO } from './wall/dado';
+export { MASONRY } from './wall/masonry';
 export { NICHE } from './wall/niche';
 export { PARAPET } from './wall/parapet';
 export { PLINTH } from './wall/plinth';
@@ -419,6 +425,7 @@ import { CRENEL } from './fortification/crenel';
 import { MACHICOLATION } from './fortification/machicolation';
 import { MERLON } from './fortification/merlon';
 import { PORTCULLIS } from './fortification/portcullis';
+import { TOWER } from './fortification/tower';
 
 // Garden
 import { ALLEE } from './garden/allee';
@@ -450,6 +457,7 @@ import { SHOJI_SCREEN } from './interior/shoji-screen';
 
 // Religious
 import { ALTAR } from './religious/altar';
+import { AMBULATORY } from './religious/ambulatory';
 import { APSE } from './religious/apse';
 import { BAPTISTERY } from './religious/baptistery';
 import { BELL_TOWER } from './religious/bell-tower';
@@ -475,6 +483,8 @@ import { GABLE } from './roofs/gable';
 import { HIP_ROOF } from './roofs/hip-roof';
 import { LANTERN } from './roofs/lantern';
 import { MANSARD } from './roofs/mansard';
+import { RAFTER } from './roofs/rafter';
+import { RIDGEPOLE } from './roofs/ridgepole';
 
 // Specialized - Art Deco
 import { DECORATIVE_SPANDREL } from './specialized/art-deco/decorative-spandrel';
@@ -538,6 +548,7 @@ import { YURT } from './specialized/vernacular/yurt';
 
 // Structural
 import { HERRINGBONE_BRICK_PATTERN } from './structural/herringbone-brick-pattern';
+import { JOIST } from './structural/joist';
 import { STONE_AND_CHAIN_HOOPS } from './structural/stone-and-chain-hoops';
 import { TRIPLE_STEPPED_PLATFORM } from './structural/triple-stepped-platform';
 // Structural Engineering - Bracing
@@ -577,6 +588,7 @@ import { ALCOVE } from './wall/alcove';
 import { COPING } from './wall/coping';
 import { CURTAIN_WALL } from './wall/curtain-wall';
 import { DADO } from './wall/dado';
+import { MASONRY } from './wall/masonry';
 import { NICHE } from './wall/niche';
 import { PARAPET } from './wall/parapet';
 import { PLINTH } from './wall/plinth';
@@ -600,7 +612,7 @@ import { TRANSOM as WINDOW_TRANSOM } from './windows/transom';
 import type { ArchitecturalElement } from '../types';
 
 // ============================================================================
-// ALL_ELEMENTS ARRAY - Complete list of all 220 architectural elements
+// ALL_ELEMENTS ARRAY - Complete list of all 227 architectural elements
 // ============================================================================
 
 export const ALL_ELEMENTS: ArchitecturalElement[] = [
@@ -713,12 +725,13 @@ export const ALL_ELEMENTS: ArchitecturalElement[] = [
   TREAD,
   WAFFLE_SLAB,
 
-  // Fortification (5)
+  // Fortification (6)
   BATTLEMENT,
   CRENEL,
   MACHICOLATION,
   MERLON,
   PORTCULLIS,
+  TOWER,
 
   // Garden (14)
   ALLEE,
@@ -748,8 +761,9 @@ export const ALL_ELEMENTS: ArchitecturalElement[] = [
   MANTELPIECE,
   SHOJI_SCREEN,
 
-  // Religious (17)
+  // Religious (18)
   ALTAR,
+  AMBULATORY,
   APSE,
   BAPTISTERY,
   BELL_TOWER,
@@ -767,7 +781,7 @@ export const ALL_ELEMENTS: ArchitecturalElement[] = [
   TORII_GATE,
   TRANSEPT,
 
-  // Roofs (7)
+  // Roofs (9)
   BUTTRESS,
   CUPOLA,
   FLYING_BUTTRESS,
@@ -775,6 +789,8 @@ export const ALL_ELEMENTS: ArchitecturalElement[] = [
   HIP_ROOF,
   LANTERN,
   MANSARD,
+  RAFTER,
+  RIDGEPOLE,
 
   // Specialized - Art Deco (6)
   DECORATIVE_SPANDREL,
@@ -836,8 +852,9 @@ export const ALL_ELEMENTS: ArchitecturalElement[] = [
   WINDCATCHER,
   YURT,
 
-  // Structural (8 - including engineering elements)
+  // Structural (9 - including engineering elements)
   HERRINGBONE_BRICK_PATTERN,
+  JOIST,
   STONE_AND_CHAIN_HOOPS,
   TRIPLE_STEPPED_PLATFORM,
   // Structural Engineering - Bracing
@@ -872,11 +889,12 @@ export const ALL_ELEMENTS: ArchitecturalElement[] = [
   GROIN_VAULT,
   RIB_VAULT,
 
-  // Wall (8)
+  // Wall (9)
   ALCOVE,
   COPING,
   CURTAIN_WALL,
   DADO,
+  MASONRY,
   NICHE,
   PARAPET,
   PLINTH,
@@ -954,11 +972,11 @@ export const ELEMENT_STATS = {
     doors: 11,
     facade: 14,
     floor: 20,
-    fortification: 5,
+    fortification: 6,
     garden: 14,
     interior: 10,
-    religious: 17,
-    roofs: 7,
+    religious: 18,
+    roofs: 9,
     'specialized/art-deco': 6,
     'specialized/art-nouveau': 6,
     'specialized/brutalist': 6,
@@ -966,10 +984,10 @@ export const ELEMENT_STATS = {
     'specialized/high-tech': 6,
     'specialized/modernist': 8,
     'specialized/vernacular': 8,
-    structural: 8,
+    structural: 9,
     urban: 13,
     vaults: 4,
-    wall: 8,
+    wall: 9,
     windows: 13,
   },
 };

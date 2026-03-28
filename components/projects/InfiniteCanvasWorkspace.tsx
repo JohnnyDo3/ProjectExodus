@@ -247,8 +247,8 @@ export function InfiniteCanvasWorkspace({
           setNodes(data.nodes)
           setConnections(data.connections)
         }
-      } catch (err) {
-        console.error('Failed to import canvas:', err)
+      } catch {
+        // silently handle import error
       }
     }
     reader.readAsText(file)

@@ -79,7 +79,12 @@ export const ScrollContainer = forwardRef<HTMLDivElement, ScrollContainerProps>(
 
     return (
       <motion.div
-        ref={ref || containerRef}
+        ref={(el) => {
+          // Merge both refs so forwarded ref AND internal ref both point to the element
+          (containerRef as React.MutableRefObject<HTMLDivElement | null>).current = el
+          if (typeof ref === 'function') ref(el)
+          else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = el
+        }}
         className={cn(
           // Full viewport overlay
           'fixed inset-0 z-50',
@@ -114,8 +119,9 @@ export const ScrollContainer = forwardRef<HTMLDivElement, ScrollContainerProps>(
           <motion.div
             className={cn(
               'relative w-full h-full',
-              // Book shadow for depth
-              'drop-shadow-2xl'
+              // Book shadow for depth — use box-shadow instead of drop-shadow
+              // because CSS filter flattens preserve-3d children
+              'shadow-2xl'
             )}
             style={{
               transformStyle: 'preserve-3d',
