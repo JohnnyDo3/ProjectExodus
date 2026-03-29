@@ -94,7 +94,7 @@ export interface Module {
       aceReadiness: string
       identityVerification: string
     }
-    academicLevel: 'upper-division' | 'graduate'
+    academicLevel: 'lower-division' | 'upper-division' | 'graduate'
     discipline: string
     institutionalPartner?: string
   }
