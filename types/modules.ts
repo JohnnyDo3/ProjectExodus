@@ -71,6 +71,33 @@ export interface Module {
   duration: Record<LearningLevel, number>
   isMasterclass: boolean
   hasVideo?: boolean
+  accreditation?: {
+    courseTitle: string
+    courseDescription: string
+    learningObjectives: string[]
+    creditHours: number
+    totalLearningHours: number
+    prerequisites: string[]
+    assessmentFramework: {
+      formativeAssessments: string[]
+      summativeAssessments: string[]
+      passingThreshold: number
+      proctoringRequirement: string
+    }
+    finalProject: {
+      title: string
+      description: string
+      deliverables: string[]
+      rubricCriteria: string[]
+    }
+    accreditationNotes: {
+      aceReadiness: string
+      identityVerification: string
+    }
+    academicLevel: 'upper-division' | 'graduate'
+    discipline: string
+    institutionalPartner?: string
+  }
   lessons: ModuleLesson[]
   activities: ModuleActivity[]
   game: ModuleGame
