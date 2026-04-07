@@ -1581,7 +1581,7 @@ export function DigitalScroll({
   // Cover & inside-cover are full-bleed (no frame)
   // ============================================
 
-  const wrapPageContent = (page: ScrollContent | undefined, side: 'left' | 'right', absolutePageIndex: number) => {
+  const wrapPageContent = (page: ScrollContent | undefined | null, side: 'left' | 'right', absolutePageIndex: number) => {
     if (!page) return <div />
 
     const content = renderPageContent(page, side)
