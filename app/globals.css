@@ -2404,6 +2404,32 @@ body.textbook-fullscreen .fixed.inset-0.z-50 {
   );
 }
 
+/* Lesson divider between verses in combined content pages */
+.lesson-content hr.lesson-divider {
+  height: 2px;
+  margin: 2rem auto;
+  width: 70%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--primary),
+    var(--border),
+    var(--primary),
+    transparent
+  );
+}
+
+/* Verse header within combined content */
+.lesson-content .verse-header {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+}
+
+.lesson-content .verse-header h2 {
+  margin-top: 0;
+}
+
 /* Progress celebration animation */
 @keyframes celebrate-pulse {
   0%, 100% {

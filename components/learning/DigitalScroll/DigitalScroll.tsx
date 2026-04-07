@@ -264,35 +264,16 @@ export function DigitalScroll({
     chaptersToShow.forEach((module, chapterIndex) => {
       // ============================================
       // CHAPTER SPREAD LAYOUT (Learning Flow):
-      // 1. Chapter divider on LEFT page (even index)
-      // 2. Chapter intro on RIGHT page (same spread)
-      // 3. CONTENT PAGES (Information FIRST - read and learn)
-      // 4. Games page (reinforce and ingrain knowledge)
-      // 5. Graded Quiz (5 questions for assessment)
+      // 1. Chapter divider + intro (spread)
+      // 2. ONE full-width content page (all lessons, scrollable)
+      // 3. Review + Reflect (spread)
+      // 4. Games + Quiz (spread)
       // ============================================
 
-      // Ensure chapter divider lands on LEFT page (even index)
-      // Use previous chapter's review page as padding if needed
-      if (pages.length % 2 !== 0) {
-        const prevChapter = chapterIndex > 0 ? chapterIndex - 1 : 0
-        const prevModule = modules[prevChapter]
-        const prevGameItems = extractTermsFromModule(prevModule, selectedLevel, 6)
-        pages.push({
-          type: 'chapter-review',
-          chapterIndex: prevChapter,
-          module: prevModule,
-          keyTerms: prevGameItems.map(t => ({ term: t.term, definition: t.definition })),
-          funFacts: generateFunFacts(prevModule, selectedLevel, topic.id).slice(0, 2),
-          summaryPoints: generateSummaryPoints(prevModule, selectedLevel).slice(0, 2),
-        })
-      }
-
       // Generate game items from module content using term extraction
-      // First try to extract terms from actual content, then fall back to predefined terms
       const extractedTerms = extractTermsFromModule(module, selectedLevel, 12)
       const fallbackTerms = KEY_TERMS_BY_TOPIC[topic.id] || []
 
-      // Combine extracted terms with fallbacks, prioritizing extracted
       const chapterGameItems: GameItem[] = extractedTerms.length >= 5
         ? extractedTerms.map(t => ({
             id: t.id,
@@ -307,7 +288,7 @@ export function DigitalScroll({
             hint: t.hint || module.title,
           }))
 
-      // Chapter divider page - LEFT page of spread
+      // Chapter divider page (LEFT of spread)
       pages.push({
         type: 'chapter-divider',
         chapterIndex,
@@ -315,7 +296,7 @@ export function DigitalScroll({
         title: module.title,
       })
 
-      // Chapter intro page - RIGHT page of same spread
+      // Chapter intro page (RIGHT of spread)
       pages.push({
         type: 'chapter-intro',
         chapterIndex,
@@ -324,54 +305,30 @@ export function DigitalScroll({
       })
 
       // ============================================
-      // STEP 1: CONTENT PAGES (Information First!)
-      // Users read and absorb information before games
+      // SINGLE FULL-WIDTH CONTENT PAGE
+      // All lessons combined into one scrollable page
       // ============================================
-      module.lessons.forEach((lesson, verseIndex) => {
-        // Content pages for this verse
-        // Split long content into multiple pages
+      const allLessonContent = module.lessons.map((lesson, verseIndex) => {
         const content = lesson.content[selectedLevel] || lesson.content.HIGH_SCHOOL
-        // Use larger chunks (1800 chars ~300 words) to reduce page flips
-        // Internal scroll handles overflow for contextually related content
-        const contentChunks = splitContentIntoPages(content, 1800)
+        const verseHeader = `<div class="verse-header"><h2>${lesson.title}</h2></div>`
+        return verseHeader + content
+      }).join('<hr class="lesson-divider" />')
 
-        // First chunk gets verse header integrated
-        contentChunks.forEach((chunk, pageIndex) => {
-          pages.push({
-            type: 'content',
-            chapterIndex,
-            verseIndex,
-            pageIndex,
-            content: chunk,
-            title: pageIndex === 0 ? lesson.title : undefined,
-            module,
-          })
-        })
+      pages.push({
+        type: 'content',
+        chapterIndex,
+        verseIndex: 0,
+        pageIndex: 0,
+        content: allLessonContent,
+        title: module.title,
+        module,
       })
 
       // ============================================
-      // STEP 2: CHAPTER REVIEW + NOTES (Condensed Enrichment)
-      // Single review page combines: Key Terms, Fun Facts, Summary
-      // Enhanced notes page includes: Real World Actions + Notes
+      // REVIEW + NOTES SPREAD
       // ============================================
 
-      // Ensure review pages land on a good spread position
-      if (pages.length % 2 !== 0) {
-        // Add chapter review on odd page to make it land on left
-        pages.push({
-          type: 'chapter-review',
-          chapterIndex,
-          module,
-          keyTerms: chapterGameItems.slice(0, 6).map(item => ({
-            term: item.term,
-            definition: item.definition,
-          })),
-          funFacts: generateFunFacts(module, selectedLevel, topic.id).slice(0, 3),
-          summaryPoints: generateSummaryPoints(module, selectedLevel).slice(0, 3),
-        })
-      }
-
-      // Chapter Review page (LEFT) - combines Key Terms, Fun Facts, Summary
+      // Chapter Review page (LEFT)
       pages.push({
         type: 'chapter-review',
         chapterIndex,
@@ -384,7 +341,7 @@ export function DigitalScroll({
         summaryPoints: generateSummaryPoints(module, selectedLevel).slice(0, 3),
       })
 
-      // Enhanced Notes page (RIGHT) - includes Real World Actions + Notes + Discussion
+      // Enhanced Notes page (RIGHT)
       pages.push({
         type: 'notes-enhanced',
         chapterIndex,
@@ -393,11 +350,10 @@ export function DigitalScroll({
       })
 
       // ============================================
-      // STEP 3: GAMES (Reinforce & Ingrain)
-      // After reading, practice with interactive games
+      // GAMES + QUIZ SPREAD
       // ============================================
 
-      // Games page - RIGHT page (practice what you learned)
+      // Games page (LEFT)
       pages.push({
         type: 'games',
         chapterIndex,
@@ -405,17 +361,12 @@ export function DigitalScroll({
         gameItems: chapterGameItems,
       })
 
-      // ============================================
-      // STEP 4: GRADED QUIZ (Assessment)
-      // 5-question quiz graded for percentage accuracy
-      // ============================================
-
-      // Quiz page - graded assessment
+      // Quiz page (RIGHT)
       pages.push({
         type: 'quiz',
         chapterIndex,
         module,
-        gameItems: chapterGameItems, // Use same terms for quiz questions
+        gameItems: chapterGameItems,
       })
     })
 
