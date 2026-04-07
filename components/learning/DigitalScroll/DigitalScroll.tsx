@@ -1208,7 +1208,7 @@ export function DigitalScroll({
                     <p className="text-xs font-bold text-[var(--muted-foreground)] mb-1.5 flex items-center gap-1.5 uppercase tracking-wider">
                       <span className="text-sm">🎯</span> Learning Objectives Demonstrated
                     </p>
-                    <div className="space-y-1 max-h-[100px] overflow-y-auto pr-1">
+                    <div className="space-y-1">
                       {reviewAccreditation.learningObjectives.slice(0, 4).map((objective, idx) => (
                         <div key={idx} className="flex items-start gap-1.5 py-0.5">
                           <span

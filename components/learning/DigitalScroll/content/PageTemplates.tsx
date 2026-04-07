@@ -472,8 +472,6 @@ function SegmentRenderer({
           className={cn(
             'text-xs leading-relaxed text-[var(--book-text,var(--foreground))] mb-2',
             // Drop cap for first paragraph
-            isFirst && '[&::first-letter]:float-left [&::first-letter]:text-3xl [&::first-letter]:font-bold [&::first-letter]:mr-1.5 [&::first-letter]:mt-0.5',
-            isFirst && '[&::first-letter]:text-[var(--primary)]'
           )}
           dangerouslySetInnerHTML={{ __html: sanitizeHtml(segment.content) }}
         />
