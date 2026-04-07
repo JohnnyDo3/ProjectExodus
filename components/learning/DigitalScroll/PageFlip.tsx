@@ -26,6 +26,7 @@ interface PageFlipProps {
   onFlipComplete?: (direction: 'next' | 'prev') => void
   onFlipStart?: (direction: 'next' | 'prev') => void
   isAnimating?: boolean
+  singlePageMode?: boolean // Full-width single page (no split spread)
   className?: string
 }
 
@@ -47,6 +48,7 @@ export function PageFlip({
   onFlipComplete,
   onFlipStart,
   isAnimating,
+  singlePageMode = false,
   className,
 }: PageFlipProps) {
   const [flipState, setFlipState] = useState<FlipState>('idle')
@@ -163,6 +165,52 @@ export function PageFlip({
   // Keyboard navigation is handled by parent (DigitalScroll)
   // to allow single-page navigation instead of spread-based
   // ============================================
+
+  // ============================================
+  // RENDER - DESKTOP SINGLE PAGE (Full-width content)
+  // Used for lesson content pages
+  // ============================================
+
+  if (isDesktop && singlePageMode) {
+    return (
+      <div
+        ref={containerRef}
+        className={cn('relative w-full h-full', className)}
+      >
+        {/* Full-width single page */}
+        <div className="absolute inset-0">
+          {leftPage}
+        </div>
+
+        {/* Navigation Zones */}
+        <button
+          className="absolute left-0 top-0 w-16 h-full cursor-pointer opacity-[0.15] hover:opacity-100 transition-opacity duration-200 z-30 flex items-center justify-start pl-2"
+          onClick={() => flipToPrev()}
+          disabled={!canFlipPrev || flipState !== 'idle'}
+          aria-label="Previous page"
+        >
+          <div className="w-8 h-8 rounded-full bg-black/10 flex items-center justify-center">
+            <svg className="w-4 h-4 text-[var(--foreground)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </div>
+        </button>
+
+        <button
+          className="absolute right-0 top-0 w-16 h-full cursor-pointer opacity-[0.15] hover:opacity-100 transition-opacity duration-200 z-30 flex items-center justify-end pr-2"
+          onClick={() => flipToNext()}
+          disabled={!canFlipNext || flipState !== 'idle'}
+          aria-label="Next page"
+        >
+          <div className="w-8 h-8 rounded-full bg-black/10 flex items-center justify-center">
+            <svg className="w-4 h-4 text-[var(--foreground)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </button>
+      </div>
+    )
+  }
 
   // ============================================
   // RENDER - DESKTOP (TWO-PAGE SPREAD)

@@ -438,34 +438,71 @@ export function DigitalScroll({
     : null
 
   // ============================================
+  // LAYOUT HELPERS
+  // Content pages display as full-width single pages on desktop
+  // All other pages display as two-page spreads
+  // ============================================
+
+  const isContentPage = useCallback((pageIndex: number): boolean => {
+    return bookPages[pageIndex]?.type === 'content'
+  }, [bookPages])
+
+  const isSinglePageMode = useMemo(() => {
+    return isDesktop && isContentPage(currentPageIndex)
+  }, [isDesktop, currentPageIndex, isContentPage])
+
+  // ============================================
   // NAVIGATION HANDLERS
+  // Dynamically adjusts increment based on current page layout
   // ============================================
 
   const goToPage = useCallback((pageIndex: number) => {
-    // On desktop, ensure we always land on an even index (left page of spread)
-    let targetIndex = pageIndex
-    if (isDesktop && pageIndex % 2 !== 0) {
-      targetIndex = pageIndex - 1 // Snap to left page of spread
-    }
-    const clampedIndex = Math.max(0, Math.min(targetIndex, totalPages - 1))
+    const clampedIndex = Math.max(0, Math.min(pageIndex, totalPages - 1))
     setCurrentPageIndex(clampedIndex)
     playPageTurn()
-  }, [totalPages, playPageTurn, isDesktop])
+  }, [totalPages, playPageTurn])
 
-  // Navigate by full spread on desktop (2 pages), single page on mobile
   const nextPage = useCallback(() => {
-    const increment = isDesktop ? 2 : 1
-    if (currentPageIndex < totalPages - increment) {
-      goToPage(currentPageIndex + increment)
+    if (!isDesktop) {
+      // Mobile: always advance by 1
+      if (currentPageIndex < totalPages - 1) {
+        goToPage(currentPageIndex + 1)
+      }
+      return
     }
-  }, [currentPageIndex, totalPages, goToPage, isDesktop])
+
+    if (isContentPage(currentPageIndex)) {
+      // Currently on a single content page → advance by 1
+      if (currentPageIndex < totalPages - 1) {
+        goToPage(currentPageIndex + 1)
+      }
+    } else {
+      // Currently on a spread → advance by 2
+      if (currentPageIndex < totalPages - 2) {
+        goToPage(currentPageIndex + 2)
+      }
+    }
+  }, [currentPageIndex, totalPages, goToPage, isDesktop, isContentPage])
 
   const prevPage = useCallback(() => {
-    const decrement = isDesktop ? 2 : 1
-    if (currentPageIndex >= decrement) {
-      goToPage(currentPageIndex - decrement)
+    if (!isDesktop) {
+      if (currentPageIndex > 0) {
+        goToPage(currentPageIndex - 1)
+      }
+      return
     }
-  }, [currentPageIndex, goToPage, isDesktop])
+
+    const prevIdx = currentPageIndex - 1
+    if (prevIdx < 0) return
+
+    if (isContentPage(prevIdx)) {
+      // Previous page is content (single) → go back by 1
+      goToPage(prevIdx)
+    } else {
+      // Previous page is part of a spread → go back by 2 to the spread start
+      goToPage(Math.max(currentPageIndex - 2, 0))
+    }
+  }, [currentPageIndex, goToPage, isDesktop, isContentPage])
 
   const goToChapter = useCallback((chapterIndex: number) => {
     // Find the chapter divider page for this chapter
@@ -473,12 +510,8 @@ export function DigitalScroll({
       (page) => page.type === 'chapter-divider' && page.chapterIndex === chapterIndex
     )
     if (pageIndex !== -1) {
-      // Snap to even index on desktop (left page of spread)
-      let targetIndex = pageIndex
-      if (isDesktop && pageIndex % 2 !== 0) {
-        targetIndex = pageIndex - 1
-      }
-      const clampedIndex = Math.max(0, Math.min(targetIndex, totalPages - 1))
+      // Chapter dividers are spread pages, so use directly
+      const clampedIndex = Math.max(0, Math.min(pageIndex, totalPages - 1))
 
       // Use rapid flip if jumping more than 5 pages
       if (Math.abs(clampedIndex - currentPageIndex) > 5) {
@@ -491,7 +524,7 @@ export function DigitalScroll({
         goToPage(clampedIndex)
       }
     }
-  }, [bookPages, currentPageIndex, goToPage, isDesktop, totalPages])
+  }, [bookPages, currentPageIndex, goToPage, totalPages])
 
   const continueReading = useCallback(() => {
     const position = scrollState.getContinuePosition(topic.id)
@@ -631,47 +664,42 @@ export function DigitalScroll({
           <div className="w-full h-full flex flex-col px-2">
             <AncientBorder />
             {/* TOC Header */}
-            <div className="text-center py-4 shrink-0">
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[var(--book-text,var(--foreground))] mb-1">
+            <div className="text-center py-2 shrink-0">
+              <h2 className="text-xl sm:text-2xl font-serif font-bold text-[var(--book-text,var(--foreground))] mb-0.5">
                 Table of Contents
               </h2>
-              <p className="text-xs text-[var(--muted-foreground)] italic font-serif">
+              <p className="text-[10px] text-[var(--muted-foreground)] italic font-serif">
                 The Seven Paths of Knowledge
               </p>
             </div>
             <HieroglyphicDivider color={currentRibbon?.colors.from} />
-            {/* Chapter List - fills available space with scroll if needed */}
-            <div className="flex-1 overflow-y-auto space-y-2 py-2">
+            {/* Chapter List - compact to fit without scrolling */}
+            <div className="flex-1 min-h-0 flex flex-col justify-evenly py-1">
               {modules.slice(0, 7).map((module, i) => {
                 const ribbon = RIBBON_ORDER[i] ? GUARDIAN_RIBBONS[RIBBON_ORDER[i]] : null
                 return (
                   <button
                     key={module.id}
                     onClick={() => goToChapter(i)}
-                    className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-[var(--muted)] transition-colors text-left group border border-transparent hover:border-[var(--border)]"
+                    className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-[var(--muted)] transition-colors text-left group"
                   >
                     <div
-                      className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm font-bold shadow-md shrink-0"
+                      className="w-6 h-6 rounded flex items-center justify-center text-white text-[10px] font-bold shadow-sm shrink-0"
                       style={{ background: ribbon?.colors.gradient }}
                     >
                       {i + 1}
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <span className="text-[10px] uppercase tracking-wider text-[var(--muted-foreground)] block">
-                        Chapter {i + 1}
-                      </span>
-                      <span className="font-serif text-base text-[var(--book-text,var(--foreground))] group-hover:text-[var(--primary)] transition-colors truncate block">
-                        {module.title}
-                      </span>
-                    </div>
-                    <ChevronRight className="w-4 h-4 text-[var(--muted-foreground)] group-hover:text-[var(--primary)] transition-colors shrink-0" />
+                    <span className="flex-1 text-xs font-serif font-medium text-[var(--book-text,var(--foreground))] group-hover:text-[var(--primary)] transition-colors truncate">
+                      {module.title}
+                    </span>
+                    <ChevronRight className="w-3 h-3 text-[var(--muted-foreground)] group-hover:text-[var(--primary)] transition-colors shrink-0" />
                   </button>
                 )
               })}
             </div>
             {/* Footer */}
-            <div className="text-center py-2 border-t border-[var(--border)]/20 shrink-0">
-              <p className="text-[10px] text-[var(--muted-foreground)]">
+            <div className="text-center py-1 shrink-0">
+              <p className="text-[9px] text-[var(--muted-foreground)]">
                 Click a chapter to begin reading
               </p>
             </div>
@@ -871,23 +899,23 @@ export function DigitalScroll({
 
               {/* LEARNING OBJECTIVES - shown for undergrad/graduate levels */}
               {showAccreditation && chapterAccreditation.learningObjectives.length > 0 && (
-                <div>
-                  <p className="text-xs font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                    <span className="text-sm">🎯</span> Learning Objectives
+                <div className="min-h-0">
+                  <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-0.5 flex items-center gap-1">
+                    <span className="text-xs">🎯</span> Learning Objectives
                   </p>
-                  <div className="space-y-0.5 max-h-[120px] overflow-y-auto pr-1">
-                    {chapterAccreditation.learningObjectives.slice(0, 6).map((objective, idx) => (
+                  <div className="space-y-0.5">
+                    {chapterAccreditation.learningObjectives.slice(0, 4).map((objective, idx) => (
                       <div
                         key={idx}
-                        className="flex items-start gap-1.5 py-0.5 px-1.5 rounded text-[10px] leading-tight"
+                        className="flex items-start gap-1 px-1 text-[9px] leading-tight"
                       >
                         <span
-                          className="w-3.5 h-3.5 rounded-full flex items-center justify-center text-white text-[8px] font-bold shrink-0 mt-0.5"
+                          className="w-3 h-3 rounded-full flex items-center justify-center text-white text-[7px] font-bold shrink-0 mt-px"
                           style={{ background: introColor }}
                         >
                           {idx + 1}
                         </span>
-                        <p className="text-[var(--book-text,var(--foreground))]">
+                        <p className="text-[var(--book-text,var(--foreground))] line-clamp-2">
                           {objective}
                         </p>
                       </div>
@@ -898,30 +926,27 @@ export function DigitalScroll({
 
               {/* LESSONS SECTION */}
               <div className="min-h-0">
-                <p className="text-xs font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                  <span className="text-sm">📚</span> Lessons
+                <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-0.5 flex items-center gap-1">
+                  <span className="text-xs">📚</span> Lessons
                 </p>
-                <div className="space-y-1 max-h-[200px] overflow-y-auto pr-1">
-                  {allLessons.slice(0, 5).map((lesson, idx) => (
+                <div className="space-y-0.5">
+                  {allLessons.slice(0, showAccreditation ? 4 : 5).map((lesson, idx) => (
                     <div
                       key={lesson.id || idx}
-                      className="flex items-center gap-2 py-1 px-2 rounded bg-[var(--muted)]/15"
+                      className="flex items-center gap-1.5 py-0.5 px-1.5 rounded bg-[var(--muted)]/15"
                     >
                       <div
-                        className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[10px] font-bold shrink-0"
+                        className="w-4 h-4 rounded-full flex items-center justify-center text-white text-[8px] font-bold shrink-0"
                         style={{ background: introColor }}
                       >
                         {idx + 1}
                       </div>
-                      <p className="flex-1 text-xs font-medium text-[var(--book-text,var(--foreground))] truncate">
+                      <p className="flex-1 text-[10px] font-medium text-[var(--book-text,var(--foreground))] truncate">
                         {lesson.title}
                       </p>
-                      <span className="text-[10px] text-[var(--muted-foreground)] shrink-0">
+                      <span className="text-[9px] text-[var(--muted-foreground)] shrink-0">
                         {lesson.duration}m
                       </span>
-                      {lesson.hasActivity && (
-                        <span className="text-xs" title="Includes activity">⚡</span>
-                      )}
                     </div>
                   ))}
                 </div>
@@ -1556,15 +1581,17 @@ export function DigitalScroll({
   }
 
   // ============================================
-  // GET PAGES FOR CURRENT SPREAD
+  // GET PAGES FOR CURRENT SPREAD/SINGLE
+  // In single-page mode: only leftPage is shown (full-width)
+  // In spread mode: leftPage + rightPage shown side by side
   // ============================================
 
   const leftPage = bookPages[currentPageIndex]
-  const rightPage = isDesktop ? bookPages[currentPageIndex + 1] : null
+  const rightPage = (isDesktop && !isSinglePageMode) ? bookPages[currentPageIndex + 1] : null
   const prevLeftPage = bookPages[currentPageIndex - 2]
   const prevRightPage = bookPages[currentPageIndex - 1]
-  const nextLeftPage = bookPages[currentPageIndex + 2]
-  const nextRightPage = bookPages[currentPageIndex + 3]
+  const nextLeftPage = isSinglePageMode ? bookPages[currentPageIndex + 1] : bookPages[currentPageIndex + 2]
+  const nextRightPage = isSinglePageMode ? bookPages[currentPageIndex + 2] : bookPages[currentPageIndex + 3]
 
   // ============================================
   // COMPLETED CHAPTERS
@@ -1591,8 +1618,13 @@ export function DigitalScroll({
       return content
     }
 
-    // Content, games, quiz allow internal scrolling
-    const allowScroll = page.type === 'content' || page.type === 'games' || page.type === 'quiz'
+    // Scroll behavior is context-aware:
+    // - Content pages (lessons): always scrollable (textbook content)
+    // - Games/quiz: scrollable only in minimized view
+    // - Everything else: never scrollable (must fit the page)
+    const isContent = page.type === 'content'
+    const isInteractive = page.type === 'games' || page.type === 'quiz'
+    const allowScroll = isContent || (isInteractive && !isExpanded)
 
     return (
       <ScrollPage
@@ -1673,10 +1705,18 @@ export function DigitalScroll({
 
             {/* Page Flip Container */}
             <PageFlip
+              singlePageMode={isSinglePageMode}
               leftPage={
-                <PageContainer side="left">
-                  {wrapPageContent(leftPage, 'left', currentPageIndex)}
-                </PageContainer>
+                isSinglePageMode ? (
+                  // Single page mode: full-width page with balanced padding
+                  <PageContainer side="left" className="!pl-6 !pr-6">
+                    {wrapPageContent(leftPage, 'left', currentPageIndex)}
+                  </PageContainer>
+                ) : (
+                  <PageContainer side="left">
+                    {wrapPageContent(leftPage, 'left', currentPageIndex)}
+                  </PageContainer>
+                )
               }
               rightPage={
                 <PageContainer side="right">
@@ -1686,14 +1726,14 @@ export function DigitalScroll({
               nextLeftPage={
                 nextLeftPage ? (
                   <PageContainer side="left">
-                    {wrapPageContent(nextLeftPage, 'left', currentPageIndex + 2)}
+                    {wrapPageContent(nextLeftPage, 'left', isSinglePageMode ? currentPageIndex + 1 : currentPageIndex + 2)}
                   </PageContainer>
                 ) : undefined
               }
               nextRightPage={
                 nextRightPage ? (
                   <PageContainer side="right">
-                    {wrapPageContent(nextRightPage, 'right', currentPageIndex + 3)}
+                    {wrapPageContent(nextRightPage, 'right', isSinglePageMode ? currentPageIndex + 2 : currentPageIndex + 3)}
                   </PageContainer>
                 ) : undefined
               }
@@ -1711,21 +1751,21 @@ export function DigitalScroll({
                   </PageContainer>
                 ) : undefined
               }
-              currentSpread={Math.floor(currentPageIndex / 2)}
-              totalSpreads={Math.ceil(totalPages / 2)}
+              currentSpread={currentPageIndex}
+              totalSpreads={totalPages}
               onFlipStart={() => setIsFlipping(true)}
               onFlipComplete={(direction) => {
                 setIsFlipping(false)
                 if (direction === 'next') {
-                  setCurrentPageIndex((prev) => Math.min(prev + (isDesktop ? 2 : 1), totalPages - 1))
+                  nextPage()
                 } else {
-                  setCurrentPageIndex((prev) => Math.max(prev - (isDesktop ? 2 : 1), 0))
+                  prevPage()
                 }
               }}
             />
 
-            {/* Book Spine */}
-            <ScrollSpine />
+            {/* Book Spine - hidden in single page mode */}
+            {!isSinglePageMode && <ScrollSpine />}
 
             {/* Page Edges */}
             <PageEdges pageCount={totalPages} />

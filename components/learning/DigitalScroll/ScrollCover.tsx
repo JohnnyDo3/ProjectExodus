@@ -340,7 +340,7 @@ export function InsideCover({
     <div
       className={cn(
         'w-full h-full flex flex-col items-center justify-center px-4 py-4',
-        'text-center overflow-y-auto',
+        'text-center overflow-hidden',
         className
       )}
       style={{
