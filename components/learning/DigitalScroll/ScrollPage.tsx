@@ -9,6 +9,7 @@ import { sanitizeHtml } from '@/lib/utils/sanitize'
 
 import { motion } from 'framer-motion'
 import { forwardRef, ReactNode, useState, useEffect, useRef } from 'react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
 import {
   WATERMARK_CONFIG,
@@ -29,7 +30,11 @@ interface ScrollPageProps {
   chapterIndex: number
   side: 'left' | 'right'
   showWatermark?: boolean
-  allowScroll?: boolean // For quizzes/games only, learning content should fit the page
+  allowScroll?: boolean // For lesson content, quizzes/games - other pages should fit
+  onPrevPage?: () => void
+  onNextPage?: () => void
+  isFirstPage?: boolean
+  isLastPage?: boolean
   className?: string
 }
 
@@ -82,7 +87,7 @@ interface Illustration {
 
 export const ScrollPage = forwardRef<HTMLDivElement, ScrollPageProps>(
   function ScrollPage(
-    { children, pageNumber, totalPages, chapterIndex, side, showWatermark = true, allowScroll = false, className },
+    { children, pageNumber, totalPages, chapterIndex, side, showWatermark = true, allowScroll = false, onPrevPage, onNextPage, isFirstPage = false, isLastPage = false, className },
     ref
   ) {
     const [deviceType, setDeviceType] = useState<'desktop' | 'tablet' | 'mobile'>('desktop')
@@ -105,6 +110,7 @@ export const ScrollPage = forwardRef<HTMLDivElement, ScrollPageProps>(
     }, [])
 
     const isDesktop = deviceType === 'desktop'
+    const isMobile = deviceType !== 'desktop'
     const ribbon = RIBBON_ORDER[chapterIndex] ? GUARDIAN_RIBBONS[RIBBON_ORDER[chapterIndex]] : null
     const WatermarkIcon = ribbon?.icon
 
@@ -119,7 +125,6 @@ export const ScrollPage = forwardRef<HTMLDivElement, ScrollPageProps>(
           className
         )}
         style={{
-          // Paper texture using subtle gradient
           backgroundImage: `
             radial-gradient(circle at 100% 0%, rgba(0,0,0,0.02) 0%, transparent 50%),
             radial-gradient(circle at 0% 100%, rgba(0,0,0,0.01) 0%, transparent 50%)
@@ -128,63 +133,129 @@ export const ScrollPage = forwardRef<HTMLDivElement, ScrollPageProps>(
         role="article"
         aria-label={A11Y_CONFIG.ariaLabels.pageNumber(pageNumber, totalPages)}
       >
-        {/* Page header with chapter indicator */}
-        <div
-          className={cn(
-            'shrink-0 py-2 border-b border-[var(--border)]/30',
-            'flex items-center justify-between',
-            'text-xs text-[var(--muted-foreground)]'
-          )}
-        >
-          {side === 'left' ? (
-            <>
-              <span className="font-medium">Page {pageNumber}</span>
-              <span className="italic opacity-60">verso</span>
-            </>
-          ) : (
-            <>
-              <span className="italic opacity-60">recto</span>
-              <span className="font-medium">Page {pageNumber}</span>
-            </>
-          )}
-        </div>
-
-        {/* Main content area - scroll only when allowScroll is true (quizzes/games) */}
+        {/* Main content area */}
         <div
           ref={scrollContainerRef}
           className={cn(
-            'flex-1 min-h-0 py-2 overflow-x-hidden',
+            'flex-1 min-h-0 pt-2 pb-1 overflow-x-hidden',
             allowScroll ? 'overflow-y-auto' : 'overflow-y-hidden',
-            // Add right padding on left pages to prevent text hitting scrollbar
-            side === 'left' && allowScroll && 'pr-3'
+            side === 'left' && allowScroll && 'pr-1'
           )}
         >
           {children}
         </div>
 
-        {/* Page footer */}
+        {/* Footer: page number in corner + turn arrows */}
         <div
           className={cn(
-            'shrink-0 py-1.5 border-t border-[var(--border)]/20',
-            'flex items-center justify-center',
-            'text-[10px] text-[var(--muted-foreground)]/50'
+            'shrink-0 py-1 border-t border-[var(--border)]/20',
+            'flex items-center',
+            'text-[10px] text-[var(--muted-foreground)]'
           )}
         >
-          {ribbon && (
-            <span className="flex items-center gap-1">
-              <span
-                className="w-2 h-2 rounded-full"
-                style={{ background: ribbon.colors.gradient }}
-              />
-              <span>Chapter {chapterIndex + 1}</span>
-            </span>
+          {/* Desktop left page: ← pageNum ... chapter */}
+          {isDesktop && side === 'left' && (
+            <>
+              <div className="flex items-center gap-1.5">
+                {onPrevPage && (
+                  <button
+                    onClick={onPrevPage}
+                    disabled={isFirstPage}
+                    className="p-0.5 rounded hover:bg-[var(--muted)]/50 disabled:opacity-20 transition-colors"
+                    aria-label="Previous page"
+                  >
+                    <ChevronLeft className="w-3.5 h-3.5" />
+                  </button>
+                )}
+                <span className="font-medium tabular-nums">{pageNumber}</span>
+              </div>
+              <div className="flex-1" />
+              {ribbon && (
+                <span className="flex items-center gap-1 opacity-60">
+                  <span
+                    className="w-1.5 h-1.5 rounded-full"
+                    style={{ background: ribbon.colors.gradient }}
+                  />
+                  <span className="text-[9px]">Ch. {chapterIndex + 1}</span>
+                </span>
+              )}
+            </>
+          )}
+
+          {/* Desktop right page: chapter ... pageNum → */}
+          {isDesktop && side === 'right' && (
+            <>
+              {ribbon && (
+                <span className="flex items-center gap-1 opacity-60">
+                  <span
+                    className="w-1.5 h-1.5 rounded-full"
+                    style={{ background: ribbon.colors.gradient }}
+                  />
+                  <span className="text-[9px]">Ch. {chapterIndex + 1}</span>
+                </span>
+              )}
+              <div className="flex-1" />
+              <div className="flex items-center gap-1.5">
+                <span className="font-medium tabular-nums">{pageNumber}</span>
+                {onNextPage && (
+                  <button
+                    onClick={onNextPage}
+                    disabled={isLastPage}
+                    className="p-0.5 rounded hover:bg-[var(--muted)]/50 disabled:opacity-20 transition-colors"
+                    aria-label="Next page"
+                  >
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
+            </>
+          )}
+
+          {/* Mobile/tablet: ← pageNum ... chapter ... → */}
+          {isMobile && (
+            <>
+              <div className="flex items-center gap-1.5">
+                {onPrevPage && (
+                  <button
+                    onClick={onPrevPage}
+                    disabled={isFirstPage}
+                    className="p-1 rounded hover:bg-[var(--muted)]/50 disabled:opacity-20 transition-colors"
+                    aria-label="Previous page"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                )}
+                <span className="font-medium tabular-nums">{pageNumber}</span>
+              </div>
+              <div className="flex-1 flex justify-center">
+                {ribbon && (
+                  <span className="flex items-center gap-1 opacity-60">
+                    <span
+                      className="w-1.5 h-1.5 rounded-full"
+                      style={{ background: ribbon.colors.gradient }}
+                    />
+                    <span className="text-[9px]">Ch. {chapterIndex + 1}</span>
+                  </span>
+                )}
+              </div>
+              {onNextPage && (
+                <button
+                  onClick={onNextPage}
+                  disabled={isLastPage}
+                  className="p-1 rounded hover:bg-[var(--muted)]/50 disabled:opacity-20 transition-colors"
+                  aria-label="Next page"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              )}
+            </>
           )}
         </div>
 
-        {/* Guardian Watermark Easter Egg */}
+        {/* Guardian Watermark */}
         {showWatermark && WatermarkIcon && (
           <div
-            className="absolute bottom-12 right-8 pointer-events-none"
+            className="absolute bottom-10 right-6 pointer-events-none"
             style={{
               width: WATERMARK_CONFIG.size,
               height: WATERMARK_CONFIG.size,
@@ -201,7 +272,7 @@ export const ScrollPage = forwardRef<HTMLDivElement, ScrollPageProps>(
           </div>
         )}
 
-        {/* Page fold shadow effect */}
+        {/* Page fold shadow */}
         {isDesktop && (
           <div
             className={cn(
