@@ -22,6 +22,7 @@ interface Feature {
   href: string
   icon: typeof GraduationCap
   accentColor: string
+  accentRgb: string
   gridClass?: string
   hero?: boolean
   stats?: string[]
@@ -36,6 +37,7 @@ const features: Feature[] = [
     href: '/learn',
     icon: GraduationCap,
     accentColor: '#36763d',
+    accentRgb: '54,118,61',
     gridClass: 'md:col-span-2 lg:col-span-2 md:row-span-2 lg:row-span-2',
     hero: true,
     stats: ['330+ Questions', '6 Topics', 'ACE Accredited'],
@@ -48,6 +50,7 @@ const features: Feature[] = [
     href: '/products',
     icon: ShoppingBag,
     accentColor: '#357777',
+    accentRgb: '53,119,119',
   },
   {
     id: 'community',
@@ -57,6 +60,7 @@ const features: Feature[] = [
     href: '/community',
     icon: Users,
     accentColor: '#c24f31',
+    accentRgb: '194,79,49',
   },
   {
     id: 'networking',
@@ -66,6 +70,7 @@ const features: Feature[] = [
     href: '/network',
     icon: Share2,
     accentColor: '#357777',
+    accentRgb: '53,119,119',
     gridClass: 'lg:col-span-2',
   },
   {
@@ -76,6 +81,7 @@ const features: Feature[] = [
     href: '/my/volition',
     icon: Fish,
     accentColor: '#36763d',
+    accentRgb: '54,118,61',
   },
   {
     id: 'mindmaps',
@@ -85,6 +91,7 @@ const features: Feature[] = [
     href: '/mindmaps',
     icon: Brain,
     accentColor: '#c24f31',
+    accentRgb: '194,79,49',
   },
   {
     id: 'gamification',
@@ -94,6 +101,7 @@ const features: Feature[] = [
     href: '/dashboard',
     icon: Trophy,
     accentColor: '#36763d',
+    accentRgb: '54,118,61',
   },
   {
     id: 'articles',
@@ -103,6 +111,7 @@ const features: Feature[] = [
     href: '/articles',
     icon: FileText,
     accentColor: '#357777',
+    accentRgb: '53,119,119',
   },
 ]
 
@@ -110,7 +119,7 @@ const features: Feature[] = [
 // ANIMATED SCENES
 // ============================================
 
-function AnimatedScene({ id, color }: { id: string; color: string }) {
+function AnimatedScene({ id, color, rgb }: { id: string; color: string; rgb: string }) {
   switch (id) {
     case 'learn':
       return (
@@ -119,14 +128,14 @@ function AnimatedScene({ id, color }: { id: string; color: string }) {
           {[0, 1, 2, 3, 4].map(i => (
             <div
               key={`page-${i}`}
-              className="absolute rounded-sm border"
+              className="absolute rounded-sm"
               style={{
-                width: 16 + i * 4,
-                height: 20 + i * 5,
+                width: 18 + i * 5,
+                height: 22 + i * 6,
                 left: `${8 + i * 18}%`,
-                top: `${12 + (i % 3) * 18}%`,
-                borderColor: color,
-                opacity: 0.1 + i * 0.02,
+                top: `${10 + (i % 3) * 16}%`,
+                border: `1.5px solid rgba(${rgb}, 0.25)`,
+                backgroundColor: `rgba(${rgb}, 0.04)`,
                 animation: `feat-float ${3 + i * 0.7}s ease-in-out infinite ${i * 0.5}s`,
                 transform: `rotate(${-15 + i * 8}deg)`,
               }}
@@ -134,9 +143,9 @@ function AnimatedScene({ id, color }: { id: string; color: string }) {
           ))}
           {/* Graduation cap */}
           <GraduationCap
-            className="absolute right-[12%] top-[15%]"
+            className="absolute right-[12%] top-[12%]"
             style={{
-              width: 44, height: 44, color, opacity: 0.12,
+              width: 48, height: 48, color, opacity: 0.2,
               animation: 'feat-float 4s ease-in-out infinite 1s',
             }}
           />
@@ -147,10 +156,10 @@ function AnimatedScene({ id, color }: { id: string; color: string }) {
               className="absolute font-bold select-none"
               style={{
                 left: `${5 + i * 16}%`,
-                bottom: `${8 + (i % 3) * 12}%`,
+                bottom: `${8 + (i % 3) * 10}%`,
                 color,
-                opacity: 0.08,
-                fontSize: 12 + i * 3,
+                opacity: 0.15,
+                fontSize: 14 + i * 3,
                 animation: `feat-rise ${5 + i}s linear infinite ${i * 1.2}s`,
               }}
             >
@@ -169,19 +178,18 @@ function AnimatedScene({ id, color }: { id: string; color: string }) {
               key={i}
               className="absolute rounded-lg"
               style={{
-                width: 22,
-                height: 22,
-                left: `${15 + (i % 3) * 28}%`,
-                top: `${12 + Math.floor(i / 3) * 28}%`,
-                backgroundColor: color,
-                opacity: 0.06,
+                width: 24,
+                height: 24,
+                left: `${12 + (i % 3) * 30}%`,
+                top: `${10 + Math.floor(i / 3) * 28}%`,
+                backgroundColor: `rgba(${rgb}, 0.1)`,
                 animation: `feat-pulse ${2 + (i % 3) * 0.4}s ease-in-out infinite ${i * 0.15}s`,
               }}
             />
           ))}
           <Leaf
-            className="absolute right-[15%] bottom-[18%]"
-            style={{ width: 28, height: 28, color, opacity: 0.1, animation: 'feat-float 5s ease-in-out infinite' }}
+            className="absolute right-[12%] bottom-[15%]"
+            style={{ width: 30, height: 30, color, opacity: 0.18, animation: 'feat-float 5s ease-in-out infinite' }}
           />
         </>
       )
@@ -191,9 +199,9 @@ function AnimatedScene({ id, color }: { id: string; color: string }) {
         <>
           {/* Chat bubbles */}
           {[
-            { left: '12%', top: '18%', w: 48, h: 26, delay: 0 },
-            { left: '48%', top: '30%', w: 40, h: 22, delay: 1.5 },
-            { left: '22%', top: '52%', w: 52, h: 28, delay: 3 },
+            { left: '10%', top: '15%', w: 52, h: 28, delay: 0 },
+            { left: '48%', top: '28%', w: 44, h: 24, delay: 1.5 },
+            { left: '20%', top: '52%', w: 56, h: 30, delay: 3 },
           ].map((b, i) => (
             <div
               key={i}
@@ -201,13 +209,12 @@ function AnimatedScene({ id, color }: { id: string; color: string }) {
               style={{
                 width: b.w, height: b.h,
                 left: b.left, top: b.top,
-                backgroundColor: color,
-                opacity: 0.08,
-                animation: `feat-pop ${4}s ease-out infinite ${b.delay}s`,
+                backgroundColor: `rgba(${rgb}, 0.12)`,
+                animation: `feat-pop 4s ease-out infinite ${b.delay}s`,
               }}
             >
-              <div className="absolute top-[35%] left-2 right-3 h-[2px] rounded-full" style={{ backgroundColor: color, opacity: 0.25 }} />
-              <div className="absolute top-[55%] left-2 right-5 h-[2px] rounded-full" style={{ backgroundColor: color, opacity: 0.15 }} />
+              <div className="absolute top-[35%] left-2 right-3 h-[2px] rounded-full" style={{ backgroundColor: `rgba(${rgb}, 0.3)` }} />
+              <div className="absolute top-[55%] left-2 right-5 h-[2px] rounded-full" style={{ backgroundColor: `rgba(${rgb}, 0.2)` }} />
             </div>
           ))}
           {/* User dots */}
@@ -216,11 +223,10 @@ function AnimatedScene({ id, color }: { id: string; color: string }) {
               key={`dot-${i}`}
               className="absolute rounded-full"
               style={{
-                width: 8, height: 8,
-                right: `${10 + i * 14}%`,
-                bottom: `${12 + (i % 2) * 12}%`,
-                backgroundColor: color,
-                opacity: 0.1,
+                width: 10, height: 10,
+                right: `${8 + i * 14}%`,
+                bottom: `${10 + (i % 2) * 14}%`,
+                backgroundColor: `rgba(${rgb}, 0.15)`,
                 animation: `feat-pulse ${2 + i * 0.5}s ease-in-out infinite ${i * 0.3}s`,
               }}
             />
@@ -233,36 +239,35 @@ function AnimatedScene({ id, color }: { id: string; color: string }) {
         <>
           {/* Network nodes */}
           {[
-            { x: '20%', y: '25%' }, { x: '50%', y: '18%' },
-            { x: '75%', y: '35%' }, { x: '35%', y: '55%' },
-            { x: '12%', y: '60%' }, { x: '62%', y: '65%' },
-            { x: '85%', y: '55%' },
+            { x: '18%', y: '22%' }, { x: '48%', y: '15%' },
+            { x: '72%', y: '32%' }, { x: '32%', y: '52%' },
+            { x: '10%', y: '58%' }, { x: '60%', y: '62%' },
+            { x: '82%', y: '50%' },
           ].map((node, i) => (
             <div
               key={i}
               className="absolute rounded-full"
               style={{
-                width: 6 + (i % 3) * 3,
-                height: 6 + (i % 3) * 3,
+                width: 8 + (i % 3) * 3,
+                height: 8 + (i % 3) * 3,
                 left: node.x, top: node.y,
-                backgroundColor: color,
-                opacity: 0.12,
+                backgroundColor: `rgba(${rgb}, 0.2)`,
                 animation: `feat-pulse ${2 + i * 0.3}s ease-in-out infinite ${i * 0.4}s`,
               }}
             />
           ))}
           {/* Connection lines */}
-          <svg className="absolute inset-0 w-full h-full" style={{ opacity: 0.06 }}>
+          <svg className="absolute inset-0 w-full h-full" style={{ opacity: 0.12 }}>
             {[
-              ['20%', '25%', '50%', '18%', 2],
-              ['50%', '18%', '75%', '35%', 2.5],
-              ['35%', '55%', '75%', '35%', 3],
-              ['12%', '60%', '35%', '55%', 2.2],
-              ['20%', '25%', '35%', '55%', 2.8],
-              ['62%', '65%', '85%', '55%', 2.4],
-              ['50%', '18%', '62%', '65%', 3.2],
+              ['18%', '22%', '48%', '15%', 2],
+              ['48%', '15%', '72%', '32%', 2.5],
+              ['32%', '52%', '72%', '32%', 3],
+              ['10%', '58%', '32%', '52%', 2.2],
+              ['18%', '22%', '32%', '52%', 2.8],
+              ['60%', '62%', '82%', '50%', 2.4],
+              ['48%', '15%', '60%', '62%', 3.2],
             ].map(([x1, y1, x2, y2, dur], i) => (
-              <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={color} strokeWidth="1.5" strokeDasharray="4 4">
+              <line key={i} x1={x1 as string} y1={y1 as string} x2={x2 as string} y2={y2 as string} stroke={color} strokeWidth="1.5" strokeDasharray="4 4">
                 <animate attributeName="stroke-dashoffset" from="8" to="0" dur={`${dur}s`} repeatCount="indefinite" />
               </line>
             ))}
@@ -275,9 +280,9 @@ function AnimatedScene({ id, color }: { id: string; color: string }) {
         <>
           {/* Fish */}
           {[
-            { top: '25%', size: 26, dur: 7, delay: 0 },
-            { top: '48%', size: 20, dur: 9, delay: 2 },
-            { top: '65%', size: 16, dur: 6, delay: 4 },
+            { top: '22%', size: 28, dur: 7, delay: 0 },
+            { top: '45%', size: 22, dur: 9, delay: 2 },
+            { top: '62%', size: 18, dur: 6, delay: 4 },
           ].map((f, i) => (
             <Fish
               key={i}
@@ -285,7 +290,7 @@ function AnimatedScene({ id, color }: { id: string; color: string }) {
               style={{
                 width: f.size, height: f.size,
                 top: f.top, left: '8%',
-                color, opacity: 0.1,
+                color, opacity: 0.18,
                 animation: `feat-swim ${f.dur}s ease-in-out infinite ${f.delay}s`,
               }}
             />
@@ -294,19 +299,18 @@ function AnimatedScene({ id, color }: { id: string; color: string }) {
           {[...Array(5)].map((_, i) => (
             <div
               key={`bub-${i}`}
-              className="absolute rounded-full border"
+              className="absolute rounded-full"
               style={{
-                width: 3 + i * 2, height: 3 + i * 2,
+                width: 4 + i * 2, height: 4 + i * 2,
                 left: `${18 + i * 15}%`,
-                bottom: '20%',
-                borderColor: color,
-                opacity: 0.08,
+                bottom: '18%',
+                border: `1.5px solid rgba(${rgb}, 0.2)`,
                 animation: `feat-rise ${3 + i * 0.8}s ease-out infinite ${i * 0.6}s`,
               }}
             />
           ))}
           {/* Wave */}
-          <svg className="absolute top-[12%] inset-x-0 w-full h-5" style={{ opacity: 0.06 }}>
+          <svg className="absolute top-[10%] inset-x-0 w-full h-5" style={{ opacity: 0.1 }}>
             <path d="M0,10 Q20,2 40,10 Q60,18 80,10 Q100,2 120,10 Q140,18 160,10 Q180,2 200,10" fill="none" stroke={color} strokeWidth="2">
               <animate attributeName="d"
                 values="M0,10 Q20,2 40,10 Q60,18 80,10 Q100,2 120,10 Q140,18 160,10 Q180,2 200,10;M0,10 Q20,18 40,10 Q60,2 80,10 Q100,18 120,10 Q140,2 160,10 Q180,18 200,10;M0,10 Q20,2 40,10 Q60,18 80,10 Q100,2 120,10 Q140,18 160,10 Q180,2 200,10"
@@ -323,10 +327,10 @@ function AnimatedScene({ id, color }: { id: string; color: string }) {
           <div
             className="absolute rounded-full"
             style={{
-              width: 12, height: 12,
+              width: 14, height: 14,
               left: '50%', top: '50%',
               transform: 'translate(-50%, -50%)',
-              backgroundColor: color, opacity: 0.15,
+              backgroundColor: `rgba(${rgb}, 0.25)`,
               animation: 'feat-pulse 3s ease-in-out infinite',
             }}
           />
@@ -341,31 +345,25 @@ function AnimatedScene({ id, color }: { id: string; color: string }) {
             const endY = 50 + Math.sin(rad) * (b.len / 3.5)
             return (
               <div key={i}>
-                {/* Branch line container (rotated) */}
                 <div
                   className="absolute origin-left"
-                  style={{
-                    left: '50%', top: '50%',
-                    transform: `rotate(${b.angle}deg)`,
-                  }}
+                  style={{ left: '50%', top: '50%', transform: `rotate(${b.angle}deg)` }}
                 >
                   <div
                     style={{
                       width: b.len, height: 2,
-                      backgroundColor: color,
-                      opacity: 0.08,
+                      backgroundColor: `rgba(${rgb}, 0.15)`,
                       transformOrigin: 'left',
                       animation: `feat-grow ${2 + i * 0.4}s ease-in-out infinite ${i * 0.3}s`,
                     }}
                   />
                 </div>
-                {/* End node */}
                 <div
                   className="absolute rounded-full"
                   style={{
-                    width: 7, height: 7,
+                    width: 8, height: 8,
                     left: `${endX}%`, top: `${endY}%`,
-                    backgroundColor: color, opacity: 0.1,
+                    backgroundColor: `rgba(${rgb}, 0.18)`,
                     animation: `feat-pulse ${2 + i * 0.4}s ease-in-out infinite ${1 + i * 0.3}s`,
                   }}
                 />
@@ -385,9 +383,9 @@ function AnimatedScene({ id, color }: { id: string; color: string }) {
               className="absolute select-none"
               style={{
                 left: `${8 + i * 13}%`,
-                top: `${12 + (i % 3) * 25}%`,
-                color, opacity: 0.12,
-                fontSize: 8 + (i % 3) * 4,
+                top: `${10 + (i % 3) * 25}%`,
+                color, opacity: 0.2,
+                fontSize: 10 + (i % 3) * 5,
                 animation: `feat-sparkle ${2 + i * 0.5}s ease-in-out infinite ${i * 0.6}s`,
               }}
             >
@@ -397,17 +395,17 @@ function AnimatedScene({ id, color }: { id: string; color: string }) {
           {/* Trophy */}
           <Trophy
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-            style={{ width: 32, height: 32, color, opacity: 0.08, animation: 'feat-float 4s ease-in-out infinite' }}
+            style={{ width: 36, height: 36, color, opacity: 0.12, animation: 'feat-float 4s ease-in-out infinite' }}
           />
           {/* Floating points */}
           {['+10', '+25', '+5', '+50'].map((pts, i) => (
             <span
               key={pts}
-              className="absolute font-bold text-[10px] select-none"
+              className="absolute font-bold text-[11px] select-none"
               style={{
                 left: `${15 + i * 22}%`,
-                bottom: '25%',
-                color, opacity: 0.1,
+                bottom: '22%',
+                color, opacity: 0.18,
                 animation: `feat-rise ${3 + i}s ease-out infinite ${i * 1.2}s`,
               }}
             >
@@ -424,29 +422,26 @@ function AnimatedScene({ id, color }: { id: string; color: string }) {
           {[0, 1, 2].map(i => (
             <div
               key={i}
-              className="absolute rounded-md border"
+              className="absolute rounded-md"
               style={{
-                width: 40, height: 52,
-                left: `${28 + i * 12}%`,
-                top: `${16 + i * 8}%`,
-                borderColor: color,
-                backgroundColor: `${color}06`,
-                opacity: 0.1 + i * 0.02,
+                width: 44, height: 56,
+                left: `${25 + i * 14}%`,
+                top: `${14 + i * 8}%`,
+                border: `1.5px solid rgba(${rgb}, 0.2)`,
+                backgroundColor: `rgba(${rgb}, 0.04)`,
                 animation: `feat-float ${3 + i * 0.5}s ease-in-out infinite ${i * 0.4}s`,
                 transform: `rotate(${-5 + i * 5}deg)`,
               }}
             >
-              {/* Text lines */}
               {[0, 1, 2].map(j => (
                 <div
                   key={j}
                   className="rounded-full mx-1.5"
                   style={{
                     height: 2,
-                    marginTop: 6 + j * 6,
+                    marginTop: 8 + j * 7,
                     width: `${55 + j * 10}%`,
-                    backgroundColor: color,
-                    opacity: 0.18,
+                    backgroundColor: `rgba(${rgb}, 0.22)`,
                   }}
                 />
               ))}
@@ -458,10 +453,10 @@ function AnimatedScene({ id, color }: { id: string; color: string }) {
               key={`p-${i}`}
               className="absolute rounded-full"
               style={{
-                width: 4, height: 4,
-                left: `${15 + i * 30}%`,
-                top: `${30 + i * 15}%`,
-                backgroundColor: color, opacity: 0.08,
+                width: 5, height: 5,
+                left: `${12 + i * 30}%`,
+                top: `${28 + i * 15}%`,
+                backgroundColor: `rgba(${rgb}, 0.12)`,
                 animation: `feat-drift ${4 + i * 1.5}s ease-in-out infinite ${i * 0.8}s`,
               }}
             />
@@ -486,8 +481,8 @@ export function FeatureShowcase() {
   return (
     <section className="py-24 md:py-32 bg-[var(--background)] relative overflow-hidden">
       {/* Subtle background texture */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[color-mix(in_srgb,var(--primary)_3%,var(--background))] to-transparent" />
-      <div className="absolute inset-0 opacity-[0.02]" style={{
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[color-mix(in_srgb,var(--primary)_4%,var(--background))] to-transparent" />
+      <div className="absolute inset-0 opacity-[0.03]" style={{
         backgroundImage: 'radial-gradient(circle, var(--foreground) 1px, transparent 1px)',
         backgroundSize: '32px 32px',
       }} />
@@ -505,7 +500,7 @@ export function FeatureShowcase() {
           >
             <span className="inline-block px-5 py-2 rounded-full text-xs font-bold tracking-[0.2em] mb-5"
               style={{
-                background: 'linear-gradient(135deg, rgba(54,118,61,0.1), rgba(53,119,119,0.1))',
+                background: 'linear-gradient(135deg, rgba(54,118,61,0.12), rgba(53,119,119,0.12))',
                 color: '#36763d',
               }}
             >
@@ -516,40 +511,37 @@ export function FeatureShowcase() {
               fontWeight: 900,
               lineHeight: 1.1,
             }}>
-              HERE&apos;S WHAT YOU GET
+              EVERYTHING UNDER ONE ROOF
             </h2>
             <p className="mt-4 text-lg text-[var(--muted-foreground)] max-w-2xl mx-auto font-medium">
-              Everything you need to live, learn, and lead sustainably — all in one place.
+              One platform for sustainable living — discover, learn, connect, and create.
             </p>
           </motion.div>
 
           {/* Bento Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 md:auto-rows-[190px] gap-4 md:gap-5 lg:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 md:auto-rows-[200px] gap-4 md:gap-5 lg:gap-6">
             {features.map((feature, index) => {
               const Icon = feature.icon
               return (
                 <Link
                   key={feature.id}
                   href={feature.href}
-                  className={cn(
-                    'block',
-                    feature.gridClass,
-                  )}
+                  className={cn('block', feature.gridClass)}
                 >
                   <motion.div
-                    className="group relative w-full h-full min-h-[180px] md:min-h-0 overflow-hidden rounded-2xl border-2 cursor-pointer"
-                    style={{ borderColor: `${feature.accentColor}25` }}
+                    className="group relative w-full h-full min-h-[200px] md:min-h-0 overflow-hidden rounded-2xl border cursor-pointer bg-[var(--card)]"
+                    style={{ borderColor: `rgba(${feature.accentRgb}, 0.2)` }}
                     initial={{ opacity: 0, y: 24 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: '-40px' }}
                     transition={{ delay: index * 0.08, duration: 0.5, ease: 'easeOut' }}
-                    whileHover={{ y: -5, transition: { duration: 0.25 } }}
+                    whileHover={{ y: -6, transition: { duration: 0.25 } }}
                   >
                     {/* Background gradient */}
                     <div
-                      className="absolute inset-0 transition-opacity duration-500"
+                      className="absolute inset-0"
                       style={{
-                        background: `linear-gradient(135deg, ${feature.accentColor}12 0%, ${feature.accentColor}08 50%, ${feature.accentColor}15 100%)`,
+                        background: `linear-gradient(145deg, rgba(${feature.accentRgb}, 0.06) 0%, transparent 50%, rgba(${feature.accentRgb}, 0.1) 100%)`,
                       }}
                     />
 
@@ -557,35 +549,38 @@ export function FeatureShowcase() {
                     <div
                       className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                       style={{
-                        background: `radial-gradient(ellipse at 50% 80%, ${feature.accentColor}18 0%, transparent 70%)`,
+                        background: `radial-gradient(ellipse at 50% 70%, rgba(${feature.accentRgb}, 0.12) 0%, transparent 70%)`,
                       }}
                     />
 
                     {/* Animated scene */}
-                    <div className="absolute inset-0 overflow-hidden transition-opacity duration-700 group-hover:opacity-140">
-                      <AnimatedScene id={feature.id} color={feature.accentColor} />
+                    <div className="absolute inset-0 overflow-hidden">
+                      <AnimatedScene id={feature.id} color={feature.accentColor} rgb={feature.accentRgb} />
                     </div>
 
                     {/* Content */}
                     <div className="relative z-10 h-full p-5 md:p-6 flex flex-col justify-end">
-                      {/* Icon + tagline row */}
-                      <div className="flex items-center gap-2.5 mb-2">
+                      {/* Icon badge */}
+                      <div className="flex items-center gap-2.5 mb-2.5">
                         <div
-                          className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300"
-                          style={{ backgroundColor: `${feature.accentColor}18` }}
+                          className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300"
+                          style={{ backgroundColor: `rgba(${feature.accentRgb}, 0.12)`, border: `1px solid rgba(${feature.accentRgb}, 0.15)` }}
                         >
-                          <Icon style={{ width: 18, height: 18, color: feature.accentColor }} />
+                          <Icon style={{ width: 20, height: 20, color: feature.accentColor }} />
                         </div>
                         <span
                           className="text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full"
-                          style={{ backgroundColor: `${feature.accentColor}12`, color: feature.accentColor }}
+                          style={{ backgroundColor: `rgba(${feature.accentRgb}, 0.1)`, color: feature.accentColor }}
                         >
                           {feature.tagline}
                         </span>
                       </div>
 
                       {/* Title */}
-                      <h3 className="text-lg font-black text-[var(--foreground)] mb-1">
+                      <h3 className={cn(
+                        'font-black text-[var(--foreground)] mb-1',
+                        feature.hero ? 'text-xl md:text-2xl' : 'text-lg',
+                      )}>
                         {feature.title}
                       </h3>
 
@@ -603,10 +598,11 @@ export function FeatureShowcase() {
                           {feature.stats.map(stat => (
                             <span
                               key={stat}
-                              className="px-2.5 py-1 rounded-lg text-[10px] font-bold"
+                              className="px-3 py-1.5 rounded-lg text-[11px] font-bold"
                               style={{
-                                backgroundColor: `${feature.accentColor}12`,
+                                backgroundColor: `rgba(${feature.accentRgb}, 0.1)`,
                                 color: feature.accentColor,
+                                border: `1px solid rgba(${feature.accentRgb}, 0.12)`,
                               }}
                             >
                               {stat}
@@ -624,11 +620,12 @@ export function FeatureShowcase() {
                       </div>
                     </div>
 
-                    {/* Border glow on hover */}
+                    {/* Border + shadow on hover */}
                     <div
-                      className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                      className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none"
                       style={{
-                        boxShadow: `0 0 30px ${feature.accentColor}20, inset 0 0 30px ${feature.accentColor}08`,
+                        border: `1.5px solid rgba(${feature.accentRgb}, 0.3)`,
+                        boxShadow: `0 8px 32px rgba(${feature.accentRgb}, 0.15), 0 2px 8px rgba(${feature.accentRgb}, 0.08)`,
                       }}
                     />
                   </motion.div>
