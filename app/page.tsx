@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import { Suspense } from 'react'
 import dynamic from 'next/dynamic'
-import { Button } from '@/components/ui/Button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
-import { Leaf, Droplet, Zap, Users, Heart, BookOpen, Award, Sprout } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
+import { Users, Heart, BookOpen, Award } from 'lucide-react'
+import { FeatureShowcase } from '@/components/home/FeatureShowcase'
 
 // Lazy-load heavy decorative components
 const TreeBranches = dynamic(() => import('@/components/decorative/TreeBranches').then(mod => ({ default: mod.TreeBranches })))
@@ -208,137 +208,8 @@ export default function Home() {
         </Suspense>
       </section>
 
-      {/* Mission Section - Asymmetric Layout */}
-      <section className="py-32 bg-[var(--background)] relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-5" style={{
-          backgroundImage: 'radial-gradient(circle, var(--primary) 1px, transparent 1px)',
-          backgroundSize: '50px 50px'
-        }} />
-
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-7xl mx-auto">
-            {/* Section Title - Offset */}
-            <div className="mb-20">
-              <div className="inline-block transform -rotate-2 bg-theme-primary text-[var(--primary-foreground)] px-8 py-4 rounded-2xl mb-6">
-                <span className="text-sm font-bold tracking-wider">OUR MISSION</span>
-              </div>
-              <h2 className="text-[var(--foreground)]" style={{
-                fontSize: 'clamp(1.5rem, 5vw, 3rem)',
-                fontWeight: 900,
-                lineHeight: 1.1,
-                maxWidth: '800px'
-              }}>
-                Building the FAMILY that loves sustainability as much as we do
-              </h2>
-            </div>
-
-            {/* Cards - Tilted & 3D */}
-            <div className="grid lg:grid-cols-3 gap-12 mb-20">
-              {/* Discover Card */}
-              <div className="group perspective transform hover:scale-105 transition-all duration-500" style={{ transform: 'rotate(-2deg)' }}>
-                <div className="relative p-10 rounded-3xl bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_20%,var(--background))] to-[color-mix(in_srgb,var(--primary)_30%,var(--background))] border-4 border-theme-primary hover:shadow-theme-2xl transition-shadow duration-300">
-                  <div className="w-20 h-20 mb-6 rounded-full bg-theme-primary flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300">
-                    <div className="w-10 h-10 rounded-full bg-[var(--background)]" />
-                  </div>
-                  <h3 className="text-xl md:text-2xl font-black mb-4 text-theme-primary">
-                    DISCOVER
-                  </h3>
-                  <p className="text-lg font-medium text-[var(--foreground)]">
-                    Thousands of sustainable products across every category imaginable
-                  </p>
-                </div>
-              </div>
-
-              {/* Learn Card */}
-              <div className="group perspective transform hover:scale-105 transition-all duration-500" style={{ transform: 'rotate(1deg)' }}>
-                <div className="relative p-10 rounded-3xl bg-gradient-to-br from-[color-mix(in_srgb,var(--accent)_20%,var(--background))] to-[color-mix(in_srgb,var(--accent)_30%,var(--background))] border-4 border-theme-accent hover:shadow-theme-2xl transition-shadow duration-300">
-                  <div className="w-20 h-20 mb-6 rounded-full bg-theme-accent flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300">
-                    <div className="w-10 h-10 rounded-full bg-[var(--background)]" />
-                  </div>
-                  <h3 className="text-xl md:text-2xl font-black mb-4 text-theme-accent">
-                    LEARN
-                  </h3>
-                  <p className="text-lg font-medium text-[var(--foreground)]">
-                    Deep-dive educational content that empowers informed decisions
-                  </p>
-                </div>
-              </div>
-
-              {/* Connect Card */}
-              <div className="group perspective transform hover:scale-105 transition-all duration-500" style={{ transform: 'rotate(-1deg)' }}>
-                <div className="relative p-10 rounded-3xl bg-gradient-to-br from-[color-mix(in_srgb,var(--secondary)_20%,var(--background))] to-[color-mix(in_srgb,var(--secondary)_30%,var(--background))] border-4 border-theme-secondary hover:shadow-theme-2xl transition-shadow duration-300">
-                  <div className="w-20 h-20 mb-6 rounded-full bg-theme-secondary flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300">
-                    <div className="w-10 h-10 rounded-full bg-[var(--background)]" />
-                  </div>
-                  <h3 className="text-xl md:text-2xl font-black mb-4 text-theme-secondary">
-                    CONNECT
-                  </h3>
-                  <p className="text-lg font-medium text-[var(--foreground)]">
-                    Join a vibrant community of changemakers building the future
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* About: Company Description with Food/Water/Energy */}
-      <section className="py-32 bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] via-[color-mix(in_srgb,var(--accent)_15%,var(--background))] to-[var(--muted)] relative overflow-hidden">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-5xl mx-auto text-center space-y-12">
-            <h2 style={{
-              fontSize: 'clamp(2rem, 6vw, 4rem)',
-              fontWeight: 900,
-              lineHeight: 1
-            }} className="text-[var(--foreground)]">
-              PROJECT EXODUS
-            </h2>
-            <p className="text-xl font-bold leading-relaxed text-[var(--foreground)]">
-              WE ARE DEVELOPING{' '}
-              <span style={{
-                background: 'linear-gradient(135deg, #36763d, #357777)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                fontWeight: 900
-              }}>SUSTAINABLE OFF-GRID SYSTEMS</span>{' '}
-              WITHIN BUILT ENVIRONMENTS
-            </p>
-
-            {/* Food, Water, Energy Icons */}
-            <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto pt-8">
-              <Card className="border-4 border-theme-primary bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[color-mix(in_srgb,var(--primary)_25%,var(--background))] shadow-theme-xl">
-                <CardContent className="p-8 text-center">
-                  <Leaf className="w-16 h-16 text-theme-primary mx-auto mb-4" />
-                  <h3 className="text-2xl font-black text-theme-primary">FOOD</h3>
-                  <p className="mt-3 text-base font-bold text-theme-muted">
-                    Sustainable agriculture and food systems
-                  </p>
-                </CardContent>
-              </Card>
-              <Card className="border-4 border-theme-accent bg-gradient-to-br from-[color-mix(in_srgb,var(--accent)_15%,var(--background))] to-[color-mix(in_srgb,var(--accent)_25%,var(--background))] shadow-theme-xl">
-                <CardContent className="p-8 text-center">
-                  <Droplet className="w-16 h-16 text-theme-accent mx-auto mb-4" />
-                  <h3 className="text-2xl font-black text-theme-accent">WATER</h3>
-                  <p className="mt-3 text-base font-bold text-theme-muted">
-                    Clean water access and conservation
-                  </p>
-                </CardContent>
-              </Card>
-              <Card className="border-4 border-theme-secondary bg-gradient-to-br from-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] to-[color-mix(in_srgb,var(--secondary)_25%,var(--background))] shadow-theme-xl">
-                <CardContent className="p-8 text-center">
-                  <Zap className="w-16 h-16 text-theme-secondary mx-auto mb-4" />
-                  <h3 className="text-2xl font-black text-theme-secondary">ENERGY</h3>
-                  <p className="mt-3 text-base font-bold text-theme-muted">
-                    Renewable energy solutions
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Feature Showcase - Platform Overview */}
+      <FeatureShowcase />
 
       {/* Mission Statement */}
       <section className="py-32 bg-[var(--background)]">
