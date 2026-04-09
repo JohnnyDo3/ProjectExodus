@@ -477,38 +477,37 @@ export function Header() {
                           {session.user?.email}
                         </p>
                       </div>
-                      <div className="flex items-center gap-2 px-3 py-2 border-b-2 border-[var(--border)]">
+                      <div className="p-2">
                         <Link
                           href="/explore"
-                          className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
+                          className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
                           onClick={() => setUserMenuOpen(false)}
                           title="Search & Explore"
                         >
                           <Search className="w-4 h-4 text-theme-muted" />
-                          <span className="text-sm font-medium text-[var(--foreground)]">Search</span>
+                          <span className="font-medium text-[var(--foreground)]">Search</span>
                         </Link>
                         <Link
                           href="/my/volition"
-                          className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
+                          className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
                           onClick={() => setUserMenuOpen(false)}
                           title="My Tank"
                         >
                           <Fish className="w-4 h-4 text-theme-muted" />
-                          <span className="text-sm font-medium text-[var(--foreground)]">My Tank</span>
+                          <span className="font-medium text-[var(--foreground)]">My Tank</span>
                         </Link>
-                      </div>
-                      <div className="p-2">
                         <Link
                           href="/settings"
-                          className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors group"
+                          className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
                           onClick={() => setUserMenuOpen(false)}
                         >
                           <Settings className="w-4 h-4 text-theme-muted" />
                           <span className="font-medium text-[var(--foreground)]">Settings</span>
                         </Link>
+                        <div className="my-1 border-t border-[var(--border)]" />
                         <button
                           onClick={handleSignOut}
-                          className="w-full flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors text-left group"
+                          className="w-full flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors text-left"
                         >
                           <LogOut className="w-4 h-4 text-theme-secondary" />
                           <span className="font-medium text-theme-secondary">Sign Out</span>
