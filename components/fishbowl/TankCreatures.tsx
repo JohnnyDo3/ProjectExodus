@@ -52,19 +52,38 @@ const CrabSVG = memo(({
 }) => {
   const scaleX = facingRight ? 1 : -1
   const c = CRAB_MATE_COLORS[variant % 2]
-  // Per-leg step cycle — horizontal swing + vertical lift.
-  // Legs lift only during the forward half of the swing (sin > 0), giving
-  // a natural arching gait instead of flat side-to-side sliding.
-  const step = (pair: number, swing: number, lift: number) => {
-    const phase = walkPhase + pair * Math.PI * 0.5
-    const s = Math.sin(phase)
-    return { x: s * swing, y: Math.max(0, s) * -lift }
-  }
-  const l0 = step(0, 5, 2.4)
-  const l1 = step(1, 5, 2.2)
-  const l2 = step(2, 5, 2.2)
-  const l3 = step(3, 5, 2.4)
   const cr = clawRaise
+  // Multi-jointed walking legs: [shoulderX, shoulderY, kneeX, kneeY, footX, footY, phaseIdx, side]
+  // Shoulders sit inside the carapace ellipse (cx=40, ry=12) so there are no
+  // gaps between the legs and the body. Side = -1 (left) / +1 (right) lets
+  // each leg swing outward-forward on the lift half of the cycle.
+  const LEGS: Array<[number, number, number, number, number, number, number, number]> = [
+    // Front pair
+    [27, 23, 20, 34, 15, 48, 0, -1],
+    [53, 23, 60, 34, 65, 48, 2, 1],
+    // Second pair
+    [25, 26, 16, 38,  9, 50, 1, -1],
+    [55, 26, 64, 38, 71, 50, 3, 1],
+    // Third pair
+    [25, 29, 14, 40,  7, 52, 2, -1],
+    [55, 29, 66, 40, 73, 52, 0, 1],
+    // Rear pair
+    [27, 32, 16, 42, 10, 54, 3, -1],
+    [53, 32, 64, 42, 70, 54, 1, 1],
+  ]
+  // Per-leg offsets: knee bends half as much as foot and at half the lift,
+  // producing a visible arc + knee articulation rather than a flat swing.
+  const legOffsets = LEGS.map(([, , , , , , poIdx, side]) => {
+    const phase = walkPhase + poIdx * Math.PI * 0.5
+    const s = Math.sin(phase)
+    const lift = Math.max(0, s)
+    return {
+      kdx: s * 1.8 * side,
+      kdy: -lift * 1.4,
+      fdx: s * 4.0 * side,
+      fdy: -lift * 3.2,
+    }
+  })
   return (
     <svg width={size} height={size * 0.75} viewBox="0 0 80 60" fill="none">
       <defs>
@@ -99,43 +118,58 @@ const CrabSVG = memo(({
       {/* Outer transform: flip for direction + body rock (tilt) + gait bounce (Y) */}
       <g transform={`translate(40, ${30 + bounceY}) rotate(${bodyTilt}) scale(${scaleX}, 1) translate(-40, -30)`}>
 
-        {/* === WALKING LEGS (4 pairs, per-leg swing + arching lift gait) === */}
-        {/* Back legs — pair 4 (rearmost) */}
-        <path d={`M22 32 Q${16 + l3.x} ${40 + l3.y * 0.5} ${10 + l3.x} ${46 + l3.y} Q${8 + l3.x} ${48 + l3.y} ${6 + l3.x} ${46 + l3.y}`} stroke={`url(#cl-${id})`} strokeWidth="2.2" fill="none" strokeLinecap="round" />
-        <path d={`M58 32 Q${64 - l3.x} ${40 + l3.y * 0.5} ${70 - l3.x} ${46 + l3.y} Q${72 - l3.x} ${48 + l3.y} ${74 - l3.x} ${46 + l3.y}`} stroke={`url(#cl-${id})`} strokeWidth="2.2" fill="none" strokeLinecap="round" />
-        {/* Pair 3 */}
-        <path d={`M26 34 Q${20 + l2.x} ${42 + l2.y * 0.5} ${14 + l2.x} ${50 + l2.y} Q${12 + l2.x} ${52 + l2.y} ${10 + l2.x} ${50 + l2.y}`} stroke={`url(#cl-${id})`} strokeWidth="2.0" fill="none" strokeLinecap="round" />
-        <path d={`M54 34 Q${60 - l2.x} ${42 + l2.y * 0.5} ${66 - l2.x} ${50 + l2.y} Q${68 - l2.x} ${52 + l2.y} ${70 - l2.x} ${50 + l2.y}`} stroke={`url(#cl-${id})`} strokeWidth="2.0" fill="none" strokeLinecap="round" />
-        {/* Pair 2 */}
-        <path d={`M30 33 Q${24 + l1.x} ${44 + l1.y * 0.5} ${18 + l1.x} ${52 + l1.y} Q${16 + l1.x} ${54 + l1.y} ${14 + l1.x} ${52 + l1.y}`} stroke={`url(#cl-${id})`} strokeWidth="1.8" fill="none" strokeLinecap="round" />
-        <path d={`M50 33 Q${56 - l1.x} ${44 + l1.y * 0.5} ${62 - l1.x} ${52 + l1.y} Q${64 - l1.x} ${54 + l1.y} ${66 - l1.x} ${52 + l1.y}`} stroke={`url(#cl-${id})`} strokeWidth="1.8" fill="none" strokeLinecap="round" />
-        {/* Front legs — pair 1 */}
-        <path d={`M34 30 Q${28 + l0.x} ${42 + l0.y * 0.5} ${22 + l0.x} ${50 + l0.y} Q${20 + l0.x} ${52 + l0.y} ${18 + l0.x} ${50 + l0.y}`} stroke={`url(#cl-${id})`} strokeWidth="1.8" fill="none" strokeLinecap="round" />
-        <path d={`M46 30 Q${52 - l0.x} ${42 + l0.y * 0.5} ${58 - l0.x} ${50 + l0.y} Q${60 - l0.x} ${52 + l0.y} ${62 - l0.x} ${50 + l0.y}`} stroke={`url(#cl-${id})`} strokeWidth="1.8" fill="none" strokeLinecap="round" />
-        {/* Leg joint dots */}
-        <circle cx={16 + l3.x * 0.5} cy={42 + l3.y * 0.5} r="1.0" fill={c.legBottom} opacity="0.5" />
-        <circle cx={64 - l3.x * 0.5} cy={42 + l3.y * 0.5} r="1.0" fill={c.legBottom} opacity="0.5" />
-        <circle cx={20 + l2.x * 0.5} cy={44 + l2.y * 0.5} r="1.0" fill={c.legBottom} opacity="0.5" />
-        <circle cx={60 - l2.x * 0.5} cy={44 + l2.y * 0.5} r="1.0" fill={c.legBottom} opacity="0.5" />
+        {/* === WALKING LEGS (4 pairs, 2 segments each with visible knee) === */}
+        {/* Shoulder caps painted first to cover any gap at the body join */}
+        {LEGS.map(([sx, sy], i) => (
+          <circle key={`sh-${i}`} cx={sx} cy={sy} r="2.0" fill={c.carapaceDark} opacity="0.85" />
+        ))}
+        {LEGS.map(([sx, sy, kx, ky, fx, fy], i) => {
+          const o = legOffsets[i]
+          const akx = kx + o.kdx
+          const aky = ky + o.kdy
+          const afx = fx + o.fdx
+          const afy = fy + o.fdy
+          return (
+            <g key={`leg-${i}`}>
+              {/* Upper segment — shoulder → knee (thicker femur) */}
+              <line x1={sx} y1={sy} x2={akx} y2={aky} stroke={`url(#cl-${id})`} strokeWidth="2.4" strokeLinecap="round" />
+              {/* Lower segment — knee → foot (tapered tibia) */}
+              <line x1={akx} y1={aky} x2={afx} y2={afy} stroke={`url(#cl-${id})`} strokeWidth="1.9" strokeLinecap="round" />
+              {/* Knee joint — visible articulation */}
+              <circle cx={akx} cy={aky} r="1.2" fill={c.legTop} stroke={c.carapaceDeep} strokeWidth="0.3" />
+              {/* Foot tip — pointed dactyl */}
+              <circle cx={afx} cy={afy} r="0.7" fill={c.carapaceDeep} />
+            </g>
+          )
+        })}
 
-        {/* === CLAWS (chelipeds) — held up at 90 degrees, defensive posture === */}
-        {/* Left claw arm — angled upward (cr = per-tick claw raise/lower) */}
-        <path d={`M28 22 Q22 ${14 - cr} 18 ${6 - cr} Q16 ${2 - cr} 14 ${4 - cr}`} stroke={`url(#cc-${id})`} strokeWidth="3.0" fill="none" strokeLinecap="round" />
-        {/* Left claw pincer — open, pointing up */}
-        <path d={`M16 ${2 - cr} Q10 ${-4 - cr} 8 ${-1 - cr} Q7 ${3 - cr} 10 ${5 - cr} Q13 ${6 - cr} 15 ${4 - cr}`} fill={`url(#cc-${id})`} />
-        <path d={`M15 ${4 - cr} Q12 ${8 - cr} 10 ${9 - cr} Q8 ${8 - cr} 9 ${5 - cr}`} fill={c.clawTip} />
-        {/* Left claw serration */}
-        <path d={`M10 ${1 - cr} L9 ${0 - cr} M11 ${2 - cr} L10 ${1 - cr}`} stroke={c.carapaceDeep} strokeWidth="0.3" fill="none" opacity="0.35" />
-        {/* Right claw arm — angled upward */}
-        <path d={`M52 22 Q58 ${14 - cr} 62 ${6 - cr} Q64 ${2 - cr} 66 ${4 - cr}`} stroke={`url(#cc-${id})`} strokeWidth="3.0" fill="none" strokeLinecap="round" />
-        {/* Right claw pincer — open, pointing up */}
-        <path d={`M64 ${2 - cr} Q70 ${-4 - cr} 72 ${-1 - cr} Q73 ${3 - cr} 70 ${5 - cr} Q67 ${6 - cr} 65 ${4 - cr}`} fill={`url(#cc-${id})`} />
-        <path d={`M65 ${4 - cr} Q68 ${8 - cr} 70 ${9 - cr} Q72 ${8 - cr} 71 ${5 - cr}`} fill={c.clawTip} />
-        {/* Right claw serration */}
-        <path d={`M70 ${1 - cr} L71 ${0 - cr} M69 ${2 - cr} L70 ${1 - cr}`} stroke={c.carapaceDeep} strokeWidth="0.3" fill="none" opacity="0.35" />
-        {/* Claw highlights — wet gleam */}
-        <path d={`M10 ${-2 - cr} Q11.5 ${-3 - cr} 13 ${-1 - cr}`} stroke="white" strokeWidth="0.5" fill="none" opacity="0.3" />
-        <path d={`M69 ${-2 - cr} Q70.5 ${-3 - cr} 72 ${-1 - cr}`} stroke="white" strokeWidth="0.5" fill="none" opacity="0.3" />
+        {/* === CLAWS (chelipeds) — classic cartoon crab pose, held straight up === */}
+        {/* Each claw is wrapped in a rotation group around its shoulder so the
+            pincer points vertically instead of angling outward. */}
+        {/* Left claw — rotated upright around shoulder (28, 22) */}
+        <g transform="rotate(38 28 22)">
+          {/* Arm (cr = per-tick claw raise/lower) */}
+          <path d={`M28 22 Q22 ${14 - cr} 18 ${6 - cr} Q16 ${2 - cr} 14 ${4 - cr}`} stroke={`url(#cc-${id})`} strokeWidth="3.0" fill="none" strokeLinecap="round" />
+          {/* Pincer — open, pointing up */}
+          <path d={`M16 ${2 - cr} Q10 ${-4 - cr} 8 ${-1 - cr} Q7 ${3 - cr} 10 ${5 - cr} Q13 ${6 - cr} 15 ${4 - cr}`} fill={`url(#cc-${id})`} />
+          <path d={`M15 ${4 - cr} Q12 ${8 - cr} 10 ${9 - cr} Q8 ${8 - cr} 9 ${5 - cr}`} fill={c.clawTip} />
+          {/* Serration */}
+          <path d={`M10 ${1 - cr} L9 ${0 - cr} M11 ${2 - cr} L10 ${1 - cr}`} stroke={c.carapaceDeep} strokeWidth="0.3" fill="none" opacity="0.35" />
+          {/* Wet gleam highlight */}
+          <path d={`M10 ${-2 - cr} Q11.5 ${-3 - cr} 13 ${-1 - cr}`} stroke="white" strokeWidth="0.5" fill="none" opacity="0.3" />
+        </g>
+        {/* Right claw — rotated upright around shoulder (52, 22) */}
+        <g transform="rotate(-38 52 22)">
+          {/* Arm */}
+          <path d={`M52 22 Q58 ${14 - cr} 62 ${6 - cr} Q64 ${2 - cr} 66 ${4 - cr}`} stroke={`url(#cc-${id})`} strokeWidth="3.0" fill="none" strokeLinecap="round" />
+          {/* Pincer — open, pointing up */}
+          <path d={`M64 ${2 - cr} Q70 ${-4 - cr} 72 ${-1 - cr} Q73 ${3 - cr} 70 ${5 - cr} Q67 ${6 - cr} 65 ${4 - cr}`} fill={`url(#cc-${id})`} />
+          <path d={`M65 ${4 - cr} Q68 ${8 - cr} 70 ${9 - cr} Q72 ${8 - cr} 71 ${5 - cr}`} fill={c.clawTip} />
+          {/* Serration */}
+          <path d={`M70 ${1 - cr} L71 ${0 - cr} M69 ${2 - cr} L70 ${1 - cr}`} stroke={c.carapaceDeep} strokeWidth="0.3" fill="none" opacity="0.35" />
+          {/* Wet gleam highlight */}
+          <path d={`M69 ${-2 - cr} Q70.5 ${-3 - cr} 72 ${-1 - cr}`} stroke="white" strokeWidth="0.5" fill="none" opacity="0.3" />
+        </g>
 
         {/* === CARAPACE (main shell body — wide oval) === */}
         <ellipse cx="40" cy="26" rx="18" ry="12" fill={`url(#cb-${id})`} />
