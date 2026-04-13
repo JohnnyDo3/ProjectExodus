@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json()
-    const { species, colors, pattern } = body
+    const { species, colors, pattern, savedDesigns } = body
 
     // Validate species - all guppy variants are available to everyone
     if (species && !ALL_SPECIES.includes(species)) {
@@ -42,16 +42,21 @@ export async function POST(req: NextRequest) {
     }
 
     // Validate colors
-    if (colors) {
+    const validateColors = (c: unknown): string | null => {
+      if (!c || typeof c !== 'object') return null
       const colorKeys = ['body', 'fin', 'accent', 'eye']
       for (const key of colorKeys) {
-        if (colors[key] && !isValidHexColor(colors[key])) {
-          return NextResponse.json(
-            { success: false, error: `Invalid color for ${key}` },
-            { status: 400 }
-          )
+        const val = (c as Record<string, unknown>)[key]
+        if (val && (typeof val !== 'string' || !isValidHexColor(val))) {
+          return `Invalid color for ${key}`
         }
       }
+      return null
+    }
+
+    const colorError = validateColors(colors)
+    if (colorError) {
+      return NextResponse.json({ success: false, error: colorError }, { status: 400 })
     }
 
     // Validate pattern
@@ -62,10 +67,39 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    // Validate savedDesigns map (colors/pattern per species)
+    let validatedSavedDesigns: Record<string, { colors?: unknown; pattern?: string | null }> | null = null
+    if (savedDesigns && typeof savedDesigns === 'object') {
+      validatedSavedDesigns = {}
+      for (const [sp, design] of Object.entries(savedDesigns as Record<string, unknown>)) {
+        if (!ALL_SPECIES.includes(sp)) continue
+        if (!design || typeof design !== 'object') continue
+        const d = design as { colors?: unknown; pattern?: unknown }
+        const designColorError = validateColors(d.colors)
+        if (designColorError) {
+          return NextResponse.json(
+            { success: false, error: `savedDesigns.${sp}: ${designColorError}` },
+            { status: 400 }
+          )
+        }
+        if (d.pattern && (typeof d.pattern !== 'string' || !VALID_PATTERNS.includes(d.pattern))) {
+          return NextResponse.json(
+            { success: false, error: `savedDesigns.${sp}: invalid pattern` },
+            { status: 400 }
+          )
+        }
+        validatedSavedDesigns[sp] = {
+          colors: d.colors ?? null,
+          pattern: (d.pattern as string) ?? null,
+        }
+      }
+    }
+
     const customization = {
       species: species || null,
       colors: colors || null,
       pattern: pattern || 'none',
+      savedDesigns: validatedSavedDesigns,
     }
 
     // Check if this is the user's first customization (one-time bonus)

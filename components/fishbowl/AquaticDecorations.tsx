@@ -5200,7 +5200,7 @@ const SAILBOAT_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'sailboat', x: 334, y: 184, scale: 1.5 },
+      { type: 'sailboat', x: 350, y: 210, scale: 1.3 },
     ],
   },
   foreground: {
@@ -5270,7 +5270,7 @@ const SUBMARINE_LAYOUT: LayeredDecoConfig = {
   },
   midground: {
     structures: [
-      { type: 'submarine', x: 221, y: 77, scale: 1.9 },
+      { type: 'submarine', x: 280, y: 140, scale: 1.3 },
     ],
   },
   foreground: {
