@@ -221,8 +221,14 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomi
       {/* Algae buildup on glass (cleaned by snails over 72h) */}
       <AlgaeOverlay width={dimensions.width} height={dimensions.height} />
 
-      {/* Glass-cleaning snails: 3 for personal, 6 for community */}
-      <SnailGroup count={contained ? 3 : 6} containerWidth={dimensions.width} containerHeight={dimensions.height} />
+      {/* Snails — split between glass-cleaners (with slime trails) and
+          decor grazers. Personal: 1 glass + 2 decor. Community: 2 glass + 3 decor. */}
+      <SnailGroup
+        glassCount={contained ? 1 : 2}
+        decorCount={contained ? 2 : 3}
+        containerWidth={dimensions.width}
+        containerHeight={dimensions.height}
+      />
 
       {/* Foreground decorations — small rocks, corals, short plants (in front of fish) */}
       <DecorationForeground width={dimensions.width} theme={theme} />

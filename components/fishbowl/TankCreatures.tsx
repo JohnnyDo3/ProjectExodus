@@ -915,13 +915,20 @@ const PATTERN_ORDER: ZamboniPattern[] = [
   'horiz-lr', 'horiz-rl', 'diag-down', 'vert-tb', 'diag-up', 'spiral',
 ]
 
+type SnailMode = 'glass' | 'decor'
+
 interface ZamboniState {
   x: number
   y: number
+  mode: SnailMode
   pattern: ZamboniPattern
-  // Waypoint navigation
+  // Glass mode: Zamboni waypoint navigation
   waypoints: { x: number; y: number }[]
   waypointIdx: number
+  // Decor mode: free-form wandering target
+  decorTarget: { x: number; y: number } | null
+  // Slime trail (glass mode only) — distance-sampled positions
+  trail: { x: number; y: number }[]
   // Movement smoothing
   heading: number         // visual heading in radians
   speed: number           // base movement speed
@@ -929,6 +936,17 @@ interface ZamboniState {
   pauseUntil: number      // rest stop timestamp
   grazingUntil: number    // slow grazing timestamp
   passCount: number       // how many full passes completed
+}
+
+// Pick a random point within the decor / substrate band for decor-mode snails.
+// Band covers roughly y = 55%–90% of tank height (where sand + structures live)
+// with a side margin so the snail isn't pushed against the tank walls.
+function pickDecorTarget(w: number, h: number): { x: number; y: number } {
+  const margin = 24
+  return {
+    x: margin + Math.random() * (w - margin * 2),
+    y: h * (0.55 + Math.random() * 0.35),
+  }
 }
 
 // Generate waypoints for each Zamboni pattern
@@ -1039,56 +1057,84 @@ function generateWaypoints(
 
 
 // ─── Snail Group Component ──────────────────────────────────────────
-// Each snail follows a distinct Zamboni cleaning pattern.
-// count=3 for personal tank, count=6 for community bowl.
+// Two modes:
+//   - glass: runs Zamboni waypoint pattern + leaves a fading slime trail
+//             so the "cleaning the glass" intent is visible
+//   - decor: wanders freely around the substrate/decor band, grazing
+//             on rocks, kelp, structures
+// Personal tank: 1 glass + 2 decor. Community tank: 2 glass + 3 decor.
 
-export const SnailGroup = memo(({ count, containerWidth, containerHeight }: {
-  count: number
+interface SnailRenderState {
+  x: number
+  y: number
+  heading: number
+  mode: SnailMode
+  trail: { x: number; y: number }[]
+}
+
+export const SnailGroup = memo(({
+  glassCount, decorCount, containerWidth, containerHeight,
+}: {
+  glassCount: number
+  decorCount: number
   containerWidth: number
   containerHeight: number
 }) => {
   const snailsRef = useRef<ZamboniState[]>([])
-  const [positions, setPositions] = useState<{ x: number; y: number; heading: number }[]>([])
+  const [positions, setPositions] = useState<SnailRenderState[]>([])
+  const total = glassCount + decorCount
 
-  // Initialize snails with their assigned Zamboni patterns
+  // Initialize snails — first `glassCount` are glass-mode, rest are decor-mode
   useEffect(() => {
     if (containerWidth === 0 || containerHeight === 0) return
 
     const MARGIN = 14
     const TOP_MARGIN = containerHeight * 0.10
 
-    // Stagger snails across distinct quadrants so they start spread out
-    const quadrantX = [0.12, 0.88, 0.12, 0.88, 0.50, 0.50]
-    const quadrantY = [0.22, 0.22, 0.72, 0.72, 0.22, 0.72]
+    // Stagger starting positions across quadrants so they spread out
+    const quadrantX = [0.12, 0.88, 0.50, 0.28, 0.72, 0.50]
+    const quadrantY = [0.22, 0.22, 0.30, 0.72, 0.72, 0.82]
 
-    snailsRef.current = Array.from({ length: count }, (_, i) => {
+    snailsRef.current = Array.from({ length: total }, (_, i) => {
+      const mode: SnailMode = i < glassCount ? 'glass' : 'decor'
       const pattern = PATTERN_ORDER[i % PATTERN_ORDER.length]
-      const waypoints = generateWaypoints(pattern, containerWidth, containerHeight, MARGIN, TOP_MARGIN)
+      const waypoints = mode === 'glass'
+        ? generateWaypoints(pattern, containerWidth, containerHeight, MARGIN, TOP_MARGIN)
+        : []
 
       // Place each snail in a different quadrant with slight randomness
       const qx = quadrantX[i % quadrantX.length] + (Math.random() - 0.5) * 0.12
-      const qy = quadrantY[i % quadrantY.length] + (Math.random() - 0.5) * 0.08
-      const startX = Math.max(MARGIN, Math.min(containerWidth - MARGIN,
-        containerWidth * qx))
+      const qy = mode === 'decor'
+        ? 0.60 + Math.random() * 0.28  // decor snails start in substrate band
+        : quadrantY[i % quadrantY.length] + (Math.random() - 0.5) * 0.08
+      const startX = Math.max(MARGIN, Math.min(containerWidth - MARGIN, containerWidth * qx))
       const startY = Math.max(TOP_MARGIN, Math.min(containerHeight * 0.93,
         TOP_MARGIN + (containerHeight * 0.83 - TOP_MARGIN) * qy))
 
-      // Find nearest waypoint to the staggered start position
+      // Glass mode: snap to nearest waypoint
       let nearestIdx = 0
-      let nearestDist = Infinity
-      waypoints.forEach((wp, idx) => {
-        const d = (wp.x - startX) ** 2 + (wp.y - startY) ** 2
-        if (d < nearestDist) { nearestDist = d; nearestIdx = idx }
-      })
+      if (mode === 'glass') {
+        let nearestDist = Infinity
+        waypoints.forEach((wp, idx) => {
+          const d = (wp.x - startX) ** 2 + (wp.y - startY) ** 2
+          if (d < nearestDist) { nearestDist = d; nearestIdx = idx }
+        })
+      }
 
       return {
         x: startX,
         y: startY,
+        mode,
         pattern,
         waypoints,
         waypointIdx: nearestIdx,
+        decorTarget: mode === 'decor'
+          ? pickDecorTarget(containerWidth, containerHeight)
+          : null,
+        trail: [],
         heading: Math.random() * Math.PI * 2,
-        speed: 0.25 + (i % 3) * 0.04, // slight speed variation
+        // Decor snails crawl a touch slower than glass-cleaners
+        speed: (mode === 'glass' ? 0.25 : 0.18) + (i % 3) * 0.04,
         pedalPhase: i * 1.3,
         pauseUntil: 0,
         grazingUntil: 0,
@@ -1096,10 +1142,12 @@ export const SnailGroup = memo(({ count, containerWidth, containerHeight }: {
       }
     })
 
-    setPositions(snailsRef.current.map(s => ({ x: s.x, y: s.y, heading: s.heading })))
-  }, [count, containerWidth, containerHeight])
+    setPositions(snailsRef.current.map(s => ({
+      x: s.x, y: s.y, heading: s.heading, mode: s.mode, trail: [],
+    })))
+  }, [glassCount, decorCount, total, containerWidth, containerHeight])
 
-  // ─── Zamboni movement loop (10fps, CSS smooths visual) ─────
+  // ─── Movement loop (10fps, CSS smooths visual) ─────
   useEffect(() => {
     if (containerWidth === 0 || containerHeight === 0) return
     if (snailsRef.current.length === 0) return
@@ -1121,29 +1169,47 @@ export const SnailGroup = memo(({ count, containerWidth, containerHeight }: {
         const pedalWave = 0.7 + 0.3 * Math.sin(snail.pedalPhase)
         const currentSpeed = snail.speed * pedalWave * grazeFactor
 
-        // ── Navigate toward current waypoint ──
-        const target = snail.waypoints[snail.waypointIdx]
-        const dx = target.x - snail.x
-        const dy = target.y - snail.y
+        // ── Determine current target by mode ──
+        let targetX: number
+        let targetY: number
+
+        if (snail.mode === 'glass') {
+          const target = snail.waypoints[snail.waypointIdx]
+          targetX = target.x
+          targetY = target.y
+        } else {
+          if (!snail.decorTarget) {
+            snail.decorTarget = pickDecorTarget(containerWidth, containerHeight)
+          }
+          targetX = snail.decorTarget.x
+          targetY = snail.decorTarget.y
+        }
+
+        const dx = targetX - snail.x
+        const dy = targetY - snail.y
         const dist = Math.sqrt(dx * dx + dy * dy)
 
         if (dist < 3) {
-          // Reached waypoint — advance to next
-          snail.waypointIdx = (snail.waypointIdx + 1) % snail.waypoints.length
-
-          // When completing a full circuit, regenerate waypoints (slight variation)
-          if (snail.waypointIdx === 0) {
-            snail.passCount++
-            snail.waypoints = generateWaypoints(
-              snail.pattern, containerWidth, containerHeight, MARGIN, TOP_MARGIN,
-            )
+          if (snail.mode === 'glass') {
+            // Advance to next waypoint
+            snail.waypointIdx = (snail.waypointIdx + 1) % snail.waypoints.length
+            if (snail.waypointIdx === 0) {
+              snail.passCount++
+              snail.waypoints = generateWaypoints(
+                snail.pattern, containerWidth, containerHeight, MARGIN, TOP_MARGIN,
+              )
+            }
+          } else {
+            // Decor snail reached its graze spot — pick a new one after resting
+            snail.decorTarget = null
           }
 
-          // Random chance to pause at waypoint (rest stop or grazing)
+          // Random chance to pause or graze after reaching a target
           const roll = Math.random()
-          if (roll < 0.08) {
+          const grazeChance = snail.mode === 'decor' ? 0.45 : 0.08
+          if (roll < grazeChance) {
             snail.grazingUntil = now + 3000 + Math.random() * 6000
-          } else if (roll < 0.18) {
+          } else if (roll < grazeChance + 0.10) {
             snail.pauseUntil = now + 1500 + Math.random() * 3000
             return
           }
@@ -1152,10 +1218,8 @@ export const SnailGroup = memo(({ count, containerWidth, containerHeight }: {
         // ── Smooth heading toward target ──
         const targetHeading = Math.atan2(dy, dx)
         let headingDiff = targetHeading - snail.heading
-        // Normalize to [-π, π]
         while (headingDiff > Math.PI) headingDiff -= Math.PI * 2
         while (headingDiff < -Math.PI) headingDiff += Math.PI * 2
-        // Smooth turn (snails can't snap-turn)
         snail.heading += headingDiff * 0.08
 
         // ── Move forward ──
@@ -1164,29 +1228,85 @@ export const SnailGroup = memo(({ count, containerWidth, containerHeight }: {
         snail.x += vx
         snail.y += vy
 
-        // ── Clamp to tank bounds ──
+        // ── Clamp to tank bounds (decor snails stick to the substrate band) ──
         snail.x = Math.max(MARGIN, Math.min(containerWidth - MARGIN, snail.x))
-        snail.y = Math.max(TOP_MARGIN, Math.min(containerHeight * 0.93, snail.y))
+        if (snail.mode === 'decor') {
+          snail.y = Math.max(containerHeight * 0.50, Math.min(containerHeight * 0.93, snail.y))
+        } else {
+          snail.y = Math.max(TOP_MARGIN, Math.min(containerHeight * 0.93, snail.y))
+        }
 
-        // Normalize heading
         snail.heading = ((snail.heading % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2)
+
+        // ── Slime trail sampling (glass mode only) ──
+        if (snail.mode === 'glass') {
+          const last = snail.trail[snail.trail.length - 1]
+          if (!last || (snail.x - last.x) ** 2 + (snail.y - last.y) ** 2 > 16) {
+            snail.trail.push({ x: snail.x, y: snail.y })
+            if (snail.trail.length > 40) snail.trail.shift()
+          }
+        }
       })
 
       setPositions(snailsRef.current.map(s => ({
         x: s.x,
         y: s.y,
         heading: s.heading,
+        mode: s.mode,
+        trail: s.mode === 'glass' ? s.trail.slice() : [],
       })))
     }, 100)
 
     return () => clearInterval(interval)
-  }, [containerWidth, containerHeight, count])
+  }, [containerWidth, containerHeight, total])
 
   // ─── Render ───────────────────────────────────────────────
   if (containerWidth === 0 || containerHeight === 0) return null
 
   return (
     <>
+      {/* Slime trails overlay — drawn behind the snail sprites */}
+      <svg
+        className="absolute inset-0 z-[22] pointer-events-none"
+        width={containerWidth}
+        height={containerHeight}
+        style={{ overflow: 'visible' }}
+      >
+        {positions.map((pos, i) => {
+          if (pos.mode !== 'glass' || pos.trail.length < 2) return null
+          const n = pos.trail.length
+          return (
+            <g key={`trail-${i}`}>
+              {pos.trail.map((p, j) => {
+                // Newer points (higher j) are more opaque; oldest fade out
+                const t = j / (n - 1)
+                const opacity = 0.08 + t * 0.35
+                const r = 2.2 + t * 1.6
+                return (
+                  <circle
+                    key={j}
+                    cx={p.x}
+                    cy={p.y}
+                    r={r}
+                    fill="rgba(215, 240, 255, 1)"
+                    opacity={opacity}
+                  />
+                )
+              })}
+              {/* Bright sheen along the most recent segment */}
+              <path
+                d={pos.trail.slice(-8).map((p, j) => `${j === 0 ? 'M' : 'L'}${p.x} ${p.y}`).join(' ')}
+                stroke="rgba(235, 250, 255, 0.55)"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                fill="none"
+              />
+            </g>
+          )
+        })}
+      </svg>
+
       {positions.map((pos, i) => {
         const facingRight = Math.cos(pos.heading) > 0
         // Tilt the snail along its heading for organic feel
@@ -1202,7 +1322,9 @@ export const SnailGroup = memo(({ count, containerWidth, containerHeight }: {
               transform: `translate(-50%, -50%) rotate(${tiltDeg}deg)`,
               transition: 'left 0.15s linear, top 0.15s linear, transform 0.15s linear',
               opacity: 1,
-              filter: 'drop-shadow(0 0 3px rgba(100,200,255,0.12))',
+              filter: pos.mode === 'glass'
+                ? 'drop-shadow(0 0 3px rgba(180,230,255,0.22))'
+                : 'drop-shadow(0 1px 2px rgba(0,0,0,0.35))',
             }}
           >
             <SnailSVG
@@ -1210,17 +1332,6 @@ export const SnailGroup = memo(({ count, containerWidth, containerHeight }: {
               color={SNAIL_COLOR_LIST[i % SNAIL_COLOR_LIST.length]}
               facingRight={facingRight}
               size={28}
-            />
-            {/* Slime trail dot */}
-            <div
-              className="absolute rounded-full pointer-events-none"
-              style={{
-                width: '8px',
-                height: '5px',
-                background: `radial-gradient(ellipse, ${SNAIL_COLOR_LIST[i % SNAIL_COLOR_LIST.length].body}30 0%, transparent 70%)`,
-                left: facingRight ? '-2%' : '82%',
-                top: '52%',
-              }}
             />
           </div>
         )
