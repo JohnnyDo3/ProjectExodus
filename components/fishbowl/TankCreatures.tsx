@@ -143,32 +143,82 @@ const CrabSVG = memo(({
           )
         })}
 
-        {/* === CLAWS (chelipeds) — classic cartoon crab pose, held straight up === */}
-        {/* Each claw is wrapped in a rotation group around its shoulder so the
-            pincer points vertically instead of angling outward. */}
-        {/* Left claw — rotated upright around shoulder (28, 22) */}
-        <g transform="rotate(38 28 22)">
-          {/* Arm (cr = per-tick claw raise/lower) */}
-          <path d={`M28 22 Q22 ${14 - cr} 18 ${6 - cr} Q16 ${2 - cr} 14 ${4 - cr}`} stroke={`url(#cc-${id})`} strokeWidth="3.0" fill="none" strokeLinecap="round" />
-          {/* Pincer — open, pointing up */}
-          <path d={`M16 ${2 - cr} Q10 ${-4 - cr} 8 ${-1 - cr} Q7 ${3 - cr} 10 ${5 - cr} Q13 ${6 - cr} 15 ${4 - cr}`} fill={`url(#cc-${id})`} />
-          <path d={`M15 ${4 - cr} Q12 ${8 - cr} 10 ${9 - cr} Q8 ${8 - cr} 9 ${5 - cr}`} fill={c.clawTip} />
-          {/* Serration */}
-          <path d={`M10 ${1 - cr} L9 ${0 - cr} M11 ${2 - cr} L10 ${1 - cr}`} stroke={c.carapaceDeep} strokeWidth="0.3" fill="none" opacity="0.35" />
-          {/* Wet gleam highlight */}
-          <path d={`M10 ${-2 - cr} Q11.5 ${-3 - cr} 13 ${-1 - cr}`} stroke="white" strokeWidth="0.5" fill="none" opacity="0.3" />
+        {/* === CLAWS (chelipeds) — anatomical hockey-stick pose ===
+            Merus extends horizontally-outward from the body, bends at the
+            elbow, then the propodus rises upward carrying the pincer.
+            Interior bend is ~85–95° (not a stiff 90°) so it reads natural.
+            cr = subtle claw-pump rotation around the elbow joint. */}
+
+        {/* ─── LEFT CLAW ─── */}
+        {/* Merus — horizontal upper arm from shoulder to elbow (slight sag) */}
+        <path d="M28 22 Q21 25 13 27" stroke={`url(#cc-${id})`} strokeWidth="3.8" fill="none" strokeLinecap="round" />
+        <path d="M28 22 Q21 25 13 27" stroke={c.carapaceDeep} strokeWidth="0.5" fill="none" strokeLinecap="round" opacity="0.4" />
+        {/* Elbow joint — visible articulation */}
+        <circle cx="13" cy="27" r="2.4" fill={c.clawBase} stroke={c.carapaceDeep} strokeWidth="0.4" />
+        <circle cx="12.5" cy="26.5" r="0.8" fill="white" opacity="0.35" />
+        {/* Propodus + pincer — rotates subtly at elbow for claw pump */}
+        <g transform={`rotate(${-cr * 3} 13 27)`}>
+          {/* Propodus (forearm/palm body) — bows outward slightly */}
+          <path
+            d="M11 27 Q5 18 4 10 Q4 3 9 2 Q14 3 15 10 Q16 19 15 27 Z"
+            fill={`url(#cc-${id})`}
+            stroke={c.carapaceDeep}
+            strokeWidth="0.45"
+          />
+          {/* Fixed finger (pollex) — body-side, short & stubby */}
+          <path
+            d="M14 5 Q18 0 20 3 Q19 7 15 8 Z"
+            fill={c.clawTip}
+            stroke={c.carapaceDeep}
+            strokeWidth="0.3"
+          />
+          {/* Movable finger (dactyl) — outer, slightly longer, curves inward */}
+          <path
+            d="M4 4 Q0 -3 3 -6 Q8 -4 9 2 Q6 4 4 4 Z"
+            fill={c.clawTip}
+            stroke={c.carapaceDeep}
+            strokeWidth="0.3"
+          />
+          {/* Wet sheen on palm */}
+          <path d="M6 15 Q8 10 10 12" stroke="white" strokeWidth="0.6" fill="none" opacity="0.5" />
+          {/* Inner-pincer shadow where fingers meet */}
+          <path d="M9 3 Q11 5 14 5" stroke={c.carapaceDeep} strokeWidth="0.4" fill="none" opacity="0.35" />
         </g>
-        {/* Right claw — rotated upright around shoulder (52, 22) */}
-        <g transform="rotate(-38 52 22)">
-          {/* Arm */}
-          <path d={`M52 22 Q58 ${14 - cr} 62 ${6 - cr} Q64 ${2 - cr} 66 ${4 - cr}`} stroke={`url(#cc-${id})`} strokeWidth="3.0" fill="none" strokeLinecap="round" />
-          {/* Pincer — open, pointing up */}
-          <path d={`M64 ${2 - cr} Q70 ${-4 - cr} 72 ${-1 - cr} Q73 ${3 - cr} 70 ${5 - cr} Q67 ${6 - cr} 65 ${4 - cr}`} fill={`url(#cc-${id})`} />
-          <path d={`M65 ${4 - cr} Q68 ${8 - cr} 70 ${9 - cr} Q72 ${8 - cr} 71 ${5 - cr}`} fill={c.clawTip} />
-          {/* Serration */}
-          <path d={`M70 ${1 - cr} L71 ${0 - cr} M69 ${2 - cr} L70 ${1 - cr}`} stroke={c.carapaceDeep} strokeWidth="0.3" fill="none" opacity="0.35" />
-          {/* Wet gleam highlight */}
-          <path d={`M69 ${-2 - cr} Q70.5 ${-3 - cr} 72 ${-1 - cr}`} stroke="white" strokeWidth="0.5" fill="none" opacity="0.3" />
+
+        {/* ─── RIGHT CLAW ─── (mirrored around x=40) */}
+        {/* Merus — horizontal upper arm from shoulder to elbow */}
+        <path d="M52 22 Q59 25 67 27" stroke={`url(#cc-${id})`} strokeWidth="3.8" fill="none" strokeLinecap="round" />
+        <path d="M52 22 Q59 25 67 27" stroke={c.carapaceDeep} strokeWidth="0.5" fill="none" strokeLinecap="round" opacity="0.4" />
+        {/* Elbow joint */}
+        <circle cx="67" cy="27" r="2.4" fill={c.clawBase} stroke={c.carapaceDeep} strokeWidth="0.4" />
+        <circle cx="66.5" cy="26.5" r="0.8" fill="white" opacity="0.35" />
+        {/* Propodus + pincer */}
+        <g transform={`rotate(${cr * 3} 67 27)`}>
+          {/* Propodus */}
+          <path
+            d="M69 27 Q75 18 76 10 Q76 3 71 2 Q66 3 65 10 Q64 19 65 27 Z"
+            fill={`url(#cc-${id})`}
+            stroke={c.carapaceDeep}
+            strokeWidth="0.45"
+          />
+          {/* Fixed finger (pollex) */}
+          <path
+            d="M66 5 Q62 0 60 3 Q61 7 65 8 Z"
+            fill={c.clawTip}
+            stroke={c.carapaceDeep}
+            strokeWidth="0.3"
+          />
+          {/* Movable finger (dactyl) */}
+          <path
+            d="M76 4 Q80 -3 77 -6 Q72 -4 71 2 Q74 4 76 4 Z"
+            fill={c.clawTip}
+            stroke={c.carapaceDeep}
+            strokeWidth="0.3"
+          />
+          {/* Wet sheen on palm */}
+          <path d="M74 15 Q72 10 70 12" stroke="white" strokeWidth="0.6" fill="none" opacity="0.5" />
+          {/* Inner-pincer shadow */}
+          <path d="M71 3 Q69 5 66 5" stroke={c.carapaceDeep} strokeWidth="0.4" fill="none" opacity="0.35" />
         </g>
 
         {/* === CARAPACE (main shell body — wide oval) === */}
