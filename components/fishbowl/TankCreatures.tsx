@@ -37,16 +37,34 @@ const CRAB_MATE_COLORS: CrabColors[] = [
   },
 ]
 
-const CrabSVG = memo(({ id, facingRight, size = 48, variant = 0, walkPhase = 0 }: {
-  id: string; facingRight: boolean; size?: number; variant?: number; walkPhase?: number
+const CrabSVG = memo(({
+  id, facingRight, size = 48, variant = 0,
+  walkPhase = 0, bodyTilt = 0, bounceY = 0, clawRaise = 0,
+}: {
+  id: string
+  facingRight: boolean
+  size?: number
+  variant?: number
+  walkPhase?: number
+  bodyTilt?: number
+  bounceY?: number
+  clawRaise?: number
 }) => {
   const scaleX = facingRight ? 1 : -1
   const c = CRAB_MATE_COLORS[variant % 2]
-  // Leg animation offsets — alternating gait pattern
-  const legSwing = (pair: number) => {
-    const offset = pair * Math.PI * 0.5 // each pair offset by 90 degrees
-    return Math.sin(walkPhase + offset) * 6
+  // Per-leg step cycle — horizontal swing + vertical lift.
+  // Legs lift only during the forward half of the swing (sin > 0), giving
+  // a natural arching gait instead of flat side-to-side sliding.
+  const step = (pair: number, swing: number, lift: number) => {
+    const phase = walkPhase + pair * Math.PI * 0.5
+    const s = Math.sin(phase)
+    return { x: s * swing, y: Math.max(0, s) * -lift }
   }
+  const l0 = step(0, 5, 2.4)
+  const l1 = step(1, 5, 2.2)
+  const l2 = step(2, 5, 2.2)
+  const l3 = step(3, 5, 2.4)
+  const cr = clawRaise
   return (
     <svg width={size} height={size * 0.75} viewBox="0 0 80 60" fill="none">
       <defs>
@@ -78,45 +96,46 @@ const CrabSVG = memo(({ id, facingRight, size = 48, variant = 0, walkPhase = 0 }
           <stop offset="100%" stopColor={c.carapaceDark} stopOpacity="0.08" />
         </radialGradient>
       </defs>
-      <g transform={`translate(40, 30) scale(${scaleX}, 1) translate(-40, -30)`}>
+      {/* Outer transform: flip for direction + body rock (tilt) + gait bounce (Y) */}
+      <g transform={`translate(40, ${30 + bounceY}) rotate(${bodyTilt}) scale(${scaleX}, 1) translate(-40, -30)`}>
 
-        {/* === WALKING LEGS (4 pairs, animated with alternating gait) === */}
+        {/* === WALKING LEGS (4 pairs, per-leg swing + arching lift gait) === */}
         {/* Back legs — pair 4 (rearmost) */}
-        <path d={`M22 32 Q${16 + legSwing(3)} 40 ${10 + legSwing(3)} 46 Q${8 + legSwing(3)} 48 ${6 + legSwing(3)} 46`} stroke={`url(#cl-${id})`} strokeWidth="2.2" fill="none" strokeLinecap="round" />
-        <path d={`M58 32 Q${64 - legSwing(3)} 40 ${70 - legSwing(3)} 46 Q${72 - legSwing(3)} 48 ${74 - legSwing(3)} 46`} stroke={`url(#cl-${id})`} strokeWidth="2.2" fill="none" strokeLinecap="round" />
+        <path d={`M22 32 Q${16 + l3.x} ${40 + l3.y * 0.5} ${10 + l3.x} ${46 + l3.y} Q${8 + l3.x} ${48 + l3.y} ${6 + l3.x} ${46 + l3.y}`} stroke={`url(#cl-${id})`} strokeWidth="2.2" fill="none" strokeLinecap="round" />
+        <path d={`M58 32 Q${64 - l3.x} ${40 + l3.y * 0.5} ${70 - l3.x} ${46 + l3.y} Q${72 - l3.x} ${48 + l3.y} ${74 - l3.x} ${46 + l3.y}`} stroke={`url(#cl-${id})`} strokeWidth="2.2" fill="none" strokeLinecap="round" />
         {/* Pair 3 */}
-        <path d={`M26 34 Q${20 + legSwing(2)} 42 ${14 + legSwing(2)} 50 Q${12 + legSwing(2)} 52 ${10 + legSwing(2)} 50`} stroke={`url(#cl-${id})`} strokeWidth="2.0" fill="none" strokeLinecap="round" />
-        <path d={`M54 34 Q${60 - legSwing(2)} 42 ${66 - legSwing(2)} 50 Q${68 - legSwing(2)} 52 ${70 - legSwing(2)} 50`} stroke={`url(#cl-${id})`} strokeWidth="2.0" fill="none" strokeLinecap="round" />
+        <path d={`M26 34 Q${20 + l2.x} ${42 + l2.y * 0.5} ${14 + l2.x} ${50 + l2.y} Q${12 + l2.x} ${52 + l2.y} ${10 + l2.x} ${50 + l2.y}`} stroke={`url(#cl-${id})`} strokeWidth="2.0" fill="none" strokeLinecap="round" />
+        <path d={`M54 34 Q${60 - l2.x} ${42 + l2.y * 0.5} ${66 - l2.x} ${50 + l2.y} Q${68 - l2.x} ${52 + l2.y} ${70 - l2.x} ${50 + l2.y}`} stroke={`url(#cl-${id})`} strokeWidth="2.0" fill="none" strokeLinecap="round" />
         {/* Pair 2 */}
-        <path d={`M30 33 Q${24 + legSwing(1)} 44 ${18 + legSwing(1)} 52 Q${16 + legSwing(1)} 54 ${14 + legSwing(1)} 52`} stroke={`url(#cl-${id})`} strokeWidth="1.8" fill="none" strokeLinecap="round" />
-        <path d={`M50 33 Q${56 - legSwing(1)} 44 ${62 - legSwing(1)} 52 Q${64 - legSwing(1)} 54 ${66 - legSwing(1)} 52`} stroke={`url(#cl-${id})`} strokeWidth="1.8" fill="none" strokeLinecap="round" />
+        <path d={`M30 33 Q${24 + l1.x} ${44 + l1.y * 0.5} ${18 + l1.x} ${52 + l1.y} Q${16 + l1.x} ${54 + l1.y} ${14 + l1.x} ${52 + l1.y}`} stroke={`url(#cl-${id})`} strokeWidth="1.8" fill="none" strokeLinecap="round" />
+        <path d={`M50 33 Q${56 - l1.x} ${44 + l1.y * 0.5} ${62 - l1.x} ${52 + l1.y} Q${64 - l1.x} ${54 + l1.y} ${66 - l1.x} ${52 + l1.y}`} stroke={`url(#cl-${id})`} strokeWidth="1.8" fill="none" strokeLinecap="round" />
         {/* Front legs — pair 1 */}
-        <path d={`M34 30 Q${28 + legSwing(0)} 42 ${22 + legSwing(0)} 50 Q${20 + legSwing(0)} 52 ${18 + legSwing(0)} 50`} stroke={`url(#cl-${id})`} strokeWidth="1.8" fill="none" strokeLinecap="round" />
-        <path d={`M46 30 Q${52 - legSwing(0)} 42 ${58 - legSwing(0)} 50 Q${60 - legSwing(0)} 52 ${62 - legSwing(0)} 50`} stroke={`url(#cl-${id})`} strokeWidth="1.8" fill="none" strokeLinecap="round" />
+        <path d={`M34 30 Q${28 + l0.x} ${42 + l0.y * 0.5} ${22 + l0.x} ${50 + l0.y} Q${20 + l0.x} ${52 + l0.y} ${18 + l0.x} ${50 + l0.y}`} stroke={`url(#cl-${id})`} strokeWidth="1.8" fill="none" strokeLinecap="round" />
+        <path d={`M46 30 Q${52 - l0.x} ${42 + l0.y * 0.5} ${58 - l0.x} ${50 + l0.y} Q${60 - l0.x} ${52 + l0.y} ${62 - l0.x} ${50 + l0.y}`} stroke={`url(#cl-${id})`} strokeWidth="1.8" fill="none" strokeLinecap="round" />
         {/* Leg joint dots */}
-        <circle cx={16 + legSwing(3) * 0.5} cy="42" r="1.0" fill={c.legBottom} opacity="0.5" />
-        <circle cx={64 - legSwing(3) * 0.5} cy="42" r="1.0" fill={c.legBottom} opacity="0.5" />
-        <circle cx={20 + legSwing(2) * 0.5} cy="44" r="1.0" fill={c.legBottom} opacity="0.5" />
-        <circle cx={60 - legSwing(2) * 0.5} cy="44" r="1.0" fill={c.legBottom} opacity="0.5" />
+        <circle cx={16 + l3.x * 0.5} cy={42 + l3.y * 0.5} r="1.0" fill={c.legBottom} opacity="0.5" />
+        <circle cx={64 - l3.x * 0.5} cy={42 + l3.y * 0.5} r="1.0" fill={c.legBottom} opacity="0.5" />
+        <circle cx={20 + l2.x * 0.5} cy={44 + l2.y * 0.5} r="1.0" fill={c.legBottom} opacity="0.5" />
+        <circle cx={60 - l2.x * 0.5} cy={44 + l2.y * 0.5} r="1.0" fill={c.legBottom} opacity="0.5" />
 
         {/* === CLAWS (chelipeds) — held up at 90 degrees, defensive posture === */}
-        {/* Left claw arm — angled upward */}
-        <path d="M28 22 Q22 14 18 6 Q16 2 14 4" stroke={`url(#cc-${id})`} strokeWidth="3.0" fill="none" strokeLinecap="round" />
+        {/* Left claw arm — angled upward (cr = per-tick claw raise/lower) */}
+        <path d={`M28 22 Q22 ${14 - cr} 18 ${6 - cr} Q16 ${2 - cr} 14 ${4 - cr}`} stroke={`url(#cc-${id})`} strokeWidth="3.0" fill="none" strokeLinecap="round" />
         {/* Left claw pincer — open, pointing up */}
-        <path d="M16 2 Q10 -4 8 -1 Q7 3 10 5 Q13 6 15 4" fill={`url(#cc-${id})`} />
-        <path d="M15 4 Q12 8 10 9 Q8 8 9 5" fill={c.clawTip} />
+        <path d={`M16 ${2 - cr} Q10 ${-4 - cr} 8 ${-1 - cr} Q7 ${3 - cr} 10 ${5 - cr} Q13 ${6 - cr} 15 ${4 - cr}`} fill={`url(#cc-${id})`} />
+        <path d={`M15 ${4 - cr} Q12 ${8 - cr} 10 ${9 - cr} Q8 ${8 - cr} 9 ${5 - cr}`} fill={c.clawTip} />
         {/* Left claw serration */}
-        <path d="M10 1 L9 0 M11 2 L10 1" stroke={c.carapaceDeep} strokeWidth="0.3" fill="none" opacity="0.35" />
+        <path d={`M10 ${1 - cr} L9 ${0 - cr} M11 ${2 - cr} L10 ${1 - cr}`} stroke={c.carapaceDeep} strokeWidth="0.3" fill="none" opacity="0.35" />
         {/* Right claw arm — angled upward */}
-        <path d="M52 22 Q58 14 62 6 Q64 2 66 4" stroke={`url(#cc-${id})`} strokeWidth="3.0" fill="none" strokeLinecap="round" />
+        <path d={`M52 22 Q58 ${14 - cr} 62 ${6 - cr} Q64 ${2 - cr} 66 ${4 - cr}`} stroke={`url(#cc-${id})`} strokeWidth="3.0" fill="none" strokeLinecap="round" />
         {/* Right claw pincer — open, pointing up */}
-        <path d="M64 2 Q70 -4 72 -1 Q73 3 70 5 Q67 6 65 4" fill={`url(#cc-${id})`} />
-        <path d="M65 4 Q68 8 70 9 Q72 8 71 5" fill={c.clawTip} />
+        <path d={`M64 ${2 - cr} Q70 ${-4 - cr} 72 ${-1 - cr} Q73 ${3 - cr} 70 ${5 - cr} Q67 ${6 - cr} 65 ${4 - cr}`} fill={`url(#cc-${id})`} />
+        <path d={`M65 ${4 - cr} Q68 ${8 - cr} 70 ${9 - cr} Q72 ${8 - cr} 71 ${5 - cr}`} fill={c.clawTip} />
         {/* Right claw serration */}
-        <path d="M70 1 L71 0 M69 2 L70 1" stroke={c.carapaceDeep} strokeWidth="0.3" fill="none" opacity="0.35" />
+        <path d={`M70 ${1 - cr} L71 ${0 - cr} M69 ${2 - cr} L70 ${1 - cr}`} stroke={c.carapaceDeep} strokeWidth="0.3" fill="none" opacity="0.35" />
         {/* Claw highlights — wet gleam */}
-        <path d="M10 -2 Q11.5 -3 13 -1" stroke="white" strokeWidth="0.5" fill="none" opacity="0.3" />
-        <path d="M69 -2 Q70.5 -3 72 -1" stroke="white" strokeWidth="0.5" fill="none" opacity="0.3" />
+        <path d={`M10 ${-2 - cr} Q11.5 ${-3 - cr} 13 ${-1 - cr}`} stroke="white" strokeWidth="0.5" fill="none" opacity="0.3" />
+        <path d={`M69 ${-2 - cr} Q70.5 ${-3 - cr} 72 ${-1 - cr}`} stroke="white" strokeWidth="0.5" fill="none" opacity="0.3" />
 
         {/* === CARAPACE (main shell body — wide oval) === */}
         <ellipse cx="40" cy="26" rx="18" ry="12" fill={`url(#cb-${id})`} />
@@ -234,12 +253,16 @@ interface CrabMotion {
   targetX: number; targetY: number
   speed: number
   facingRight: boolean
-  // Phase timers
-  phaseTicks: number
-  // Scuttle wobble
+  // Phase timer — now measured in seconds (was ticks)
+  phaseTime: number
+  // Scuttle wobble (gait phase)
   wobblePhase: number
   // Forage animation
   foragePhase: number
+  // Presentation: body rock + vertical bounce, smoothed via rAF
+  bodyTilt: number
+  bounceY: number
+  clawRaise: number
 }
 
 function createCrabMotion(startX: number, startY: number): CrabMotion {
@@ -248,119 +271,155 @@ function createCrabMotion(startX: number, startY: number): CrabMotion {
     phase: 'scuttle',
     targetX: startX + (Math.random() - 0.5) * 200,
     targetY: startY,
-    speed: 0.6 + Math.random() * 0.4,
+    speed: 22 + Math.random() * 14, // pixels per second (scuttle)
     facingRight: Math.random() > 0.5,
-    phaseTicks: 30 + Math.floor(Math.random() * 40),
+    phaseTime: 3 + Math.random() * 4,
     wobblePhase: Math.random() * Math.PI * 2,
     foragePhase: 0,
+    bodyTilt: 0,
+    bounceY: 0,
+    clawRaise: 0,
   }
 }
 
-function tickCrab(c: CrabMotion, cw: number, ch: number): void {
+// Smoothly ease a value toward a target — used for gait tilt/bounce so the
+// body rocks without popping when phases change.
+function damp(current: number, target: number, rate: number, dt: number): number {
+  const t = 1 - Math.exp(-rate * dt)
+  return current + (target - current) * t
+}
+
+function tickCrab(c: CrabMotion, cw: number, ch: number, dt: number): void {
   const bottomBound = ch - 12
   const bottomZone = ch * 0.7  // crabs stay in bottom 30%
 
+  // Target values the body interpolates toward each frame (gait presentation)
+  let tiltTarget = 0
+  let bounceTarget = 0
+  let clawTarget = 0
+
   switch (c.phase) {
     case 'scuttle': {
-      // Sideways crab walk — primary X movement, slight Y wobble
-      c.wobblePhase += 0.2
+      // Sideways crab walk — primary X movement, arching gait
+      // Gait frequency scales with walking speed (~3 Hz step cycle at base speed)
+      const gaitFreq = 6 + c.speed * 0.12
+      c.wobblePhase += gaitFreq * dt
       const dx = c.targetX - c.x
       const moveDir = dx > 0 ? 1 : -1
       c.facingRight = moveDir > 0
 
-      // Crabs move mostly sideways with a characteristic bobbing gait
-      const scuttleSpeed = c.speed * (0.8 + Math.sin(c.wobblePhase * 2) * 0.2)
-      c.x += moveDir * scuttleSpeed
-      c.y += Math.sin(c.wobblePhase) * 0.3  // slight vertical bob
+      const scuttleSpeed = c.speed * (0.85 + Math.sin(c.wobblePhase * 2) * 0.15)
+      c.x += moveDir * scuttleSpeed * dt
+      // slight organic vertical drift (half a pixel over a step cycle)
+      c.y += Math.sin(c.wobblePhase * 0.5) * 0.02
 
-      c.phaseTicks--
-      if (Math.abs(dx) < 5 || c.phaseTicks <= 0) {
-        // Reached target or timed out — decide next action
+      // Body rocks side-to-side with the gait, bounces up/down per step
+      tiltTarget = Math.sin(c.wobblePhase) * 2.2 * moveDir
+      bounceTarget = -Math.abs(Math.sin(c.wobblePhase * 2)) * 0.9
+
+      c.phaseTime -= dt
+      if (Math.abs(dx) < 5 || c.phaseTime <= 0) {
         const roll = Math.random()
         if (roll < 0.35) {
           c.phase = 'pause'
-          c.phaseTicks = 15 + Math.floor(Math.random() * 30) // 1.5–4.5 seconds
+          c.phaseTime = 1.5 + Math.random() * 3
         } else if (roll < 0.65) {
           c.phase = 'forage'
-          c.phaseTicks = 30 + Math.floor(Math.random() * 50) // 3–8 seconds
+          c.phaseTime = 3 + Math.random() * 5
           c.foragePhase = 0
         } else if (roll < 0.8) {
-          // Pick new scuttle target
           c.targetX = Math.max(15, Math.min(cw - 40, c.x + (Math.random() - 0.5) * 250))
           c.targetY = Math.max(bottomZone, Math.min(bottomBound, c.y + (Math.random() - 0.5) * 30))
-          c.phaseTicks = 20 + Math.floor(Math.random() * 40)
+          c.phaseTime = 2 + Math.random() * 4
         } else {
           c.phase = 'hide'
-          c.phaseTicks = 40 + Math.floor(Math.random() * 80) // 4–12 seconds
+          c.phaseTime = 4 + Math.random() * 8
         }
       }
       break
     }
 
     case 'pause': {
-      // Sitting still — slight antenna twitch via tiny position jitter
-      c.wobblePhase += 0.1
-      c.x += Math.sin(c.wobblePhase * 3) * 0.05
-      c.phaseTicks--
-      if (c.phaseTicks <= 0) {
-        // After pause, either scuttle or dart
+      // Sitting still — antennae/claw twitch, tiny sway
+      c.wobblePhase += 2.5 * dt
+      tiltTarget = Math.sin(c.wobblePhase * 1.2) * 0.8
+      bounceTarget = 0
+      clawTarget = Math.sin(c.wobblePhase * 0.7) * 0.3
+      c.phaseTime -= dt
+      if (c.phaseTime <= 0) {
         if (Math.random() < 0.15) {
           c.phase = 'dart'
           c.targetX = Math.max(15, Math.min(cw - 40, c.x + (Math.random() > 0.5 ? 1 : -1) * (80 + Math.random() * 120)))
-          c.phaseTicks = 8 + Math.floor(Math.random() * 6)
+          c.phaseTime = 0.5 + Math.random() * 0.4
         } else {
           c.phase = 'scuttle'
           c.targetX = Math.max(15, Math.min(cw - 40, c.x + (Math.random() - 0.5) * 200))
-          c.phaseTicks = 20 + Math.floor(Math.random() * 40)
+          c.phaseTime = 2 + Math.random() * 4
         }
       }
       break
     }
 
     case 'forage': {
-      // Picking at substrate — small forward/back movements with claw action
-      c.foragePhase += 0.18
-      c.x += Math.sin(c.foragePhase) * 0.3
-      c.y += Math.sin(c.foragePhase * 0.6) * 0.15
+      // Picking at substrate — subtle body shift + claw pumping
+      c.foragePhase += 4 * dt
+      c.x += Math.sin(c.foragePhase) * 0.08
+      c.y += Math.sin(c.foragePhase * 0.6) * 0.04
+      tiltTarget = Math.sin(c.foragePhase * 0.5) * 1.4
+      bounceTarget = Math.sin(c.foragePhase) * 0.4
+      // Claws rhythmically dip down as if picking at the sand
+      clawTarget = 1.5 + Math.sin(c.foragePhase * 1.2) * 1.2
 
-      c.phaseTicks--
-      if (c.phaseTicks <= 0) {
+      c.phaseTime -= dt
+      if (c.phaseTime <= 0) {
         c.phase = 'scuttle'
         c.targetX = Math.max(15, Math.min(cw - 40, c.x + (Math.random() - 0.5) * 180))
-        c.phaseTicks = 25 + Math.floor(Math.random() * 35)
+        c.phaseTime = 2.5 + Math.random() * 3.5
       }
       break
     }
 
     case 'dart': {
-      // Quick sideways dash — startled crab behavior
+      // Quick sideways dash — startled crab, fast gait
+      c.wobblePhase += 20 * dt
       const dx = c.targetX - c.x
       const moveDir = dx > 0 ? 1 : -1
       c.facingRight = moveDir > 0
-      c.x += moveDir * c.speed * 3.5  // much faster than scuttle
+      c.x += moveDir * c.speed * 3.8 * dt
+      tiltTarget = Math.sin(c.wobblePhase) * 4 * moveDir
+      bounceTarget = -Math.abs(Math.sin(c.wobblePhase * 2)) * 1.4
+      // Claws tuck down while darting
+      clawTarget = -1.2
 
-      c.phaseTicks--
-      if (Math.abs(dx) < 8 || c.phaseTicks <= 0) {
+      c.phaseTime -= dt
+      if (Math.abs(dx) < 8 || c.phaseTime <= 0) {
         c.phase = 'pause'
-        c.phaseTicks = 10 + Math.floor(Math.random() * 20)
+        c.phaseTime = 1 + Math.random() * 2
       }
       break
     }
 
     case 'hide': {
-      // Tucked in, barely moving — just tiny shifts
-      c.wobblePhase += 0.05
-      c.x += Math.sin(c.wobblePhase) * 0.02
-
-      c.phaseTicks--
-      if (c.phaseTicks <= 0) {
+      // Tucked in, barely moving
+      c.wobblePhase += 0.5 * dt
+      c.x += Math.sin(c.wobblePhase) * 0.008
+      tiltTarget = 0
+      bounceTarget = 0.3
+      clawTarget = -0.6
+      c.phaseTime -= dt
+      if (c.phaseTime <= 0) {
         c.phase = 'scuttle'
         c.targetX = Math.max(15, Math.min(cw - 40, c.x + (Math.random() - 0.5) * 200))
-        c.phaseTicks = 20 + Math.floor(Math.random() * 40)
+        c.phaseTime = 2 + Math.random() * 4
       }
       break
     }
   }
+
+  // Damp presentation values toward their targets for smooth transitions
+  c.bodyTilt = damp(c.bodyTilt, tiltTarget, 10, dt)
+  c.bounceY = damp(c.bounceY, bounceTarget, 14, dt)
+  c.clawRaise = damp(c.clawRaise, clawTarget, 6, dt)
 
   // Clamp to tank bounds — crabs stay on the bottom
   c.x = Math.max(10, Math.min(cw - 40, c.x))
@@ -371,6 +430,16 @@ function tickCrab(c: CrabMotion, cw: number, ch: number): void {
 // Mate A is slightly larger, Mate B slightly smaller
 const CRAB_MATE_SIZES = [48, 42]
 
+interface CrabRenderState {
+  x: number
+  y: number
+  facingRight: boolean
+  walkPhase: number
+  bodyTilt: number
+  bounceY: number
+  clawRaise: number
+}
+
 export const CrabGroup = memo(({ containerWidth, containerHeight, contained = false }: {
   containerWidth: number
   containerHeight: number
@@ -378,7 +447,7 @@ export const CrabGroup = memo(({ containerWidth, containerHeight, contained = fa
 }) => {
   const count = 2 // always a mated pair
   const crabsRef = useRef<CrabMotion[]>([])
-  const [positions, setPositions] = useState<{ x: number; y: number; facingRight: boolean; walkPhase: number }[]>([])
+  const [positions, setPositions] = useState<CrabRenderState[]>([])
 
   // Initialize the mated pair — start near each other
   useEffect(() => {
@@ -388,51 +457,62 @@ export const CrabGroup = memo(({ containerWidth, containerHeight, contained = fa
     const bottomY = containerHeight * (0.80 + Math.random() * 0.10)
 
     crabsRef.current = Array.from({ length: count }, (_, i) => {
-      // Start them side by side, offset slightly
       const offsetX = (i === 0 ? -1 : 1) * (30 + Math.random() * 20)
       const startX = Math.max(25, Math.min(containerWidth - 50, centerX + offsetX))
       const startY = bottomY + (Math.random() - 0.5) * 10
       return createCrabMotion(startX, startY)
     })
 
-    setPositions(crabsRef.current.map(c => ({ x: c.x, y: c.y, facingRight: c.facingRight, walkPhase: c.wobblePhase })))
+    setPositions(crabsRef.current.map(c => ({
+      x: c.x, y: c.y, facingRight: c.facingRight,
+      walkPhase: c.wobblePhase, bodyTilt: c.bodyTilt,
+      bounceY: c.bounceY, clawRaise: c.clawRaise,
+    })))
   }, [containerWidth, containerHeight, count])
 
-  // Movement loop — 10 fps, CSS transitions smooth the visual
-  // Mates tend to stay near each other — if too far apart, the trailing one orients toward partner
+  // Smooth 60 fps rAF loop — delta-time integration so gait + movement stay
+  // framerate-independent. React re-renders per frame but the two memo'd
+  // CrabSVGs are cheap and the outer wrapper uses GPU-composited transforms.
   useEffect(() => {
     if (containerWidth === 0 || containerHeight === 0) return
     if (crabsRef.current.length < 2) return
 
-    const interval = setInterval(() => {
-      crabsRef.current.forEach((crab, i) => {
-        tickCrab(crab, containerWidth, containerHeight)
-      })
+    let raf = 0
+    let last = performance.now()
+
+    const step = (now: number) => {
+      const dt = Math.min(0.05, (now - last) / 1000) // cap to 50 ms (tab blur)
+      last = now
+
+      crabsRef.current.forEach(crab => tickCrab(crab, containerWidth, containerHeight, dt))
 
       // Mate bond: if crabs drift too far apart (>40% of tank width),
-      // the one in 'scuttle' or 'pause' phase redirects toward partner
+      // one of them redirects toward the partner.
       const [a, b] = crabsRef.current
       const mateDist = Math.abs(a.x - b.x)
       const maxDist = containerWidth * 0.40
-
       if (mateDist > maxDist) {
-        // Whichever crab is in a redirectable phase moves toward the other
         for (const [self, partner] of [[a, b], [b, a]] as [CrabMotion, CrabMotion][]) {
           if (self.phase === 'scuttle' || self.phase === 'pause') {
             self.phase = 'scuttle'
             self.targetX = partner.x + (Math.random() - 0.5) * 40
-            self.phaseTicks = 20 + Math.floor(Math.random() * 20)
-            break // only redirect one at a time
+            self.phaseTime = 2 + Math.random() * 2
+            break
           }
         }
       }
 
       setPositions(crabsRef.current.map(c => ({
-        x: c.x, y: c.y, facingRight: c.facingRight, walkPhase: c.wobblePhase,
+        x: c.x, y: c.y, facingRight: c.facingRight,
+        walkPhase: c.wobblePhase, bodyTilt: c.bodyTilt,
+        bounceY: c.bounceY, clawRaise: c.clawRaise,
       })))
-    }, 100)
 
-    return () => clearInterval(interval)
+      raf = requestAnimationFrame(step)
+    }
+
+    raf = requestAnimationFrame(step)
+    return () => cancelAnimationFrame(raf)
   }, [containerWidth, containerHeight])
 
   if (containerWidth === 0 || containerHeight === 0) return null
@@ -442,11 +522,11 @@ export const CrabGroup = memo(({ containerWidth, containerHeight, contained = fa
       {positions.map((pos, i) => (
         <div
           key={`crab-${i}`}
-          className="absolute"
+          className="absolute left-0 top-0"
           style={{
-            left: `${pos.x}px`,
-            top: `${pos.y}px`,
-            transition: 'left 0.15s linear, top 0.15s linear',
+            // GPU-composited transform — smoother than animating left/top
+            transform: `translate3d(${pos.x}px, ${pos.y}px, 0)`,
+            willChange: 'transform',
           }}
         >
           <CrabSVG
@@ -455,6 +535,9 @@ export const CrabGroup = memo(({ containerWidth, containerHeight, contained = fa
             size={CRAB_MATE_SIZES[i]}
             variant={i}
             walkPhase={pos.walkPhase}
+            bodyTilt={pos.bodyTilt}
+            bounceY={pos.bounceY}
+            clawRaise={pos.clawRaise}
           />
         </div>
       ))}

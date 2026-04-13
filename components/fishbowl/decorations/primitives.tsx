@@ -2,6 +2,35 @@
 
 import { memo } from 'react'
 
+// ─── Hex color helpers ──────────────────────────────────────────────
+// Derive shade/tint variants from a base color so Rock/Coral/Kelp render
+// consistent highlights & shadows regardless of theme palette. Prevents the
+// "washed out" / off-tint look caused by hardcoded pink or gray fallbacks.
+
+function hexToRgb(hex: string): [number, number, number] {
+  const h = hex.replace('#', '')
+  return [
+    parseInt(h.slice(0, 2), 16),
+    parseInt(h.slice(2, 4), 16),
+    parseInt(h.slice(4, 6), 16),
+  ]
+}
+
+function rgbToHex(r: number, g: number, b: number): string {
+  const c = (n: number) => Math.max(0, Math.min(255, Math.round(n))).toString(16).padStart(2, '0')
+  return `#${c(r)}${c(g)}${c(b)}`
+}
+
+function lightenHex(hex: string, amount: number): string {
+  const [r, g, b] = hexToRgb(hex)
+  return rgbToHex(r + (255 - r) * amount, g + (255 - g) * amount, b + (255 - b) * amount)
+}
+
+function darkenHex(hex: string, amount: number): string {
+  const [r, g, b] = hexToRgb(hex)
+  return rgbToHex(r * (1 - amount), g * (1 - amount), b * (1 - amount))
+}
+
 // ─── Sandy Bottom ────────────────────────────────────────────────────
 
 export const SandyBottom = memo(({ color = '#C4A862', lighter = '#D4B872', detail = '#B89B52' }: {
@@ -62,13 +91,15 @@ SandyBottom.displayName = 'SandyBottom'
 interface RockProps { x: number; y: number; variant?: 'small' | 'medium' | 'large'; color?: string }
 
 export const Rock = memo(({ x, y, variant = 'medium', color = '#6B7280' }: RockProps) => {
-  const darker = color === '#6B7280' ? '#4B5563' : '#5A6370'
-  const lighter = color === '#6B7280' ? '#9CA3AF' : '#8B939F'
+  // Derive shade ramp from the base color so every theme's rocks read
+  // consistently (no more blue-gray fallbacks tinting warm/cool stones).
+  const darker = darkenHex(color, 0.32)
+  const lighter = lightenHex(color, 0.28)
+  const midTone = darkenHex(color, 0.12)
+  const midLight = lightenHex(color, 0.12)
 
   if (variant === 'small') {
     // ~25×18px bounding box (scaled up from 12×8)
-    const midTone = color === '#6B7280' ? '#5C6370' : '#637080'
-    const midLight = color === '#6B7280' ? '#8894A0' : '#7D8A96'
     return (
       <g transform={`translate(${x}, ${y})`}>
         {/* Dark base shadow */}
@@ -93,8 +124,6 @@ export const Rock = memo(({ x, y, variant = 'medium', color = '#6B7280' }: RockP
   }
   if (variant === 'large') {
     // ~70×42px bounding box (scaled up from 32×16)
-    const midTone = color === '#6B7280' ? '#5C6370' : '#637080'
-    const midLight = color === '#6B7280' ? '#8894A0' : '#7D8A96'
     return (
       <g transform={`translate(${x}, ${y})`}>
         {/* Main body */}
@@ -138,8 +167,6 @@ export const Rock = memo(({ x, y, variant = 'medium', color = '#6B7280' }: RockP
     )
   }
   // Medium: ~42×28px bounding box (scaled up from 20×12)
-  const midToneM = color === '#6B7280' ? '#5C6370' : '#637080'
-  const midLightM = color === '#6B7280' ? '#8894A0' : '#7D8A96'
   return (
     <g transform={`translate(${x}, ${y})`}>
       {/* Dark base shadow */}
@@ -148,14 +175,14 @@ export const Rock = memo(({ x, y, variant = 'medium', color = '#6B7280' }: RockP
       <rect x="4" y="14" width="40" height="16" fill={color} />
       <rect x="8" y="8" width="32" height="12" fill={color} />
       {/* Intermediate shade rects for color depth */}
-      <rect x="6" y="16" width="14" height="8" fill={midLightM} opacity="0.35" />
-      <rect x="22" y="14" width="12" height="6" fill={midToneM} opacity="0.3" />
-      <rect x="10" y="22" width="18" height="5" fill={midLightM} opacity="0.2" />
+      <rect x="6" y="16" width="14" height="8" fill={midLight} opacity="0.35" />
+      <rect x="22" y="14" width="12" height="6" fill={midTone} opacity="0.3" />
+      <rect x="10" y="22" width="18" height="5" fill={midLight} opacity="0.2" />
       {/* Top highlight */}
       <rect x="14" y="4" width="20" height="10" fill={lighter} />
       <rect x="12" y="12" width="8" height="8" fill={lighter} opacity="0.4" />
       {/* Subtle highlight on top-left */}
-      <rect x="14" y="4" width="8" height="4" fill="#B0BAC4" opacity="0.3" />
+      <rect x="14" y="4" width="8" height="4" fill={lightenHex(color, 0.4)} opacity="0.3" />
       <rect x="10" y="8" width="6" height="3" fill={lighter} opacity="0.25" />
       {/* Right side shadow */}
       <rect x="30" y="14" width="10" height="8" fill={darker} opacity="0.3" />
@@ -337,11 +364,14 @@ Kelp.displayName = 'Kelp'
 interface CoralProps { x: number; y: number; variant?: 'branch' | 'brain' | 'fan'; color?: string }
 
 export const Coral = memo(({ x, y, variant = 'branch', color = '#E91E63' }: CoralProps) => {
-  const lighter = '#F48FB1'
-  const darker = color === '#E91E63' ? '#C2185B' : '#8B4A52'
-
-  // Intermediate shade between color and lighter
-  const midCoral = color === '#E91E63' ? '#F06292' : '#C47080'
+  // Derive highlight/shade ramp from the base color so green/orange/brown/
+  // cyan corals no longer get pink-tinted highlights from the old hardcoded
+  // fallbacks — every theme reads as the same species in its own palette.
+  const lighter = lightenHex(color, 0.55)
+  const softLight = lightenHex(color, 0.72)
+  const brightTip = lightenHex(color, 0.82)
+  const darker = darkenHex(color, 0.4)
+  const midCoral = lightenHex(color, 0.25)
 
   if (variant === 'branch') {
     // ~45×50px bounding box (scaled up from ~20×22)
@@ -402,8 +432,8 @@ export const Coral = memo(({ x, y, variant = 'branch', color = '#E91E63' }: Cora
         <rect x="42" y="20" width="6" height="18" fill={darker} opacity="0.15" />
         <rect x="8" y="28" width="4" height="10" fill={darker} opacity="0.12" />
         {/* Surface highlights on top */}
-        <rect x="18" y="4" width="10" height="4" fill="#F8BBD0" opacity="0.3" />
-        <rect x="22" y="6" width="6" height="3" fill="#FCE4EC" opacity="0.2" />
+        <rect x="18" y="4" width="10" height="4" fill={softLight} opacity="0.3" />
+        <rect x="22" y="6" width="6" height="3" fill={brightTip} opacity="0.2" />
         {/* Brain meander ridges — original */}
         <rect x="16" y="14" width="22" height="2" fill={lighter} opacity="0.45" />
         <rect x="10" y="22" width="34" height="2" fill={lighter} opacity="0.4" />
@@ -447,9 +477,9 @@ export const Coral = memo(({ x, y, variant = 'branch', color = '#E91E63' }: Cora
       <rect x="8" y="6" width="32" height="14" fill={lighter} opacity="0.6" />
       <rect x="12" y="0" width="22" height="10" fill={lighter} opacity="0.4" />
       {/* Growth edge detail (lighter pixels at top edge) */}
-      <rect x="14" y="0" width="18" height="2" fill="#FCE4EC" opacity="0.35" />
-      <rect x="10" y="2" width="4" height="2" fill="#F8BBD0" opacity="0.3" />
-      <rect x="32" y="2" width="4" height="2" fill="#F8BBD0" opacity="0.25" />
+      <rect x="14" y="0" width="18" height="2" fill={brightTip} opacity="0.35" />
+      <rect x="10" y="2" width="4" height="2" fill={softLight} opacity="0.3" />
+      <rect x="32" y="2" width="4" height="2" fill={softLight} opacity="0.25" />
       {/* Vein/branch pattern lines (1px dark lines radiating from stem) */}
       <rect x="22" y="14" width="1" height="20" fill={darker} opacity="0.15" />
       <rect x="16" y="16" width="1" height="16" fill={darker} opacity="0.12" />
