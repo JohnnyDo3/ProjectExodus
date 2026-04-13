@@ -474,7 +474,7 @@ function AnimatedScene({ id, color, rgb }: { id: string; color: string; rgb: str
 // ============================================
 
 export function FeatureShowcase() {
-  const { data: session, status } = useSession()
+  const { status } = useSession()
   const isAuthenticated = status === 'authenticated'
   const showSignUp = !isAuthenticated && status !== 'loading'
 
@@ -549,7 +549,7 @@ export function FeatureShowcase() {
                     <div
                       className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                       style={{
-                        background: `radial-gradient(ellipse at 50% 70%, rgba(${feature.accentRgb}, 0.12) 0%, transparent 70%)`,
+                        background: `radial-gradient(ellipse at 50% 70%, rgba(${feature.accentRgb}, 0.2) 0%, transparent 70%)`,
                       }}
                     />
 
@@ -622,10 +622,10 @@ export function FeatureShowcase() {
 
                     {/* Border + shadow on hover */}
                     <div
-                      className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none"
+                      className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                       style={{
-                        border: `1.5px solid rgba(${feature.accentRgb}, 0.3)`,
-                        boxShadow: `0 8px 32px rgba(${feature.accentRgb}, 0.15), 0 2px 8px rgba(${feature.accentRgb}, 0.08)`,
+                        border: `1.5px solid rgba(${feature.accentRgb}, 0.35)`,
+                        boxShadow: `0 12px 36px rgba(${feature.accentRgb}, 0.18), 0 2px 8px rgba(${feature.accentRgb}, 0.1)`,
                       }}
                     />
                   </motion.div>
@@ -644,39 +644,105 @@ export function FeatureShowcase() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <div className="relative rounded-3xl overflow-hidden py-12 md:py-16 px-6">
+            <div className="relative rounded-3xl overflow-hidden py-14 md:py-20 px-6 md:px-10">
               {/* Gradient background */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#36763d] via-[#357777] to-[#c24f31]" />
-              {/* Pattern overlay */}
+              <div className="absolute inset-0 bg-gradient-to-br from-[#36763d] via-[#357777] to-[#c24f31]" />
+              {/* Diagonal pattern */}
               <div className="absolute inset-0 opacity-[0.06]" style={{
                 backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.08) 20px, rgba(255,255,255,0.08) 40px)',
               }} />
+              {/* Top highlight */}
+              <div className="absolute inset-0" style={{
+                background: 'radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.14) 0%, transparent 60%)',
+              }} />
 
-              <div className="relative z-10 text-center text-white">
-                <p className="text-[10px] md:text-xs font-bold tracking-[0.3em] mb-6 opacity-70">
-                  THREE PILLARS · ONE MISSION
-                </p>
-
-                <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8 md:gap-14 mb-6">
-                  <div className="flex items-center gap-2.5">
-                    <Leaf className="w-7 h-7 md:w-9 md:h-9 opacity-90" />
-                    <span className="text-2xl md:text-4xl font-black">FOOD</span>
-                  </div>
-                  <span className="hidden sm:block text-2xl opacity-30">·</span>
-                  <div className="flex items-center gap-2.5">
-                    <Droplet className="w-7 h-7 md:w-9 md:h-9 opacity-90" />
-                    <span className="text-2xl md:text-4xl font-black">WATER</span>
-                  </div>
-                  <span className="hidden sm:block text-2xl opacity-30">·</span>
-                  <div className="flex items-center gap-2.5">
-                    <Zap className="w-7 h-7 md:w-9 md:h-9 opacity-90" />
-                    <span className="text-2xl md:text-4xl font-black">ENERGY</span>
-                  </div>
+              <div className="relative z-10">
+                {/* Heading */}
+                <div className="text-center mb-10 md:mb-14">
+                  <p className="text-[10px] md:text-xs font-bold tracking-[0.3em] mb-3 text-white/70">
+                    THREE PILLARS · ONE MISSION
+                  </p>
+                  <h3 className="text-3xl md:text-5xl font-black text-white tracking-tight">
+                    Off-Grid by Design
+                  </h3>
+                  <p className="mt-4 text-base md:text-lg font-medium text-white/85 max-w-2xl mx-auto">
+                    Sustainable systems engineered to work together within every built environment.
+                  </p>
                 </div>
 
-                <p className="text-base md:text-lg font-bold opacity-85 max-w-xl mx-auto">
-                  Developing sustainable off-grid systems within built environments
-                </p>
+                {/* Pillar cards */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto">
+                  {[
+                    {
+                      icon: Leaf,
+                      title: 'FOOD',
+                      description: 'Regenerative growing, permaculture, aquaponics, and closed-loop nutrition systems.',
+                      stat: 'Grow · Harvest · Share',
+                    },
+                    {
+                      icon: Droplet,
+                      title: 'WATER',
+                      description: 'Rainwater capture, greywater recycling, purification, and resilient irrigation.',
+                      stat: 'Capture · Clean · Reuse',
+                    },
+                    {
+                      icon: Zap,
+                      title: 'ENERGY',
+                      description: 'Solar, wind, and storage systems engineered for true energy independence.',
+                      stat: 'Generate · Store · Thrive',
+                    },
+                  ].map((pillar, i) => {
+                    const PillarIcon = pillar.icon
+                    return (
+                      <motion.div
+                        key={pillar.title}
+                        className="group/pillar relative rounded-2xl p-6 md:p-7 backdrop-blur-sm overflow-hidden"
+                        style={{
+                          backgroundColor: 'rgba(255,255,255,0.08)',
+                          border: '1px solid rgba(255,255,255,0.18)',
+                        }}
+                        initial={{ opacity: 0, y: 24 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: 0.3 + i * 0.12 }}
+                        whileHover={{ y: -4, transition: { duration: 0.25 } }}
+                      >
+                        {/* Hover shine */}
+                        <div
+                          className="absolute inset-0 opacity-0 group-hover/pillar:opacity-100 transition-opacity duration-500 pointer-events-none"
+                          style={{
+                            background: 'radial-gradient(circle at 50% 0%, rgba(255,255,255,0.16) 0%, transparent 60%)',
+                          }}
+                        />
+
+                        <div
+                          className="relative w-14 h-14 rounded-2xl flex items-center justify-center mb-4 group-hover/pillar:scale-110 transition-transform duration-300"
+                          style={{
+                            backgroundColor: 'rgba(255,255,255,0.15)',
+                            border: '1px solid rgba(255,255,255,0.22)',
+                          }}
+                        >
+                          <PillarIcon
+                            className="w-7 h-7 text-white"
+                            style={{
+                              animation: `feat-float ${3.2 + i * 0.4}s ease-in-out infinite ${i * 0.3}s`,
+                            }}
+                          />
+                        </div>
+
+                        <h4 className="relative text-2xl md:text-3xl font-black text-white mb-2 tracking-tight">
+                          {pillar.title}
+                        </h4>
+                        <p className="relative text-sm text-white/85 leading-relaxed mb-4">
+                          {pillar.description}
+                        </p>
+                        <p className="relative text-[11px] font-bold tracking-[0.15em] text-white/65 uppercase">
+                          {pillar.stat}
+                        </p>
+                      </motion.div>
+                    )
+                  })}
+                </div>
               </div>
             </div>
           </motion.div>
