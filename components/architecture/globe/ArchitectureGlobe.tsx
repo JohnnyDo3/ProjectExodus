@@ -144,6 +144,14 @@ export default function ArchitectureGlobe({
         controls.autoRotate = false
         controls.enableRotate = true
         controls.enableZoom = true
+
+        // OrbitControls sets the canvas's touch-action to 'none' internally,
+        // which blocks vertical page scroll on iPad/mobile. Override so the
+        // page can scroll vertically while horizontal drag still rotates the
+        // globe and pinch still zooms.
+        if (controls.domElement) {
+          controls.domElement.style.touchAction = 'pan-y'
+        }
       }
 
       globeInitializedRef.current = true
@@ -271,7 +279,7 @@ export default function ArchitectureGlobe({
   // -------------------------------------------------------------------------
 
   return (
-    <div ref={containerRef} className="w-full h-full" style={{ touchAction: 'none' }}>
+    <div ref={containerRef} className="w-full h-full" style={{ touchAction: 'pan-y' }}>
       {dimensions.width > 0 && dimensions.height > 0 && (
         <GlobeGL
           ref={globeRef}

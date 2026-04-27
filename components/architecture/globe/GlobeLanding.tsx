@@ -181,7 +181,7 @@ export default function GlobeLanding() {
       {/* Globe — FIXED, starts below header */}
       <div
         className="fixed top-16 sm:top-20 left-0 right-0 bottom-0 overflow-hidden"
-        style={{ zIndex: 11, touchAction: 'none' }}
+        style={{ zIndex: 11, touchAction: 'pan-y' }}
         aria-label="Interactive Architecture Globe"
         aria-roledescription="3D globe visualization"
       >
