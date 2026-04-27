@@ -145,10 +145,21 @@ export default function ArchitectureGlobe({
         controls.enableRotate = true
         controls.enableZoom = true
 
+        // Touch gestures on iPad/mobile:
+        //   1 finger vertical drag  -> page scroll (handled by touch-action: pan-y)
+        //   1 finger horizontal drag -> globe rotate (longitude)
+        //   2 finger drag           -> full 360 rotation including up/down tilt
+        //   2 finger pinch          -> zoom
+        // Default OrbitControls TWO is DOLLY_PAN; switching to DOLLY_ROTATE (3)
+        // gives users full latitude rotation back on touch.
+        if (controls.touches) {
+          controls.touches.TWO = 3 // THREE.TOUCH.DOLLY_ROTATE
+        }
+
         // OrbitControls sets the canvas's touch-action to 'none' internally,
         // which blocks vertical page scroll on iPad/mobile. Override so the
         // page can scroll vertically while horizontal drag still rotates the
-        // globe and pinch still zooms.
+        // globe and 2-finger drag rotates fully.
         if (controls.domElement) {
           controls.domElement.style.touchAction = 'pan-y'
         }
