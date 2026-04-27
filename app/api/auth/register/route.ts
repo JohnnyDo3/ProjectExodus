@@ -3,6 +3,7 @@ import { prisma } from '@/lib/db'
 import bcrypt from 'bcryptjs'
 import { z } from 'zod'
 import { rateLimit, rateLimitResponse } from '@/lib/rate-limit'
+import { isPasswordPwned } from '@/lib/security/pwnedPassword'
 
 // List of known disposable/temporary email domains to block bots
 const DISPOSABLE_EMAIL_DOMAINS = [
@@ -28,7 +29,7 @@ const registerSchema = z.object({
     .trim()
     .refine(isNotDisposableEmail, 'Disposable email addresses are not allowed'),
   password: z.string()
-    .min(12, 'Password must be at least 12 characters')
+    .min(8, 'Password must be at least 8 characters')
     .max(100)
     .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
     .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
@@ -62,6 +63,16 @@ export async function POST(req: NextRequest) {
     if (existingUser) {
       return NextResponse.json(
         { error: 'User with this email already exists' },
+        { status: 400 }
+      )
+    }
+
+    if (await isPasswordPwned(validatedData.password)) {
+      return NextResponse.json(
+        {
+          error: 'This password has appeared in a known data breach. Please choose a different one.',
+          field: 'password',
+        },
         { status: 400 }
       )
     }

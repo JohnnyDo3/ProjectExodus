@@ -41,8 +41,8 @@ export default function SignUpPage() {
 
     if (!formData.password) {
       newErrors.password = 'Password is required'
-    } else if (formData.password.length < 12) {
-      newErrors.password = 'Password must be at least 12 characters'
+    } else if (formData.password.length < 8) {
+      newErrors.password = 'Password must be at least 8 characters'
     } else if (!/[A-Z]/.test(formData.password)) {
       newErrors.password = 'Password must include an uppercase letter'
     } else if (!/[a-z]/.test(formData.password)) {
@@ -141,7 +141,7 @@ export default function SignUpPage() {
   const strengthLabels = ['', 'Weak', 'Fair', 'Good', 'Strong', 'Very Strong']
   const strengthColors = ['', 'bg-terra-500', 'bg-terra-400', 'bg-moss-400', 'bg-moss-500', 'bg-moss-600']
   const passwordChecks = [
-    { label: 'At least 12 characters', met: formData.password.length >= 12 },
+    { label: 'At least 8 characters', met: formData.password.length >= 8 },
     { label: '1 uppercase letter (A-Z)', met: /[A-Z]/.test(formData.password) },
     { label: '1 lowercase letter (a-z)', met: /[a-z]/.test(formData.password) },
     { label: '1 number (0-9)', met: /[0-9]/.test(formData.password) },
@@ -216,7 +216,7 @@ export default function SignUpPage() {
                   onChange={handleChange}
                   placeholder="••••••••"
                   error={errors.password}
-                  hint="At least 12 characters, with upper/lower/number/symbol"
+                  hint="At least 8 characters, with upper/lower/number/symbol"
                 />
 
                 {formData.password && (
