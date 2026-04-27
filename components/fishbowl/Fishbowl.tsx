@@ -27,6 +27,8 @@ interface FishbowlProps {
 
 // Only show a subset of fish at any given time. Fish swim in and out.
 const DEFAULT_MAX_VISIBLE = 12
+// Fish fade-in/out duration — must match the opacity transition in SwimmingFish.
+const FISH_FADE_MS = 1200
 
 export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomization, ownerId, contained = false, theme = 'ocean', squareCorners = false }: FishbowlProps) {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -36,6 +38,7 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomi
   const [overlayPos, setOverlayPos] = useState<{ x: number; y: number } | null>(null)
   const [containerRect, setContainerRect] = useState<DOMRect | null>(null)
   const [visibleFishIds, setVisibleFishIds] = useState<Set<string>>(new Set())
+  const [exitingFishIds, setExitingFishIds] = useState<Set<string>>(new Set())
 
   // Convert users to fish data
   const allFish: FishData[] = useMemo(() =>
@@ -53,7 +56,8 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomi
     [users, ownerId, ownerCustomization]
   )
 
-  // Rotate which fish are visible - never fully packed
+  // Rotate which fish are visible - never fully packed.
+  // Departing fish fade out (kept mounted briefly), arriving fish fade in.
   useEffect(() => {
     if (allFish.length === 0) return
 
@@ -61,6 +65,8 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomi
     const initialCount = Math.min(maxVisible, allFish.length)
     const shuffled = [...allFish].sort(() => Math.random() - 0.5)
     setVisibleFishIds(new Set(shuffled.slice(0, initialCount).map(f => f.id)))
+
+    const removalTimers: ReturnType<typeof setTimeout>[] = []
 
     // Periodically swap fish in/out
     const interval = setInterval(() => {
@@ -74,10 +80,13 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomi
         const removeCount = Math.min(Math.ceil(Math.random() * 2), visible.length - 3)
         if (removeCount <= 0) return prev
 
+        const departing: string[] = []
         const next = new Set(prev)
         for (let i = 0; i < removeCount; i++) {
           const removeIdx = Math.floor(Math.random() * visible.length)
-          next.delete(visible[removeIdx])
+          const id = visible[removeIdx]
+          next.delete(id)
+          departing.push(id)
           visible.splice(removeIdx, 1)
         }
 
@@ -90,50 +99,67 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomi
         // Ensure we don't exceed max
         while (next.size > maxVisible) {
           const arr = Array.from(next)
-          next.delete(arr[Math.floor(Math.random() * arr.length)])
+          const dropped = arr[Math.floor(Math.random() * arr.length)]
+          next.delete(dropped)
+          departing.push(dropped)
+        }
+
+        // Mark departing fish as exiting; keep them mounted long enough to fade.
+        if (departing.length > 0) {
+          setExitingFishIds(curr => {
+            const updated = new Set(curr)
+            departing.forEach(id => updated.add(id))
+            return updated
+          })
+          removalTimers.push(setTimeout(() => {
+            setExitingFishIds(curr => {
+              const updated = new Set(curr)
+              departing.forEach(id => updated.delete(id))
+              return updated
+            })
+          }, FISH_FADE_MS))
         }
 
         return next
       })
     }, 8000 + Math.random() * 4000) // every 8-12 seconds
 
-    return () => clearInterval(interval)
+    return () => {
+      clearInterval(interval)
+      removalTimers.forEach(clearTimeout)
+    }
   }, [allFish, maxVisible])
 
-  const visibleFish = useMemo(() =>
-    allFish.filter(f => visibleFishIds.has(f.id)),
-    [allFish, visibleFishIds]
+  // Render any fish that's currently visible OR still fading out.
+  const renderedFish = useMemo(() =>
+    allFish.filter(f => visibleFishIds.has(f.id) || exitingFishIds.has(f.id)),
+    [allFish, visibleFishIds, exitingFishIds]
   )
 
-  // Measure container
+  // Measure container. Only updates on actual size changes — never on scroll —
+  // so the fish tree doesn't re-render every time the user moves the page.
+  // The overlay's containerRect is refreshed at the moment a fish is hovered/clicked.
   useEffect(() => {
     const el = containerRef.current
     if (!el) return
 
-    // Immediate measurement as fallback (handles cases where ResizeObserver is slow)
     const measure = () => {
       const rect = el.getBoundingClientRect()
       if (rect.width > 0 && rect.height > 0) {
-        setDimensions({ width: rect.width, height: rect.height })
+        setDimensions(prev =>
+          prev.width === rect.width && prev.height === rect.height
+            ? prev
+            : { width: rect.width, height: rect.height }
+        )
         setContainerRect(rect)
       }
     }
     measure()
 
-    const observer = new ResizeObserver(entries => {
-      const entry = entries[0]
-      if (entry) {
-        setDimensions({
-          width: entry.contentRect.width,
-          height: entry.contentRect.height,
-        })
-        setContainerRect(el.getBoundingClientRect())
-      }
-    })
-
+    const observer = new ResizeObserver(() => measure())
     observer.observe(el)
 
-    // Retry measurement after a short delay for iPad/mobile where layout may settle late
+    // Retry once for late-settling layouts (iPad/mobile)
     const retryTimeout = setTimeout(measure, 100)
 
     return () => {
@@ -142,26 +168,16 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomi
     }
   }, [])
 
-  // Update container rect on scroll
-  useEffect(() => {
-    const update = () => {
-      if (containerRef.current) {
-        setContainerRect(containerRef.current.getBoundingClientRect())
-      }
-    }
-    window.addEventListener('scroll', update, { passive: true })
-    window.addEventListener('resize', update, { passive: true })
-    return () => {
-      window.removeEventListener('scroll', update)
-      window.removeEventListener('resize', update)
-    }
+  const refreshContainerRect = useCallback(() => {
+    if (containerRef.current) setContainerRect(containerRef.current.getBoundingClientRect())
   }, [])
 
   const handleFishHover = useCallback((fish: FishData, rect: DOMRect) => {
     if (clickedFish) return // don't show hover when click overlay is open
+    refreshContainerRect()
     setHoveredFish(fish)
     setOverlayPos({ x: rect.left + rect.width / 2, y: rect.top })
-  }, [clickedFish])
+  }, [clickedFish, refreshContainerRect])
 
   const handleFishLeave = useCallback(() => {
     if (clickedFish) return
@@ -170,10 +186,11 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomi
   }, [clickedFish])
 
   const handleFishClick = useCallback((fish: FishData, rect: DOMRect) => {
+    refreshContainerRect()
     setClickedFish(fish)
     setHoveredFish(null)
     setOverlayPos({ x: rect.left + rect.width / 2, y: rect.top })
-  }, [])
+  }, [refreshContainerRect])
 
   const handleCloseOverlay = useCallback(() => {
     setClickedFish(null)
@@ -198,7 +215,7 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomi
       <DecorationMidground width={dimensions.width} theme={theme} />
 
       {/* Swimming fish (z-index 10-20, swim between decoration layers) */}
-      {dimensions.width > 0 && visibleFish.map((fish, i) => (
+      {dimensions.width > 0 && renderedFish.map((fish, i) => (
         <SwimmingFish
           key={fish.id}
           fish={fish}
@@ -210,6 +227,7 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomi
           index={i}
           contained={contained}
           theme={theme}
+          exiting={exitingFishIds.has(fish.id)}
         />
       ))}
 

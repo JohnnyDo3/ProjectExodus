@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback, memo } from 'react'
-import { FishSVG, getTierFromScore, getTierName, type FishTier, type FishCustomization } from './FishSpecies'
+import { useEffect, useRef, useCallback, memo } from 'react'
+import { FishSVG, type FishTier, type FishCustomization } from './FishSpecies'
 
 export interface FishData {
   id: string
@@ -122,8 +122,12 @@ interface SwimmingFishProps {
   index: number
   contained?: boolean
   theme?: string
+  exiting?: boolean
   allFishPositions?: React.MutableRefObject<Map<string, { x: number; y: number; vx: number; size: number }>>
 }
+
+const HOVER_FILTER = 'brightness(1.3) drop-shadow(0 0 12px rgba(34,211,238,0.6)) drop-shadow(0 0 4px rgba(255,255,255,0.3))'
+const REST_FILTER = 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))'
 
 // ── Constants ───────────────────────────────────────────────────────
 const FISH_MARGIN = 120
@@ -211,15 +215,12 @@ function pickWaypoint(
 const globalFishPositions = new Map<string, { x: number; y: number; vx: number; size: number; heading: number; speed: number }>()
 
 // ── Component ───────────────────────────────────────────────────────
-export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHover, onLeave, onClick, index, contained = false, theme, allFishPositions }: SwimmingFishProps) => {
+export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHover, onLeave, onClick, index, contained = false, theme, exiting = false, allFishPositions }: SwimmingFishProps) => {
   const ref = useRef<HTMLDivElement>(null)
   const stateRef = useRef<SwimmingFishState | null>(null)
   const animRef = useRef<number>(0)
-  const [pos, setPos] = useState<{
-    x: number; y: number; direction: 'left' | 'right'; phase: number; vy: number;
-    tailPhase: number; speed: number; behavior: FishBehavior; pitch: number
-  }>({ x: 0, y: 0, direction: 'right', phase: 0, vy: 0, tailPhase: 0, speed: 0, behavior: 'cruise', pitch: 0 })
   const isHovered = useRef(false)
+  const lastZIndex = useRef(0)
 
   const fishSize = 36 + fish.tier * 8
 
@@ -269,12 +270,6 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
       spiralCenterX: 0,
       spiralCenterY: 0,
     }
-
-    setPos({
-      x: startX, y: startY,
-      direction: enterFromLeft ? 'right' : 'left',
-      phase: 0, vy: 0, tailPhase: 0, speed: baseSpeed, behavior: 'cruise', pitch: 0,
-    })
   }, [containerWidth, containerHeight, index, contained, fishSize])
 
   // ── Animation loop ──────────────────────────────────────────────
@@ -554,16 +549,25 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
         } as any)
       }
 
-      setPos({
-        x: s.x, y: s.y,
-        direction: s.direction,
-        phase: s.phase,
-        vy: Math.sin(s.heading) * s.speed,
-        tailPhase: s.tailPhase,
-        speed: s.speed,
-        behavior: s.behavior,
-        pitch: s.smoothPitch,
-      })
+      // ─── Imperative DOM update (no React render) ─────────────
+      const el = ref.current
+      if (el) {
+        const speedRatio = s.speed / (s.baseSpeed || 1.5)
+        const tailSwing = Math.sin(s.tailPhase) * (1.2 + speedRatio * 1.5)
+        const bobAmount = Math.sin(s.phase * 0.4) * 0.5
+        const dirSign = s.direction === 'left' ? 1 : -1
+        const flipSign = s.direction === 'right' ? -1 : 1
+        const rotate = s.smoothPitch * flipSign + tailSwing * 0.3
+
+        el.style.transform = `translate3d(${s.x.toFixed(2)}px, ${(s.y + bobAmount).toFixed(2)}px, 0) scaleX(${dirSign}) rotate(${rotate.toFixed(2)}deg)`
+
+        // zIndex changes infrequently; only write when it actually changes
+        const z = 10 + Math.floor(s.y / 10)
+        if (z !== lastZIndex.current) {
+          el.style.zIndex = String(z)
+          lastZIndex.current = z
+        }
+      }
 
       animRef.current = requestAnimationFrame(animate)
     }
@@ -578,11 +582,15 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
   // ── Event handlers ──────────────────────────────────────────────
   const handleMouseEnter = useCallback(() => {
     isHovered.current = true
-    if (ref.current) onHover(fish, ref.current.getBoundingClientRect())
+    if (ref.current) {
+      ref.current.style.filter = HOVER_FILTER
+      onHover(fish, ref.current.getBoundingClientRect())
+    }
   }, [fish, onHover])
 
   const handleMouseLeave = useCallback(() => {
     isHovered.current = false
+    if (ref.current) ref.current.style.filter = REST_FILTER
     onLeave()
   }, [onLeave])
 
@@ -590,29 +598,32 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
     if (ref.current) onClick(fish, ref.current.getBoundingClientRect())
   }, [fish, onClick])
 
-  // ── Render ──────────────────────────────────────────────────────
-  // Tail undulation — stronger when swimming faster, very subtle when idle
-  const speedRatio = pos.speed / (stateRef.current?.baseSpeed || 1.5)
-  const tailSwing = Math.sin(pos.tailPhase) * (1.2 + speedRatio * 1.5)
-  // Gentle vertical bob (very subtle, doesn't dominate)
-  const bobAmount = Math.sin(pos.phase * 0.4) * 0.5
-  // Pitch from movement direction
-  const pitchDeg = pos.pitch
-  const flipSign = pos.direction === 'right' ? -1 : 1
+  // ── Mount fade-in / exit fade-out ───────────────────────────────
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    // Schedule the fade-in on the next frame so the initial opacity:0 paints first.
+    const id = requestAnimationFrame(() => {
+      if (el) el.style.opacity = exiting ? '0' : '1'
+    })
+    return () => cancelAnimationFrame(id)
+  }, [exiting])
 
+  // ── Render ──────────────────────────────────────────────────────
+  // Note: position/rotation/zIndex/filter are written imperatively in the RAF
+  // loop and event handlers. React never re-renders this component during
+  // movement — it only mounts/unmounts.
   return (
     <div
       ref={ref}
       className="absolute cursor-pointer"
       style={{
-        left: `${pos.x}px`,
-        top: `${pos.y + bobAmount}px`,
-        transform: `scaleX(${pos.direction === 'left' ? 1 : -1}) rotate(${pitchDeg * flipSign + tailSwing * 0.3}deg)`,
-        zIndex: 10 + Math.floor(pos.y / 10),
-        filter: isHovered.current
-          ? `brightness(1.3) drop-shadow(0 0 12px rgba(34,211,238,0.6)) drop-shadow(0 0 4px rgba(255,255,255,0.3))`
-          : `drop-shadow(0 2px 4px rgba(0,0,0,0.2))`,
-        transition: 'filter 0.3s ease',
+        left: 0,
+        top: 0,
+        opacity: 0,
+        willChange: 'transform, opacity',
+        filter: REST_FILTER,
+        transition: 'filter 0.3s ease, opacity 1.2s ease',
       }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
