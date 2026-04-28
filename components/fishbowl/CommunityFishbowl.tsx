@@ -249,7 +249,7 @@ export function CommunityFishbowl() {
         {/* The fishbowl — fills the viewport below the lid, above the base */}
         <div className="absolute inset-0 pt-20 pb-16">
           {users.length > 0 ? (
-            <Fishbowl users={users} maxVisible={15} squareCorners theme={activeTheme} />
+            <Fishbowl users={users} maxVisible={30} contained squareCorners theme={activeTheme} />
           ) : (
             <div
               className="w-full h-full flex items-center justify-center"

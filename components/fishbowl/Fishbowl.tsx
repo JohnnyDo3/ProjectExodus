@@ -25,10 +25,14 @@ interface FishbowlProps {
   squareCorners?: boolean
 }
 
-// Only show a subset of fish at any given time. Fish swim in and out.
+// Only show a subset of fish at any given time.
 const DEFAULT_MAX_VISIBLE = 12
-// Fish fade-in/out duration — must match the opacity transition in SwimmingFish.
-const FISH_FADE_MS = 1200
+// Random delay between successive fish departures (one fish leaves at a time).
+const DEPARTURE_MIN_MS = 20_000
+const DEPARTURE_MAX_MS = 90_000
+// Hard safety: if a departing fish hasn't exited after this long (e.g. it
+// got stuck on a structure), force the swap anyway.
+const DEPARTURE_TIMEOUT_MS = 20_000
 
 export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomization, ownerId, contained = false, theme = 'ocean', squareCorners = false }: FishbowlProps) {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -38,7 +42,8 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomi
   const [overlayPos, setOverlayPos] = useState<{ x: number; y: number } | null>(null)
   const [containerRect, setContainerRect] = useState<DOMRect | null>(null)
   const [visibleFishIds, setVisibleFishIds] = useState<Set<string>>(new Set())
-  const [exitingFishIds, setExitingFishIds] = useState<Set<string>>(new Set())
+  const [departingFishIds, setDepartingFishIds] = useState<Set<string>>(new Set())
+  const [pendingEntrances, setPendingEntrances] = useState<Map<string, 'left' | 'right'>>(new Map())
 
   // Convert users to fish data
   const allFish: FishData[] = useMemo(() =>
@@ -56,84 +61,119 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomi
     [users, ownerId, ownerCustomization]
   )
 
-  // Rotate which fish are visible - never fully packed.
-  // Departing fish fade out (kept mounted briefly), arriving fish fade in.
+  // Initial population — pick a random subset to show on mount.
   useEffect(() => {
     if (allFish.length === 0) return
-
-    // Initial batch
     const initialCount = Math.min(maxVisible, allFish.length)
     const shuffled = [...allFish].sort(() => Math.random() - 0.5)
     setVisibleFishIds(new Set(shuffled.slice(0, initialCount).map(f => f.id)))
-
-    const removalTimers: ReturnType<typeof setTimeout>[] = []
-
-    // Periodically swap fish in/out
-    const interval = setInterval(() => {
-      setVisibleFishIds(prev => {
-        const visible = Array.from(prev)
-        const hidden = allFish.filter(f => !prev.has(f.id))
-
-        if (hidden.length === 0 || visible.length === 0) return prev
-
-        // Remove 1-2 fish
-        const removeCount = Math.min(Math.ceil(Math.random() * 2), visible.length - 3)
-        if (removeCount <= 0) return prev
-
-        const departing: string[] = []
-        const next = new Set(prev)
-        for (let i = 0; i < removeCount; i++) {
-          const removeIdx = Math.floor(Math.random() * visible.length)
-          const id = visible[removeIdx]
-          next.delete(id)
-          departing.push(id)
-          visible.splice(removeIdx, 1)
-        }
-
-        // Add same number from hidden
-        const shuffledHidden = [...hidden].sort(() => Math.random() - 0.5)
-        for (let i = 0; i < Math.min(removeCount, shuffledHidden.length); i++) {
-          next.add(shuffledHidden[i].id)
-        }
-
-        // Ensure we don't exceed max
-        while (next.size > maxVisible) {
-          const arr = Array.from(next)
-          const dropped = arr[Math.floor(Math.random() * arr.length)]
-          next.delete(dropped)
-          departing.push(dropped)
-        }
-
-        // Mark departing fish as exiting; keep them mounted long enough to fade.
-        if (departing.length > 0) {
-          setExitingFishIds(curr => {
-            const updated = new Set(curr)
-            departing.forEach(id => updated.add(id))
-            return updated
-          })
-          removalTimers.push(setTimeout(() => {
-            setExitingFishIds(curr => {
-              const updated = new Set(curr)
-              departing.forEach(id => updated.delete(id))
-              return updated
-            })
-          }, FISH_FADE_MS))
-        }
-
-        return next
-      })
-    }, 8000 + Math.random() * 4000) // every 8-12 seconds
-
-    return () => {
-      clearInterval(interval)
-      removalTimers.forEach(clearTimeout)
-    }
   }, [allFish, maxVisible])
 
-  // Render any fish that's currently visible OR still fading out.
+  // Track latest visible IDs in a ref so the scheduler doesn't need to
+  // re-subscribe each time the visible set changes.
+  const visibleIdsRef = useRef(visibleFishIds)
+  visibleIdsRef.current = visibleFishIds
+  const departingIdsRef = useRef(departingFishIds)
+  departingIdsRef.current = departingFishIds
+
+  // Schedule the next departure on a random 20-90s timer. Only one fish
+  // departs at a time. When the picked fish actually exits screen (handled
+  // by handleFishDeparted below), it's swapped for one from the hidden pool
+  // and the next timer is scheduled.
+  const departureTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const scheduleNextDeparture = useCallback(() => {
+    if (departureTimerRef.current) clearTimeout(departureTimerRef.current)
+    if (allFish.length <= maxVisible) return // No offscreen pool — nothing to rotate
+    const delay = DEPARTURE_MIN_MS + Math.random() * (DEPARTURE_MAX_MS - DEPARTURE_MIN_MS)
+    departureTimerRef.current = setTimeout(() => {
+      const visibleArr = Array.from(visibleIdsRef.current).filter(
+        id => !departingIdsRef.current.has(id)
+      )
+      if (visibleArr.length === 0) {
+        scheduleNextDeparture()
+        return
+      }
+      const pick = visibleArr[Math.floor(Math.random() * visibleArr.length)]
+      setDepartingFishIds(curr => {
+        const next = new Set(curr)
+        next.add(pick)
+        return next
+      })
+    }, delay)
+  }, [allFish.length, maxVisible])
+
+  // Kick off the rotation once we have enough fish to actually rotate.
+  useEffect(() => {
+    if (allFish.length <= maxVisible) return
+    scheduleNextDeparture()
+    return () => {
+      if (departureTimerRef.current) clearTimeout(departureTimerRef.current)
+    }
+  }, [allFish.length, maxVisible, scheduleNextDeparture])
+
+  // When a departing fish actually exits the screen, swap it for a hidden one.
+  const handleFishDeparted = useCallback((departedId: string) => {
+    const candidates = allFish.filter(f =>
+      !visibleIdsRef.current.has(f.id) && f.id !== departedId
+    )
+    if (candidates.length === 0) {
+      // No replacement available — just remove the departed fish.
+      setVisibleFishIds(curr => {
+        const next = new Set(curr); next.delete(departedId); return next
+      })
+      setDepartingFishIds(curr => {
+        const next = new Set(curr); next.delete(departedId); return next
+      })
+      scheduleNextDeparture()
+      return
+    }
+    const replacement = candidates[Math.floor(Math.random() * candidates.length)]
+    const entrance: 'left' | 'right' = Math.random() < 0.5 ? 'left' : 'right'
+
+    setVisibleFishIds(curr => {
+      const next = new Set(curr)
+      next.delete(departedId)
+      next.add(replacement.id)
+      return next
+    })
+    setDepartingFishIds(curr => {
+      const next = new Set(curr); next.delete(departedId); return next
+    })
+    setPendingEntrances(curr => {
+      const next = new Map(curr)
+      next.set(replacement.id, entrance)
+      return next
+    })
+    scheduleNextDeparture()
+  }, [allFish, scheduleNextDeparture])
+
+  // Safety: if a departing fish gets stuck and never reports, force the swap.
+  useEffect(() => {
+    if (departingFishIds.size === 0) return
+    const timers: ReturnType<typeof setTimeout>[] = []
+    departingFishIds.forEach(id => {
+      timers.push(setTimeout(() => {
+        if (departingIdsRef.current.has(id)) handleFishDeparted(id)
+      }, DEPARTURE_TIMEOUT_MS))
+    })
+    return () => { timers.forEach(clearTimeout) }
+  }, [departingFishIds, handleFishDeparted])
+
+  // Once a replacement fish has been mounted, clear its pending entrance flag
+  // so subsequent re-renders don't re-trigger the offscreen-spawn logic.
+  useEffect(() => {
+    if (pendingEntrances.size === 0) return
+    const id = requestAnimationFrame(() => {
+      setPendingEntrances(curr => (curr.size === 0 ? curr : new Map()))
+    })
+    return () => cancelAnimationFrame(id)
+  }, [pendingEntrances])
+
+  // Render every fish that's currently in the visible set (departing fish
+  // remain in the visible set until they actually exit and are swapped).
   const renderedFish = useMemo(() =>
-    allFish.filter(f => visibleFishIds.has(f.id) || exitingFishIds.has(f.id)),
-    [allFish, visibleFishIds, exitingFishIds]
+    allFish.filter(f => visibleFishIds.has(f.id)),
+    [allFish, visibleFishIds]
   )
 
   // Measure container. Only updates on actual size changes — never on scroll —
@@ -227,7 +267,9 @@ export function Fishbowl({ users, maxVisible = DEFAULT_MAX_VISIBLE, ownerCustomi
           index={i}
           contained={contained}
           theme={theme}
-          exiting={exitingFishIds.has(fish.id)}
+          departing={departingFishIds.has(fish.id)}
+          entrance={pendingEntrances.get(fish.id)}
+          onDeparted={handleFishDeparted}
         />
       ))}
 

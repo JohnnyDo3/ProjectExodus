@@ -122,7 +122,13 @@ interface SwimmingFishProps {
   index: number
   contained?: boolean
   theme?: string
-  exiting?: boolean
+  /** When true, the fish stops avoiding walls and steers toward the nearest
+   *  edge. Once fully offscreen it fires onDeparted and stops animating. */
+  departing?: boolean
+  /** If set, the fish spawns offscreen and swims in from this side. */
+  entrance?: 'left' | 'right'
+  /** Fired exactly once when a departing fish has fully exited the screen. */
+  onDeparted?: (fishId: string) => void
   allFishPositions?: React.MutableRefObject<Map<string, { x: number; y: number; vx: number; size: number }>>
 }
 
@@ -215,12 +221,17 @@ function pickWaypoint(
 const globalFishPositions = new Map<string, { x: number; y: number; vx: number; size: number; heading: number; speed: number }>()
 
 // ── Component ───────────────────────────────────────────────────────
-export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHover, onLeave, onClick, index, contained = false, theme, exiting = false, allFishPositions }: SwimmingFishProps) => {
+export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHover, onLeave, onClick, index, contained = false, theme, departing = false, entrance, onDeparted, allFishPositions }: SwimmingFishProps) => {
   const ref = useRef<HTMLDivElement>(null)
   const stateRef = useRef<SwimmingFishState | null>(null)
   const animRef = useRef<number>(0)
   const isHovered = useRef(false)
   const lastZIndex = useRef(0)
+  const departingRef = useRef(departing)
+  const onDepartedRef = useRef(onDeparted)
+  const hasReportedDepartureRef = useRef(false)
+  departingRef.current = departing
+  onDepartedRef.current = onDeparted
 
   const fishSize = 36 + fish.tier * 8
 
@@ -231,7 +242,11 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
   useEffect(() => {
     if (containerWidth === 0 || containerHeight === 0) return
 
-    const enterFromLeft = Math.random() > 0.5
+    // `entrance` (set on replacement fish) overrides starting position so the
+    // fish swims in from offscreen regardless of contained mode.
+    const enterFromLeft = entrance
+      ? entrance === 'left'
+      : Math.random() > 0.5
     const heading = enterFromLeft ? 0 : Math.PI // 0 = right, PI = left
     const baseSpeed = randomBetween(BASE_SPEED_MIN, BASE_SPEED_MAX)
     const preferredDepth = randomBetween(0.2, 0.7)
@@ -240,9 +255,10 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
       containerHeight * SWIM_ZONE_BOTTOM
     )
 
-    const startX = contained
-      ? randomBetween(fishSize + 10, containerWidth - fishSize - 10)
-      : (enterFromLeft ? -FISH_MARGIN : containerWidth + FISH_MARGIN)
+    const startOffscreen = !!entrance || !contained
+    const startX = startOffscreen
+      ? (enterFromLeft ? -FISH_MARGIN : containerWidth + FISH_MARGIN)
+      : randomBetween(fishSize + 10, containerWidth - fishSize - 10)
 
     const wp = pickWaypoint(containerWidth, containerHeight, startX, startY, contained)
 
@@ -367,6 +383,18 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
           s.targetHeading = Math.atan2(s.waypointY - s.y, s.waypointX - s.x)
         }
 
+        // ─── 3b. Departing override ───────────────────────────
+        // When marked departing, redirect heading toward nearest X edge so the
+        // fish swims out naturally. Wall avoidance for that side is skipped
+        // below; the fish will exit and fire onDeparted.
+        if (departingRef.current) {
+          const exitLeft = s.x < containerWidth / 2
+          s.targetHeading = exitLeft ? Math.PI : 0
+          // Place the waypoint just past the edge so steering is smooth.
+          s.waypointX = exitLeft ? -FISH_MARGIN - 50 : containerWidth + FISH_MARGIN + 50
+          s.waypointY = s.y
+        }
+
         // ─── 4. Boids: separation, alignment, cohesion ────────
         let sepX = 0, sepY = 0, sepCount = 0
         let aliDx = 0, aliDy = 0, aliCount = 0
@@ -434,7 +462,7 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
         const minY = containerHeight * SWIM_ZONE_TOP
         const maxY = containerHeight * SWIM_ZONE_BOTTOM
 
-        if (contained) {
+        if (contained && !departingRef.current) {
           // Left wall
           if (s.x < marginX) {
             const urgency = 1 - s.x / marginX
@@ -508,7 +536,16 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
         if (s.y < minY) { s.y = minY + 2; s.heading = Math.abs(s.heading) < Math.PI / 2 ? 0.3 : Math.PI - 0.3 }
         if (s.y > maxY) { s.y = maxY - 2; s.heading = Math.abs(s.heading) < Math.PI / 2 ? -0.3 : Math.PI + 0.3 }
 
-        if (contained) {
+        if (departingRef.current) {
+          // No bounce, no wrap. When fully offscreen, signal the parent and
+          // halt the loop so the parent can swap in a replacement.
+          if (s.x < -FISH_MARGIN - 20 || s.x > containerWidth + FISH_MARGIN + 20) {
+            if (!hasReportedDepartureRef.current) {
+              hasReportedDepartureRef.current = true
+              onDepartedRef.current?.(fish.id)
+            }
+          }
+        } else if (contained) {
           const pad = fishSize / 2 + 5
           if (s.x < pad) { s.x = pad + 2; s.heading = randomBetween(-0.4, 0.4) }
           if (s.x > containerWidth - pad) { s.x = containerWidth - pad - 2; s.heading = randomBetween(Math.PI - 0.4, Math.PI + 0.4) }
@@ -598,16 +635,17 @@ export const SwimmingFish = memo(({ fish, containerWidth, containerHeight, onHov
     if (ref.current) onClick(fish, ref.current.getBoundingClientRect())
   }, [fish, onClick])
 
-  // ── Mount fade-in / exit fade-out ───────────────────────────────
+  // ── Mount fade-in ────────────────────────────────────────────────
+  // Fish swim out naturally via the departing flow; this fade only handles
+  // the brief "appear" on mount (initial render and replacements).
   useEffect(() => {
     const el = ref.current
     if (!el) return
-    // Schedule the fade-in on the next frame so the initial opacity:0 paints first.
     const id = requestAnimationFrame(() => {
-      if (el) el.style.opacity = exiting ? '0' : '1'
+      if (el) el.style.opacity = '1'
     })
     return () => cancelAnimationFrame(id)
-  }, [exiting])
+  }, [])
 
   // ── Render ──────────────────────────────────────────────────────
   // Note: position/rotation/zIndex/filter are written imperatively in the RAF
