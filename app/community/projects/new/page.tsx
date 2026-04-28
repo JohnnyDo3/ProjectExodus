@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { redirect, useRouter } from 'next/navigation'
 import Step0Picker from '@/components/projects/create/Step0Picker'
+import BrainstormPanel from '@/components/projects/create/BrainstormPanel'
 import type { ExtractedFields } from '@/lib/projects/ai/extractedFieldsSchema'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -134,6 +135,9 @@ export default function NewProjectPage() {
 
   // Step management
   const [showStep0, setShowStep0] = useState(true)
+  const [brainstormOpen, setBrainstormOpen] = useState(false)
+  const [brainstormDraftId, setBrainstormDraftId] = useState<string | null>(null)
+  const [brainstormStarting, setBrainstormStarting] = useState(false)
   const [showTemplateGallery, setShowTemplateGallery] = useState(true)
   const [selectedTemplate, setSelectedTemplate] = useState<ProjectTemplate | null>(null)
   const [currentStep, setCurrentStep] = useState(1)
@@ -516,17 +520,47 @@ export default function NewProjectPage() {
     setShowTemplateGallery(false)
   }
 
+  // Step 0 — brainstorm chat. Created lazily when user picks the brainstorm path.
+  if (brainstormOpen && brainstormDraftId) {
+    return (
+      <BrainstormPanel
+        draftId={brainstormDraftId}
+        onClose={() => { setBrainstormOpen(false); setShowStep0(true) }}
+        onDraftInitiative={(fields, id) => {
+          setBrainstormOpen(false)
+          applyExtractedFields(fields, id)
+        }}
+      />
+    )
+  }
+
   // Step 0 — picker (paste / brainstorm / blank). Shown before everything else.
   if (showStep0) {
+    const startBrainstorm = async () => {
+      if (brainstormStarting) return
+      setBrainstormStarting(true)
+      try {
+        const res = await fetch('/api/projects/drafts', { method: 'POST' })
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}))
+          throw new Error(body.error || 'Couldn\'t start a brainstorm')
+        }
+        const { draft } = await res.json()
+        setBrainstormDraftId(draft.id)
+        setBrainstormOpen(true)
+        setShowStep0(false)
+      } catch (err) {
+        alert(err instanceof Error ? err.message : 'Couldn\'t start a brainstorm')
+      } finally {
+        setBrainstormStarting(false)
+      }
+    }
     return (
       <div className="min-h-screen flex flex-col bg-[var(--background)]">
         <Step0Picker
           onSkip={() => setShowStep0(false)}
           onPlanExtracted={applyExtractedFields}
-          onBrainstormPlaceholder={() => {
-            // Phase 2 wires this up to a real brainstorm chat.
-            alert('Brainstorm with Sage is coming next — for now, paste a plan or start blank.')
-          }}
+          onBrainstormPlaceholder={startBrainstorm}
         />
       </div>
     )

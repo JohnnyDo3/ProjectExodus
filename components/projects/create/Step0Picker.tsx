@@ -11,7 +11,7 @@
  */
 
 import { useRef, useState } from 'react'
-import { Sparkles, FileText, Upload, MessageSquareText, Forward, Loader2, AlertTriangle } from 'lucide-react'
+import { Sparkles, FileText, Upload, MessageSquareText, Forward, Loader2, AlertTriangle, ArrowRight } from 'lucide-react'
 import type { ExtractedFields } from '@/lib/projects/ai/extractedFieldsSchema'
 
 interface Step0PickerProps {
@@ -19,7 +19,7 @@ interface Step0PickerProps {
   onSkip: () => void
   /** Sage extracted fields from the pasted plan. */
   onPlanExtracted: (fields: ExtractedFields, draftId: string) => void
-  /** Called when the user picks the brainstorm path. Phase 2 wires this up. */
+  /** Called when the user picks the brainstorm path. */
   onBrainstormPlaceholder?: () => void
 }
 
@@ -255,8 +255,8 @@ export default function Step0Picker({
             Don't have anything written yet? Talk it out with Sage and she'll
             draft your initiative when you're ready.
           </p>
-          <div className="mt-4 inline-flex items-center gap-1.5 text-xs text-theme-muted">
-            <Loader2 className="w-3.5 h-3.5" /> Coming soon
+          <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-theme-primary">
+            <ArrowRight className="w-3.5 h-3.5" /> Open chat
           </div>
         </button>
 
