@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { redirect, useRouter } from 'next/navigation'
+import Step0Picker from '@/components/projects/create/Step0Picker'
+import type { ExtractedFields } from '@/lib/projects/ai/extractedFieldsSchema'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -131,10 +133,15 @@ export default function NewProjectPage() {
   const router = useRouter()
 
   // Step management
+  const [showStep0, setShowStep0] = useState(true)
   const [showTemplateGallery, setShowTemplateGallery] = useState(true)
   const [selectedTemplate, setSelectedTemplate] = useState<ProjectTemplate | null>(null)
   const [currentStep, setCurrentStep] = useState(1)
   const [completedSteps, setCompletedSteps] = useState<number[]>([])
+
+  // Sage pre-fill state — only set when the user came in via Step 0 paste/upload
+  const [sageDraftId, setSageDraftId] = useState<string | null>(null)
+  const [sageNotes, setSageNotes] = useState<string | null>(null)
 
   // Loading & submission states
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -459,6 +466,72 @@ export default function NewProjectPage() {
   const StepIcon = currentStepData.icon
   const selectedTheme = PROJECT_THEMES.find(t => t.value === theme)
 
+  // Sage pre-filled fields from a pasted plan / upload. Map the structured
+  // extraction output onto the form's existing state setters.
+  const applyExtractedFields = (fields: ExtractedFields, draftId: string) => {
+    if (fields.name) setName(fields.name)
+    if (fields.tagline) setTagline(fields.tagline)
+    if (fields.description) setDescription(fields.description)
+    if (fields.mission) setMission(fields.mission)
+    if (fields.goal) setGoal(fields.goal)
+    if (fields.theme) setTheme(fields.theme)
+    if (fields.category) setCategory(fields.category)
+    if (fields.projectStatus) setProjectStatus(fields.projectStatus)
+    if (fields.tags && fields.tags.length > 0) setTags(fields.tags)
+    if (fields.visibility) setVisibility(fields.visibility)
+    if (fields.subprojects && fields.subprojects.length > 0) {
+      setSubprojects(fields.subprojects.map((s, i) => ({
+        id: `sage-${i}`,
+        name: s.name,
+        description: s.description ?? '',
+        parentId: null,
+      })))
+    }
+    if (fields.mindMapNodes && fields.mindMapNodes.length > 0) {
+      setMindMapNodes(fields.mindMapNodes.map((n, i) => ({
+        id: `sage-node-${i}`,
+        label: n.label,
+        description: n.description ?? '',
+        type: n.type ?? 'IDEA',
+      })))
+    }
+    if (fields.mindMapConnections && fields.mindMapConnections.length > 0) {
+      setMindMapConnections(fields.mindMapConnections.map((c, i) => ({
+        id: `sage-conn-${i}`,
+        from: c.from,
+        to: c.to,
+        type: c.type ?? 'RELATED',
+      })))
+    }
+    if (typeof fields.enableDiscussions === 'boolean') setEnableDiscussions(fields.enableDiscussions)
+    if (typeof fields.enableResearch === 'boolean') setEnableResearch(fields.enableResearch)
+    if (typeof fields.enableLearning === 'boolean') setEnableLearning(fields.enableLearning)
+    if (typeof fields.requireApproval === 'boolean') setRequireApproval(fields.requireApproval)
+
+    setSageDraftId(draftId)
+    setSageNotes(fields.sageNotes ?? null)
+    // User has Sage-pre-filled content; skip the template gallery and drop
+    // them right into the wizard for review.
+    setShowStep0(false)
+    setShowTemplateGallery(false)
+  }
+
+  // Step 0 — picker (paste / brainstorm / blank). Shown before everything else.
+  if (showStep0) {
+    return (
+      <div className="min-h-screen flex flex-col bg-[var(--background)]">
+        <Step0Picker
+          onSkip={() => setShowStep0(false)}
+          onPlanExtracted={applyExtractedFields}
+          onBrainstormPlaceholder={() => {
+            // Phase 2 wires this up to a real brainstorm chat.
+            alert('Brainstorm with Sage is coming next — for now, paste a plan or start blank.')
+          }}
+        />
+      </div>
+    )
+  }
+
   // Show template gallery if user hasn't selected a template yet
   if (showTemplateGallery) {
     return (
@@ -490,6 +563,29 @@ export default function NewProjectPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[var(--background)]">
+      {/* Sage pre-fill banner — appears when fields were filled from a pasted plan */}
+      {sageNotes && (
+        <div className="bg-gradient-to-r from-[var(--primary)]/10 via-[var(--accent)]/10 to-[var(--primary)]/10 border-b border-[var(--primary)]/30">
+          <div className="container mx-auto px-4 py-3">
+            <div className="max-w-5xl mx-auto flex items-start gap-3">
+              <Sparkles className="w-5 h-5 mt-0.5 shrink-0 text-[var(--primary)]" />
+              <div className="flex-1 text-sm">
+                <span className="font-bold">Sage pre-filled this for you. </span>
+                <span className="text-theme-muted">{sageNotes}</span>
+                <span className="text-theme-muted"> Review every field — anything you change overrides her draft.</span>
+              </div>
+              <button
+                onClick={() => setSageNotes(null)}
+                className="text-xs font-bold text-theme-muted hover:text-theme-foreground shrink-0"
+                aria-label="Dismiss Sage notes"
+              >
+                Dismiss
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header with Progress */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[var(--card)] via-[var(--background)] to-[var(--card)] border-b border-[var(--border)]/30">
         {/* Ambient glow */}

@@ -177,6 +177,9 @@ model User {
   createdTemplates          DocumentTemplate[]       @relation("TemplateCreator")
   commentReactions          CommentReaction[]        @relation("CommentReactions")
 
+  // Initiative drafts (pre-creation workspaces with Sage)
+  initiativeDrafts          InitiativeDraft[]        @relation("InitiativeDrafts")
+
   @@index([email])
   @@index([role])
   @@index([createdAt])
@@ -1108,6 +1111,57 @@ enum ProjectStatus {
 enum ProjectVisibility {
   PUBLIC      // Everyone can view
   UNLISTED    // Only with direct link
+}
+
+// Pre-creation drafts: a workspace where a user can paste an existing plan,
+// brainstorm with Sage, and accumulate structured fields before promoting
+// the draft into a real Project.
+model InitiativeDraft {
+  id            String              @id @default(cuid())
+  userId        String
+  user          User                @relation("InitiativeDrafts", fields: [userId], references: [id], onDelete: Cascade)
+
+  title         String              @default("Untitled draft")
+  status        InitiativeDraftStatus @default(ACTIVE)
+  path          InitiativeDraftPath   @default(BLANK)
+
+  // Plan-paste / upload inputs (only set when path includes PASTE/HYBRID)
+  originalPlanText     String?      @db.Text
+  originalPlanFilename String?
+
+  // Brainstorm chat history: array of { role: 'user'|'assistant', content, ts }
+  chatHistory   Json                @default("[]")
+
+  // Structured form fields gathered so far. Mirrors the Project form's state
+  // shape — fields Sage couldn't determine are absent rather than null.
+  extractedFields Json              @default("{}")
+
+  // Counters for rate limiting / abuse prevention
+  draftAttempts   Int               @default(0)
+  chatMessageCount Int              @default(0)
+
+  // If the draft was promoted into a real Project
+  promotedToProjectId String?
+  promotedAt          DateTime?
+
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+
+  @@index([userId, status])
+  @@index([userId, updatedAt])
+}
+
+enum InitiativeDraftStatus {
+  ACTIVE      // user is working on it
+  PROMOTED    // turned into a real Project
+  DISCARDED   // user threw it away
+}
+
+enum InitiativeDraftPath {
+  BLANK       // Step 0 not used / skipped
+  PASTE       // started from a pasted/uploaded plan
+  BRAINSTORM  // started from a chat with Sage
+  HYBRID      // both: paste, then refine in chat
 }
 
 model ProjectMember {
