@@ -106,7 +106,8 @@ export default function BrainstormPanel({
       })
       if (!res.ok) {
         const body = await res.json().catch(() => ({}))
-        throw new Error(body.error || 'Sage hit a snag.')
+        const detail = body?.detail ? ` (${body.detail})` : ''
+        throw new Error((body.error || 'Sage hit a snag.') + detail)
       }
       const data = await res.json()
       setHistory(h => [...h, { role: 'assistant', content: data.reply, ts: Date.now() }])
@@ -142,7 +143,8 @@ export default function BrainstormPanel({
 
   // Always cover the full viewport. The fullscreen toggle only changes
   // the relative widths of the preview vs chat columns inside.
-  const wrapperClass = 'fixed inset-0 z-50 bg-[var(--background)] flex'
+  // z-[110] sits above the site header (z-[100] in components/layout/Header.tsx).
+  const wrapperClass = 'fixed inset-0 z-[110] bg-[var(--background)] flex'
 
   return (
     <div className={wrapperClass}>

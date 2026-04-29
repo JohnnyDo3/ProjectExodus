@@ -15,10 +15,13 @@ import {
 } from '@/lib/projects/ai/extractedFieldsSchema'
 
 const MAX_CHAT_MESSAGES = 100
-const MAX_USER_MESSAGE_CHARS = 4000
+// Generous per-message cap so users can paste a chunk of plan or notes
+// mid-conversation without hitting validation. Each turn re-sends the
+// full transcript to Gemini; 100 turns × 20k chars × ~0.25 tokens/char
+// ≈ 500k tokens per turn, well within Gemini Flash Lite's 1M context.
+const MAX_USER_MESSAGE_CHARS = 20_000
 
 const requestSchema = z.object({
-  // The new user message that just came in.
   userMessage: z.string().min(1).max(MAX_USER_MESSAGE_CHARS),
 })
 
@@ -111,13 +114,22 @@ ${planSnippet}
       systemPrompt: getBrainstormSystemPrompt(),
       userMessage: `${contextPrimer}Conversation so far:\n\n${transcript}\n\nProduce your next reply and the current extractedFields snapshot.`,
       responseSchema: BRAINSTORM_RESPONSE_SCHEMA,
-      maxOutputTokens: 2048,
+      // Generous output cap — each turn must fit BOTH the chat reply
+      // and a complete extractedFields snapshot. 2048 truncated mid-JSON
+      // for richer drafts and surfaced as "Sage hit a snag".
+      maxOutputTokens: 6144,
       temperature: 0.7,
     })
   } catch (err) {
     console.error('Brainstorm call failed:', err)
+    const message = err instanceof Error ? err.message : 'unknown error'
     return NextResponse.json(
-      { error: 'Sage hit a snag. Try again in a moment.' },
+      {
+        error: 'Sage hit a snag. Try again, or shorten your last message if it was very long.',
+        // Detail is intentionally surfaced — helps the user (and us) tell
+        // a transient Gemini blip from a real schema/payload issue.
+        detail: message.slice(0, 240),
+      },
       { status: 502 }
     )
   }
