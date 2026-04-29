@@ -27,36 +27,62 @@ interface ChatTurn {
 
 interface BrainstormPanelProps {
   draftId: string
-  initialChatHistory?: ChatTurn[]
-  initialFields?: ExtractedFields
   onClose: () => void
   onDraftInitiative: (fields: ExtractedFields, draftId: string) => void
 }
 
-const SAGE_OPENER: ChatTurn = {
+const SAGE_OPENER_FRESH: ChatTurn = {
   role: 'assistant',
   content:
     "Hey — I'm Sage. Let's design your initiative together. What are you trying to build, and what's pulling you toward it?",
 }
 
+const sageOpenerFromPlan = (name?: string): ChatTurn => ({
+  role: 'assistant',
+  content: name
+    ? `I read your plan — ${name} sounds great. What do you want to refine or talk through?`
+    : 'I read your plan. What do you want to refine or talk through?',
+})
+
 export default function BrainstormPanel({
   draftId,
-  initialChatHistory,
-  initialFields,
   onClose,
   onDraftInitiative,
 }: BrainstormPanelProps) {
-  const [history, setHistory] = useState<ChatTurn[]>(
-    initialChatHistory && initialChatHistory.length > 0
-      ? initialChatHistory
-      : [SAGE_OPENER]
-  )
-  const [fields, setFields] = useState<ExtractedFields>(initialFields ?? {})
+  const [history, setHistory] = useState<ChatTurn[]>([])
+  const [fields, setFields] = useState<ExtractedFields>({})
   const [pending, setPending] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [input, setInput] = useState('')
   const [fullscreen, setFullscreen] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
+
+  // Fetch existing draft state on mount so resumed brainstorms pick up
+  // exactly where they left off, and hybrid drafts (paste then chat) get
+  // an opener that acknowledges the plan Sage has already read.
+  useEffect(() => {
+    let cancelled = false
+    fetch(`/api/projects/drafts/${draftId}`)
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(data => {
+        if (cancelled) return
+        const draft = data.draft
+        const existingHistory = (draft.chatHistory ?? []) as ChatTurn[]
+        const existingFields = (draft.extractedFields ?? {}) as ExtractedFields
+        setFields(existingFields)
+        if (existingHistory.length > 0) {
+          setHistory(existingHistory)
+        } else {
+          setHistory([
+            draft.path === 'PASTE' || draft.path === 'HYBRID'
+              ? sageOpenerFromPlan(existingFields.name)
+              : SAGE_OPENER_FRESH,
+          ])
+        }
+      })
+      .catch(() => { if (!cancelled) setHistory([SAGE_OPENER_FRESH]) })
+    return () => { cancelled = true }
+  }, [draftId])
 
   // Auto-scroll the chat to the latest turn.
   useEffect(() => {

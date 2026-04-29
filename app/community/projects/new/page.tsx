@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react'
 import { redirect, useRouter } from 'next/navigation'
 import Step0Picker from '@/components/projects/create/Step0Picker'
 import BrainstormPanel from '@/components/projects/create/BrainstormPanel'
+import DraftsList from '@/components/projects/create/DraftsList'
 import type { ExtractedFields } from '@/lib/projects/ai/extractedFieldsSchema'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -15,7 +16,8 @@ import {
   Settings, Layers, BookOpen, Lock, Unlock, Globe2, Archive,
   Palette, Layout, ImageIcon, Tag, FolderTree, Plus, X, ChevronDown,
   Zap, Leaf, Sun, Moon, TreePine, Waves, Mountain, Wind, Network,
-  Lightbulb, CheckSquare, Flag, Package, StickyNote, Hexagon, AlertTriangle, Star, Link2
+  Lightbulb, CheckSquare, Flag, Package, StickyNote, Hexagon, AlertTriangle, Star, Link2,
+  MessageSquareText,
 } from 'lucide-react'
 import { BackButton } from '@/components/navigation/BackButton'
 import Link from 'next/link'
@@ -520,6 +522,29 @@ export default function NewProjectPage() {
     setShowTemplateGallery(false)
   }
 
+  // Resume an existing draft: fetch it and route to brainstorm panel or
+  // pre-filled wizard depending on what's already there.
+  const resumeDraft = async (draftId: string) => {
+    try {
+      const res = await fetch(`/api/projects/drafts/${draftId}`)
+      if (!res.ok) throw new Error('Draft not found')
+      const { draft } = await res.json()
+      const fields = (draft.extractedFields ?? {}) as ExtractedFields
+      const history = (draft.chatHistory ?? []) as unknown[]
+      // If there's any chat or the draft was a brainstorm, reopen the panel.
+      if (history.length > 0 || draft.path === 'BRAINSTORM' || draft.path === 'HYBRID') {
+        setBrainstormDraftId(draftId)
+        setBrainstormOpen(true)
+        setShowStep0(false)
+        return
+      }
+      // Otherwise drop into the wizard with the extracted fields.
+      applyExtractedFields(fields, draftId)
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Couldn\'t resume that draft')
+    }
+  }
+
   // Step 0 — brainstorm chat. Created lazily when user picks the brainstorm path.
   if (brainstormOpen && brainstormDraftId) {
     return (
@@ -557,6 +582,7 @@ export default function NewProjectPage() {
     }
     return (
       <div className="min-h-screen flex flex-col bg-[var(--background)]">
+        <DraftsList onResume={resumeDraft} />
         <Step0Picker
           onSkip={() => setShowStep0(false)}
           onPlanExtracted={applyExtractedFields}
@@ -608,6 +634,14 @@ export default function NewProjectPage() {
                 <span className="text-theme-muted">{sageNotes}</span>
                 <span className="text-theme-muted"> Review every field — anything you change overrides her draft.</span>
               </div>
+              {sageDraftId && (
+                <button
+                  onClick={() => { setBrainstormDraftId(sageDraftId); setBrainstormOpen(true) }}
+                  className="text-xs font-bold text-theme-primary hover:opacity-80 shrink-0 inline-flex items-center gap-1"
+                >
+                  <MessageSquareText className="w-3.5 h-3.5" /> Refine with Sage
+                </button>
+              )}
               <button
                 onClick={() => setSageNotes(null)}
                 className="text-xs font-bold text-theme-muted hover:text-theme-foreground shrink-0"

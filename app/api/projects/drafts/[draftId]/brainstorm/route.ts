@@ -80,11 +80,36 @@ export async function POST(
     .map(t => `${t.role === 'user' ? 'USER' : 'SAGE'}: ${t.content}`)
     .join('\n\n')
 
+  // For HYBRID / PASTE-then-chat drafts, give Sage a primer of what was
+  // already pulled from the plan so she doesn't ask the user to repeat
+  // themselves. Plan text is trimmed to keep prompt size sane.
+  const priorFields = (draft.extractedFields as Record<string, unknown> | null) ?? null
+  const priorFieldsSummary = priorFields && Object.keys(priorFields).length > 0
+    ? JSON.stringify(priorFields, null, 2)
+    : null
+  const planSnippet = draft.originalPlanText
+    ? draft.originalPlanText.slice(0, 6000)
+    : null
+
+  const contextPrimer = planSnippet || priorFieldsSummary
+    ? `Earlier in this session the user ${planSnippet ? 'pasted a plan' : 'gave you input'} that you already extracted into these fields:
+${priorFieldsSummary ?? '(no fields captured yet)'}
+
+${planSnippet ? `Excerpt of the plan they pasted:
+"""
+${planSnippet}
+"""
+
+` : ''}Treat the conversation below as the latest, more authoritative source if it contradicts what's above. Don't ask the user to repeat what's already captured.
+
+`
+    : ''
+
   let raw: BrainstormResponse
   try {
     raw = await callGeminiStructured<BrainstormResponse>({
       systemPrompt: getBrainstormSystemPrompt(),
-      userMessage: `Conversation so far:\n\n${transcript}\n\nProduce your next reply and the current extractedFields snapshot.`,
+      userMessage: `${contextPrimer}Conversation so far:\n\n${transcript}\n\nProduce your next reply and the current extractedFields snapshot.`,
       responseSchema: BRAINSTORM_RESPONSE_SCHEMA,
       maxOutputTokens: 2048,
       temperature: 0.7,
