@@ -30,7 +30,7 @@ export function Header() {
   const communityHoverTimeout = useRef<NodeJS.Timeout | null>(null)
   const learnHoverTimeout = useRef<NodeJS.Timeout | null>(null)
   const pathname = usePathname()
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
   const { isScrollOpen } = useDigitalScrollContext()
   const sageContext = useSageContextSafe()
 
@@ -446,9 +446,14 @@ export function Header() {
               </Link>
             )}
             {session && <NotificationBell />}
-            {status === 'loading' ? (
-              <div className="w-24 h-9 bg-[var(--muted)] rounded-lg animate-pulse" />
-            ) : session ? (
+            {/* Render directly from `session` — branching on status==='loading'
+                here causes a hydration mismatch (React #418): the server has the
+                resolved session via SessionProvider's `session` prop and renders
+                the user menu, but the client's useSession briefly returns
+                'loading' during hydration and would render the skeleton.
+                NextAuth keeps `data` populated across background revalidations,
+                so the skeleton path was never actually needed. */}
+            {session ? (
               <div className="relative">
                 <button
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
@@ -667,10 +672,10 @@ export function Header() {
               {/* Divider */}
               <div className="border-t-2 border-[var(--border)]" />
 
-              {/* Auth Section */}
-              {status === 'loading' ? (
-                <div className="w-full h-12 bg-[var(--muted)] rounded-xl animate-pulse" />
-              ) : session ? (
+              {/* Auth Section — render from `session` directly to avoid
+                  the SSR/CSR mismatch caused by useSession briefly returning
+                  status='loading' on hydration. */}
+              {session ? (
                 <div className="space-y-3">
                   {/* User Info */}
                   <div className="px-4 py-4 rounded-xl bg-[var(--muted)] border-2 border-theme-primary">

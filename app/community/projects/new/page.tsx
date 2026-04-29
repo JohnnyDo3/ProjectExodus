@@ -135,6 +135,12 @@ export default function NewProjectPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
 
+  // Tracks whether we're past the hydration boundary. Used to gate any
+  // session-dependent UI (loading spinner, redirect) so SSR and the
+  // initial client render produce identical HTML — see React #418.
+  const [hasMounted, setHasMounted] = useState(false)
+  useEffect(() => { setHasMounted(true) }, [])
+
   // Step management
   const [showStep0, setShowStep0] = useState(true)
   const [brainstormOpen, setBrainstormOpen] = useState(false)
@@ -243,7 +249,12 @@ export default function NewProjectPage() {
     }
   }
 
-  if (status === 'loading') {
+  // Only show the loading state for genuine post-mount session transitions —
+  // gating on raw `status === 'loading'` here causes a hydration mismatch
+  // (React #418): the server has the resolved session and renders the
+  // wizard, but the client briefly returns status='loading' on hydration
+  // and would render the spinner.
+  if (hasMounted && status === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
         <div className="text-center space-y-4">
@@ -254,8 +265,11 @@ export default function NewProjectPage() {
     )
   }
 
-  if (!session) {
+  if (hasMounted && status === 'unauthenticated') {
     redirect('/auth/signin')
+  }
+  if (!session) {
+    return null
   }
 
   const canProceed = () => {
