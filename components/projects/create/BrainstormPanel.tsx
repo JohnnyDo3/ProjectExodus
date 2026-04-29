@@ -56,6 +56,17 @@ export default function BrainstormPanel({
   const [input, setInput] = useState('')
   const [fullscreen, setFullscreen] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  // Auto-grow the textarea as the user types, capped at half the viewport
+  // so the chat above stays readable. Recalculated whenever input changes.
+  useEffect(() => {
+    const el = textareaRef.current
+    if (!el) return
+    el.style.height = 'auto'
+    const cap = Math.round(window.innerHeight * 0.5)
+    el.style.height = `${Math.min(el.scrollHeight, cap)}px`
+  }, [input])
 
   // Fetch existing draft state on mount so resumed brainstorms pick up
   // exactly where they left off, and hybrid drafts (paste then chat) get
@@ -232,13 +243,15 @@ export default function BrainstormPanel({
         <div className="p-4 border-t border-[var(--border)]">
           <div className="flex items-end gap-2">
             <textarea
+              ref={textareaRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={onKeyDown}
               rows={2}
               placeholder="Tell Sage what you're thinking…"
               disabled={pending}
-              className="flex-1 resize-none rounded-lg border-2 border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm focus:border-theme-primary focus:outline-none disabled:opacity-50"
+              style={{ maxHeight: '50vh' }}
+              className="flex-1 resize-none rounded-lg border-2 border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm focus:border-theme-primary focus:outline-none disabled:opacity-50 overflow-y-auto"
             />
             <button
               onClick={send}

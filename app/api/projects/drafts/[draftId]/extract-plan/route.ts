@@ -76,8 +76,20 @@ export async function POST(
     })
   } catch (err) {
     console.error('Plan extraction failed:', err)
+    const message = err instanceof Error ? err.message : 'unknown error'
+    // Pass the underlying message through if it's a safety / recitation
+    // block so the user can see what actually happened (and edit the
+    // input). Otherwise return the generic "couldn't process" copy.
+    const looksLikeKnownIssue =
+      message.startsWith("Sage's safety filter") ||
+      message.startsWith('Sage stopped')
     return NextResponse.json(
-      { error: 'Sage couldn\'t process that plan. Try a shorter excerpt or a different format.' },
+      {
+        error: looksLikeKnownIssue
+          ? message
+          : 'Sage couldn\'t process that plan. Try a shorter excerpt or a different format.',
+        detail: message.slice(0, 240),
+      },
       { status: 502 }
     )
   }

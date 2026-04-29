@@ -123,11 +123,17 @@ ${planSnippet}
   } catch (err) {
     console.error('Brainstorm call failed:', err)
     const message = err instanceof Error ? err.message : 'unknown error'
+    // If the underlying error is a safety/recitation block, surface it
+    // verbatim so the user knows their last message tripped a filter
+    // rather than the generic "Sage hit a snag" copy.
+    const looksLikeKnownIssue =
+      message.startsWith("Sage's safety filter") ||
+      message.startsWith('Sage stopped')
     return NextResponse.json(
       {
-        error: 'Sage hit a snag. Try again, or shorten your last message if it was very long.',
-        // Detail is intentionally surfaced — helps the user (and us) tell
-        // a transient Gemini blip from a real schema/payload issue.
+        error: looksLikeKnownIssue
+          ? message
+          : 'Sage hit a snag. Try again, or shorten your last message if it was very long.',
         detail: message.slice(0, 240),
       },
       { status: 502 }

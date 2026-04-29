@@ -5,11 +5,17 @@
 const GEMINI_API_KEY = process.env.GOOGLE_AI_API_KEY
 const GEMINI_MODEL = 'gemini-2.0-flash-lite'
 
+// Safety thresholds tuned for sustainability-platform content. Business
+// plans, LCAs, and climate-related discussions routinely mention things
+// that the default BLOCK_MEDIUM_AND_ABOVE setting would flag — chemical
+// safety, hazardous waste handling, geopolitical risk, climate disasters,
+// supply-chain conflicts, etc. BLOCK_ONLY_HIGH keeps obvious abuse out
+// without nuking legitimate content. Hate speech stays stricter.
 const SAFETY_SETTINGS = [
-  { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
+  { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_ONLY_HIGH' },
   { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
   { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-  { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
+  { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_ONLY_HIGH' },
 ]
 
 interface CallStructuredOpts {
@@ -59,6 +65,24 @@ export async function callGeminiStructured<T = unknown>(
   }
 
   const data = await res.json()
+
+  // Gemini signals safety blocks two ways: a top-level promptFeedback.blockReason,
+  // or a candidate with finishReason='SAFETY' and no content.parts. Either way
+  // the response is unusable. Surface a specific error so the caller can tell
+  // the user "your content tripped a filter" instead of a generic crash.
+  const blockReason = data?.promptFeedback?.blockReason
+  const finishReason = data?.candidates?.[0]?.finishReason
+  if (blockReason || finishReason === 'SAFETY') {
+    throw new Error(
+      `Sage's safety filter blocked this content (${blockReason || finishReason}). ` +
+      `If your plan discusses sensitive topics like hazardous materials or geopolitical risk, ` +
+      `try paraphrasing the most flagged section.`
+    )
+  }
+  if (finishReason === 'RECITATION') {
+    throw new Error('Sage stopped because the content matched a copyrighted source too closely. Paraphrase and try again.')
+  }
+
   const text = data?.candidates?.[0]?.content?.parts?.[0]?.text
   if (!text || typeof text !== 'string') {
     throw new Error('Gemini structured response had no text content')
