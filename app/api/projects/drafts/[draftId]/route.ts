@@ -7,11 +7,12 @@ import { extractedFieldsSchema } from '@/lib/projects/ai/extractedFieldsSchema'
 const patchSchema = z.object({
   title: z.string().min(1).max(150).optional(),
   extractedFields: extractedFieldsSchema.partial().optional(),
+  // Caps mirror the brainstorm endpoint to keep DB row size bounded.
   chatHistory: z.array(z.object({
     role: z.enum(['user', 'assistant']),
-    content: z.string(),
+    content: z.string().max(4000),
     ts: z.number().optional(),
-  })).optional(),
+  })).max(200).optional(),
   status: z.enum(['ACTIVE', 'DISCARDED']).optional(),
 })
 
