@@ -25,7 +25,7 @@ export const CONTENT_LIMITS = {
   // File upload limits
   MAX_TEXT_FILE_SIZE: 10 * 1024 * 1024,   // 10MB for .txt/.md/.rtf/.html/.tex
   MAX_PDF_FILE_SIZE: 20 * 1024 * 1024,    // 20MB for .pdf
-  MAX_DOCX_FILE_SIZE: 20 * 1024 * 1024,   // 20MB for .docx/.doc/.odt
+  MAX_DOCX_FILE_SIZE: 20 * 1024 * 1024,   // 20MB for .docx
 
   // Chunked upload threshold — files above this use chunked upload
   CHUNKED_UPLOAD_THRESHOLD: 4 * 1024 * 1024, // 4MB
@@ -583,7 +583,7 @@ export function sanitizeFilename(filename: string): string {
 /**
  * Recognized file type categories for article uploads
  */
-export type ArticleFileType = 'pdf' | 'docx' | 'doc' | 'odt' | 'rtf' | 'html' | 'text' | 'latex'
+export type ArticleFileType = 'pdf' | 'docx' | 'rtf' | 'html' | 'text' | 'latex'
 
 /**
  * Validate file upload — supports a wide range of document formats
@@ -595,12 +595,14 @@ export function validateFileUpload(file: {
 }): { isValid: boolean; error?: string; fileType?: ArticleFileType } {
   const lowerName = file.name.toLowerCase()
 
-  // Map extensions to file types and their size limits
+  // Map extensions to file types and their size limits.
+  // .doc (legacy binary Word) and .odt (OpenDocument) are intentionally
+  // excluded — mammoth only handles .docx, and silently routing them
+  // to it produces confusing "not a valid .docx document" errors.
+  // Users with those formats are told to re-save as .docx.
   const extensionMap: Record<string, { type: ArticleFileType; maxSize: number }> = {
     '.pdf':   { type: 'pdf',   maxSize: CONTENT_LIMITS.MAX_PDF_FILE_SIZE },
     '.docx':  { type: 'docx',  maxSize: CONTENT_LIMITS.MAX_DOCX_FILE_SIZE },
-    '.doc':   { type: 'doc',   maxSize: CONTENT_LIMITS.MAX_DOCX_FILE_SIZE },
-    '.odt':   { type: 'odt',   maxSize: CONTENT_LIMITS.MAX_DOCX_FILE_SIZE },
     '.rtf':   { type: 'rtf',   maxSize: CONTENT_LIMITS.MAX_TEXT_FILE_SIZE },
     '.html':  { type: 'html',  maxSize: CONTENT_LIMITS.MAX_TEXT_FILE_SIZE },
     '.htm':   { type: 'html',  maxSize: CONTENT_LIMITS.MAX_TEXT_FILE_SIZE },

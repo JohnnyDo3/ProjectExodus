@@ -320,9 +320,9 @@ export default function WriteArticlePage() {
       const useChunked = file.size > CONTENT_LIMITS.CHUNKED_UPLOAD_THRESHOLD
 
       // ── Binary formats that need server-side parsing ──
-      if (fileType === 'pdf' || fileType === 'docx' || fileType === 'doc' || fileType === 'odt') {
+      if (fileType === 'pdf' || fileType === 'docx') {
         // Small PDF/DOCX: direct single-request upload (fast, serverless-safe)
-        // Large or .doc/.odt: chunked upload (handles any size reliably)
+        // Large: chunked upload
         if (!useChunked && fileType === 'pdf') {
           toast(`Processing ${file.name} (${sizeStr})...`, { duration: 6000 })
           setUploadProgress({ phase: 'uploading', percent: 10 })
@@ -705,7 +705,7 @@ We support MLA, APA, and Chicago citation formats."
                 <input
                   ref={fileInputRef}
                   type="file"
-                  accept=".txt,.md,.pdf,.docx,.doc,.odt,.rtf,.html,.htm,.tex,.latex"
+                  accept=".txt,.md,.pdf,.docx,.rtf,.html,.htm,.tex,.latex"
                   onChange={handleFileUpload}
                   className="hidden"
                 />

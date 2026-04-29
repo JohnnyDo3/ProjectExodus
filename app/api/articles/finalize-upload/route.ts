@@ -16,14 +16,12 @@ const UPLOAD_DIR = join(tmpdir(), 'article-uploads')
 // File type detection
 // ---------------------------------------------------------------------------
 
-type FileType = 'pdf' | 'docx' | 'doc' | 'odt' | 'rtf' | 'html' | 'text' | 'latex'
+type FileType = 'pdf' | 'docx' | 'rtf' | 'html' | 'text' | 'latex'
 
 function getFileType(lowerName: string): FileType | null {
   const map: Record<string, FileType> = {
     '.pdf': 'pdf',
     '.docx': 'docx',
-    '.doc': 'doc',
-    '.odt': 'odt',
     '.rtf': 'rtf',
     '.html': 'html',
     '.htm': 'html',
@@ -315,8 +313,13 @@ export async function POST(request: NextRequest) {
     const fileType = getFileType(lowerName)
 
     if (!fileType) {
+      const lower = lowerName
+      const friendly =
+        lower.endsWith('.doc') ? 'Older .doc files aren\'t supported. Re-save as .docx, or paste the contents directly.' :
+        lower.endsWith('.odt') ? 'OpenDocument (.odt) files aren\'t supported. Save as .docx or .pdf, or paste the contents directly.' :
+        'Unsupported file type. Supported: PDF, Word (.docx), RTF, HTML, TXT, Markdown, LaTeX.'
       return NextResponse.json(
-        { success: false, error: 'Unsupported file type. Supported: PDF, Word (.doc/.docx), RTF, HTML, TXT, Markdown, LaTeX, ODT.' },
+        { success: false, error: friendly },
         { status: 400 }
       )
     }
@@ -369,11 +372,11 @@ export async function POST(request: NextRequest) {
         )
       }
       result = { text, numPages, info }
-    } else if (fileType === 'docx' || fileType === 'doc' || fileType === 'odt') {
+    } else if (fileType === 'docx') {
       const { text, html, warnings } = await processDocxFile(assembledPath)
       if (!text.trim()) {
         return NextResponse.json(
-          { success: false, error: 'Could not extract text from document. The file may be empty or corrupted. Try saving as .docx or pasting content directly.' },
+          { success: false, error: 'Could not extract text from document. The file may be empty or corrupted. Try pasting content directly.' },
           { status: 400 }
         )
       }

@@ -11,7 +11,10 @@ export const maxDuration = 60
 
 const UPLOAD_DIR = join(tmpdir(), 'article-uploads')
 const MAX_CHUNK_SIZE = 12 * 1024 * 1024 // 12MB
-const ALLOWED_EXTENSIONS = ['.pdf', '.docx', '.doc', '.odt', '.rtf', '.html', '.htm', '.txt', '.md', '.tex', '.latex']
+// .doc and .odt removed: mammoth only handles .docx, so silently
+// accepting them produced "not a valid .docx document" errors at the
+// finalize step. Users are now told to re-save as .docx upfront.
+const ALLOWED_EXTENSIONS = ['.pdf', '.docx', '.rtf', '.html', '.htm', '.txt', '.md', '.tex', '.latex']
 
 export async function POST(request: NextRequest) {
   try {
@@ -61,8 +64,12 @@ export async function POST(request: NextRequest) {
     const lowerName = fileName.toLowerCase()
     const hasValidExtension = ALLOWED_EXTENSIONS.some(ext => lowerName.endsWith(ext))
     if (!hasValidExtension) {
+      const friendly =
+        lowerName.endsWith('.doc') ? 'Older .doc files aren\'t supported. Re-save as .docx, or paste the contents directly.' :
+        lowerName.endsWith('.odt') ? 'OpenDocument (.odt) files aren\'t supported. Save as .docx or .pdf, or paste the contents directly.' :
+        'Unsupported file type. Supported: PDF, Word (.docx), RTF, HTML, TXT, Markdown, LaTeX.'
       return NextResponse.json(
-        { success: false, error: 'Unsupported file type. Supported: PDF, Word, RTF, HTML, TXT, Markdown, LaTeX, ODT.' },
+        { success: false, error: friendly },
         { status: 400 }
       )
     }
