@@ -62,9 +62,16 @@ ${chatTranscript}
 ──────── CONVERSATION END ────────`
 }
 
-// Hard cap on plan input. ~12k tokens-ish (~25-30 pages). Keeps Gemini
-// latency low and prevents abuse. Trim with a warning if exceeded.
-export const MAX_PLAN_CHARS = 48_000
+// What gets sent to Gemini. ~30 dense pages of business writing.
+// (Gemini 2.0 Flash Lite handles much more, but this is the sweet spot
+// for latency and prompt-injection blast radius.)
+export const MAX_PLAN_CHARS = 120_000
+
+// Absolute hard ceiling on the planText field after JSON parsing — used
+// by the API route's zod schema as belt-and-suspenders against payload
+// abuse. Anything between MAX_PLAN_CHARS and ABSOLUTE_MAX_PLAN_CHARS is
+// accepted but trimmed before being sent to the LLM, with a banner.
+export const ABSOLUTE_MAX_PLAN_CHARS = 250_000
 
 export function trimPlanForExtraction(text: string): { text: string; truncated: boolean } {
   if (text.length <= MAX_PLAN_CHARS) return { text, truncated: false }

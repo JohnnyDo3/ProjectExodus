@@ -7,7 +7,7 @@ import { callGeminiStructured } from '@/lib/projects/ai/geminiStructured'
 import {
   buildPlanExtractionPrompt,
   trimPlanForExtraction,
-  MAX_PLAN_CHARS,
+  ABSOLUTE_MAX_PLAN_CHARS,
 } from '@/lib/projects/ai/sageExtractionPrompt'
 import {
   extractedFieldsSchema,
@@ -16,7 +16,9 @@ import {
 } from '@/lib/projects/ai/extractedFieldsSchema'
 
 const requestSchema = z.object({
-  planText: z.string().min(40, 'The plan needs to be at least a few sentences long.'),
+  planText: z.string()
+    .min(40, 'The plan needs to be at least a few sentences long.')
+    .max(ABSOLUTE_MAX_PLAN_CHARS, 'That plan is enormous — trim it down or paste the most important sections.'),
   filename: z.string().max(255).optional(),
 })
 

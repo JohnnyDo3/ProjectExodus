@@ -25,7 +25,9 @@ interface Step0PickerProps {
 
 type Mode = 'choose' | 'paste'
 
-const MAX_PASTE_CHARS = 60_000
+// Generous client cap. Server-side belt-and-suspenders ceiling sits at
+// 250k in the extract-plan route's zod schema.
+const MAX_PASTE_CHARS = 120_000
 const MIN_PASTE_CHARS = 40
 
 export default function Step0Picker({
@@ -183,7 +185,7 @@ export default function Step0Picker({
               <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0 text-amber-500" />
               <span>
                 Heads up — your plan was longer than Sage can process at once. She read the first
-                ~25-30 pages. For richer extraction, paste the most important sections directly.
+                ~30 pages. For richer extraction on the rest, paste the most important sections directly.
               </span>
             </div>
           )}

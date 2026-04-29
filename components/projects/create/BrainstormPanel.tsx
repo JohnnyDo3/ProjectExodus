@@ -140,9 +140,9 @@ export default function BrainstormPanel({
     })
   }, [fields])
 
-  const wrapperClass = fullscreen
-    ? 'fixed inset-0 z-50 bg-[var(--background)] flex'
-    : 'fixed inset-0 z-50 bg-[var(--background)] flex md:relative md:inset-auto'
+  // Always cover the full viewport. The fullscreen toggle only changes
+  // the relative widths of the preview vs chat columns inside.
+  const wrapperClass = 'fixed inset-0 z-50 bg-[var(--background)] flex'
 
   return (
     <div className={wrapperClass}>
