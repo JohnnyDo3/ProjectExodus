@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useSession } from 'next-auth/react'
+import { useHasMounted } from '@/lib/hooks/useHasMounted'
 import { useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
@@ -111,6 +112,7 @@ type ViewMode = 'paste' | 'preview'
 
 export default function WriteArticlePage() {
   const { data: session, status } = useSession()
+  const hasMounted = useHasMounted()
   const router = useRouter()
 
   // View mode
@@ -555,7 +557,7 @@ export default function WriteArticlePage() {
   const readTime = Math.max(1, Math.ceil(wordCount / 200))
 
   // Loading state
-  if (status === 'loading') {
+  if (hasMounted && status === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
         <Loader2 className="w-12 h-12 text-[var(--primary)] animate-spin" />

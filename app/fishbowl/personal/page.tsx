@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { Fish, Users, Info, Sparkles, Palette, Shell, Anchor, Flame, Castle, Pyramid, Landmark, Waves, Sailboat, Ship, UserPlus, Plus, Minus, Skull } from 'lucide-react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
+import { useHasMounted } from '@/lib/hooks/useHasMounted'
 import { useRouter } from 'next/navigation'
 import { Fishbowl } from '@/components/fishbowl/Fishbowl'
 import { FishSVG, getTierFromScore, getTierName, type FishCustomization, type FishTier } from '@/components/fishbowl/FishSpecies'
@@ -47,6 +48,7 @@ const DECOR_THEMES = [
 
 export default function PersonalFishbowlPage() {
   const { data: session, status } = useSession()
+  const hasMounted = useHasMounted()
   const router = useRouter()
   const [data, setData] = useState<PersonalFishbowlData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -149,7 +151,7 @@ export default function PersonalFishbowlPage() {
     setShowCustomizer(false)
   }, [])
 
-  if (status === 'loading' || isLoading) {
+  if ((hasMounted && status === 'loading') || isLoading) {
     return (
       <div className="h-full flex items-center justify-center bg-[#0A1628]">
         <div className="text-center space-y-4">

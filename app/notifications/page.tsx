@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
+import { useHasMounted } from '@/lib/hooks/useHasMounted'
 import { useRouter } from 'next/navigation'
 import { formatDistanceToNow } from 'date-fns'
 import { Bell, Trash2, CheckCheck } from 'lucide-react'
@@ -59,6 +60,7 @@ const getNotificationIcon = (type: NotificationType): string => {
 
 export default function NotificationsPage() {
   const { data: session, status } = useSession()
+  const hasMounted = useHasMounted()
   const router = useRouter()
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [loading, setLoading] = useState(true)
@@ -166,7 +168,7 @@ export default function NotificationsPage() {
   }
 
   // Show loading state while checking auth
-  if (status === 'loading' || loading) {
+  if ((hasMounted && status === 'loading') || loading) {
     return (
       <div className="h-full flex flex-col overflow-hidden" style={{ background: 'var(--background)' }}>
         <div className="flex-1 flex items-center justify-center">

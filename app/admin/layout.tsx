@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
+import { useHasMounted } from '@/lib/hooks/useHasMounted'
 import { useRouter } from 'next/navigation'
 import { AdminSidebar } from '@/components/admin/AdminSidebar'
 import { AdminHeader } from '@/components/admin/AdminHeader'
@@ -19,6 +20,7 @@ export default function AdminLayout({
   children: React.ReactNode
 }) {
   const { data: session, status } = useSession()
+  const hasMounted = useHasMounted()
   const router = useRouter()
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [stats, setStats] = useState<AdminStats>({ pendingProducts: 0, openReports: 0 })
@@ -60,8 +62,9 @@ export default function AdminLayout({
     localStorage.setItem('adminSidebarCollapsed', String(newState))
   }
 
-  // Show loading state while checking auth
-  if (status === 'loading') {
+  // Show loading state while checking auth — only post-mount, to avoid
+  // a SSR/CSR hydration mismatch (React #418).
+  if (hasMounted && status === 'loading') {
     return (
       <div className="min-h-screen bg-slate-100 flex items-center justify-center">
         <div className="text-center">

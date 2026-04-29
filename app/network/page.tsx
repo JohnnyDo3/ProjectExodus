@@ -9,6 +9,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
+import { useHasMounted } from '@/lib/hooks/useHasMounted'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Card, CardContent } from '@/components/ui/Card'
@@ -94,6 +95,7 @@ type ViewMode = 'feed' | 'following' | 'followers' | 'discover' | 'tree'
 
 export default function NetworkPage() {
   const { data: session, status } = useSession()
+  const hasMounted = useHasMounted()
   const router = useRouter()
   const searchParams = useSearchParams()
   const initialView = (searchParams.get('view') as ViewMode) || 'feed'
@@ -246,7 +248,7 @@ export default function NetworkPage() {
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
     .slice(0, 3)
 
-  if (status === 'loading') {
+  if (hasMounted && status === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center space-y-4">

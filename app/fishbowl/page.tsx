@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
+import { useHasMounted } from '@/lib/hooks/useHasMounted'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -111,6 +112,7 @@ type ViewMode = 'feed' | 'following' | 'followers' | 'discover' | 'tree' | 'dire
 
 export default function FishbowlPage() {
   const { data: session, status } = useSession()
+  const hasMounted = useHasMounted()
   const router = useRouter()
   const searchParams = useSearchParams()
   const initialView = (searchParams.get('view') as ViewMode) || 'feed'
@@ -262,7 +264,7 @@ export default function FishbowlPage() {
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
     .slice(0, 3)
 
-  if (status === 'loading') {
+  if (hasMounted && status === 'loading') {
     return (
       <div className="h-screen flex items-center justify-center" style={{ height: '100dvh' }}>
         <div className="text-center space-y-4">

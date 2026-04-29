@@ -7,6 +7,7 @@ import Step0Picker from '@/components/projects/create/Step0Picker'
 import BrainstormPanel from '@/components/projects/create/BrainstormPanel'
 import DraftsList from '@/components/projects/create/DraftsList'
 import type { ExtractedFields } from '@/lib/projects/ai/extractedFieldsSchema'
+import { useHasMounted } from '@/lib/hooks/useHasMounted'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -135,11 +136,7 @@ export default function NewProjectPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
 
-  // Tracks whether we're past the hydration boundary. Used to gate any
-  // session-dependent UI (loading spinner, redirect) so SSR and the
-  // initial client render produce identical HTML — see React #418.
-  const [hasMounted, setHasMounted] = useState(false)
-  useEffect(() => { setHasMounted(true) }, [])
+  const hasMounted = useHasMounted()
 
   // Step management
   const [showStep0, setShowStep0] = useState(true)

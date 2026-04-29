@@ -1,6 +1,7 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
+import { useHasMounted } from '@/lib/hooks/useHasMounted'
 import { redirect } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
@@ -72,6 +73,7 @@ interface AnalyticsData {
 
 export default function AuthorAnalyticsPage() {
   const { data: session, status } = useSession()
+  const hasMounted = useHasMounted()
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -124,7 +126,7 @@ export default function AuthorAnalyticsPage() {
     return `${Math.floor(seconds / 3600)}h ${Math.floor((seconds % 3600) / 60)}m`
   }
 
-  if (status === 'loading' || isLoading) {
+  if ((hasMounted && status === 'loading') || isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center space-y-4">

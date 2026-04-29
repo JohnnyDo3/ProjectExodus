@@ -1,6 +1,7 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
+import { useHasMounted } from '@/lib/hooks/useHasMounted'
 import Image from 'next/image'
 import { redirect } from 'next/navigation'
 import React, { useEffect, useState, useCallback, useRef } from 'react'
@@ -405,6 +406,7 @@ function LaneCard({ children }: { children: React.ReactNode; wide?: boolean }) {
 
 export default function MyVolitionPage() {
   const { data: session, status } = useSession()
+  const hasMounted = useHasMounted()
   const isMobile = useIsMobile()
 
   // Layout state
@@ -793,7 +795,7 @@ export default function MyVolitionPage() {
   }
 
   // Loading state
-  if (status === 'loading' || isLoading) {
+  if ((hasMounted && status === 'loading') || isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
         <div className="text-center space-y-4">

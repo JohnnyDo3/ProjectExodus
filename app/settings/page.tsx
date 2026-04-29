@@ -1,6 +1,7 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
+import { useHasMounted } from '@/lib/hooks/useHasMounted'
 import { redirect } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
@@ -22,6 +23,7 @@ import { ProfileBusinessCard } from '@/components/profile/ProfileBusinessCard'
 
 export default function SettingsPage() {
   const { data: session, status } = useSession()
+  const hasMounted = useHasMounted()
   const [activeTab, setActiveTab] = useState('profile')
   const [isSaving, setIsSaving] = useState(false)
   const [saveMessage, setSaveMessage] = useState('')
@@ -92,7 +94,7 @@ export default function SettingsPage() {
     }
   }
 
-  if (status === 'loading') {
+  if (hasMounted && status === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center space-y-4">

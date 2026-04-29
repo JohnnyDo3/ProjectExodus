@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
+import { useHasMounted } from '@/lib/hooks/useHasMounted'
 import { useRouter, useSearchParams } from 'next/navigation'
 import {
   User,
@@ -35,6 +36,7 @@ interface Conversation {
 
 export default function MessagesPage() {
   const { data: session, status } = useSession()
+  const hasMounted = useHasMounted()
   const router = useRouter()
   const searchParams = useSearchParams()
   const preSelectedUserId = searchParams.get('user')
@@ -155,7 +157,7 @@ export default function MessagesPage() {
 
   const totalUnread = conversations.reduce((sum, c) => sum + c.unreadCount, 0)
 
-  if (status === 'loading' || isLoading) {
+  if ((hasMounted && status === 'loading') || isLoading) {
     return (
       <div className="h-full flex items-center justify-center bg-[var(--background)]">
         <div className="text-center space-y-4">
