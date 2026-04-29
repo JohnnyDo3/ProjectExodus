@@ -53,25 +53,30 @@ export default function Step0Picker({
     setFilename(file.name)
     setParsing(true)
     try {
+      // The article-parsing endpoints require specific form field names
+      // (`pdf` and `docx`) and return { success, data: { text } }.
       const ext = file.name.split('.').pop()?.toLowerCase()
-      const endpoint =
-        ext === 'pdf' ? '/api/articles/parse-pdf' :
-        ext === 'docx' || ext === 'doc' ? '/api/articles/parse-docx' :
-        null
-      if (!endpoint) {
-        throw new Error('Only PDF or DOCX files are supported. For other formats, paste the text directly.')
+      let endpoint: string
+      let fieldName: string
+      if (ext === 'pdf') {
+        endpoint = '/api/articles/parse-pdf'
+        fieldName = 'pdf'
+      } else if (ext === 'docx') {
+        endpoint = '/api/articles/parse-docx'
+        fieldName = 'docx'
+      } else {
+        throw new Error('Only PDF or DOCX files are supported. (Older .doc files aren\'t — re-save as .docx, or paste the text directly.)')
       }
       const fd = new FormData()
-      fd.append('file', file)
+      fd.append(fieldName, file)
       const res = await fetch(endpoint, { method: 'POST', body: fd })
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}))
+      const body = await res.json().catch(() => ({}))
+      if (!res.ok || body.success === false) {
         throw new Error(body.error || `Couldn't parse ${file.name}`)
       }
-      const data = await res.json()
-      const text: string = data.text || ''
+      const text: string = body?.data?.text || ''
       if (text.length < MIN_PASTE_CHARS) {
-        throw new Error('That file didn\'t contain enough readable text. Try pasting the contents directly.')
+        throw new Error('That file didn\'t contain enough readable text. (Image-only PDFs won\'t work.) Paste the contents directly instead.')
       }
       setPlanText(text)
     } catch (err) {
@@ -148,7 +153,7 @@ export default function Step0Picker({
             <input
               ref={fileInputRef}
               type="file"
-              accept=".pdf,.docx,.doc,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+              accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
               onChange={(e) => {
                 const f = e.target.files?.[0]
                 if (f) handleFile(f)
