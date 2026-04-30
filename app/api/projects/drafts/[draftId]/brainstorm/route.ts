@@ -126,9 +126,19 @@ ${planSnippet}
     // If the underlying error is a safety/recitation block, surface it
     // verbatim so the user knows their last message tripped a filter
     // rather than the generic "Sage hit a snag" copy.
+    // Pass through specific user-actionable errors verbatim. Anything
+    // else gets the generic "snag" message so we don't leak raw upstream
+    // payloads.
     const looksLikeKnownIssue =
       message.startsWith("Sage's safety filter") ||
-      message.startsWith('Sage stopped')
+      message.startsWith('Sage stopped') ||
+      message.startsWith('Sage is over') ||
+      message.startsWith("Sage isn't connected") ||
+      message.startsWith('Gemini is having trouble')
+    const status =
+      message.startsWith('Sage is over') ? 429 :
+      message.startsWith("Sage isn't connected") ? 503 :
+      502
     return NextResponse.json(
       {
         error: looksLikeKnownIssue
@@ -136,7 +146,7 @@ ${planSnippet}
           : 'Sage hit a snag. Try again, or shorten your last message if it was very long.',
         detail: message.slice(0, 240),
       },
-      { status: 502 }
+      { status }
     )
   }
 

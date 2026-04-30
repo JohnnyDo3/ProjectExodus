@@ -82,7 +82,14 @@ export async function POST(
     // input). Otherwise return the generic "couldn't process" copy.
     const looksLikeKnownIssue =
       message.startsWith("Sage's safety filter") ||
-      message.startsWith('Sage stopped')
+      message.startsWith('Sage stopped') ||
+      message.startsWith('Sage is over') ||
+      message.startsWith("Sage isn't connected") ||
+      message.startsWith('Gemini is having trouble')
+    const status =
+      message.startsWith('Sage is over') ? 429 :
+      message.startsWith("Sage isn't connected") ? 503 :
+      502
     return NextResponse.json(
       {
         error: looksLikeKnownIssue
@@ -90,7 +97,7 @@ export async function POST(
           : 'Sage couldn\'t process that plan. Try a shorter excerpt or a different format.',
         detail: message.slice(0, 240),
       },
-      { status: 502 }
+      { status }
     )
   }
 

@@ -61,7 +61,20 @@ export async function callGeminiStructured<T = unknown>(
 
   if (!res.ok) {
     const errText = await res.text().catch(() => '')
-    throw new Error(`Gemini structured call failed (${res.status}): ${errText.slice(0, 300)}`)
+    if (res.status === 429) {
+      throw new Error(
+        'Sage is over the Gemini API\'s rate limit right now. ' +
+        'The site\'s daily AI quota has been used up — try again later, or the admin can upgrade the API plan.'
+      )
+    }
+    if (res.status === 401 || res.status === 403) {
+      throw new Error('Sage isn\'t connected to Gemini right now. The admin needs to fix the API key.')
+    }
+    if (res.status >= 500) {
+      throw new Error('Gemini is having trouble at the moment. Try again in a minute.')
+    }
+    // Other 4xx — surface a trimmed, sanitized version (no raw JSON payload).
+    throw new Error(`Gemini call failed (${res.status}): ${errText.slice(0, 200).replace(/\s+/g, ' ').trim()}`)
   }
 
   const data = await res.json()
