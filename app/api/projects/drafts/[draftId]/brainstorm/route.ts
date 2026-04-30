@@ -3,7 +3,7 @@ import { auth } from '@/auth'
 import { prisma } from '@/lib/db/prisma'
 import { rateLimit, rateLimitResponse } from '@/lib/rate-limit'
 import { z } from 'zod'
-import { callGeminiStructured } from '@/lib/projects/ai/geminiStructured'
+import { callLlmStructured } from '@/lib/projects/ai/llmStructured'
 import {
   getBrainstormSystemPrompt,
   BRAINSTORM_RESPONSE_SCHEMA,
@@ -110,7 +110,7 @@ ${planSnippet}
 
   let raw: BrainstormResponse
   try {
-    raw = await callGeminiStructured<BrainstormResponse>({
+    raw = await callLlmStructured<BrainstormResponse>({
       systemPrompt: getBrainstormSystemPrompt(),
       userMessage: `${contextPrimer}Conversation so far:\n\n${transcript}\n\nProduce your next reply and the current extractedFields snapshot.`,
       responseSchema: BRAINSTORM_RESPONSE_SCHEMA,
@@ -134,7 +134,8 @@ ${planSnippet}
       message.startsWith('Sage stopped') ||
       message.startsWith('Sage is over') ||
       message.startsWith("Sage isn't connected") ||
-      message.startsWith('Gemini is having trouble')
+      message.startsWith('Gemini is having trouble') ||
+      message.startsWith('Groq is having trouble')
     const status =
       message.startsWith('Sage is over') ? 429 :
       message.startsWith("Sage isn't connected") ? 503 :

@@ -3,7 +3,7 @@ import { auth } from '@/auth'
 import { prisma } from '@/lib/db/prisma'
 import { rateLimit, rateLimitResponse } from '@/lib/rate-limit'
 import { z } from 'zod'
-import { callGeminiStructured } from '@/lib/projects/ai/geminiStructured'
+import { callLlmStructured } from '@/lib/projects/ai/llmStructured'
 import {
   buildPlanExtractionPrompt,
   trimPlanForExtraction,
@@ -67,7 +67,7 @@ export async function POST(
 
   let raw: unknown
   try {
-    raw = await callGeminiStructured({
+    raw = await callLlmStructured({
       systemPrompt: buildPlanExtractionPrompt(trimmed),
       userMessage: 'Extract the initiative fields from the plan above and return them as JSON matching the schema.',
       responseSchema: GEMINI_RESPONSE_SCHEMA,
@@ -85,7 +85,8 @@ export async function POST(
       message.startsWith('Sage stopped') ||
       message.startsWith('Sage is over') ||
       message.startsWith("Sage isn't connected") ||
-      message.startsWith('Gemini is having trouble')
+      message.startsWith('Gemini is having trouble') ||
+      message.startsWith('Groq is having trouble')
     const status =
       message.startsWith('Sage is over') ? 429 :
       message.startsWith("Sage isn't connected") ? 503 :
