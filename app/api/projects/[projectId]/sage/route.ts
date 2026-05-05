@@ -9,6 +9,7 @@ import {
   WaiverContext
 } from '@/lib/projects/ai/sageProjectPrompt'
 import { getProjectFallbackResponse } from '@/lib/projects/ai/sageFallback'
+import { callGroqChat, isGroqConfigured } from '@/lib/projects/ai/groqStructured'
 
 const GEMINI_API_KEY = process.env.GOOGLE_AI_API_KEY
 
@@ -173,22 +174,33 @@ export async function POST(
     // Get the last user message
     const lastUserMessage = messages[messages.length - 1]?.content || ''
 
-    // Try AI response, fall back to keyword-based
-    let responseText: string
+    // Try AI response: Groq first (higher free quota), then Gemini,
+    // then keyword-based fallback. The keyword fallback ensures Sage
+    // is never silent even if both providers are out.
+    let responseText: string | null = null
 
-    if (GEMINI_API_KEY) {
+    if (isGroqConfigured()) {
+      try {
+        responseText = await callGroqChat({
+          systemPrompt,
+          messages,
+          temperature: 0.7,
+          maxOutputTokens: 1000,
+        })
+      } catch (error) {
+        console.warn('Groq Sage failed, will try Gemini:', error)
+      }
+    }
+
+    if (!responseText && GEMINI_API_KEY) {
       try {
         responseText = await callGeminiAPI(systemPrompt, messages)
       } catch (error) {
-        console.error('Gemini API error, using fallback:', error)
-        responseText = getProjectFallbackResponse({
-          mode,
-          query: lastUserMessage,
-          projectContext,
-          waiverContext
-        })
+        console.error('Gemini Sage error, using keyword fallback:', error)
       }
-    } else {
+    }
+
+    if (!responseText) {
       responseText = getProjectFallbackResponse({
         mode,
         query: lastUserMessage,

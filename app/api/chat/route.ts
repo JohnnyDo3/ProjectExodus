@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { rateLimit, rateLimitResponse } from '@/lib/rate-limit'
+import { callGroqChat, isGroqConfigured } from '@/lib/projects/ai/groqStructured'
 
 // FAQ context for the AI to reference
 const FAQ_CONTEXT = `
@@ -122,6 +123,27 @@ export async function POST(request: NextRequest) {
         { error: 'Invalid request format' },
         { status: 400 }
       )
+    }
+
+    // Try Groq first (higher free quota). If Groq isn't configured or
+    // fails, fall through to Gemini below; if both fail, the catch-block
+    // returns the rule-based fallback response.
+    if (isGroqConfigured()) {
+      try {
+        const groqMessages = messages.map((msg: any, index: number) => ({
+          role: (msg.role === 'assistant' ? 'assistant' : 'user') as 'user' | 'assistant',
+          content: index === 0 ? `${msg.content}` : msg.content,
+        }))
+        const reply = await callGroqChat({
+          systemPrompt: `You are Sage, the AI guide for Project Exodus. Use this FAQ context to answer the user's questions. ${FAQ_CONTEXT}`,
+          messages: groqMessages,
+          temperature: 0.7,
+          maxOutputTokens: 500,
+        })
+        return NextResponse.json({ message: reply })
+      } catch (err) {
+        console.warn('[CHAT API] Groq failed, falling back to Gemini:', err)
+      }
     }
 
     // Check if Google AI API key is available
