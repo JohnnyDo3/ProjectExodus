@@ -117,8 +117,14 @@ export default function BrainstormPanel({
       })
       if (!res.ok) {
         const body = await res.json().catch(() => ({}))
-        const detail = body?.detail ? ` (${body.detail})` : ''
-        throw new Error((body.error || 'Sage hit a snag.') + detail)
+        const errorMsg = body.error || 'Sage hit a snag.'
+        // Only append detail when it adds new info — when both fields
+        // already carry the same friendly message, appending it would
+        // produce "(X) (X)" noise.
+        const detail = body?.detail && !errorMsg.includes(body.detail) && !body.detail.includes(errorMsg)
+          ? ` (${body.detail})`
+          : ''
+        throw new Error(errorMsg + detail)
       }
       const data = await res.json()
       setHistory(h => [...h, { role: 'assistant', content: data.reply, ts: Date.now() }])
