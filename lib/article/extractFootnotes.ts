@@ -177,5 +177,98 @@ export function extractFootnotes(html: string): FootnoteExtractionResult {
     }
   }
 
+  // ── Pattern 5: any block element containing ONLY a footnote-style
+  // label (no other prose in the element) — catches the case where
+  // mammoth rendered the source's "Footnotes" header as a plain <p>
+  // with no <strong>, no heading style.
+  if (footnotes.length === 0) {
+    const labelOnlyRe = /<(?:h[1-6]|p|div)\b[^>]*>\s*(?:<(?:strong|b|em|i)\b[^>]*>\s*)?(?:Foot|End)?notes?\s*:?\s*(?:<\/(?:strong|b|em|i)>\s*)?<\/(?:h[1-6]|p|div)>/i
+    const labelMatch = body.match(labelOnlyRe)
+    if (labelMatch && labelMatch.index !== undefined) {
+      const before = body.slice(0, labelMatch.index)
+      const after = body.slice(labelMatch.index + labelMatch[0].length)
+      const listAfter = after.match(/^\s*<[ou]l\b[^>]*>([\s\S]*?)<\/[ou]l>/i)
+      if (listAfter) {
+        const liRe = /<li[^>]*>([\s\S]*?)<\/li>/gi
+        let liMatch: RegExpExecArray | null
+        let n = 1
+        while ((liMatch = liRe.exec(listAfter[1])) !== null) {
+          footnotes.push({ number: n++, html: stripBackRef(liMatch[1]) })
+        }
+        if (footnotes.length > 0) {
+          body = (before + after.slice(listAfter[0].length)).trim()
+        }
+      } else {
+        const pRe = /<p[^>]*>\s*(\d{1,3})[\.\)]\s*([\s\S]*?)<\/p>/gi
+        let pMatch: RegExpExecArray | null
+        let lastIdx = 0
+        while ((pMatch = pRe.exec(after)) !== null) {
+          lastIdx = pRe.lastIndex
+          footnotes.push({
+            number: parseInt(pMatch[1], 10),
+            html: pMatch[2].trim(),
+          })
+        }
+        if (footnotes.length === 0) {
+          // Last-resort: treat every remaining <p> in the tail as a
+          // footnote, one per element. Numbered prefix optional.
+          const allPRe = /<p[^>]*>([\s\S]*?)<\/p>/gi
+          let allPMatch: RegExpExecArray | null
+          let endIdx = 0
+          let n = 1
+          while ((allPMatch = allPRe.exec(after)) !== null) {
+            const inner = allPMatch[1].trim()
+            if (!inner) continue
+            footnotes.push({ number: n++, html: inner })
+            endIdx = allPRe.lastIndex
+          }
+          if (footnotes.length > 0) {
+            body = (before + after.slice(endIdx)).trim()
+          }
+        } else {
+          body = (before + after.slice(lastIdx)).trim()
+        }
+      }
+    }
+  }
+
+  // ── Pattern 6: trailing block of sequentially-numbered <p>s, no
+  // heading required. Catches mammoth output that's just
+  // <p>1. text</p><p>2. text</p>... at the end of the document.
+  // Conservative: numbers must start at 1 and increment by 1, and
+  // there can't be significant prose between the trailing block and
+  // the end of body.
+  if (footnotes.length === 0) {
+    const pRe = /<p\b[^>]*>\s*(\d{1,3})[\.\)]\s*([\s\S]*?)<\/p>/gi
+    const all: { num: number; html: string; start: number; end: number }[] = []
+    let pMatch: RegExpExecArray | null
+    while ((pMatch = pRe.exec(body)) !== null) {
+      all.push({
+        num: parseInt(pMatch[1], 10),
+        html: pMatch[2].trim(),
+        start: pMatch.index,
+        end: pRe.lastIndex,
+      })
+    }
+    if (all.length >= 2) {
+      let runStart = all.length - 1
+      while (runStart > 0 && all[runStart].num === all[runStart - 1].num + 1) runStart--
+      const run = all.slice(runStart)
+      const trailingTrash = body.slice(run[run.length - 1].end).replace(/\s+/g, '')
+      if (
+        run.length >= 2 &&
+        run[0].num === 1 &&
+        trailingTrash.length < 80
+      ) {
+        for (const r of run) {
+          footnotes.push({ number: r.num, html: r.html })
+        }
+        const before = body.slice(0, run[0].start)
+        const after = body.slice(run[run.length - 1].end)
+        body = (before + after).trim()
+      }
+    }
+  }
+
   return { body, footnotes }
 }
