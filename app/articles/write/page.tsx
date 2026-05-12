@@ -1100,22 +1100,25 @@ We support MLA, APA, and Chicago citation formats."
   )
 }
 
-// Side intentionally left to autoSide — the title and excerpt span
-// almost the full content width, so the horizontal gutter is never
-// wide enough for a 260px callout and the auto router places them
-// below the target. The sidebar entries (cover, tags) stay 'left' so
-// their callouts float into the body column on wide viewports; the
-// in-component clamp keeps them on-screen on narrower ones.
+// Title and excerpt are locked to side: 'bottom' rather than autoSide
+// because their position relative to the viewport changes as the user
+// scrolls — autoSide would flip them between 'top' and 'bottom'
+// independently, occasionally inverting the visual order (subtitle
+// callout appearing above the title callout). Pinning both to bottom
+// keeps the natural stack title → title-callout → subtitle →
+// subtitle-callout no matter where the page is scrolled.
 const PUBLISH_LAYOUT_ANNOTATIONS: GuideAnnotation[] = [
   {
     id: 'title',
     label: 'Title',
     description: 'The first thing readers see. Big and bold. Tap to edit.',
+    side: 'bottom',
   },
   {
     id: 'excerpt',
     label: 'Subtitle / hook',
     description: 'One or two sentences that pull readers into the article.',
+    side: 'bottom',
   },
   {
     id: 'body',
