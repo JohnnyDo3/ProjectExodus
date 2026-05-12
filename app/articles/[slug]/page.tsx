@@ -1,21 +1,30 @@
 import { notFound } from 'next/navigation'
+import { headers } from 'next/headers'
+import { auth } from '@/auth'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
-import { Clock, User, Calendar, MessageCircle, Tag } from 'lucide-react'
+import { Clock, User, Calendar, MessageCircle, Tag, FileText, Pencil } from 'lucide-react'
 import { BackButton } from '@/components/navigation/BackButton'
 import { formatDate } from '@/lib/utils/format'
 import Link from 'next/link'
 import { ArticleClientWrapper } from '@/components/article/ArticleClientWrapper'
 
-// ISR: Revalidate article pages every 1 hour (3600 seconds)
-// Articles don't change frequently, so caching improves performance
-export const revalidate = 3600
+// Caching disabled: the response varies by user (the author sees their
+// own drafts; everyone else sees only PUBLISHED). ISR per-URL would
+// serve the wrong content. Page is still fast — single DB query.
+export const dynamic = 'force-dynamic'
 
 async function getArticle(slug: string) {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
+    // Forward the requester's cookies so the API can identify them via
+    // next-auth's session cookie. Without this, the server-to-server
+    // fetch is anonymous and the author can't see their own drafts.
+    const incomingHeaders = await headers()
+    const cookie = incomingHeaders.get('cookie') ?? ''
     const res = await fetch(`${baseUrl}/api/articles/${slug}`, {
-      next: { revalidate: 3600 }, // Cache for 1 hour, matching page revalidate
+      headers: { cookie },
+      cache: 'no-store',
     })
 
     if (!res.ok) {
@@ -36,22 +45,44 @@ export default async function ArticleDetailPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const article = await getArticle(slug)
+  const [article, session] = await Promise.all([getArticle(slug), auth()])
 
   if (!article) {
     notFound()
   }
+
+  const isDraft = article.status !== 'PUBLISHED'
+  const isAuthor = session?.user?.id && session.user.id === article.author?.id
 
   return (
     <div className="min-h-screen bg-[var(--background)] transition-colors">
       {/* Hero Section */}
       <section className="py-24 bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] via-[color-mix(in_srgb,var(--accent)_15%,var(--background))] to-[color-mix(in_srgb,var(--secondary)_15%,var(--background))]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
+          <div className="mb-6 flex items-center justify-between gap-4">
             <BackButton label="Back to Articles" fallbackUrl="/articles" />
+            {isAuthor && (
+              <Link
+                href={`/articles/write?draft=${article.slug}`}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--card)] border-2 border-theme-primary text-sm font-bold hover:bg-theme-primary hover:text-[var(--primary-foreground)] transition-colors"
+              >
+                <Pencil className="w-4 h-4" />
+                Edit
+              </Link>
+            )}
           </div>
           <div className="max-w-5xl mx-auto text-center space-y-8">
-            {article.featured && (
+            {isDraft && (
+              <div>
+                <div className="inline-flex items-center gap-2 px-5 py-2 bg-amber-500/20 border-2 border-amber-500 rounded-full shadow-lg">
+                  <FileText className="w-4 h-4 text-amber-700 dark:text-amber-300" />
+                  <span className="text-sm font-black text-amber-700 dark:text-amber-300 uppercase tracking-wide">
+                    {article.status === 'DRAFT' ? 'Draft — only you can see this' : article.status}
+                  </span>
+                </div>
+              </div>
+            )}
+            {article.featured && !isDraft && (
               <div>
                 <div className="inline-flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] rounded-full shadow-lg">
                   <span className="text-sm font-black text-[var(--primary-foreground)] uppercase tracking-wide">

@@ -35,11 +35,13 @@ export async function GET(
 ) {
   try {
     const { slug } = await params
+    // Get the session up front — we need to know who's asking so we can
+    // serve drafts to their author. The previous version hard-filtered on
+    // status: PUBLISHED which 404'd a user trying to see their own draft.
+    const session = await auth()
+
     const article = await prisma.article.findUnique({
-      where: {
-        slug: slug,
-        status: 'PUBLISHED',
-      },
+      where: { slug },
       include: {
         category: true,
         author: {
@@ -139,8 +141,16 @@ export async function GET(
       )
     }
 
-    // Get session for user's like status
-    const session = await auth()
+    // Access control: published articles are public. Anything else (DRAFT,
+    // ARCHIVED, etc.) is only visible to the author.
+    const isPublished = article.status === 'PUBLISHED'
+    const isAuthor = session?.user?.id && session.user.id === article.authorId
+    if (!isPublished && !isAuthor) {
+      return NextResponse.json(
+        { success: false, error: 'Article not found' },
+        { status: 404 }
+      )
+    }
 
     // Track unique user views - only increment if this user hasn't viewed before
     if (session?.user?.id) {
