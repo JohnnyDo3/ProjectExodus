@@ -1,4 +1,68 @@
 /**
+ * Conservative trailing-footnote extractor for PDF-extracted text.
+ *
+ * Looks at the very end of the document for a contiguous block of
+ * lines that all look like numbered footnote definitions
+ * (^\d+\.\s+...). To call something a footnote block we require:
+ *   - at least 2 consecutive matches
+ *   - numbers sequentially starting from 1
+ *   - at least one entry is longer than 30 chars (typical footnote)
+ *
+ * Those constraints keep us from yanking a final numbered list or
+ * page-numbered scraps out of the body. We only ever extract from
+ * the document tail, never from mid-content.
+ *
+ * Returns the body text with the footnote block removed, plus the
+ * raw footnote strings (caller can format them however it wants).
+ */
+export function extractTrailingPdfFootnotes(text: string): {
+  body: string
+  footnotes: string[]
+} {
+  if (!text) return { body: text, footnotes: [] }
+  const trimmed = text.replace(/\s+$/, '')
+  const lines = trimmed.split('\n')
+
+  // Walk backwards collecting footnote-pattern lines until we hit a
+  // non-matching one. Skip blank lines while scanning.
+  const candidates: { idx: number; line: string; num: number }[] = []
+  for (let i = lines.length - 1; i >= 0; i--) {
+    const line = lines[i].trim()
+    if (!line) {
+      if (candidates.length > 0) break  // hit blank gap, stop
+      continue
+    }
+    const match = line.match(/^(\d{1,3})[\.\)]\s+(\S.*)$/)
+    if (!match) break
+    candidates.unshift({ idx: i, line, num: parseInt(match[1], 10) })
+  }
+
+  if (candidates.length < 2) return { body: text, footnotes: [] }
+
+  // Require the numbers to start at 1 and increment by 1.
+  for (let i = 0; i < candidates.length; i++) {
+    if (candidates[i].num !== i + 1) return { body: text, footnotes: [] }
+  }
+
+  // At least one entry should be substantive — guards against
+  // "1. Apple 2. Pear 3. Plum"-style lists that meet every other check.
+  const hasLongOne = candidates.some(c => c.line.length > 30)
+  if (!hasLongOne) return { body: text, footnotes: [] }
+
+  const cutoff = candidates[0].idx
+  const bodyLines = lines.slice(0, cutoff)
+  // Trim trailing blank lines from the body.
+  while (bodyLines.length > 0 && !bodyLines[bodyLines.length - 1].trim()) {
+    bodyLines.pop()
+  }
+
+  return {
+    body: bodyLines.join('\n'),
+    footnotes: candidates.map(c => c.line),
+  }
+}
+
+/**
  * Reflow text extracted from a PDF so that visual lines within a
  * paragraph get joined back into a single paragraph, but explicit
  * paragraph breaks (blank lines, page joiners) are preserved.

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { CONTENT_LIMITS } from '@/lib/article/contentSecurity'
-import { reflowExtractedText } from '@/lib/article/reflowText'
+import { reflowExtractedText, extractTrailingPdfFootnotes } from '@/lib/article/reflowText'
 import { PDFParse } from 'pdf-parse'
 
 export const runtime = 'nodejs'
@@ -96,15 +96,28 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Pull a trailing block of numbered footnote definitions out of
+    // the body BEFORE reflow so we can split on raw line structure.
+    // Conservative heuristic — sequential 1, 2, 3..., at least one
+    // long entry — see lib/article/reflowText.ts.
+    const { body, footnotes } = extractTrailingPdfFootnotes(text)
+
     // Reflow: merge wrapped lines within a paragraph back into one
     // paragraph and handle end-of-line hyphenation. Without this,
     // every visual line in the PDF becomes its own <p> in the editor.
-    text = reflowExtractedText(text)
+    text = reflowExtractedText(body)
+
+    if (footnotes.length > 0) {
+      text += '\n\n## Footnotes\n\n' + footnotes.join('\n\n')
+    }
 
     // Log when we had to fall back so we can see in Vercel logs which
     // PDFs are hitting the alternate paths.
     if (extractionMode !== 'lineEnforce') {
       console.log(`[parse-pdf] Used fallback extraction (${extractionMode}) for ${file.name}`)
+    }
+    if (footnotes.length > 0) {
+      console.log(`[parse-pdf] Extracted ${footnotes.length} trailing footnotes from ${file.name}`)
     }
 
     // Get metadata if available — sanitize string values to prevent XSS

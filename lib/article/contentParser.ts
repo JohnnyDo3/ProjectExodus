@@ -594,8 +594,18 @@ function textToHtml(text: string): string {
         return `<h2>${trimmed}</h2>`
       }
 
-      // Regular paragraph - preserve single line breaks as <br>
-      const withBreaks = trimmed.replace(/\n/g, '<br>')
+      // Regular paragraph. PDFs (and most plain-text sources) use a
+      // single \n for visual line wraps, NOT for author-intended
+      // breaks. Treating them as <br> made every wrap-line look like
+      // its own paragraph. We now join wrapped lines with a space
+      // (and stitch end-of-line hyphenation), while still respecting
+      // Markdown's two-trailing-spaces hard-break convention so
+      // hand-authored line breaks survive.
+      const withBreaks = trimmed
+        .replace(/([A-Za-z])-\n([A-Za-z])/g, '$1$2')   // de-hyphenate
+        .replace(/  +\n/g, '<br>')                       // Markdown hard break
+        .replace(/\n/g, ' ')                             // wrap -> space
+        .replace(/[ \t]+/g, ' ')                         // collapse runs
       return `<p>${withBreaks}</p>`
     })
     .filter(Boolean)

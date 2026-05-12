@@ -6,7 +6,7 @@ import { join } from 'path'
 import { tmpdir } from 'os'
 import { pipeline } from 'stream/promises'
 import { sanitizeFilename, CONTENT_LIMITS } from '@/lib/article/contentSecurity'
-import { reflowExtractedText } from '@/lib/article/reflowText'
+import { reflowExtractedText, extractTrailingPdfFootnotes } from '@/lib/article/reflowText'
 
 export const runtime = 'nodejs'
 export const maxDuration = 300 // 5 minutes for processing large files
@@ -204,7 +204,11 @@ async function processPdfFile(filePath: string): Promise<{
       extracted = textResult.text || ''
     }
 
-    const text = reflowExtractedText(extracted)
+    const { body: extractedBody, footnotes } = extractTrailingPdfFootnotes(extracted)
+    let text = reflowExtractedText(extractedBody)
+    if (footnotes.length > 0) {
+      text += '\n\n## Footnotes\n\n' + footnotes.join('\n\n')
+    }
     const numPages = textResult.total || 0
 
     const info: Record<string, string> = {}
