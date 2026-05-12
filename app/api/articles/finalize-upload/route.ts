@@ -6,6 +6,7 @@ import { join } from 'path'
 import { tmpdir } from 'os'
 import { pipeline } from 'stream/promises'
 import { sanitizeFilename, CONTENT_LIMITS } from '@/lib/article/contentSecurity'
+import { reflowExtractedText } from '@/lib/article/reflowText'
 
 export const runtime = 'nodejs'
 export const maxDuration = 300 // 5 minutes for processing large files
@@ -185,13 +186,25 @@ async function processPdfFile(filePath: string): Promise<{
   const parser = new PDFParse({ data: buffer })
 
   try {
-    const textResult = await parser.getText({
+    // Mirror the two-pass extraction strategy in /api/articles/parse-pdf:
+    // aggressive line detection works for traditional PDFs, defaults
+    // handle Chrome-printed PDFs and other web-rendered output.
+    let textResult = await parser.getText({
       lineEnforce: true,
       lineThreshold: 4.6,
       pageJoiner: '\n\n',
     })
+    let extracted = textResult.text || ''
+    if (!extracted.trim()) {
+      textResult = await parser.getText({ pageJoiner: '\n\n' })
+      extracted = textResult.text || ''
+    }
+    if (!extracted.trim()) {
+      textResult = await parser.getText()
+      extracted = textResult.text || ''
+    }
 
-    const text = textResult.text || ''
+    const text = reflowExtractedText(extracted)
     const numPages = textResult.total || 0
 
     const info: Record<string, string> = {}

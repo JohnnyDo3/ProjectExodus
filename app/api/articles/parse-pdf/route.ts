@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { CONTENT_LIMITS } from '@/lib/article/contentSecurity'
+import { reflowExtractedText } from '@/lib/article/reflowText'
 import { PDFParse } from 'pdf-parse'
 
 export const runtime = 'nodejs'
@@ -94,6 +95,11 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       )
     }
+
+    // Reflow: merge wrapped lines within a paragraph back into one
+    // paragraph and handle end-of-line hyphenation. Without this,
+    // every visual line in the PDF becomes its own <p> in the editor.
+    text = reflowExtractedText(text)
 
     // Log when we had to fall back so we can see in Vercel logs which
     // PDFs are hitting the alternate paths.
