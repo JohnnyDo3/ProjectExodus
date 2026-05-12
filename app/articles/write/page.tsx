@@ -759,6 +759,71 @@ We support MLA, APA, and Chicago citation formats."
                 />
               </div>
 
+              {/* Format guidance — DOCX preserves the most structure. */}
+              <details className="mt-5 rounded-xl bg-[var(--muted)]/40 border border-[var(--border)] overflow-hidden text-sm">
+                <summary className="flex items-center gap-2 px-4 py-3 cursor-pointer font-bold hover:bg-[var(--muted)]/60">
+                  <Sparkles className="w-4 h-4 text-theme-primary shrink-0" />
+                  <span className="flex-1">
+                    <span className="text-theme-primary">Tip:</span>{' '}
+                    <span className="text-[var(--foreground)]">.docx</span>
+                    <span className="text-theme-muted"> preserves footnotes, headers, lists, and links best — </span>
+                    <span className="text-theme-primary underline">how to convert →</span>
+                  </span>
+                </summary>
+                <div className="px-4 pb-4 pt-1 space-y-3 text-theme-muted">
+                  <p>
+                    PDFs lose footnote structure (no font/position data reaches the parser).
+                    Word, Google Docs, and most editors export to .docx for free in 30 seconds:
+                  </p>
+                  <ol className="space-y-2 list-decimal list-inside ml-1">
+                    <li>
+                      <strong className="text-[var(--foreground)]">Google Docs</strong> (free, no install):
+                      drag your file into{' '}
+                      <a
+                        href="https://drive.google.com/drive/my-drive"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-theme-primary underline"
+                      >
+                        Drive
+                      </a>
+                      , right-click → <em>Open with → Google Docs</em>, then{' '}
+                      <em>File → Download → Microsoft Word (.docx)</em>.
+                    </li>
+                    <li>
+                      <strong className="text-[var(--foreground)]">Microsoft Word</strong>: open your
+                      file, <em>File → Save As</em>, pick <em>Word Document (.docx)</em>.
+                    </li>
+                    <li>
+                      <strong className="text-[var(--foreground)]">Online converter</strong> (no
+                      account):{' '}
+                      <a
+                        href="https://cloudconvert.com/pdf-to-docx"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-theme-primary underline"
+                      >
+                        CloudConvert
+                      </a>
+                      {' '}or{' '}
+                      <a
+                        href="https://www.ilovepdf.com/pdf_to_word"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-theme-primary underline"
+                      >
+                        ILovePDF
+                      </a>
+                      . Free for occasional use.
+                    </li>
+                  </ol>
+                  <p className="text-xs">
+                    Already have a .docx? Just use the <strong className="text-[var(--foreground)]">Upload File</strong>{' '}
+                    button above — footnotes and headers will carry over automatically.
+                  </p>
+                </div>
+              </details>
+
               {/* Upload Progress */}
               {uploadProgress && (
                 <div className="mt-6 p-4 bg-[var(--muted)]/50 rounded-xl">
