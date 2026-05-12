@@ -116,24 +116,53 @@ export function PublishLayoutGuide({ annotations, isOpen, onClose }: PublishLayo
   )
 }
 
+const CALLOUT_WIDTH = 260
+const CALLOUT_GAP = 16
+
 function Callout({ annotation }: { annotation: ResolvedAnnotation }) {
   const { rect, label, description } = annotation
   const side = annotation.side ?? autoSide(rect)
 
-  // Position the callout relative to the target's viewport rect. Sized
-  // to ~260px wide; arrow points at the edge of the target.
+  // Position the callout relative to the target's viewport rect. The
+  // browser does the final paint, so we just compute a starting point
+  // (top/left + transform) and then clamp the on-screen result so it
+  // never spills out of the viewport even if the chosen side ran out
+  // of room (e.g. user resized between mount and recompute).
   const style: React.CSSProperties = (() => {
-    const gap = 16
+    const vw = typeof window !== 'undefined' ? window.innerWidth : 1280
+    const margin = 8 // min distance from viewport edges
     switch (side) {
-      case 'left':
-        return { top: rect.top + rect.height / 2, left: rect.left - gap, transform: 'translate(-100%, -50%)' }
-      case 'right':
-        return { top: rect.top + rect.height / 2, left: rect.right + gap, transform: 'translateY(-50%)' }
-      case 'top':
-        return { top: rect.top - gap, left: rect.left + rect.width / 2, transform: 'translate(-50%, -100%)' }
+      case 'left': {
+        // Callout sits to the LEFT of the target. Final left edge of the
+        // callout = rect.left - gap - CALLOUT_WIDTH. Clamp to margin.
+        const desiredLeft = rect.left - CALLOUT_GAP - CALLOUT_WIDTH
+        const clampedLeft = Math.max(margin, desiredLeft)
+        return { top: rect.top + rect.height / 2, left: clampedLeft, transform: 'translateY(-50%)' }
+      }
+      case 'right': {
+        const desiredLeft = rect.right + CALLOUT_GAP
+        const maxLeft = vw - CALLOUT_WIDTH - margin
+        const clampedLeft = Math.min(desiredLeft, maxLeft)
+        return { top: rect.top + rect.height / 2, left: clampedLeft, transform: 'translateY(-50%)' }
+      }
+      case 'top': {
+        // Center horizontally on the target, clamp into viewport.
+        const desiredCenter = rect.left + rect.width / 2
+        const clampedCenter = Math.min(
+          Math.max(CALLOUT_WIDTH / 2 + margin, desiredCenter),
+          vw - CALLOUT_WIDTH / 2 - margin,
+        )
+        return { top: rect.top - CALLOUT_GAP, left: clampedCenter, transform: 'translate(-50%, -100%)' }
+      }
       case 'bottom':
-      default:
-        return { top: rect.bottom + gap, left: rect.left + rect.width / 2, transform: 'translateX(-50%)' }
+      default: {
+        const desiredCenter = rect.left + rect.width / 2
+        const clampedCenter = Math.min(
+          Math.max(CALLOUT_WIDTH / 2 + margin, desiredCenter),
+          vw - CALLOUT_WIDTH / 2 - margin,
+        )
+        return { top: rect.bottom + CALLOUT_GAP, left: clampedCenter, transform: 'translateX(-50%)' }
+      }
     }
   })()
 
@@ -163,13 +192,33 @@ function Callout({ annotation }: { annotation: ResolvedAnnotation }) {
   )
 }
 
-/** Choose the side that has the most room around the target. */
+/**
+ * Choose the side that has the most room around the target.
+ *  - For wide elements (≥ 55% of viewport width — title, excerpt) the
+ *    horizontal gutters are too narrow for the 260px callout, so we
+ *    place it above or below depending on where there's more vertical
+ *    headroom.
+ *  - For narrower elements (sidebar widgets, body card, etc.) we pick
+ *    the horizontal side with enough room; otherwise fall through to
+ *    bottom.
+ */
 function autoSide(rect: DOMRect): 'left' | 'right' | 'top' | 'bottom' {
   const vw = window.innerWidth
+  const vh = window.innerHeight
+  const minSideRoom = CALLOUT_WIDTH + CALLOUT_GAP + 8
+
+  // Wide element — left/right would overflow. Prefer the side with
+  // more vertical room.
+  if (rect.width / vw >= 0.55) {
+    const roomBelow = vh - rect.bottom
+    const roomAbove = rect.top
+    return roomBelow >= roomAbove ? 'bottom' : 'top'
+  }
+
+  // Narrow element — pick the side with enough horizontal room.
   const rightRoom = vw - rect.right
   const leftRoom = rect.left
-  // Prefer horizontal placement when there's space, else fall back below.
-  if (rightRoom >= 300) return 'right'
-  if (leftRoom >= 300) return 'left'
+  if (rightRoom >= minSideRoom) return 'right'
+  if (leftRoom >= minSideRoom) return 'left'
   return 'bottom'
 }
