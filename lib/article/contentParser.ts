@@ -691,15 +691,18 @@ function parseHtmlContent(html: string): ParsedContent {
   }
   body = body.trim()
 
-  // Excerpt: first paragraph that ISN'T the title we just removed.
+  // For excerpt + word count we want one giant string with no markup.
   const plainBody = stripTags(body).replace(/\s+/g, ' ').trim()
   const excerpt = plainBody.slice(0, 200) + (plainBody.length > 200 ? '...' : '')
 
-  // References: try to detect a "Works Cited" / "References" section
-  // in the plain-text version. Mammoth doesn't emit a structured
-  // references block, so we fall back to the same heuristic used for
-  // text-based parses.
-  const { references } = extractWorksCited(plainBody)
+  // For reference detection we need the OPPOSITE: line-structured plain
+  // text where block elements become newlines and <a href> URLs survive
+  // (extractWorksCited splits on \n to find the header line, and
+  // parseCitation needs the URL string to fill the reference's url
+  // field). Collapsing whitespace like plainBody above would erase the
+  // line breaks that extractWorksCited depends on.
+  const refText = htmlToBlockedText(body)
+  const { references } = extractWorksCited(refText)
 
   const wordCount = plainBody.split(/\s+/).filter(Boolean).length
   const estimatedReadTime = Math.max(1, Math.ceil(wordCount / 200))
@@ -725,6 +728,36 @@ function stripTags(html: string): string {
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
     .replace(/&nbsp;/g, ' ')
+}
+
+/**
+ * HTML -> plain text that preserves line structure (block elements
+ * become newlines) and keeps <a> link URLs inline so downstream
+ * reference detection can pick them up. Specifically built for the
+ * reference / works-cited detection path; not a general-purpose
+ * formatter.
+ */
+function htmlToBlockedText(html: string): string {
+  return html
+    // Preserve link URLs: <a href="X">label</a> -> "label (X)"
+    .replace(/<a\b[^>]*?\bhref=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi, '$2 ($1)')
+    // Treat block-level tags (open or close) as newlines so each
+    // paragraph / heading / list item becomes its own line.
+    .replace(/<\s*\/?\s*(?:p|div|h[1-6]|li|tr|br|hr|blockquote|article|section)\b[^>]*>/gi, '\n')
+    // Drop any remaining tags
+    .replace(/<[^>]+>/g, '')
+    // Decode common entities
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&nbsp;/g, ' ')
+    // Tidy whitespace: collapse runs of spaces, cap blank lines.
+    .replace(/[ \t]+/g, ' ')
+    .replace(/[ \t]*\n[ \t]*/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
 }
 
 /**
