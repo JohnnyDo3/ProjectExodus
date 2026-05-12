@@ -1,6 +1,7 @@
 'use client'
 
 import { useEditor, EditorContent } from '@tiptap/react'
+import { Extension } from '@tiptap/core'
 import StarterKit from '@tiptap/starter-kit'
 import Link from '@tiptap/extension-link'
 import Image from '@tiptap/extension-image'
@@ -52,6 +53,44 @@ interface TipTapEditorProps {
   placeholder?: string
   onPaste?: (text: string) => void
 }
+
+// Tab key handler. TipTap's StarterKit only binds Tab when the caret is
+// inside a list item (sink / lift the item). Outside lists it does
+// nothing, which lets the browser steal Tab and move focus to the next
+// form control — so a writer trying to indent a paragraph just loses
+// focus. This extension adds:
+//   • In a list      Tab/Shift+Tab nest/unnest the list item (unchanged).
+//   • Anywhere else  Tab inserts 4 non-breaking spaces (an indent that
+//                    survives HTML's whitespace collapsing) and Shift+Tab
+//                    deletes them when they precede the caret.
+const TabIndent = Extension.create({
+  name: 'tabIndent',
+  addKeyboardShortcuts() {
+    const INDENT = '    '
+    return {
+      Tab: () => {
+        if (this.editor.isActive('listItem')) {
+          return this.editor.commands.sinkListItem('listItem')
+        }
+        return this.editor.commands.insertContent(INDENT)
+      },
+      'Shift-Tab': () => {
+        if (this.editor.isActive('listItem')) {
+          return this.editor.commands.liftListItem('listItem')
+        }
+        // Best-effort outdent: if the four chars immediately before the
+        // caret are our indent block, delete them.
+        const { from } = this.editor.state.selection
+        const start = Math.max(0, from - INDENT.length)
+        const text = this.editor.state.doc.textBetween(start, from)
+        if (text === INDENT) {
+          return this.editor.chain().focus().deleteRange({ from: start, to: from }).run()
+        }
+        return false
+      },
+    }
+  },
+})
 
 // Citation format patterns
 const citationPatterns = {
@@ -176,6 +215,7 @@ export default function TipTapEditor({
       Superscript,
       TextStyle,
       Color,
+      TabIndent,
     ],
     content,
     onUpdate: ({ editor }) => {
