@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
@@ -11,8 +11,10 @@ import Image from 'next/image'
 import { formatDistanceToNow } from 'date-fns'
 import { MarkdownContent } from '@/components/article/MarkdownContent'
 import { ReferencesWidget } from '@/components/article/ReferencesWidget'
+import { FootnotesWidget } from '@/components/article/FootnotesWidget'
 import { PeerReviewWidget } from '@/components/article/PeerReviewWidget'
 import { AuthorBusinessCard } from '@/components/article/AuthorBusinessCard'
+import { extractFootnotes } from '@/lib/article/extractFootnotes'
 
 interface ArticleClientWrapperProps {
   article: {
@@ -79,6 +81,13 @@ export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
 
   // Check if current user is the author
   const isAuthor = session?.user?.id === article.authorId
+
+  // Pull footnotes out of the article body so they render in a sidebar
+  // widget instead of getting buried at the bottom of the body content.
+  const { body: bodyWithoutFootnotes, footnotes } = useMemo(
+    () => extractFootnotes(article.content || ''),
+    [article.content],
+  )
 
   // Handle article deletion
   const handleDelete = async () => {
@@ -149,8 +158,8 @@ export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
 
         <Card className="bg-[var(--card)] border-2 border-[var(--border)]">
           <CardContent className="p-6 sm:p-8 md:p-12 select-text">
-            {article.content ? (
-              <MarkdownContent content={article.content} />
+            {bodyWithoutFootnotes ? (
+              <MarkdownContent content={bodyWithoutFootnotes} />
             ) : (
               <p className="text-lg font-medium leading-relaxed text-theme-muted">
                 {article.excerpt || 'Article content coming soon...'}
@@ -367,8 +376,12 @@ export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
 
       {/* Sidebar */}
       <aside className="md:col-span-1 space-y-6">
+        {/* Footnotes Widget — sits above References so the in-line
+            citation markers in the body have an obvious anchor. */}
+        <FootnotesWidget footnotes={footnotes} />
+
         {/* References Widget */}
-        <ReferencesWidget references={article.references || []} articleContent={article.content} />
+        <ReferencesWidget references={article.references || []} articleContent={bodyWithoutFootnotes} />
 
         {/* Round Table Talk Widget - Single access point for discussions */}
         <PeerReviewWidget
