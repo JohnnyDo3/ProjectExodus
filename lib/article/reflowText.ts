@@ -24,6 +24,14 @@ export function reflowExtractedText(raw: string): string {
   // 1. Normalize line endings to \n
   const normalized = raw.replace(/\r\n?/g, '\n')
 
+  // If the source has zero blank lines, every line is adjacent and we
+  // can't tell paragraphs from wrapped lines. Bail out and let the
+  // downstream normalizePdfText (which has line-level heuristics for
+  // sentence-end + capital-start, all-caps detection, etc.) handle it.
+  if (!/\n\s*\n/.test(normalized)) {
+    return normalized
+  }
+
   // 2. Split on paragraph boundaries (blank lines)
   const blocks = normalized.split(/\n\s*\n+/)
 

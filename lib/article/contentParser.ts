@@ -609,6 +609,17 @@ export function parseContent(rawContent: string): ParsedContent {
   // Normalize line endings
   let normalized = rawContent.replace(/\r\n/g, '\n').replace(/\r/g, '\n')
 
+  // Detect rich HTML sources (mammoth's DOCX output, hand-pasted HTML).
+  // We need a different pipeline for these — running normalizePdfText
+  // on HTML would mangle the tags, and we want to preserve the
+  // structural markup that the source carefully encoded (headers,
+  // footnotes, lists, links, sup/sub, bold/italic).
+  const looksLikeHtml = /<(p|h[1-6]|ul|ol|li|table|tr|td|sup|sub|a|strong|em|b|i|blockquote)\b[^>]*>/i.test(normalized)
+
+  if (looksLikeHtml) {
+    return parseHtmlContent(normalized)
+  }
+
   // Normalize PDF-extracted text (restores paragraph breaks, removes artifacts)
   normalized = normalizePdfText(normalized)
 
@@ -643,6 +654,67 @@ export function parseContent(rawContent: string): ParsedContent {
     wordCount,
     estimatedReadTime,
   }
+}
+
+/**
+ * Parse already-structured HTML (e.g. mammoth's DOCX output). Preserves
+ * the original markup wholesale — headers, lists, footnotes (mammoth
+ * emits <sup><a href="#..."> markers + an <ol class="footnotes"> block),
+ * tables, bold / italic, links — and just pulls out title + excerpt
+ * for the form fields.
+ */
+function parseHtmlContent(html: string): ParsedContent {
+  // Title: prefer the first <h1>, then <h2>, then the first paragraph.
+  const h1Match = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)
+  const h2Match = html.match(/<h2[^>]*>([\s\S]*?)<\/h2>/i)
+  const firstPara = html.match(/<p[^>]*>([\s\S]*?)<\/p>/i)
+  const titleHtml = h1Match?.[1] || h2Match?.[1] || firstPara?.[1] || 'Untitled'
+  const title = stripTags(titleHtml).trim().slice(0, 200) || 'Untitled'
+
+  // Body: keep the HTML, but drop the title element so it doesn't
+  // appear twice (once as the form title, once inside the body).
+  let body = html
+  if (h1Match) {
+    body = body.replace(h1Match[0], '')
+  } else if (h2Match) {
+    body = body.replace(h2Match[0], '')
+  }
+  body = body.trim()
+
+  // Excerpt: first paragraph that ISN'T the title we just removed.
+  const plainBody = stripTags(body).replace(/\s+/g, ' ').trim()
+  const excerpt = plainBody.slice(0, 200) + (plainBody.length > 200 ? '...' : '')
+
+  // References: try to detect a "Works Cited" / "References" section
+  // in the plain-text version. Mammoth doesn't emit a structured
+  // references block, so we fall back to the same heuristic used for
+  // text-based parses.
+  const { references } = extractWorksCited(plainBody)
+
+  const wordCount = plainBody.split(/\s+/).filter(Boolean).length
+  const estimatedReadTime = Math.max(1, Math.ceil(wordCount / 200))
+  const suggestedCategory = suggestCategory(plainBody)
+
+  return {
+    title,
+    body,
+    excerpt,
+    references,
+    suggestedCategory,
+    wordCount,
+    estimatedReadTime,
+  }
+}
+
+function stripTags(html: string): string {
+  return html
+    .replace(/<[^>]+>/g, '')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&nbsp;/g, ' ')
 }
 
 /**

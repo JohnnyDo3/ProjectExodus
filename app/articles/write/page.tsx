@@ -121,6 +121,12 @@ export default function WriteArticlePage() {
 
   // Paste content
   const [pastedContent, setPastedContent] = useState('')
+  // Rich HTML from formats that preserve structure (mammoth's DOCX output).
+  // When set, "Parse & Preview" uses this as the body instead of running
+  // pastedContent through textToHtml, so headers / footnotes / lists /
+  // bold / italic / links from the source document survive into the
+  // editor. Cleared whenever the user edits the textarea directly.
+  const [pastedHtml, setPastedHtml] = useState<string | null>(null)
 
   // Parsed article data
   const [articleData, setArticleData] = useState<{
@@ -231,7 +237,13 @@ export default function WriteArticlePage() {
     // Process with slight delay for UX
     setTimeout(() => {
       try {
-        const parsed = parseContent(pastedContent)
+        // If we have rich HTML from a structured source (DOCX via
+        // mammoth), pass it to parseContent so it keeps headers,
+        // footnotes, lists, bold/italic etc. instead of being
+        // flattened into plain text and re-rebuilt into paragraphs.
+        const parsed = pastedHtml
+          ? parseContent(pastedHtml)
+          : parseContent(pastedContent)
 
         // Sanitize the parsed content
         const sanitizedBody = sanitizeHtml(parsed.body)
@@ -289,7 +301,7 @@ export default function WriteArticlePage() {
         setIsParsing(false)
       }
     }, 500)
-  }, [pastedContent])
+  }, [pastedContent, pastedHtml])
 
   // Upload progress state
   const [uploadProgress, setUploadProgress] = useState<{ phase: string; percent: number } | null>(null)
@@ -375,7 +387,10 @@ export default function WriteArticlePage() {
           }
 
           setPastedContent(data.data.text)
-          toast.success(`${file.name} loaded! Click "Parse & Preview" to continue.`)
+          // Mammoth gives us structured HTML — keep it so Parse & Preview
+          // can preserve headers / footnotes / lists / formatting.
+          setPastedHtml(data.data.html ?? null)
+          toast.success(`${file.name} loaded with structure preserved! Click "Parse & Preview" to continue.`)
         } else {
           // Chunked upload for large files and .doc/.odt
           throw new Error('__USE_CHUNKED__')
@@ -423,6 +438,8 @@ export default function WriteArticlePage() {
           }
 
           setPastedContent(result.data!.text)
+          // Chunked-DOCX path: mammoth's html survives finalize-upload too.
+          setPastedHtml(result.data!.html ?? null)
 
           const pages = result.data!.numPages
           const successMsg = pages
@@ -661,7 +678,13 @@ export default function WriteArticlePage() {
                 <CardContent className="p-6">
                   <textarea
                     value={pastedContent}
-                    onChange={(e) => setPastedContent(e.target.value)}
+                    onChange={(e) => {
+                      setPastedContent(e.target.value)
+                      // User is editing the textarea directly — any rich
+                      // HTML from a prior upload is stale. Fall back to
+                      // text -> HTML conversion on the next parse.
+                      setPastedHtml(null)
+                    }}
                     placeholder="Paste your entire document here...
 
 Include your title, body content, and Works Cited / References section.
