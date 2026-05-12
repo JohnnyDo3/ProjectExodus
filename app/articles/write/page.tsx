@@ -25,6 +25,7 @@ import { Select } from '@/components/ui/Select'
 import { Textarea } from '@/components/ui/Textarea'
 import CoverImageUpload from '@/components/article/CoverImageUpload'
 import PublishConfirmDialog from '@/components/article/PublishConfirmDialog'
+import { PublishLayoutGuide, type GuideAnnotation } from '@/components/article/PublishLayoutGuide'
 import {
   ArrowLeft,
   Upload,
@@ -127,6 +128,8 @@ export default function WriteArticlePage() {
   // bold / italic / links from the source document survive into the
   // editor. Cleared whenever the user edits the textarea directly.
   const [pastedHtml, setPastedHtml] = useState<string | null>(null)
+  // First-time preview guide overlay state.
+  const [showGuide, setShowGuide] = useState(false)
 
   // Parsed article data
   const [articleData, setArticleData] = useState<{
@@ -285,6 +288,18 @@ export default function WriteArticlePage() {
         })
 
         setViewMode('preview')
+
+        // Auto-open the layout guide the first time a user lands in
+        // preview after pasting/uploading. After "Got it" we set a
+        // localStorage flag so we don't badger them on every parse.
+        try {
+          const seen = localStorage.getItem('article-preview-guide-seen-v1')
+          if (!seen) {
+            // Defer one tick so the preview DOM is mounted before the
+            // guide tries to measure anchors.
+            setTimeout(() => setShowGuide(true), 50)
+          }
+        } catch {}
 
         // Show success with stats
         const wordCount = validation.stats.wordCount
@@ -623,6 +638,14 @@ export default function WriteArticlePage() {
 
             {viewMode === 'preview' && (
               <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowGuide(true)}
+                  className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold text-theme-muted hover:text-theme-primary hover:bg-[var(--muted)] transition-colors"
+                  title="What does each part of the article do?"
+                >
+                  <Sparkles className="w-3.5 h-3.5" /> Layout guide
+                </button>
                 <Button
                   variant="outline"
                   size="sm"
@@ -821,7 +844,7 @@ We support MLA, APA, and Chicago citation formats."
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                   <div className="max-w-5xl mx-auto text-center space-y-6">
                     {/* Editable Title */}
-                    <div className="group relative">
+                    <div className="group relative" data-tour-id="title">
                       {editingField === 'title' ? (
                         <input
                           type="text"
@@ -843,7 +866,7 @@ We support MLA, APA, and Chicago citation formats."
                     </div>
 
                     {/* Editable Excerpt */}
-                    <div className="group relative max-w-4xl mx-auto">
+                    <div className="group relative max-w-4xl mx-auto" data-tour-id="excerpt">
                       {editingField === 'excerpt' ? (
                         <textarea
                           value={articleData.excerpt}
@@ -898,7 +921,7 @@ We support MLA, APA, and Chicago citation formats."
                   <div className="max-w-5xl mx-auto">
                     <div className="grid md:grid-cols-3 gap-8">
                       {/* Main Content */}
-                      <article className="md:col-span-2">
+                      <article className="md:col-span-2" data-tour-id="body">
                         <Card className="bg-[var(--card)] border-2 border-[var(--border)]">
                           <CardContent className="p-6 sm:p-8 md:p-12">
                             <TipTapEditor
@@ -934,7 +957,7 @@ We support MLA, APA, and Chicago citation formats."
                                 ]}
                               />
                             </div>
-                            <div>
+                            <div data-tour-id="tags">
                               <label className="text-xs font-medium text-[var(--muted-foreground)] mb-1 block">
                                 Tags
                               </label>
@@ -945,7 +968,7 @@ We support MLA, APA, and Chicago citation formats."
                                 className="text-sm"
                               />
                             </div>
-                            <div>
+                            <div data-tour-id="cover">
                               <label className="text-xs font-medium text-[var(--muted-foreground)] mb-1 block">
                                 Cover Image
                               </label>
@@ -997,9 +1020,53 @@ We support MLA, APA, and Chicago citation formats."
         title={articleData.title}
         isPublishing={saving}
       />
+
+      {/* First-time preview-mode layout guide. Annotated overlay
+          pointing at title, subtitle, body, cover, tags. */}
+      <PublishLayoutGuide
+        isOpen={showGuide && viewMode === 'preview'}
+        annotations={PUBLISH_LAYOUT_ANNOTATIONS}
+        onClose={() => {
+          setShowGuide(false)
+          try { localStorage.setItem('article-preview-guide-seen-v1', '1') } catch {}
+        }}
+      />
     </div>
   )
 }
+
+const PUBLISH_LAYOUT_ANNOTATIONS: GuideAnnotation[] = [
+  {
+    id: 'title',
+    label: 'Title',
+    description: 'The first thing readers see. Big and bold. Tap to edit.',
+    side: 'right',
+  },
+  {
+    id: 'excerpt',
+    label: 'Subtitle / hook',
+    description: 'One or two sentences that pull readers into the article.',
+    side: 'right',
+  },
+  {
+    id: 'body',
+    label: 'Article body',
+    description: 'Your main content. Headers, lists, footnotes, and links all preserved from the original.',
+    side: 'left',
+  },
+  {
+    id: 'cover',
+    label: 'Cover image',
+    description: 'The hero image shown at the top of the published page.',
+    side: 'left',
+  },
+  {
+    id: 'tags',
+    label: 'Tags',
+    description: 'Comma-separated. Helps readers find the article via search and topic pages.',
+    side: 'left',
+  },
+]
 
 // References Preview Widget
 function ReferencesPreview({
