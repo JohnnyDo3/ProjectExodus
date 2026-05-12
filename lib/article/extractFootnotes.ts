@@ -99,25 +99,51 @@ export function extractFootnotes(html: string): FootnoteExtractionResult {
     }
   }
 
-  // ── Pattern 3: <h2|h3>Footnotes</h2|h3> + numbered <p> entries ──
+  // ── Pattern 3: heading containing "Footnotes" / "Notes" + entries ──
+  // Broadened to match h1-h6 (mammoth's heading level depends on the
+  // source DOCX's outline level), AND to recognise a "Footnotes" /
+  // "Endnotes" / "Notes" / "Footnote" / "Endnote" / "Note" label
+  // wrapped in <p><strong> / <p><b> instead of an <h*> tag (common
+  // when the source author bolded the label manually rather than
+  // applying a heading style).
   if (footnotes.length === 0) {
-    const headingRe = /<h([23])>\s*(?:Foot|End)notes?\s*<\/h\1>([\s\S]*?)$/i
-    const headingMatch = body.match(headingRe)
-    if (headingMatch) {
-      const tail = headingMatch[2]
-      const pRe = /<p[^>]*>\s*(\d{1,3})[\.\)]\s*([\s\S]*?)<\/p>/gi
-      let pMatch: RegExpExecArray | null
-      let lastIdx = 0
-      while ((pMatch = pRe.exec(tail)) !== null) {
-        lastIdx = pRe.lastIndex
-        footnotes.push({
-          number: parseInt(pMatch[1], 10),
-          html: pMatch[2].trim(),
-        })
-      }
-      if (footnotes.length > 0) {
-        // Drop the heading + consumed entries; keep anything past them.
-        body = body.replace(headingMatch[0], tail.slice(lastIdx)).trim()
+    const headingPatterns: RegExp[] = [
+      /<h([1-6])\b[^>]*>\s*(?:Foot|End)?notes?\s*<\/h\1>([\s\S]*?)$/i,
+      /<p[^>]*>\s*<(?:strong|b)\b[^>]*>\s*(?:Foot|End)?notes?\s*<\/(?:strong|b)>\s*<\/p>([\s\S]*?)$/i,
+    ]
+    for (const re of headingPatterns) {
+      const headingMatch = body.match(re)
+      if (!headingMatch) continue
+      const tail = headingMatch[headingMatch.length - 1]
+      // Two possible entry shapes: an <ol>/<ul> right after the heading,
+      // or a sequence of numbered <p>N. text</p> paragraphs.
+      const olAfter = tail.match(/^\s*<[ou]l\b[^>]*>([\s\S]*?)<\/[ou]l>/i)
+      if (olAfter) {
+        const liRe = /<li[^>]*>([\s\S]*?)<\/li>/gi
+        let liMatch: RegExpExecArray | null
+        let n = 1
+        while ((liMatch = liRe.exec(olAfter[1])) !== null) {
+          footnotes.push({ number: n++, html: stripBackRef(liMatch[1]) })
+        }
+        if (footnotes.length > 0) {
+          body = body.replace(headingMatch[0], tail.slice(olAfter[0].length)).trim()
+          break
+        }
+      } else {
+        const pRe = /<p[^>]*>\s*(\d{1,3})[\.\)]\s*([\s\S]*?)<\/p>/gi
+        let pMatch: RegExpExecArray | null
+        let lastIdx = 0
+        while ((pMatch = pRe.exec(tail)) !== null) {
+          lastIdx = pRe.lastIndex
+          footnotes.push({
+            number: parseInt(pMatch[1], 10),
+            html: pMatch[2].trim(),
+          })
+        }
+        if (footnotes.length > 0) {
+          body = body.replace(headingMatch[0], tail.slice(lastIdx)).trim()
+          break
+        }
       }
     }
   }

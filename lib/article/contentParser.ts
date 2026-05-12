@@ -582,6 +582,11 @@ function textToHtml(text: string): string {
       const startsWithCapOrMarker = /^(?:#{1,3}\s+)?[A-Z]/.test(trimmed)
       const isNotNumberOnly = !/^\d+\.?\s*$/.test(trimmed)
       const hasMultipleWords = trimmed.split(/\s+/).length >= 2
+      // Known single-word section labels that should still be promoted
+      // to an <h2> even though they're only one word — without this
+      // "Footnotes" / "Notes" never become headings, and the footnotes
+      // extractor never finds the section in the published body.
+      const isKnownSectionLabel = /^(?:Footnotes?|Endnotes?|Notes?|References|Bibliography|Sources|Citations?|Acknowledg(?:e?)ments?|Appendix|Glossary|Introduction|Conclusion|Abstract|Summary)$/i.test(trimmed)
 
       // Handle markdown-style headings explicitly
       const markdownHeading = trimmed.match(/^(#{1,3})\s+(.+)$/)
@@ -590,7 +595,7 @@ function textToHtml(text: string): string {
         return `<h${level + 1}>${markdownHeading[2]}</h${level + 1}>`
       }
 
-      if (isSingleLine && isShort && hasNoPunctuation && startsWithCapOrMarker && isNotNumberOnly && hasMultipleWords) {
+      if (isSingleLine && isShort && hasNoPunctuation && startsWithCapOrMarker && isNotNumberOnly && (hasMultipleWords || isKnownSectionLabel)) {
         return `<h2>${trimmed}</h2>`
       }
 
