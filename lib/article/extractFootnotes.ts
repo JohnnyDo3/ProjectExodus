@@ -28,27 +28,59 @@ export function extractFootnotes(html: string): FootnoteExtractionResult {
   let body = html
   const footnotes: ExtractedFootnote[] = []
 
-  // ── Pattern 1: mammoth's <ol class="footnotes"> ──────────────────
-  const mammothBlockRe = /<ol[^>]*class=["'][^"']*\bfootnotes\b[^"']*["'][^>]*>([\s\S]*?)<\/ol>/i
-  const mammothMatch = body.match(mammothBlockRe)
-  if (mammothMatch) {
-    const listInner = mammothMatch[1]
-    const liRe = /<li[^>]*>([\s\S]*?)<\/li>/gi
+  // ── Pattern 1: an <ol> whose <li>s have id="footnote-N" ──────────
+  // Mammoth (the DOCX -> HTML converter we use) does NOT in practice
+  // tag the footnote <ol> with class="footnotes" — it just emits a
+  // plain <ol> and identifies each entry via id="footnote-N" on the
+  // <li>. We detect the footnote list by looking for that ID pattern
+  // anywhere inside the list.
+  const olRe = /<ol\b[^>]*>([\s\S]*?)<\/ol>/gi
+  let olMatch: RegExpExecArray | null
+  while ((olMatch = olRe.exec(body)) !== null) {
+    const listInner = olMatch[1]
+    if (!/<li[^>]*\bid=["']footnote-/i.test(listInner)) continue
+    // Found the mammoth footnote list. Pull each entry's content.
+    const liRe = /<li[^>]*\bid=["']footnote-(\d+)["'][^>]*>([\s\S]*?)<\/li>/gi
     let liMatch: RegExpExecArray | null
-    let n = 1
     while ((liMatch = liRe.exec(listInner)) !== null) {
-      // Mammoth appends a back-reference link like
-      // <a href="#footnote-ref-1">↑</a>. Strip it for the widget — the
-      // widget already provides its own navigation context.
-      const cleaned = liMatch[1]
+      // Strip mammoth's back-reference link (e.g. <a href="#footnote-ref-1">↑</a>)
+      const cleaned = liMatch[2]
         .replace(/<a[^>]*href=["']#footnote-ref-[^"']*["'][^>]*>[\s\S]*?<\/a>/gi, '')
         .trim()
-      footnotes.push({ number: n++, html: cleaned })
+      footnotes.push({
+        number: parseInt(liMatch[1], 10),
+        html: cleaned,
+      })
     }
-    body = body.replace(mammothMatch[0], '').trim()
+    if (footnotes.length > 0) {
+      body = body.replace(olMatch[0], '').trim()
+      break // only consume the first qualifying <ol>
+    }
   }
 
-  // ── Pattern 2: <h2|h3>Footnotes</h2|h3> + numbered <p> entries ──
+  // ── Pattern 2: legacy/explicit <ol class="footnotes"> ────────────
+  // Cheap fallback in case a future mammoth release (or another
+  // converter) does start emitting a class. Only runs if pattern 1
+  // didn't already harvest the list.
+  if (footnotes.length === 0) {
+    const mammothBlockRe = /<ol[^>]*class=["'][^"']*\bfootnotes\b[^"']*["'][^>]*>([\s\S]*?)<\/ol>/i
+    const mammothMatch = body.match(mammothBlockRe)
+    if (mammothMatch) {
+      const listInner = mammothMatch[1]
+      const liRe = /<li[^>]*>([\s\S]*?)<\/li>/gi
+      let liMatch: RegExpExecArray | null
+      let n = 1
+      while ((liMatch = liRe.exec(listInner)) !== null) {
+        const cleaned = liMatch[1]
+          .replace(/<a[^>]*href=["']#footnote-ref-[^"']*["'][^>]*>[\s\S]*?<\/a>/gi, '')
+          .trim()
+        footnotes.push({ number: n++, html: cleaned })
+      }
+      body = body.replace(mammothMatch[0], '').trim()
+    }
+  }
+
+  // ── Pattern 3: <h2|h3>Footnotes</h2|h3> + numbered <p> entries ──
   // PDF-sourced articles get a "## Footnotes" heading appended by
   // extract-trailing-pdf-footnotes -> textToHtml, which produces
   // <h3>Footnotes</h3><p>1. text</p><p>2. text</p>...
