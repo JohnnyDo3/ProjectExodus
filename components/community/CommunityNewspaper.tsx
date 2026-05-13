@@ -14,16 +14,7 @@ import { GuitarHeroFeed } from '@/components/discussions/GuitarHeroFeed'
 import { SustainableTechBillboard } from '@/components/community/SustainableTechBillboard'
 import { useEffect, useState } from 'react'
 
-// Guardian archetype icons - Exodology's Seven Virtues
-const archetypeConfig: Record<string, { icon: any, gradient: string, name: string, color: string }> = {
-  GUARDIAN_OF_TEMPERANCE: { icon: Shield, gradient: 'from-blue-500 via-cyan-400 to-teal-500', name: 'Guardian of Temperance', color: 'text-cyan-400' },
-  GUARDIAN_OF_WISDOM: { icon: Eye, gradient: 'from-violet-500 via-purple-400 to-fuchsia-500', name: 'Guardian of Wisdom', color: 'text-violet-400' },
-  GUARDIAN_OF_COURAGE: { icon: Flame, gradient: 'from-orange-500 via-red-400 to-pink-500', name: 'Guardian of Courage', color: 'text-orange-400' },
-  GUARDIAN_OF_JUSTICE: { icon: Target, gradient: 'from-amber-500 via-yellow-400 to-orange-400', name: 'Guardian of Justice', color: 'text-amber-400' },
-  GUARDIAN_OF_HUMANITY: { icon: Heart, gradient: 'from-pink-500 via-rose-400 to-red-400', name: 'Guardian of Humanity', color: 'text-rose-400' },
-  GUARDIAN_OF_TRANSCENDENCE: { icon: Sparkles, gradient: 'from-indigo-500 via-blue-400 to-cyan-500', name: 'Guardian of Transcendence', color: 'text-indigo-400' },
-  GUARDIAN_OF_NATURE: { icon: Globe, gradient: 'from-emerald-500 via-green-400 to-teal-500', name: 'Guardian of Nature', color: 'text-emerald-400' },
-}
+import { COMMANDMENT_LIST, resolveCommandment } from '@/lib/commandments'
 
 interface CommunityNewspaperProps {
   user: any
@@ -67,7 +58,7 @@ export function CommunityNewspaper({
     return () => clearInterval(timer)
   }, [])
 
-  const userArchetype = user?.guardianArchetype ? archetypeConfig[user.guardianArchetype] : null
+  const userArchetype = user?.guardianArchetype ? resolveCommandment(user.guardianArchetype) : null
   const ArchetypeIcon = userArchetype?.icon || Compass
 
   // Featured content
@@ -539,8 +530,8 @@ export function CommunityNewspaper({
             <div className="flex items-center justify-center gap-2 mb-5">
               <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[var(--border)]/50 to-[var(--border)]/50" />
               <div className="flex gap-1.5">
-                {Object.values(archetypeConfig).map((config, i) => (
-                  <div key={i} className={`w-1.5 h-1.5 rounded-full bg-gradient-to-br ${config.gradient} opacity-40`} />
+                {COMMANDMENT_LIST.map((c) => (
+                  <div key={c.id} className={`w-1.5 h-1.5 rounded-full bg-gradient-to-br ${c.gradient} opacity-40`} />
                 ))}
               </div>
               <div className="h-px flex-1 bg-gradient-to-r from-[var(--border)]/50 via-[var(--border)]/50 to-transparent" />

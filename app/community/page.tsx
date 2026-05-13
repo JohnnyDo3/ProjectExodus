@@ -1,21 +1,7 @@
-import {
-  Sparkles, Heart, Globe, Target, Shield, Eye, Flame
-} from 'lucide-react'
 import { auth } from '@/auth'
 import { prisma } from '@/lib/db'
 import { CommunityNewspaper } from '@/components/community/CommunityNewspaper'
 import { CommunityHeartPage } from '@/components/community/CommunityHeartPage'
-
-// Guardian archetype icons and colors
-const archetypeConfig: Record<string, { icon: any, gradient: string, name: string }> = {
-  GUARDIAN_OF_TEMPERANCE: { icon: Shield, gradient: 'from-blue-500 to-cyan-500', name: 'Guardian of Temperance' },
-  GUARDIAN_OF_WISDOM: { icon: Eye, gradient: 'from-violet-500 to-purple-500', name: 'Guardian of Wisdom' },
-  GUARDIAN_OF_COURAGE: { icon: Flame, gradient: 'from-orange-500 to-red-500', name: 'Guardian of Courage' },
-  GUARDIAN_OF_JUSTICE: { icon: Target, gradient: 'from-amber-500 to-yellow-500', name: 'Guardian of Justice' },
-  GUARDIAN_OF_HUMANITY: { icon: Heart, gradient: 'from-pink-500 to-rose-500', name: 'Guardian of Humanity' },
-  GUARDIAN_OF_TRANSCENDENCE: { icon: Sparkles, gradient: 'from-indigo-500 to-blue-500', name: 'Guardian of Transcendence' },
-  GUARDIAN_OF_NATURE: { icon: Globe, gradient: 'from-emerald-500 to-green-500', name: 'Guardian of Nature' },
-}
 
 async function getDashboardData(userId: string) {
   try {

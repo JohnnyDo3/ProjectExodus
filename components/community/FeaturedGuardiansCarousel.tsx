@@ -2,21 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Shield, TrendingUp, Users, Crown } from 'lucide-react'
+import { Shield, TrendingUp, Crown } from 'lucide-react'
 import Link from 'next/link'
-
-// Guardian archetype colors (matching the business card themes)
-const archetypeColors: Record<string, { gradient: string; border: string }> = {
-  GUARDIAN_OF_COURAGE: { gradient: 'from-red-500 to-orange-500', border: 'border-red-500/30' },
-  GUARDIAN_OF_TRANSCENDENCE: { gradient: 'from-sky-400 to-blue-500', border: 'border-sky-500/30' },
-  GUARDIAN_OF_NATURE: { gradient: 'from-emerald-400 to-teal-500', border: 'border-emerald-500/30' },
-  GUARDIAN_OF_WISDOM: { gradient: 'from-amber-400 to-yellow-500', border: 'border-amber-500/30' },
-  GUARDIAN_OF_HUMANITY: { gradient: 'from-pink-400 to-rose-500', border: 'border-pink-500/30' },
-  GUARDIAN_OF_TEMPERANCE: { gradient: 'from-violet-400 to-purple-500', border: 'border-violet-500/30' },
-  GUARDIAN_OF_JUSTICE: { gradient: 'from-indigo-400 to-blue-600', border: 'border-indigo-500/30' },
-}
-
-const defaultColors = { gradient: 'from-slate-400 to-slate-500', border: 'border-slate-500/30' }
+import { resolveCommandment } from '@/lib/commandments'
 
 interface LeaderboardUser {
   userId: string
@@ -29,18 +17,19 @@ interface LeaderboardUser {
   isDemo?: boolean
 }
 
-// Demo profiles to show when no real users exist
+// Demo profiles cycle through the 10 commandments so the carousel
+// looks populated even before any real leaderboard entries exist.
 const demoProfiles: LeaderboardUser[] = [
-  { userId: 'demo-1', name: 'EcoWarrior', image: null, guardianArchetype: 'GUARDIAN_OF_NATURE', points: 2450, level: 12, rank: 1, isDemo: true },
-  { userId: 'demo-2', name: 'SolarSage', image: null, guardianArchetype: 'GUARDIAN_OF_WISDOM', points: 2180, level: 11, rank: 2, isDemo: true },
-  { userId: 'demo-3', name: 'GreenHeart', image: null, guardianArchetype: 'GUARDIAN_OF_HUMANITY', points: 1920, level: 10, rank: 3, isDemo: true },
-  { userId: 'demo-4', name: 'TerraNova', image: null, guardianArchetype: 'GUARDIAN_OF_COURAGE', points: 1650, level: 9, rank: 4, isDemo: true },
-  { userId: 'demo-5', name: 'WaveRider', image: null, guardianArchetype: 'GUARDIAN_OF_TRANSCENDENCE', points: 1420, level: 8, rank: 5, isDemo: true },
-  { userId: 'demo-6', name: 'SeedKeeper', image: null, guardianArchetype: 'GUARDIAN_OF_TEMPERANCE', points: 1180, level: 7, rank: 6, isDemo: true },
-  { userId: 'demo-7', name: 'WindChaser', image: null, guardianArchetype: 'GUARDIAN_OF_JUSTICE', points: 980, level: 6, rank: 7, isDemo: true },
-  { userId: 'demo-8', name: 'RootFinder', image: null, guardianArchetype: 'GUARDIAN_OF_NATURE', points: 820, level: 5, rank: 8, isDemo: true },
-  { userId: 'demo-9', name: 'SunSeeker', image: null, guardianArchetype: 'GUARDIAN_OF_WISDOM', points: 650, level: 4, rank: 9, isDemo: true },
-  { userId: 'demo-10', name: 'EarthBound', image: null, guardianArchetype: 'GUARDIAN_OF_HUMANITY', points: 480, level: 3, rank: 10, isDemo: true },
+  { userId: 'demo-1', name: 'EcoWarrior',  image: null, guardianArchetype: 'stewardship',    points: 2450, level: 12, rank: 1,  isDemo: true },
+  { userId: 'demo-2', name: 'SolarSage',   image: null, guardianArchetype: 'transparency',   points: 2180, level: 11, rank: 2,  isDemo: true },
+  { userId: 'demo-3', name: 'GreenHeart',  image: null, guardianArchetype: 'loyalty',        points: 1920, level: 10, rank: 3,  isDemo: true },
+  { userId: 'demo-4', name: 'TerraNova',   image: null, guardianArchetype: 'integrity',      points: 1650, level: 9,  rank: 4,  isDemo: true },
+  { userId: 'demo-5', name: 'WaveRider',   image: null, guardianArchetype: 'equity',         points: 1420, level: 8,  rank: 5,  isDemo: true },
+  { userId: 'demo-6', name: 'SeedKeeper',  image: null, guardianArchetype: 'biodiversity',   points: 1180, level: 7,  rank: 6,  isDemo: true },
+  { userId: 'demo-7', name: 'WindChaser',  image: null, guardianArchetype: 'rest',           points: 980,  level: 6,  rank: 7,  isDemo: true },
+  { userId: 'demo-8', name: 'RootFinder',  image: null, guardianArchetype: 'legacy',         points: 820,  level: 5,  rank: 8,  isDemo: true },
+  { userId: 'demo-9', name: 'SunSeeker',   image: null, guardianArchetype: 'sanctity',       points: 650,  level: 4,  rank: 9,  isDemo: true },
+  { userId: 'demo-10', name: 'EarthBound', image: null, guardianArchetype: 'sustainability', points: 480,  level: 3,  rank: 10, isDemo: true },
 ]
 
 export function FeaturedGuardiansCarousel() {
@@ -110,16 +99,21 @@ export function FeaturedGuardiansCarousel() {
       {/* Grid of all 10 profiles - 5x2 layout */}
       <div className="flex-1 grid grid-cols-5 grid-rows-2 gap-1.5 p-1">
         {displayUsers.slice(0, 10).map((user, index) => {
-          const colors = user.guardianArchetype
-            ? archetypeColors[user.guardianArchetype] || defaultColors
-            : defaultColors
+          const cmd = resolveCommandment(user.guardianArchetype)
+          const colors = {
+            gradient: cmd.gradient,
+            // 30%-opacity hex (hexAccent + alpha byte) — sidesteps
+            // Tailwind JIT not picking up runtime-built class names.
+            borderStyle: `${cmd.hexAccent}4D`,
+          }
           const rankBadge = getRankBadge(user.rank)
           const RankIcon = rankBadge.icon
           const isDemo = user.isDemo
 
           const cardContent = (
             <motion.div
-              className={`relative bg-[var(--card)] border ${colors.border} rounded-lg p-1.5 h-full flex flex-col items-center cursor-pointer`}
+              className="relative bg-[var(--card)] border rounded-lg p-1.5 h-full flex flex-col items-center cursor-pointer"
+              style={{ borderColor: colors.borderStyle }}
               whileHover={{ scale: 1.05, y: -2 }}
               animate={index < 3 ? {
                 boxShadow: ['0 1px 5px rgba(0,0,0,0.1)', '0 2px 8px rgba(0,0,0,0.15)', '0 1px 5px rgba(0,0,0,0.1)'],

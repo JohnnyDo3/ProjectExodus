@@ -24,145 +24,25 @@ import {
   Edit2,
   Save,
   X,
-  Shield,
   Heart,
   Sparkles,
-  Eye,
-  Sword,
-  MessageCircle,
-  Stethoscope,
-  Lightbulb,
-  HeartHandshake,
-  Flower2,
-  Scale,
   Crown,
   ScrollText,
-  Infinity,
   Plus,
   Trash2,
   Maximize2,
   Minimize2,
   Check,
+  Infinity,
 } from 'lucide-react'
-
-/*
- * THE 7 GUARDIANS OF PROJECT EXODUS
- *
- * In the event of the passing of Stefan Rogowski (Code Name: Mr.Nobody)
- * the Guardianship of Project Exodus will be passed unto 7 individuals
- * of equal voting authority.
- *
- * The 7 individuals have the Code Names of the Archangels from scripture.
- * Their titles reflect the values each Archangel represents.
- *
- * Each guardian has the duty and responsibility to hold true the values
- * set forth in: "Mr. Nobody's Project Exodus"
- *
- * - We the People of Project Exodus -
- */
-
-const GUARDIAN_ARCHETYPES = {
-  michael: {
-    id: 'michael',
-    name: 'MICHAEL',
-    title: 'Guardian of Strength',
-    value: 'STRENGTH',
-    description: 'You stand unwavering. Your strength protects those who cannot protect themselves.',
-    scripture: 'The one who leads the armies of heaven against darkness.',
-    icon: Sword,
-    gradient: 'from-red-600 to-orange-500',
-    bgGradient: 'from-red-600/20 to-orange-500/10',
-    accentColor: 'text-red-500',
-    borderColor: 'border-red-500',
-    commandments: ['STEWARDSHIP', 'INTEGRITY', 'SUSTAINABILITY'],
-  },
-  gabriel: {
-    id: 'gabriel',
-    name: 'GABRIEL',
-    title: 'Guardian of Revelation',
-    value: 'REVELATION',
-    description: 'You bring truth to light. Your words reveal what must be known.',
-    scripture: 'The messenger who announces what is to come.',
-    icon: MessageCircle,
-    gradient: 'from-sky-500 to-blue-600',
-    bgGradient: 'from-sky-500/20 to-blue-600/10',
-    accentColor: 'text-sky-500',
-    borderColor: 'border-sky-500',
-    commandments: ['TRANSPARENCY', 'LEGACY', 'EQUITY'],
-  },
-  raphael: {
-    id: 'raphael',
-    name: 'RAPHAEL',
-    title: 'Guardian of Healing',
-    value: 'HEALING',
-    description: 'You mend what is broken. Your presence restores and renews.',
-    scripture: 'The healer who makes whole what was wounded.',
-    icon: Stethoscope,
-    gradient: 'from-emerald-500 to-green-600',
-    bgGradient: 'from-emerald-500/20 to-green-600/10',
-    accentColor: 'text-emerald-500',
-    borderColor: 'border-emerald-500',
-    commandments: ['SANCTITY', 'REST', 'BIODIVERSITY'],
-  },
-  uriel: {
-    id: 'uriel',
-    name: 'URIEL',
-    title: 'Guardian of Wisdom',
-    value: 'WISDOM',
-    description: 'You illuminate the path. Your wisdom guides those who seek understanding.',
-    scripture: 'The light of God who reveals divine truth.',
-    icon: Lightbulb,
-    gradient: 'from-amber-500 to-yellow-500',
-    bgGradient: 'from-amber-500/20 to-yellow-500/10',
-    accentColor: 'text-amber-500',
-    borderColor: 'border-amber-500',
-    commandments: ['LEGACY', 'TRANSPARENCY', 'STEWARDSHIP'],
-  },
-  camael: {
-    id: 'camael',
-    name: 'CAMAEL',
-    title: 'Guardian of Love',
-    value: 'LOVE',
-    description: 'You embody compassion. Your love connects all beings as one.',
-    scripture: 'The one who sees God through the heart.',
-    icon: HeartHandshake,
-    gradient: 'from-pink-500 to-rose-600',
-    bgGradient: 'from-pink-500/20 to-rose-600/10',
-    accentColor: 'text-pink-500',
-    borderColor: 'border-pink-500',
-    commandments: ['LOYALTY', 'EQUITY', 'SANCTITY'],
-  },
-  jophiel: {
-    id: 'jophiel',
-    name: 'JOPHIEL',
-    title: 'Guardian of Beauty',
-    value: 'BEAUTY',
-    description: 'You see the divine in all things. Your vision transforms the ordinary into the sacred.',
-    scripture: 'The beauty of God who adorns creation.',
-    icon: Flower2,
-    gradient: 'from-violet-500 to-purple-600',
-    bgGradient: 'from-violet-500/20 to-purple-600/10',
-    accentColor: 'text-violet-500',
-    borderColor: 'border-violet-500',
-    commandments: ['BIODIVERSITY', 'SUSTAINABILITY', 'REST'],
-  },
-  zadkiel: {
-    id: 'zadkiel',
-    name: 'ZADKIEL',
-    title: 'Guardian of Mercy',
-    value: 'MERCY',
-    description: 'You forgive the unforgivable. Your mercy grants second chances.',
-    scripture: 'The righteousness of God who liberates the bound.',
-    icon: Scale,
-    gradient: 'from-indigo-500 to-blue-700',
-    bgGradient: 'from-indigo-500/20 to-blue-700/10',
-    accentColor: 'text-indigo-500',
-    borderColor: 'border-indigo-500',
-    commandments: ['INTEGRITY', 'LOYALTY', 'LEGACY'],
-  },
-}
-
-type ArchetypeType = keyof typeof GUARDIAN_ARCHETYPES
+import {
+  COMMANDMENTS,
+  COMMANDMENT_LIST,
+  DEFAULT_COMMANDMENT,
+  resolveCommandmentSlug,
+  type Commandment,
+  type CommandmentSlug,
+} from '@/lib/commandments'
 
 interface Experience {
   id: string
@@ -227,8 +107,8 @@ interface ProfileData {
   followers?: number
   following?: number
   connectionsCount?: number
-  // Guardian data
-  archetype?: ArchetypeType
+  // Commandment data
+  commandment?: CommandmentSlug
   declaration?: string
   memberSince?: string
 }
@@ -244,7 +124,7 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
   const [isLoading, setIsLoading] = useState(true)
   const [isExpanded, setIsExpanded] = useState(false)
   const [isFullScreen, setIsFullScreen] = useState(false)
-  const [selectedArchetype, setSelectedArchetype] = useState<ArchetypeType>('michael')
+  const [selectedCommandment, setSelectedCommandment] = useState<CommandmentSlug>(DEFAULT_COMMANDMENT)
   const [isSaving, setIsSaving] = useState(false)
   const [editingSection, setEditingSection] = useState<EditSection>(null)
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
@@ -265,7 +145,7 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
     achievements: initialProfile?.achievements || [],
     resumeUrl: initialProfile?.resumeUrl,
     resumeFileName: initialProfile?.resumeFileName,
-    archetype: (initialProfile as any)?.archetype || 'michael',
+    commandment: resolveCommandmentSlug((initialProfile as any)?.commandment),
     declaration: (initialProfile as any)?.declaration || '',
     memberSince: (initialProfile as any)?.memberSince,
   })
@@ -310,12 +190,12 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
             achievements: data.data.honors || [],
             resumeUrl: data.data.resume,
             resumeFileName: data.data.resume ? 'resume.pdf' : undefined,
-            archetype: data.data.guardianArchetype || 'michael',
+            commandment: resolveCommandmentSlug(data.data.guardianArchetype),
             declaration: data.data.declaration || '',
             memberSince: data.data.createdAt,
           }
           setProfile(profileData)
-          setSelectedArchetype(profileData.archetype || 'michael')
+          setSelectedCommandment(profileData.commandment || DEFAULT_COMMANDMENT)
         }
       }
 
@@ -357,14 +237,14 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
           experience: profile.experience,
           education: profile.education,
           honors: profile.achievements,
-          guardianArchetype: selectedArchetype,
+          guardianArchetype: selectedCommandment,
           declaration: profile.declaration,
         }),
       })
 
       if (res.ok) {
-        // Update profile.archetype to match selectedArchetype
-        setProfile(prev => ({ ...prev, archetype: selectedArchetype }))
+        // Update profile.commandment to match selectedCommandment
+        setProfile(prev => ({ ...prev, commandment: selectedCommandment }))
         setHasUnsavedChanges(false)
         setEditingSection(null)
       } else {
@@ -421,8 +301,8 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
     ? Math.floor((Date.now() - new Date(profile.memberSince).getTime()) / (1000 * 60 * 60 * 24 * 365))
     : 0
 
-  const archetype = GUARDIAN_ARCHETYPES[selectedArchetype]
-  const ArchetypeIcon = archetype.icon
+  const commandment = COMMANDMENTS[selectedCommandment]
+  const CommandmentIcon = commandment.icon
   const hasSocialLinks = profile.social.website || profile.social.linkedin || profile.social.twitter || profile.social.github
 
   if (isLoading) {
@@ -437,16 +317,16 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
   // Compact column view
   if (!isFullScreen) {
     return (
-      <div className={`flex-shrink-0 w-96 h-full flex flex-col bg-[var(--card)] rounded-2xl border-4 ${archetype.borderColor} shadow-lg overflow-hidden`}>
+      <div className={`flex-shrink-0 w-96 h-full flex flex-col bg-[var(--card)] rounded-2xl border-4 ${commandment.borderColor} shadow-lg overflow-hidden`}>
         {/* Header */}
-        <div className={`p-4 bg-gradient-to-r ${archetype.gradient} relative overflow-hidden`}>
+        <div className={`p-4 bg-gradient-to-r ${commandment.gradient} relative overflow-hidden`}>
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 right-0 w-32 h-32 bg-white rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2" />
           </div>
           <div className="relative flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-white/20 rounded-xl backdrop-blur-sm">
-                <ArchetypeIcon className="w-5 h-5 text-white" />
+                <CommandmentIcon className="w-5 h-5 text-white" />
               </div>
               <div>
                 <p className="text-[9px] font-bold text-white/70 uppercase tracking-wider">Identity Declaration</p>
@@ -482,7 +362,7 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
         {/* Content */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {/* Profile Card - Editable */}
-          <div className={`p-4 bg-gradient-to-br ${archetype.gradient} rounded-xl text-white relative`}>
+          <div className={`p-4 bg-gradient-to-br ${commandment.gradient} rounded-xl text-white relative`}>
             <div className="flex items-center gap-3 mb-3">
               <div className="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center border-2 border-white/30">
                 <User className="w-7 h-7" />
@@ -499,7 +379,7 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
                   type="text"
                   value={profile.headline}
                   onChange={(e) => handleFieldChange('headline', e.target.value)}
-                  placeholder={archetype.title}
+                  placeholder={commandment.title}
                   className="w-full text-[10px] font-medium bg-transparent border-b border-transparent hover:border-white/30 focus:border-white focus:outline-none opacity-90 placeholder:opacity-40"
                 />
               </div>
@@ -545,13 +425,13 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
             </div>
           </div>
 
-          {/* Guardian Value */}
-          <div className={`p-3 bg-gradient-to-br ${archetype.bgGradient} rounded-xl border-2 ${archetype.borderColor}`}>
+          {/* Resonant Commandment */}
+          <div className={`p-3 bg-gradient-to-br ${commandment.bgGradient} rounded-xl border-2 ${commandment.borderColor}`}>
             <div className="flex items-center gap-2 mb-1">
-              <ArchetypeIcon className={`w-4 h-4 ${archetype.accentColor}`} />
-              <span className={`text-xs font-black ${archetype.accentColor}`}>{archetype.value}</span>
+              <CommandmentIcon className={`w-4 h-4 ${commandment.accentColor}`} />
+              <span className={`text-xs font-black ${commandment.accentColor}`}>{commandment.name}</span>
             </div>
-            <p className="text-[10px] font-medium text-theme-muted italic">{archetype.description}</p>
+            <p className="text-[10px] font-medium text-theme-muted italic">{commandment.description}</p>
           </div>
 
           {/* Skills Preview */}
@@ -560,7 +440,7 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
             {profile.skills.length > 0 ? (
               <div className="flex flex-wrap gap-1">
                 {profile.skills.slice(0, 4).map((skill, idx) => (
-                  <span key={idx} className={`px-2 py-0.5 bg-gradient-to-r ${archetype.gradient} text-white text-[9px] font-bold rounded-full`}>
+                  <span key={idx} className={`px-2 py-0.5 bg-gradient-to-r ${commandment.gradient} text-white text-[9px] font-bold rounded-full`}>
                     {skill}
                   </span>
                 ))}
@@ -578,24 +458,24 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
           {/* Quick Stats */}
           <div className="grid grid-cols-2 gap-2">
             <div className="p-2 bg-[var(--muted)] rounded-lg text-center">
-              <p className={`text-lg font-black ${archetype.accentColor}`}>{profile.projectsCreated || 0}</p>
+              <p className={`text-lg font-black ${commandment.accentColor}`}>{profile.projectsCreated || 0}</p>
               <p className="text-[8px] font-bold text-theme-muted uppercase">Projects</p>
             </div>
             <div className="p-2 bg-[var(--muted)] rounded-lg text-center">
-              <p className={`text-lg font-black ${archetype.accentColor}`}>{profile.articlesWritten || 0}</p>
+              <p className={`text-lg font-black ${commandment.accentColor}`}>{profile.articlesWritten || 0}</p>
               <p className="text-[8px] font-bold text-theme-muted uppercase">Articles</p>
             </div>
           </div>
         </div>
 
         {/* Footer */}
-        <div className={`p-3 border-t-2 ${archetype.borderColor} bg-gradient-to-r ${archetype.bgGradient}`}>
+        <div className={`p-3 border-t-2 ${commandment.borderColor} bg-gradient-to-r ${commandment.bgGradient}`}>
           <div className="flex items-center justify-center gap-2">
-            <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${archetype.gradient}`} />
+            <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${commandment.gradient}`} />
             <p className="text-[8px] font-black text-theme-muted uppercase tracking-widest">
               We the People of Project Exodus
             </p>
-            <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${archetype.gradient}`} />
+            <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${commandment.gradient}`} />
           </div>
         </div>
       </div>
@@ -605,35 +485,36 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
   // Full screen edit mode
   return (
     <div className="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4 overflow-y-auto">
-      <div className={`w-full max-w-5xl bg-[var(--card)] rounded-2xl border-4 ${archetype.borderColor} shadow-2xl max-h-[95vh] overflow-hidden flex flex-col`}>
-        {/* Header */}
-        <div className={`px-6 py-5 bg-gradient-to-r ${archetype.gradient} relative overflow-hidden flex-shrink-0`}>
+      <div className={`w-full max-w-5xl bg-[var(--card)] rounded-2xl border-4 ${commandment.borderColor} shadow-2xl max-h-[95vh] overflow-hidden flex flex-col`}>
+        {/* Header — stacks on mobile so the title isn't squished against
+            the action buttons. */}
+        <div className={`px-4 sm:px-6 py-4 sm:py-5 bg-gradient-to-r ${commandment.gradient} relative overflow-hidden flex-shrink-0`}>
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2" />
             <div className="absolute bottom-0 left-0 w-48 h-48 bg-white rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2" />
           </div>
 
-          <div className="relative flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-white/20 rounded-2xl backdrop-blur-sm border border-white/30">
-                <ArchetypeIcon className="w-8 h-8 text-white" />
+          <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+              <div className="p-2.5 sm:p-3 bg-white/20 rounded-2xl backdrop-blur-sm border border-white/30 flex-shrink-0">
+                <CommandmentIcon className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
               </div>
-              <div>
+              <div className="min-w-0">
                 <div className="flex items-center gap-2 mb-1">
-                  <Crown className="w-4 h-4 text-white/80" />
-                  <p className="text-xs font-bold text-white/80 uppercase tracking-wider">Edit Your Identity Declaration</p>
+                  <Crown className="w-4 h-4 text-white/80 flex-shrink-0" />
+                  <p className="text-[10px] sm:text-xs font-bold text-white/80 uppercase tracking-wider truncate">Edit Your Identity Declaration</p>
                 </div>
-                <h2 className="text-2xl font-black text-white tracking-wide">{profile.name || session?.user?.name || 'Your Username'}</h2>
-                <p className="text-sm font-medium text-white/90">{archetype.title} - {archetype.value}</p>
+                <h2 className="text-xl sm:text-2xl font-black text-white tracking-wide truncate">{profile.name || session?.user?.name || 'Your Username'}</h2>
+                <p className="text-xs sm:text-sm font-medium text-white/90 truncate">{commandment.name} — {commandment.title}</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 self-end sm:self-auto flex-shrink-0">
               {hasUnsavedChanges && (
                 <button
                   onClick={handleSave}
                   disabled={isSaving}
-                  className="px-4 py-2 bg-white text-gray-900 rounded-xl font-bold text-sm flex items-center gap-2 hover:bg-white/90 transition-colors"
+                  className="px-3 sm:px-4 py-2 bg-white text-gray-900 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 hover:bg-white/90 transition-colors"
                 >
                   <Save className="w-4 h-4" />
                   {isSaving ? 'Saving...' : 'Save Changes'}
@@ -641,39 +522,40 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
               )}
               <button
                 onClick={() => setIsFullScreen(false)}
-                className="p-2.5 bg-white/20 hover:bg-white/30 rounded-xl transition-colors"
+                className="p-2 sm:p-2.5 bg-white/20 hover:bg-white/30 rounded-xl transition-colors"
               >
                 <Minimize2 className="w-5 h-5 text-white" />
               </button>
             </div>
           </div>
 
-          {/* Guardian Archetype Selector */}
-          <div className="relative mt-5 pt-5 border-t border-white/20">
+          {/* Commandment Selector — 10 commandments fit a 5×2 grid on
+              mobile and a 10-col row on desktop. */}
+          <div className="relative mt-4 sm:mt-5 pt-4 sm:pt-5 border-t border-white/20">
             <p className="text-xs font-black text-white/80 uppercase tracking-wider mb-3">
-              Choose Your Guardian Value
+              Choose Your Most Resonant Commandment
             </p>
-            <div className="grid grid-cols-7 gap-2">
-              {Object.values(GUARDIAN_ARCHETYPES).map((a) => {
+            <div className="grid grid-cols-5 sm:grid-cols-10 gap-1.5 sm:gap-2">
+              {COMMANDMENT_LIST.map((a) => {
                 const AIcon = a.icon
-                const isSelected = selectedArchetype === a.id
+                const isSelected = selectedCommandment === a.id
                 return (
                   <button
                     key={a.id}
                     onClick={() => {
-                      setSelectedArchetype(a.id as ArchetypeType)
-                      setProfile(prev => ({ ...prev, archetype: a.id as ArchetypeType }))
+                      setSelectedCommandment(a.id as CommandmentSlug)
+                      setProfile(prev => ({ ...prev, commandment: a.id as CommandmentSlug }))
                       setHasUnsavedChanges(true)
                     }}
-                    className={`flex flex-col items-center gap-1 p-3 rounded-xl text-xs font-bold transition-all ${
+                    className={`flex flex-col items-center gap-1 p-2 sm:p-3 rounded-xl text-xs font-bold transition-all ${
                       isSelected
                         ? 'bg-white text-gray-900 shadow-lg scale-105'
                         : 'bg-white/10 text-white hover:bg-white/20'
                     }`}
-                    title={`${a.name}: ${a.value}`}
+                    title={`${a.name}: ${a.title}`}
                   >
-                    <AIcon className="w-5 h-5" />
-                    <span className="text-[9px] font-black">{a.value}</span>
+                    <AIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <span className="text-[8px] sm:text-[9px] font-black leading-tight">{a.name}</span>
                   </button>
                 )
               })}
@@ -687,7 +569,7 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
             {/* Left Column - Preview Card */}
             <div className="space-y-6">
               {/* Identity Card Preview */}
-              <div className={`p-6 bg-gradient-to-br ${archetype.gradient} rounded-2xl text-white relative overflow-hidden`}>
+              <div className={`p-6 bg-gradient-to-br ${commandment.gradient} rounded-2xl text-white relative overflow-hidden`}>
                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl transform translate-x-1/2 -translate-y-1/2" />
                 <p className="text-[10px] font-bold opacity-70 uppercase tracking-wider mb-4">Preview - How others see you</p>
 
@@ -698,7 +580,7 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
                   </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-black">{profile.name || 'Anonymous'}</h3>
-                    <p className="text-sm font-medium opacity-90">{profile.headline || archetype.title}</p>
+                    <p className="text-sm font-medium opacity-90">{profile.headline || commandment.title}</p>
                   </div>
                 </div>
 
@@ -760,20 +642,20 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
 
               {/* STOCK Breakdown */}
               <div className="grid grid-cols-4 gap-3">
-                <div className={`p-3 bg-gradient-to-br ${archetype.bgGradient} rounded-xl border-2 ${archetype.borderColor}`}>
-                  <p className={`text-2xl font-black ${archetype.accentColor}`}>{profile.projectsCreated || 0}</p>
+                <div className={`p-3 bg-gradient-to-br ${commandment.bgGradient} rounded-xl border-2 ${commandment.borderColor}`}>
+                  <p className={`text-2xl font-black ${commandment.accentColor}`}>{profile.projectsCreated || 0}</p>
                   <p className="text-[10px] font-bold text-theme-muted uppercase">Projects</p>
                 </div>
-                <div className={`p-3 bg-gradient-to-br ${archetype.bgGradient} rounded-xl border-2 ${archetype.borderColor}`}>
-                  <p className={`text-2xl font-black ${archetype.accentColor}`}>{profile.articlesWritten || 0}</p>
+                <div className={`p-3 bg-gradient-to-br ${commandment.bgGradient} rounded-xl border-2 ${commandment.borderColor}`}>
+                  <p className={`text-2xl font-black ${commandment.accentColor}`}>{profile.articlesWritten || 0}</p>
                   <p className="text-[10px] font-bold text-theme-muted uppercase">Articles</p>
                 </div>
-                <div className={`p-3 bg-gradient-to-br ${archetype.bgGradient} rounded-xl border-2 ${archetype.borderColor}`}>
-                  <p className={`text-2xl font-black ${archetype.accentColor}`}>{profile.followers || 0}</p>
+                <div className={`p-3 bg-gradient-to-br ${commandment.bgGradient} rounded-xl border-2 ${commandment.borderColor}`}>
+                  <p className={`text-2xl font-black ${commandment.accentColor}`}>{profile.followers || 0}</p>
                   <p className="text-[10px] font-bold text-theme-muted uppercase">Followers</p>
                 </div>
-                <div className={`p-3 bg-gradient-to-br ${archetype.bgGradient} rounded-xl border-2 ${archetype.borderColor}`}>
-                  <p className={`text-2xl font-black ${archetype.accentColor}`}>{profile.modulesCompleted || 0}</p>
+                <div className={`p-3 bg-gradient-to-br ${commandment.bgGradient} rounded-xl border-2 ${commandment.borderColor}`}>
+                  <p className={`text-2xl font-black ${commandment.accentColor}`}>{profile.modulesCompleted || 0}</p>
                   <p className="text-[10px] font-bold text-theme-muted uppercase">Modules</p>
                 </div>
               </div>
@@ -785,7 +667,7 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
               <EditSection
                 title="Basic Information"
                 icon={User}
-                archetype={archetype}
+                commandment={commandment}
                 isEditing={editingSection === 'basic'}
                 onToggle={() => setEditingSection(editingSection === 'basic' ? null : 'basic')}
               >
@@ -837,7 +719,7 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
               <EditSection
                 title="Your Declaration"
                 icon={ScrollText}
-                archetype={archetype}
+                commandment={commandment}
                 isEditing={editingSection === 'declaration'}
                 onToggle={() => setEditingSection(editingSection === 'declaration' ? null : 'declaration')}
               >
@@ -870,14 +752,14 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
               <EditSection
                 title="Expertise & Skills"
                 icon={Sparkles}
-                archetype={archetype}
+                commandment={commandment}
                 isEditing={editingSection === 'skills'}
                 onToggle={() => setEditingSection(editingSection === 'skills' ? null : 'skills')}
               >
                 <SkillsEditor
                   skills={profile.skills}
                   onChange={(skills) => handleFieldChange('skills', skills)}
-                  archetype={archetype}
+                  commandment={commandment}
                 />
               </EditSection>
 
@@ -885,14 +767,14 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
               <EditSection
                 title="Experience"
                 icon={Briefcase}
-                archetype={archetype}
+                commandment={commandment}
                 isEditing={editingSection === 'experience'}
                 onToggle={() => setEditingSection(editingSection === 'experience' ? null : 'experience')}
               >
                 <ExperienceEditor
                   experience={profile.experience}
                   onChange={(exp) => handleFieldChange('experience', exp)}
-                  archetype={archetype}
+                  commandment={commandment}
                 />
               </EditSection>
 
@@ -900,14 +782,14 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
               <EditSection
                 title="Education"
                 icon={GraduationCap}
-                archetype={archetype}
+                commandment={commandment}
                 isEditing={editingSection === 'education'}
                 onToggle={() => setEditingSection(editingSection === 'education' ? null : 'education')}
               >
                 <EducationEditor
                   education={profile.education}
                   onChange={(edu) => handleFieldChange('education', edu)}
-                  archetype={archetype}
+                  commandment={commandment}
                 />
               </EditSection>
 
@@ -915,7 +797,7 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
               <EditSection
                 title="Social Links"
                 icon={Globe}
-                archetype={archetype}
+                commandment={commandment}
                 isEditing={editingSection === 'social'}
                 onToggle={() => setEditingSection(editingSection === 'social' ? null : 'social')}
               >
@@ -967,14 +849,14 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
               <EditSection
                 title="Achievements"
                 icon={Award}
-                archetype={archetype}
+                commandment={commandment}
                 isEditing={editingSection === 'achievements'}
                 onToggle={() => setEditingSection(editingSection === 'achievements' ? null : 'achievements')}
               >
                 <AchievementsEditor
                   achievements={profile.achievements}
                   onChange={(ach) => handleFieldChange('achievements', ach)}
-                  archetype={archetype}
+                  commandment={commandment}
                 />
               </EditSection>
 
@@ -982,20 +864,20 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
               <EditSection
                 title="Resume"
                 icon={FileText}
-                archetype={archetype}
+                commandment={commandment}
                 isEditing={editingSection === 'resume'}
                 onToggle={() => setEditingSection(editingSection === 'resume' ? null : 'resume')}
               >
                 <div className="space-y-3">
                   {profile.resumeFileName ? (
                     <div className="flex items-center gap-3 p-3 bg-[var(--muted)] rounded-xl">
-                      <FileText className={`w-5 h-5 ${archetype.accentColor}`} />
+                      <FileText className={`w-5 h-5 ${commandment.accentColor}`} />
                       <span className="flex-1 text-sm font-medium text-[var(--foreground)] truncate">
                         {profile.resumeFileName}
                       </span>
                       <button
                         onClick={() => window.open(profile.resumeUrl, '_blank')}
-                        className={`p-2 bg-gradient-to-r ${archetype.gradient} text-white rounded-lg hover:opacity-90 transition-opacity`}
+                        className={`p-2 bg-gradient-to-r ${commandment.gradient} text-white rounded-lg hover:opacity-90 transition-opacity`}
                       >
                         <Download className="w-4 h-4" />
                       </button>
@@ -1012,7 +894,7 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
                   />
                   <button
                     onClick={() => fileInputRef.current?.click()}
-                    className={`w-full py-3 px-4 bg-gradient-to-r ${archetype.gradient} text-white rounded-xl text-sm font-bold hover:opacity-90 transition-opacity flex items-center justify-center gap-2`}
+                    className={`w-full py-3 px-4 bg-gradient-to-r ${commandment.gradient} text-white rounded-xl text-sm font-bold hover:opacity-90 transition-opacity flex items-center justify-center gap-2`}
                   >
                     <Upload className="w-4 h-4" />
                     {profile.resumeFileName ? 'Replace Resume' : 'Upload Resume'}
@@ -1024,13 +906,13 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
         </div>
 
         {/* Footer */}
-        <div className={`p-4 border-t-2 ${archetype.borderColor} bg-gradient-to-r ${archetype.bgGradient} flex-shrink-0`}>
+        <div className={`p-4 border-t-2 ${commandment.borderColor} bg-gradient-to-r ${commandment.bgGradient} flex-shrink-0`}>
           <div className="flex items-center justify-center gap-2">
-            <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${archetype.gradient}`} />
+            <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${commandment.gradient}`} />
             <p className="text-[10px] font-black text-theme-muted uppercase tracking-widest">
               We the People of Project Exodus
             </p>
-            <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${archetype.gradient}`} />
+            <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${commandment.gradient}`} />
           </div>
         </div>
       </div>
@@ -1042,30 +924,30 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
 function EditSection({
   title,
   icon: Icon,
-  archetype,
+  commandment,
   isEditing,
   onToggle,
   children,
 }: {
   title: string
   icon: any
-  archetype: typeof GUARDIAN_ARCHETYPES.michael
+  commandment: Commandment
   isEditing: boolean
   onToggle: () => void
   children: React.ReactNode
 }) {
   return (
-    <div className={`border-2 ${isEditing ? archetype.borderColor : 'border-[var(--border)]'} rounded-xl overflow-hidden transition-colors`}>
+    <div className={`border-2 ${isEditing ? commandment.borderColor : 'border-[var(--border)]'} rounded-xl overflow-hidden transition-colors`}>
       <button
         onClick={onToggle}
-        className={`w-full p-4 flex items-center justify-between ${isEditing ? `bg-gradient-to-r ${archetype.bgGradient}` : 'bg-[var(--muted)]/50 hover:bg-[var(--muted)]'} transition-colors`}
+        className={`w-full p-4 flex items-center justify-between ${isEditing ? `bg-gradient-to-r ${commandment.bgGradient}` : 'bg-[var(--muted)]/50 hover:bg-[var(--muted)]'} transition-colors`}
       >
         <div className="flex items-center gap-3">
-          <Icon className={`w-5 h-5 ${isEditing ? archetype.accentColor : 'text-theme-muted'}`} />
-          <span className={`text-sm font-black ${isEditing ? archetype.accentColor : 'text-[var(--foreground)]'}`}>{title}</span>
+          <Icon className={`w-5 h-5 ${isEditing ? commandment.accentColor : 'text-theme-muted'}`} />
+          <span className={`text-sm font-black ${isEditing ? commandment.accentColor : 'text-[var(--foreground)]'}`}>{title}</span>
         </div>
         {isEditing ? (
-          <ChevronUp className={`w-5 h-5 ${archetype.accentColor}`} />
+          <ChevronUp className={`w-5 h-5 ${commandment.accentColor}`} />
         ) : (
           <ChevronDown className="w-5 h-5 text-theme-muted" />
         )}
@@ -1083,11 +965,11 @@ function EditSection({
 function SkillsEditor({
   skills,
   onChange,
-  archetype,
+  commandment,
 }: {
   skills: string[]
   onChange: (skills: string[]) => void
-  archetype: typeof GUARDIAN_ARCHETYPES.michael
+  commandment: Commandment
 }) {
   const [newSkill, setNewSkill] = useState('')
 
@@ -1115,7 +997,7 @@ function SkillsEditor({
         />
         <button
           onClick={addSkill}
-          className={`px-4 py-2 bg-gradient-to-r ${archetype.gradient} text-white rounded-xl font-bold text-sm hover:opacity-90 transition-opacity`}
+          className={`px-4 py-2 bg-gradient-to-r ${commandment.gradient} text-white rounded-xl font-bold text-sm hover:opacity-90 transition-opacity`}
         >
           <Plus className="w-4 h-4" />
         </button>
@@ -1124,7 +1006,7 @@ function SkillsEditor({
         {skills.map((skill, idx) => (
           <span
             key={idx}
-            className={`px-3 py-1.5 bg-gradient-to-r ${archetype.gradient} text-white text-xs font-bold rounded-full flex items-center gap-2`}
+            className={`px-3 py-1.5 bg-gradient-to-r ${commandment.gradient} text-white text-xs font-bold rounded-full flex items-center gap-2`}
           >
             {skill}
             <button onClick={() => removeSkill(skill)} className="hover:opacity-70">
@@ -1144,11 +1026,11 @@ function SkillsEditor({
 function ExperienceEditor({
   experience,
   onChange,
-  archetype,
+  commandment,
 }: {
   experience: Experience[]
   onChange: (experience: Experience[]) => void
-  archetype: typeof GUARDIAN_ARCHETYPES.michael
+  commandment: Commandment
 }) {
   const [isAdding, setIsAdding] = useState(false)
   const [newExp, setNewExp] = useState<Partial<Experience>>({})
@@ -1180,7 +1062,7 @@ function ExperienceEditor({
   return (
     <div className="space-y-4">
       {experience.map((exp) => (
-        <div key={exp.id} className={`p-3 bg-[var(--muted)]/50 rounded-xl border-l-4 ${archetype.borderColor}`}>
+        <div key={exp.id} className={`p-3 bg-[var(--muted)]/50 rounded-xl border-l-4 ${commandment.borderColor}`}>
           <div className="flex items-start justify-between">
             <div>
               <h5 className="text-sm font-black text-[var(--foreground)]">{exp.title}</h5>
@@ -1240,7 +1122,7 @@ function ExperienceEditor({
           <div className="flex gap-2">
             <button
               onClick={addExperience}
-              className={`flex-1 py-2 bg-gradient-to-r ${archetype.gradient} text-white rounded-lg font-bold text-sm`}
+              className={`flex-1 py-2 bg-gradient-to-r ${commandment.gradient} text-white rounded-lg font-bold text-sm`}
             >
               Add
             </button>
@@ -1269,11 +1151,11 @@ function ExperienceEditor({
 function EducationEditor({
   education,
   onChange,
-  archetype,
+  commandment,
 }: {
   education: Education[]
   onChange: (education: Education[]) => void
-  archetype: typeof GUARDIAN_ARCHETYPES.michael
+  commandment: Commandment
 }) {
   const [isAdding, setIsAdding] = useState(false)
   const [newEdu, setNewEdu] = useState<Partial<Education>>({})
@@ -1304,7 +1186,7 @@ function EducationEditor({
   return (
     <div className="space-y-4">
       {education.map((edu) => (
-        <div key={edu.id} className={`p-3 bg-[var(--muted)]/50 rounded-xl border-l-4 ${archetype.borderColor}`}>
+        <div key={edu.id} className={`p-3 bg-[var(--muted)]/50 rounded-xl border-l-4 ${commandment.borderColor}`}>
           <div className="flex items-start justify-between">
             <div>
               <h5 className="text-sm font-black text-[var(--foreground)]">{edu.degree}</h5>
@@ -1351,7 +1233,7 @@ function EducationEditor({
           <div className="flex gap-2">
             <button
               onClick={addEducation}
-              className={`flex-1 py-2 bg-gradient-to-r ${archetype.gradient} text-white rounded-lg font-bold text-sm`}
+              className={`flex-1 py-2 bg-gradient-to-r ${commandment.gradient} text-white rounded-lg font-bold text-sm`}
             >
               Add
             </button>
@@ -1380,11 +1262,11 @@ function EducationEditor({
 function AchievementsEditor({
   achievements,
   onChange,
-  archetype,
+  commandment,
 }: {
   achievements: Achievement[]
   onChange: (achievements: Achievement[]) => void
-  archetype: typeof GUARDIAN_ARCHETYPES.michael
+  commandment: Commandment
 }) {
   const [isAdding, setIsAdding] = useState(false)
   const [newAch, setNewAch] = useState<Partial<Achievement>>({})
@@ -1412,7 +1294,7 @@ function AchievementsEditor({
   return (
     <div className="space-y-4">
       {achievements.map((ach) => (
-        <div key={ach.id} className={`p-3 bg-[var(--muted)]/50 rounded-xl border-l-4 ${archetype.borderColor}`}>
+        <div key={ach.id} className={`p-3 bg-[var(--muted)]/50 rounded-xl border-l-4 ${commandment.borderColor}`}>
           <div className="flex items-start justify-between">
             <div>
               <h5 className="text-sm font-black text-[var(--foreground)]">{ach.title}</h5>
@@ -1452,7 +1334,7 @@ function AchievementsEditor({
           <div className="flex gap-2">
             <button
               onClick={addAchievement}
-              className={`flex-1 py-2 bg-gradient-to-r ${archetype.gradient} text-white rounded-lg font-bold text-sm`}
+              className={`flex-1 py-2 bg-gradient-to-r ${commandment.gradient} text-white rounded-lg font-bold text-sm`}
             >
               Add
             </button>

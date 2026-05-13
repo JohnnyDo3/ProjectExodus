@@ -22,18 +22,9 @@ import {
   Edit2,
   Save,
   X,
-  Shield,
   Sparkles,
-  Sword,
-  MessageCircle,
-  Stethoscope,
-  Lightbulb,
-  HeartHandshake,
-  Flower2,
-  Scale,
   Crown,
   ScrollText,
-  Infinity,
   AlertTriangle,
   Heart,
   Phone,
@@ -44,6 +35,13 @@ import {
   Check,
 } from 'lucide-react'
 import { ExperienceEditModal, EducationEditModal, SkillsEditModal } from './modals'
+import {
+  COMMANDMENTS,
+  COMMANDMENT_LIST,
+  DEFAULT_COMMANDMENT,
+  resolveCommandmentSlug,
+  type CommandmentSlug,
+} from '@/lib/commandments'
 import type { Experience, Education } from './modals'
 
 // Field visibility preferences interface
@@ -120,14 +118,14 @@ function ValuesEditModal({
   values,
   onSave,
   predefinedValues,
-  archetypeColor,
+  commandmentColor,
 }: {
   isOpen: boolean
   onClose: () => void
   values: string[]
   onSave: (values: string[]) => Promise<void>
   predefinedValues: string[]
-  archetypeColor: string
+  commandmentColor: string
 }) {
   const [selectedValues, setSelectedValues] = useState<string[]>(values)
   const [customValue, setCustomValue] = useState('')
@@ -192,7 +190,7 @@ function ValuesEditModal({
                   key={idx}
                   onClick={() => toggleValue(value)}
                   className="px-3 py-1.5 text-white text-xs font-bold rounded-full flex items-center gap-1.5 hover:opacity-80 transition-opacity"
-                  style={{ backgroundColor: archetypeColor }}
+                  style={{ backgroundColor: commandmentColor }}
                 >
                   {value}
                   <X className="w-3 h-3" />
@@ -218,7 +216,7 @@ function ValuesEditModal({
               onClick={addCustomValue}
               disabled={!customValue.trim()}
               className="px-3"
-              style={{ backgroundColor: archetypeColor }}
+              style={{ backgroundColor: commandmentColor }}
             >
               <Plus className="w-4 h-4" />
             </Button>
@@ -240,7 +238,7 @@ function ValuesEditModal({
                       ? 'text-white'
                       : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/20'
                   }`}
-                  style={isSelected ? { backgroundColor: archetypeColor } : {}}
+                  style={isSelected ? { backgroundColor: commandmentColor } : {}}
                 >
                   {isSelected && <Check className="w-3 h-3 inline mr-1" />}
                   {value}
@@ -259,7 +257,7 @@ function ValuesEditModal({
             onClick={handleSave}
             disabled={isSaving}
             className="flex-1 font-black text-white"
-            style={{ backgroundColor: archetypeColor }}
+            style={{ backgroundColor: commandmentColor }}
           >
             {isSaving ? 'Saving...' : 'Save Values'}
           </Button>
@@ -269,141 +267,6 @@ function ValuesEditModal({
     document.body
   )
 }
-
-/*
- * THE 7 GUARDIANS OF PROJECT EXODUS
- *
- * In the event of the passing of Stefan Rogowski (Code Name: Mr.Nobody)
- * the Guardianship of Project Exodus will be passed unto 7 individuals
- * of equal voting authority.
- *
- * The 7 individuals have the Code Names of the Archangels from scripture.
- * Their titles reflect the values each Archangel represents.
- *
- * Each guardian has the duty and responsibility to hold true the values
- * set forth in: "Mr. Nobody's Project Exodus"
- *
- * - We the People of Project Exodus -
- */
-
-// Guardian archetypes with fixed gradient colors (matching settings page)
-// These colors represent identity and should NOT change with theme
-const GUARDIAN_ARCHETYPES = {
-  michael: {
-    id: 'michael',
-    name: 'MICHAEL',
-    title: 'Guardian of Strength',
-    value: 'STRENGTH',
-    description: 'You stand unwavering. Your strength protects those who cannot protect themselves.',
-    scripture: 'The one who leads the armies of heaven against darkness.',
-    icon: Sword,
-    // Red to Orange gradient (from settings)
-    colors: {
-      from: '#dc2626', // red-600
-      to: '#f97316',   // orange-500
-      gradient: 'linear-gradient(135deg, #dc2626 0%, #f97316 100%)',
-    },
-    commandments: ['STEWARDSHIP', 'INTEGRITY', 'SUSTAINABILITY'],
-  },
-  gabriel: {
-    id: 'gabriel',
-    name: 'GABRIEL',
-    title: 'Guardian of Revelation',
-    value: 'REVELATION',
-    description: 'You bring truth to light. Your words reveal what must be known.',
-    scripture: 'The messenger who announces what is to come.',
-    icon: MessageCircle,
-    // Sky to Blue gradient (from settings)
-    colors: {
-      from: '#0ea5e9', // sky-500
-      to: '#2563eb',   // blue-600
-      gradient: 'linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)',
-    },
-    commandments: ['TRANSPARENCY', 'LEGACY', 'EQUITY'],
-  },
-  raphael: {
-    id: 'raphael',
-    name: 'RAPHAEL',
-    title: 'Guardian of Healing',
-    value: 'HEALING',
-    description: 'You mend what is broken. Your presence restores and renews.',
-    scripture: 'The healer who makes whole what was wounded.',
-    icon: Stethoscope,
-    // Emerald to Teal gradient (from settings)
-    colors: {
-      from: '#10b981', // emerald-500
-      to: '#0d9488',   // teal-600
-      gradient: 'linear-gradient(135deg, #10b981 0%, #0d9488 100%)',
-    },
-    commandments: ['SANCTITY', 'REST', 'BIODIVERSITY'],
-  },
-  uriel: {
-    id: 'uriel',
-    name: 'URIEL',
-    title: 'Guardian of Wisdom',
-    value: 'WISDOM',
-    description: 'You illuminate the path. Your wisdom guides those who seek understanding.',
-    scripture: 'The light of God who reveals divine truth.',
-    icon: Lightbulb,
-    // Amber to Yellow gradient (from settings)
-    colors: {
-      from: '#f59e0b', // amber-500
-      to: '#eab308',   // yellow-500
-      gradient: 'linear-gradient(135deg, #f59e0b 0%, #eab308 100%)',
-    },
-    commandments: ['LEGACY', 'TRANSPARENCY', 'STEWARDSHIP'],
-  },
-  camael: {
-    id: 'camael',
-    name: 'CAMAEL',
-    title: 'Guardian of Love',
-    value: 'LOVE',
-    description: 'You embody compassion. Your love connects all beings as one.',
-    scripture: 'The one who sees God through the heart.',
-    icon: HeartHandshake,
-    // Pink to Rose gradient (from settings)
-    colors: {
-      from: '#ec4899', // pink-500
-      to: '#e11d48',   // rose-600
-      gradient: 'linear-gradient(135deg, #ec4899 0%, #e11d48 100%)',
-    },
-    commandments: ['LOYALTY', 'EQUITY', 'SANCTITY'],
-  },
-  jophiel: {
-    id: 'jophiel',
-    name: 'JOPHIEL',
-    title: 'Guardian of Beauty',
-    value: 'BEAUTY',
-    description: 'You see the divine in all things. Your vision transforms the ordinary into the sacred.',
-    scripture: 'The beauty of God who adorns creation.',
-    icon: Flower2,
-    // Violet to Purple gradient (from settings)
-    colors: {
-      from: '#8b5cf6', // violet-500
-      to: '#9333ea',   // purple-600
-      gradient: 'linear-gradient(135deg, #8b5cf6 0%, #9333ea 100%)',
-    },
-    commandments: ['BIODIVERSITY', 'SUSTAINABILITY', 'REST'],
-  },
-  zadkiel: {
-    id: 'zadkiel',
-    name: 'ZADKIEL',
-    title: 'Guardian of Mercy',
-    value: 'MERCY',
-    description: 'You forgive the unforgivable. Your mercy grants second chances.',
-    scripture: 'The righteousness of God who liberates the bound.',
-    icon: Scale,
-    // Indigo to Blue gradient (from settings)
-    colors: {
-      from: '#6366f1', // indigo-500
-      to: '#1d4ed8',   // blue-700
-      gradient: 'linear-gradient(135deg, #6366f1 0%, #1d4ed8 100%)',
-    },
-    commandments: ['INTEGRITY', 'LOYALTY', 'LEGACY'],
-  },
-}
-
-type ArchetypeType = keyof typeof GUARDIAN_ARCHETYPES
 
 interface ProfileBusinessCardProps {
   userId: string
@@ -449,7 +312,7 @@ interface ProfileData {
   followers?: number
   following?: number
   connectionsCount?: number
-  archetype?: ArchetypeType
+  commandment?: CommandmentSlug
   declaration?: string
   memberSince?: string
   jobTitle?: string
@@ -552,12 +415,12 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
   const [isEditing, setIsEditing] = useState(Boolean(onClose))
   // Remove nested edit modal - we no longer need it
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const [showArchetypeSelector, setShowArchetypeSelector] = useState(false)
-  const [selectedArchetype, setSelectedArchetype] = useState<ArchetypeType>('michael')
+  const [showCommandmentSelector, setShowCommandmentSelector] = useState(false)
+  const [selectedCommandment, setSelectedCommandment] = useState<CommandmentSlug>(DEFAULT_COMMANDMENT)
   const [editingField, setEditingField] = useState<string | null>(null)
   const [editedProfile, setEditedProfile] = useState<Partial<ProfileData>>({})
   const [savedProfile, setSavedProfile] = useState<Partial<ProfileData>>({})
-  const [savedArchetype, setSavedArchetype] = useState<ArchetypeType>('michael')
+  const [savedCommandment, setSavedCommandment] = useState<CommandmentSlug>(DEFAULT_COMMANDMENT)
   const [isMounted, setIsMounted] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [showUnsavedDialog, setShowUnsavedDialog] = useState(false)
@@ -578,9 +441,9 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
   const hasUnsavedChanges = useCallback(() => {
     if (!isEditing) return false
     const profileChanged = JSON.stringify(editedProfile) !== JSON.stringify(savedProfile)
-    const archetypeChanged = selectedArchetype !== savedArchetype
-    return profileChanged || archetypeChanged
-  }, [isEditing, editedProfile, savedProfile, selectedArchetype, savedArchetype])
+    const commandmentChanged = selectedCommandment !== savedCommandment
+    return profileChanged || commandmentChanged
+  }, [isEditing, editedProfile, savedProfile, selectedCommandment, savedCommandment])
 
   // Handle close with unsaved changes check
   const handleClose = useCallback(() => {
@@ -594,11 +457,11 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
   // Handle discard changes
   const handleDiscard = useCallback(() => {
     setEditedProfile({ ...savedProfile })
-    setSelectedArchetype(savedArchetype)
+    setSelectedCommandment(savedCommandment)
     setIsEditing(false)
     setShowUnsavedDialog(false)
     onClose?.()
-  }, [savedProfile, savedArchetype, onClose])
+  }, [savedProfile, savedCommandment, onClose])
 
   // Set mounted state for portal rendering
   useEffect(() => {
@@ -634,7 +497,7 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
               achievements: data.data.honors || [],
               resumeUrl: data.data.resume,
               resumeFileName: data.data.resume ? 'resume.pdf' : undefined,
-              archetype: data.data.guardianArchetype || 'michael',
+              commandment: resolveCommandmentSlug(data.data.guardianArchetype),
               declaration: data.data.declaration || '',
               memberSince: data.data.createdAt,
               jobTitle: data.data.jobTitle || '',
@@ -643,8 +506,8 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
             setProfile(profileData)
             setEditedProfile(profileData)
             setSavedProfile(profileData)
-            setSelectedArchetype(profileData.archetype || 'michael')
-            setSavedArchetype(profileData.archetype || 'michael')
+            setSelectedCommandment(profileData.commandment || DEFAULT_COMMANDMENT)
+            setSavedCommandment(profileData.commandment || DEFAULT_COMMANDMENT)
 
             // Load privacy/visibility settings
             if (data.data.privacySettings) {
@@ -689,7 +552,7 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
         location: editedProfile.location,
         phone: editedProfile.phone,
         declaration: editedProfile.declaration,
-        guardianArchetype: selectedArchetype,
+        guardianArchetype: selectedCommandment,
         website: editedProfile.social?.website,
         linkedin: editedProfile.social?.linkedin,
         twitter: editedProfile.social?.twitter,
@@ -702,10 +565,10 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
       })
 
       if (res.ok) {
-        const updatedProfile = { ...editedProfile, archetype: selectedArchetype }
+        const updatedProfile = { ...editedProfile, commandment: selectedCommandment }
         setProfile(prev => prev ? { ...prev, ...updatedProfile } : null)
         setSavedProfile({ ...editedProfile })
-        setSavedArchetype(selectedArchetype)
+        setSavedCommandment(selectedCommandment)
         setIsEditing(false)
         setShowUnsavedDialog(false)
         onSaveCallback?.()
@@ -739,13 +602,13 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
     return null
   }
 
-  const archetype = GUARDIAN_ARCHETYPES[selectedArchetype]
-  const ArchetypeIcon = archetype.icon
+  const commandment = COMMANDMENTS[selectedCommandment]
+  const CommandmentIcon = commandment.icon
   const hasSocialLinks = profile.social.website || profile.social.linkedin || profile.social.twitter
 
-  // Use the archetype's fixed gradient colors (not theme-dependent)
-  const archetypeColor = archetype.colors.from
-  const archetypeGradient = archetype.colors.gradient
+  // Use the commandment's fixed gradient colors (not theme-dependent)
+  const commandmentColor = commandment.colors.from
+  const commandmentGradient = commandment.colors.gradient
 
   const stockScore = (profile.projectsCreated || 0) * 10 +
                      (profile.articlesWritten || 0) * 5 +
@@ -774,7 +637,7 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
           headline: editedProfile.headline,
           location: editedProfile.location,
           declaration: editedProfile.declaration,
-          guardianArchetype: selectedArchetype,
+          guardianArchetype: selectedCommandment,
           website: editedProfile.social?.website,
           linkedin: editedProfile.social?.linkedin,
           twitter: editedProfile.social?.twitter,
@@ -785,14 +648,14 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
         setProfile(prev => prev ? {
           ...prev,
           ...editedProfile,
-          archetype: selectedArchetype,
+          commandment: selectedCommandment,
           social: {
             ...prev.social,
             ...editedProfile.social,
           }
         } : null)
         setIsEditModalOpen(false)
-        setShowArchetypeSelector(false)
+        setShowCommandmentSelector(false)
         setEditingField(null)
       }
     } catch (error) {
@@ -1014,11 +877,12 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
 
   return (
     <>
-    <Card className="border-4 overflow-hidden" style={{ borderColor: archetypeColor }}>
-      {/* Sacred Header - uses archetype gradient as background */}
+    <Card className="border-4 overflow-hidden" style={{ borderColor: commandmentColor }}>
+      {/* Digital ID Header — stacks on mobile so the name/commandment
+          line never gets crushed against the action buttons. */}
       <div
-        className="px-6 py-5 relative overflow-hidden"
-        style={{ background: archetypeGradient }}
+        className="px-4 sm:px-6 py-4 sm:py-5 relative overflow-hidden"
+        style={{ background: commandmentGradient }}
       >
         {/* Dark overlay for text contrast */}
         <div className="absolute inset-0 bg-black/25" />
@@ -1029,22 +893,22 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-white rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2" />
         </div>
 
-        <div className="relative flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="p-3 bg-black/30 rounded-2xl backdrop-blur-sm border border-white/30 shadow-lg">
-              <ArchetypeIcon className="w-8 h-8 text-white drop-shadow-md" />
+        <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+            <div className="p-2.5 sm:p-3 bg-black/30 rounded-2xl backdrop-blur-sm border border-white/30 shadow-lg flex-shrink-0">
+              <CommandmentIcon className="w-7 h-7 sm:w-8 sm:h-8 text-white drop-shadow-md" />
             </div>
-            <div>
+            <div className="min-w-0">
               <div className="flex items-center gap-2 mb-1">
-                <Crown className="w-4 h-4 text-white drop-shadow-sm" />
-                <p className="text-xs font-bold text-white uppercase tracking-wider drop-shadow-sm">Identity Declaration</p>
+                <Crown className="w-4 h-4 text-white drop-shadow-sm flex-shrink-0" />
+                <p className="text-[10px] sm:text-xs font-bold text-white uppercase tracking-wider drop-shadow-sm truncate">Identity Declaration</p>
               </div>
-              <h2 className="text-2xl font-black text-white tracking-wide drop-shadow-md">{profile.name || 'Anonymous'}</h2>
-              <p className="text-sm font-semibold text-white drop-shadow-sm">{archetype.title} • {archetype.value}</p>
+              <h2 className="text-xl sm:text-2xl font-black text-white tracking-wide drop-shadow-md truncate">{profile.name || 'Anonymous'}</h2>
+              <p className="text-xs sm:text-sm font-semibold text-white drop-shadow-sm truncate">{commandment.name} • {commandment.title}</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 self-end sm:self-auto flex-shrink-0">
             {/* Show Edit button only when NOT in edit mode */}
             {isOwnProfile && !isEditing && (
               <button
@@ -1064,7 +928,7 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
                       setShowUnsavedDialog(true)
                     } else {
                       setEditedProfile({ ...savedProfile })
-                      setSelectedArchetype(savedArchetype)
+                      setSelectedCommandment(savedCommandment)
                       setIsEditing(false)
                       onClose?.()
                     }
@@ -1119,21 +983,21 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
       </div>
 
       <CardContent className="p-4">
-        {/* Guardian Archetype Selector - Only visible to profile owner */}
+        {/* Commandment Selector — only visible to the profile owner. */}
         {isOwnProfile && isFullView && (
           <div className="mb-4 p-3 bg-[var(--muted)] rounded-xl border-2 border-[var(--border)]">
             <p className="text-xs font-black text-[var(--muted-foreground)] uppercase tracking-wider mb-3 flex items-center gap-2">
               <Crown className="w-4 h-4" />
-              Choose Your Guardian Archetype
+              Choose Your Most Resonant Commandment
             </p>
             <div className="flex flex-wrap gap-2">
-              {Object.entries(GUARDIAN_ARCHETYPES).map(([key, arch]) => {
+              {COMMANDMENT_LIST.map((arch) => {
                 const Icon = arch.icon
-                const isSelected = selectedArchetype === key
+                const isSelected = selectedCommandment === arch.id
                 return (
                   <button
-                    key={key}
-                    onClick={() => setSelectedArchetype(key as ArchetypeType)}
+                    key={arch.id}
+                    onClick={() => setSelectedCommandment(arch.id)}
                     className={`flex items-center gap-2 px-3 py-2 rounded-lg border-2 transition-all ${
                       isSelected
                         ? 'border-transparent text-white shadow-lg scale-105'
@@ -1149,7 +1013,7 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
                       <Icon className="w-4 h-4 text-white" />
                     </div>
                     <span className={`text-xs font-bold ${isSelected ? 'text-white' : 'text-[var(--foreground)]'}`}>
-                      {arch.value}
+                      {arch.name}
                     </span>
                   </button>
                 )
@@ -1163,7 +1027,7 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
           {/* Core Identity */}
           <div
             className="p-5 rounded-2xl relative overflow-hidden"
-            style={{ background: archetypeGradient }}
+            style={{ background: commandmentGradient }}
           >
             {/* Dark overlay for text contrast */}
             <div className="absolute inset-0 bg-black/25 rounded-2xl" />
@@ -1197,7 +1061,7 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
                       placeholder="Your role or calling"
                     />
                   ) : (
-                    <p className="text-sm font-medium text-white/90 truncate">{profile.headline || archetype.title}</p>
+                    <p className="text-sm font-medium text-white/90 truncate">{profile.headline || commandment.title}</p>
                   )}
                 </div>
               </div>
@@ -1316,18 +1180,18 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
             <div
               className="p-3 rounded-lg border-2"
               style={{
-                borderColor: archetypeColor,
-                backgroundColor: `color-mix(in srgb, ${archetypeColor} 10%, var(--background))`
+                borderColor: commandmentColor,
+                backgroundColor: `color-mix(in srgb, ${commandmentColor} 10%, var(--background))`
               }}
             >
               <div className="flex items-center gap-2 mb-1.5">
-                <ArchetypeIcon className="w-5 h-5 flex-shrink-0" style={{ color: archetypeColor }} />
+                <CommandmentIcon className="w-5 h-5 flex-shrink-0" style={{ color: commandmentColor }} />
                 <div className="min-w-0">
                   <p className="text-[9px] font-black text-[var(--muted-foreground)] uppercase">I Embody</p>
-                  <p className="text-base font-black truncate" style={{ color: archetypeColor }}>{archetype.value}</p>
+                  <p className="text-base font-black truncate" style={{ color: commandmentColor }}>{commandment.name}</p>
                 </div>
               </div>
-              <p className="text-xs font-medium text-[var(--muted-foreground)] italic line-clamp-2">{archetype.description}</p>
+              <p className="text-xs font-medium text-[var(--muted-foreground)] italic line-clamp-2">{commandment.description}</p>
             </div>
 
             {/* Values - Editable for profile owner */}
@@ -1349,15 +1213,16 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
                 className={`flex flex-wrap gap-1.5 ${isOwnProfile && isEditing ? 'cursor-pointer hover:opacity-80' : ''}`}
                 onClick={() => isOwnProfile && isEditing && setShowValuesModal(true)}
               >
-                {/* Show custom values if available, otherwise show archetype defaults */}
+                {/* Show user's custom values if any, otherwise just fall
+                    back to their chosen commandment as a single chip. */}
                 {(profile.customValues && profile.customValues.length > 0
                   ? profile.customValues
-                  : archetype.commandments
+                  : [commandment.name]
                 ).map((value, idx) => (
                   <span
                     key={idx}
                     className="px-2 py-1 text-white text-[10px] font-bold rounded-full"
-                    style={{ backgroundColor: archetypeColor }}
+                    style={{ backgroundColor: commandmentColor }}
                   >
                     {value}
                   </span>
@@ -1480,19 +1345,19 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
             {/* STOCK Breakdown */}
             <div className="grid grid-cols-2 gap-1.5">
               <div className="p-2 bg-[var(--muted)] rounded-lg">
-                <p className="text-lg font-black" style={{ color: archetypeColor }}>{profile.projectsCreated || 0}</p>
+                <p className="text-lg font-black" style={{ color: commandmentColor }}>{profile.projectsCreated || 0}</p>
                 <p className="text-[8px] font-bold text-[var(--muted-foreground)] uppercase">Projects</p>
               </div>
               <div className="p-2 bg-[var(--muted)] rounded-lg">
-                <p className="text-lg font-black" style={{ color: archetypeColor }}>{profile.articlesWritten || 0}</p>
+                <p className="text-lg font-black" style={{ color: commandmentColor }}>{profile.articlesWritten || 0}</p>
                 <p className="text-[8px] font-bold text-[var(--muted-foreground)] uppercase">Articles</p>
               </div>
               <div className="p-2 bg-[var(--muted)] rounded-lg">
-                <p className="text-lg font-black" style={{ color: archetypeColor }}>{profile.followers || 0}</p>
+                <p className="text-lg font-black" style={{ color: commandmentColor }}>{profile.followers || 0}</p>
                 <p className="text-[8px] font-bold text-[var(--muted-foreground)] uppercase">Followers</p>
               </div>
               <div className="p-2 bg-[var(--muted)] rounded-lg">
-                <p className="text-lg font-black" style={{ color: archetypeColor }}>{profile.modulesCompleted || 0}</p>
+                <p className="text-lg font-black" style={{ color: commandmentColor }}>{profile.modulesCompleted || 0}</p>
                 <p className="text-[8px] font-bold text-[var(--muted-foreground)] uppercase">Modules</p>
               </div>
             </div>
@@ -1672,7 +1537,7 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <h4 className="text-sm font-black text-[var(--foreground)] flex items-center gap-2">
-                    <Briefcase className="w-4 h-4" style={{ color: archetypeColor }} />
+                    <Briefcase className="w-4 h-4" style={{ color: commandmentColor }} />
                     Experience
                   </h4>
                   <VisibilityToggle field="showExperience" />
@@ -1683,7 +1548,7 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
                     onClick={() => isOwnProfile && setShowExperienceModal(true)}
                   >
                     {profile.experience.slice(0, 2).map((exp: any, idx: number) => (
-                      <div key={idx} className="border-l-2 pl-3" style={{ borderColor: archetypeColor }}>
+                      <div key={idx} className="border-l-2 pl-3" style={{ borderColor: commandmentColor }}>
                         <h5 className="text-sm font-black text-[var(--foreground)]">{exp.title}</h5>
                         <p className="text-xs font-bold text-[var(--muted-foreground)]">{exp.company}</p>
                         <p className="text-[10px] font-medium text-[var(--muted-foreground)]">
@@ -1717,7 +1582,7 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <h4 className="text-sm font-black text-[var(--foreground)] flex items-center gap-2">
-                    <GraduationCap className="w-4 h-4" style={{ color: archetypeColor }} />
+                    <GraduationCap className="w-4 h-4" style={{ color: commandmentColor }} />
                     Education
                   </h4>
                   <VisibilityToggle field="showEducation" />
@@ -1728,7 +1593,7 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
                     onClick={() => isOwnProfile && setShowEducationModal(true)}
                   >
                     {profile.education.slice(0, 2).map((edu: any, idx: number) => (
-                      <div key={idx} className="border-l-2 pl-3" style={{ borderColor: archetypeColor }}>
+                      <div key={idx} className="border-l-2 pl-3" style={{ borderColor: commandmentColor }}>
                         <h5 className="text-sm font-black text-[var(--foreground)]">{edu.degree}</h5>
                         <p className="text-xs font-bold text-[var(--muted-foreground)]">{edu.school}</p>
                         <p className="text-[10px] font-medium text-[var(--muted-foreground)]">{edu.graduationYear}</p>
@@ -1759,7 +1624,7 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
               {/* Achievements */}
               <div>
                 <h4 className="text-sm font-black text-[var(--foreground)] mb-2 flex items-center gap-2">
-                  <Award className="w-4 h-4" style={{ color: archetypeColor }} />
+                  <Award className="w-4 h-4" style={{ color: commandmentColor }} />
                   Achievements
                 </h4>
                 {profile.achievements.length > 0 ? (
@@ -1789,7 +1654,7 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
                   href={profile.resumeUrl}
                   download={profile.resumeFileName || 'resume.pdf'}
                   className="inline-flex items-center gap-2 px-4 py-2 text-white rounded-lg hover:opacity-90 transition-opacity text-sm font-bold"
-                  style={{ backgroundColor: archetypeColor }}
+                  style={{ backgroundColor: commandmentColor }}
                 >
                   <Download className="w-4 h-4" />
                   Download Resume
@@ -1808,14 +1673,14 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
         <div className="mt-6 pt-5 border-t-2 border-[var(--border)]">
           <div className="text-center">
             <p className="text-xs font-medium text-[var(--muted-foreground)] italic mb-1">
-              "{archetype.scripture}"
+              &ldquo;{commandment.description}&rdquo;
             </p>
             <div className="flex items-center justify-center gap-2 mt-3">
-              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: archetypeColor }} />
+              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: commandmentColor }} />
               <p className="text-[10px] font-black text-[var(--muted-foreground)] uppercase tracking-widest">
                 We the People of Project Exodus
               </p>
-              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: archetypeColor }} />
+              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: commandmentColor }} />
             </div>
           </div>
         </div>
@@ -1859,7 +1724,7 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
           values={profile.customValues || []}
           onSave={handleValuesSave}
           predefinedValues={PREDEFINED_VALUES}
-          archetypeColor={archetypeColor}
+          commandmentColor={commandmentColor}
         />
       </>
     )}

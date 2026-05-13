@@ -1,93 +1,10 @@
 'use client'
 
-import { User, MapPin, Mail, Edit2, Sword, MessageCircle, Stethoscope, Lightbulb, HeartHandshake, Flower2, Scale, Phone, Briefcase, Building2, FileText, Sparkles, Heart } from 'lucide-react'
+import { User, MapPin, Mail, Edit2, Phone, Briefcase, Building2, FileText, Sparkles, Heart } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { LucideIcon } from 'lucide-react'
 import { ViewMode } from '@/hooks/useVolitionLayout'
-
-// Guardian Archetypes - matching ProfileBusinessCard with hex colors
-const GUARDIAN_ARCHETYPES: Record<string, {
-  value: string
-  title: string
-  icon: LucideIcon
-  colors: {
-    from: string
-    to: string
-    gradient: string
-  }
-}> = {
-  michael: {
-    value: 'STRENGTH',
-    title: 'Guardian of Strength',
-    icon: Sword,
-    colors: {
-      from: '#dc2626',
-      to: '#f97316',
-      gradient: 'linear-gradient(135deg, #dc2626 0%, #f97316 100%)',
-    },
-  },
-  gabriel: {
-    value: 'REVELATION',
-    title: 'Guardian of Revelation',
-    icon: MessageCircle,
-    colors: {
-      from: '#0ea5e9',
-      to: '#2563eb',
-      gradient: 'linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)',
-    },
-  },
-  raphael: {
-    value: 'HEALING',
-    title: 'Guardian of Healing',
-    icon: Stethoscope,
-    colors: {
-      from: '#10b981',
-      to: '#0d9488',
-      gradient: 'linear-gradient(135deg, #10b981 0%, #0d9488 100%)',
-    },
-  },
-  uriel: {
-    value: 'WISDOM',
-    title: 'Guardian of Wisdom',
-    icon: Lightbulb,
-    colors: {
-      from: '#f59e0b',
-      to: '#eab308',
-      gradient: 'linear-gradient(135deg, #f59e0b 0%, #eab308 100%)',
-    },
-  },
-  camael: {
-    value: 'LOVE',
-    title: 'Guardian of Love',
-    icon: HeartHandshake,
-    colors: {
-      from: '#ec4899',
-      to: '#e11d48',
-      gradient: 'linear-gradient(135deg, #ec4899 0%, #e11d48 100%)',
-    },
-  },
-  jophiel: {
-    value: 'BEAUTY',
-    title: 'Guardian of Beauty',
-    icon: Flower2,
-    colors: {
-      from: '#8b5cf6',
-      to: '#9333ea',
-      gradient: 'linear-gradient(135deg, #8b5cf6 0%, #9333ea 100%)',
-    },
-  },
-  zadkiel: {
-    value: 'MERCY',
-    title: 'Guardian of Mercy',
-    icon: Scale,
-    colors: {
-      from: '#6366f1',
-      to: '#1d4ed8',
-      gradient: 'linear-gradient(135deg, #6366f1 0%, #1d4ed8 100%)',
-    },
-  },
-}
+import { resolveCommandment } from '@/lib/commandments'
 
 interface ProfileCardProps {
   user: {
@@ -128,8 +45,11 @@ export function ProfileCard({
 }: ProfileCardProps) {
   const isCompact = viewMode === 'compact'
   const isMinimal = viewMode === 'minimal'
+  // Only render commandment chrome if the user actually picked one (DB
+  // column is still `guardianArchetype`; resolveCommandment handles both
+  // legacy archetype slugs and new commandment slugs).
   const archetype = userProfile?.guardianArchetype
-    ? GUARDIAN_ARCHETYPES[userProfile.guardianArchetype.toLowerCase()]
+    ? resolveCommandment(userProfile.guardianArchetype)
     : null
 
   // Minimal view - just title header
@@ -218,7 +138,7 @@ export function ProfileCard({
           <div className="flex-1 min-w-0 pt-1">
             {archetype && (
               <p className="text-[10px] font-bold text-white/80 uppercase tracking-wide mb-0.5">
-                {archetype.title} • {archetype.value}
+                {archetype.name} • {archetype.title}
               </p>
             )}
             <h3 className="text-xl font-black text-white truncate">

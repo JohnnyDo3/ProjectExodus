@@ -115,16 +115,17 @@ const volitionLanes = [
   { icon: Leaf, label: 'Impact', color: 'text-green-400', desc: 'Your measurable environmental footprint and positive actions' },
 ]
 
-// The 7 Guardians - Archangel archetypes representing core values
-const guardianArchetypes = [
-  { emoji: '⚔️', name: 'MICHAEL', title: 'Strength', desc: 'You stand unwavering. Your strength protects those who cannot protect themselves.', color: 'from-red-600 to-orange-500' },
-  { emoji: '💬', name: 'GABRIEL', title: 'Revelation', desc: 'You bring truth to light. Your words reveal what must be known.', color: 'from-sky-500 to-blue-600' },
-  { emoji: '🩺', name: 'RAPHAEL', title: 'Healing', desc: 'You mend what is broken. Your presence restores and renews.', color: 'from-emerald-500 to-green-600' },
-  { emoji: '💡', name: 'URIEL', title: 'Wisdom', desc: 'You illuminate the path. Your wisdom guides those who seek understanding.', color: 'from-amber-500 to-yellow-500' },
-  { emoji: '💗', name: 'CAMAEL', title: 'Love', desc: 'You embody compassion. Your love connects all beings as one.', color: 'from-pink-500 to-rose-600' },
-  { emoji: '🌸', name: 'JOPHIEL', title: 'Beauty', desc: 'You see the divine in all things. Your vision transforms the ordinary into the sacred.', color: 'from-violet-500 to-purple-600' },
-  { emoji: '⚖️', name: 'ZADKIEL', title: 'Mercy', desc: 'You forgive the unforgivable. Your mercy grants second chances.', color: 'from-indigo-500 to-blue-700' },
-]
+// The 10 sustainability commandments — shape adapted from the legacy
+// guardian-archetype carousel so the surrounding JSX needs no changes
+// beyond what the linter forces.
+import { COMMANDMENT_LIST as _COMMANDMENT_LIST } from '@/lib/commandments'
+const guardianArchetypes = _COMMANDMENT_LIST.map((c) => ({
+  icon: c.icon,
+  name: c.name,
+  title: c.title,
+  desc: c.description,
+  color: c.gradient,
+}))
 
 // Business card features
 const businessCardFeatures = [
@@ -724,27 +725,30 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   <p className="text-xs text-[var(--muted-foreground)] max-w-[220px] leading-relaxed text-center">A verified business card representing your values and contributions</p>
                 </div>
 
-                {/* Archetype icons with hover reveal - enhanced with glow */}
-                <div className="relative flex items-center justify-center gap-2 mb-3">
-                  {guardianArchetypes.map((archetype, i) => (
-                    <motion.div
-                      key={i}
-                      className="relative"
-                      onMouseEnter={() => setHoveredArchetype(i)}
-                      onMouseLeave={() => setHoveredArchetype(null)}
-                    >
+                {/* Commandment icons with hover reveal */}
+                <div className="relative flex items-center justify-center gap-1.5 mb-3 flex-wrap">
+                  {guardianArchetypes.map((archetype, i) => {
+                    const Icon = archetype.icon
+                    return (
                       <motion.div
-                        className={`w-10 h-10 rounded-full flex items-center justify-center text-lg border-2 cursor-pointer transition-all ${
-                          hoveredArchetype === i
-                            ? 'bg-[var(--primary)]/40 border-[var(--primary)]/70 scale-110 shadow-xl shadow-[var(--primary)]/20'
-                            : 'bg-[var(--card)]/80 border-[var(--border)]/50 shadow-md'
-                        }`}
-                        whileHover={{ y: -3 }}
+                        key={i}
+                        className="relative"
+                        onMouseEnter={() => setHoveredArchetype(i)}
+                        onMouseLeave={() => setHoveredArchetype(null)}
                       >
-                        {archetype.emoji}
+                        <motion.div
+                          className={`w-10 h-10 rounded-full flex items-center justify-center border-2 cursor-pointer transition-all ${
+                            hoveredArchetype === i
+                              ? 'bg-[var(--primary)]/40 border-[var(--primary)]/70 scale-110 shadow-xl shadow-[var(--primary)]/20'
+                              : 'bg-[var(--card)]/80 border-[var(--border)]/50 shadow-md'
+                          }`}
+                          whileHover={{ y: -3 }}
+                        >
+                          <Icon className="w-5 h-5 text-[var(--foreground)]" />
+                        </motion.div>
                       </motion.div>
-                    </motion.div>
-                  ))}
+                    )
+                  })}
                   {/* Hover tooltip - positioned below entire icon row */}
                   {hoveredArchetype !== null && (
                     <motion.div

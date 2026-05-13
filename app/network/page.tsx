@@ -50,21 +50,14 @@ import {
 } from 'lucide-react'
 
 // ============================================
-// ARCHETYPE TRAITS (for connection theming)
+// CONNECTION THEMING — driven by each user's commandment
 // ============================================
 
-const ARCHETYPE_TRAITS: Record<string, { gradient: string; trait: string; symbol: string }> = {
-  michael: { gradient: 'from-red-600 to-orange-500', trait: 'Strength', symbol: '🔥' },
-  gabriel: { gradient: 'from-sky-500 to-blue-600', trait: 'Truth', symbol: '📯' },
-  raphael: { gradient: 'from-emerald-500 to-green-600', trait: 'Healing', symbol: '💚' },
-  uriel: { gradient: 'from-amber-500 to-yellow-500', trait: 'Wisdom', symbol: '💡' },
-  camael: { gradient: 'from-pink-500 to-rose-600', trait: 'Love', symbol: '💗' },
-  jophiel: { gradient: 'from-violet-500 to-purple-600', trait: 'Creativity', symbol: '✨' },
-  zadkiel: { gradient: 'from-indigo-500 to-blue-700', trait: 'Grace', symbol: '⚖️' },
-}
+import { resolveCommandment } from '@/lib/commandments'
 
 const getArchetypeTrait = (archetype: string | null) => {
-  return ARCHETYPE_TRAITS[archetype || 'uriel'] || ARCHETYPE_TRAITS.uriel
+  const c = resolveCommandment(archetype)
+  return { gradient: c.gradient, trait: c.title, symbol: c.name }
 }
 
 interface UserProfile {

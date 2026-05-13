@@ -18,103 +18,10 @@ import {
   UserPlus,
   UserCheck,
   Loader2,
-  MessageCircle,
-  Sword,
-  Stethoscope,
-  Lightbulb,
-  HeartHandshake,
-  Flower2,
-  Scale,
   Sparkles,
   Briefcase,
-  MessageSquare,
 } from 'lucide-react'
-
-// ============================================
-// GUARDIAN ARCHETYPES
-// ============================================
-
-const GUARDIAN_ARCHETYPES = {
-  michael: {
-    name: 'MICHAEL',
-    value: 'STRENGTH',
-    icon: Sword,
-    gradient: 'from-red-600 to-orange-500',
-    bgGradient: 'from-red-600/10 to-orange-500/5',
-    glow: 'rgba(239,68,68,0.25)',
-    glowNight: 'rgba(239,68,68,0.4)',
-    accent: '#ef4444',
-    accentColor: 'text-red-500',
-  },
-  gabriel: {
-    name: 'GABRIEL',
-    value: 'REVELATION',
-    icon: MessageSquare,
-    gradient: 'from-sky-500 to-blue-600',
-    bgGradient: 'from-sky-500/10 to-blue-600/5',
-    glow: 'rgba(14,165,233,0.25)',
-    glowNight: 'rgba(14,165,233,0.45)',
-    accent: '#0ea5e9',
-    accentColor: 'text-sky-500',
-  },
-  raphael: {
-    name: 'RAPHAEL',
-    value: 'HEALING',
-    icon: Stethoscope,
-    gradient: 'from-emerald-500 to-green-600',
-    bgGradient: 'from-emerald-500/10 to-green-600/5',
-    glow: 'rgba(16,185,129,0.25)',
-    glowNight: 'rgba(16,185,129,0.4)',
-    accent: '#10b981',
-    accentColor: 'text-emerald-500',
-  },
-  uriel: {
-    name: 'URIEL',
-    value: 'WISDOM',
-    icon: Lightbulb,
-    gradient: 'from-amber-500 to-yellow-500',
-    bgGradient: 'from-amber-500/10 to-yellow-500/5',
-    glow: 'rgba(245,158,11,0.25)',
-    glowNight: 'rgba(245,158,11,0.4)',
-    accent: '#f59e0b',
-    accentColor: 'text-amber-500',
-  },
-  camael: {
-    name: 'CAMAEL',
-    value: 'LOVE',
-    icon: HeartHandshake,
-    gradient: 'from-pink-500 to-rose-600',
-    bgGradient: 'from-pink-500/10 to-rose-600/5',
-    glow: 'rgba(236,72,153,0.25)',
-    glowNight: 'rgba(236,72,153,0.4)',
-    accent: '#ec4899',
-    accentColor: 'text-pink-500',
-  },
-  jophiel: {
-    name: 'JOPHIEL',
-    value: 'BEAUTY',
-    icon: Flower2,
-    gradient: 'from-violet-500 to-purple-600',
-    bgGradient: 'from-violet-500/10 to-purple-600/5',
-    glow: 'rgba(139,92,246,0.25)',
-    glowNight: 'rgba(139,92,246,0.45)',
-    accent: '#8b5cf6',
-    accentColor: 'text-violet-500',
-  },
-  zadkiel: {
-    name: 'ZADKIEL',
-    value: 'MERCY',
-    icon: Scale,
-    gradient: 'from-indigo-500 to-blue-700',
-    bgGradient: 'from-indigo-500/10 to-blue-700/5',
-    glow: 'rgba(99,102,241,0.25)',
-    glowNight: 'rgba(99,102,241,0.45)',
-    accent: '#6366f1',
-    accentColor: 'text-indigo-500',
-  },
-}
-
-type ArchetypeKey = keyof typeof GUARDIAN_ARCHETYPES
+import { resolveCommandment } from '@/lib/commandments'
 
 // ============================================
 // TYPES
@@ -176,9 +83,16 @@ export function ConstellationCard({
 }: ConstellationCardProps) {
   const { phase, twilightProgress, isDay } = useTimeTheme()
 
-  const archetypeKey = (user.guardianArchetype || 'michael').toLowerCase() as ArchetypeKey
-  const archetype = GUARDIAN_ARCHETYPES[archetypeKey] || GUARDIAN_ARCHETYPES.michael
+  // DB still stores legacy guardianArchetype values like 'michael' —
+  // resolveCommandment handles both new commandment slugs and the
+  // legacy ones, falling back to STEWARDSHIP for unknowns.
+  const archetype = resolveCommandment(user.guardianArchetype)
   const ArchetypeIcon = archetype.icon
+  // hexAccent + an alpha hex byte produces a CSS rgba() equivalent
+  // without any string parsing: '40' ≈ 25%, '66' ≈ 40%.
+  const glow = `${archetype.hexAccent}40`
+  const glowNight = `${archetype.hexAccent}66`
+  const accent = archetype.hexAccent
 
   // Calculate STOCK score
   const stockScore = useMemo(() => {
@@ -204,7 +118,7 @@ export function ConstellationCard({
           ? 'rgba(245, 235, 224, 0.65)'
           : 'rgba(250, 250, 249, 0.55)',
       blur: isNightPhase ? 'blur(20px)' : isTwilightPhase ? 'blur(16px)' : 'blur(12px)',
-      glowColor: isNightPhase ? archetype.glowNight : archetype.glow,
+      glowColor: isNightPhase ? glowNight : glow,
       glowIntensity: isNightPhase ? 20 : isDawnDusk ? 15 : 8,
       borderOpacity: isNightPhase ? 0.3 : 0.15,
       shimmer: isDawnDusk,
@@ -261,7 +175,7 @@ export function ConstellationCard({
           background: ambiance.cardBg,
           backdropFilter: ambiance.blur,
           WebkitBackdropFilter: ambiance.blur,
-          borderColor: `color-mix(in srgb, ${archetype.accent} ${ambiance.borderOpacity * 100}%, var(--border))`,
+          borderColor: `color-mix(in srgb, ${accent} ${ambiance.borderOpacity * 100}%, var(--border))`,
         }}
       >
         {/* Archetype gradient accent bar */}
@@ -400,8 +314,8 @@ export function ConstellationCard({
                   key={tag}
                   className="px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold transition-colors duration-300"
                   style={{
-                    backgroundColor: `color-mix(in srgb, ${archetype.accent} 12%, var(--background))`,
-                    color: archetype.accent,
+                    backgroundColor: `color-mix(in srgb, ${accent} 12%, var(--background))`,
+                    color: accent,
                   }}
                 >
                   {tag}
@@ -456,7 +370,7 @@ export function ConstellationCard({
               </p>
             </div>
             <div className="text-center">
-              <p className="text-base sm:text-lg font-black" style={{ color: archetype.accent }}>
+              <p className="text-base sm:text-lg font-black" style={{ color: accent }}>
                 {stockScore}
               </p>
               <p className="text-[8px] sm:text-[9px] font-bold text-[var(--muted-foreground)] uppercase tracking-wider">
@@ -469,7 +383,7 @@ export function ConstellationCard({
           <div
             className={`flex items-center gap-2 p-2 rounded-lg bg-gradient-to-r ${archetype.bgGradient} mb-3 transition-all duration-300`}
             style={{
-              borderLeft: `3px solid ${archetype.accent}`,
+              borderLeft: `3px solid ${accent}`,
             }}
           >
             <ArchetypeIcon className={`w-4 h-4 ${archetype.accentColor}`} />
@@ -478,7 +392,7 @@ export function ConstellationCard({
                 {archetype.name}
               </span>
               <span className="text-[9px] text-[var(--muted-foreground)]">
-                Guardian of {archetype.value.charAt(0) + archetype.value.slice(1).toLowerCase()}
+                {archetype.title}
               </span>
             </div>
           </div>

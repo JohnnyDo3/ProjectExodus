@@ -80,16 +80,11 @@ const CATEGORY_SCROLL_THEMES: Record<string, { seal: string; ribbon: string; par
   community: { seal: 'from-purple-600 to-purple-800', ribbon: 'bg-purple-700', parchment: 'from-purple-50 via-stone-50 to-purple-50' },
 }
 
-// Archetype traits for author theming (traits only, no names)
-const ARCHETYPE_TRAITS: Record<string, { gradient: string; trait: string; accentColor: string }> = {
-  michael: { gradient: 'from-red-600 to-orange-500', trait: 'Strength', accentColor: 'text-red-500' },
-  gabriel: { gradient: 'from-sky-500 to-blue-600', trait: 'Truth', accentColor: 'text-sky-500' },
-  raphael: { gradient: 'from-emerald-500 to-green-600', trait: 'Healing', accentColor: 'text-emerald-500' },
-  uriel: { gradient: 'from-amber-500 to-yellow-500', trait: 'Wisdom', accentColor: 'text-amber-500' },
-  camael: { gradient: 'from-pink-500 to-rose-600', trait: 'Love', accentColor: 'text-pink-500' },
-  jophiel: { gradient: 'from-violet-500 to-purple-600', trait: 'Creativity', accentColor: 'text-violet-500' },
-  zadkiel: { gradient: 'from-indigo-500 to-blue-700', trait: 'Grace', accentColor: 'text-indigo-500' },
-}
+// Author theming now flows from the writer's chosen commandment. The
+// legacy `guardianArchetype` values still resolve thanks to the mapper
+// in @/lib/commandments. We just expose the same fields the rest of
+// the file was reading: gradient, trait, accentColor.
+import { resolveCommandment } from '@/lib/commandments'
 
 // Reading depth indicators - experiential rather than explicit difficulty levels
 // Helps readers find content that matches their available time and focus
@@ -635,7 +630,8 @@ export default function ArticlesPage() {
   }
 
   const getAuthorTheme = (archetype: string | null) => {
-    return ARCHETYPE_TRAITS[archetype || 'uriel'] || ARCHETYPE_TRAITS.uriel
+    const c = resolveCommandment(archetype)
+    return { gradient: c.gradient, trait: c.title, accentColor: c.accentColor }
   }
 
   // Full interactive page - now accessible to all users (authenticated and non-authenticated)
