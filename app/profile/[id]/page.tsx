@@ -5,6 +5,8 @@ import { Card, CardContent } from '@/components/ui/Card'
 import { FollowButton } from '@/components/profile/FollowButton'
 import { ProfileBusinessCard } from '@/components/profile/ProfileBusinessCard'
 import { ShareButtons } from '@/components/article/ShareButtons'
+import { BannerUploader } from '@/components/profile/BannerUploader'
+import { EndorsementsWidget } from '@/components/profile/EndorsementsWidget'
 import {
   ArrowLeft,
   Edit,
@@ -124,6 +126,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
         } : {}}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-[var(--muted)] via-[var(--muted)]/40 to-transparent" />
+        {isOwnProfile && <BannerUploader userId={u.id as string} />}
       </div>
 
       {/* ─── Hero card (overlapping the banner) ───────────────── */}
@@ -444,9 +447,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
             )}
 
             {expertise.length > 0 && (
-              <SidebarCard title="Expertise" icon={<Sparkles className="w-5 h-5 text-theme-primary" />}>
-                <ChipList items={expertise} variant="solid" />
-              </SidebarCard>
+              <EndorsementsWidget userId={u.id as string} isOwnProfile={isOwnProfile} />
             )}
 
             {skills.length > 0 && (

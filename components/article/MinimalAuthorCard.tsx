@@ -2,10 +2,9 @@
 
 /**
  * Minimal author card for the article sidebar — just an avatar +
- * the author's name, linking to their profile. Used at the top of
- * the published article sidebar (above the rich AuthorBusinessCard,
- * if any). Falls back to the user's fishbowl fish design when they
- * haven't set a profile photo.
+ * the author's name, linking to their profile. Sits at the top of
+ * the published article sidebar. Falls back to the user's fishbowl
+ * fish design when they haven't set a profile photo.
  */
 
 import Link from 'next/link'

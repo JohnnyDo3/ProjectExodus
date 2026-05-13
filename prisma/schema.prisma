@@ -72,6 +72,10 @@ model User {
   fishCustomization Json?
 
   role          UserRole  @default(USER)
+  // Admin-set verification flag — used by the profile page to render
+  // a small ShieldCheck next to the name. Not currently editable from
+  // the UI; flip from the admin dashboard or directly in the DB.
+  verified      Boolean   @default(false)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
@@ -179,6 +183,10 @@ model User {
 
   // Initiative drafts (pre-creation workspaces with Sage)
   initiativeDrafts          InitiativeDraft[]        @relation("InitiativeDrafts")
+
+  // Skill endorsements — LinkedIn-style social proof.
+  endorsementsReceived      Endorsement[]            @relation("EndorsementsReceived")
+  endorsementsGiven         Endorsement[]            @relation("EndorsementsGiven")
 
   @@index([email])
   @@index([role])
@@ -1169,6 +1177,30 @@ enum InitiativeDraftPath {
   PASTE       // started from a pasted/uploaded plan
   BRAINSTORM  // started from a chat with Sage
   HYBRID      // both: paste, then refine in chat
+}
+
+// LinkedIn-style skill endorsements. One row per
+// (endorser, endorsee, skill) — the unique index prevents double-
+// endorsements of the same skill by the same user.
+model Endorsement {
+  id          String   @id @default(cuid())
+
+  userId      String   // who's being endorsed
+  user        User     @relation("EndorsementsReceived", fields: [userId], references: [id], onDelete: Cascade)
+
+  endorserId  String   // who's doing the endorsing
+  endorser    User     @relation("EndorsementsGiven", fields: [endorserId], references: [id], onDelete: Cascade)
+
+  // The skill being endorsed. Stored as a normalised string so
+  // counts across users can be aggregated without joining a
+  // skills table. Matches one of the strings in User.expertise.
+  skill       String
+
+  createdAt   DateTime @default(now())
+
+  @@unique([userId, endorserId, skill])
+  @@index([userId, skill])
+  @@index([endorserId])
 }
 
 model ProjectMember {

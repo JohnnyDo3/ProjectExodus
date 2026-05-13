@@ -15,8 +15,6 @@ import { FootnotesWidget } from '@/components/article/FootnotesWidget'
 import { TableOfContents } from '@/components/article/TableOfContents'
 import { CorrectionsBanner } from '@/components/article/CorrectionsBanner'
 import { MinimalAuthorCard } from '@/components/article/MinimalAuthorCard'
-// NOTE: AuthorBusinessCard import removed — the rich card was replaced
-// by the MinimalAuthorCard at the top of the sidebar.
 import { PeerReviewWidget } from '@/components/article/PeerReviewWidget'
 import { extractFootnotes } from '@/lib/article/extractFootnotes'
 
