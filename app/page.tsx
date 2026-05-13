@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Users, Heart, BookOpen, Award } from 'lucide-react'
 import { FeatureShowcase } from '@/components/home/FeatureShowcase'
+import { OnboardingReminderBanner } from '@/components/onboarding/OnboardingReminderBanner'
 
 // Lazy-load heavy decorative components
 const TreeBranches = dynamic(() => import('@/components/decorative/TreeBranches').then(mod => ({ default: mod.TreeBranches })))
@@ -207,6 +208,15 @@ export default function Home() {
           <ProgressiveSkyline />
         </Suspense>
       </section>
+
+      {/* Onboarding reminder banner — self-suppresses unless the
+          signed-in user is missing profile fields or a fish design,
+          and only shows once per device (localStorage dismiss). */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+        <div className="max-w-4xl mx-auto">
+          <OnboardingReminderBanner />
+        </div>
+      </div>
 
       {/* Feature Showcase - Platform Overview */}
       <FeatureShowcase />

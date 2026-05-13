@@ -97,7 +97,9 @@ export default function SignUpPage() {
       })
 
       if (signInResult?.ok) {
-        router.push('/')
+        // New users go through the onboarding flow (fish design →
+        // digital ID → welcome). Each step is skippable.
+        router.push('/onboarding/fish')
         router.refresh()
       } else {
         // Registration worked but signin failed - redirect to signin page
