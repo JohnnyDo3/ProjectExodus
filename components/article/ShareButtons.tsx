@@ -7,8 +7,8 @@
  * is required.
  */
 
-import { useState } from 'react'
-import { Linkedin, Mail, Link2, Check } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Linkedin, Mail, Link2, Check, Share2 } from 'lucide-react'
 
 interface ShareButtonsProps {
   url: string
@@ -19,6 +19,23 @@ interface ShareButtonsProps {
 
 export function ShareButtons({ url, title, description, className = '' }: ShareButtonsProps) {
   const [copied, setCopied] = useState(false)
+  const [canNativeShare, setCanNativeShare] = useState(false)
+
+  // navigator.share is only available in browser AND on https/localhost.
+  // Check after mount to avoid SSR / hydration mismatch (server can't
+  // know what the client supports).
+  useEffect(() => {
+    setCanNativeShare(typeof navigator !== 'undefined' && typeof navigator.share === 'function')
+  }, [])
+
+  const nativeShare = async () => {
+    try {
+      await navigator.share({ title, text: description, url })
+    } catch {
+      // User dismissed or browser denied — silent fallback. The
+      // platform buttons next to it still work.
+    }
+  }
 
   const encodedUrl = encodeURIComponent(url)
   const encodedTitle = encodeURIComponent(title)
@@ -67,6 +84,17 @@ export function ShareButtons({ url, title, description, className = '' }: ShareB
       <span className="text-xs font-bold uppercase tracking-wider text-theme-muted mr-1 hidden sm:inline">
         Share
       </span>
+      {canNativeShare && (
+        <button
+          type="button"
+          onClick={nativeShare}
+          aria-label="Share via your device"
+          title="Share"
+          className="inline-flex items-center justify-center w-9 h-9 rounded-full border-2 border-theme-primary text-theme-primary hover:bg-[var(--primary)]/10 transition-colors"
+        >
+          <Share2 className="w-4 h-4" />
+        </button>
+      )}
       {targets.map(({ key, label, href, icon: Icon }) => (
         <a
           key={key}
