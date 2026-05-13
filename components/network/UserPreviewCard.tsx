@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { Button } from '@/components/ui/Button'
 import {
   Mail,
+  MessageCircle,
   Phone,
   UserPlus,
   UserCheck,
