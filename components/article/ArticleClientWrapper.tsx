@@ -12,6 +12,7 @@ import { formatDistanceToNow } from 'date-fns'
 import { MarkdownContent } from '@/components/article/MarkdownContent'
 import { ReferencesWidget } from '@/components/article/ReferencesWidget'
 import { FootnotesWidget } from '@/components/article/FootnotesWidget'
+import { CorrectionsBanner } from '@/components/article/CorrectionsBanner'
 import { PeerReviewWidget } from '@/components/article/PeerReviewWidget'
 import { AuthorBusinessCard } from '@/components/article/AuthorBusinessCard'
 import { extractFootnotes } from '@/lib/article/extractFootnotes'
@@ -154,6 +155,16 @@ export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
               </div>
             </div>
           </div>
+        )}
+
+        {/* Editorial correction / editor's note — surfaced prominently
+            above the body when present. Drives reader trust by being
+            transparent about post-publish edits. */}
+        {(article as { correctionsNote?: string | null; correctionsNoteAt?: string | null }).correctionsNote && (
+          <CorrectionsBanner
+            note={(article as { correctionsNote?: string | null }).correctionsNote!}
+            noteAt={(article as { correctionsNoteAt?: string | null }).correctionsNoteAt || null}
+          />
         )}
 
         <Card className="bg-[var(--card)] border-2 border-[var(--border)]">

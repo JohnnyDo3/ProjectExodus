@@ -445,6 +445,12 @@ export async function POST(request: NextRequest) {
         authorId: session.user.id,
         seoTitle: stripHtml(String(body.seoTitle || title)).slice(0, CONTENT_LIMITS.MAX_TITLE_LENGTH),
         seoDescription: stripHtml(String(body.seoDescription || excerpt)).slice(0, CONTENT_LIMITS.MAX_EXCERPT_LENGTH),
+        ...(body.correctionsNote
+          ? {
+              correctionsNote: stripHtml(String(body.correctionsNote)).slice(0, 1500),
+              correctionsNoteAt: new Date(),
+            }
+          : {}),
         references: referencesData.length > 0 ? {
           create: referencesData,
         } : undefined,

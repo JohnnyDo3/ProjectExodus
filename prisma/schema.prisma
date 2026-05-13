@@ -473,6 +473,13 @@ model Article {
   readBy          ArticleRead[]
   seoTitle        String?
   seoDescription  String?
+  // Editorial correction / editor's note. When present, surfaced as a
+  // banner at the top of the article (above the body) so readers can
+  // see when content has been amended after publish. Plain text;
+  // intentionally separate from `content` so it can be revised
+  // without rewriting the article itself.
+  correctionsNote  String?          @db.Text
+  correctionsNoteAt DateTime?       // when the note was most recently set
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
   publishedAt     DateTime?

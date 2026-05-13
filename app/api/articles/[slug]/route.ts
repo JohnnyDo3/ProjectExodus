@@ -338,6 +338,16 @@ export async function PUT(
         publishedAt: body.status === 'PUBLISHED' && !body.publishedAt ? new Date() : undefined,
         seoTitle: body.seoTitle ? stripHtml(body.seoTitle) : undefined,
         seoDescription: body.seoDescription ? stripHtml(body.seoDescription) : undefined,
+        // Editorial correction / editor's note. Always strip HTML —
+        // this surfaces as a banner, not free-form rich text. Empty
+        // string clears the note. The timestamp is set whenever the
+        // note text changes (including being cleared).
+        ...(body.correctionsNote !== undefined
+          ? {
+              correctionsNote: stripHtml(String(body.correctionsNote)).slice(0, 1500) || null,
+              correctionsNoteAt: new Date(),
+            }
+          : {}),
       },
       include: {
         category: true,

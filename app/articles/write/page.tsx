@@ -63,6 +63,7 @@ import {
   MoreHorizontal,
   Image as ImageIcon,
   Link as LinkIcon,
+  AlertTriangle,
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 
@@ -140,6 +141,7 @@ export default function WriteArticlePage() {
     categoryId: string
     tags: string
     references: ParsedReference[]
+    correctionsNote: string
   }>({
     title: '',
     content: '',
@@ -148,6 +150,7 @@ export default function WriteArticlePage() {
     categoryId: '',
     tags: '',
     references: [],
+    correctionsNote: '',
   })
 
   // Sidebar widgets
@@ -285,6 +288,7 @@ export default function WriteArticlePage() {
           categoryId: parsed.suggestedCategory || '',
           tags: '',
           references: parsed.references.slice(0, CONTENT_LIMITS.MAX_REFERENCES),
+          correctionsNote: '',
         })
 
         setViewMode('preview')
@@ -564,6 +568,7 @@ export default function WriteArticlePage() {
             format: r.format || '',
           })),
           tags: articleData.tags.split(',').map(t => t.trim()).filter(Boolean).slice(0, 20),
+          correctionsNote: articleData.correctionsNote || null,
         }),
       })
 
@@ -1051,6 +1056,34 @@ We support MLA, APA, and Chicago citation formats."
                             references={articleData.references}
                             onUpdate={(refs) => setArticleData(prev => ({ ...prev, references: refs }))}
                           />
+
+                          {/* Editor's note / corrections — surfaced as a
+                              banner on the published article so readers
+                              can see when content has been amended
+                              after publish. Plain text only. */}
+                          <Card className="bg-[var(--card)] border-2 border-[var(--border)]">
+                            <CardHeader className="pb-3">
+                              <CardTitle className="text-sm font-bold flex items-center gap-2">
+                                <AlertTriangle className="w-4 h-4 text-amber-500" />
+                                Editor&apos;s note (optional)
+                              </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <Textarea
+                                value={articleData.correctionsNote}
+                                onChange={(e) => setArticleData(prev => ({ ...prev, correctionsNote: e.target.value.slice(0, 1500) }))}
+                                placeholder="e.g. Corrected the figure cited in para 3 (was 47%, should be 74%) — 2024-03-15"
+                                rows={4}
+                                className="text-sm"
+                              />
+                              <p className="text-[11px] text-theme-muted mt-2 leading-relaxed">
+                                When set, this appears as an amber banner above
+                                the article body — used for transparency on
+                                post-publish corrections.
+                              </p>
+                            </CardContent>
+                          </Card>
+
                           <AuthorPreview session={session} />
                           <SharePreview />
                         </div>
