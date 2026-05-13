@@ -91,6 +91,8 @@ const Figcaption = Node.create({
 // it doesn't clobber existing block quotes. Renders as
 // <blockquote class="pull-quote">...</blockquote>; styled in globals.css
 // with the larger Playfair Display + border-top/bottom treatment.
+// Toggled from the toolbar via the built-in toggleWrap command, so
+// no custom addCommands needed.
 const PullQuote = Node.create({
   name: 'pullquote',
   group: 'block',
@@ -101,14 +103,6 @@ const PullQuote = Node.create({
   },
   renderHTML({ HTMLAttributes }) {
     return ['blockquote', mergeAttributes(HTMLAttributes, { class: 'pull-quote' }), 0]
-  },
-  addCommands() {
-    return {
-      togglePullQuote:
-        () =>
-        ({ commands }) =>
-          commands.toggleWrap(this.name),
-    } as Record<string, unknown> as never
   },
 })
 
@@ -683,17 +677,10 @@ export default function TipTapEditor({
           <button
             type="button"
             onClick={() => {
-              // Toggle a pull-quote wrap around the selection / current block.
-              // Falls back to a plain blockquote if the custom command
-              // isn't recognised (extension config error).
-              const chain = editor.chain().focus() as ReturnType<typeof editor.chain> & {
-                togglePullQuote?: () => ReturnType<typeof editor.chain>
-              }
-              if (chain.togglePullQuote) {
-                chain.togglePullQuote!().run()
-              } else {
-                editor.chain().focus().toggleBlockquote().run()
-              }
+              // toggleWrap is built into TipTap; wraps the current
+              // block-level selection in a pullquote node (or unwraps
+              // if it's already inside one).
+              editor.chain().focus().toggleWrap('pullquote').run()
             }}
             className={`toolbar-btn ${editor.isActive('pullquote') ? 'active' : ''}`}
             title="Pull-quote"
