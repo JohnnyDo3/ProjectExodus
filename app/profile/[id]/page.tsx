@@ -455,7 +455,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
                     <li key={i} className="text-[var(--foreground)]">
                       {typeof l === 'string'
                         ? l
-                        : (<><span className="font-bold">{l.name}</span>{l.level && <span className="text-theme-muted"> — {l.level}</span>}</>)}
+                        : (<><span className="font-bold">{l.name}</span>{!!l.level && <span className="text-theme-muted"> — {l.level}</span>}</>)}
                     </li>
                   ))}
                 </ul>
