@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
-import { Menu, X, Leaf, User, LogOut, Settings, Users, ChevronRight, MessageCircle, Bell, ChevronDown, Lock, Crown, GraduationCap, Fish, Search } from 'lucide-react'
+import { Menu, X, Leaf, User, LogOut, Settings, Users, ChevronRight, MessageCircle, Bell, ChevronDown, Lock, Crown, GraduationCap, Fish, Search, Compass } from 'lucide-react'
 import NotificationBell from '@/components/notifications/NotificationBell'
 import { useDigitalScrollContext } from '@/components/learning/DigitalScroll/DigitalScrollContext'
 import { useSageContextSafe } from '@/components/ai/SageContext'
@@ -496,10 +496,10 @@ export function Header() {
                           href="/my/volition"
                           className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
                           onClick={() => setUserMenuOpen(false)}
-                          title="My Tank"
+                          title="Your Volition"
                         >
-                          <Fish className="w-4 h-4 text-theme-muted" />
-                          <span className="font-medium text-[var(--foreground)]">My Tank</span>
+                          <Compass className="w-4 h-4 text-theme-muted" />
+                          <span className="font-medium text-[var(--foreground)]">Your Volition</span>
                         </Link>
                         <Link
                           href="/settings"
@@ -716,8 +716,8 @@ export function Header() {
                   <Link href="/my/volition" onClick={() => setMobileMenuOpen(false)}>
                     <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-[var(--muted)] hover:bg-theme-primary/10 transition-colors">
                       <div className="flex items-center gap-3">
-                        <Fish className="w-5 h-5 text-cyan-500" />
-                        <span className="font-bold text-[var(--foreground)]">My Tank</span>
+                        <Compass className="w-5 h-5 text-theme-primary" />
+                        <span className="font-bold text-[var(--foreground)]">Your Volition</span>
                       </div>
                       <ChevronRight className="w-5 h-5 text-theme-muted" />
                     </div>
