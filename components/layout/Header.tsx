@@ -589,7 +589,7 @@ export function Header() {
                       href={item.href}
                       className={`flex items-center justify-between py-4 px-4 rounded-xl font-bold text-lg transition-all ${
                         isActive
-                          ? 'bg-theme-primary text-[var(--primary-foreground)]'
+                          ? 'bg-theme-primary/10 text-theme-primary border-l-4 border-theme-primary pl-3'
                           : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-theme-primary/10'
                       }`}
                       onClick={() => setMobileMenuOpen(false)}
@@ -765,7 +765,7 @@ export function Header() {
                   <Link
                     href="/auth/signup"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="w-full flex items-center justify-center py-4 px-4 rounded-xl font-bold bg-[var(--primary)] text-[var(--primary-foreground)] shadow-lg"
+                    className="w-full flex items-center justify-center py-4 px-4 rounded-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 text-white hover:from-emerald-500 hover:to-teal-500 shadow-lg"
                   >
                     Get Started
                   </Link>
