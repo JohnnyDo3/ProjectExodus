@@ -18,6 +18,7 @@ import {
   UserPlus,
   UserCheck,
   Loader2,
+  MessageCircle,
   Sparkles,
   Briefcase,
 } from 'lucide-react'
