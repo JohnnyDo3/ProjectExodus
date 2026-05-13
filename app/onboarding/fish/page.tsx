@@ -4,9 +4,7 @@
  * Step 1 of post-signup onboarding: customize the user's fishbowl
  * fish. Reuses the existing FishCustomizer modal — its onSave hits the
  * fish-customize API, then we route to step 2. Closing the modal (the
- * X button) is treated as "skip this step" and also routes to step 2.
- * A small "Skip everything" link floats above the modal for users who
- * want to jump straight to the home page.
+ * X button) and the bottom "Skip this step" link both route to step 2.
  */
 
 import { useRouter } from 'next/navigation'
@@ -47,7 +45,6 @@ export default function FishOnboardingPage() {
   }
 
   const skipToNext = () => router.push('/onboarding/profile')
-  const skipEverything = () => router.push('/onboarding/welcome')
 
   if (status === 'loading' || !session?.user?.id) {
     return (
@@ -65,14 +62,15 @@ export default function FishOnboardingPage() {
         onSave={saveAndContinue}
         onClose={skipToNext}
       />
-      {/* Skip-everything link floats above the modal so it's always
-          reachable. z-[400] beats the modal's z-[300]. */}
-      <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[400]">
+      {/* Skip-this-step link floats at the bottom of the screen above
+          the modal so it's always reachable. z-[400] beats the modal's
+          z-[300]. */}
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[400]">
         <button
-          onClick={skipEverything}
+          onClick={skipToNext}
           className="px-4 py-2 rounded-full bg-black/60 backdrop-blur text-white/80 hover:text-white text-xs font-bold uppercase tracking-wider border border-white/20 hover:border-white/40 transition-colors"
         >
-          Skip everything →
+          Skip this step →
         </button>
       </div>
     </>

@@ -289,7 +289,7 @@ export default function SignUpPage() {
                 className="w-full text-lg py-6 font-black shadow-lg"
                 disabled={loading}
               >
-                {loading ? 'CREATING ACCOUNT...' : 'CREATE ACCOUNT'}
+                {loading ? 'CREATING ACCOUNT...' : 'CONTINUE'}
               </Button>
 
               <div className="text-center text-sm text-theme-muted">

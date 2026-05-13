@@ -41,7 +41,7 @@ export default function WelcomeOnboardingPage() {
           onClick={() => router.push('/')}
           className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-theme-primary text-black font-black text-base hover:opacity-90 shadow-lg"
         >
-          Take me in
+          Create Account
           <ArrowRight className="w-5 h-5" />
         </button>
 
