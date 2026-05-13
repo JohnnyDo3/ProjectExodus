@@ -47,7 +47,9 @@ export async function GET(
     where: { userId, skill: { in: skills } },
     _count: { skill: true },
   })
-  const countBySkill = new Map(grouped.map(g => [g.skill, g._count.skill]))
+  const countBySkill = new Map<string, number>(
+    grouped.map((g: { skill: string; _count: { skill: number } }) => [g.skill, g._count.skill]),
+  )
 
   let mineSet: Set<string> = new Set()
   if (session?.user?.id) {
@@ -55,7 +57,7 @@ export async function GET(
       where: { userId, endorserId: session.user.id, skill: { in: skills } },
       select: { skill: true },
     })
-    mineSet = new Set(mine.map(e => e.skill))
+    mineSet = new Set(mine.map((e: { skill: string }) => e.skill))
   }
 
   return NextResponse.json({
