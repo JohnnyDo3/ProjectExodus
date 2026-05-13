@@ -131,6 +131,9 @@ export default function WriteArticlePage() {
   const [pastedHtml, setPastedHtml] = useState<string | null>(null)
   // First-time preview guide overlay state.
   const [showGuide, setShowGuide] = useState(false)
+  // Sage tag-suggestion state.
+  const [tagsLoading, setTagsLoading] = useState(false)
+  const [tagsError, setTagsError] = useState<string | null>(null)
 
   // Parsed article data
   const [articleData, setArticleData] = useState<{
@@ -1028,15 +1031,58 @@ We support MLA, APA, and Chicago citation formats."
                               />
                             </div>
                             <div data-tour-id="tags">
-                              <label className="text-xs font-medium text-[var(--muted-foreground)] mb-1 block">
-                                Tags
-                              </label>
+                              <div className="flex items-center justify-between mb-1">
+                                <label className="text-xs font-medium text-[var(--muted-foreground)]">
+                                  Tags
+                                </label>
+                                <button
+                                  type="button"
+                                  disabled={tagsLoading || (!articleData.title.trim() && !articleData.content.replace(/<[^>]+>/g, '').trim())}
+                                  onClick={async () => {
+                                    setTagsLoading(true)
+                                    setTagsError(null)
+                                    try {
+                                      const res = await fetch('/api/articles/suggest-tags', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({
+                                          title: articleData.title,
+                                          excerpt: articleData.excerpt,
+                                          content: articleData.content,
+                                        }),
+                                      })
+                                      const data = await res.json()
+                                      if (!res.ok) {
+                                        throw new Error(data.error || 'Couldn\'t suggest tags.')
+                                      }
+                                      const suggested: string[] = Array.isArray(data.tags) ? data.tags : []
+                                      // Merge with what's already in the field; dedupe.
+                                      const existing = articleData.tags
+                                        .split(',').map(t => t.trim()).filter(Boolean)
+                                      const merged = Array.from(new Set([...existing, ...suggested]))
+                                      setArticleData(prev => ({ ...prev, tags: merged.join(', ') }))
+                                    } catch (err) {
+                                      setTagsError(err instanceof Error ? err.message : 'Suggestion failed.')
+                                    } finally {
+                                      setTagsLoading(false)
+                                    }
+                                  }}
+                                  className="inline-flex items-center gap-1 text-[11px] font-bold text-theme-primary hover:opacity-80 disabled:opacity-40"
+                                  title="Let Sage suggest tags from your article"
+                                >
+                                  <Sparkles className="w-3 h-3" />
+                                  {tagsLoading ? 'Thinking…' : 'Suggest with Sage'}
+                                </button>
+                              </div>
                               <Input
                                 value={articleData.tags}
                                 onChange={(e) => setArticleData(prev => ({ ...prev, tags: e.target.value }))}
                                 placeholder="sustainability, research"
                                 className="text-sm"
                               />
+                              {tagsError && (
+                                <p className="mt-1 text-[11px] text-red-500">{tagsError}</p>
+                              )}
                             </div>
                             <div data-tour-id="cover">
                               <label className="text-xs font-medium text-[var(--muted-foreground)] mb-1 block">

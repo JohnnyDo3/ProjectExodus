@@ -14,6 +14,7 @@ import { ReferencesWidget } from '@/components/article/ReferencesWidget'
 import { FootnotesWidget } from '@/components/article/FootnotesWidget'
 import { TableOfContents } from '@/components/article/TableOfContents'
 import { CorrectionsBanner } from '@/components/article/CorrectionsBanner'
+import { MinimalAuthorCard } from '@/components/article/MinimalAuthorCard'
 import { PeerReviewWidget } from '@/components/article/PeerReviewWidget'
 import { AuthorBusinessCard } from '@/components/article/AuthorBusinessCard'
 import { extractFootnotes } from '@/lib/article/extractFootnotes'
@@ -388,6 +389,29 @@ export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
 
       {/* Sidebar */}
       <aside className="md:col-span-1 space-y-6">
+        {/* Cover image — hero shot for the article. Sits at the top of
+            the sidebar so it's the first thing readers see alongside
+            the body. Squared off card so it matches the rest of the
+            sidebar widgets visually. */}
+        {article.coverImage && (
+          <div className="rounded-xl overflow-hidden border-2 border-[var(--border)] bg-[var(--card)]">
+            {/* Plain <img> rather than next/image so external URLs
+                (Cloudinary, etc.) don't need domain allow-listing. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={article.coverImage}
+              alt={article.title}
+              className="w-full h-auto block"
+              loading="lazy"
+            />
+          </div>
+        )}
+
+        {/* Minimal author card — name + avatar (or fishbowl fish as
+            default). Sits right below the cover so the byline pairs
+            with the hero image. */}
+        {article.author && <MinimalAuthorCard author={article.author} />}
+
         {/* Table of contents — auto-derived from the body's h2/h3 tags.
             Sticky on desktop so it follows the reader through long
             articles. Self-suppresses on short articles. */}
@@ -408,11 +432,6 @@ export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
           peerReviews={reviews}
           onReviewsChange={setReviews}
         />
-
-        {/* Author Business Card */}
-        {article.author && (
-          <AuthorBusinessCard author={article.author} />
-        )}
 
         {/* Share Card */}
         <Card className="bg-[var(--card)] border-2 border-[var(--border)]">

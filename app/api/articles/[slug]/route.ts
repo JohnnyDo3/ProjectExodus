@@ -60,6 +60,11 @@ export async function GET(
             expertise: true,
             guardianArchetype: true,
             declaration: true,
+            // Used by the published article's minimal author card to
+            // render the user's fishbowl fish as the default avatar
+            // when they don't have a profile image set.
+            stockScore: true,
+            fishCustomization: true,
             _count: {
               select: {
                 followers: true,
