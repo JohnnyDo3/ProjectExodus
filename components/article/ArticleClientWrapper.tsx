@@ -12,6 +12,7 @@ import { formatDistanceToNow } from 'date-fns'
 import { MarkdownContent } from '@/components/article/MarkdownContent'
 import { ReferencesWidget } from '@/components/article/ReferencesWidget'
 import { FootnotesWidget } from '@/components/article/FootnotesWidget'
+import { TableOfContents } from '@/components/article/TableOfContents'
 import { CorrectionsBanner } from '@/components/article/CorrectionsBanner'
 import { PeerReviewWidget } from '@/components/article/PeerReviewWidget'
 import { AuthorBusinessCard } from '@/components/article/AuthorBusinessCard'
@@ -387,6 +388,13 @@ export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
 
       {/* Sidebar */}
       <aside className="md:col-span-1 space-y-6">
+        {/* Table of contents — auto-derived from the body's h2/h3 tags.
+            Sticky on desktop so it follows the reader through long
+            articles. Self-suppresses on short articles. */}
+        <div className="md:sticky md:top-24 md:z-10">
+          <TableOfContents body={bodyWithoutFootnotes} />
+        </div>
+
         {/* Footnotes Widget — sits above References so the in-line
             citation markers in the body have an obvious anchor. */}
         <FootnotesWidget footnotes={footnotes} />
