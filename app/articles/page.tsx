@@ -3050,8 +3050,11 @@ export default function ArticlesPage() {
         ))}
 
         {/* ============ KEYSTONE DIVIDER - Grand Ornate Roman Architectural Masterpiece ============ */}
-        {/* mx-16 matches the pillar width (w-16) to prevent overflow into Corinthian columns */}
-        <div className="h-24 shadow-2xl relative overflow-hidden mx-16" style={{ background: 'linear-gradient(to bottom, #d97706, #b45309, #78350f, #451a03)', borderTop: '3px solid rgba(251, 191, 36, 0.7)' }}>
+        {/* On desktop, the entablature is inset by the pillar width
+            (mx-16) so it doesn't overflow into the Corinthian columns.
+            Columns are hidden on small screens so we collapse the inset
+            there to keep content readable. */}
+        <div className="h-24 shadow-2xl relative overflow-hidden mx-2 sm:mx-8 lg:mx-16" style={{ background: 'linear-gradient(to bottom, #d97706, #b45309, #78350f, #451a03)', borderTop: '3px solid rgba(251, 191, 36, 0.7)' }}>
 
           {/* === LAYER 1: TOP GREEK KEY MEANDER - Full Width === */}
           <div className="absolute top-0 left-0 right-0 h-5 overflow-hidden">
@@ -3248,7 +3251,7 @@ export default function ArticlesPage() {
         {/* ============ SHELF 1 ============ */}
         <div className="relative pt-6 pb-2">
           {/* Centered Category filter bar with Roman styling */}
-          <div className="flex items-center justify-center px-12 mb-3">
+          <div className="flex items-center justify-center px-4 sm:px-8 lg:px-12 mb-3">
             <div className="flex items-center gap-3 px-4 py-1.5 bg-gradient-to-r from-amber-900/40 via-amber-800/60 to-amber-900/40 rounded-sm border-y border-amber-600/30">
               {/* Left decorative element */}
               <div className="flex items-center gap-2">
@@ -3286,7 +3289,7 @@ export default function ArticlesPage() {
           </div>
 
           {/* Scrolls container - sits ON the shelf */}
-          <div className="relative mx-16">
+          <div className="relative mx-2 sm:mx-8 lg:mx-16">
             <div className="flex items-end justify-center gap-2.5 px-6 pb-0 min-h-[85px] flex-wrap overflow-hidden">
               {/* Leading ghost scrolls - add some before articles */}
               {Array.from({ length: Math.max(0, Math.floor((16 - getShelfArticles(0, shelf1Category).length) / 3)) }).map((_, i) => (
@@ -3508,7 +3511,7 @@ export default function ArticlesPage() {
         {/* ============ SHELF 2 ============ */}
         <div className="relative pt-6 pb-2">
           {/* Centered Category filter bar with Roman styling */}
-          <div className="flex items-center justify-center px-12 mb-3">
+          <div className="flex items-center justify-center px-4 sm:px-8 lg:px-12 mb-3">
             <div className="flex items-center gap-3 px-4 py-1.5 bg-gradient-to-r from-amber-900/40 via-amber-800/60 to-amber-900/40 rounded-sm border-y border-amber-600/30">
               {/* Left decorative element */}
               <div className="flex items-center gap-2">
@@ -3546,7 +3549,7 @@ export default function ArticlesPage() {
           </div>
 
           {/* Scrolls container */}
-          <div className="relative mx-16">
+          <div className="relative mx-2 sm:mx-8 lg:mx-16">
             <div className="flex items-end justify-center gap-2.5 px-6 pb-0 min-h-[85px] flex-wrap overflow-hidden">
               {/* Leading ghost scrolls - add some before articles */}
               {Array.from({ length: Math.max(0, Math.floor((16 - getShelfArticles(1, shelf2Category).length) / 3)) }).map((_, i) => (
@@ -3756,7 +3759,7 @@ export default function ArticlesPage() {
         {/* ============ SHELF 3 ============ */}
         <div className="relative pt-6 pb-2">
           {/* Centered Category filter bar with Roman styling */}
-          <div className="flex items-center justify-center px-12 mb-3">
+          <div className="flex items-center justify-center px-4 sm:px-8 lg:px-12 mb-3">
             <div className="flex items-center gap-3 px-4 py-1.5 bg-gradient-to-r from-amber-900/40 via-amber-800/60 to-amber-900/40 rounded-sm border-y border-amber-600/30">
               {/* Left decorative element */}
               <div className="flex items-center gap-2">
@@ -3794,7 +3797,7 @@ export default function ArticlesPage() {
           </div>
 
           {/* Scrolls container */}
-          <div className="relative mx-16">
+          <div className="relative mx-2 sm:mx-8 lg:mx-16">
             <div className="flex items-end justify-center gap-2.5 px-6 pb-0 min-h-[85px] flex-wrap overflow-hidden">
               {/* Leading ghost scrolls - add some before articles */}
               {Array.from({ length: Math.max(0, Math.floor((16 - getShelfArticles(2, shelf3Category).length) / 3)) }).map((_, i) => (
@@ -4297,10 +4300,10 @@ export default function ArticlesPage() {
                       </button>
                     </div>
                     {session && (
-                      <Link href="/articles/write" className="hidden sm:block">
-                        <Button className="bg-gradient-to-br from-emerald-700 to-emerald-900 text-white hover:from-emerald-600 hover:to-emerald-800 font-bold px-5 py-3 rounded-md shadow-lg whitespace-nowrap border border-emerald-500/30">
-                          <PenSquare className="w-4 h-4 mr-2" />
-                          Inscribe
+                      <Link href="/articles/write">
+                        <Button className="bg-gradient-to-br from-emerald-700 to-emerald-900 text-white hover:from-emerald-600 hover:to-emerald-800 font-bold px-3 sm:px-5 py-3 rounded-md shadow-lg whitespace-nowrap border border-emerald-500/30">
+                          <PenSquare className="w-4 h-4 sm:mr-2" />
+                          <span className="hidden sm:inline">Inscribe</span>
                         </Button>
                       </Link>
                     )}
@@ -4784,7 +4787,7 @@ export default function ArticlesPage() {
                       <div
                         key={article.id}
                         onClick={() => setPreviewArticle(article)}
-                        className="group cursor-pointer flex-shrink-0 w-[260px] sm:w-[300px] bg-gradient-to-b from-stone-800/80 to-stone-900/80 rounded-xl overflow-hidden border border-amber-700/20 hover:border-amber-500/50 transition-all hover:shadow-xl hover:shadow-amber-900/20 hover:-translate-y-1 backdrop-blur-sm"
+                        className="group cursor-pointer flex-shrink-0 w-[220px] sm:w-[260px] lg:w-[300px] bg-gradient-to-b from-stone-800/80 to-stone-900/80 rounded-xl overflow-hidden border border-amber-700/20 hover:border-amber-500/50 transition-all hover:shadow-xl hover:shadow-amber-900/20 hover:-translate-y-1 backdrop-blur-sm"
                       >
                         {/* Cover Image */}
                         <div className="relative h-36 overflow-hidden bg-stone-800">
