@@ -496,10 +496,10 @@ export function Header() {
                           href="/my/volition"
                           className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
                           onClick={() => setUserMenuOpen(false)}
-                          title="Your Volition"
+                          title="My Volition"
                         >
-                          <Compass className="w-4 h-4 text-theme-muted" />
-                          <span className="font-medium text-[var(--foreground)]">Your Volition</span>
+                          <Compass className="w-4 h-4 text-theme-muted shrink-0" />
+                          <span className="font-medium text-[var(--foreground)] whitespace-nowrap">My Volition</span>
                         </Link>
                         <Link
                           href="/settings"
@@ -716,8 +716,8 @@ export function Header() {
                   <Link href="/my/volition" onClick={() => setMobileMenuOpen(false)}>
                     <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-[var(--muted)] hover:bg-theme-primary/10 transition-colors">
                       <div className="flex items-center gap-3">
-                        <Compass className="w-5 h-5 text-theme-primary" />
-                        <span className="font-bold text-[var(--foreground)]">Your Volition</span>
+                        <Compass className="w-5 h-5 text-theme-primary shrink-0" />
+                        <span className="font-bold text-[var(--foreground)] whitespace-nowrap">My Volition</span>
                       </div>
                       <ChevronRight className="w-5 h-5 text-theme-muted" />
                     </div>
