@@ -31,6 +31,10 @@ interface ArticleClientWrapperProps {
     peerReviews: any[]
     tags: any[]
     comments: any[]
+    // Optional fields surfaced in the published-article layout.
+    coverImage?: string | null
+    correctionsNote?: string | null
+    correctionsNoteAt?: string | null
     author: {
       id: string
       name: string | null
@@ -44,6 +48,10 @@ interface ArticleClientWrapperProps {
       expertise?: string[]
       guardianArchetype?: string | null
       declaration?: string | null
+      // Used by MinimalAuthorCard to render the author's fishbowl fish
+      // as a default avatar when they don't have a profile image.
+      stockScore?: number | null
+      fishCustomization?: import('@/components/fishbowl/FishSpecies').FishCustomization | null
       _count?: {
         followers: number
         following: number
@@ -163,10 +171,10 @@ export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
         {/* Editorial correction / editor's note — surfaced prominently
             above the body when present. Drives reader trust by being
             transparent about post-publish edits. */}
-        {(article as { correctionsNote?: string | null; correctionsNoteAt?: string | null }).correctionsNote && (
+        {article.correctionsNote && (
           <CorrectionsBanner
-            note={(article as { correctionsNote?: string | null }).correctionsNote!}
-            noteAt={(article as { correctionsNoteAt?: string | null }).correctionsNoteAt || null}
+            note={article.correctionsNote}
+            noteAt={article.correctionsNoteAt || null}
           />
         )}
 
