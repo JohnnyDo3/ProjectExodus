@@ -1,7 +1,7 @@
 'use client'
 
 import { useEditor, EditorContent } from '@tiptap/react'
-import { Extension } from '@tiptap/core'
+import { Extension, Node, mergeAttributes } from '@tiptap/core'
 import StarterKit from '@tiptap/starter-kit'
 import Link from '@tiptap/extension-link'
 import Image from '@tiptap/extension-image'
@@ -53,6 +53,64 @@ interface TipTapEditorProps {
   placeholder?: string
   onPaste?: (text: string) => void
 }
+
+// Figure / Figcaption nodes for journalism-style captioned images.
+// StarterKit doesn't ship these, so we add them minimally:
+//   <figure>
+//     <img ... />
+//     <figcaption>Caption text · <em>Photo credit</em></figcaption>
+//   </figure>
+// renderHTML passes attributes through, parseHTML matches the tags
+// directly so pasted HTML containing figures (e.g. mammoth's DOCX
+// output) is preserved.
+const Figure = Node.create({
+  name: 'figure',
+  group: 'block',
+  content: 'image figcaption?',
+  isolating: true,
+  parseHTML() {
+    return [{ tag: 'figure' }]
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ['figure', mergeAttributes(HTMLAttributes), 0]
+  },
+})
+
+const Figcaption = Node.create({
+  name: 'figcaption',
+  content: 'inline*',
+  parseHTML() {
+    return [{ tag: 'figcaption' }]
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ['figcaption', mergeAttributes(HTMLAttributes), 0]
+  },
+})
+
+// Pull-quote — a separate node from the regular Blockquote so toggling
+// it doesn't clobber existing block quotes. Renders as
+// <blockquote class="pull-quote">...</blockquote>; styled in globals.css
+// with the larger Playfair Display + border-top/bottom treatment.
+const PullQuote = Node.create({
+  name: 'pullquote',
+  group: 'block',
+  content: 'block+',
+  defining: true,
+  parseHTML() {
+    return [{ tag: 'blockquote.pull-quote' }]
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ['blockquote', mergeAttributes(HTMLAttributes, { class: 'pull-quote' }), 0]
+  },
+  addCommands() {
+    return {
+      togglePullQuote:
+        () =>
+        ({ commands }) =>
+          commands.toggleWrap(this.name),
+    } as Record<string, unknown> as never
+  },
+})
 
 // Tab key handler. TipTap's StarterKit only binds Tab when the caret is
 // inside a list item (sink / lift the item). Outside lists it does
@@ -216,6 +274,9 @@ export default function TipTapEditor({
       TextStyle,
       Color,
       TabIndent,
+      Figure,
+      Figcaption,
+      PullQuote,
     ],
     content,
     onUpdate: ({ editor }) => {
@@ -275,11 +336,34 @@ export default function TipTapEditor({
     }
   }
 
+  // Escape user-supplied caption / credit text for safe HTML insertion.
+  // Used only for figure / figcaption text, which the schema-aware
+  // sanitizer will validate again on save.
+  const escapeForHtml = (s: string) =>
+    s
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+
+  const insertImageWithMetadata = (src: string) => {
+    const caption = (window.prompt('Caption (optional — leave blank to skip):') || '').trim()
+    const credit = (window.prompt('Photo credit (optional — e.g. "Photo: Jane Smith"):') || '').trim()
+    if (!caption && !credit) {
+      // No metadata — fall back to plain image insertion.
+      editor.chain().focus().setImage({ src }).run()
+      return
+    }
+    const captionParts: string[] = []
+    if (caption) captionParts.push(escapeForHtml(caption))
+    if (credit) captionParts.push(`<em>${escapeForHtml(credit)}</em>`)
+    const figureHtml = `<figure><img src="${escapeForHtml(src)}" alt="${escapeForHtml(caption)}" /><figcaption>${captionParts.join(' · ')}</figcaption></figure>`
+    editor.chain().focus().insertContent(figureHtml).run()
+  }
+
   const addImageFromUrl = () => {
     const url = window.prompt('Enter image URL:')
-    if (url) {
-      editor.chain().focus().setImage({ src: url }).run()
-    }
+    if (url) insertImageWithMetadata(url)
     setShowImageMenu(false)
   }
 
@@ -317,7 +401,7 @@ export default function TipTapEditor({
 
       const data = await res.json()
       if (data.success && data.data?.url) {
-        editor.chain().focus().setImage({ src: data.data.url }).run()
+        insertImageWithMetadata(data.data.url)
       } else {
         alert(data.error || 'Failed to upload image.')
       }
@@ -595,6 +679,26 @@ export default function TipTapEditor({
             title="Quote"
           >
             <Quote size={18} />
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              // Toggle a pull-quote wrap around the selection / current block.
+              // Falls back to a plain blockquote if the custom command
+              // isn't recognised (extension config error).
+              const chain = editor.chain().focus() as ReturnType<typeof editor.chain> & {
+                togglePullQuote?: () => ReturnType<typeof editor.chain>
+              }
+              if (chain.togglePullQuote) {
+                chain.togglePullQuote!().run()
+              } else {
+                editor.chain().focus().toggleBlockquote().run()
+              }
+            }}
+            className={`toolbar-btn ${editor.isActive('pullquote') ? 'active' : ''}`}
+            title="Pull-quote"
+          >
+            <Quote size={18} className="text-theme-primary" />
           </button>
           <button
             type="button"
@@ -1028,6 +1132,28 @@ export default function TipTapEditor({
           height: auto;
           border-radius: 8px;
           margin: 1em 0;
+        }
+
+        .editor-content .ProseMirror figure {
+          margin: 1.5em 0;
+        }
+
+        .editor-content .ProseMirror figure img {
+          margin: 0;
+        }
+
+        .editor-content .ProseMirror figcaption {
+          margin-top: 0.5em;
+          padding: 0 0.25em;
+          font-size: 0.875em;
+          color: var(--muted-foreground);
+          font-style: normal;
+          line-height: 1.5;
+        }
+
+        .editor-content .ProseMirror figcaption em {
+          font-style: italic;
+          opacity: 0.85;
         }
 
         .editor-content .ProseMirror a {

@@ -18,11 +18,24 @@ export function sanitizeHtml(html: string): string {
   const config = {
     ALLOWED_TAGS: [
       'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-      'a', 'strong', 'em', 'ul', 'ol', 'li',
-      'br', 'div', 'span'
+      'a', 'strong', 'em', 'b', 'i', 'u', 's',
+      'ul', 'ol', 'li',
+      'blockquote', 'cite', 'q',
+      'br', 'hr', 'div', 'span',
+      // Media — required for article body images. figure/figcaption
+      // power journalism-style captioned photos with optional credit.
+      'img', 'figure', 'figcaption',
+      // Inline formatting often used in long-form journalism
+      'sup', 'sub', 'mark', 'small',
     ],
     ALLOWED_ATTR: [
-      'href', 'title', 'class', 'id'
+      'href', 'title', 'class', 'id',
+      // <img> attributes — src, alt, dimensions
+      'src', 'alt', 'width', 'height', 'loading',
+      // <a> outbound
+      'target', 'rel',
+      // Quote / cite metadata
+      'cite', 'datetime',
     ],
     ALLOW_DATA_ATTR: false,
     // Block javascript: URLs and other dangerous protocols

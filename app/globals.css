@@ -2614,3 +2614,72 @@ body.textbook-fullscreen .fixed.inset-0.z-50 {
 .comments-sidebar::-webkit-scrollbar-thumb:hover {
   opacity: 1;
 }
+
+/* ──────────────────────────────────────────────────────────────────
+ * Published article body — image figures and pull-quotes.
+ * Mirrors the editor preview so what you write is what you publish.
+ * ────────────────────────────────────────────────────────────────── */
+.article-content figure {
+  margin: 1.75em 0;
+}
+.article-content figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 0;
+}
+.article-content figcaption {
+  margin-top: 0.65em;
+  padding: 0 0.25em;
+  font-size: 0.9em;
+  color: var(--muted-foreground);
+  line-height: 1.55;
+  text-align: left;
+}
+.article-content figcaption em {
+  font-style: italic;
+  opacity: 0.85;
+}
+
+/* Pull-quote: any <blockquote> with class="pull-quote" gets the larger,
+ * journalism-style treatment (oversized, no left border, centered). */
+.article-content blockquote.pull-quote {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.5em;
+  font-weight: 500;
+  font-style: italic;
+  text-align: center;
+  line-height: 1.4;
+  color: var(--foreground);
+  margin: 2em auto;
+  max-width: 38ch;
+  padding: 0.75em 1em;
+  border: none;
+  border-top: 2px solid var(--primary);
+  border-bottom: 2px solid var(--primary);
+  background: none;
+}
+.article-content blockquote.pull-quote::before,
+.article-content blockquote.pull-quote::after {
+  content: none;
+}
+
+/* Print stylesheet — strip distractions so users can save a clean
+ * archival copy of the article. */
+@media print {
+  /* Hide chrome: nav, sidebars, share buttons, reading progress, etc. */
+  header, nav, aside, footer,
+  .reading-progress, .share-buttons, .editor-toolbar { display: none !important; }
+  /* Full-bleed article body */
+  .article-content { font-size: 12pt; line-height: 1.55; color: #000; }
+  .article-content img, .article-content figure { page-break-inside: avoid; }
+  .article-content h1, .article-content h2, .article-content h3 { page-break-after: avoid; }
+  /* Show link URLs after anchor text so they survive the print */
+  .article-content a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    color: #555;
+  }
+}
+
