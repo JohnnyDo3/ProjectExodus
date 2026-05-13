@@ -44,28 +44,58 @@ function safeArray(value: unknown): ArrayEntry[] {
   return Array.isArray(value) ? (value as ArrayEntry[]) : []
 }
 
-async function getRecentActivity(userId: string) {
-  const [articles, projects] = await Promise.all([
-    prisma.article.findMany({
-      where: { authorId: userId, status: 'PUBLISHED' },
-      orderBy: { publishedAt: 'desc' },
-      take: 5,
-      select: {
-        id: true, title: true, slug: true, excerpt: true,
-        coverImage: true, readTime: true, publishedAt: true,
-      },
-    }).catch(() => []),
-    prisma.project.findMany({
-      where: { creatorId: userId, visibility: 'PUBLIC' },
-      orderBy: { createdAt: 'desc' },
-      take: 5,
-      select: {
-        id: true, name: true, slug: true, description: true,
-        coverImage: true, createdAt: true,
-      },
-    }).catch(() => []),
-  ])
-  return { articles, projects }
+interface RecentArticle {
+  id: string
+  title: string
+  slug: string
+  excerpt: string | null
+  coverImage: string | null
+  readTime: number | null
+  publishedAt: Date | null
+}
+
+interface RecentProject {
+  id: string
+  name: string
+  slug: string
+  description: string | null
+  coverImage: string | null
+  createdAt: Date
+}
+
+async function getRecentActivity(
+  userId: string,
+): Promise<{ articles: RecentArticle[]; projects: RecentProject[] }> {
+  // Fail-soft: profile page should still render even if the recent-
+  // activity queries break. Wrapped in try/catch so the return type
+  // stays the explicit interfaces above (rather than the loose
+  // `Prisma | never[]` union that .catch(() => []) used to produce,
+  // which made the downstream .map callbacks infer as `any`).
+  try {
+    const [articles, projects] = await Promise.all([
+      prisma.article.findMany({
+        where: { authorId: userId, status: 'PUBLISHED' },
+        orderBy: { publishedAt: 'desc' },
+        take: 5,
+        select: {
+          id: true, title: true, slug: true, excerpt: true,
+          coverImage: true, readTime: true, publishedAt: true,
+        },
+      }),
+      prisma.project.findMany({
+        where: { creatorId: userId, visibility: 'PUBLIC' },
+        orderBy: { createdAt: 'desc' },
+        take: 5,
+        select: {
+          id: true, name: true, slug: true, description: true,
+          coverImage: true, createdAt: true,
+        },
+      }),
+    ])
+    return { articles, projects }
+  } catch {
+    return { articles: [], projects: [] }
+  }
 }
 
 export default async function ProfilePage({ params }: { params: Promise<{ id: string }> }) {
