@@ -48,9 +48,12 @@ export function FootnotesWidget({ footnotes }: FootnotesWidgetProps) {
           <ol className="space-y-3 text-sm">
             {footnotes.map(fn => (
               <li
-                key={fn.number}
-                id={`footnote-${fn.number}`}
-                className="flex gap-2 text-theme-muted leading-relaxed"
+                key={fn.anchorId}
+                // Use the anchorId derived from the source so in-body
+                // markers like <a href="#footnote-0"> scroll to the
+                // matching entry. Display is still 1-indexed via fn.number.
+                id={fn.anchorId}
+                className="flex gap-2 text-theme-muted leading-relaxed scroll-mt-24"
               >
                 <span className="shrink-0 font-black text-theme-primary tabular-nums">
                   {fn.number}.
