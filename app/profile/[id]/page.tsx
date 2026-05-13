@@ -276,9 +276,9 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
                     <div key={i} className="border-l-4 border-theme-accent pl-4">
                       {!!exp.title && <h3 className="text-lg font-black text-theme-accent mb-0.5">{exp.title as string}</h3>}
                       {!!exp.company && <p className="text-base font-bold text-[var(--foreground)] mb-0.5">{exp.company as string}</p>}
-                      {(exp.startDate || exp.endDate) && (
+                      {!!(exp.startDate || exp.endDate) && (
                         <p className="text-xs font-semibold text-theme-muted mb-1.5">
-                          {(exp.startDate as string) || ''}{(exp.startDate || exp.endDate) && ' – '}{(exp.endDate as string) || 'Present'}
+                          {(exp.startDate as string) || ''}{!!(exp.startDate && exp.endDate) && ' – '}{(exp.endDate as string) || 'Present'}
                         </p>
                       )}
                       {!!exp.description && (
@@ -299,9 +299,9 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
                       <p className="text-base font-bold text-[var(--foreground)] mb-0.5">
                         {edu.degree as string} {edu.fieldOfStudy ? `in ${edu.fieldOfStudy as string}` : ''}
                       </p>
-                      {(edu.startYear || edu.endYear) && (
+                      {!!(edu.startYear || edu.endYear) && (
                         <p className="text-xs font-semibold text-theme-muted">
-                          {(edu.startYear as string) || ''}{(edu.startYear || edu.endYear) && ' – '}{(edu.endYear as string) || 'Present'}
+                          {(edu.startYear as string) || ''}{!!(edu.startYear && edu.endYear) && ' – '}{(edu.endYear as string) || 'Present'}
                         </p>
                       )}
                     </div>
