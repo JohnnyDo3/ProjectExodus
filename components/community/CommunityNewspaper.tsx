@@ -319,9 +319,11 @@ export function CommunityNewspaper({
         {/* MAIN CONTENT - Bio-Digital 3 Column Grid */}
         {/* ============================================ */}
         {/* ============================================ */}
-        {/* GUITAR HERO LIVE FEED */}
+        {/* GUITAR HERO LIVE FEED - laptop only (needs keyboard + width) */}
         {/* ============================================ */}
-        <GuitarHeroFeed />
+        <div className="hidden lg:block">
+          <GuitarHeroFeed />
+        </div>
 
         {/* ============================================ */}
         {/* SUSTAINABLE TECH BILLBOARD */}

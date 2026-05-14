@@ -2377,8 +2377,8 @@ export default function ArticlesPage() {
                   backgroundSize: '30px 30px'
                 }} />
 
-                {/* Left decorative scroll/acanthus carvings */}
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                {/* Left decorative scroll/acanthus carvings - hidden on mobile, narrow header */}
+                <div className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 items-center gap-2">
                   <svg viewBox="0 0 40 28" className="w-10 h-7 text-amber-500/50">
                     <path d="M38 14 Q30 8 25 14 Q30 20 38 14" fill="none" stroke="currentColor" strokeWidth="0.8"/>
                     <path d="M25 14 Q18 6 10 14 Q18 22 25 14" fill="none" stroke="currentColor" strokeWidth="0.8"/>
@@ -2392,8 +2392,8 @@ export default function ArticlesPage() {
                   </svg>
                 </div>
 
-                {/* Right decorative scroll/acanthus carvings (mirrored) */}
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2 scale-x-[-1]">
+                {/* Right decorative scroll/acanthus carvings (mirrored) - hidden on mobile */}
+                <div className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 items-center gap-2 scale-x-[-1]">
                   <svg viewBox="0 0 40 28" className="w-10 h-7 text-amber-500/50">
                     <path d="M38 14 Q30 8 25 14 Q30 20 38 14" fill="none" stroke="currentColor" strokeWidth="0.8"/>
                     <path d="M25 14 Q18 6 10 14 Q18 22 25 14" fill="none" stroke="currentColor" strokeWidth="0.8"/>
@@ -2409,34 +2409,34 @@ export default function ArticlesPage() {
 
                 {/* Classical Roman inscription - Latin motto above, The Archives below */}
                 <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex flex-col justify-center items-center gap-0.5">
-                  {/* Latin inscription */}
+                  {/* Latin inscription - hidden on mobile, too long for narrow entablature */}
                   <span
-                    className="text-[10px] font-semibold tracking-[0.4em] text-amber-400/70 uppercase"
+                    className="hidden sm:inline text-[10px] font-semibold tracking-[0.4em] text-amber-400/70 uppercase"
                     style={{ fontFamily: 'Georgia, serif', letterSpacing: '0.5em' }}
                   >
                     SAPIENTIA • VERITAS • SCIENTIA
                   </span>
 
-                  <div className="flex items-center gap-3 px-6 py-0.5 bg-gradient-to-r from-transparent via-amber-900/40 to-transparent">
-                    {/* Left flourish */}
-                    <svg viewBox="0 0 24 8" className="w-6 h-2 text-amber-400/60">
+                  <div className="flex items-center gap-1.5 sm:gap-3 px-2 sm:px-6 py-0.5 bg-gradient-to-r from-transparent via-amber-900/40 to-transparent">
+                    {/* Left flourish - hidden on mobile to save space */}
+                    <svg viewBox="0 0 24 8" className="hidden sm:block w-6 h-2 text-amber-400/60">
                       <path d="M0 4 Q6 2 12 4 Q18 6 24 4" fill="none" stroke="currentColor" strokeWidth="0.8"/>
                       <circle cx="22" cy="4" r="1.5" fill="currentColor" opacity="0.5"/>
                     </svg>
 
                     {/* Scroll icon */}
-                    <ScrollText className="w-4 h-4 text-amber-400/80" />
+                    <ScrollText className="w-3 h-3 sm:w-4 sm:h-4 text-amber-400/80" />
 
                     {/* The Archives text */}
                     <span
-                      className="text-sm font-bold tracking-[0.3em] text-amber-200 uppercase"
+                      className="text-[11px] sm:text-sm font-bold tracking-[0.2em] sm:tracking-[0.3em] text-amber-200 uppercase whitespace-nowrap"
                       style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 4px rgba(0,0,0,0.6), 0 0 20px rgba(251,191,36,0.3)' }}
                     >
                       The Archives
                     </span>
 
-                    {/* Right flourish */}
-                    <svg viewBox="0 0 24 8" className="w-6 h-2 text-amber-400/60 scale-x-[-1]">
+                    {/* Right flourish - hidden on mobile to save space */}
+                    <svg viewBox="0 0 24 8" className="hidden sm:block w-6 h-2 text-amber-400/60 scale-x-[-1]">
                       <path d="M0 4 Q6 2 12 4 Q18 6 24 4" fill="none" stroke="currentColor" strokeWidth="0.8"/>
                       <circle cx="22" cy="4" r="1.5" fill="currentColor" opacity="0.5"/>
                     </svg>
@@ -2517,7 +2517,7 @@ export default function ArticlesPage() {
           <div className="max-w-6xl mx-auto pt-28 sm:pt-32 lg:pt-40">
             {/* Title Section - Below the entablature */}
             <div className="text-center mb-6 sm:mb-8">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 tracking-tight" style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)', color: '#ffffff' }}>
+              <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-black mb-3 tracking-tight" style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)', color: '#ffffff' }}>
                 Knowledge Shared
               </h1>
 
@@ -2528,7 +2528,7 @@ export default function ArticlesPage() {
                 <div className="h-px w-16" style={{ background: 'linear-gradient(to left, transparent, rgba(245, 158, 11, 0.5))' }} />
               </div>
 
-              <p className="text-sm sm:text-base font-medium opacity-90 px-4 max-w-lg mx-auto" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#fde68a' }}>
+              <p className="text-xs sm:text-base font-medium opacity-90 px-2 sm:px-4 max-w-lg mx-auto" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#fde68a' }}>
                 "Wisdom is not consumed — it is received."
               </p>
 
@@ -2586,7 +2586,7 @@ export default function ArticlesPage() {
                     </button>
                   </Link>
                 )}
-                <p className="mt-2 text-xs text-amber-300/60 font-medium">
+                <p className="mt-2 text-[11px] sm:text-xs text-amber-300/60 font-medium px-2 leading-snug">
                   {session ? 'Share a case study, lesson, or sustainability journey' : 'Sign up free to share your wisdom'}
                 </p>
               </div>
