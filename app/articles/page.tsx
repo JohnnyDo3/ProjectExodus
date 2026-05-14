@@ -2538,62 +2538,106 @@ export default function ArticlesPage() {
       {/* END OF HERO U-FRAME */}
 
       {/* ============================================ */}
-      {/* MOBILE-ONLY BOTTOM-HALF BOOKSHELF BAND       */}
-      {/* Compact wood + brass + frieze band that      */}
-      {/* visually frames the article shelves below on */}
-      {/* phones. Sized for ~375px viewports — NOT a   */}
-      {/* shrunk desktop shelf.                        */}
+      {/* MOBILE-ONLY BOTTOM-HALF BOOKSHELF             */}
+      {/* A row of upright scrolls sitting on a wooden  */}
+      {/* shelf board, with carved base molding below.  */}
+      {/* Designed at mobile scale — NOT a shrunken     */}
+      {/* desktop shelf.                                */}
       {/* ============================================ */}
-      <div className="lg:hidden relative h-20 overflow-hidden shadow-inner" style={{ background: 'linear-gradient(to bottom, #451a03 0%, #78350f 30%, #92400e 55%, #78350f 85%, #451a03 100%)' }}>
-        {/* Wood grain */}
-        <div className="absolute inset-0 opacity-25" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 30 Q50 27 100 30 Q150 33 200 30' fill='none' stroke='%23000' stroke-width='0.6'/%3E%3Cpath d='M0 55 Q50 53 100 55 Q150 57 200 55' fill='none' stroke='%23000' stroke-width='0.4' opacity='0.7'/%3E%3C/svg%3E")`,
+      <div className="lg:hidden relative overflow-hidden" style={{ background: 'linear-gradient(to bottom, #1c1410 0%, #3b1d09 20%, #78350f 55%, #92400e 75%, #451a03 100%)' }}>
+        {/* Subtle wood grain over the whole band */}
+        <div className="absolute inset-0 opacity-20 pointer-events-none" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 60 Q50 57 100 60 Q150 63 200 60' fill='none' stroke='%23000' stroke-width='0.6'/%3E%3Cpath d='M0 110 Q50 108 100 110 Q150 112 200 110' fill='none' stroke='%23000' stroke-width='0.4' opacity='0.7'/%3E%3C/svg%3E")`,
         }} />
 
-        {/* Top shelf surface — the flat board */}
-        <div className="absolute top-0 left-0 right-0 h-2.5" style={{
-          background: 'linear-gradient(to bottom, #d97706, #b45309 40%, #78350f)',
-          borderTop: '1px solid rgba(251, 191, 36, 0.5)',
-          boxShadow: 'inset 0 -1px 0 rgba(0,0,0,0.4)',
-        }} />
-
-        {/* Carved frieze band - geometric meander */}
-        <div className="absolute top-3 left-0 right-0 h-4 flex items-center justify-center overflow-hidden" style={{ background: 'linear-gradient(to bottom, rgba(180,83,9,0.5), rgba(69,26,3,0.3))' }}>
-          <div className="flex items-center gap-0.5 px-3">
-            {Array.from({ length: 24 }).map((_, i) => (
-              <svg key={`frieze-${i}`} viewBox="0 0 8 8" className="w-2 h-2 text-amber-500/60 shrink-0">
-                <path d="M0 4 L2 4 L2 2 L6 2 L6 6 L0 6 Z" fill="none" stroke="currentColor" strokeWidth="0.7"/>
-              </svg>
-            ))}
-          </div>
-          {/* Top/bottom hairlines */}
-          <div className="absolute top-0 left-0 right-0 h-px bg-amber-600/50" />
-          <div className="absolute bottom-0 left-0 right-0 h-px bg-amber-900/70" />
+        {/* ===== ROW OF UPRIGHT SCROLLS — the "bottom" of the shelf ===== */}
+        {/* Standing scrolls in a deep alcove, lit from above */}
+        <div className="relative h-20 flex items-end justify-center gap-1 px-3 pb-1" style={{
+          background: 'radial-gradient(ellipse at top, rgba(251,191,36,0.18) 0%, rgba(0,0,0,0.35) 70%)',
+          boxShadow: 'inset 0 4px 8px rgba(0,0,0,0.5)',
+        }}>
+          {Array.from({ length: 14 }).map((_, i) => {
+            // Vary scroll heights, widths, and tints for a natural library look
+            const heights = [60, 68, 56, 72, 64, 70, 58, 66, 74, 62, 68, 60, 70, 64]
+            const widths = [10, 8, 11, 9, 12, 8, 10, 11, 9, 10, 12, 9, 8, 11]
+            const tints = [
+              'from-amber-300 to-amber-600',
+              'from-orange-300 to-orange-700',
+              'from-yellow-200 to-amber-500',
+              'from-amber-200 to-amber-700',
+              'from-rose-300 to-amber-700',
+              'from-amber-400 to-orange-800',
+              'from-yellow-300 to-amber-600',
+            ]
+            const h = heights[i % heights.length]
+            const w = widths[i % widths.length]
+            const tint = tints[i % tints.length]
+            return (
+              <div key={`scroll-${i}`} className="relative flex flex-col items-center shrink-0" style={{ height: `${h}px`, width: `${w}px` }}>
+                {/* Scroll cap (top finial) */}
+                <div className="w-full h-1 rounded-full bg-gradient-to-b from-amber-900 to-amber-950 shadow-sm" />
+                {/* Scroll body — rolled parchment */}
+                <div className={`flex-1 w-full bg-gradient-to-b ${tint} border-x border-amber-900/40 shadow-md`} style={{
+                  boxShadow: 'inset 1px 0 0 rgba(255,255,255,0.15), inset -1px 0 0 rgba(0,0,0,0.25), 0 2px 4px rgba(0,0,0,0.3)',
+                }}>
+                  {/* Hint of a binding ribbon midway */}
+                  <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-amber-950/50" />
+                </div>
+                {/* Scroll base (bottom finial) */}
+                <div className="w-full h-1 rounded-full bg-gradient-to-b from-amber-950 to-stone-950 shadow-sm" />
+              </div>
+            )
+          })}
         </div>
 
-        {/* Three brass mounting brackets — anchored to the shelf board */}
-        <div className="absolute top-0 left-[12%] w-2.5 h-7 bg-gradient-to-b from-yellow-500 via-yellow-700 to-amber-800 rounded-b-sm shadow-md border-x border-yellow-300/40" />
-        <div className="absolute top-0 right-[12%] w-2.5 h-7 bg-gradient-to-b from-yellow-500 via-yellow-700 to-amber-800 rounded-b-sm shadow-md border-x border-yellow-300/40" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-8 bg-gradient-to-b from-yellow-400 via-yellow-600 to-amber-700 rounded-b-sm shadow-md border-x border-yellow-300/50" />
+        {/* ===== THE SHELF BOARD ===== */}
+        <div className="relative h-3" style={{
+          background: 'linear-gradient(to bottom, #d97706 0%, #b45309 40%, #78350f 100%)',
+          borderTop: '1px solid rgba(251, 191, 36, 0.55)',
+          boxShadow: 'inset 0 -2px 0 rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.4)',
+        }}>
+          {/* Wood grain hairlines on the shelf board */}
+          <div className="absolute inset-0 opacity-40" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 12' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 6 Q50 4 100 6 Q150 8 200 6' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
+          }} />
+          {/* Highlight along top edge */}
+          <div className="absolute top-0 left-0 right-0 h-px bg-amber-300/50" />
+        </div>
 
-        {/* Base molding — heavier band at the bottom */}
-        <div className="absolute bottom-0 left-0 right-0 h-3" style={{
-          background: 'linear-gradient(to bottom, #78350f, #451a03)',
-          borderBottom: '1px solid rgba(0,0,0,0.6)',
-          borderTop: '1px solid rgba(251, 191, 36, 0.25)',
-        }} />
+        {/* ===== BASE / FRIEZE BAND ===== */}
+        <div className="relative h-12" style={{
+          background: 'linear-gradient(to bottom, #78350f, #451a03 60%, #1c1410)',
+        }}>
+          {/* Three brass mounting brackets hanging under the shelf */}
+          <div className="absolute top-0 left-[12%] w-2.5 h-5 bg-gradient-to-b from-yellow-500 via-yellow-700 to-amber-800 rounded-b-sm shadow-md border-x border-yellow-300/40" />
+          <div className="absolute top-0 right-[12%] w-2.5 h-5 bg-gradient-to-b from-yellow-500 via-yellow-700 to-amber-800 rounded-b-sm shadow-md border-x border-yellow-300/40" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-6 bg-gradient-to-b from-yellow-400 via-yellow-600 to-amber-700 rounded-b-sm shadow-md border-x border-yellow-300/50" />
 
-        {/* Dentil row above base molding */}
-        <div className="absolute bottom-3 left-0 right-0 h-1.5 flex items-center justify-center">
-          <div className="flex items-center gap-1 px-2">
-            {Array.from({ length: 28 }).map((_, i) => (
-              <div key={`dentil-${i}`} className="w-1 h-1.5 bg-gradient-to-b from-amber-700 to-amber-950 rounded-b-[1px]" />
-            ))}
+          {/* Carved meander frieze running through the middle */}
+          <div className="absolute top-6 left-0 right-0 h-3 flex items-center justify-center overflow-hidden">
+            <div className="flex items-center gap-0.5 px-3">
+              {Array.from({ length: 28 }).map((_, i) => (
+                <svg key={`frieze-${i}`} viewBox="0 0 8 8" className="w-1.5 h-1.5 text-amber-500/60 shrink-0">
+                  <path d="M0 4 L2 4 L2 2 L6 2 L6 6 L0 6 Z" fill="none" stroke="currentColor" strokeWidth="0.7"/>
+                </svg>
+              ))}
+            </div>
+            <div className="absolute top-0 left-0 right-0 h-px bg-amber-600/40" />
+            <div className="absolute bottom-0 left-0 right-0 h-px bg-amber-900/70" />
+          </div>
+
+          {/* Dentil row */}
+          <div className="absolute bottom-1 left-0 right-0 h-1.5 flex items-center justify-center">
+            <div className="flex items-center gap-1 px-2">
+              {Array.from({ length: 32 }).map((_, i) => (
+                <div key={`dentil-${i}`} className="w-1 h-1.5 bg-gradient-to-b from-amber-700 to-amber-950 rounded-b-[1px]" />
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Warm amber glow at the top edge — like sunset hitting the shelf */}
-        <div className="absolute top-0 left-1/4 right-1/4 h-1 bg-gradient-to-b from-amber-300/40 to-transparent blur-sm" />
+        {/* Soft fade into the page below */}
+        <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-b from-transparent to-stone-950/40 pointer-events-none" />
       </div>
 
       {/* ========================================== */}
@@ -4085,7 +4129,7 @@ export default function ArticlesPage() {
         </div>
       ) : (
       <div className="relative bg-gradient-to-b from-amber-950 via-stone-900 to-amber-950">
-        <div className="container mx-auto px-4 py-8 relative z-10 lg:px-[20%]">
+        <div className="container mx-auto px-4 pt-10 pb-8 sm:pt-8 relative z-10 lg:px-[20%] lg:pt-8">
           <div className="max-w-6xl mx-auto">
 
             {/* Centered Modal Popups for each scroll */}
@@ -4249,8 +4293,8 @@ export default function ArticlesPage() {
                 <div className="absolute -top-1 left-4 right-4 h-2 bg-gradient-to-r from-transparent via-amber-500/40 to-transparent" />
 
                 {/* Carved label */}
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-5 py-1.5 bg-gradient-to-b from-slate-600 to-slate-800 rounded border border-amber-500/40 shadow-lg">
-                  <span className="text-[10px] font-bold text-amber-300 uppercase tracking-[0.15em]">Search the Archives</span>
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-5 py-1.5 bg-gradient-to-b from-slate-600 to-slate-800 rounded border border-amber-500/40 shadow-lg z-10">
+                  <span className="text-[10px] font-bold text-amber-300 uppercase tracking-[0.15em] whitespace-nowrap">Search the Archives</span>
                 </div>
 
                 {/* Inner carved area */}
