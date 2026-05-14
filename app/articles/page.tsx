@@ -820,7 +820,7 @@ export default function ArticlesPage() {
 
           {/* Coffered Ceiling with ornate beams - parallax effect */}
           <div
-            className="absolute top-0 left-0 right-0 h-24 pointer-events-none z-5 overflow-hidden hidden lg:block"
+            className="absolute top-0 left-0 right-0 h-24 pointer-events-none z-5 overflow-hidden"
             style={{ transform: `translateY(${parallaxOffset * 0.1}px)` }}
           >
             {/* Main ceiling surface */}
@@ -874,7 +874,7 @@ export default function ArticlesPage() {
           </div>
 
           {/* Marble Floor with mosaic pattern */}
-          <div className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none z-5 overflow-hidden hidden lg:block">
+          <div className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none z-5 overflow-hidden">
             {/* Floor surface with perspective */}
             <div className="absolute inset-0 bg-gradient-to-t from-stone-800/95 via-stone-700/85 to-transparent">
               {/* Marble veining pattern */}
@@ -909,7 +909,7 @@ export default function ArticlesPage() {
           </div>
 
           {/* Spider Web in corner - subtle atmospheric detail */}
-          <div className="absolute top-0 left-0 w-32 h-32 pointer-events-none z-10 hidden lg:block opacity-20">
+          <div className="absolute top-0 left-0 w-16 sm:w-24 lg:w-32 h-16 sm:h-24 lg:h-32 pointer-events-none z-10 opacity-20">
             <svg viewBox="0 0 100 100" className="w-full h-full">
               {/* Radial web strands from corner */}
               <defs>
@@ -944,7 +944,7 @@ export default function ArticlesPage() {
 
           {/* Seasonal Decorations */}
           {currentSeason === 'winter' && (
-            <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden hidden lg:block">
+            <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden">
               {/* Subtle snowflakes drifting */}
               {[...Array(8)].map((_, i) => (
                 <div
@@ -971,7 +971,7 @@ export default function ArticlesPage() {
           )}
 
           {currentSeason === 'autumn' && (
-            <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden hidden lg:block">
+            <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden">
               {/* Falling leaves */}
               {[...Array(5)].map((_, i) => (
                 <div
@@ -994,7 +994,7 @@ export default function ArticlesPage() {
           )}
 
           {currentSeason === 'spring' && (
-            <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden hidden lg:block">
+            <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden">
               {/* Floating pollen/petals */}
               {[...Array(6)].map((_, i) => (
                 <div
@@ -1026,7 +1026,7 @@ export default function ArticlesPage() {
             initial={{ x: '-100%', opacity: 0 }}
             animate={libraryEntered ? { x: 0, opacity: 1 } : { x: '-100%', opacity: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
-            className="hidden lg:block absolute left-0 top-0 bottom-0 w-[18%] z-20"
+            className="absolute left-0 top-0 bottom-0 w-[15%] sm:w-[16%] lg:w-[18%] z-20"
           >
             {/* Bookshelf frame */}
             <div className="absolute inset-0 bg-gradient-to-r from-amber-950/95 via-amber-900/90 to-amber-950/80 border-r-4 border-amber-700/60">
@@ -1683,7 +1683,7 @@ export default function ArticlesPage() {
             initial={{ x: '100%', opacity: 0 }}
             animate={libraryEntered ? { x: 0, opacity: 1 } : { x: '100%', opacity: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
-            className="hidden lg:block absolute right-0 top-0 bottom-0 w-[18%] z-20"
+            className="absolute right-0 top-0 bottom-0 w-[15%] sm:w-[16%] lg:w-[18%] z-20"
           >
             {/* Bookshelf frame */}
             <div className="absolute inset-0 bg-gradient-to-l from-amber-950/95 via-amber-900/90 to-amber-950/80 border-l-4 border-amber-700/60">
@@ -2311,7 +2311,7 @@ export default function ArticlesPage() {
             initial={{ opacity: 0, y: -20 }}
             animate={libraryEntered ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
             transition={{ duration: 0.6, ease: 'easeOut', delay: 0.5 }}
-            className="hidden lg:block absolute left-[18%] right-[18%] top-0 z-10 pointer-events-none"
+            className="absolute left-[15%] right-[15%] sm:left-[16%] sm:right-[16%] lg:left-[18%] lg:right-[18%] top-0 z-10 pointer-events-none"
           >
             {/* Main Entablature Structure - Refined Classical Roman */}
             <div className="relative">
@@ -2513,8 +2513,8 @@ export default function ArticlesPage() {
 
         </div>
 
-        <div className="container mx-auto px-4 py-6 sm:py-8 relative z-10 lg:px-[20%]">
-          <div className="max-w-6xl mx-auto lg:pt-40">
+        <div className="container mx-auto py-6 sm:py-8 relative z-10 px-[16%] sm:px-[17%] lg:px-[20%]">
+          <div className="max-w-6xl mx-auto pt-28 sm:pt-32 lg:pt-40">
             {/* Title Section - Below the entablature */}
             <div className="text-center mb-6 sm:mb-8">
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 tracking-tight" style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)', color: '#ffffff' }}>
@@ -2599,7 +2599,7 @@ export default function ArticlesPage() {
         {/* BOTTOM CONNECTING SHELF - Forms bottom of U */}
         {/* Full-width shelf connecting the side bookshelves */}
         {/* ========================================== */}
-        <div className="hidden lg:block absolute bottom-0 left-0 right-0 h-8 z-25">
+        <div className="absolute bottom-0 left-0 right-0 h-8 z-25">
           {/* Main shelf surface */}
           <div className="absolute inset-0 shadow-lg overflow-hidden" style={{ background: 'linear-gradient(to bottom, #b45309, #92400e, #451a03)', borderTop: '2px solid rgba(245, 158, 11, 0.4)' }}>
             {/* Wood grain texture */}
@@ -2621,7 +2621,7 @@ export default function ArticlesPage() {
       {/* GRAND LIBRARY - HORIZONTAL BOOKSHELVES    */}
       {/* Roman-inspired design with category filters */}
       {/* ========================================== */}
-      <div className="hidden lg:block relative bg-gradient-to-b from-amber-950 via-amber-900 to-amber-950 overflow-visible">
+      <div className="relative bg-gradient-to-b from-amber-950 via-amber-900 to-amber-950 overflow-visible">
         {/* Wood grain texture overlay */}
         <div className="absolute inset-0 opacity-20" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0 Q30 100 20 200 Q10 300 20 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M50 0 Q60 100 50 200 Q40 300 50 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M80 0 Q70 100 80 200 Q90 300 80 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3C/svg%3E")`,
@@ -4106,7 +4106,7 @@ export default function ArticlesPage() {
         </div>
       ) : (
       <div className="relative bg-gradient-to-b from-amber-950 via-stone-900 to-amber-950">
-        <div className="container mx-auto px-4 py-8 relative z-10 lg:px-[20%]">
+        <div className="container mx-auto py-8 relative z-10 px-[16%] sm:px-[17%] lg:px-[20%]">
           <div className="max-w-6xl mx-auto">
 
             {/* Centered Modal Popups for each scroll */}
