@@ -461,11 +461,11 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-3 p-3 sm:p-4 flex-1 min-h-[calc(100vh-8rem)]">
         {/* Left column: BizID Showcase + Network Activity - Flip Card */}
         <div
-          className={`lg:col-span-4 min-h-[260px] lg:min-h-[360px] h-full ${isDesktop ? 'cursor-pointer' : ''} select-none`}
+          className="lg:col-span-4 min-h-[260px] lg:min-h-[360px] h-full cursor-pointer select-none"
           style={{ perspective: isDesktop ? '1000px' : undefined }}
           onMouseEnter={() => isDesktop && setIsBizIDFlipped(true)}
           onMouseLeave={() => isDesktop && setIsBizIDFlipped(false)}
-          onClick={() => isDesktop && setIsBizIDFlipped((v) => !v)}
+          onClick={() => setIsBizIDFlipped((v) => !v)}
         >
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -475,7 +475,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
             style={{ transformStyle: isDesktop ? 'preserve-3d' : 'flat' }}
           >
             {/* Front Side - BizID Features + Network Activity */}
-            <GlowingBorder className="absolute inset-0" style={{ backfaceVisibility: 'hidden' }}>
+            <GlowingBorder className={`absolute inset-0 ${!isDesktop && isBizIDFlipped ? 'hidden' : ''}`} style={{ backfaceVisibility: 'hidden' }}>
               <div className="relative h-full flex flex-col gap-2">
                 {/* BizID Card - Top Section with Ivy Mural */}
                 <motion.div
@@ -584,7 +584,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                       {fakeUserPreviews.map((user, index) => (
                         <motion.button
                           key={user.theme}
-                          onClick={() => setActiveUserIndex(index)}
+                          onClick={(e) => { e.stopPropagation(); setActiveUserIndex(index) }}
                           className={`w-2 h-2 rounded-full bg-gradient-to-r ${user.gradient} transition-all duration-300`}
                           animate={{
                             scale: index === activeUserIndex ? 1.3 : 1,
@@ -669,10 +669,10 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
             </GlowingBorder>
 
             {/* Back Side - Full Height BizID Philosophy with Ivy Mural - ENHANCED */}
-            {/* Hidden on mobile: iOS Safari can't mask the hidden 3D face */}
+            {/* Mobile: hidden until flipped; strip rotateY so it renders forward */}
             <div
-              className={`absolute inset-0 bg-gradient-to-br from-[var(--card)] via-[var(--muted)]/50 to-[var(--card)] rounded-xl p-5 overflow-hidden border-2 border-[var(--primary)]/20 shadow-xl ${isDesktop ? '' : 'hidden'}`}
-              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+              className={`absolute inset-0 bg-gradient-to-br from-[var(--card)] via-[var(--muted)]/50 to-[var(--card)] rounded-xl p-5 overflow-hidden border-2 border-[var(--primary)]/20 shadow-xl ${!isDesktop && !isBizIDFlipped ? 'hidden' : ''}`}
+              style={{ backfaceVisibility: 'hidden', transform: isDesktop ? 'rotateY(180deg)' : 'none' }}
             >
               {/* Ivy Mural Background - Enhanced with more depth */}
               <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
@@ -837,11 +837,11 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
         >
           {/* Learning Academy - Flip Card with Philosophy - Now Full Height */}
           <div
-            className={`relative flex-1 ${isDesktop ? 'cursor-pointer' : ''} select-none`}
+            className="relative flex-1 cursor-pointer select-none"
             style={{ perspective: isDesktop ? '1000px' : undefined }}
             onMouseEnter={() => isDesktop && setIsLearningFlipped(true)}
             onMouseLeave={() => isDesktop && setIsLearningFlipped(false)}
-            onClick={() => isDesktop && setIsLearningFlipped((v) => !v)}
+            onClick={() => setIsLearningFlipped((v) => !v)}
           >
             <motion.div
               className="relative w-full h-full"
@@ -851,7 +851,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
             >
               {/* Front Side - Learning Features with Zen Garden Mural */}
               <div
-                className="absolute inset-0 bg-gradient-to-br from-[var(--card)]/90 via-[var(--muted)]/40 to-[var(--card)]/90 backdrop-blur-md border border-[var(--border)]/30 rounded-xl p-4 overflow-hidden flex flex-col"
+                className={`absolute inset-0 bg-gradient-to-br from-[var(--card)]/90 via-[var(--muted)]/40 to-[var(--card)]/90 backdrop-blur-md border border-[var(--border)]/30 rounded-xl p-4 overflow-hidden flex flex-col ${!isDesktop && isLearningFlipped ? 'hidden' : ''}`}
                 style={{ backfaceVisibility: 'hidden' }}
               >
                 {/* Zen Garden Mural Background - Theme Aware */}
@@ -1048,7 +1048,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                                         ? `${t.color} scale-125`
                                         : 'text-[var(--muted-foreground)]/25 hover:text-[var(--muted-foreground)]/50'
                                     }`}
-                                    onClick={() => setActiveTopicIndex(i)}
+                                    onClick={(e) => { e.stopPropagation(); setActiveTopicIndex(i) }}
                                   >
                                     <DotIcon className="w-3 h-3" />
                                   </button>
@@ -1105,7 +1105,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                                         ? `${t.color} scale-125`
                                         : 'text-[var(--muted-foreground)]/25 hover:text-[var(--muted-foreground)]/50'
                                     }`}
-                                    onClick={() => setActiveToolIndex(i)}
+                                    onClick={(e) => { e.stopPropagation(); setActiveToolIndex(i) }}
                                   >
                                     <DotIcon className="w-3 h-3" />
                                   </button>
@@ -1121,10 +1121,10 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
               </div>
 
               {/* Back Side - Learning Philosophy with Zen Mural - ENHANCED */}
-              {/* Hidden on mobile: iOS Safari can't mask the hidden 3D face */}
+              {/* Mobile: hidden until flipped; strip rotateY so it renders forward */}
               <div
-                className={`absolute inset-0 bg-gradient-to-br from-[var(--card)] via-[var(--muted)]/50 to-[var(--card)] rounded-xl p-5 overflow-hidden border-2 border-[var(--accent)]/20 shadow-xl ${isDesktop ? '' : 'hidden'}`}
-                style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+                className={`absolute inset-0 bg-gradient-to-br from-[var(--card)] via-[var(--muted)]/50 to-[var(--card)] rounded-xl p-5 overflow-hidden border-2 border-[var(--accent)]/20 shadow-xl ${!isDesktop && !isLearningFlipped ? 'hidden' : ''}`}
+                style={{ backfaceVisibility: 'hidden', transform: isDesktop ? 'rotateY(180deg)' : 'none' }}
               >
                 {/* Zen Mural Background for back - Enhanced with more depth */}
                 <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
@@ -1311,11 +1311,11 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
         >
           {/* Volition Marketing Card - Flip Card with Philosophy */}
           <div
-            className={`relative flex-1 min-h-0 ${isDesktop ? 'cursor-pointer' : ''} select-none`}
+            className="relative flex-1 min-h-0 cursor-pointer select-none"
             style={{ perspective: isDesktop ? '1000px' : undefined }}
             onMouseEnter={() => isDesktop && setIsVolitionFlipped(false)}
             onMouseLeave={() => isDesktop && setIsVolitionFlipped(true)}
-            onClick={() => isDesktop && setIsVolitionFlipped((v) => !v)}
+            onClick={() => setIsVolitionFlipped((v) => !v)}
           >
             <motion.div
               className="absolute inset-0"
@@ -1324,9 +1324,9 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
               transition={{ duration: 0.6, ease: 'easeInOut' }}
             >
               {/* Front Side - Features with Forest Mural */}
-              {/* Hidden on mobile: Volition's primary face on mobile is the back (philosophy) */}
+              {/* Mobile: visible only when tapped (default state is back-facing) */}
               <motion.div
-                className={`absolute inset-0 bg-gradient-to-br from-[var(--card)]/90 via-[var(--muted)]/40 to-[var(--card)]/90 rounded-xl p-4 overflow-hidden border border-[var(--border)]/30 ${isDesktop ? '' : 'hidden'}`}
+                className={`absolute inset-0 bg-gradient-to-br from-[var(--card)]/90 via-[var(--muted)]/40 to-[var(--card)]/90 rounded-xl p-4 overflow-hidden border border-[var(--border)]/30 ${!isDesktop && isVolitionFlipped ? 'hidden' : ''}`}
                 style={{ backfaceVisibility: 'hidden' }}
               >
                 {/* Forest Mural Background - Theme Aware */}
@@ -1506,9 +1506,9 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
               </motion.div>
 
               {/* Back Side - Philosophy with Forest Mural (Larger text with internal scroll) */}
-              {/* On mobile this is the primary face — strip rotateY so it renders forward */}
+              {/* Mobile: visible by default; strip rotateY so it renders forward */}
               <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-[var(--card)]/95 via-[var(--muted)]/30 to-[var(--card)]/95 rounded-xl p-4 border border-[var(--border)]/30 flex flex-col"
+                className={`absolute inset-0 bg-gradient-to-br from-[var(--card)]/95 via-[var(--muted)]/30 to-[var(--card)]/95 rounded-xl p-4 border border-[var(--border)]/30 flex flex-col ${!isDesktop && !isVolitionFlipped ? 'hidden' : ''}`}
                 style={{ backfaceVisibility: 'hidden', transform: isDesktop ? 'rotateY(180deg)' : 'none' }}
               >
                 {/* Forest Mural Background for back - theme aware */}
@@ -1564,7 +1564,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                               ? 'bg-[var(--primary)] w-3'
                               : 'bg-[var(--muted-foreground)]/30'
                           }`}
-                          onClick={() => setActiveLaneIndex(i)}
+                          onClick={(e) => { e.stopPropagation(); setActiveLaneIndex(i) }}
                           whileHover={{ scale: 1.3 }}
                         />
                       ))}
