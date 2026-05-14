@@ -3236,10 +3236,17 @@ export default function ArticlesPage() {
                 const isCompleted = articleProgress?.completed || false
                 const isHovered = hoveredBook === article.id
                 const rotation = ((idx * 17) % 5) - 2
+                // Mobile-only: each article gets its own row with a randomized
+                // horizontal offset (deterministic by article id)
+                const mobOffsetPct = ((article.id || `${idx}`).split('').reduce((a, c) => (a * 31 + c.charCodeAt(0)) | 0, 0) & 0x7fffffff) % 70
 
                 return (
                   <div
                     key={`shelf1-${article.id}`}
+                    className="w-full sm:w-auto sm:!pl-0"
+                    style={{ paddingLeft: `${mobOffsetPct}%` }}
+                  >
+                  <div
                     className={`flex-shrink-0 relative w-8 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-4 z-30' : 'z-10'} ${highlightScrolls ? 'scroll-highlight-glow' : ''}`}
                     style={{ marginBottom: '0px' }}
                     onMouseEnter={() => handleScrollHover(article)}
@@ -3307,6 +3314,7 @@ export default function ArticlesPage() {
                       </div>
                     </div>
                   </div>
+                  </div>
                 )
               })}
               {/* Trailing ghost scrolls - remaining after leading and articles */}
@@ -3334,7 +3342,7 @@ export default function ArticlesPage() {
             </div>
 
             {/* Center decorative medallion - matching Shelf 2/3 */}
-            <div className="absolute left-1/2 -translate-x-1/2 -bottom-2 w-12 h-12 z-30">
+            <div className="absolute left-1/2 -translate-x-1/2 -bottom-2 w-8 h-8 sm:w-12 sm:h-12 z-30">
               {/* Medallion shadow */}
               <div className="absolute inset-0 translate-y-1 bg-amber-950/50 rounded-full blur-md" />
               <div className="relative w-full h-full bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-700 rounded-full shadow-xl border-2 border-yellow-300/50 flex items-center justify-center overflow-hidden">
@@ -3496,10 +3504,15 @@ export default function ArticlesPage() {
                 const isCompleted = articleProgress?.completed || false
                 const isHovered = hoveredBook === article.id
                 const rotation = ((idx * 13 + 5) % 5) - 2
+                const mobOffsetPct = ((article.id || `${idx}`).split('').reduce((a, c) => (a * 31 + c.charCodeAt(0)) | 0, 0) & 0x7fffffff) % 70
 
                 return (
                   <div
                     key={`shelf2-${article.id}`}
+                    className="w-full sm:w-auto sm:!pl-0"
+                    style={{ paddingLeft: `${mobOffsetPct}%` }}
+                  >
+                  <div
                     className={`flex-shrink-0 relative w-8 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-4 z-30' : 'z-10'} ${highlightScrolls ? 'scroll-highlight-glow' : ''}`}
                     style={{ marginBottom: '0px' }}
                     onMouseEnter={() => handleScrollHover(article)}
@@ -3555,6 +3568,7 @@ export default function ArticlesPage() {
                       </div>
                     </div>
                   </div>
+                  </div>
                 )
               })}
               {/* Trailing ghost scrolls - remaining after leading and articles */}
@@ -3582,7 +3596,7 @@ export default function ArticlesPage() {
             </div>
 
             {/* Center decorative medallion - enhanced */}
-            <div className="absolute left-1/2 -translate-x-1/2 -bottom-2 w-12 h-12 z-30">
+            <div className="absolute left-1/2 -translate-x-1/2 -bottom-2 w-8 h-8 sm:w-12 sm:h-12 z-30">
               {/* Medallion shadow */}
               <div className="absolute inset-0 translate-y-1 bg-amber-950/50 rounded-full blur-md" />
               <div className="relative w-full h-full bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-700 rounded-full shadow-xl border-2 border-yellow-300/50 flex items-center justify-center overflow-hidden">
@@ -3744,10 +3758,15 @@ export default function ArticlesPage() {
                 const isCompleted = articleProgress?.completed || false
                 const isHovered = hoveredBook === article.id
                 const rotation = ((idx * 11 + 3) % 5) - 2
+                const mobOffsetPct = ((article.id || `${idx}`).split('').reduce((a, c) => (a * 31 + c.charCodeAt(0)) | 0, 0) & 0x7fffffff) % 70
 
                 return (
                   <div
                     key={`shelf3-${article.id}`}
+                    className="w-full sm:w-auto sm:!pl-0"
+                    style={{ paddingLeft: `${mobOffsetPct}%` }}
+                  >
+                  <div
                     className={`flex-shrink-0 relative w-8 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-4 z-30' : 'z-10'} ${highlightScrolls ? 'scroll-highlight-glow' : ''}`}
                     style={{ marginBottom: '0px' }}
                     onMouseEnter={() => handleScrollHover(article)}
@@ -3803,6 +3822,7 @@ export default function ArticlesPage() {
                       </div>
                     </div>
                   </div>
+                  </div>
                 )
               })}
               {/* Trailing ghost scrolls - remaining after leading and articles */}
@@ -3830,7 +3850,7 @@ export default function ArticlesPage() {
             </div>
 
             {/* Center decorative medallion - matching Shelf 1/2 */}
-            <div className="absolute left-1/2 -translate-x-1/2 -bottom-2 w-12 h-12 z-30">
+            <div className="absolute left-1/2 -translate-x-1/2 -bottom-2 w-8 h-8 sm:w-12 sm:h-12 z-30">
               {/* Medallion shadow */}
               <div className="absolute inset-0 translate-y-1 bg-amber-950/50 rounded-full blur-md" />
               <div className="relative w-full h-full bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-700 rounded-full shadow-xl border-2 border-yellow-300/50 flex items-center justify-center overflow-hidden">
