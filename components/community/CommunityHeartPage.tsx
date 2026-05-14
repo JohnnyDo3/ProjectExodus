@@ -333,6 +333,19 @@ const fakeUserPreviews = [
 ]
 
 export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps) {
+  // iOS Safari mishandles backface-visibility + preserve-3d on these cards,
+  // so on viewports below `lg` we skip the 3D flip entirely and render only
+  // the primary face of each card flat.
+  const [isDesktop, setIsDesktop] = useState(false)
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const mq = window.matchMedia('(min-width: 1024px)')
+    const sync = () => setIsDesktop(mq.matches)
+    sync()
+    mq.addEventListener('change', sync)
+    return () => mq.removeEventListener('change', sync)
+  }, [])
+
   const [isVolitionFlipped, setIsVolitionFlipped] = useState(true)
   const [isBizIDFlipped, setIsBizIDFlipped] = useState(false)
   const [isLearningFlipped, setIsLearningFlipped] = useState(false)
@@ -448,18 +461,18 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-3 p-3 sm:p-4 flex-1 min-h-[calc(100vh-8rem)]">
         {/* Left column: BizID Showcase + Network Activity - Flip Card */}
         <div
-          className="lg:col-span-4 min-h-[260px] lg:min-h-[360px] h-full cursor-pointer select-none"
-          style={{ perspective: '1000px' }}
-          onMouseEnter={() => setIsBizIDFlipped(true)}
-          onMouseLeave={() => setIsBizIDFlipped(false)}
-          onClick={() => setIsBizIDFlipped((v) => !v)}
+          className={`lg:col-span-4 min-h-[260px] lg:min-h-[360px] h-full ${isDesktop ? 'cursor-pointer' : ''} select-none`}
+          style={{ perspective: isDesktop ? '1000px' : undefined }}
+          onMouseEnter={() => isDesktop && setIsBizIDFlipped(true)}
+          onMouseLeave={() => isDesktop && setIsBizIDFlipped(false)}
+          onClick={() => isDesktop && setIsBizIDFlipped((v) => !v)}
         >
           <motion.div
             initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0, rotateY: isBizIDFlipped ? 180 : 0 }}
+            animate={{ opacity: 1, x: 0, rotateY: isDesktop && isBizIDFlipped ? 180 : 0 }}
             transition={{ duration: 0.6, ease: 'easeInOut' }}
             className="relative w-full h-full"
-            style={{ transformStyle: 'preserve-3d' }}
+            style={{ transformStyle: isDesktop ? 'preserve-3d' : 'flat' }}
           >
             {/* Front Side - BizID Features + Network Activity */}
             <GlowingBorder className="absolute inset-0" style={{ backfaceVisibility: 'hidden' }}>
@@ -656,8 +669,9 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
             </GlowingBorder>
 
             {/* Back Side - Full Height BizID Philosophy with Ivy Mural - ENHANCED */}
+            {/* Hidden on mobile: iOS Safari can't mask the hidden 3D face */}
             <div
-              className="absolute inset-0 bg-gradient-to-br from-[var(--card)] via-[var(--muted)]/50 to-[var(--card)] rounded-xl p-5 overflow-hidden border-2 border-[var(--primary)]/20 shadow-xl"
+              className={`absolute inset-0 bg-gradient-to-br from-[var(--card)] via-[var(--muted)]/50 to-[var(--card)] rounded-xl p-5 overflow-hidden border-2 border-[var(--primary)]/20 shadow-xl ${isDesktop ? '' : 'hidden'}`}
               style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
             >
               {/* Ivy Mural Background - Enhanced with more depth */}
@@ -823,16 +837,16 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
         >
           {/* Learning Academy - Flip Card with Philosophy - Now Full Height */}
           <div
-            className="relative flex-1 cursor-pointer select-none"
-            style={{ perspective: '1000px' }}
-            onMouseEnter={() => setIsLearningFlipped(true)}
-            onMouseLeave={() => setIsLearningFlipped(false)}
-            onClick={() => setIsLearningFlipped((v) => !v)}
+            className={`relative flex-1 ${isDesktop ? 'cursor-pointer' : ''} select-none`}
+            style={{ perspective: isDesktop ? '1000px' : undefined }}
+            onMouseEnter={() => isDesktop && setIsLearningFlipped(true)}
+            onMouseLeave={() => isDesktop && setIsLearningFlipped(false)}
+            onClick={() => isDesktop && setIsLearningFlipped((v) => !v)}
           >
             <motion.div
               className="relative w-full h-full"
-              style={{ transformStyle: 'preserve-3d' }}
-              animate={{ rotateY: isLearningFlipped ? 180 : 0 }}
+              style={{ transformStyle: isDesktop ? 'preserve-3d' : 'flat' }}
+              animate={{ rotateY: isDesktop && isLearningFlipped ? 180 : 0 }}
               transition={{ duration: 0.6, ease: 'easeInOut' }}
             >
               {/* Front Side - Learning Features with Zen Garden Mural */}
@@ -1107,8 +1121,9 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
               </div>
 
               {/* Back Side - Learning Philosophy with Zen Mural - ENHANCED */}
+              {/* Hidden on mobile: iOS Safari can't mask the hidden 3D face */}
               <div
-                className="absolute inset-0 bg-gradient-to-br from-[var(--card)] via-[var(--muted)]/50 to-[var(--card)] rounded-xl p-5 overflow-hidden border-2 border-[var(--accent)]/20 shadow-xl"
+                className={`absolute inset-0 bg-gradient-to-br from-[var(--card)] via-[var(--muted)]/50 to-[var(--card)] rounded-xl p-5 overflow-hidden border-2 border-[var(--accent)]/20 shadow-xl ${isDesktop ? '' : 'hidden'}`}
                 style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
               >
                 {/* Zen Mural Background for back - Enhanced with more depth */}
@@ -1296,21 +1311,22 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
         >
           {/* Volition Marketing Card - Flip Card with Philosophy */}
           <div
-            className="relative flex-1 min-h-0 cursor-pointer select-none"
-            style={{ perspective: '1000px' }}
-            onMouseEnter={() => setIsVolitionFlipped(false)}
-            onMouseLeave={() => setIsVolitionFlipped(true)}
-            onClick={() => setIsVolitionFlipped((v) => !v)}
+            className={`relative flex-1 min-h-0 ${isDesktop ? 'cursor-pointer' : ''} select-none`}
+            style={{ perspective: isDesktop ? '1000px' : undefined }}
+            onMouseEnter={() => isDesktop && setIsVolitionFlipped(false)}
+            onMouseLeave={() => isDesktop && setIsVolitionFlipped(true)}
+            onClick={() => isDesktop && setIsVolitionFlipped((v) => !v)}
           >
             <motion.div
               className="absolute inset-0"
-              style={{ transformStyle: 'preserve-3d' }}
-              animate={{ rotateY: isVolitionFlipped ? 180 : 0 }}
+              style={{ transformStyle: isDesktop ? 'preserve-3d' : 'flat' }}
+              animate={{ rotateY: isDesktop && isVolitionFlipped ? 180 : 0 }}
               transition={{ duration: 0.6, ease: 'easeInOut' }}
             >
               {/* Front Side - Features with Forest Mural */}
+              {/* Hidden on mobile: Volition's primary face on mobile is the back (philosophy) */}
               <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-[var(--card)]/90 via-[var(--muted)]/40 to-[var(--card)]/90 rounded-xl p-4 overflow-hidden border border-[var(--border)]/30"
+                className={`absolute inset-0 bg-gradient-to-br from-[var(--card)]/90 via-[var(--muted)]/40 to-[var(--card)]/90 rounded-xl p-4 overflow-hidden border border-[var(--border)]/30 ${isDesktop ? '' : 'hidden'}`}
                 style={{ backfaceVisibility: 'hidden' }}
               >
                 {/* Forest Mural Background - Theme Aware */}
@@ -1490,9 +1506,10 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
               </motion.div>
 
               {/* Back Side - Philosophy with Forest Mural (Larger text with internal scroll) */}
+              {/* On mobile this is the primary face — strip rotateY so it renders forward */}
               <motion.div
                 className="absolute inset-0 bg-gradient-to-br from-[var(--card)]/95 via-[var(--muted)]/30 to-[var(--card)]/95 rounded-xl p-4 border border-[var(--border)]/30 flex flex-col"
-                style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+                style={{ backfaceVisibility: 'hidden', transform: isDesktop ? 'rotateY(180deg)' : 'none' }}
               >
                 {/* Forest Mural Background for back - theme aware */}
                 <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
