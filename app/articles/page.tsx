@@ -26,7 +26,6 @@ import {
   User,
   Bookmark,
   PenSquare,
-  ChevronDown,
   Sparkles,
   TrendingUp,
   History,
@@ -167,7 +166,6 @@ export default function ArticlesPage() {
   const loadMoreRef = useRef<HTMLDivElement>(null)
 
   // New state for enhanced library features
-  const [mobileDoorsOpen, setMobileDoorsOpen] = useState(false)
   const [libraryEntered, setLibraryEntered] = useState(false)
   const [savedArticles, setSavedArticles] = useState<string[]>([])
   const [hoveredBook, setHoveredBook] = useState<string | null>(null)
@@ -638,84 +636,6 @@ export default function ArticlesPage() {
   // Non-authenticated users can interact with the bookshelf but must sign up to read articles
   return (
     <div className="min-h-screen bg-[var(--background)]">
-      {/* ========================================== */}
-      {/* MOBILE LIBRARY DOORS - Entrance Experience */}
-      {/* ========================================== */}
-      <AnimatePresence>
-        {!mobileDoorsOpen && (
-          <motion.div
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            className="lg:hidden fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-b from-amber-950 via-stone-900 to-amber-950"
-            onClick={() => setMobileDoorsOpen(true)}
-          >
-            {/* Library doors background texture */}
-            <div className="absolute inset-0 opacity-20" style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='wood'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.03' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23wood)'/%3E%3C/svg%3E")`,
-            }} />
-
-            {/* Left door */}
-            <motion.div
-              initial={{ x: 0 }}
-              exit={{ x: '-100%' }}
-              transition={{ duration: 0.8, ease: 'easeInOut' }}
-              className="absolute left-0 top-0 bottom-0 w-1/2 bg-gradient-to-r from-amber-900 to-amber-800 border-r-4 border-amber-600/50"
-            >
-              {/* Door panel details */}
-              <div className="absolute inset-4 border-2 border-amber-600/30 rounded-sm">
-                <div className="absolute inset-4 border border-amber-500/20 rounded-sm" />
-              </div>
-              {/* Door handle */}
-              <div className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-16 bg-gradient-to-b from-amber-400 to-amber-600 rounded-full shadow-lg border-2 border-amber-300/50" />
-              {/* Decorative carvings */}
-              <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-16 h-16 border-2 border-amber-500/30 rotate-45" />
-              <div className="absolute bottom-1/4 left-1/2 -translate-x-1/2 w-12 h-12 border-2 border-amber-500/30 rotate-45" />
-            </motion.div>
-
-            {/* Right door */}
-            <motion.div
-              initial={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ duration: 0.8, ease: 'easeInOut' }}
-              className="absolute right-0 top-0 bottom-0 w-1/2 bg-gradient-to-l from-amber-900 to-amber-800 border-l-4 border-amber-600/50"
-            >
-              {/* Door panel details */}
-              <div className="absolute inset-4 border-2 border-amber-600/30 rounded-sm">
-                <div className="absolute inset-4 border border-amber-500/20 rounded-sm" />
-              </div>
-              {/* Door handle */}
-              <div className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-16 bg-gradient-to-b from-amber-400 to-amber-600 rounded-full shadow-lg border-2 border-amber-300/50" />
-              {/* Decorative carvings */}
-              <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-16 h-16 border-2 border-amber-500/30 rotate-45" />
-              <div className="absolute bottom-1/4 left-1/2 -translate-x-1/2 w-12 h-12 border-2 border-amber-500/30 rotate-45" />
-            </motion.div>
-
-            {/* Center content - above doors */}
-            <div className="relative z-10 text-center px-6">
-              {/* Library crest */}
-              <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-2xl border-4 border-amber-400/50">
-                <ScrollText className="w-10 h-10 text-amber-100" />
-              </div>
-              <h2 className="text-2xl font-bold text-amber-100 mb-2" style={{ fontFamily: 'Georgia, serif' }}>
-                The Archives
-              </h2>
-              <p className="text-amber-300/70 text-sm mb-6">
-                Wisdom awaits within
-              </p>
-              <motion.div
-                animate={{ y: [0, 8, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-                className="text-amber-400/80"
-              >
-                <p className="text-xs uppercase tracking-widest mb-2">Tap to Enter</p>
-                <ChevronDown className="w-6 h-6 mx-auto" />
-              </motion.div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Hero Header - U-Shaped Bookshelf Frame */}
       <div className="relative bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 text-white pb-8">
         {/* Ancient Chamber Background */}
@@ -820,7 +740,7 @@ export default function ArticlesPage() {
 
           {/* Coffered Ceiling with ornate beams - parallax effect */}
           <div
-            className="absolute top-0 left-0 right-0 h-24 pointer-events-none z-5 overflow-hidden"
+            className="absolute top-0 left-0 right-0 h-24 pointer-events-none z-5 overflow-hidden hidden lg:block"
             style={{ transform: `translateY(${parallaxOffset * 0.1}px)` }}
           >
             {/* Main ceiling surface */}
@@ -874,7 +794,7 @@ export default function ArticlesPage() {
           </div>
 
           {/* Marble Floor with mosaic pattern */}
-          <div className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none z-5 overflow-hidden">
+          <div className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none z-5 overflow-hidden hidden lg:block">
             {/* Floor surface with perspective */}
             <div className="absolute inset-0 bg-gradient-to-t from-stone-800/95 via-stone-700/85 to-transparent">
               {/* Marble veining pattern */}
@@ -909,7 +829,7 @@ export default function ArticlesPage() {
           </div>
 
           {/* Spider Web in corner - subtle atmospheric detail */}
-          <div className="absolute top-0 left-0 w-16 sm:w-24 lg:w-32 h-16 sm:h-24 lg:h-32 pointer-events-none z-10 opacity-20">
+          <div className="absolute top-0 left-0 w-32 h-32 pointer-events-none z-10 hidden lg:block opacity-20">
             <svg viewBox="0 0 100 100" className="w-full h-full">
               {/* Radial web strands from corner */}
               <defs>
@@ -944,7 +864,7 @@ export default function ArticlesPage() {
 
           {/* Seasonal Decorations */}
           {currentSeason === 'winter' && (
-            <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden">
+            <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden hidden lg:block">
               {/* Subtle snowflakes drifting */}
               {[...Array(8)].map((_, i) => (
                 <div
@@ -971,7 +891,7 @@ export default function ArticlesPage() {
           )}
 
           {currentSeason === 'autumn' && (
-            <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden">
+            <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden hidden lg:block">
               {/* Falling leaves */}
               {[...Array(5)].map((_, i) => (
                 <div
@@ -994,7 +914,7 @@ export default function ArticlesPage() {
           )}
 
           {currentSeason === 'spring' && (
-            <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden">
+            <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden hidden lg:block">
               {/* Floating pollen/petals */}
               {[...Array(6)].map((_, i) => (
                 <div
@@ -1026,7 +946,7 @@ export default function ArticlesPage() {
             initial={{ x: '-100%', opacity: 0 }}
             animate={libraryEntered ? { x: 0, opacity: 1 } : { x: '-100%', opacity: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
-            className="absolute left-0 top-0 bottom-0 w-[15%] sm:w-[16%] lg:w-[18%] z-20"
+            className="hidden lg:block absolute left-0 top-0 bottom-0 w-[18%] z-20"
           >
             {/* Bookshelf frame */}
             <div className="absolute inset-0 bg-gradient-to-r from-amber-950/95 via-amber-900/90 to-amber-950/80 border-r-4 border-amber-700/60">
@@ -1683,7 +1603,7 @@ export default function ArticlesPage() {
             initial={{ x: '100%', opacity: 0 }}
             animate={libraryEntered ? { x: 0, opacity: 1 } : { x: '100%', opacity: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
-            className="absolute right-0 top-0 bottom-0 w-[15%] sm:w-[16%] lg:w-[18%] z-20"
+            className="hidden lg:block absolute right-0 top-0 bottom-0 w-[18%] z-20"
           >
             {/* Bookshelf frame */}
             <div className="absolute inset-0 bg-gradient-to-l from-amber-950/95 via-amber-900/90 to-amber-950/80 border-l-4 border-amber-700/60">
@@ -2311,7 +2231,7 @@ export default function ArticlesPage() {
             initial={{ opacity: 0, y: -20 }}
             animate={libraryEntered ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
             transition={{ duration: 0.6, ease: 'easeOut', delay: 0.5 }}
-            className="absolute left-[15%] right-[15%] sm:left-[16%] sm:right-[16%] lg:left-[18%] lg:right-[18%] top-0 z-10 pointer-events-none"
+            className="hidden lg:block absolute left-[18%] right-[18%] top-0 z-10 pointer-events-none"
           >
             {/* Main Entablature Structure - Refined Classical Roman */}
             <div className="relative">
@@ -2513,11 +2433,11 @@ export default function ArticlesPage() {
 
         </div>
 
-        <div className="container mx-auto py-6 sm:py-8 relative z-10 px-[16%] sm:px-[17%] lg:px-[20%]">
-          <div className="max-w-6xl mx-auto pt-28 sm:pt-32 lg:pt-40">
+        <div className="container mx-auto px-4 py-6 sm:py-8 relative z-10 lg:px-[20%]">
+          <div className="max-w-6xl mx-auto lg:pt-40">
             {/* Title Section - Below the entablature */}
             <div className="text-center mb-6 sm:mb-8">
-              <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-black mb-3 tracking-tight" style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)', color: '#ffffff' }}>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 tracking-tight" style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)', color: '#ffffff' }}>
                 Knowledge Shared
               </h1>
 
@@ -2528,7 +2448,7 @@ export default function ArticlesPage() {
                 <div className="h-px w-16" style={{ background: 'linear-gradient(to left, transparent, rgba(245, 158, 11, 0.5))' }} />
               </div>
 
-              <p className="text-xs sm:text-base font-medium opacity-90 px-2 sm:px-4 max-w-lg mx-auto" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#fde68a' }}>
+              <p className="text-sm sm:text-base font-medium opacity-90 px-4 max-w-lg mx-auto" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#fde68a' }}>
                 "Wisdom is not consumed — it is received."
               </p>
 
@@ -2586,7 +2506,7 @@ export default function ArticlesPage() {
                     </button>
                   </Link>
                 )}
-                <p className="mt-2 text-[11px] sm:text-xs text-amber-300/60 font-medium px-2 leading-snug">
+                <p className="mt-2 text-xs text-amber-300/60 font-medium">
                   {session ? 'Share a case study, lesson, or sustainability journey' : 'Sign up free to share your wisdom'}
                 </p>
               </div>
@@ -2599,7 +2519,7 @@ export default function ArticlesPage() {
         {/* BOTTOM CONNECTING SHELF - Forms bottom of U */}
         {/* Full-width shelf connecting the side bookshelves */}
         {/* ========================================== */}
-        <div className="absolute bottom-0 left-0 right-0 h-8 z-25">
+        <div className="hidden lg:block absolute bottom-0 left-0 right-0 h-8 z-25">
           {/* Main shelf surface */}
           <div className="absolute inset-0 shadow-lg overflow-hidden" style={{ background: 'linear-gradient(to bottom, #b45309, #92400e, #451a03)', borderTop: '2px solid rgba(245, 158, 11, 0.4)' }}>
             {/* Wood grain texture */}
@@ -2617,11 +2537,70 @@ export default function ArticlesPage() {
       </div>
       {/* END OF HERO U-FRAME */}
 
+      {/* ============================================ */}
+      {/* MOBILE-ONLY BOTTOM-HALF BOOKSHELF BAND       */}
+      {/* Compact wood + brass + frieze band that      */}
+      {/* visually frames the article shelves below on */}
+      {/* phones. Sized for ~375px viewports — NOT a   */}
+      {/* shrunk desktop shelf.                        */}
+      {/* ============================================ */}
+      <div className="lg:hidden relative h-20 overflow-hidden shadow-inner" style={{ background: 'linear-gradient(to bottom, #451a03 0%, #78350f 30%, #92400e 55%, #78350f 85%, #451a03 100%)' }}>
+        {/* Wood grain */}
+        <div className="absolute inset-0 opacity-25" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 30 Q50 27 100 30 Q150 33 200 30' fill='none' stroke='%23000' stroke-width='0.6'/%3E%3Cpath d='M0 55 Q50 53 100 55 Q150 57 200 55' fill='none' stroke='%23000' stroke-width='0.4' opacity='0.7'/%3E%3C/svg%3E")`,
+        }} />
+
+        {/* Top shelf surface — the flat board */}
+        <div className="absolute top-0 left-0 right-0 h-2.5" style={{
+          background: 'linear-gradient(to bottom, #d97706, #b45309 40%, #78350f)',
+          borderTop: '1px solid rgba(251, 191, 36, 0.5)',
+          boxShadow: 'inset 0 -1px 0 rgba(0,0,0,0.4)',
+        }} />
+
+        {/* Carved frieze band - geometric meander */}
+        <div className="absolute top-3 left-0 right-0 h-4 flex items-center justify-center overflow-hidden" style={{ background: 'linear-gradient(to bottom, rgba(180,83,9,0.5), rgba(69,26,3,0.3))' }}>
+          <div className="flex items-center gap-0.5 px-3">
+            {Array.from({ length: 24 }).map((_, i) => (
+              <svg key={`frieze-${i}`} viewBox="0 0 8 8" className="w-2 h-2 text-amber-500/60 shrink-0">
+                <path d="M0 4 L2 4 L2 2 L6 2 L6 6 L0 6 Z" fill="none" stroke="currentColor" strokeWidth="0.7"/>
+              </svg>
+            ))}
+          </div>
+          {/* Top/bottom hairlines */}
+          <div className="absolute top-0 left-0 right-0 h-px bg-amber-600/50" />
+          <div className="absolute bottom-0 left-0 right-0 h-px bg-amber-900/70" />
+        </div>
+
+        {/* Three brass mounting brackets — anchored to the shelf board */}
+        <div className="absolute top-0 left-[12%] w-2.5 h-7 bg-gradient-to-b from-yellow-500 via-yellow-700 to-amber-800 rounded-b-sm shadow-md border-x border-yellow-300/40" />
+        <div className="absolute top-0 right-[12%] w-2.5 h-7 bg-gradient-to-b from-yellow-500 via-yellow-700 to-amber-800 rounded-b-sm shadow-md border-x border-yellow-300/40" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-8 bg-gradient-to-b from-yellow-400 via-yellow-600 to-amber-700 rounded-b-sm shadow-md border-x border-yellow-300/50" />
+
+        {/* Base molding — heavier band at the bottom */}
+        <div className="absolute bottom-0 left-0 right-0 h-3" style={{
+          background: 'linear-gradient(to bottom, #78350f, #451a03)',
+          borderBottom: '1px solid rgba(0,0,0,0.6)',
+          borderTop: '1px solid rgba(251, 191, 36, 0.25)',
+        }} />
+
+        {/* Dentil row above base molding */}
+        <div className="absolute bottom-3 left-0 right-0 h-1.5 flex items-center justify-center">
+          <div className="flex items-center gap-1 px-2">
+            {Array.from({ length: 28 }).map((_, i) => (
+              <div key={`dentil-${i}`} className="w-1 h-1.5 bg-gradient-to-b from-amber-700 to-amber-950 rounded-b-[1px]" />
+            ))}
+          </div>
+        </div>
+
+        {/* Warm amber glow at the top edge — like sunset hitting the shelf */}
+        <div className="absolute top-0 left-1/4 right-1/4 h-1 bg-gradient-to-b from-amber-300/40 to-transparent blur-sm" />
+      </div>
+
       {/* ========================================== */}
       {/* GRAND LIBRARY - HORIZONTAL BOOKSHELVES    */}
       {/* Roman-inspired design with category filters */}
       {/* ========================================== */}
-      <div className="relative bg-gradient-to-b from-amber-950 via-amber-900 to-amber-950 overflow-visible">
+      <div className="hidden lg:block relative bg-gradient-to-b from-amber-950 via-amber-900 to-amber-950 overflow-visible">
         {/* Wood grain texture overlay */}
         <div className="absolute inset-0 opacity-20" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0 Q30 100 20 200 Q10 300 20 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M50 0 Q60 100 50 200 Q40 300 50 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M80 0 Q70 100 80 200 Q90 300 80 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3C/svg%3E")`,
@@ -4106,7 +4085,7 @@ export default function ArticlesPage() {
         </div>
       ) : (
       <div className="relative bg-gradient-to-b from-amber-950 via-stone-900 to-amber-950">
-        <div className="container mx-auto py-8 relative z-10 px-[16%] sm:px-[17%] lg:px-[20%]">
+        <div className="container mx-auto px-4 py-8 relative z-10 lg:px-[20%]">
           <div className="max-w-6xl mx-auto">
 
             {/* Centered Modal Popups for each scroll */}

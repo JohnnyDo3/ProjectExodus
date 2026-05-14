@@ -448,10 +448,11 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-3 p-3 sm:p-4 flex-1 min-h-[calc(100vh-8rem)]">
         {/* Left column: BizID Showcase + Network Activity - Flip Card */}
         <div
-          className="lg:col-span-4 min-h-[260px] lg:min-h-[360px] h-full"
+          className="lg:col-span-4 min-h-[260px] lg:min-h-[360px] h-full cursor-pointer select-none"
           style={{ perspective: '1000px' }}
           onMouseEnter={() => setIsBizIDFlipped(true)}
           onMouseLeave={() => setIsBizIDFlipped(false)}
+          onClick={() => setIsBizIDFlipped((v) => !v)}
         >
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -721,7 +722,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
               <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-3">
                 {/* Enhanced Header with backdrop for depth */}
                 <div className="mb-3 flex flex-col items-center px-4 py-2.5 rounded-xl bg-[var(--card)]/60 backdrop-blur-sm border border-[var(--border)]/20 shadow-lg">
-                  <h3 className="text-lg font-black text-[var(--foreground)] mb-1.5 tracking-tight drop-shadow-sm">Your Professional Identity</h3>
+                  <h3 className="text-base sm:text-lg font-black text-[var(--foreground)] mb-1.5 tracking-tight drop-shadow-sm">Your Professional Identity</h3>
                   <p className="text-xs text-[var(--muted-foreground)] max-w-[220px] leading-relaxed text-center">A verified business card representing your values and contributions</p>
                 </div>
 
@@ -754,7 +755,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                     <motion.div
                       initial={{ opacity: 0, y: 5 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="absolute top-full mt-3 left-1/2 -translate-x-1/2 w-72 p-4 bg-[var(--card)] border-2 border-[var(--primary)]/40 rounded-xl shadow-2xl z-20"
+                      className="absolute top-full mt-3 left-1/2 -translate-x-1/2 w-[90vw] max-w-[18rem] sm:w-72 p-4 bg-[var(--card)] border-2 border-[var(--primary)]/40 rounded-xl shadow-2xl z-20"
                     >
                       <p className={`text-base font-black text-center bg-gradient-to-r ${guardianArchetypes[hoveredArchetype].color} bg-clip-text text-transparent`}>{guardianArchetypes[hoveredArchetype].title}</p>
                       <p className="text-sm text-[var(--muted-foreground)] leading-relaxed mt-2 text-center">{guardianArchetypes[hoveredArchetype].desc}</p>
@@ -764,9 +765,9 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
 
                 {/* Enhanced Quote with better contrast */}
                 <div className="relative px-5 py-2 mb-3 bg-[var(--card)]/70 backdrop-blur-sm rounded-xl border border-[var(--primary)]/20 shadow-lg">
-                  <div className="absolute -left-1 top-1/2 -translate-y-1/2 text-[var(--primary)]/50 text-xl font-serif">"</div>
-                  <p className="text-sm italic text-[var(--foreground)] font-semibold drop-shadow-sm">Your values define your identity</p>
-                  <div className="absolute -right-1 top-1/2 -translate-y-1/2 text-[var(--primary)]/50 text-xl font-serif">"</div>
+                  <div className="hidden sm:block absolute -left-1 top-1/2 -translate-y-1/2 text-[var(--primary)]/50 text-xl font-serif">"</div>
+                  <p className="text-xs sm:text-sm italic text-[var(--foreground)] font-semibold drop-shadow-sm">Your values define your identity</p>
+                  <div className="hidden sm:block absolute -right-1 top-1/2 -translate-y-1/2 text-[var(--primary)]/50 text-xl font-serif">"</div>
                 </div>
 
                 {/* Feature explanations - enhanced with better depth and readability */}
@@ -822,10 +823,11 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
         >
           {/* Learning Academy - Flip Card with Philosophy - Now Full Height */}
           <div
-            className="relative flex-1"
+            className="relative flex-1 cursor-pointer select-none"
             style={{ perspective: '1000px' }}
             onMouseEnter={() => setIsLearningFlipped(true)}
             onMouseLeave={() => setIsLearningFlipped(false)}
+            onClick={() => setIsLearningFlipped((v) => !v)}
           >
             <motion.div
               className="relative w-full h-full"
@@ -1182,12 +1184,12 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
                   {/* Enhanced Header with backdrop for depth */}
                   <div className="mb-4 flex flex-col items-center px-5 py-3 rounded-xl bg-[var(--card)]/60 backdrop-blur-sm border border-[var(--border)]/20 shadow-lg">
-                    <h3 className="text-xl font-black text-[var(--foreground)] mb-1.5 tracking-tight drop-shadow-sm">Education Without Barriers</h3>
+                    <h3 className="text-base sm:text-xl font-black text-[var(--foreground)] mb-1.5 tracking-tight drop-shadow-sm">Education Without Barriers</h3>
                     <p className="text-sm text-[var(--muted-foreground)] max-w-[340px] leading-relaxed text-center">Free sustainability education for all ages</p>
                   </div>
 
                   {/* Visual learning journey - enhanced with better depth */}
-                  <div className="flex items-center justify-center gap-2.5 mb-4 px-3 py-2.5 rounded-xl bg-[var(--card)]/40 backdrop-blur-sm border border-[var(--border)]/20">
+                  <div className="flex items-center justify-center gap-1 sm:gap-2.5 mb-4 px-2 sm:px-3 py-2.5 rounded-xl bg-[var(--card)]/40 backdrop-blur-sm border border-[var(--border)]/20">
                     {[
                       { emoji: '🌱', label: 'Begin' },
                       { emoji: '📚', label: 'Study' },
@@ -1204,13 +1206,13 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                         transition={{ delay: i * 0.06 }}
                         whileHover={{ y: -3, scale: 1.1 }}
                       >
-                        <div className="w-11 h-11 rounded-full bg-[var(--card)]/80 border-2 border-[var(--border)]/50 flex items-center justify-center shadow-md mb-1">
-                          <span className="text-xl">{stage.emoji}</span>
+                        <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-[var(--card)]/80 border-2 border-[var(--border)]/50 flex items-center justify-center shadow-md mb-1">
+                          <span className="text-sm sm:text-xl">{stage.emoji}</span>
                         </div>
                         <span className="text-[9px] font-semibold text-[var(--foreground)]/80 drop-shadow-sm">{stage.label}</span>
                         {i < 5 && (
                           <motion.div
-                            className="absolute w-5 h-0.5 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] right-[-12px] top-5 rounded-full shadow-sm"
+                            className="absolute w-2 sm:w-5 h-0.5 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] right-[-5px] sm:right-[-12px] top-4 sm:top-5 rounded-full shadow-sm"
                             initial={{ scaleX: 0 }}
                             animate={{ scaleX: 1 }}
                             transition={{ delay: i * 0.06 + 0.2 }}
@@ -1222,9 +1224,9 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
 
                   {/* Enhanced Philosophy statement with better contrast */}
                   <div className="relative px-6 py-3 mb-4 bg-[var(--card)]/70 backdrop-blur-sm rounded-xl border border-[var(--accent)]/20 shadow-lg">
-                    <div className="absolute -left-1.5 top-1/2 -translate-y-1/2 text-[var(--accent)]/60 text-2xl font-serif">"</div>
-                    <p className="text-base italic text-[var(--foreground)] font-semibold drop-shadow-sm">Knowledge belongs to everyone</p>
-                    <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 text-[var(--accent)]/60 text-2xl font-serif">"</div>
+                    <div className="hidden sm:block absolute -left-1.5 top-1/2 -translate-y-1/2 text-[var(--accent)]/60 text-2xl font-serif">"</div>
+                    <p className="text-sm sm:text-base italic text-[var(--foreground)] font-semibold drop-shadow-sm">Knowledge belongs to everyone</p>
+                    <div className="hidden sm:block absolute -right-1.5 top-1/2 -translate-y-1/2 text-[var(--accent)]/60 text-2xl font-serif">"</div>
                   </div>
 
                   {/* Feature explanations - enhanced grid with better depth */}
@@ -1294,10 +1296,11 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
         >
           {/* Volition Marketing Card - Flip Card with Philosophy */}
           <div
-            className="relative flex-1 min-h-0"
+            className="relative flex-1 min-h-0 cursor-pointer select-none"
             style={{ perspective: '1000px' }}
             onMouseEnter={() => setIsVolitionFlipped(false)}
             onMouseLeave={() => setIsVolitionFlipped(true)}
+            onClick={() => setIsVolitionFlipped((v) => !v)}
           >
             <motion.div
               className="absolute inset-0"
