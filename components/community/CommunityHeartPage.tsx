@@ -1307,7 +1307,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="lg:col-span-3 flex flex-col gap-3 min-h-[260px] lg:min-h-[360px]"
+          className="lg:col-span-3 flex flex-col gap-3 min-h-[520px] sm:min-h-[460px] lg:min-h-[360px]"
         >
           {/* Volition Marketing Card - Flip Card with Philosophy */}
           <div

@@ -2537,121 +2537,20 @@ export default function ArticlesPage() {
       </div>
       {/* END OF HERO U-FRAME */}
 
-      {/* ============================================ */}
-      {/* MOBILE-ONLY BOTTOM-HALF BOOKSHELF             */}
-      {/* A row of upright scrolls sitting on a wooden  */}
-      {/* shelf board, with carved base molding below.  */}
-      {/* Designed at mobile scale — NOT a shrunken     */}
-      {/* desktop shelf.                                */}
-      {/* ============================================ */}
-      <div className="lg:hidden relative overflow-hidden" style={{ background: 'linear-gradient(to bottom, #1c1410 0%, #3b1d09 20%, #78350f 55%, #92400e 75%, #451a03 100%)' }}>
-        {/* Subtle wood grain over the whole band */}
-        <div className="absolute inset-0 opacity-20 pointer-events-none" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 60 Q50 57 100 60 Q150 63 200 60' fill='none' stroke='%23000' stroke-width='0.6'/%3E%3Cpath d='M0 110 Q50 108 100 110 Q150 112 200 110' fill='none' stroke='%23000' stroke-width='0.4' opacity='0.7'/%3E%3C/svg%3E")`,
-        }} />
-
-        {/* ===== ROW OF UPRIGHT SCROLLS — the "bottom" of the shelf ===== */}
-        {/* Standing scrolls in a deep alcove, lit from above */}
-        <div className="relative h-20 flex items-end justify-center gap-1 px-3 pb-1" style={{
-          background: 'radial-gradient(ellipse at top, rgba(251,191,36,0.18) 0%, rgba(0,0,0,0.35) 70%)',
-          boxShadow: 'inset 0 4px 8px rgba(0,0,0,0.5)',
-        }}>
-          {Array.from({ length: 14 }).map((_, i) => {
-            // Vary scroll heights, widths, and tints for a natural library look
-            const heights = [60, 68, 56, 72, 64, 70, 58, 66, 74, 62, 68, 60, 70, 64]
-            const widths = [10, 8, 11, 9, 12, 8, 10, 11, 9, 10, 12, 9, 8, 11]
-            const tints = [
-              'from-amber-300 to-amber-600',
-              'from-orange-300 to-orange-700',
-              'from-yellow-200 to-amber-500',
-              'from-amber-200 to-amber-700',
-              'from-rose-300 to-amber-700',
-              'from-amber-400 to-orange-800',
-              'from-yellow-300 to-amber-600',
-            ]
-            const h = heights[i % heights.length]
-            const w = widths[i % widths.length]
-            const tint = tints[i % tints.length]
-            return (
-              <div key={`scroll-${i}`} className="relative flex flex-col items-center shrink-0" style={{ height: `${h}px`, width: `${w}px` }}>
-                {/* Scroll cap (top finial) */}
-                <div className="w-full h-1 rounded-full bg-gradient-to-b from-amber-900 to-amber-950 shadow-sm" />
-                {/* Scroll body — rolled parchment */}
-                <div className={`flex-1 w-full bg-gradient-to-b ${tint} border-x border-amber-900/40 shadow-md`} style={{
-                  boxShadow: 'inset 1px 0 0 rgba(255,255,255,0.15), inset -1px 0 0 rgba(0,0,0,0.25), 0 2px 4px rgba(0,0,0,0.3)',
-                }}>
-                  {/* Hint of a binding ribbon midway */}
-                  <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-amber-950/50" />
-                </div>
-                {/* Scroll base (bottom finial) */}
-                <div className="w-full h-1 rounded-full bg-gradient-to-b from-amber-950 to-stone-950 shadow-sm" />
-              </div>
-            )
-          })}
-        </div>
-
-        {/* ===== THE SHELF BOARD ===== */}
-        <div className="relative h-3" style={{
-          background: 'linear-gradient(to bottom, #d97706 0%, #b45309 40%, #78350f 100%)',
-          borderTop: '1px solid rgba(251, 191, 36, 0.55)',
-          boxShadow: 'inset 0 -2px 0 rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.4)',
-        }}>
-          {/* Wood grain hairlines on the shelf board */}
-          <div className="absolute inset-0 opacity-40" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 12' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 6 Q50 4 100 6 Q150 8 200 6' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
-          }} />
-          {/* Highlight along top edge */}
-          <div className="absolute top-0 left-0 right-0 h-px bg-amber-300/50" />
-        </div>
-
-        {/* ===== BASE / FRIEZE BAND ===== */}
-        <div className="relative h-12" style={{
-          background: 'linear-gradient(to bottom, #78350f, #451a03 60%, #1c1410)',
-        }}>
-          {/* Three brass mounting brackets hanging under the shelf */}
-          <div className="absolute top-0 left-[12%] w-2.5 h-5 bg-gradient-to-b from-yellow-500 via-yellow-700 to-amber-800 rounded-b-sm shadow-md border-x border-yellow-300/40" />
-          <div className="absolute top-0 right-[12%] w-2.5 h-5 bg-gradient-to-b from-yellow-500 via-yellow-700 to-amber-800 rounded-b-sm shadow-md border-x border-yellow-300/40" />
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-6 bg-gradient-to-b from-yellow-400 via-yellow-600 to-amber-700 rounded-b-sm shadow-md border-x border-yellow-300/50" />
-
-          {/* Carved meander frieze running through the middle */}
-          <div className="absolute top-6 left-0 right-0 h-3 flex items-center justify-center overflow-hidden">
-            <div className="flex items-center gap-0.5 px-3">
-              {Array.from({ length: 28 }).map((_, i) => (
-                <svg key={`frieze-${i}`} viewBox="0 0 8 8" className="w-1.5 h-1.5 text-amber-500/60 shrink-0">
-                  <path d="M0 4 L2 4 L2 2 L6 2 L6 6 L0 6 Z" fill="none" stroke="currentColor" strokeWidth="0.7"/>
-                </svg>
-              ))}
-            </div>
-            <div className="absolute top-0 left-0 right-0 h-px bg-amber-600/40" />
-            <div className="absolute bottom-0 left-0 right-0 h-px bg-amber-900/70" />
-          </div>
-
-          {/* Dentil row */}
-          <div className="absolute bottom-1 left-0 right-0 h-1.5 flex items-center justify-center">
-            <div className="flex items-center gap-1 px-2">
-              {Array.from({ length: 32 }).map((_, i) => (
-                <div key={`dentil-${i}`} className="w-1 h-1.5 bg-gradient-to-b from-amber-700 to-amber-950 rounded-b-[1px]" />
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Soft fade into the page below */}
-        <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-b from-transparent to-stone-950/40 pointer-events-none" />
-      </div>
-
       {/* ========================================== */}
       {/* GRAND LIBRARY - HORIZONTAL BOOKSHELVES    */}
       {/* Roman-inspired design with category filters */}
+      {/* Renders on every viewport; sized for mobile below */}
       {/* ========================================== */}
-      <div className="hidden lg:block relative bg-gradient-to-b from-amber-950 via-amber-900 to-amber-950 overflow-visible">
+      <div className="relative bg-gradient-to-b from-amber-950 via-amber-900 to-amber-950 overflow-visible">
         {/* Wood grain texture overlay */}
         <div className="absolute inset-0 opacity-20" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0 Q30 100 20 200 Q10 300 20 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M50 0 Q60 100 50 200 Q40 300 50 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M80 0 Q70 100 80 200 Q90 300 80 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3C/svg%3E")`,
         }} />
 
         {/* Roman pilaster columns on sides - LARGE pillars supporting the library above */}
-        <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-amber-800 via-amber-700 to-amber-800 z-10 border-r-4 border-amber-600/60 shadow-2xl">
+        {/* Hidden on mobile: the 64px columns eat too much of a 375px viewport */}
+        <div className="hidden lg:block absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-amber-800 via-amber-700 to-amber-800 z-10 border-r-4 border-amber-600/60 shadow-2xl">
           {/* Architecturally Accurate Corinthian Capital - Enlarged */}
           <div className={`absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 border-b-2 border-amber-600/50 ${isNightTime ? 'brightness-110' : ''}`}>
             <svg viewBox="0 0 64 80" className={`w-full h-full ${isNightTime ? 'text-amber-400' : 'text-amber-500/80'}`} preserveAspectRatio="xMidYMid meet">
@@ -2744,7 +2643,7 @@ export default function ArticlesPage() {
             <div className="absolute bottom-2 left-0 right-0 h-3 bg-gradient-to-t from-amber-900 to-transparent" />
           </div>
         </div>
-        <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-amber-800 via-amber-700 to-amber-800 z-10 border-l-4 border-amber-600/60 shadow-2xl">
+        <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-amber-800 via-amber-700 to-amber-800 z-10 border-l-4 border-amber-600/60 shadow-2xl">
           {/* Architecturally Accurate Corinthian Capital - Enlarged */}
           <div className={`absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 border-b-2 border-amber-600/50 ${isNightTime ? 'brightness-110' : ''}`}>
             <svg viewBox="0 0 64 80" className={`w-full h-full ${isNightTime ? 'text-amber-400' : 'text-amber-500/80'}`} preserveAspectRatio="xMidYMid meet">
@@ -3274,19 +3173,19 @@ export default function ArticlesPage() {
         {/* ============ SHELF 1 ============ */}
         <div className="relative pt-6 pb-2">
           {/* Centered Category filter bar with Roman styling */}
-          <div className="flex items-center justify-center px-4 sm:px-8 lg:px-12 mb-3">
-            <div className="flex items-center gap-3 px-4 py-1.5 bg-gradient-to-r from-amber-900/40 via-amber-800/60 to-amber-900/40 rounded-sm border-y border-amber-600/30">
+          <div className="flex items-center justify-center px-2 sm:px-8 lg:px-12 mb-3">
+            <div className="flex items-center gap-1.5 sm:gap-3 px-2 sm:px-4 py-1.5 bg-gradient-to-r from-amber-900/40 via-amber-800/60 to-amber-900/40 rounded-sm border-y border-amber-600/30 max-w-full">
               {/* Left decorative element */}
               <div className="flex items-center gap-2">
-                <svg viewBox="0 0 16 8" className="w-4 h-2 text-amber-500/50">
+                <svg viewBox="0 0 16 8" className="hidden sm:block w-4 h-2 text-amber-500/50">
                   <path d="M0 4 L6 4 M8 0 L8 8" stroke="currentColor" strokeWidth="1" fill="none"/>
                 </svg>
                 <span className="text-[10px] font-bold text-amber-300/80 uppercase tracking-[0.15em]" style={{ fontFamily: 'Georgia, serif' }}>Shelf I</span>
               </div>
               {/* Divider */}
-              <div className="w-px h-4 bg-gradient-to-b from-transparent via-amber-500/40 to-transparent" />
+              <div className="hidden sm:block w-px h-4 bg-gradient-to-b from-transparent via-amber-500/40 to-transparent" />
               {/* Category buttons - icon only style matching Shelf 3 */}
-              <div className="flex items-center gap-1.5">
+              <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-1.5">
                 <button
                   onClick={() => setShelf1Category(null)}
                   className={`px-2.5 py-1 text-[9px] font-bold rounded-sm transition-all border ${!shelf1Category ? 'bg-amber-700/70 text-amber-100 border-amber-500/50 shadow-inner' : 'text-amber-400/70 border-transparent hover:text-amber-300 hover:bg-amber-800/30'}`}
@@ -3305,15 +3204,15 @@ export default function ArticlesPage() {
                 ))}
               </div>
               {/* Right decorative element */}
-              <svg viewBox="0 0 16 8" className="w-4 h-2 text-amber-500/50 scale-x-[-1]">
+              <svg viewBox="0 0 16 8" className="hidden sm:block w-4 h-2 text-amber-500/50 scale-x-[-1]">
                 <path d="M0 4 L6 4 M8 0 L8 8" stroke="currentColor" strokeWidth="1" fill="none"/>
               </svg>
             </div>
           </div>
 
           {/* Scrolls container - sits ON the shelf */}
-          <div className="relative mx-2 sm:mx-8 lg:mx-16">
-            <div className="flex items-end justify-center gap-2.5 px-6 pb-0 min-h-[85px] flex-wrap overflow-hidden">
+          <div className="relative mx-1 sm:mx-8 lg:mx-16">
+            <div className="flex items-end justify-center gap-1 sm:gap-2.5 px-2 sm:px-6 pb-0 min-h-[85px] flex-wrap overflow-hidden">
               {/* Leading ghost scrolls - add some before articles */}
               {Array.from({ length: Math.max(0, Math.floor((16 - getShelfArticles(0, shelf1Category).length) / 3)) }).map((_, i) => (
                 <div key={`ghost-shelf1-leading-${i}`} className="flex-shrink-0 w-6 relative opacity-15 hover:opacity-25 transition-opacity" style={{ marginBottom: '0px' }}>
@@ -3534,19 +3433,19 @@ export default function ArticlesPage() {
         {/* ============ SHELF 2 ============ */}
         <div className="relative pt-6 pb-2">
           {/* Centered Category filter bar with Roman styling */}
-          <div className="flex items-center justify-center px-4 sm:px-8 lg:px-12 mb-3">
-            <div className="flex items-center gap-3 px-4 py-1.5 bg-gradient-to-r from-amber-900/40 via-amber-800/60 to-amber-900/40 rounded-sm border-y border-amber-600/30">
+          <div className="flex items-center justify-center px-2 sm:px-8 lg:px-12 mb-3">
+            <div className="flex items-center gap-1.5 sm:gap-3 px-2 sm:px-4 py-1.5 bg-gradient-to-r from-amber-900/40 via-amber-800/60 to-amber-900/40 rounded-sm border-y border-amber-600/30 max-w-full">
               {/* Left decorative element */}
               <div className="flex items-center gap-2">
-                <svg viewBox="0 0 16 8" className="w-4 h-2 text-amber-500/50">
+                <svg viewBox="0 0 16 8" className="hidden sm:block w-4 h-2 text-amber-500/50">
                   <path d="M0 4 L6 4 M8 0 L8 8" stroke="currentColor" strokeWidth="1" fill="none"/>
                 </svg>
                 <span className="text-[10px] font-bold text-amber-300/80 uppercase tracking-[0.15em]" style={{ fontFamily: 'Georgia, serif' }}>Shelf II</span>
               </div>
               {/* Divider */}
-              <div className="w-px h-4 bg-gradient-to-b from-transparent via-amber-500/40 to-transparent" />
+              <div className="hidden sm:block w-px h-4 bg-gradient-to-b from-transparent via-amber-500/40 to-transparent" />
               {/* Category buttons - icon only style matching Shelf 3 */}
-              <div className="flex items-center gap-1.5">
+              <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-1.5">
                 <button
                   onClick={() => setShelf2Category(null)}
                   className={`px-2.5 py-1 text-[9px] font-bold rounded-sm transition-all border ${!shelf2Category ? 'bg-amber-700/70 text-amber-100 border-amber-500/50 shadow-inner' : 'text-amber-400/70 border-transparent hover:text-amber-300 hover:bg-amber-800/30'}`}
@@ -3565,15 +3464,15 @@ export default function ArticlesPage() {
                 ))}
               </div>
               {/* Right decorative element */}
-              <svg viewBox="0 0 16 8" className="w-4 h-2 text-amber-500/50 scale-x-[-1]">
+              <svg viewBox="0 0 16 8" className="hidden sm:block w-4 h-2 text-amber-500/50 scale-x-[-1]">
                 <path d="M0 4 L6 4 M8 0 L8 8" stroke="currentColor" strokeWidth="1" fill="none"/>
               </svg>
             </div>
           </div>
 
           {/* Scrolls container */}
-          <div className="relative mx-2 sm:mx-8 lg:mx-16">
-            <div className="flex items-end justify-center gap-2.5 px-6 pb-0 min-h-[85px] flex-wrap overflow-hidden">
+          <div className="relative mx-1 sm:mx-8 lg:mx-16">
+            <div className="flex items-end justify-center gap-1 sm:gap-2.5 px-2 sm:px-6 pb-0 min-h-[85px] flex-wrap overflow-hidden">
               {/* Leading ghost scrolls - add some before articles */}
               {Array.from({ length: Math.max(0, Math.floor((16 - getShelfArticles(1, shelf2Category).length) / 3)) }).map((_, i) => (
                 <div key={`ghost-shelf2-leading-${i}`} className="flex-shrink-0 w-6 relative opacity-15 hover:opacity-25 transition-opacity" style={{ marginBottom: '0px' }}>
@@ -3782,17 +3681,17 @@ export default function ArticlesPage() {
         {/* ============ SHELF 3 ============ */}
         <div className="relative pt-6 pb-2">
           {/* Centered Category filter bar with Roman styling */}
-          <div className="flex items-center justify-center px-4 sm:px-8 lg:px-12 mb-3">
-            <div className="flex items-center gap-3 px-4 py-1.5 bg-gradient-to-r from-amber-900/40 via-amber-800/60 to-amber-900/40 rounded-sm border-y border-amber-600/30">
+          <div className="flex items-center justify-center px-2 sm:px-8 lg:px-12 mb-3">
+            <div className="flex items-center gap-1.5 sm:gap-3 px-2 sm:px-4 py-1.5 bg-gradient-to-r from-amber-900/40 via-amber-800/60 to-amber-900/40 rounded-sm border-y border-amber-600/30 max-w-full">
               {/* Left decorative element */}
               <div className="flex items-center gap-2">
-                <svg viewBox="0 0 16 8" className="w-4 h-2 text-amber-500/50">
+                <svg viewBox="0 0 16 8" className="hidden sm:block w-4 h-2 text-amber-500/50">
                   <path d="M0 4 L6 4 M8 0 L8 8" stroke="currentColor" strokeWidth="1" fill="none"/>
                 </svg>
                 <span className="text-[10px] font-bold text-amber-300/80 uppercase tracking-[0.15em]" style={{ fontFamily: 'Georgia, serif' }}>Shelf III</span>
               </div>
               {/* Divider */}
-              <div className="w-px h-4 bg-gradient-to-b from-transparent via-amber-500/40 to-transparent" />
+              <div className="hidden sm:block w-px h-4 bg-gradient-to-b from-transparent via-amber-500/40 to-transparent" />
               {/* Category buttons - all icons for this row */}
               <div className="flex items-center gap-1.5">
                 <button
@@ -3813,15 +3712,15 @@ export default function ArticlesPage() {
                 ))}
               </div>
               {/* Right decorative element */}
-              <svg viewBox="0 0 16 8" className="w-4 h-2 text-amber-500/50 scale-x-[-1]">
+              <svg viewBox="0 0 16 8" className="hidden sm:block w-4 h-2 text-amber-500/50 scale-x-[-1]">
                 <path d="M0 4 L6 4 M8 0 L8 8" stroke="currentColor" strokeWidth="1" fill="none"/>
               </svg>
             </div>
           </div>
 
           {/* Scrolls container */}
-          <div className="relative mx-2 sm:mx-8 lg:mx-16">
-            <div className="flex items-end justify-center gap-2.5 px-6 pb-0 min-h-[85px] flex-wrap overflow-hidden">
+          <div className="relative mx-1 sm:mx-8 lg:mx-16">
+            <div className="flex items-end justify-center gap-1 sm:gap-2.5 px-2 sm:px-6 pb-0 min-h-[85px] flex-wrap overflow-hidden">
               {/* Leading ghost scrolls - add some before articles */}
               {Array.from({ length: Math.max(0, Math.floor((16 - getShelfArticles(2, shelf3Category).length) / 3)) }).map((_, i) => (
                 <div key={`ghost-shelf3-leading-${i}`} className="flex-shrink-0 w-6 relative opacity-15 hover:opacity-25 transition-opacity" style={{ marginBottom: '0px' }}>

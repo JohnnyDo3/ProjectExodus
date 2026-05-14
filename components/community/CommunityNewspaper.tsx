@@ -319,11 +319,10 @@ export function CommunityNewspaper({
         {/* MAIN CONTENT - Bio-Digital 3 Column Grid */}
         {/* ============================================ */}
         {/* ============================================ */}
-        {/* GUITAR HERO LIVE FEED - laptop only (needs keyboard + width) */}
+        {/* GUITAR HERO LIVE FEED - visual animation only */}
+        {/* (game UI hidden inside the component itself) */}
         {/* ============================================ */}
-        <div className="hidden lg:block">
-          <GuitarHeroFeed />
-        </div>
+        <GuitarHeroFeed />
 
         {/* ============================================ */}
         {/* SUSTAINABLE TECH BILLBOARD */}
