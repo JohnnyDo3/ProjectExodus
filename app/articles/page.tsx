@@ -888,8 +888,10 @@ export default function ArticlesPage() {
             <div className="absolute top-0 right-[30%] w-[1px] h-full bg-gradient-to-b from-amber-700/40 via-amber-600/20 to-amber-700/40" />
           </div>
 
-          {/* Ornate top border - Greek key pattern */}
-          <svg className="absolute top-0 left-0 right-0 h-8 opacity-30" preserveAspectRatio="none">
+          {/* Ornate top border - Greek key pattern.
+              z-30 so it renders OVER the mobile bookends (z-20) and visually
+              spans the full width across the top of the hero. */}
+          <svg className="absolute top-0 left-0 right-0 h-8 opacity-30 z-30" preserveAspectRatio="none">
             <defs>
               <pattern id="greekKey" x="0" y="0" width="32" height="16" patternUnits="userSpaceOnUse">
                 <path d="M0 8 L8 8 L8 0 L16 0 L16 8 L24 8 L24 16 L32 16 L32 8" fill="none" stroke="url(#goldGradient)" strokeWidth="2"/>
@@ -2744,8 +2746,9 @@ export default function ArticlesPage() {
       <div className="relative bg-gradient-to-b from-amber-950 via-amber-900 to-amber-950 overflow-visible">
         {/* Mobile bookends — extend the hero bookends down through the shelves.
             No top cap so they continue seamlessly from the hero. Bottom cap
-            at the very end. Sconces aligned one per shelf (16/50/83%). */}
-        {renderMobileBookends('shelves', [30, 58, 85], false, true)}
+            at the very end. No sconces — candles only on the hero bookends;
+            this section is just the wood strip continuation. */}
+        {renderMobileBookends('shelves', [], false, true)}
 
         {/* Wood grain texture overlay */}
         <div className="absolute inset-0 opacity-20" style={{
