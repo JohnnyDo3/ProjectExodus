@@ -638,6 +638,81 @@ export default function ArticlesPage() {
     <div className="min-h-screen bg-[var(--background)]">
       {/* Hero Header - U-Shaped Bookshelf Frame */}
       <div className="relative bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 text-white pb-8">
+        {/* ============================================ */}
+        {/* MOBILE-ONLY BOOKEND SCONCES                  */}
+        {/* Vertical wooden strips on the L/R edges of   */}
+        {/* the hero, each holding a brass sconce + lit  */}
+        {/* candle. Just the *outside* of a bookshelf —  */}
+        {/* no shelves, no books, no scrolls.            */}
+        {/* ============================================ */}
+        {(['left', 'right'] as const).map((side) => (
+          <div
+            key={`bookend-${side}`}
+            className={`lg:hidden absolute ${side}-0 top-0 bottom-0 w-6 z-20 overflow-hidden`}
+            style={{
+              background: side === 'left'
+                ? 'linear-gradient(to right, #1c1208 0%, #451a03 30%, #78350f 70%, #92400e 100%)'
+                : 'linear-gradient(to left, #1c1208 0%, #451a03 30%, #78350f 70%, #92400e 100%)',
+              boxShadow: side === 'left'
+                ? 'inset -2px 0 4px rgba(0,0,0,0.5)'
+                : 'inset 2px 0 4px rgba(0,0,0,0.5)',
+            }}
+          >
+            {/* Wood grain texture */}
+            <div className="absolute inset-0 opacity-25 pointer-events-none" style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 24 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 0 Q10 100 6 200 Q2 300 6 400' fill='none' stroke='%23000' stroke-width='0.6'/%3E%3Cpath d='M18 0 Q14 100 18 200 Q22 300 18 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.7'/%3E%3C/svg%3E")`,
+            }} />
+
+            {/* Inner edge highlight (the side facing the room) */}
+            <div className={`absolute top-0 bottom-0 ${side === 'left' ? 'right-0' : 'left-0'} w-px bg-amber-400/40`} />
+
+            {/* === SCONCE CANDLE (upper third of the bookend) === */}
+            <div className="absolute top-[28%] left-1/2 -translate-x-1/2 w-5 flex flex-col items-center">
+              {/* Warm halo glow behind the candle */}
+              <div className="absolute -top-3 -left-4 -right-4 -bottom-6 rounded-full bg-yellow-400/25 blur-xl pointer-events-none" />
+              <div className="absolute -top-1 -left-2 -right-2 -bottom-3 rounded-full bg-orange-400/20 blur-md pointer-events-none" />
+
+              {/* Flame */}
+              <div className="relative w-1.5 h-3 z-10">
+                <div className="absolute inset-x-0 bottom-0 h-full rounded-full bg-gradient-to-t from-orange-500 via-yellow-300 to-yellow-100 animate-pulse" style={{ animationDuration: '1.4s' }} />
+                <div className="absolute inset-x-0.5 bottom-0.5 h-2/3 rounded-full bg-gradient-to-t from-orange-400/60 to-yellow-200/80 blur-[1px]" />
+              </div>
+
+              {/* Wick */}
+              <div className="w-px h-0.5 bg-stone-900 z-10" />
+
+              {/* Candle body */}
+              <div className="relative w-2 h-5 z-10" style={{
+                background: 'linear-gradient(to bottom, #fef3c7 0%, #fde68a 60%, #fcd34d 100%)',
+                boxShadow: 'inset -1px 0 0 rgba(0,0,0,0.15), inset 1px 0 0 rgba(255,255,255,0.4), 0 1px 2px rgba(0,0,0,0.3)',
+              }}>
+                {/* Wax drip down one side */}
+                <div className="absolute top-1 left-0 w-0.5 h-3 bg-amber-100/60 rounded-b-full" />
+              </div>
+
+              {/* Brass dish (sconce cup) */}
+              <div className="relative w-4 h-1.5 rounded-b-full z-10" style={{
+                background: 'linear-gradient(to bottom, #fbbf24 0%, #d97706 50%, #92400e 100%)',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.4), inset 0 -1px 0 rgba(0,0,0,0.3)',
+              }} />
+
+              {/* Brass mounting bracket */}
+              <div className="w-2 h-2 -mt-px z-10" style={{
+                background: 'linear-gradient(to bottom, #d97706, #92400e)',
+                clipPath: 'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)',
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.2)',
+              }} />
+
+              {/* Anchor bolt on the bracket */}
+              <div className="w-1 h-1 -mt-px rounded-full bg-amber-900 z-10" />
+            </div>
+
+            {/* Subtle vertical reeded molding lines (decorative bookend detail) */}
+            <div className={`absolute top-2 bottom-2 ${side === 'left' ? 'left-1' : 'right-1'} w-px bg-amber-900/40`} />
+            <div className={`absolute top-4 bottom-4 ${side === 'left' ? 'left-2' : 'right-2'} w-px bg-amber-800/30`} />
+          </div>
+        ))}
+
         {/* Ancient Chamber Background */}
         <div className="absolute inset-0 overflow-hidden">
           {/* Stone texture overlay */}
@@ -2433,7 +2508,7 @@ export default function ArticlesPage() {
 
         </div>
 
-        <div className="container mx-auto px-4 py-6 sm:py-8 relative z-10 lg:px-[20%]">
+        <div className="container mx-auto px-8 py-6 sm:py-8 relative z-10 lg:px-[20%]">
           <div className="max-w-6xl mx-auto lg:pt-40">
             {/* Title Section - Below the entablature */}
             <div className="text-center mb-6 sm:mb-8">
@@ -3212,7 +3287,7 @@ export default function ArticlesPage() {
 
           {/* Scrolls container - sits ON the shelf */}
           <div className="relative mx-1 sm:mx-8 lg:mx-16">
-            <div className="flex items-end justify-center gap-1 sm:gap-2.5 px-2 sm:px-6 pb-0 min-h-[85px] flex-wrap overflow-hidden">
+            <div className="flex items-end justify-start sm:justify-center gap-1 sm:gap-2.5 px-2 sm:px-6 pb-0 min-h-[85px] flex-nowrap sm:flex-wrap overflow-x-auto overflow-y-hidden sm:overflow-hidden scrollbar-hide">
               {/* Leading ghost scrolls - add some before articles */}
               {Array.from({ length: Math.max(0, Math.floor((16 - getShelfArticles(0, shelf1Category).length) / 3)) }).map((_, i) => (
                 <div key={`ghost-shelf1-leading-${i}`} className="flex-shrink-0 w-6 relative opacity-15 hover:opacity-25 transition-opacity" style={{ marginBottom: '0px' }}>
@@ -3236,17 +3311,10 @@ export default function ArticlesPage() {
                 const isCompleted = articleProgress?.completed || false
                 const isHovered = hoveredBook === article.id
                 const rotation = ((idx * 17) % 5) - 2
-                // Mobile-only: each article gets its own row with a randomized
-                // horizontal offset (deterministic by article id)
-                const mobOffsetPct = ((article.id || `${idx}`).split('').reduce((a, c) => (a * 31 + c.charCodeAt(0)) | 0, 0) & 0x7fffffff) % 70
 
                 return (
                   <div
                     key={`shelf1-${article.id}`}
-                    className="w-full sm:w-auto sm:!pl-0"
-                    style={{ paddingLeft: `${mobOffsetPct}%` }}
-                  >
-                  <div
                     className={`flex-shrink-0 relative w-8 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-4 z-30' : 'z-10'} ${highlightScrolls ? 'scroll-highlight-glow' : ''}`}
                     style={{ marginBottom: '0px' }}
                     onMouseEnter={() => handleScrollHover(article)}
@@ -3313,7 +3381,6 @@ export default function ArticlesPage() {
                         </div>
                       </div>
                     </div>
-                  </div>
                   </div>
                 )
               })}
@@ -3480,7 +3547,7 @@ export default function ArticlesPage() {
 
           {/* Scrolls container */}
           <div className="relative mx-1 sm:mx-8 lg:mx-16">
-            <div className="flex items-end justify-center gap-1 sm:gap-2.5 px-2 sm:px-6 pb-0 min-h-[85px] flex-wrap overflow-hidden">
+            <div className="flex items-end justify-start sm:justify-center gap-1 sm:gap-2.5 px-2 sm:px-6 pb-0 min-h-[85px] flex-nowrap sm:flex-wrap overflow-x-auto overflow-y-hidden sm:overflow-hidden scrollbar-hide">
               {/* Leading ghost scrolls - add some before articles */}
               {Array.from({ length: Math.max(0, Math.floor((16 - getShelfArticles(1, shelf2Category).length) / 3)) }).map((_, i) => (
                 <div key={`ghost-shelf2-leading-${i}`} className="flex-shrink-0 w-6 relative opacity-15 hover:opacity-25 transition-opacity" style={{ marginBottom: '0px' }}>
@@ -3504,15 +3571,10 @@ export default function ArticlesPage() {
                 const isCompleted = articleProgress?.completed || false
                 const isHovered = hoveredBook === article.id
                 const rotation = ((idx * 13 + 5) % 5) - 2
-                const mobOffsetPct = ((article.id || `${idx}`).split('').reduce((a, c) => (a * 31 + c.charCodeAt(0)) | 0, 0) & 0x7fffffff) % 70
 
                 return (
                   <div
                     key={`shelf2-${article.id}`}
-                    className="w-full sm:w-auto sm:!pl-0"
-                    style={{ paddingLeft: `${mobOffsetPct}%` }}
-                  >
-                  <div
                     className={`flex-shrink-0 relative w-8 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-4 z-30' : 'z-10'} ${highlightScrolls ? 'scroll-highlight-glow' : ''}`}
                     style={{ marginBottom: '0px' }}
                     onMouseEnter={() => handleScrollHover(article)}
@@ -3567,7 +3629,6 @@ export default function ArticlesPage() {
                         </div>
                       </div>
                     </div>
-                  </div>
                   </div>
                 )
               })}
@@ -3734,7 +3795,7 @@ export default function ArticlesPage() {
 
           {/* Scrolls container */}
           <div className="relative mx-1 sm:mx-8 lg:mx-16">
-            <div className="flex items-end justify-center gap-1 sm:gap-2.5 px-2 sm:px-6 pb-0 min-h-[85px] flex-wrap overflow-hidden">
+            <div className="flex items-end justify-start sm:justify-center gap-1 sm:gap-2.5 px-2 sm:px-6 pb-0 min-h-[85px] flex-nowrap sm:flex-wrap overflow-x-auto overflow-y-hidden sm:overflow-hidden scrollbar-hide">
               {/* Leading ghost scrolls - add some before articles */}
               {Array.from({ length: Math.max(0, Math.floor((16 - getShelfArticles(2, shelf3Category).length) / 3)) }).map((_, i) => (
                 <div key={`ghost-shelf3-leading-${i}`} className="flex-shrink-0 w-6 relative opacity-15 hover:opacity-25 transition-opacity" style={{ marginBottom: '0px' }}>
@@ -3758,15 +3819,10 @@ export default function ArticlesPage() {
                 const isCompleted = articleProgress?.completed || false
                 const isHovered = hoveredBook === article.id
                 const rotation = ((idx * 11 + 3) % 5) - 2
-                const mobOffsetPct = ((article.id || `${idx}`).split('').reduce((a, c) => (a * 31 + c.charCodeAt(0)) | 0, 0) & 0x7fffffff) % 70
 
                 return (
                   <div
                     key={`shelf3-${article.id}`}
-                    className="w-full sm:w-auto sm:!pl-0"
-                    style={{ paddingLeft: `${mobOffsetPct}%` }}
-                  >
-                  <div
                     className={`flex-shrink-0 relative w-8 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-4 z-30' : 'z-10'} ${highlightScrolls ? 'scroll-highlight-glow' : ''}`}
                     style={{ marginBottom: '0px' }}
                     onMouseEnter={() => handleScrollHover(article)}
@@ -3821,7 +3877,6 @@ export default function ArticlesPage() {
                         </div>
                       </div>
                     </div>
-                  </div>
                   </div>
                 )
               })}
