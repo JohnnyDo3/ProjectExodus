@@ -650,7 +650,7 @@ export default function ArticlesPage() {
       {(['left', 'right'] as const).map((side) => (
         <div
           key={`${keyPrefix}-${side}`}
-          className={`lg:hidden absolute ${side}-0 top-0 bottom-0 w-8 z-20 overflow-hidden`}
+          className={`lg:hidden absolute ${side}-0 top-0 bottom-0 w-10 z-20 overflow-hidden`}
           style={{
             background: side === 'left'
               ? 'linear-gradient(to right, #1c1208 0%, #451a03 30%, #78350f 70%, #92400e 100%)'
@@ -2731,7 +2731,7 @@ export default function ArticlesPage() {
 
         </div>
 
-        <div className="container mx-auto px-10 py-6 sm:py-8 relative z-10 lg:px-[20%]">
+        <div className="container mx-auto px-12 py-6 sm:py-8 relative z-10 lg:px-[20%]">
           <div className="max-w-6xl mx-auto pt-14 sm:pt-16 lg:pt-40">
             {/* Title Section - Below the entablature */}
             <div className="text-center mb-6 sm:mb-8">
@@ -3279,7 +3279,7 @@ export default function ArticlesPage() {
             (mx-16) so it doesn't overflow into the Corinthian columns.
             Columns are hidden on small screens so we collapse the inset
             there to keep content readable. */}
-        <div className="h-24 shadow-2xl relative overflow-hidden mx-9 sm:mx-8 lg:mx-16" style={{ background: 'linear-gradient(to bottom, #d97706, #b45309, #78350f, #451a03)', borderTop: '3px solid rgba(251, 191, 36, 0.7)' }}>
+        <div className="h-24 shadow-2xl relative overflow-hidden mx-11 sm:mx-8 lg:mx-16" style={{ background: 'linear-gradient(to bottom, #d97706, #b45309, #78350f, #451a03)', borderTop: '3px solid rgba(251, 191, 36, 0.7)' }}>
 
           {/* === LAYER 1: TOP GREEK KEY MEANDER - Full Width === */}
           <div className="absolute top-0 left-0 right-0 h-5 overflow-hidden">
@@ -3515,7 +3515,7 @@ export default function ArticlesPage() {
           </div>
 
           {/* Scrolls container - sits ON the shelf */}
-          <div className="relative mx-9 sm:mx-8 lg:mx-16">
+          <div className="relative mx-11 sm:mx-8 lg:mx-16">
             <div className="flex items-end justify-start sm:justify-center gap-1 sm:gap-2.5 px-2 sm:px-6 pb-0 min-h-[85px] flex-nowrap sm:flex-wrap overflow-x-auto overflow-y-hidden sm:overflow-hidden scrollbar-hide">
               {/* Leading ghost scrolls - add some before articles */}
               {Array.from({ length: Math.max(0, Math.floor((16 - getShelfArticles(0, shelf1Category).length) / 3)) }).map((_, i) => (
@@ -3776,7 +3776,7 @@ export default function ArticlesPage() {
           </div>
 
           {/* Scrolls container */}
-          <div className="relative mx-9 sm:mx-8 lg:mx-16">
+          <div className="relative mx-11 sm:mx-8 lg:mx-16">
             <div className="flex items-end justify-start sm:justify-center gap-1 sm:gap-2.5 px-2 sm:px-6 pb-0 min-h-[85px] flex-nowrap sm:flex-wrap overflow-x-auto overflow-y-hidden sm:overflow-hidden scrollbar-hide">
               {/* Leading ghost scrolls - add some before articles */}
               {Array.from({ length: Math.max(0, Math.floor((16 - getShelfArticles(1, shelf2Category).length) / 3)) }).map((_, i) => (
@@ -4025,7 +4025,7 @@ export default function ArticlesPage() {
           </div>
 
           {/* Scrolls container */}
-          <div className="relative mx-9 sm:mx-8 lg:mx-16">
+          <div className="relative mx-11 sm:mx-8 lg:mx-16">
             <div className="flex items-end justify-start sm:justify-center gap-1 sm:gap-2.5 px-2 sm:px-6 pb-0 min-h-[85px] flex-nowrap sm:flex-wrap overflow-x-auto overflow-y-hidden sm:overflow-hidden scrollbar-hide">
               {/* Leading ghost scrolls - add some before articles */}
               {Array.from({ length: Math.max(0, Math.floor((16 - getShelfArticles(2, shelf3Category).length) / 3)) }).map((_, i) => (
