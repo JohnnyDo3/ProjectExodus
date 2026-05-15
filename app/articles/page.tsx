@@ -666,50 +666,75 @@ export default function ArticlesPage() {
             {/* Inner edge highlight (the side facing the room) */}
             <div className={`absolute top-0 bottom-0 ${side === 'left' ? 'right-0' : 'left-0'} w-px bg-amber-400/40`} />
 
-            {/* === SCONCE CANDLE (upper third of the bookend) === */}
-            <div className="absolute top-[28%] left-1/2 -translate-x-1/2 w-5 flex flex-col items-center">
-              {/* Warm halo glow behind the candle */}
-              <div className="absolute -top-3 -left-4 -right-4 -bottom-6 rounded-full bg-yellow-400/25 blur-xl pointer-events-none" />
-              <div className="absolute -top-1 -left-2 -right-2 -bottom-3 rounded-full bg-orange-400/20 blur-md pointer-events-none" />
-
-              {/* Flame */}
-              <div className="relative w-1.5 h-3 z-10">
-                <div className="absolute inset-x-0 bottom-0 h-full rounded-full bg-gradient-to-t from-orange-500 via-yellow-300 to-yellow-100 animate-pulse" style={{ animationDuration: '1.4s' }} />
-                <div className="absolute inset-x-0.5 bottom-0.5 h-2/3 rounded-full bg-gradient-to-t from-orange-400/60 to-yellow-200/80 blur-[1px]" />
-              </div>
-
-              {/* Wick */}
-              <div className="w-px h-0.5 bg-stone-900 z-10" />
-
-              {/* Candle body */}
-              <div className="relative w-2 h-5 z-10" style={{
-                background: 'linear-gradient(to bottom, #fef3c7 0%, #fde68a 60%, #fcd34d 100%)',
-                boxShadow: 'inset -1px 0 0 rgba(0,0,0,0.15), inset 1px 0 0 rgba(255,255,255,0.4), 0 1px 2px rgba(0,0,0,0.3)',
-              }}>
-                {/* Wax drip down one side */}
-                <div className="absolute top-1 left-0 w-0.5 h-3 bg-amber-100/60 rounded-b-full" />
-              </div>
-
-              {/* Brass dish (sconce cup) */}
-              <div className="relative w-4 h-1.5 rounded-b-full z-10" style={{
-                background: 'linear-gradient(to bottom, #fbbf24 0%, #d97706 50%, #92400e 100%)',
-                boxShadow: '0 1px 2px rgba(0,0,0,0.4), inset 0 -1px 0 rgba(0,0,0,0.3)',
-              }} />
-
-              {/* Brass mounting bracket */}
-              <div className="w-2 h-2 -mt-px z-10" style={{
-                background: 'linear-gradient(to bottom, #d97706, #92400e)',
-                clipPath: 'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)',
-                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.2)',
-              }} />
-
-              {/* Anchor bolt on the bracket */}
-              <div className="w-1 h-1 -mt-px rounded-full bg-amber-900 z-10" />
+            {/* Top decorative cap — finishes the bookend cleanly against the page header */}
+            <div className="absolute top-0 left-0 right-0 h-4 z-10" style={{
+              background: 'linear-gradient(to bottom, #92400e 0%, #78350f 50%, #451a03 100%)',
+              borderBottom: '1px solid rgba(0,0,0,0.5)',
+              boxShadow: '0 1px 0 rgba(251, 191, 36, 0.25)',
+            }}>
+              {/* Hairline highlights on the cap */}
+              <div className="absolute top-0.5 left-0.5 right-0.5 h-px bg-amber-300/40" />
+              <div className="absolute top-2 left-1 right-1 h-px bg-amber-700/50" />
             </div>
 
+            {/* Bottom decorative base — mirrors the top cap */}
+            <div className="absolute bottom-0 left-0 right-0 h-4 z-10" style={{
+              background: 'linear-gradient(to top, #451a03 0%, #78350f 50%, #92400e 100%)',
+              borderTop: '1px solid rgba(0,0,0,0.5)',
+              boxShadow: '0 -1px 0 rgba(251, 191, 36, 0.2)',
+            }}>
+              <div className="absolute bottom-0.5 left-0.5 right-0.5 h-px bg-amber-300/30" />
+              <div className="absolute bottom-2 left-1 right-1 h-px bg-amber-700/40" />
+            </div>
+
+            {/* === SCONCE CANDLES — two per bookend, evenly spaced === */}
+            {[
+              { topClass: 'top-[18%]', dur: '1.4s' },
+              { topClass: 'top-[58%]', dur: '1.7s' },
+            ].map(({ topClass, dur }, i) => (
+              <div key={`sconce-${side}-${i}`} className={`absolute ${topClass} left-1/2 -translate-x-1/2 w-5 flex flex-col items-center`}>
+                {/* Warm halo glow behind the candle */}
+                <div className="absolute -top-3 -left-4 -right-4 -bottom-6 rounded-full bg-yellow-400/25 blur-xl pointer-events-none" />
+                <div className="absolute -top-1 -left-2 -right-2 -bottom-3 rounded-full bg-orange-400/20 blur-md pointer-events-none" />
+
+                {/* Flame */}
+                <div className="relative w-1.5 h-3 z-10">
+                  <div className="absolute inset-x-0 bottom-0 h-full rounded-full bg-gradient-to-t from-orange-500 via-yellow-300 to-yellow-100 animate-pulse" style={{ animationDuration: dur }} />
+                  <div className="absolute inset-x-0.5 bottom-0.5 h-2/3 rounded-full bg-gradient-to-t from-orange-400/60 to-yellow-200/80 blur-[1px]" />
+                </div>
+
+                {/* Wick */}
+                <div className="w-px h-0.5 bg-stone-900 z-10" />
+
+                {/* Candle body */}
+                <div className="relative w-2 h-5 z-10" style={{
+                  background: 'linear-gradient(to bottom, #fef3c7 0%, #fde68a 60%, #fcd34d 100%)',
+                  boxShadow: 'inset -1px 0 0 rgba(0,0,0,0.15), inset 1px 0 0 rgba(255,255,255,0.4), 0 1px 2px rgba(0,0,0,0.3)',
+                }}>
+                  <div className="absolute top-1 left-0 w-0.5 h-3 bg-amber-100/60 rounded-b-full" />
+                </div>
+
+                {/* Brass dish (sconce cup) */}
+                <div className="relative w-4 h-1.5 rounded-b-full z-10" style={{
+                  background: 'linear-gradient(to bottom, #fbbf24 0%, #d97706 50%, #92400e 100%)',
+                  boxShadow: '0 1px 2px rgba(0,0,0,0.4), inset 0 -1px 0 rgba(0,0,0,0.3)',
+                }} />
+
+                {/* Brass mounting bracket */}
+                <div className="w-2 h-2 -mt-px z-10" style={{
+                  background: 'linear-gradient(to bottom, #d97706, #92400e)',
+                  clipPath: 'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)',
+                  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.2)',
+                }} />
+
+                {/* Anchor bolt on the bracket */}
+                <div className="w-1 h-1 -mt-px rounded-full bg-amber-900 z-10" />
+              </div>
+            ))}
+
             {/* Subtle vertical reeded molding lines (decorative bookend detail) */}
-            <div className={`absolute top-2 bottom-2 ${side === 'left' ? 'left-1' : 'right-1'} w-px bg-amber-900/40`} />
-            <div className={`absolute top-4 bottom-4 ${side === 'left' ? 'left-2' : 'right-2'} w-px bg-amber-800/30`} />
+            <div className={`absolute top-5 bottom-5 ${side === 'left' ? 'left-1' : 'right-1'} w-px bg-amber-900/40`} />
+            <div className={`absolute top-8 bottom-8 ${side === 'left' ? 'left-2' : 'right-2'} w-px bg-amber-800/30`} />
           </div>
         ))}
 
@@ -3246,9 +3271,11 @@ export default function ArticlesPage() {
         </div>
 
         {/* ============ SHELF 1 ============ */}
-        <div className="relative pt-6 pb-2">
+        {/* Mobile: pt-0 so the category bar attaches directly to the bottom
+            of the ornate top shelf (entablature) above. Desktop: pt-6 as before. */}
+        <div className="relative pt-0 pb-2 sm:pt-6">
           {/* Centered Category filter bar with Roman styling */}
-          <div className="flex items-center justify-center px-2 sm:px-8 lg:px-12 mb-3">
+          <div className="flex items-center justify-center px-2 sm:px-8 lg:px-12 mb-5 sm:mb-3">
             <div className="flex items-center gap-1.5 sm:gap-3 px-2 sm:px-4 py-1.5 bg-gradient-to-r from-amber-900/40 via-amber-800/60 to-amber-900/40 rounded-sm border-y border-amber-600/30 max-w-full">
               {/* Left decorative element */}
               <div className="flex items-center gap-2">
@@ -3508,7 +3535,7 @@ export default function ArticlesPage() {
         {/* ============ SHELF 2 ============ */}
         <div className="relative pt-6 pb-2">
           {/* Centered Category filter bar with Roman styling */}
-          <div className="flex items-center justify-center px-2 sm:px-8 lg:px-12 mb-3">
+          <div className="flex items-center justify-center px-2 sm:px-8 lg:px-12 mb-5 sm:mb-3">
             <div className="flex items-center gap-1.5 sm:gap-3 px-2 sm:px-4 py-1.5 bg-gradient-to-r from-amber-900/40 via-amber-800/60 to-amber-900/40 rounded-sm border-y border-amber-600/30 max-w-full">
               {/* Left decorative element */}
               <div className="flex items-center gap-2">
@@ -3756,7 +3783,7 @@ export default function ArticlesPage() {
         {/* ============ SHELF 3 ============ */}
         <div className="relative pt-6 pb-2">
           {/* Centered Category filter bar with Roman styling */}
-          <div className="flex items-center justify-center px-2 sm:px-8 lg:px-12 mb-3">
+          <div className="flex items-center justify-center px-2 sm:px-8 lg:px-12 mb-5 sm:mb-3">
             <div className="flex items-center gap-1.5 sm:gap-3 px-2 sm:px-4 py-1.5 bg-gradient-to-r from-amber-900/40 via-amber-800/60 to-amber-900/40 rounded-sm border-y border-amber-600/30 max-w-full">
               {/* Left decorative element */}
               <div className="flex items-center gap-2">
