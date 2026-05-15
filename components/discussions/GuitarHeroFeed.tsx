@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useSession } from 'next-auth/react'
-import { Activity, TrendingUp, Hash } from 'lucide-react'
+import { Activity, Zap, TrendingUp, Hash, Gamepad2 } from 'lucide-react'
 import Link from 'next/link'
 import type { ActivityItem } from './ActivityCard'
 import { GuitarHeroNote, LANE_CONFIG, getLaneCategory } from './GuitarHeroNote'
@@ -549,15 +549,27 @@ export function GuitarHeroFeed() {
         </div>
 
         <div className="flex items-center gap-4 sm:gap-6">
-          {/* Ambient community stats — game-specific counters (combo, played, streak,
-              Play button) removed; keep total activity + trending hashtags */}
+          {/* Game-specific counters (combo, played, streak, Play button) shown
+              only on lg+ — the game itself is laptop-only. Mobile keeps the
+              ambient passive animation + community stats. */}
           {!gameActive && (
             <>
+              {combo > 2 && (
+                <div className="hidden lg:flex items-center gap-1 animate-pulse">
+                  <Zap className="w-4 h-4 text-yellow-400" />
+                  <span className="text-sm font-black text-yellow-400">{combo}x COMBO</span>
+                </div>
+              )}
+
               <div className="flex items-center gap-1.5">
                 <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
                 <span className="text-xs font-bold text-white/50">
                   {hubData.totalActivity} total
                 </span>
+              </div>
+
+              <div className="hidden lg:block text-xs font-black text-white/60 tabular-nums">
+                {totalSplashed} <span className="text-white/30">played</span>
               </div>
 
               {hubData.trending.length > 0 && (
@@ -571,6 +583,17 @@ export function GuitarHeroFeed() {
                 </div>
               )}
             </>
+          )}
+
+          {/* Play button (lg+ only — game is laptop-exclusive) */}
+          {!gameActive && countdown === null && !showModePicker && (
+            <button
+              onClick={() => setShowModePicker(true)}
+              className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/40 text-cyan-400 text-xs font-black uppercase tracking-wider hover:from-cyan-500/30 hover:to-purple-500/30 transition-all"
+            >
+              <Gamepad2 className="w-4 h-4" />
+              <span className="hidden sm:inline">Play</span>
+            </button>
           )}
         </div>
       </div>
@@ -748,7 +771,19 @@ export function GuitarHeroFeed() {
         <div className="absolute bottom-6 left-0 right-0 h-px z-5 pointer-events-none" style={{ background: 'linear-gradient(90deg, #FF6B6B30, #4ECDC430, #45B7D130, #A78BFA30, #F472B630, #FBBF2430, #34D39930, #818CF830)' }} />
       </div>
 
-      {/* Game-specific streak indicator removed — feed is passive-only now */}
+      {/* ═══ STREAK INDICATOR (passive mode, lg+ only — game UI is laptop-exclusive) ═══ */}
+      {!gameActive && streak > 5 && (
+        <div className="hidden lg:block fixed top-20 right-6 z-30 pointer-events-none">
+          <div className="text-right animate-pulse">
+            <p className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400">
+              {streak}
+            </p>
+            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-orange-400/60">
+              streak
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* ═══ COUNTDOWN ═══ */}
       {countdown !== null && (
