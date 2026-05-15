@@ -834,8 +834,106 @@ export default function ArticlesPage() {
     <div className="min-h-screen bg-[var(--background)]">
       {/* Hero Header - U-Shaped Bookshelf Frame */}
       <div className="relative bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 text-white pb-8">
-        {/* Mobile bookends — hero gets top cap + 4 sconces */}
-        {renderMobileBookends('hero', [20, 42, 64, 84], true, false)}
+        {/* Mobile bookends — hero gets 4 sconces. The bookshelf top crown
+            below replaces the per-bookend top cap visually. */}
+        {renderMobileBookends('hero', [20, 42, 64, 84], false, false)}
+
+        {/* ============================================ */}
+        {/* MOBILE BOOKSHELF TOP CROWN — runs full width  */}
+        {/* across the top, connecting the two bookends.  */}
+        {/* A proper cornice with multiple decorative     */}
+        {/* layers: top crown molding, carved frieze,     */}
+        {/* dentil row, base shadow.                      */}
+        {/* ============================================ */}
+        <div
+          className="lg:hidden absolute top-0 left-0 right-0 h-12 z-30 overflow-hidden pointer-events-none"
+          style={{
+            background: 'linear-gradient(to bottom, #1c1208 0%, #451a03 15%, #78350f 40%, #92400e 70%, #78350f 100%)',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.4)',
+          }}
+        >
+          {/* Wood grain texture */}
+          <div className="absolute inset-0 opacity-25" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 18 Q100 15 200 18 Q300 21 400 18' fill='none' stroke='%23000' stroke-width='0.6'/%3E%3Cpath d='M0 32 Q100 30 200 32 Q300 34 400 32' fill='none' stroke='%23000' stroke-width='0.4' opacity='0.7'/%3E%3C/svg%3E")`,
+          }} />
+
+          {/* Top crown molding — slim highlighted ridge at the very top */}
+          <div className="absolute top-0 left-0 right-0 h-1" style={{
+            background: 'linear-gradient(to bottom, #d97706, #92400e)',
+            borderBottom: '1px solid rgba(251, 191, 36, 0.5)',
+          }} />
+
+          {/* Greek key meander frieze — the carved decorative band */}
+          <div className="absolute top-1.5 left-0 right-0 h-4 overflow-hidden">
+            <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 240 16">
+              <defs>
+                <pattern id="crownMeander" x="0" y="0" width="24" height="16" patternUnits="userSpaceOnUse">
+                  {/* Classic Greek meander pattern */}
+                  <path
+                    d="M0 12 L6 12 L6 4 L12 4 L12 12 L18 12 L18 4 L24 4"
+                    fill="none"
+                    stroke="#fbbf24"
+                    strokeWidth="1"
+                    opacity="0.7"
+                  />
+                  <path
+                    d="M3 8 L9 8 L9 0 L15 0 L15 8 L21 8"
+                    fill="none"
+                    stroke="#f59e0b"
+                    strokeWidth="0.5"
+                    opacity="0.5"
+                  />
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill="url(#crownMeander)" />
+            </svg>
+            {/* Hairline borders around the frieze */}
+            <div className="absolute top-0 left-0 right-0 h-px bg-amber-500/40" />
+            <div className="absolute bottom-0 left-0 right-0 h-px bg-amber-900/60" />
+          </div>
+
+          {/* Dentil row — small carved blocks beneath the frieze */}
+          <div className="absolute top-7 left-0 right-0 h-2 flex items-center justify-center overflow-hidden">
+            <div className="flex items-center gap-0.5 px-1">
+              {Array.from({ length: 50 }).map((_, i) => (
+                <div
+                  key={`crown-dentil-${i}`}
+                  className="w-1.5 h-1.5 shrink-0 rounded-b-[1px]"
+                  style={{ background: 'linear-gradient(to bottom, #d97706, #78350f 60%, #451a03)' }}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Central rosette ornament */}
+          <div className="absolute top-6 left-1/2 -translate-x-1/2 w-5 h-5">
+            <svg viewBox="0 0 20 20" className="w-full h-full text-amber-400/80">
+              <circle cx="10" cy="10" r="6" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+              <circle cx="10" cy="10" r="3" fill="currentColor" opacity="0.5"/>
+              <circle cx="10" cy="10" r="1.5" fill="#fbbf24"/>
+              {/* Radiating petals */}
+              {[0, 60, 120, 180, 240, 300].map((angle) => (
+                <line
+                  key={angle}
+                  x1="10"
+                  y1="10"
+                  x2={10 + 5 * Math.cos((angle * Math.PI) / 180)}
+                  y2={10 + 5 * Math.sin((angle * Math.PI) / 180)}
+                  stroke="currentColor"
+                  strokeWidth="0.5"
+                  opacity="0.6"
+                />
+              ))}
+            </svg>
+          </div>
+
+          {/* Base shadow — dark band where the crown meets the rest of the hero */}
+          <div className="absolute bottom-0 left-0 right-0 h-1.5" style={{
+            background: 'linear-gradient(to bottom, #451a03 0%, #1c1208 100%)',
+            borderBottom: '1px solid rgba(0,0,0,0.6)',
+            borderTop: '1px solid rgba(251, 191, 36, 0.2)',
+          }} />
+        </div>
 
         {/* Ancient Chamber Background */}
         <div className="absolute inset-0 overflow-hidden">
@@ -889,9 +987,8 @@ export default function ArticlesPage() {
           </div>
 
           {/* Ornate top border - Greek key pattern.
-              z-30 so it renders OVER the mobile bookends (z-20) and visually
-              spans the full width across the top of the hero. */}
-          <svg className="absolute top-0 left-0 right-0 h-8 opacity-30 z-30" preserveAspectRatio="none">
+              Desktop only — on mobile the bookshelf top crown above replaces this. */}
+          <svg className="hidden lg:block absolute top-0 left-0 right-0 h-8 opacity-30 z-30" preserveAspectRatio="none">
             <defs>
               <pattern id="greekKey" x="0" y="0" width="32" height="16" patternUnits="userSpaceOnUse">
                 <path d="M0 8 L8 8 L8 0 L16 0 L16 8 L24 8 L24 16 L32 16 L32 8" fill="none" stroke="url(#goldGradient)" strokeWidth="2"/>
@@ -2635,7 +2732,7 @@ export default function ArticlesPage() {
         </div>
 
         <div className="container mx-auto px-10 py-6 sm:py-8 relative z-10 lg:px-[20%]">
-          <div className="max-w-6xl mx-auto lg:pt-40">
+          <div className="max-w-6xl mx-auto pt-14 sm:pt-16 lg:pt-40">
             {/* Title Section - Below the entablature */}
             <div className="text-center mb-6 sm:mb-8">
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 tracking-tight" style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)', color: '#ffffff' }}>
