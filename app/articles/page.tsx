@@ -2746,9 +2746,8 @@ export default function ArticlesPage() {
       <div className="relative bg-gradient-to-b from-amber-950 via-amber-900 to-amber-950 overflow-visible">
         {/* Mobile bookends — extend the hero bookends down through the shelves.
             No top cap so they continue seamlessly from the hero. Bottom cap
-            at the very end. No sconces — candles only on the hero bookends;
-            this section is just the wood strip continuation. */}
-        {renderMobileBookends('shelves', [], false, true)}
+            at the very end. Sconces aligned one per shelf (16/50/83%). */}
+        {renderMobileBookends('shelves', [30, 58, 85], false, true)}
 
         {/* Wood grain texture overlay */}
         <div className="absolute inset-0 opacity-20" style={{
@@ -2946,7 +2945,7 @@ export default function ArticlesPage() {
 
         {/* Standalone wall candle sconces - Left side */}
         {[18, 50, 82].map((topPercent, i) => (
-          <div key={`hshelf-left-candle-${i}`} className="absolute left-[72px] z-20" style={{ top: `${topPercent}%`, transform: 'translateY(-50%)' }}>
+          <div key={`hshelf-left-candle-${i}`} className="hidden lg:block absolute left-[72px] z-20" style={{ top: `${topPercent}%`, transform: 'translateY(-50%)' }}>
             <div className="relative w-8 h-12">
               {/* Decorative backplate with carved flame motif - night-time aware */}
               <div className={`absolute inset-0 bg-gradient-to-b from-yellow-500 via-amber-600 to-amber-800 rounded-t-full rounded-b-lg shadow-xl border border-yellow-400/40 overflow-hidden ${isNightTime ? 'brightness-110' : ''}`}>
@@ -3063,7 +3062,7 @@ export default function ArticlesPage() {
 
         {/* Standalone wall candle sconces - Right side */}
         {[18, 50, 82].map((topPercent, i) => (
-          <div key={`hshelf-right-candle-${i}`} className="absolute right-[72px] z-20" style={{ top: `${topPercent}%`, transform: 'translateY(-50%)' }}>
+          <div key={`hshelf-right-candle-${i}`} className="hidden lg:block absolute right-[72px] z-20" style={{ top: `${topPercent}%`, transform: 'translateY(-50%)' }}>
             <div className="relative w-8 h-12">
               {/* Decorative backplate with carved flame motif - night-time aware */}
               <div className={`absolute inset-0 bg-gradient-to-b from-yellow-500 via-amber-600 to-amber-800 rounded-t-full rounded-b-lg shadow-xl border border-yellow-400/40 overflow-hidden ${isNightTime ? 'brightness-110' : ''}`}>
