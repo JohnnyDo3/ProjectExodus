@@ -634,50 +634,54 @@ export default function ArticlesPage() {
 
   // Full interactive page - now accessible to all users (authenticated and non-authenticated)
   // Non-authenticated users can interact with the bookshelf but must sign up to read articles
-  return (
-    <div className="min-h-screen bg-[var(--background)]">
-      {/* Hero Header - U-Shaped Bookshelf Frame */}
-      <div className="relative bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 text-white pb-8">
-        {/* ============================================ */}
-        {/* MOBILE-ONLY BOOKEND SCONCES                  */}
-        {/* Vertical wooden strips on the L/R edges of   */}
-        {/* the hero, each holding a brass sconce + lit  */}
-        {/* candle. Just the *outside* of a bookshelf —  */}
-        {/* no shelves, no books, no scrolls.            */}
-        {/* ============================================ */}
-        {(['left', 'right'] as const).map((side) => (
-          <div
-            key={`bookend-${side}`}
-            className={`lg:hidden absolute ${side}-0 top-0 bottom-0 w-6 z-20 overflow-hidden`}
-            style={{
-              background: side === 'left'
-                ? 'linear-gradient(to right, #1c1208 0%, #451a03 30%, #78350f 70%, #92400e 100%)'
-                : 'linear-gradient(to left, #1c1208 0%, #451a03 30%, #78350f 70%, #92400e 100%)',
-              boxShadow: side === 'left'
-                ? 'inset -2px 0 4px rgba(0,0,0,0.5)'
-                : 'inset 2px 0 4px rgba(0,0,0,0.5)',
-            }}
-          >
-            {/* Wood grain texture */}
-            <div className="absolute inset-0 opacity-25 pointer-events-none" style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 24 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 0 Q10 100 6 200 Q2 300 6 400' fill='none' stroke='%23000' stroke-width='0.6'/%3E%3Cpath d='M18 0 Q14 100 18 200 Q22 300 18 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.7'/%3E%3C/svg%3E")`,
-            }} />
 
-            {/* Inner edge highlight (the side facing the room) */}
-            <div className={`absolute top-0 bottom-0 ${side === 'left' ? 'right-0' : 'left-0'} w-px bg-amber-400/40`} />
+  // === MOBILE BOOKEND HELPER ===
+  // Renders left+right wooden bookend strips (lg:hidden) for mobile.
+  // Used on the hero (top cap, 4 evenly-spaced sconces) and on the
+  // shelves section (no top cap so it continues from the hero, bottom
+  // cap at the very bottom of the shelves, sconces aligned to shelves).
+  const renderMobileBookends = (
+    keyPrefix: string,
+    sconcePositions: number[],
+    showTopCap: boolean,
+    showBottomCap: boolean,
+  ) => (
+    <>
+      {(['left', 'right'] as const).map((side) => (
+        <div
+          key={`${keyPrefix}-${side}`}
+          className={`lg:hidden absolute ${side}-0 top-0 bottom-0 w-8 z-20 overflow-hidden`}
+          style={{
+            background: side === 'left'
+              ? 'linear-gradient(to right, #1c1208 0%, #451a03 30%, #78350f 70%, #92400e 100%)'
+              : 'linear-gradient(to left, #1c1208 0%, #451a03 30%, #78350f 70%, #92400e 100%)',
+            boxShadow: side === 'left'
+              ? 'inset -2px 0 4px rgba(0,0,0,0.5)'
+              : 'inset 2px 0 4px rgba(0,0,0,0.5)',
+          }}
+        >
+          {/* Wood grain texture */}
+          <div className="absolute inset-0 opacity-25 pointer-events-none" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 24 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 0 Q10 100 6 200 Q2 300 6 400' fill='none' stroke='%23000' stroke-width='0.6'/%3E%3Cpath d='M18 0 Q14 100 18 200 Q22 300 18 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.7'/%3E%3C/svg%3E")`,
+          }} />
 
-            {/* Top decorative cap — finishes the bookend cleanly against the page header */}
+          {/* Inner edge highlight */}
+          <div className={`absolute top-0 bottom-0 ${side === 'left' ? 'right-0' : 'left-0'} w-px bg-amber-400/40`} />
+
+          {/* Top decorative cap */}
+          {showTopCap && (
             <div className="absolute top-0 left-0 right-0 h-4 z-10" style={{
               background: 'linear-gradient(to bottom, #92400e 0%, #78350f 50%, #451a03 100%)',
               borderBottom: '1px solid rgba(0,0,0,0.5)',
               boxShadow: '0 1px 0 rgba(251, 191, 36, 0.25)',
             }}>
-              {/* Hairline highlights on the cap */}
               <div className="absolute top-0.5 left-0.5 right-0.5 h-px bg-amber-300/40" />
               <div className="absolute top-2 left-1 right-1 h-px bg-amber-700/50" />
             </div>
+          )}
 
-            {/* Bottom decorative base — mirrors the top cap */}
+          {/* Bottom decorative cap */}
+          {showBottomCap && (
             <div className="absolute bottom-0 left-0 right-0 h-4 z-10" style={{
               background: 'linear-gradient(to top, #451a03 0%, #78350f 50%, #92400e 100%)',
               borderTop: '1px solid rgba(0,0,0,0.5)',
@@ -686,155 +690,152 @@ export default function ArticlesPage() {
               <div className="absolute bottom-0.5 left-0.5 right-0.5 h-px bg-amber-300/30" />
               <div className="absolute bottom-2 left-1 right-1 h-px bg-amber-700/40" />
             </div>
+          )}
 
-            {/* === SCONCE CANDLES — four per bookend, matching desktop pilaster sconces === */}
-            {[20, 42, 64, 84].map((topPercent, i) => (
-              <div
-                key={`sconce-${side}-${i}`}
-                className="absolute left-1/2 -translate-x-1/2 z-10"
-                style={{ top: `${topPercent}%`, transform: 'translateY(-50%) translateX(-50%)' }}
-              >
-                <div className="relative w-5 flex flex-col items-center">
-                  {/* === FLAME STACK (same layering as desktop pilaster sconce) === */}
-                  <div className={`relative ${isNightTime ? 'opacity-100' : 'opacity-80'}`}>
-                    {/* Outer ambient glow - largest, softest */}
-                    <div className="absolute -inset-3 bg-gradient-radial from-orange-400/40 via-amber-400/20 to-transparent rounded-full blur-lg pointer-events-none" />
-                    {/* Secondary glow ring */}
-                    <div className="absolute -inset-1.5 bg-gradient-radial from-yellow-400/50 via-orange-300/25 to-transparent rounded-full blur-md pointer-events-none" />
-                    {/* Outer flame - teardrop */}
-                    <div
-                      className="relative w-2 h-3 rounded-full animate-pulse"
-                      style={{
-                        background: 'linear-gradient(to top, #dc2626 0%, #ea580c 20%, #f97316 40%, #fbbf24 70%, #fef3c7 95%)',
-                        clipPath: 'ellipse(50% 50% at 50% 55%)',
-                        filter: 'blur(0.3px)',
-                        animationDelay: `${i * 0.3}s`,
-                        animationDuration: '0.6s',
-                      }}
-                    />
-                    {/* Middle flame */}
-                    <div
-                      className="absolute top-0.5 left-1/2 -translate-x-1/2 w-1.5 h-2 rounded-full"
-                      style={{
-                        background: 'linear-gradient(to top, #ea580c 0%, #f97316 30%, #fbbf24 60%, #fef9c3 100%)',
-                        clipPath: 'ellipse(45% 50% at 50% 50%)',
-                        filter: 'blur(0.2px)',
-                        animation: `flame-dance ${0.4 + i * 0.1}s ease-in-out infinite alternate`,
-                      }}
-                    />
-                    {/* Inner blue-white core - hottest part */}
-                    <div
-                      className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1.5 rounded-full"
-                      style={{
-                        background: 'linear-gradient(to top, #60a5fa 0%, #93c5fd 30%, #fef3c7 60%, #fbbf24 100%)',
-                        clipPath: 'ellipse(40% 50% at 50% 60%)',
-                        filter: 'blur(0.2px)',
-                        animation: `flame-core ${0.3 + i * 0.08}s ease-in-out infinite alternate`,
-                      }}
-                    />
-                    {/* Flame tip - flickering point */}
-                    <div
-                      className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-1"
-                      style={{
-                        background: 'linear-gradient(to top, #fef3c7, #ffffff)',
-                        clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
-                        filter: 'blur(0.3px)',
-                        animation: `flame-tip ${0.25 + i * 0.05}s ease-in-out infinite`,
-                      }}
-                    />
-                    {/* Smoke wisps */}
-                    <div className={`absolute -top-4 left-1/2 -translate-x-1/2 w-2 h-4 pointer-events-none ${isNightTime ? 'opacity-15' : 'opacity-25'}`}>
-                      <div
-                        className="absolute w-1.5 h-3 rounded-full"
-                        style={{
-                          background: 'linear-gradient(to top, rgba(180,180,180,0.3), rgba(200,200,200,0.1), transparent)',
-                          animation: `smoke-rise ${2.5 + i * 0.3}s ease-out infinite`,
-                          animationDelay: `${i * 0.4}s`,
-                        }}
-                      />
-                      <div
-                        className="absolute left-0.5 w-1 h-2.5 rounded-full"
-                        style={{
-                          background: 'linear-gradient(to top, rgba(180,180,180,0.2), transparent)',
-                          animation: `smoke-rise ${3 + i * 0.2}s ease-out infinite`,
-                          animationDelay: `${0.5 + i * 0.3}s`,
-                        }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Glowing wick tip */}
+          {/* === SCONCE CANDLES — matching desktop pilaster sconce design === */}
+          {sconcePositions.map((topPercent, i) => (
+            <div
+              key={`${keyPrefix}-sconce-${side}-${i}`}
+              className="absolute left-1/2 z-10"
+              style={{ top: `${topPercent}%`, transform: 'translateY(-50%) translateX(-50%)' }}
+            >
+              <div className="relative w-6 flex flex-col items-center">
+                {/* === FLAME STACK === */}
+                <div className={`relative ${isNightTime ? 'opacity-100' : 'opacity-80'}`}>
+                  <div className="absolute -inset-3 bg-gradient-radial from-orange-400/40 via-amber-400/20 to-transparent rounded-full blur-lg pointer-events-none" />
+                  <div className="absolute -inset-1.5 bg-gradient-radial from-yellow-400/50 via-orange-300/25 to-transparent rounded-full blur-md pointer-events-none" />
                   <div
-                    className="w-0.5 h-0.5 bg-orange-500 rounded-full blur-[0.5px] -mt-px"
-                    style={{ boxShadow: '0 0 2px 0.5px rgba(251, 191, 36, 0.8)' }}
+                    className="relative w-2.5 h-3.5 rounded-full animate-pulse"
+                    style={{
+                      background: 'linear-gradient(to top, #dc2626 0%, #ea580c 20%, #f97316 40%, #fbbf24 70%, #fef3c7 95%)',
+                      clipPath: 'ellipse(50% 50% at 50% 55%)',
+                      filter: 'blur(0.3px)',
+                      animationDelay: `${i * 0.3}s`,
+                      animationDuration: '0.6s',
+                    }}
                   />
-                  {/* Wick */}
-                  <div className="w-0.5 h-1.5 bg-gradient-to-t from-gray-700 via-gray-600 to-gray-800" />
-
-                  {/* Candle body with wax drips */}
                   <div
-                    className="relative w-2 h-4 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md"
-                    style={{ height: `${1 + (i % 3) * 0.125}rem` }}
-                  >
-                    {/* Wax drip - right side */}
-                    <svg className="absolute top-1 -right-0.5 w-1.5 h-2.5 text-amber-100/80" viewBox="0 0 6 12">
-                      <path d="M3 0 Q4 3 3 6 Q2 8 3 10 Q3.5 11 3 12" fill="currentColor" />
-                    </svg>
-                    {/* Wax drip - left side (only on even sconces) */}
-                    {i % 2 === 0 && (
-                      <svg className="absolute top-2 -left-0.5 w-1 h-2 text-amber-100/70" viewBox="0 0 4 8">
-                        <path d="M2 0 Q3 2 2 4 Q1.5 6 2 8" fill="currentColor" />
-                      </svg>
-                    )}
+                    className="absolute top-0.5 left-1/2 -translate-x-1/2 w-2 h-2.5 rounded-full"
+                    style={{
+                      background: 'linear-gradient(to top, #ea580c 0%, #f97316 30%, #fbbf24 60%, #fef9c3 100%)',
+                      clipPath: 'ellipse(45% 50% at 50% 50%)',
+                      filter: 'blur(0.2px)',
+                      animation: `flame-dance ${0.4 + i * 0.1}s ease-in-out infinite alternate`,
+                    }}
+                  />
+                  <div
+                    className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1.5 rounded-full"
+                    style={{
+                      background: 'linear-gradient(to top, #60a5fa 0%, #93c5fd 30%, #fef3c7 60%, #fbbf24 100%)',
+                      clipPath: 'ellipse(40% 50% at 50% 60%)',
+                      filter: 'blur(0.2px)',
+                      animation: `flame-core ${0.3 + i * 0.08}s ease-in-out infinite alternate`,
+                    }}
+                  />
+                  <div
+                    className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-1"
+                    style={{
+                      background: 'linear-gradient(to top, #fef3c7, #ffffff)',
+                      clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
+                      filter: 'blur(0.3px)',
+                      animation: `flame-tip ${0.25 + i * 0.05}s ease-in-out infinite`,
+                    }}
+                  />
+                  {/* Smoke wisps */}
+                  <div className={`absolute -top-4 left-1/2 -translate-x-1/2 w-2 h-4 pointer-events-none ${isNightTime ? 'opacity-15' : 'opacity-25'}`}>
+                    <div
+                      className="absolute w-1.5 h-3 rounded-full"
+                      style={{
+                        background: 'linear-gradient(to top, rgba(180,180,180,0.3), rgba(200,200,200,0.1), transparent)',
+                        animation: `smoke-rise ${2.5 + i * 0.3}s ease-out infinite`,
+                        animationDelay: `${i * 0.4}s`,
+                      }}
+                    />
+                    <div
+                      className="absolute left-0.5 w-1 h-2.5 rounded-full"
+                      style={{
+                        background: 'linear-gradient(to top, rgba(180,180,180,0.2), transparent)',
+                        animation: `smoke-rise ${3 + i * 0.2}s ease-out infinite`,
+                        animationDelay: `${0.5 + i * 0.3}s`,
+                      }}
+                    />
                   </div>
-
-                  {/* Bobeche cup (ornate candle holder with scalloped rim) */}
-                  <div className={`relative w-4 h-2.5 -mt-px ${isNightTime ? 'brightness-110' : ''}`}>
-                    {/* Scalloped rim */}
-                    <svg className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-5 h-1.5" viewBox="0 0 24 8">
-                      <path d="M2 4 Q4 1 6 4 Q8 7 10 4 Q12 1 14 4 Q16 7 18 4 Q20 1 22 4" fill="none" stroke="#fef3c7" strokeWidth="1" opacity="0.6"/>
-                      <path d="M3 5 Q5 3 7 5 Q9 7 11 5 Q13 3 15 5 Q17 7 19 5 Q21 3 23 5" fill="none" stroke="#fbbf24" strokeWidth="0.5" opacity="0.4"/>
-                    </svg>
-                    {/* Cup body with curved bowl */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-yellow-400 via-amber-500 to-amber-700 shadow-lg overflow-hidden" style={{ borderRadius: '0 0 50% 50% / 0 0 80% 80%' }}>
-                      {/* Inner bowl shadow */}
-                      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2.5 h-1 bg-gradient-to-b from-amber-800/60 to-transparent rounded-b-full" />
-                      {/* Decorative bead band */}
-                      <div className="absolute top-0.5 left-0 right-0 flex justify-center gap-px">
-                        <div className="w-px h-px rounded-full bg-yellow-300/70" />
-                        <div className="w-px h-px rounded-full bg-yellow-300/60" />
-                        <div className="w-px h-px rounded-full bg-yellow-300/70" />
-                        <div className="w-px h-px rounded-full bg-yellow-300/60" />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Brass mounting bracket */}
-                  <div className={`relative w-3 h-2 -mt-px shadow-md ${isNightTime ? 'brightness-110' : ''}`} style={{
-                    background: 'linear-gradient(to bottom, #fbbf24, #d97706 50%, #92400e)',
-                    clipPath: 'polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%)',
-                    borderTop: '1px solid rgba(251, 191, 36, 0.6)',
-                  }}>
-                    {/* Decorative rosette in bracket center */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5">
-                      <svg viewBox="0 0 12 12" className={`w-full h-full ${isNightTime ? 'text-yellow-300/80' : 'text-yellow-400/70'}`}>
-                        <circle cx="6" cy="6" r="4" fill="none" stroke="currentColor" strokeWidth="1"/>
-                        <circle cx="6" cy="6" r="1.5" fill="currentColor" opacity="0.6"/>
-                      </svg>
-                    </div>
-                  </div>
-
-                  {/* Anchor bolt below bracket */}
-                  <div className="w-1 h-1 -mt-px rounded-full bg-amber-900" />
                 </div>
-              </div>
-            ))}
 
-            {/* Subtle vertical reeded molding lines (decorative bookend detail) */}
-            <div className={`absolute top-5 bottom-5 ${side === 'left' ? 'left-1' : 'right-1'} w-px bg-amber-900/40`} />
-            <div className={`absolute top-8 bottom-8 ${side === 'left' ? 'left-2' : 'right-2'} w-px bg-amber-800/30`} />
-          </div>
-        ))}
+                {/* Glowing wick tip */}
+                <div
+                  className="w-0.5 h-0.5 bg-orange-500 rounded-full blur-[0.5px] -mt-px"
+                  style={{ boxShadow: '0 0 2px 0.5px rgba(251, 191, 36, 0.8)' }}
+                />
+                {/* Wick */}
+                <div className="w-0.5 h-1.5 bg-gradient-to-t from-gray-700 via-gray-600 to-gray-800" />
+
+                {/* Candle body with wax drips */}
+                <div
+                  className="relative w-2.5 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md"
+                  style={{ height: `${1.2 + (i % 3) * 0.15}rem` }}
+                >
+                  <svg className="absolute top-1 -right-0.5 w-1.5 h-2.5 text-amber-100/80" viewBox="0 0 6 12">
+                    <path d="M3 0 Q4 3 3 6 Q2 8 3 10 Q3.5 11 3 12" fill="currentColor" />
+                  </svg>
+                  {i % 2 === 0 && (
+                    <svg className="absolute top-2 -left-0.5 w-1 h-2 text-amber-100/70" viewBox="0 0 4 8">
+                      <path d="M2 0 Q3 2 2 4 Q1.5 6 2 8" fill="currentColor" />
+                    </svg>
+                  )}
+                </div>
+
+                {/* Bobeche cup with scalloped rim */}
+                <div className={`relative w-5 h-3 -mt-px ${isNightTime ? 'brightness-110' : ''}`}>
+                  <svg className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-6 h-1.5" viewBox="0 0 24 8">
+                    <path d="M2 4 Q4 1 6 4 Q8 7 10 4 Q12 1 14 4 Q16 7 18 4 Q20 1 22 4" fill="none" stroke="#fef3c7" strokeWidth="1" opacity="0.6"/>
+                    <path d="M3 5 Q5 3 7 5 Q9 7 11 5 Q13 3 15 5 Q17 7 19 5 Q21 3 23 5" fill="none" stroke="#fbbf24" strokeWidth="0.5" opacity="0.4"/>
+                  </svg>
+                  <div className="absolute inset-0 bg-gradient-to-b from-yellow-400 via-amber-500 to-amber-700 shadow-lg overflow-hidden" style={{ borderRadius: '0 0 50% 50% / 0 0 80% 80%' }}>
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-1.5 bg-gradient-to-b from-amber-800/60 to-transparent rounded-b-full" />
+                    <div className="absolute top-1 left-0 right-0 flex justify-center gap-px">
+                      <div className="w-px h-px rounded-full bg-yellow-300/70" />
+                      <div className="w-px h-px rounded-full bg-yellow-300/60" />
+                      <div className="w-px h-px rounded-full bg-yellow-300/70" />
+                      <div className="w-px h-px rounded-full bg-yellow-300/60" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Brass mounting bracket with rosette */}
+                <div className={`relative w-4 h-2.5 -mt-px shadow-md ${isNightTime ? 'brightness-110' : ''}`} style={{
+                  background: 'linear-gradient(to bottom, #fbbf24, #d97706 50%, #92400e)',
+                  clipPath: 'polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%)',
+                  borderTop: '1px solid rgba(251, 191, 36, 0.6)',
+                }}>
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2">
+                    <svg viewBox="0 0 12 12" className={`w-full h-full ${isNightTime ? 'text-yellow-300/80' : 'text-yellow-400/70'}`}>
+                      <circle cx="6" cy="6" r="4" fill="none" stroke="currentColor" strokeWidth="1"/>
+                      <circle cx="6" cy="6" r="1.5" fill="currentColor" opacity="0.6"/>
+                    </svg>
+                  </div>
+                </div>
+
+                {/* Anchor bolt */}
+                <div className="w-1 h-1 -mt-px rounded-full bg-amber-900" />
+              </div>
+            </div>
+          ))}
+
+          {/* Reeded molding lines */}
+          <div className={`absolute ${showTopCap ? 'top-5' : 'top-0'} ${showBottomCap ? 'bottom-5' : 'bottom-0'} ${side === 'left' ? 'left-1.5' : 'right-1.5'} w-px bg-amber-900/40`} />
+          <div className={`absolute ${showTopCap ? 'top-8' : 'top-0'} ${showBottomCap ? 'bottom-8' : 'bottom-0'} ${side === 'left' ? 'left-3' : 'right-3'} w-px bg-amber-800/30`} />
+        </div>
+      ))}
+    </>
+  )
+
+  return (
+    <div className="min-h-screen bg-[var(--background)]">
+      {/* Hero Header - U-Shaped Bookshelf Frame */}
+      <div className="relative bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 text-white pb-8">
+        {/* Mobile bookends — hero gets top cap + 4 sconces */}
+        {renderMobileBookends('hero', [20, 42, 64, 84], true, false)}
 
         {/* Ancient Chamber Background */}
         <div className="absolute inset-0 overflow-hidden">
@@ -2631,7 +2632,7 @@ export default function ArticlesPage() {
 
         </div>
 
-        <div className="container mx-auto px-8 py-6 sm:py-8 relative z-10 lg:px-[20%]">
+        <div className="container mx-auto px-10 py-6 sm:py-8 relative z-10 lg:px-[20%]">
           <div className="max-w-6xl mx-auto lg:pt-40">
             {/* Title Section - Below the entablature */}
             <div className="text-center mb-6 sm:mb-8">
@@ -2741,6 +2742,11 @@ export default function ArticlesPage() {
       {/* Renders on every viewport; sized for mobile below */}
       {/* ========================================== */}
       <div className="relative bg-gradient-to-b from-amber-950 via-amber-900 to-amber-950 overflow-visible">
+        {/* Mobile bookends — extend the hero bookends down through the shelves.
+            No top cap so they continue seamlessly from the hero. Bottom cap
+            at the very end. Sconces aligned one per shelf (16/50/83%). */}
+        {renderMobileBookends('shelves', [30, 58, 85], false, true)}
+
         {/* Wood grain texture overlay */}
         <div className="absolute inset-0 opacity-20" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0 Q30 100 20 200 Q10 300 20 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M50 0 Q60 100 50 200 Q40 300 50 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M80 0 Q70 100 80 200 Q90 300 80 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3C/svg%3E")`,
@@ -3174,7 +3180,7 @@ export default function ArticlesPage() {
             (mx-16) so it doesn't overflow into the Corinthian columns.
             Columns are hidden on small screens so we collapse the inset
             there to keep content readable. */}
-        <div className="h-24 shadow-2xl relative overflow-hidden mx-2 sm:mx-8 lg:mx-16" style={{ background: 'linear-gradient(to bottom, #d97706, #b45309, #78350f, #451a03)', borderTop: '3px solid rgba(251, 191, 36, 0.7)' }}>
+        <div className="h-24 shadow-2xl relative overflow-hidden mx-9 sm:mx-8 lg:mx-16" style={{ background: 'linear-gradient(to bottom, #d97706, #b45309, #78350f, #451a03)', borderTop: '3px solid rgba(251, 191, 36, 0.7)' }}>
 
           {/* === LAYER 1: TOP GREEK KEY MEANDER - Full Width === */}
           <div className="absolute top-0 left-0 right-0 h-5 overflow-hidden">
@@ -3410,7 +3416,7 @@ export default function ArticlesPage() {
           </div>
 
           {/* Scrolls container - sits ON the shelf */}
-          <div className="relative mx-1 sm:mx-8 lg:mx-16">
+          <div className="relative mx-9 sm:mx-8 lg:mx-16">
             <div className="flex items-end justify-start sm:justify-center gap-1 sm:gap-2.5 px-2 sm:px-6 pb-0 min-h-[85px] flex-nowrap sm:flex-wrap overflow-x-auto overflow-y-hidden sm:overflow-hidden scrollbar-hide">
               {/* Leading ghost scrolls - add some before articles */}
               {Array.from({ length: Math.max(0, Math.floor((16 - getShelfArticles(0, shelf1Category).length) / 3)) }).map((_, i) => (
@@ -3671,7 +3677,7 @@ export default function ArticlesPage() {
           </div>
 
           {/* Scrolls container */}
-          <div className="relative mx-1 sm:mx-8 lg:mx-16">
+          <div className="relative mx-9 sm:mx-8 lg:mx-16">
             <div className="flex items-end justify-start sm:justify-center gap-1 sm:gap-2.5 px-2 sm:px-6 pb-0 min-h-[85px] flex-nowrap sm:flex-wrap overflow-x-auto overflow-y-hidden sm:overflow-hidden scrollbar-hide">
               {/* Leading ghost scrolls - add some before articles */}
               {Array.from({ length: Math.max(0, Math.floor((16 - getShelfArticles(1, shelf2Category).length) / 3)) }).map((_, i) => (
@@ -3920,7 +3926,7 @@ export default function ArticlesPage() {
           </div>
 
           {/* Scrolls container */}
-          <div className="relative mx-1 sm:mx-8 lg:mx-16">
+          <div className="relative mx-9 sm:mx-8 lg:mx-16">
             <div className="flex items-end justify-start sm:justify-center gap-1 sm:gap-2.5 px-2 sm:px-6 pb-0 min-h-[85px] flex-nowrap sm:flex-wrap overflow-x-auto overflow-y-hidden sm:overflow-hidden scrollbar-hide">
               {/* Leading ghost scrolls - add some before articles */}
               {Array.from({ length: Math.max(0, Math.floor((16 - getShelfArticles(2, shelf3Category).length) / 3)) }).map((_, i) => (
