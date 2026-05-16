@@ -1,7 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { motion } from 'framer-motion'
+import { COMMANDMENTS, resolveCommandmentSlug } from '@/lib/commandments'
+import { FishSVG, getTierFromScore, type FishCustomization } from '@/components/fishbowl/FishSpecies'
 import {
   Shield, Crown, Sparkles, TrendingUp,
   User, Briefcase, FileText, BookOpen, Users, MessageCircle, MessageSquare, Leaf,
@@ -15,8 +17,18 @@ import { AnimatedStatsBar } from './AnimatedStatsBar'
 import { LiveActivityStream } from './LiveActivityStream'
 import { AmbientBackground } from './AmbientBackground'
 
+export type FeaturedContributor = {
+  id: string
+  name: string | null
+  declaration: string | null
+  guardianArchetype: string | null
+  fishCustomization: unknown
+  stockScore: number
+}
+
 interface CommunityHeartPageProps {
   isAuthenticated: boolean
+  featuredContributors?: FeaturedContributor[]
 }
 
 // Decorative corner ornament component
@@ -332,7 +344,29 @@ const fakeUserPreviews = [
   },
 ]
 
-export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps) {
+export function CommunityHeartPage({ isAuthenticated, featuredContributors }: CommunityHeartPageProps) {
+  // Map real top contributors → the shape the existing BizID carousel expects.
+  // Falls back to `fakeUserPreviews` if the DB returns nothing (fresh install
+  // or no opted-in contributors yet) so the card still renders.
+  const userPreviews = useMemo(() => {
+    if (!featuredContributors || featuredContributors.length === 0) return fakeUserPreviews
+    return featuredContributors.map((u, i) => {
+      const slug = resolveCommandmentSlug(u.guardianArchetype)
+      const c = COMMANDMENTS[slug]
+      return {
+        id: u.id,
+        name: u.name || 'Anonymous',
+        declaration: u.declaration?.trim() || 'Building a better tomorrow',
+        theme: `${slug}-${u.id}`, // unique key per user
+        gradient: c.gradient,
+        accentColor: c.accentColor,
+        stock: u.stockScore,
+        fishCustomization: u.fishCustomization as FishCustomization | null,
+        commandmentHex: c.hexAccent,
+      }
+    })
+  }, [featuredContributors])
+
   // iOS Safari mishandles backface-visibility + preserve-3d on these cards,
   // so on viewports below `lg` we skip the 3D flip entirely and render only
   // the primary face of each card flat.
@@ -356,14 +390,13 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
   const [activeToolIndex, setActiveToolIndex] = useState(0)
 
   // Synchronized wave effect - carousels change in right-to-left sequence
-  // Wave order: Volition (right) → Tools → Core Topics → BizID (left)
+  // Wave order: Volition (right) → Tools → Core Topics
   useEffect(() => {
     const WAVE_INTERVAL = 9000 // Time between waves (slower, more relaxed)
     const WAVE_DELAYS = {
       volition: 0,      // Right column - first
       tools: 700,       // Center-right - 0.7s later
       topics: 1400,     // Center-left - 1.4s later
-      bizId: 2100,      // Left column - 2.1s later
     }
 
     const waveInterval = setInterval(() => {
@@ -387,17 +420,20 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
           setActiveTopicIndex((prev) => (prev + 1) % coreLearnTopics.length)
         }, WAVE_DELAYS.topics)
       }
-
-      // BizID user preview (only when showing front side)
-      if (!isBizIDFlipped) {
-        setTimeout(() => {
-          setActiveUserIndex((prev) => (prev + 1) % fakeUserPreviews.length)
-        }, WAVE_DELAYS.bizId)
-      }
     }, WAVE_INTERVAL)
 
     return () => clearInterval(waveInterval)
-  }, [isVolitionFlipped, isLearningFlipped, isBizIDFlipped])
+  }, [isVolitionFlipped, isLearningFlipped])
+
+  // BizID contributor carousel rotates faster (every 4s) so the showcase
+  // feels lively and visitors see multiple real contributors quickly.
+  useEffect(() => {
+    if (isBizIDFlipped || userPreviews.length <= 1) return
+    const id = setInterval(() => {
+      setActiveUserIndex((prev) => (prev + 1) % userPreviews.length)
+    }, 4000)
+    return () => clearInterval(id)
+  }, [isBizIDFlipped, userPreviews.length])
 
   return (
     <div className="min-h-screen bg-[var(--background)] relative overflow-y-auto flex flex-col">
@@ -579,20 +615,27 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
 
                   {/* User ID Card Preview - Compact */}
                   <div className="relative z-10 flex-1 min-h-0 flex flex-col">
-                    {/* Theme selector dots */}
-                    <div className="flex justify-center gap-1 mb-1">
-                      {fakeUserPreviews.map((user, index) => (
-                        <motion.button
-                          key={user.theme}
-                          onClick={(e) => { e.stopPropagation(); setActiveUserIndex(index) }}
-                          className={`w-2 h-2 rounded-full bg-gradient-to-r ${user.gradient} transition-all duration-300`}
-                          animate={{
-                            scale: index === activeUserIndex ? 1.3 : 1,
-                            opacity: index === activeUserIndex ? 1 : 0.4,
-                          }}
-                          whileHover={{ scale: 1.2, opacity: 0.8 }}
-                        />
-                      ))}
+                    {/* Carousel dots — solid colored dots, not gradient bars */}
+                    <div className="flex justify-center items-center gap-1.5 mb-1.5">
+                      {userPreviews.map((user, index) => {
+                        const isActive = index === activeUserIndex
+                        const dotColor = (user as { commandmentHex?: string }).commandmentHex || '#fbbf24'
+                        return (
+                          <motion.button
+                            key={user.theme}
+                            onClick={(e) => { e.stopPropagation(); setActiveUserIndex(index) }}
+                            className="rounded-full transition-all duration-300 flex-shrink-0"
+                            style={{
+                              width: isActive ? 10 : 6,
+                              height: isActive ? 10 : 6,
+                              backgroundColor: isActive ? dotColor : 'rgba(148, 163, 184, 0.4)',
+                              boxShadow: isActive ? `0 0 6px ${dotColor}80` : undefined,
+                            }}
+                            whileHover={{ scale: 1.25 }}
+                            aria-label={`Show contributor ${index + 1}`}
+                          />
+                        )
+                      })}
                     </div>
 
                     {/* User ID Card Preview */}
@@ -606,8 +649,8 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                       >
                         {/* Card */}
                         <div className="relative bg-[var(--card)] border border-[var(--border)]/50 rounded-lg overflow-hidden shadow-lg">
-                          {/* Gradient header */}
-                          <div className={`h-8 bg-gradient-to-r ${fakeUserPreviews[activeUserIndex].gradient} relative overflow-hidden`}>
+                          {/* Gradient header — uses the current contributor's commandment colors */}
+                          <div className={`h-8 bg-gradient-to-r ${userPreviews[activeUserIndex].gradient} relative overflow-hidden`}>
                             <motion.div
                               className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
                               animate={{ x: ['-100%', '200%'] }}
@@ -615,22 +658,34 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                             />
                           </div>
 
-                          {/* Avatar overlapping header */}
+                          {/* Avatar overlapping header — render the user's actual fish */}
                           <div className="relative -mt-4 px-2">
                             <motion.div
-                              className={`w-8 h-8 rounded-md bg-gradient-to-br ${fakeUserPreviews[activeUserIndex].gradient} p-0.5 shadow-md`}
+                              className={`w-10 h-10 rounded-md bg-gradient-to-br ${userPreviews[activeUserIndex].gradient} p-0.5 shadow-md`}
                             >
-                              <div className="w-full h-full rounded bg-[var(--card)] flex items-center justify-center">
-                                <User className={`w-3.5 h-3.5 ${fakeUserPreviews[activeUserIndex].accentColor}`} />
+                              <div className="w-full h-full rounded bg-[var(--card)] flex items-center justify-center overflow-hidden">
+                                {(() => {
+                                  const u = userPreviews[activeUserIndex] as typeof userPreviews[number] & { fishCustomization?: FishCustomization | null; stock?: number }
+                                  if (u.fishCustomization) {
+                                    return (
+                                      <FishSVG
+                                        tier={getTierFromScore(u.stock || 0)}
+                                        customization={u.fishCustomization}
+                                        size={32}
+                                      />
+                                    )
+                                  }
+                                  return <User className={`w-4 h-4 ${userPreviews[activeUserIndex].accentColor}`} />
+                                })()}
                               </div>
                             </motion.div>
                           </div>
 
                           {/* Content */}
                           <div className="p-2 pt-0.5">
-                            <p className="font-bold text-[10px] text-[var(--foreground)]">{fakeUserPreviews[activeUserIndex].name}</p>
-                            <p className={`text-[8px] ${fakeUserPreviews[activeUserIndex].accentColor} italic truncate`}>
-                              "{fakeUserPreviews[activeUserIndex].declaration}"
+                            <p className="font-bold text-[10px] text-[var(--foreground)] truncate">{userPreviews[activeUserIndex].name}</p>
+                            <p className={`text-[8px] ${userPreviews[activeUserIndex].accentColor} italic truncate`}>
+                              "{userPreviews[activeUserIndex].declaration}"
                             </p>
                           </div>
                         </div>

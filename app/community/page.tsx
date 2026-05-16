@@ -133,6 +133,34 @@ async function getDashboardData(userId: string) {
   }
 }
 
+// Top contributors shown on the non-logged-in BizID card carousel.
+// Filter: must have a name, a chosen guardian archetype (so we know
+// which commandment colors to use), and a non-zero stockScore.
+async function getFeaturedContributors() {
+  try {
+    return await prisma.user.findMany({
+      where: {
+        stockScore: { gt: 0 },
+        name: { not: null },
+        guardianArchetype: { not: null },
+      },
+      select: {
+        id: true,
+        name: true,
+        declaration: true,
+        guardianArchetype: true,
+        fishCustomization: true,
+        stockScore: true,
+      },
+      orderBy: { stockScore: 'desc' },
+      take: 10,
+    })
+  } catch (error) {
+    console.error('Error fetching featured contributors:', error)
+    return []
+  }
+}
+
 export default async function CommunityPage() {
   const session = await auth()
 
@@ -140,7 +168,8 @@ export default async function CommunityPage() {
   // NON-LOGGED IN VIEW - Community Heart Page with Flip Widgets
   // ============================================
   if (!session?.user?.id) {
-    return <CommunityHeartPage isAuthenticated={false} />
+    const featuredContributors = await getFeaturedContributors()
+    return <CommunityHeartPage isAuthenticated={false} featuredContributors={featuredContributors} />
   }
 
   // ============================================
