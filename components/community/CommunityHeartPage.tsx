@@ -1513,7 +1513,10 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
               </motion.div>
 
               {/* Back Side - Philosophy with Forest Mural (Larger text with internal scroll) */}
-              <motion.div
+              {/* Plain <div> (not motion.div) so framer-motion doesn't override the inline
+                  rotateY(180deg). That override was leaving the back face at rotation 0,
+                  so it showed through the front while no flip animation played. */}
+              <div
                 className="absolute inset-0 bg-gradient-to-br from-[var(--card)]/95 via-[var(--muted)]/30 to-[var(--card)]/95 rounded-xl p-4 border border-[var(--border)]/30 flex flex-col"
                 style={{
                   backfaceVisibility: 'hidden',
@@ -1629,7 +1632,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                     <Sparkles className="w-3.5 h-3.5 text-[var(--primary)]" />
                   </div>
                 </div>
-              </motion.div>
+              </div>
             </motion.div>
           </div>
 
