@@ -617,7 +617,10 @@ export function CommunityHeartPage({ isAuthenticated, featuredContributors }: Co
 
                   {/* User ID Card Preview - Compact */}
                   <div className="relative z-10 flex-1 min-h-0 flex flex-col">
-                    {/* Carousel dots — solid colored dots, not gradient bars */}
+                    {/* Carousel dots — solid colored dots. Explicit pixel
+                        sizing + p-0/border-0/appearance-none so mobile
+                        Safari's default button styling can't stretch them
+                        into vertical bars. */}
                     <div className="flex justify-center items-center gap-1.5 mb-1.5">
                       {userPreviews.map((user, index) => {
                         const isActive = index === activeUserIndex
@@ -625,13 +628,17 @@ export function CommunityHeartPage({ isAuthenticated, featuredContributors }: Co
                         return (
                           <motion.button
                             key={user.theme}
+                            type="button"
                             onClick={(e) => { e.stopPropagation(); setActiveUserIndex(index) }}
-                            className="rounded-full transition-all duration-300 flex-shrink-0"
+                            className="rounded-full transition-all duration-300 flex-shrink-0 p-0 border-0 appearance-none"
                             style={{
                               width: isActive ? 10 : 6,
                               height: isActive ? 10 : 6,
+                              minWidth: isActive ? 10 : 6,
+                              minHeight: isActive ? 10 : 6,
                               backgroundColor: isActive ? dotColor : 'rgba(148, 163, 184, 0.4)',
                               boxShadow: isActive ? `0 0 6px ${dotColor}80` : undefined,
+                              lineHeight: 0,
                             }}
                             whileHover={{ scale: 1.25 }}
                             aria-label={`Show contributor ${index + 1}`}
@@ -1639,20 +1646,29 @@ export function CommunityHeartPage({ isAuthenticated, featuredContributors }: Co
 
                   {/* Lane Carousel */}
                   <div className="relative w-full mb-3">
-                    {/* Lane indicator dots */}
-                    <div className="flex items-center justify-center gap-1 mb-2">
-                      {volitionLanes.map((_, i) => (
-                        <motion.button
-                          key={i}
-                          className={`w-1.5 h-1.5 rounded-full transition-all ${
-                            activeLaneIndex === i
-                              ? 'bg-[var(--primary)] w-3'
-                              : 'bg-[var(--muted-foreground)]/30'
-                          }`}
-                          onClick={(e) => { e.stopPropagation(); setActiveLaneIndex(i) }}
-                          whileHover={{ scale: 1.3 }}
-                        />
-                      ))}
+                    {/* Lane indicator dots — explicit pixel sizing + button
+                        reset so mobile Safari's default button styling
+                        doesn't stretch them into vertical bars. */}
+                    <div className="flex items-center justify-center gap-1.5 mb-2">
+                      {volitionLanes.map((_, i) => {
+                        const active = activeLaneIndex === i
+                        return (
+                          <motion.button
+                            key={i}
+                            type="button"
+                            onClick={(e) => { e.stopPropagation(); setActiveLaneIndex(i) }}
+                            whileHover={{ scale: 1.25 }}
+                            className="rounded-full transition-all duration-300 flex-shrink-0 p-0 border-0 appearance-none"
+                            style={{
+                              width: active ? 10 : 6,
+                              height: active ? 10 : 6,
+                              backgroundColor: active ? 'var(--primary)' : 'rgba(148, 163, 184, 0.35)',
+                              boxShadow: active ? '0 0 6px var(--primary)' : undefined,
+                            }}
+                            aria-label={`Show lane ${i + 1}`}
+                          />
+                        )
+                      })}
                     </div>
 
                     {/* Active lane display */}
