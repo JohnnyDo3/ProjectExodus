@@ -461,21 +461,21 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-3 p-3 sm:p-4 flex-1 min-h-[calc(100vh-8rem)]">
         {/* Left column: BizID Showcase + Network Activity - Flip Card */}
         <div
-          className="lg:col-span-4 min-h-[260px] lg:min-h-[360px] h-full cursor-pointer select-none"
-          style={{ perspective: isDesktop ? '1000px' : undefined }}
+          className="lg:col-span-4 min-h-[520px] lg:min-h-[360px] h-full cursor-pointer select-none"
+          style={{ perspective: '1000px', WebkitPerspective: '1000px' } as React.CSSProperties}
           onMouseEnter={() => isDesktop && setIsBizIDFlipped(true)}
           onMouseLeave={() => isDesktop && setIsBizIDFlipped(false)}
           onClick={() => setIsBizIDFlipped((v) => !v)}
         >
           <motion.div
             initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0, rotateY: isDesktop && isBizIDFlipped ? 180 : 0 }}
+            animate={{ opacity: 1, x: 0, rotateY: isBizIDFlipped ? 180 : 0 }}
             transition={{ duration: 0.6, ease: 'easeInOut' }}
             className="relative w-full h-full"
-            style={{ transformStyle: isDesktop ? 'preserve-3d' : 'flat' }}
+            style={{ transformStyle: 'preserve-3d', WebkitTransformStyle: 'preserve-3d', willChange: 'transform' } as React.CSSProperties}
           >
             {/* Front Side - BizID Features + Network Activity */}
-            <GlowingBorder className={`absolute inset-0 ${!isDesktop && isBizIDFlipped ? 'hidden' : ''}`} style={{ backfaceVisibility: 'hidden' }}>
+            <GlowingBorder className="absolute inset-0" style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' } as React.CSSProperties}>
               <div className="relative h-full flex flex-col gap-2">
                 {/* BizID Card - Top Section with Ivy Mural */}
                 <motion.div
@@ -669,10 +669,14 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
             </GlowingBorder>
 
             {/* Back Side - Full Height BizID Philosophy with Ivy Mural - ENHANCED */}
-            {/* Mobile: hidden until flipped; strip rotateY so it renders forward */}
             <div
-              className={`absolute inset-0 bg-gradient-to-br from-[var(--card)] via-[var(--muted)]/50 to-[var(--card)] rounded-xl p-5 overflow-hidden border-2 border-[var(--primary)]/20 shadow-xl ${!isDesktop && !isBizIDFlipped ? 'hidden' : ''}`}
-              style={{ backfaceVisibility: 'hidden', transform: isDesktop ? 'rotateY(180deg)' : 'none' }}
+              className="absolute inset-0 bg-gradient-to-br from-[var(--card)] via-[var(--muted)]/50 to-[var(--card)] rounded-xl p-5 overflow-hidden border-2 border-[var(--primary)]/20 shadow-xl"
+              style={{
+                backfaceVisibility: 'hidden',
+                WebkitBackfaceVisibility: 'hidden',
+                transform: 'rotateY(180deg)',
+                WebkitTransform: 'rotateY(180deg)',
+              } as React.CSSProperties}
             >
               {/* Ivy Mural Background - Enhanced with more depth */}
               <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
@@ -833,26 +837,26 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="lg:col-span-5 flex flex-col gap-3 min-h-[260px] lg:min-h-[360px]"
+          className="lg:col-span-5 flex flex-col gap-3 min-h-[500px] lg:min-h-[360px]"
         >
           {/* Learning Academy - Flip Card with Philosophy - Now Full Height */}
           <div
             className="relative flex-1 cursor-pointer select-none"
-            style={{ perspective: isDesktop ? '1000px' : undefined }}
+            style={{ perspective: '1000px', WebkitPerspective: '1000px' } as React.CSSProperties}
             onMouseEnter={() => isDesktop && setIsLearningFlipped(true)}
             onMouseLeave={() => isDesktop && setIsLearningFlipped(false)}
             onClick={() => setIsLearningFlipped((v) => !v)}
           >
             <motion.div
               className="relative w-full h-full"
-              style={{ transformStyle: isDesktop ? 'preserve-3d' : 'flat' }}
-              animate={{ rotateY: isDesktop && isLearningFlipped ? 180 : 0 }}
+              style={{ transformStyle: 'preserve-3d', WebkitTransformStyle: 'preserve-3d', willChange: 'transform' } as React.CSSProperties}
+              animate={{ rotateY: isLearningFlipped ? 180 : 0 }}
               transition={{ duration: 0.6, ease: 'easeInOut' }}
             >
               {/* Front Side - Learning Features with Zen Garden Mural */}
               <div
-                className={`absolute inset-0 bg-gradient-to-br from-[var(--card)]/90 via-[var(--muted)]/40 to-[var(--card)]/90 backdrop-blur-md border border-[var(--border)]/30 rounded-xl p-4 overflow-hidden flex flex-col ${!isDesktop && isLearningFlipped ? 'hidden' : ''}`}
-                style={{ backfaceVisibility: 'hidden' }}
+                className="absolute inset-0 bg-gradient-to-br from-[var(--card)]/90 via-[var(--muted)]/40 to-[var(--card)]/90 backdrop-blur-md border border-[var(--border)]/30 rounded-xl p-4 overflow-hidden flex flex-col"
+                style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' } as React.CSSProperties}
               >
                 {/* Zen Garden Mural Background - Theme Aware */}
                 <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
@@ -1121,10 +1125,14 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
               </div>
 
               {/* Back Side - Learning Philosophy with Zen Mural - ENHANCED */}
-              {/* Mobile: hidden until flipped; strip rotateY so it renders forward */}
               <div
-                className={`absolute inset-0 bg-gradient-to-br from-[var(--card)] via-[var(--muted)]/50 to-[var(--card)] rounded-xl p-5 overflow-hidden border-2 border-[var(--accent)]/20 shadow-xl ${!isDesktop && !isLearningFlipped ? 'hidden' : ''}`}
-                style={{ backfaceVisibility: 'hidden', transform: isDesktop ? 'rotateY(180deg)' : 'none' }}
+                className="absolute inset-0 bg-gradient-to-br from-[var(--card)] via-[var(--muted)]/50 to-[var(--card)] rounded-xl p-5 overflow-hidden border-2 border-[var(--accent)]/20 shadow-xl"
+                style={{
+                  backfaceVisibility: 'hidden',
+                  WebkitBackfaceVisibility: 'hidden',
+                  transform: 'rotateY(180deg)',
+                  WebkitTransform: 'rotateY(180deg)',
+                } as React.CSSProperties}
               >
                 {/* Zen Mural Background for back - Enhanced with more depth */}
                 <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
@@ -1307,27 +1315,26 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="lg:col-span-3 flex flex-col gap-3 min-h-[520px] sm:min-h-[460px] lg:min-h-[360px]"
+          className="lg:col-span-3 flex flex-col gap-3 min-h-[560px] lg:min-h-[360px]"
         >
           {/* Volition Marketing Card - Flip Card with Philosophy */}
           <div
             className="relative flex-1 min-h-0 cursor-pointer select-none"
-            style={{ perspective: isDesktop ? '1000px' : undefined }}
+            style={{ perspective: '1000px', WebkitPerspective: '1000px' } as React.CSSProperties}
             onMouseEnter={() => isDesktop && setIsVolitionFlipped(false)}
             onMouseLeave={() => isDesktop && setIsVolitionFlipped(true)}
             onClick={() => setIsVolitionFlipped((v) => !v)}
           >
             <motion.div
               className="absolute inset-0"
-              style={{ transformStyle: isDesktop ? 'preserve-3d' : 'flat' }}
-              animate={{ rotateY: isDesktop && isVolitionFlipped ? 180 : 0 }}
+              style={{ transformStyle: 'preserve-3d', WebkitTransformStyle: 'preserve-3d', willChange: 'transform' } as React.CSSProperties}
+              animate={{ rotateY: isVolitionFlipped ? 180 : 0 }}
               transition={{ duration: 0.6, ease: 'easeInOut' }}
             >
               {/* Front Side - Features with Forest Mural */}
-              {/* Mobile: visible only when tapped (default state is back-facing) */}
               <motion.div
-                className={`absolute inset-0 bg-gradient-to-br from-[var(--card)]/90 via-[var(--muted)]/40 to-[var(--card)]/90 rounded-xl p-4 overflow-hidden border border-[var(--border)]/30 ${!isDesktop && isVolitionFlipped ? 'hidden' : ''}`}
-                style={{ backfaceVisibility: 'hidden' }}
+                className="absolute inset-0 bg-gradient-to-br from-[var(--card)]/90 via-[var(--muted)]/40 to-[var(--card)]/90 rounded-xl p-4 overflow-hidden border border-[var(--border)]/30"
+                style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' } as React.CSSProperties}
               >
                 {/* Forest Mural Background - Theme Aware */}
                 <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
@@ -1506,10 +1513,14 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
               </motion.div>
 
               {/* Back Side - Philosophy with Forest Mural (Larger text with internal scroll) */}
-              {/* Mobile: visible by default; strip rotateY so it renders forward */}
               <motion.div
-                className={`absolute inset-0 bg-gradient-to-br from-[var(--card)]/95 via-[var(--muted)]/30 to-[var(--card)]/95 rounded-xl p-4 border border-[var(--border)]/30 flex flex-col ${!isDesktop && !isVolitionFlipped ? 'hidden' : ''}`}
-                style={{ backfaceVisibility: 'hidden', transform: isDesktop ? 'rotateY(180deg)' : 'none' }}
+                className="absolute inset-0 bg-gradient-to-br from-[var(--card)]/95 via-[var(--muted)]/30 to-[var(--card)]/95 rounded-xl p-4 border border-[var(--border)]/30 flex flex-col"
+                style={{
+                  backfaceVisibility: 'hidden',
+                  WebkitBackfaceVisibility: 'hidden',
+                  transform: 'rotateY(180deg)',
+                  WebkitTransform: 'rotateY(180deg)',
+                } as React.CSSProperties}
               >
                 {/* Forest Mural Background for back - theme aware */}
                 <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
