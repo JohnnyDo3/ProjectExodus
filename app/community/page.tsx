@@ -134,15 +134,14 @@ async function getDashboardData(userId: string) {
 }
 
 // Top contributors shown on the non-logged-in BizID card carousel.
-// Filter: must have a name, a chosen guardian archetype (so we know
-// which commandment colors to use), and a non-zero stockScore.
+// We only require a name — guardianArchetype is optional (commandment
+// resolver falls back to a default), and stockScore=0 is fine for newer
+// users so the carousel always has enough faces to cycle through.
 async function getFeaturedContributors() {
   try {
     return await prisma.user.findMany({
       where: {
-        stockScore: { gt: 0 },
         name: { not: null },
-        guardianArchetype: { not: null },
       },
       select: {
         id: true,
@@ -152,7 +151,10 @@ async function getFeaturedContributors() {
         fishCustomization: true,
         stockScore: true,
       },
-      orderBy: { stockScore: 'desc' },
+      orderBy: [
+        { stockScore: 'desc' },
+        { createdAt: 'desc' },
+      ],
       take: 10,
     })
   } catch (error) {

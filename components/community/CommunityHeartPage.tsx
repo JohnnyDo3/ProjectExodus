@@ -440,15 +440,17 @@ export function CommunityHeartPage({ isAuthenticated, featuredContributors }: Co
       {/* Ambient animated background */}
       <AmbientBackground />
 
-      {/* Tagline bar with ancient wisdom ticker */}
+      {/* Tagline bar with ancient wisdom ticker.
+          Mobile: ticker on top, tagline below (no overlap).
+          ≥sm:   tagline overlaid on top of the ticker (original look). */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative z-20 flex items-center justify-center px-4 py-2.5 bg-gradient-to-r from-[var(--primary)]/5 via-[var(--accent)]/10 to-[var(--secondary)]/5 border-b border-[var(--border)]/30 overflow-hidden"
+        className="relative z-20 flex flex-col sm:flex-row items-center sm:justify-center gap-2 sm:gap-0 px-4 py-2.5 bg-gradient-to-r from-[var(--primary)]/5 via-[var(--accent)]/10 to-[var(--secondary)]/5 border-b border-[var(--border)]/30 overflow-hidden"
       >
-        {/* Scrolling wisdom ticker - behind the tagline */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Scrolling wisdom ticker — own row on mobile, absolute fill on desktop */}
+        <div className="relative w-full h-6 overflow-hidden pointer-events-none sm:absolute sm:inset-0 sm:h-auto sm:w-auto">
           <motion.div
             className="flex items-center whitespace-nowrap h-full"
             animate={{ x: ['0%', '-50%'] }}
@@ -467,7 +469,7 @@ export function CommunityHeartPage({ isAuthenticated, featuredContributors }: Co
           </motion.div>
         </div>
 
-        {/* Center tagline - on top */}
+        {/* Center tagline — stacked below the ticker on mobile, overlaid on desktop */}
         <motion.div
           className="relative z-10 flex items-center gap-3 px-4 py-1 bg-[var(--background)]/80 backdrop-blur-sm rounded-full border border-[var(--border)]/20"
           animate={{ opacity: [0.9, 1, 0.9] }}
@@ -799,8 +801,13 @@ export function CommunityHeartPage({ isAuthenticated, featuredContributors }: Co
                   <p className="text-xs text-[var(--muted-foreground)] max-w-[220px] leading-relaxed text-center">A verified business card representing your values and contributions</p>
                 </div>
 
-                {/* Commandment icons with hover reveal */}
-                <div className="relative flex items-center justify-center gap-1.5 mb-3 flex-wrap">
+                {/* Commandment icons with hover reveal.
+                    stopPropagation so clicking a commandment doesn't
+                    bubble up to the flip-card toggle on the parent. */}
+                <div
+                  className="relative flex items-center justify-center gap-1.5 mb-3 flex-wrap"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   {guardianArchetypes.map((archetype, i) => {
                     const Icon = archetype.icon
                     return (
@@ -1387,9 +1394,18 @@ export function CommunityHeartPage({ isAuthenticated, featuredContributors }: Co
               transition={{ duration: 0.6, ease: 'easeInOut' }}
             >
               {/* Front Side - Features with Forest Mural */}
-              <motion.div
+              {/* Plain <div> + explicit rotateY(0) so framer-motion never
+                  injects a transform that breaks backface-visibility and
+                  lets the back face bleed through. Matches the pattern
+                  used on the back face below. */}
+              <div
                 className="absolute inset-0 bg-gradient-to-br from-[var(--card)]/90 via-[var(--muted)]/40 to-[var(--card)]/90 rounded-xl p-4 overflow-hidden border border-[var(--border)]/30"
-                style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' } as React.CSSProperties}
+                style={{
+                  backfaceVisibility: 'hidden',
+                  WebkitBackfaceVisibility: 'hidden',
+                  transform: 'rotateY(0deg)',
+                  WebkitTransform: 'rotateY(0deg)',
+                } as React.CSSProperties}
               >
                 {/* Forest Mural Background - Theme Aware */}
                 <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
@@ -1565,7 +1581,7 @@ export function CommunityHeartPage({ isAuthenticated, featuredContributors }: Co
                     </div>
                   )}
                 </div>
-              </motion.div>
+              </div>
 
               {/* Back Side - Philosophy with Forest Mural (Larger text with internal scroll) */}
               {/* Plain <div> (not motion.div) so framer-motion doesn't override the inline
