@@ -1324,51 +1324,51 @@ export function CommunityHeartPage({ isAuthenticated, featuredContributors }: Co
                   {/* Feature explanations - enhanced grid with better depth */}
                   <div className="w-full grid grid-cols-2 gap-2.5">
                     <motion.div
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-[var(--card)]/70 backdrop-blur-sm border border-[var(--border)]/40 shadow-md"
+                      className="flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2.5 rounded-xl bg-[var(--card)]/70 backdrop-blur-sm border border-[var(--border)]/40 shadow-md min-w-0"
                       whileHover={{ scale: 1.03, x: 2, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
                     >
                       <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--primary)]/30 to-[var(--primary)]/10 flex items-center justify-center flex-shrink-0 shadow-inner border border-[var(--primary)]/20">
                         <GraduationCap className="w-4 h-4 text-[var(--primary)] drop-shadow-sm" />
                       </div>
-                      <div className="text-left">
-                        <p className="text-xs font-bold text-[var(--foreground)] drop-shadow-sm">6 Grade Levels</p>
-                        <p className="text-[10px] text-[var(--muted-foreground)] leading-snug">K-12 to PhD adapted</p>
+                      <div className="text-left min-w-0 flex-1">
+                        <p className="text-[10px] sm:text-xs font-bold text-[var(--foreground)] drop-shadow-sm leading-tight">6 Grade Levels</p>
+                        <p className="text-[9px] sm:text-[10px] text-[var(--muted-foreground)] leading-snug">K-12 to PhD adapted</p>
                       </div>
                     </motion.div>
                     <motion.div
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-[var(--card)]/70 backdrop-blur-sm border border-[var(--border)]/40 shadow-md"
+                      className="flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2.5 rounded-xl bg-[var(--card)]/70 backdrop-blur-sm border border-[var(--border)]/40 shadow-md min-w-0"
                       whileHover={{ scale: 1.03, x: 2, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
                     >
                       <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500/30 to-purple-500/10 flex items-center justify-center flex-shrink-0 shadow-inner border border-purple-500/20">
                         <Gamepad2 className="w-4 h-4 text-purple-500 drop-shadow-sm" />
                       </div>
-                      <div className="text-left">
-                        <p className="text-xs font-bold text-[var(--foreground)] drop-shadow-sm">Interactive Games</p>
-                        <p className="text-[10px] text-[var(--muted-foreground)] leading-snug">Learn through play</p>
+                      <div className="text-left min-w-0 flex-1">
+                        <p className="text-[10px] sm:text-xs font-bold text-[var(--foreground)] drop-shadow-sm leading-tight">Interactive Games</p>
+                        <p className="text-[9px] sm:text-[10px] text-[var(--muted-foreground)] leading-snug">Learn through play</p>
                       </div>
                     </motion.div>
                     <motion.div
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-[var(--card)]/70 backdrop-blur-sm border border-[var(--border)]/40 shadow-md"
+                      className="flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2.5 rounded-xl bg-[var(--card)]/70 backdrop-blur-sm border border-[var(--border)]/40 shadow-md min-w-0"
                       whileHover={{ scale: 1.03, x: 2, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
                     >
                       <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500/30 to-cyan-500/10 flex items-center justify-center flex-shrink-0 shadow-inner border border-cyan-500/20">
                         <Brain className="w-4 h-4 text-cyan-500 drop-shadow-sm" />
                       </div>
-                      <div className="text-left">
-                        <p className="text-xs font-bold text-[var(--foreground)] drop-shadow-sm">Adaptive Learning</p>
-                        <p className="text-[10px] text-[var(--muted-foreground)] leading-snug">Adjusts to your pace</p>
+                      <div className="text-left min-w-0 flex-1">
+                        <p className="text-[10px] sm:text-xs font-bold text-[var(--foreground)] drop-shadow-sm leading-tight">Adaptive Learning</p>
+                        <p className="text-[9px] sm:text-[10px] text-[var(--muted-foreground)] leading-snug">Adjusts to your pace</p>
                       </div>
                     </motion.div>
                     <motion.div
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-[var(--card)]/70 backdrop-blur-sm border border-[var(--border)]/40 shadow-md"
+                      className="flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2.5 rounded-xl bg-[var(--card)]/70 backdrop-blur-sm border border-[var(--border)]/40 shadow-md min-w-0"
                       whileHover={{ scale: 1.03, x: 2, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
                     >
                       <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--accent)]/30 to-[var(--accent)]/10 flex items-center justify-center flex-shrink-0 shadow-inner border border-[var(--accent)]/20">
                         <Award className="w-4 h-4 text-[var(--accent)] drop-shadow-sm" />
                       </div>
-                      <div className="text-left">
-                        <p className="text-xs font-bold text-[var(--foreground)] drop-shadow-sm">Certifications</p>
-                        <p className="text-[10px] text-[var(--muted-foreground)] leading-snug">Earn credentials</p>
+                      <div className="text-left min-w-0 flex-1">
+                        <p className="text-[10px] sm:text-xs font-bold text-[var(--foreground)] drop-shadow-sm leading-tight">Certifications</p>
+                        <p className="text-[9px] sm:text-[10px] text-[var(--muted-foreground)] leading-snug">Earn credentials</p>
                       </div>
                     </motion.div>
                   </div>
@@ -1658,12 +1658,16 @@ export function CommunityHeartPage({ isAuthenticated, featuredContributors }: Co
                             type="button"
                             onClick={(e) => { e.stopPropagation(); setActiveLaneIndex(i) }}
                             whileHover={{ scale: 1.25 }}
-                            className="rounded-full transition-all duration-300 flex-shrink-0 p-0 border-0 appearance-none"
+                            className="rounded-full transition-all duration-300 flex-shrink-0 p-0 border-0 appearance-none block"
                             style={{
                               width: active ? 10 : 6,
                               height: active ? 10 : 6,
+                              minWidth: active ? 10 : 6,
+                              minHeight: active ? 10 : 6,
                               backgroundColor: active ? 'var(--primary)' : 'rgba(148, 163, 184, 0.35)',
                               boxShadow: active ? '0 0 6px var(--primary)' : undefined,
+                              lineHeight: 0,
+                              padding: 0,
                             }}
                             aria-label={`Show lane ${i + 1}`}
                           />
