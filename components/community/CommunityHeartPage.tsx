@@ -513,7 +513,20 @@ export function CommunityHeartPage({ isAuthenticated, featuredContributors }: Co
             style={{ transformStyle: 'preserve-3d', WebkitTransformStyle: 'preserve-3d', willChange: 'transform' } as React.CSSProperties}
           >
             {/* Front Side - BizID Features + Network Activity */}
-            <GlowingBorder className="absolute inset-0" style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' } as React.CSSProperties}>
+            {/* Explicit rotateY(0) + isolation: 'isolate' so the browser
+                can reliably cull this face when the parent flips 180°
+                (matches the back face which uses rotateY(180deg)).
+                Without an explicit transform here the front bled through
+                the back on mobile Safari. */}
+            <GlowingBorder
+              className="absolute inset-0"
+              style={{
+                backfaceVisibility: 'hidden',
+                WebkitBackfaceVisibility: 'hidden',
+                transform: 'rotateY(0deg)',
+                WebkitTransform: 'rotateY(0deg)',
+              } as React.CSSProperties}
+            >
               <div className="relative h-full flex flex-col gap-2">
                 {/* BizID Card - Top Section with Ivy Mural */}
                 <motion.div
@@ -733,8 +746,12 @@ export function CommunityHeartPage({ isAuthenticated, featuredContributors }: Co
             </GlowingBorder>
 
             {/* Back Side - Full Height BizID Philosophy with Ivy Mural - ENHANCED */}
+            {/* Solid `bg-[var(--card)]` underneath the gradient so even if
+                backface-visibility ever lets a sliver of the front through,
+                the back face is fully opaque (no see-through middle from
+                the previous `via-[var(--muted)]/50`). */}
             <div
-              className="absolute inset-0 bg-gradient-to-br from-[var(--card)] via-[var(--muted)]/50 to-[var(--card)] rounded-xl p-5 overflow-hidden border-2 border-[var(--primary)]/20 shadow-xl"
+              className="absolute inset-0 bg-[var(--card)] rounded-xl p-5 overflow-hidden border-2 border-[var(--primary)]/20 shadow-xl"
               style={{
                 backfaceVisibility: 'hidden',
                 WebkitBackfaceVisibility: 'hidden',
@@ -742,6 +759,8 @@ export function CommunityHeartPage({ isAuthenticated, featuredContributors }: Co
                 WebkitTransform: 'rotateY(180deg)',
               } as React.CSSProperties}
             >
+              {/* Subtle gradient overlay on top of the solid card bg */}
+              <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/5 via-transparent to-[var(--accent)]/5 rounded-xl pointer-events-none" />
               {/* Ivy Mural Background - Enhanced with more depth */}
               <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
                 {/* Deep layered parchment texture */}
