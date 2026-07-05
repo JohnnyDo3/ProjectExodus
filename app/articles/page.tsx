@@ -2731,53 +2731,70 @@ export default function ArticlesPage() {
 
         </div>
 
-        <div className="container mx-auto px-12 py-6 sm:py-8 relative z-10 lg:px-[20%]">
+        <div className="container mx-auto px-4 sm:px-8 md:px-12 py-4 sm:py-6 md:py-8 relative z-10 lg:px-[20%]">
           <div className="max-w-6xl mx-auto pt-14 sm:pt-16 lg:pt-40">
             {/* Title Section - Below the entablature */}
-            <div className="text-center mb-6 sm:mb-8">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 tracking-tight" style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)', color: '#ffffff' }}>
+            <div className="text-center mb-5 sm:mb-6 md:mb-8">
+              <h1
+                className="font-black mb-3 tracking-tight"
+                style={{
+                  fontFamily: 'Georgia, serif',
+                  textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)',
+                  color: '#ffffff',
+                  fontSize: 'clamp(1.5rem, 6.5vw, 3rem)',
+                  lineHeight: 1.1,
+                }}
+              >
                 Knowledge Shared
               </h1>
 
               {/* Decorative divider */}
               <div className="flex items-center justify-center gap-3 mb-3">
-                <div className="h-px w-16" style={{ background: 'linear-gradient(to right, transparent, rgba(245, 158, 11, 0.5))' }} />
+                <div className="h-px w-10 sm:w-16" style={{ background: 'linear-gradient(to right, transparent, rgba(245, 158, 11, 0.5))' }} />
                 <div className="w-2 h-2 rotate-45" style={{ backgroundColor: '#f59e0b' }} />
-                <div className="h-px w-16" style={{ background: 'linear-gradient(to left, transparent, rgba(245, 158, 11, 0.5))' }} />
+                <div className="h-px w-10 sm:w-16" style={{ background: 'linear-gradient(to left, transparent, rgba(245, 158, 11, 0.5))' }} />
               </div>
 
-              <p className="text-sm sm:text-base font-medium opacity-90 px-4 max-w-lg mx-auto" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#fde68a' }}>
+              <p
+                className="font-medium opacity-90 px-4 max-w-lg mx-auto"
+                style={{
+                  fontFamily: 'Georgia, serif',
+                  fontStyle: 'italic',
+                  color: '#fde68a',
+                  fontSize: 'clamp(0.8125rem, 2.5vw, 1rem)',
+                }}
+              >
                 "Wisdom is not consumed — it is received."
               </p>
 
               {/* Stats in ornate frames - clickable to highlight scrolls */}
               <div
-                className={`flex items-center justify-center gap-4 mt-4 cursor-pointer group transition-all duration-300 ${highlightScrolls ? 'scale-105' : 'hover:scale-102'}`}
+                className={`flex items-center justify-center gap-2 sm:gap-4 mt-4 cursor-pointer group transition-all duration-300 ${highlightScrolls ? 'scale-105' : 'hover:scale-102'}`}
                 onClick={() => setHighlightScrolls(prev => !prev)}
                 title="Click to highlight article scrolls on the shelves"
               >
-                <div className={`relative px-4 py-2 bg-gradient-to-b from-slate-800/80 to-slate-900/80 border rounded-sm transition-all duration-300 ${highlightScrolls ? 'border-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.4)]' : 'border-amber-600/40 group-hover:border-amber-500/60'}`}>
+                <div className={`relative px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-b from-slate-800/80 to-slate-900/80 border rounded-sm transition-all duration-300 ${highlightScrolls ? 'border-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.4)]' : 'border-amber-600/40 group-hover:border-amber-500/60'}`}>
                   <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 via-amber-500/10 to-amber-500/5" />
-                  <span className="text-xs font-bold text-amber-200 relative">
+                  <span className="text-[10px] sm:text-xs font-bold text-amber-200 relative whitespace-nowrap">
                     {totalArticles > 0 ? totalArticles : articles.length + (featuredArticle ? 1 : 0)} Articles
                   </span>
                 </div>
-                <div className={`relative px-4 py-2 bg-gradient-to-b from-slate-800/80 to-slate-900/80 border rounded-sm transition-all duration-300 ${highlightScrolls ? 'border-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.4)]' : 'border-amber-600/40 group-hover:border-amber-500/60'}`}>
+                <div className={`relative px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-b from-slate-800/80 to-slate-900/80 border rounded-sm transition-all duration-300 ${highlightScrolls ? 'border-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.4)]' : 'border-amber-600/40 group-hover:border-amber-500/60'}`}>
                   <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 via-amber-500/10 to-amber-500/5" />
-                  <span className="text-xs font-bold text-amber-200 relative">
+                  <span className="text-[10px] sm:text-xs font-bold text-amber-200 relative whitespace-nowrap">
                     {totalViews.toLocaleString()} Readers
                   </span>
                 </div>
               </div>
 
               {/* Prominent Author Button */}
-              <div className="mt-6">
+              <div className="mt-5 sm:mt-6">
                 {session ? (
                   <Link href="/articles/write">
-                    <button className="group relative inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-emerald-700 via-emerald-600 to-emerald-700 hover:from-emerald-600 hover:via-emerald-500 hover:to-emerald-600 text-white font-bold text-base rounded-lg shadow-2xl border-2 border-emerald-400/40 hover:border-emerald-300/60 transition-all duration-300 hover:scale-105 hover:shadow-emerald-500/30">
+                    <button className="group relative inline-flex items-center gap-2 sm:gap-3 px-5 py-2.5 sm:px-8 sm:py-4 bg-gradient-to-r from-emerald-700 via-emerald-600 to-emerald-700 hover:from-emerald-600 hover:via-emerald-500 hover:to-emerald-600 text-white font-bold text-sm sm:text-base rounded-lg shadow-2xl border-2 border-emerald-400/40 hover:border-emerald-300/60 transition-all duration-300 hover:scale-105 hover:shadow-emerald-500/30">
                       {/* Decorative quill icon */}
                       <div className="relative">
-                        <PenSquare className="w-5 h-5" />
+                        <PenSquare className="w-4 h-4 sm:w-5 sm:h-5" />
                         <div className="absolute -top-1 -right-1 w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
                       </div>
                       <span className="tracking-wide">Publish an Article</span>
@@ -2790,10 +2807,10 @@ export default function ArticlesPage() {
                   </Link>
                 ) : (
                   <Link href="/auth/signup">
-                    <button className="group relative inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-slate-600 via-slate-500 to-slate-600 hover:from-emerald-700 hover:via-emerald-600 hover:to-emerald-700 text-white font-bold text-base rounded-lg shadow-2xl border-2 border-slate-400/40 hover:border-emerald-400/60 transition-all duration-300 hover:scale-105">
+                    <button className="group relative inline-flex items-center gap-2 sm:gap-3 px-5 py-2.5 sm:px-8 sm:py-4 bg-gradient-to-r from-slate-600 via-slate-500 to-slate-600 hover:from-emerald-700 hover:via-emerald-600 hover:to-emerald-700 text-white font-bold text-sm sm:text-base rounded-lg shadow-2xl border-2 border-slate-400/40 hover:border-emerald-400/60 transition-all duration-300 hover:scale-105">
                       {/* Decorative quill icon */}
                       <div className="relative">
-                        <PenSquare className="w-5 h-5" />
+                        <PenSquare className="w-4 h-4 sm:w-5 sm:h-5" />
                       </div>
                       <span className="tracking-wide">Join to Contribute</span>
                       {/* Decorative corner accents */}
@@ -2804,7 +2821,7 @@ export default function ArticlesPage() {
                     </button>
                   </Link>
                 )}
-                <p className="mt-2 text-xs text-amber-300/60 font-medium">
+                <p className="mt-2 text-[10px] sm:text-xs text-amber-300/60 font-medium px-4">
                   {session ? 'Share a case study, lesson, or sustainability journey' : 'Sign up free to share your wisdom'}
                 </p>
               </div>
@@ -4275,45 +4292,55 @@ export default function ArticlesPage() {
           }} />
 
           {/* Locked content message */}
-          <div className="relative z-10 flex flex-col items-center justify-center py-20 px-4">
+          <div className="relative z-10 flex flex-col items-center justify-center py-12 sm:py-20 px-4">
             {/* Lock icon with glow */}
-            <div className="relative mb-6">
+            <div className="relative mb-4 sm:mb-6">
               <div className="absolute inset-0 bg-amber-500/20 rounded-full blur-xl animate-pulse" />
-              <div className="relative w-20 h-20 bg-gradient-to-br from-amber-700 to-amber-900 rounded-full flex items-center justify-center shadow-2xl border-4 border-amber-600/50">
-                <Lock className="w-10 h-10 text-amber-200" />
+              <div className="relative w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-amber-700 to-amber-900 rounded-full flex items-center justify-center shadow-2xl border-4 border-amber-600/50">
+                <Lock className="w-8 h-8 sm:w-10 sm:h-10 text-amber-200" />
               </div>
             </div>
 
             {/* Title */}
-            <h2 className="text-2xl sm:text-3xl font-bold text-amber-100 text-center mb-3" style={{ fontFamily: 'Georgia, serif' }}>
+            <h2
+              className="font-bold text-amber-100 text-center mb-3"
+              style={{
+                fontFamily: 'Georgia, serif',
+                fontSize: 'clamp(1.25rem, 5vw, 1.875rem)',
+                lineHeight: 1.15,
+              }}
+            >
               Unlock the Grand Library
             </h2>
 
             {/* Description */}
-            <p className="text-amber-300/80 text-center max-w-md mb-8 leading-relaxed">
+            <p
+              className="text-amber-300/80 text-center max-w-md mb-6 sm:mb-8 leading-relaxed px-2"
+              style={{ fontSize: 'clamp(0.8125rem, 2.5vw, 1rem)' }}
+            >
               Join our community to access the full collection of wisdom scrolls,
               contribute your own articles, and track your reading journey.
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full max-w-sm sm:max-w-none sm:w-auto">
               <Link
                 href="/auth/signup"
-                className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold rounded-xl shadow-lg transition-all transform hover:scale-105 border-2 border-amber-500/50"
+                className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 sm:px-8 py-2.5 sm:py-3 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold text-sm sm:text-base rounded-xl shadow-lg transition-all transform hover:scale-105 border-2 border-amber-500/50"
               >
-                <UserPlus className="w-5 h-5" />
+                <UserPlus className="w-4 h-4 sm:w-5 sm:h-5" />
                 Join Free
               </Link>
               <Link
                 href="/auth/signin"
-                className="flex items-center gap-2 px-8 py-3 bg-transparent hover:bg-amber-800/30 text-amber-200 font-bold rounded-xl transition-all border-2 border-amber-600/50"
+                className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 sm:px-8 py-2.5 sm:py-3 bg-transparent hover:bg-amber-800/30 text-amber-200 font-bold text-sm sm:text-base rounded-xl transition-all border-2 border-amber-600/50"
               >
                 Sign In
               </Link>
             </div>
 
             {/* Features preview */}
-            <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl">
+            <div className="mt-8 sm:mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-2xl">
               <div className="flex flex-col items-center text-center p-4">
                 <BookOpen className="w-8 h-8 text-amber-500 mb-2" />
                 <p className="text-sm font-semibold text-amber-200">Browse All Articles</p>
